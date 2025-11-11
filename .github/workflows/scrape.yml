@@ -1,18 +1,17 @@
-# This file goes in .github/workflows/scrape.yml
-# It automatically runs your scraper.
-
 name: 'Run Job Scraper'
 
 on:
-  # This makes it run daily at 00:00 UTC
   schedule:
     - cron: '0 0 * * *'
-  # This lets you run it manually from the "Actions" tab in GitHub
   workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    
+    # This gives the secret to our script
+    env:
+      COMPANIES_JSON: ${{ secrets.COMPANIES_JSON }}
     
     steps:
       # 1. Checks out your repository's code
@@ -26,14 +25,17 @@ jobs:
           node-version: '18' # Use a stable LTS version
 
       # 3. Installs the dependencies from your package.json
-      #    We use --prefix to specify the 'scraper' directory
+      # --- THIS IS THE FIX ---
+      # I have removed '--prefix scraper'. It will now look
+      # in your main folder, which is correct.
       - name: 'Install Dependencies'
-        run: npm ci --prefix scraper
+        run: npm ci
 
       # 4. Runs your scraper script
-      #    We use --prefix to run it from the 'scraper' directory
+      # --- THIS IS THE FIX ---
+      # I have removed '--prefix scraper'.
       - name: 'Run Scraper Script'
-        run: npm start --prefix scraper
+        run: npm start
 
       # 5. This action automatically commits and pushes
       #    any changes in the repository (i.e., your updated jobs.json)
