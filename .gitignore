@@ -25,9 +25,3 @@ desktop.ini
 # Log files
 *.log
 npm-debug.log*
-
-# Our Secret File
-companies.json
-
-# Our Output Database
-jobs.json
