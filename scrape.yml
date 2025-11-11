@@ -1,0 +1,47 @@
+# This file goes in .github/workflows/scrape.yml
+# It automatically runs your scraper.
+
+name: 'Run Job Scraper'
+
+on:
+  # This makes it run daily at 00:00 UTC
+  schedule:
+    - cron: '0 0 * * *'
+  # This lets you run it manually from the "Actions" tab in GitHub
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checks out your repository's code
+      - name: 'Checkout Repo'
+        uses: actions/checkout@v4
+
+      # 2. Sets up the Node.js environment
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Use a stable LTS version
+
+      # 3. Installs the dependencies from your package.json
+      #    We use --prefix to specify the 'scraper' directory
+      - name: 'Install Dependencies'
+        run: npm ci --prefix scraper
+
+      # 4. Runs your scraper script
+      #    We use --prefix to run it from the 'scraper' directory
+      - name: 'Run Scraper Script'
+        run: npm start --prefix scraper
+
+      # 5. This action automatically commits and pushes
+      #    any changes in the repository (i.e., your updated jobs.json)
+      - name: 'Commit and Push Changes'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Automated: Updated job listings'
+          file_pattern: 'jobs.json' # Only commit if jobs.json changed
+          commit_user_name: 'GitHub Actions Bot'
+          commit_user_email: 'actions@github.com'
+          commit_author: 'GitHub Actions Bot <actions@github.com>'

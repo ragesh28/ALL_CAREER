@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>My Job Aggregator</title>
+    <!-- Simple, clean styling. No frameworks needed. -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #eee;
+        }
+        h1 {
+            margin: 0;
+            color: #111;
+        }
+        #job-list {
+            padding: 0 32px 32px;
+            margin: 0;
+            list-style-type: none;
+        }
+        .job-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .job-item:last-child {
+            border-bottom: none;
+        }
+        .job-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0 0 8px;
+        }
+        .job-company {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 12px;
+        }
+        .job-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #007bff;
+            text-decoration: none;
+            background-color: #f0f7ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: background-color 0.2s;
+        }
+        .job-link:hover {
+            background-color: #e0f0ff;
+        }
+        #loading-message {
+            padding: 32px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Aggregated Job Listings</h1>
+            <p>Jobs scraped daily from company career sites.</p>
+        </header>
+
+        <!-- The list of jobs will be injected here by JavaScript -->
+        <ul id="job-list">
+            <li id="loading-message">Loading job data...</li>
+        </ul>
+    </div>
+
+    <script>
+        // This is all the JavaScript your website needs.
+        // It fetches the "database" (jobs.json) and displays it.
+        
+        // Use an IIFE (Immediately Invoked Function Expression) to run the code
+        (async function loadJobs() {
+            const jobListEl = document.getElementById('job-list');
+            const loadingMessageEl = document.getElementById('loading-message');
+
+            try {
+                // Fetch the JSON file. 
+                // We add a cache-busting query to get the latest version.
+                const response = await fetch(`jobs.json?v=${new Date().getTime()}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const jobs = await response.json();
+
+                // Clear the "loading" message
+                jobListEl.innerHTML = '';
+
+                if (jobs.length === 0) {
+                    jobListEl.innerHTML = '<li id="loading-message">No jobs found.</li>';
+                    return;
+                }
+
+                // Loop through each job and create the HTML
+                jobs.forEach(job => {
+                    const jobItem = document.createElement('li');
+                    jobItem.className = 'job-item';
+                    
+                    jobItem.innerHTML = `
+                        <h3 class="job-title">${job.title}</h3>
+                        <p class="job-company">${job.company}</p>
+                        <a href="${job.url}" class="job-link" target="_blank" rel="noopener noreferrer">
+                            View Job &rarr;
+                        </a>
+                    `;
+                    jobListEl.appendChild(jobItem);
+                });
+
+            } catch (error) {
+                console.error('Failed to load jobs:', error);
+                loadingMessageEl.innerText = 'Failed to load job data. Please try again later.';
+            }
+        })();
+    </script>
+</body>
+</html>cd scraper
