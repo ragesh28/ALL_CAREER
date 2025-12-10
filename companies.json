@@ -1,0 +1,222 @@
+[
+  {
+    "name": "Zoho",
+    "url": "https.://www.zoho.com/careers/",
+    "itemSelector": "ul.rec-job-info",
+    "titleSelector": ".rec-job-title",
+    "linkSelector": ".rec-job-title a",
+    "isItemLink": false,
+    "dateSelector": ".datecls",
+    "locationSelector": ".zrsite_City"
+  },
+  {
+    "name": "Freshworks",
+    "url": "https.://careers.smartrecruiters.com/Freshworks/",
+    "itemSelector": "li.job",
+    "titleSelector": "h4",
+    "linkSelector": "a",
+    "isItemLink": false,
+    "dateSelector": ".job-date",
+    "locationSelector": ".job-location"
+  },
+  {
+    "name": "HCLTech",
+    "url": "https.://www.hcltech.com/careers/careers-in-india?page=0",
+    "itemSelector": "tbody tr",
+    "titleSelector": ".views-field-field-designation a",
+    "linkSelector": ".views-field-field-designation a",
+    "isItemLink": false,
+    "dateSelector": ".views-field-field-updated-date",
+    "locationSelector": ".views-field-field-kenexa-jobs-location",
+    "filterLocations": ["chennai", "bangalore"]
+  },
+  {
+    "name": "CRED",
+    "url": "https://jobs.lever.co/cred",
+    "itemSelector": ".posting",
+    "titleSelector": "h5",
+    "linkSelector": "a.posting-title",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".sort-by-location"
+  },
+  {
+    "name": "Kissflow",
+    "url": "https://careers.kissflow.com/",
+    "itemSelector": ".career-link",
+    "titleSelector": "h6",
+    "linkSelector": "a",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ""
+  },
+  {
+    "name": "Kaleidofin",
+    "url": "https://www.kaleidofin.com/careers",
+    "itemSelector": ".collection-item-careers",
+    "titleSelector": "h3.heading-16",
+    "linkSelector": "a.link-block-3",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": "p:last-child"
+  },
+  {
+    "name": "M2P Fintech",
+    "url": "https://careers.m2pfintech.com/view-jobs/",
+    "itemSelector": "a.job-box",
+    "titleSelector": "h2",
+    "linkSelector": "a.job-box",
+    "isItemLink": true,
+    "dateSelector": "",
+    "locationSelector": "span"
+  },
+  {
+    "name": "Lumel",
+    "url": "https://lumel.com/careers/#current-openings",
+    "itemSelector": ".kekahire-listing",
+    "titleSelector": "h3",
+    "linkSelector": "a.kekahire-apply-button",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".kekahire-listing-title-wrapper span"
+  },
+  {
+    "name": "Mr. Cooper",
+    "url": "https://careers.mrcooper.com/us/en/c/technology-jobs",
+    "itemSelector": "li.jobs-list-item",
+    "titleSelector": ".job-title span",
+    "linkSelector": "a",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".job-location"
+  },
+  {
+    "name": "Caterpillar",
+    "url": "https://careers.caterpillar.com/en/jobs/",
+    "itemSelector": ".card",
+    "titleSelector": "a.js-view-job",
+    "linkSelector": "a.js-view-job",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ""
+  },
+  {
+    "name": "Temenos",
+    "url": "https://temenos.csod.com/ux/ats/careersite/4/home?c=temenos",
+    "itemSelector": ".p-panel",
+    "titleSelector": "a[data-tag='displayJobTitle']",
+    "linkSelector": "a[data-tag='displayJobTitle']",
+    "isItemLink": false,
+    "dateSelector": "p[data-tag='displayJobPostingDate']",
+    "locationSelector": "p[data-tag='displayJobLocation']"
+  },
+  {
+    "name": "Amazon",
+    "url": "https://www.amazon.jobs/content/en/locations/india/chennai",
+    "itemSelector": "div[class*='header-module_root']",
+    "titleSelector": "h3 a",
+    "linkSelector": "h3 a",
+    "isItemLink": false,
+    "dateSelector": "div[class*='metadatum-module_text']:last-child",
+    "locationSelector": "span[class*='map-location-to-element-module_item']",
+    "filterLocations": ["chennai", "bangalore"]
+  },
+{
+    "name": "Amazon Bangalore",
+    "url": "https://www.amazon.jobs/content/en/locations/india/bangalore",
+    "itemSelector": "div[class*='header-module_root']",
+    "titleSelector": "h3 a",
+    "linkSelector": "h3 a",
+    "isItemLink": false,
+    "dateSelector": "div[class*='metadatum-module_text']:last-child",
+    "locationSelector": "span[class*='map-location-to-element-module_item']"
+  },
+  {
+    "name": "Accenture",
+    "url": "https://www.accenture.com/in-en/careers/jobsearch?ct=Bengaluru%7CChennai%7CCoimbatore",
+    "itemSelector": ".rad-filters-vertical__job-card-header",
+    "titleSelector": ".rad-filters-vertical__job-card-title",
+    "linkSelector": ".rad-filters-vertical__job-card-title",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".rad-filters-vertical__job-card-details-location",
+    "filterLocations": ["chennai", "bangalore", "bengaluru", "various"]
+  },
+{
+    "name": "TCS",
+    "url": "https://ibegin.tcsapps.com/candidate/jobs/search",
+    "itemSelector": ".searched-job",
+    "titleSelector": ".job-info-title span",
+    "linkSelector": "", 
+    "isItemLink": false,
+    "dateSelector": ".date-desktop span",
+    "locationSelector": ".job-data-bar > div.job-info:nth-child(2) span",
+    "filterLocations": ["chennai", "bangalore", "bengaluru"]
+  },
+  {
+    "name": "Wipro",
+    "url": "https://careers.wipro.com/search/?q=&locationsearch=chennai&searchResultView=LIST",
+    "itemSelector": "li[data-testid='jobCard']",
+    "titleSelector": "a[data-testid^='jobCardTitle']",
+    "linkSelector": "a[data-testid^='jobCardTitle']",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": "div[data-testid='jobCardLocation']",
+    "filterLocations": ["chennai", "bangalore"]
+  },
+  {
+    "name": "Cognizant",
+    "url": "https://careers.cognizant.com/india-en/jobs/",
+    "itemSelector": ".card-body",
+    "titleSelector": "h2.card-title",
+    "linkSelector": "a.js-view-job",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".job-meta li:first-child",
+    "filterLocations": ["chennai", "bangalore"]
+  },
+{
+    "name": "LTIMindtree",
+    "url": "https://ltimindtree.ripplehire.com/candidate/?token=xviyQvbnyYZdGtozXoNm&lang=en&source=CAREERSITE#list/geo=India",
+    "itemSelector": "li.job",
+    "titleSelector": "a.job-title",
+    "linkSelector": "a.job-title",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": "li.location-text",
+    "filterLocations": ["chennai", "bangalore", "bengaluru","bangalure"]
+  },
+  {
+    "name": "Capgemini",
+    "url": "https://www.capgemini.com/in-en/careers/?page=1&size=11&country_code=in-en&keyword=bangalore%2Cchennai",
+    "itemSelector": "li[class*='JobRow-module__job-card-wrapper']",
+    "titleSelector": "div[class*='JobRow-module__title']",
+    "linkSelector": "a[class*='JobRow-module__job-card']",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": "div[class*='JobRow-module__location']",
+    "filterLocations": ["chennai", "bangalore", "bengaluru"]
+  },
+  {
+    "name": "IBM",
+    "url": "https://www.ibm.com/in-en/careers/search?field_keyword_05[0]=India",
+    "itemSelector": ".bx--card-group__cards__col",
+    "titleSelector": ".bx--card__heading",
+    "linkSelector": "a[id^='search-result']",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".ibm--card__copy__inner",
+    "filterLocations": ["chennai", "bangalore"]
+  },
+  {
+    "name": "Virtusa",
+    "url": "https://www.virtusa.com/careers/job-search#India#Bengaluru",
+    "itemSelector": ".info__section--item",
+    "titleSelector": ".job_position-title",
+    "linkSelector": "a.job_position",
+    "isItemLink": false,
+    "dateSelector": "",
+    "locationSelector": ".job_positionlocation",
+    "filterLocations": ["chennai", "bangalore", "bengaluru"]
+  }
+]

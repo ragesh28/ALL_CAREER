@@ -2,138 +2,128 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
-    <title>My Job Aggregator</title>
-    <!-- Simple, clean styling. No frameworks needed. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL_CAREER | HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-surface: #0f172a;
+            --primary: #3b82f6;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        header {
-            padding: 24px 32px;
-            border-bottom: 1px solid #eee;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 60%);
         }
         h1 {
-            margin: 0;
-            color: #111;
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #3b82f6, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
         }
-        #job-list {
-            padding: 0 32px 32px;
-            margin: 0;
-            list-style-type: none;
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
         }
-        .job-item {
-            padding: 20px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .job-item:last-child {
-            border-bottom: none;
-        }
-        .job-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin: 0 0 8px;
-        }
-        .job-company {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #555;
-            margin-bottom: 12px;
-        }
-        .job-link {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #007bff;
+        .menu-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
             text-decoration: none;
-            background-color: #f0f7ff;
-            padding: 6px 12px;
-            border-radius: 20px;
-            transition: background-color 0.2s;
-        }
-        .job-link:hover {
-            background-color: #e0f0ff;
-        }
-        #loading-message {
-            padding: 32px;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            font-size: 1.1rem;
-            color: #777;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
+        }
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            transition: 0.3s;
+        }
+        .menu-card:hover .icon-box {
+            background: var(--primary);
+            color: white;
+        }
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        /* Mobile */
+        @media (max-width: 768px) {
+            .grid-menu { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Aggregated Job Listings</h1>
-            <p>Jobs scraped daily from company career sites.</p>
-        </header>
+    <h1>ALL_CAREER</h1>
 
-        <!-- The list of jobs will be injected here by JavaScript -->
-        <ul id="job-list">
-            <li id="loading-message">Loading job data...</li>
-        </ul>
+    <div class="grid-menu">
+        <!-- 1. Company Directory -->
+        <a href="career_explorer.html" class="menu-card">
+            <div class="icon-box">🏢</div>
+            <div class="card-title">Company Directory</div>
+            <div class="card-desc">Explore salary insights, roles, and hiring types for 100+ top companies.</div>
+        </a>
+
+        <!-- 2. Job Fetcher (NEW) -->
+        <a href="daily_jobs.html" class="menu-card" style="border-color: rgba(59, 130, 246, 0.4);">
+            <div class="icon-box">🚀</div>
+            <div class="card-title">Daily Job Drops</div>
+            <div class="card-desc">Live jobs fetched automatically from career pages (Zoho, HCL, Amazon, etc).</div>
+        </a>
+
+        <!-- 3. Practice Lab -->
+        <a href="practice.html" class="menu-card">
+            <div class="icon-box">⚡</div>
+            <div class="card-title">Practice Lab</div>
+            <div class="card-desc">Master DSA with the Top 150 LeetCode questions and company-specific sets.</div>
+        </a>
     </div>
 
-    <script>
-        // This is all the JavaScript your website needs.
-        // It fetches the "database" (jobs.json) and displays it.
-        
-        // Use an IIFE (Immediately Invoked Function Expression) to run the code
-        (async function loadJobs() {
-            const jobListEl = document.getElementById('job-list');
-            const loadingMessageEl = document.getElementById('loading-message');
-
-            try {
-                // Fetch the JSON file. 
-                // We add a cache-busting query to get the latest version.
-                const response = await fetch(`jobs.json?v=${new Date().getTime()}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
-                const jobs = await response.json();
-
-                // Clear the "loading" message
-                jobListEl.innerHTML = '';
-
-                if (jobs.length === 0) {
-                    jobListEl.innerHTML = '<li id="loading-message">No jobs found.</li>';
-                    return;
-                }
-
-                // Loop through each job and create the HTML
-                jobs.forEach(job => {
-                    const jobItem = document.createElement('li');
-                    jobItem.className = 'job-item';
-                    
-                    jobItem.innerHTML = `
-                        <h3 class="job-title">${job.title}</h3>
-                        <p class="job-company">${job.company}</p>
-                        <a href="${job.url}" class="job-link" target="_blank" rel="noopener noreferrer">
-                            View Job &rarr;
-                        </a>
-                    `;
-                    jobListEl.appendChild(jobItem);
-                });
-
-            } catch (error) {
-                console.error('Failed to load jobs:', error);
-                loadingMessageEl.innerText = 'Failed to load job data. Please try again later.';
-            }
-        })();
-    </script>
 </body>
-</html>cd scraper
+</html>

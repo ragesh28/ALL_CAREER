@@ -192,3 +192,4 @@ async function scrapeJobs() {
 
 // Run the scraper
 scrapeJobs();
+// clean_jobs.js,companies.json,find_selectors.js , package-lock.json , package.json , scrape.js

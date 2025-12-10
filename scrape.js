@@ -1,165 +1,180 @@
 /*
   This is your main scraper script.
-  It now loads the company list from a secure file
-  or from GitHub Secrets.
+  It includes:
+  1. Stealth mode to bypass bot detection.
+  2. Logic to save 'jobs_data.js' for the website (Fixes the loading error).
+  3. Logic to save 'jobs.json' for the database (Remembers old jobs).
+  4. Fix for Accenture (waiting for text to load).
 */
 
-// --- THIS IS THE NEW CODE ---
-// We use 'puppeteer-extra' instead of the normal 'puppeteer'
 const puppeteer = require('puppeteer-extra');
-// We add the 'stealth' plugin
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-// We tell puppeteer to use the plugin
 puppeteer.use(StealthPlugin());
-// --- END OF NEW CODE ---
+const fs = require('fs').promises;
 
-const fs =require('fs').promises;
-
-// --- THIS IS THE NEW, SECURE WAY TO LOAD COMPANIES ---
+// --- 1. SETUP: LOAD COMPANIES ---
 let COMPANIES = [];
-
-if (process.env.COMPANIES_JSON) {
-  // We are running on GitHub
-  console.log("Loading companies from GitHub Secrets...");
-  COMPANIES = JSON.parse(process.env.COMPANIES_JSON);
-} else {
-  // We are running on your local PC
-  console.log("Loading companies from local 'companies.json' file...");
-  // We use 'require' because it's easier
-  COMPANIES = require('./companies.json');
+try {
+  if (process.env.COMPANIES_JSON) {
+    console.log("Loading companies from GitHub Secrets...");
+    COMPANIES = JSON.parse(process.env.COMPANIES_JSON);
+  } else {
+    console.log("Loading companies from local 'companies.json' file...");
+    COMPANIES = require('./companies.json');
+  }
+} catch (error) {
+  console.error("Error loading companies:", error.message);
+  process.exit(1);
 }
-// --- END OF NEW LOADING LOGIC ---
 
+// --- 2. CONFIGURATION: TEST MODE ---
+// Set this to a company name (e.g. "Accenture") to test only that company.
+// Leave as "" to run ALL companies.
+const TEST_ONLY_COMPANY = ""; 
 
-// --- THE HCLTECH FUNCTION IS NOW DELETED (it's in the JSON file) ---
-
-
-// --- Helper function to read the old database ---
 async function getExistingJobs() {
   try {
     const data = await fs.readFile('jobs.json', 'utf8');
     return JSON.parse(data);
   } catch (err) {
-    console.log('No existing jobs.json found. Creating a new one.');
-    return []; // Return an empty array if file doesn't exist
+    return [];
   }
 }
 
-// --- Main function to run the scraper (UPDATED) ---
 async function scrapeJobs() {
-  // 1. Read the old jobs from our file
   const oldJobs = await getExistingJobs();
   const oldJobUrls = new Set(oldJobs.map(job => job.url));
-  
-  let allScrapedJobs = []; // This will hold ALL jobs we find
+  let allScrapedJobs = [];
 
-  // 2. Scrape ALL companies from the list
   for (const company of COMPANIES) {
-    let browser; 
-    
+    // Isolation Logic
+    if (TEST_ONLY_COMPANY && company.name !== TEST_ONLY_COMPANY) {
+      continue; 
+    }
+
+    let browser;
     try {
       console.log(`Scraping ${company.name}...`);
       browser = await puppeteer.launch({
-        headless: true, // 100% automated
+        headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
 
       const page = await browser.newPage();
       await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36');
       
-      // --- FIX: Removed extra dot typos ---
+      // Automatic Typo Fixer for URLs
       if (company.url.startsWith('https.')) {
         company.url = company.url.replace('https.://', 'https://');
       }
-      // --- END OF FIX ---
-      
-      await page.goto(company.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-      
-      await page.waitForSelector(company.itemSelector, { timeout: 15000 });
 
-      // Scrape data, including date and location
-      let jobsOnPage = await page.evaluate((company) => {
+      await page.goto(company.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+
+      try {
+        await page.waitForSelector(company.itemSelector, { timeout: 15000 });
+        
+        // --- ACCENTURE FIX: WAIT FOR SKELETON LOADING ---
+        if (company.name === "Accenture") {
+             console.log(`-- Accenture detected. Waiting 5 seconds for text to appear...`);
+             await new Promise(r => setTimeout(r, 5000)); 
+        }
+        // ------------------------------------------------
+
+      } catch(e) {
+        console.log(`-- Warning: Could not find items for ${company.name}.`);
+        if (browser) await browser.close();
+        continue;
+      }
+
+      const jobsOnPage = await page.evaluate((company) => {
         const jobItems = [];
         const elements = document.querySelectorAll(company.itemSelector);
 
         elements.forEach(item => {
-          const titleEl = item.querySelector(company.titleSelector);
-          const linkEl = item.querySelector(company.linkSelector);
-          const dateEl = item.querySelector(company.dateSelector);
-          const locationEl = item.querySelector(company.locationSelector);
+          const titleEl = company.titleSelector ? item.querySelector(company.titleSelector) : null;
+          let linkEl;
+          if (company.isItemLink) {
+            linkEl = item;
+          } else {
+            linkEl = company.linkSelector ? item.querySelector(company.linkSelector) : null;
+          }
           
-          if (titleEl && linkEl) {
-            jobItems.push({
-              company: company.name,
-              title: titleEl.innerText.trim(),
-              url: linkEl.href,
-              location: locationEl ? locationEl.innerText.trim() : 'Unknown',
-              date: dateEl ? dateEl.innerText.trim().replace(/\s+/g, ' ') : new Date().toISOString()
-            });
+          const dateEl = company.dateSelector ? item.querySelector(company.dateSelector) : null;
+          const locationEl = company.locationSelector ? item.querySelector(company.locationSelector) : null;
+          
+          if (titleEl) {
+            // Use textContent to get text even if hidden
+            let locText = locationEl ? locationEl.textContent.trim() : 'Unknown';
+            locText = locText.replace(/\s+/g, ' ');
+
+            let titleText = titleEl.textContent.trim();
+
+            if (titleText.length > 0) {
+                jobItems.push({
+                company: company.name,
+                title: titleText,
+                // Fallback to company URL if specific link is missing (TCS fix)
+                url: linkEl ? linkEl.href : company.url,
+                location: locText,
+                date: dateEl ? dateEl.textContent.trim().replace(/\s+/g, ' ') : new Date().toISOString()
+                });
+            }
           }
         });
         return jobItems;
-      }, company); // Pass in the full company config
+      }, company);
 
-      // --- THIS IS YOUR NEW FILTERING LOGIC ---
+      // Filter Logic
       if (company.filterLocations && company.filterLocations.length > 0) {
-        console.log(`-- Found ${jobsOnPage.length} jobs. Filtering for: ${company.filterLocations.join(', ')}`);
+        console.log(`-- Found ${jobsOnPage.length} raw jobs. Filtering...`);
         
         const filteredJobs = jobsOnPage.filter(job => {
           const locationText = job.location.toLowerCase();
-          // Check if any of the filter words are in the location
           return company.filterLocations.some(filterLoc => locationText.includes(filterLoc));
         });
         
-        allScrapedJobs.push(...filteredJobs); // Add only filtered jobs
+        allScrapedJobs.push(...filteredJobs);
         console.log(`Found ${filteredJobs.length} jobs at ${company.name} (after filtering).`);
       } else {
-        // This is for Zoho and Freshworks (no filter)
-        allScrapedJobs.push(...jobsOnPage); // Add all jobs
+        allScrapedJobs.push(...jobsOnPage);
         console.log(`Found ${jobsOnPage.length} jobs at ${company.name}.`);
       }
-      // --- END OF NEW FILTERING LOGIC ---
 
     } catch (error) {
       console.error(`Failed to scrape ${company.name}: ${error.message}`);
     } finally {
-      if (browser) {
-        await browser.close();
-      }
+      if (browser) await browser.close();
     }
   }
   
   console.log('All scraping finished.');
 
-  // 4. --- NEW, SAFER LOGIC (YOUR IDEA) ---
-  
-  // A. Check if scraping failed
   if (allScrapedJobs.length === 0) {
     console.log('--- Database Update ---');
-    console.log('CRITICAL: Scrapers found 0 total jobs. This might be an error.');
-    console.log('To protect your data, no changes will be made to jobs.json.');
-    return; // STOP and do not delete anything
+    console.log('No jobs found (or scraping failed). No changes made to data files.');
+    return;
   }
 
-  // B. Find only the new jobs
   const newJobs = allScrapedJobs.filter(job => !oldJobUrls.has(job.url));
-  
-  // C. Create the new list by ADDING new jobs to the OLD jobs
   const finalJobsList = [...newJobs, ...oldJobs];
 
   console.log('--- Database Update ---');
   console.log(`Found ${newJobs.length} new jobs.`);
-  console.log('Added new jobs to the existing list.');
-  console.log(`Total jobs in file: ${finalJobsList.length}`);
+  console.log(`Total jobs in database: ${finalJobsList.length}`);
   
-  // 5. Save the final, safe list to jobs.json
   try {
+    // 1. Save JSON (The Database)
     await fs.writeFile('jobs.json', JSON.stringify(finalJobsList, null, 2));
-    console.log('Successfully saved job data to jobs.json');
+    console.log('Saved jobs.json (Database)');
+
+    // 2. Save JS (For the Website)
+    const jsContent = `const activeJobs = ${JSON.stringify(finalJobsList, null, 2)};`;
+    await fs.writeFile('jobs_data.js', jsContent);
+    console.log('Saved jobs_data.js (Website Data)');
+
   } catch (err) {
-    console.error('Error writing jobs.json file:', err);
+    console.error('Error writing files:', err);
   }
 }
 
-// Run the scraper
 scrapeJobs();

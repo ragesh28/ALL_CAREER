@@ -1,49 +1,41 @@
-name: 'Run Job Scraper'
+name: Daily Job Scraper
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    
-    # This gives the secret to our script
-    env:
-      COMPANIES_JSON: ${{ secrets.COMPANIES_JSON }}
-    
+
     steps:
-      # 1. Checks out your repository's code
-      - name: 'Checkout Repo'
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # 2. Sets up the Node.js environment
-      - name: 'Setup Node.js'
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use a stable LTS version
+          node-version: '18'
 
-      # 3. Installs the dependencies from your package.json
-      # --- THIS IS THE FIX ---
-      # I have removed '--prefix scraper'. It will now look
-      # in your main folder, which is correct.
-      - name: 'Install Dependencies'
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      # 4. Runs your scraper script
-      # --- THIS IS THE FIX ---
-      # I have removed '--prefix scraper'.
-      - name: 'Run Scraper Script'
-        run: npm start
+      # 1. RUN THE SCRAPER
+      - name: Run Scraper
+        env:
+          COMPANIES_JSON: ${{ secrets.COMPANIES_JSON }}
+        run: node scrape.js
 
-      # 5. This action automatically commits and pushes
-      #    any changes in the repository (i.e., your updated jobs.json)
-      - name: 'Commit and Push Changes'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'Automated: Updated job listings'
-          file_pattern: 'jobs.json' # Only commit if jobs.json changed
-          commit_user_name: 'GitHub Actions Bot'
-          commit_user_email: 'actions@github.com'
-          commit_author: 'GitHub Actions Bot <actions@github.com>'
+      # 2. RUN THE CLEANER (This is the new part!)
+      - name: Clean Old Jobs
+        run: node clean_jobs.js
+
+      # 3. SAVE CHANGES
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add jobs.json jobs_data.js
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Daily job update + cleanup" && git push)
