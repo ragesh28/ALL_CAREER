@@ -5,6 +5,7 @@
 An automated, stealth-enabled ETL pipeline that extracts job market intelligence from top tech companies.
 
 🔴 VIEW LIVE HUB
+(If this link is 404, please enable GitHub Pages in Settings)
 
 </div>
 
@@ -105,3 +106,30 @@ Create a file named companies.json in the root folder. Note: This file is git-ig
 4. Ignite the Engine
 
 npm start
+
+
+📡 Live Dashboard
+
+The fetched data is visualized via index.html, which acts as a static frontend consuming the raw JSON/JS data.
+
+Job Fetcher: Real-time display of the latest 30-day window.
+
+Company Directory: Static analysis of company roles and salaries.
+
+Practice Lab: Integrated DSA tracker for interview prep.
+
+🤝 Contribution Strategy
+
+We separate Code from Configuration to allow open-source collaboration without leaking data.
+
+Code: Publicly available in this repo.
+
+Config: Stored in GitHub Secrets (COMPANIES_JSON).
+
+To add a company, simply submit a PR with the selector logic, or fork the repo and add your own secret configuration.
+
+<div align="center">
+
+Maintained by Ragesh
+
+</div>
