@@ -10,7 +10,6 @@ An automated, stealth-enabled ETL pipeline that extracts job market intelligence
 
 <br /><br />
 
-*(If the link returns 404, enable GitHub Pages in repository **Settings → Pages** and deploy from `main` branch)*
 
 </div>
 
@@ -156,3 +155,8 @@ This project is licensed under the MIT License. See the LICENSE file for details
 - For context on good README practices: see any standard README guidelines  
 
 *(Last updated: 2025-12-10)*
+<div align="center">
+
+Maintained by Ragesh
+
+</div>
