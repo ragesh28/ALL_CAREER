@@ -1,92 +1,107 @@
-🚀 Daily Job Scraper & Career Hub
+<div align="center">
 
-A fully automated career platform that scrapes, aggregates, and filters job listings from top tech companies daily.
+📡 ALL_CAREER | Intelligent Job Aggregator
 
-🔴 LIVE DEMO
-(Note: Enable GitHub Pages in Settings -> Pages -> Source: main branch to view the live site)
+An automated, stealth-enabled ETL pipeline that extracts job market intelligence from top tech companies.
 
-🧐 How It Works
+🔴 VIEW LIVE HUB
 
-This project runs on a 24-hour cycle using GitHub Actions to ensure job listings are always fresh.
+</div>
 
-graph LR
-    A[🕒 Midnight UTC] -->|Triggers| B(GitHub Action)
-    B -->|Spins Up| C{Scraper Bot}
-    C -->|Visits| D[Company Career Pages]
-    D -->|Extracts| E[Job Data]
-    E -->|Saves to| F[jobs.json]
-    F -->|Auto-Cleans| G[Remove Jobs > 30 Days]
-    G -->|Updates| H[Web Interface]
+⚡️ The Concept
+
+Most job boards are cluttered and slow. ALL_CAREER creates a private, noise-free feed of opportunities by directly tapping into the career portals of companies like Zoho, HCL, and Amazon. It runs on a 24-hour autonomous cycle, ensuring the data is always synchronized with the source.
+
+🧬 Core Architecture
+
+This project is not just a scraper; it's a self-maintaining data ecosystem running entirely on GitHub infrastructure.
+
+graph TD
+    subgraph "00:00 UTC Trigger"
+    A[⏰ Cron Scheduler] --> B(GitHub Action Runner)
+    end
+    
+    subgraph "Extraction Layer"
+    B --> C{Stealth Scraper Bot}
+    C -->|Bypasses Bot Detection| D[Target: HCLTech]
+    C -->|Direct Extraction| E[Target: Zoho]
+    C -->|API Intercept| F[Target: Amazon]
+    end
+    
+    subgraph "Data Processing"
+    D & E & F --> G[Raw Data Collection]
+    G --> H{Deduplication Engine}
+    H -->|Filter Locations| I[Chennai / Bangalore Only]
+    end
+    
+    subgraph "Storage & Cleanup"
+    I --> J[(jobs.json)]
+    J --> K{The Janitor Script}
+    K -->|Delete records > 30 days| L[Clean Database]
+    L --> M[Update Web UI]
+    end
 
 
-Automated Scraping: Every day at 00:00 UTC, a virtual browser visits career pages (Zoho, Amazon, HCL, etc.).
+🛡️ Engineering Features
 
-Smart Filtering: It extracts only relevant roles and filters by location (Chennai/Bangalore).
+1. 👻 Stealth Mode Extraction
 
-Self-Cleaning Database: A maintenance script runs automatically to delete expired jobs older than 30 days.
+Standard scrapers get blocked immediately by firewalls (WAF). This engine uses puppeteer-extra-plugin-stealth to mimic human behavior:
 
-Instant UI Update: The website (index.html) reads the updated data immediately without needing a database server.
+Fingerprint Masking: Hides the fact that it is a robot.
 
-✨ Features
+Dynamic Viewports: Changes screen size to look like a real laptop.
 
-🕵️‍♂️ Stealth Scraping: Uses puppeteer-extra-plugin-stealth to bypass bot detection.
+Smart Waiting: Uses "Cool Down" timers to handle skeleton loaders (crucial for Accenture/HCL).
 
-🌍 Multi-Company Support: Currently supports 15+ major tech companies including Zoho, Freshworks, HCL, Amazon, and more.
+2. 🧠 Intelligent Filtering
 
-🧹 Auto-Maintenance: "Janitor" script keeps the database clean by removing old entries.
+The system doesn't just grab everything. It applies logic during the fetch:
 
-📱 Responsive Hub: A modern, dark-mode UI to browse jobs, company stats, and practice DSA.
+Location Locking: Discards jobs not in specific tech hubs.
 
-⚡ Zero-Config: Works out of the box with GitHub Actions.
+Duplicate Guard: Checks URLs against the existing database to prevent double entries.
 
-📂 Project Structure
+Fallback Logic: If a specific job link is hidden behind JavaScript (like TCS), it intelligently falls back to the main portal link.
 
-scrape.js - The brain of the operation. Fetches data using Puppeteer.
+3. 🧹 "The Janitor" (Auto-Maintenance)
 
-clean_jobs.js - The janitor. Removes jobs older than 30 days.
+A database that only grows will eventually become useless.
 
-companies.json - Configuration file containing URLs and CSS Selectors.
+The Problem: Old jobs expire but stay in the JSON file.
 
-daily_jobs.html - The user interface for viewing active listings.
+The Solution: A dedicated clean_jobs.js script runs after every fetch. It parses dates and performs a "Hard Delete" on any record older than 30 days.
 
-index.html - The main landing hub.
+📦 Installation & Setup
 
-.github/workflows/scrape.yml - The automation timer configuration.
+If you want to run this engine on your local machine for development:
 
-🚀 Getting Started (Run Locally)
-
-Want to run this on your own machine?
-
-Clone the repo
+1. Clone the repository
 
 git clone [https://github.com/ragesh28/ALL_CAREER.git](https://github.com/ragesh28/ALL_CAREER.git)
 cd ALL_CAREER
 
 
-Install Dependencies
+2. Install dependencies
 
 npm install
 
 
-Run the Scraper
+3. Configure Secrets (Important)
+Create a file named companies.json in the root folder. Note: This file is git-ignored for security.
+
+[
+  {
+    "name": "Zoho",
+    "url": "[https://www.zoho.com/careers/](https://www.zoho.com/careers/)",
+    "itemSelector": ".job-item",
+    "titleSelector": "h3",
+    "linkSelector": "a",
+    "isItemLink": false
+  }
+]
+
+
+4. Ignite the Engine
 
 npm start
-
-
-This will scrape the jobs and update jobs_data.js.
-
-Open the App
-
-Open index.html in your browser to see the Career Hub.
-
-🤝 Contributing
-
-Got a new company to add?
-
-Open companies.json.
-
-Add the URL and CSS Selectors.
-
-Submit a Pull Request!
-
-Built with ❤️ by Ragesh
