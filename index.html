@@ -13,6 +13,7 @@
             --text-main: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
+            --gold: #fbbf24;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -27,7 +28,6 @@
             background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 60%);
         }
         
-        /* --- ANIMATED HEADER --- */
         h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 4rem;
@@ -40,11 +40,7 @@
             cursor: default;
             transition: letter-spacing 0.5s ease;
         }
-
-        /* The Expansion Animation */
-        h1:hover {
-            letter-spacing: 10px;
-        }
+        h1:hover { letter-spacing: 10px; }
 
         .grid-menu {
             display: grid;
@@ -74,22 +70,31 @@
             border-color: var(--primary);
             box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
         }
+        
         .icon-box {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
+            width: 90px;
+            height: 90px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            font-size: 2.5rem;
+            margin-bottom: 25px;
             transition: 0.3s;
         }
+        
         .menu-card:hover .icon-box {
-            background: var(--primary);
-            color: white;
+            background: rgba(255,255,255,0.08);
+            transform: scale(1.1);
         }
+
+        /* SVG SIZE */
+        .icon-box svg {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+        
         .card-title {
             font-family: 'Outfit', sans-serif;
             font-size: 1.5rem;
@@ -101,6 +106,14 @@
             font-size: 0.95rem;
             line-height: 1.5;
         }
+        
+        .salary-highlight {
+            color: var(--gold);
+            font-weight: 700;
+            display: block;
+            margin-top: 5px;
+        }
+
         @media (max-width: 768px) {
             .grid-menu { grid-template-columns: 1fr; }
             h1 { font-size: 2.5rem; }
@@ -109,24 +122,62 @@
 </head>
 <body>
 
+    <!-- SVG GRADIENT DEFINITIONS (Hidden) -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#f43f5e;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <h1>ALL_CAREER</h1>
 
     <div class="grid-menu">
+        <!-- 1. Company Directory -->
         <a href="career_explorer.html" class="menu-card">
-            <div class="icon-box">🏢</div>
+            <div class="icon-box">
+                <!-- UPDATED LOGO: Solid Office Building -->
+                <svg viewBox="0 0 24 24" fill="url(#grad-blue)">
+                    <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                </svg>
+            </div>
             <div class="card-title">Company Directory</div>
-            <div class="card-desc">Explore salary insights, roles, and hiring types for 100+ top companies.</div>
+            <div class="card-desc">
+                Curated list of top-tier tech companies.
+                <span class="salary-highlight">Base Pay: ₹5 LPA - ₹45 LPA+</span>
+            </div>
         </a>
 
-        <a href="daily_jobs.html" class="menu-card" style="border-color: rgba(59, 130, 246, 0.4);">
-            <div class="icon-box">🚀</div>
+        <!-- 2. Job Fetcher -->
+        <a href="daily_jobs.html" class="menu-card" style="border-color: rgba(16, 185, 129, 0.3);">
+            <div class="icon-box">
+                <!-- Briefcase Icon -->
+                <svg viewBox="0 0 24 24" fill="url(#grad-green)">
+                   <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                </svg>
+            </div>
             <div class="card-title">Daily Job Drops</div>
             <div class="card-desc">Live jobs fetched automatically from career pages (Zoho, HCL, Amazon, etc).</div>
         </a>
 
-        <!-- Renamed to Learn Coding -->
+        <!-- 3. Learn Coding -->
         <a href="practice.html" class="menu-card">
-            <div class="icon-box">⚡</div>
+            <div class="icon-box">
+                <!-- Code Icon -->
+                <svg viewBox="0 0 24 24" fill="url(#grad-orange)">
+                   <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                </svg>
+            </div>
             <div class="card-title">Learn Coding</div>
             <div class="card-desc">Master DSA with the Top 150 LeetCode questions and company-specific sets.</div>
         </a>
