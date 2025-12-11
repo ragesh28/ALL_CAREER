@@ -28,7 +28,7 @@ jobs:
           COMPANIES_JSON: ${{ secrets.COMPANIES_JSON }}
         run: node scrape.js
 
-      # 2. RUN THE CLEANER (This is the new part!)
+      # 2. RUN THE CLEANER
       - name: Clean Old Jobs
         run: node clean_jobs.js
 
@@ -37,5 +37,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add jobs.json jobs_data.js
+          # The -f flag forces git to add the file even if it is in .gitignore
+          git add -f jobs.json jobs_data.js
           git diff --quiet && git diff --staged --quiet || (git commit -m "Daily job update + cleanup" && git push)
