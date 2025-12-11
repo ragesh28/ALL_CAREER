@@ -134,9 +134,9 @@
   {
     "name": "Accenture",
     "url": "https://www.accenture.com/in-en/careers/jobsearch?ct=Bengaluru%7CChennai%7CCoimbatore",
-    "itemSelector": ".rad-filters-vertical__job-card-header",
+    "itemSelector": ".rad-filters-vertical__job-card",
     "titleSelector": ".rad-filters-vertical__job-card-title",
-    "linkSelector": ".rad-filters-vertical__job-card-title",
+    "linkSelector": "a.rad-filters-vertical__job-card-content-link-button",
     "isItemLink": false,
     "dateSelector": "",
     "locationSelector": ".rad-filters-vertical__job-card-details-location",

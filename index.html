@@ -26,6 +26,8 @@
             justify-content: center;
             background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 60%);
         }
+        
+        /* --- ANIMATED HEADER --- */
         h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 4rem;
@@ -35,7 +37,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -2px;
+            cursor: default;
+            transition: letter-spacing 0.5s ease;
         }
+
+        /* The Expansion Animation */
+        h1:hover {
+            letter-spacing: 10px;
+        }
+
         .grid-menu {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -91,7 +101,6 @@
             font-size: 0.95rem;
             line-height: 1.5;
         }
-        /* Mobile */
         @media (max-width: 768px) {
             .grid-menu { grid-template-columns: 1fr; }
             h1 { font-size: 2.5rem; }
@@ -103,24 +112,22 @@
     <h1>ALL_CAREER</h1>
 
     <div class="grid-menu">
-        <!-- 1. Company Directory -->
         <a href="career_explorer.html" class="menu-card">
             <div class="icon-box">🏢</div>
             <div class="card-title">Company Directory</div>
             <div class="card-desc">Explore salary insights, roles, and hiring types for 100+ top companies.</div>
         </a>
 
-        <!-- 2. Job Fetcher (NEW) -->
         <a href="daily_jobs.html" class="menu-card" style="border-color: rgba(59, 130, 246, 0.4);">
             <div class="icon-box">🚀</div>
             <div class="card-title">Daily Job Drops</div>
             <div class="card-desc">Live jobs fetched automatically from career pages (Zoho, HCL, Amazon, etc).</div>
         </a>
 
-        <!-- 3. Practice Lab -->
+        <!-- Renamed to Learn Coding -->
         <a href="practice.html" class="menu-card">
             <div class="icon-box">⚡</div>
-            <div class="card-title">Practice Lab</div>
+            <div class="card-title">Learn Coding</div>
             <div class="card-desc">Master DSA with the Top 150 LeetCode questions and company-specific sets.</div>
         </a>
     </div>

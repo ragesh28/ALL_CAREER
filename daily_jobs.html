@@ -7,8 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* YOUR PREFERRED DARK THEME */
             --bg-deep: #020617;
-            --bg-surface: #0f172a;
+            --bg-surface: #0f172a; /* Restored this specific color */
+            --bg-glass: rgba(15, 23, 42, 0.95);
             --primary: #10b981; 
             --text-main: #ffffff;
             --text-muted: #94a3b8;
@@ -20,390 +22,235 @@
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
+            background-image: radial-gradient(circle at top center, rgba(16, 185, 129, 0.08), transparent 50%);
+            background-attachment: fixed;
         }
-        header {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-surface);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        
+        /* --- ANIMATED HEADER --- */
+        #main-header {
+            text-align: center;
+            padding-top: 60px;
+            padding-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 1;
+            height: auto;
+            transform: scale(1);
         }
-        .brand { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.2rem; }
-        .back-btn { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
-        .back-btn:hover { color: white; }
-
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+        body.scrolled #main-header {
+            opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0;
         }
-        .page-title {
+        h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: var(--primary);
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: letter-spacing 0.5s ease;
+            letter-spacing: -1px;
+            text-decoration: none;
+            margin: 0;
         }
-        .stats { color: var(--text-muted); margin-bottom: 20px; }
+        h1:hover { letter-spacing: 5px; }
 
-        /* --- FILTER BAR --- */
+        /* --- STICKY FILTER --- */
+        .filter-bar-container {
+            position: sticky; top: 20px; z-index: 100;
+            padding: 0 20px; display: flex; justify-content: center;
+            margin-bottom: 40px;
+        }
         .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 16px;
+            width: 100%; max-width: 1000px;
+            display: flex; gap: 15px;
+            background: var(--bg-glass); backdrop-filter: blur(12px);
+            padding: 12px 20px; border-radius: 50px;
             border: 1px solid var(--border);
-            flex-wrap: wrap;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            align-items: center; flex-wrap: wrap;
         }
-        .filter-group { flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 5px; }
-        .filter-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-left: 5px; }
+        .mini-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
+            color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
+            overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none; margin-right: 0;
+        }
+        body.scrolled .mini-logo { max-width: 150px; opacity: 1; margin-right: 15px; }
+        
+        .btn-back {
+            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+            padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
+            transition: 0.2s; white-space: nowrap; margin-left: auto;
+        }
+        .btn-back:hover { color: white; border-color: white; }
+        
+        .filter-group { flex: 1; min-width: 130px; display: flex; flex-direction: column; }
         .filter-input {
-            background: var(--bg-deep);
+            background: var(--bg-deep); /* Use deep bg for inputs */
             border: 1px solid var(--border);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            outline: none;
-            font-family: inherit;
-            transition: 0.3s;
+            color: white; padding: 10px 15px; border-radius: 20px; outline: none;
+            font-family: inherit; transition: 0.3s; cursor: pointer;
         }
-        .filter-input:focus { border-color: var(--primary); }
-        select.filter-input { cursor: pointer; }
+        .filter-input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+        select.filter-input option { background-color: var(--bg-deep); color: white; padding: 10px; }
 
-        /* --- DATE HEADERS (WhatsApp Style) --- */
-        .date-divider {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0 20px 0;
-            position: relative;
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 100px; }
+        .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
+        
+        .date-divider { display: flex; justify-content: center; margin: 40px 0 20px 0; }
         .date-label {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            z-index: 2;
+            background: rgba(255, 255, 255, 0.1); color: var(--text-main);
+            padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;
             border: 1px solid var(--border);
         }
         
-        /* --- JOB GRID --- */
-        /* Note: We group cards in sub-grids under each date header */
-        .job-group-grid {
-            display: grid;
-            gap: 20px;
-            /* Auto-fit columns */
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        }
-
+        .job-group-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        
         .job-card {
-            background: var(--bg-surface);
+            background: var(--bg-surface); /* RESTORED COLOR */
             border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column; /* Stack vertically for better grid fit */
-            gap: 15px;
-            transition: 0.2s;
-            position: relative;
+            padding: 24px; border-radius: 20px; display: flex; flex-direction: column;
+            gap: 15px; transition: 0.2s;
         }
-        .job-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .job-card:hover { 
+            border-color: var(--primary); transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
         }
         
         .card-top { display: flex; gap: 15px; align-items: flex-start; }
-        
         .logo-box {
-            width: 45px; height: 45px; background: white; border-radius: 10px;
+            width: 48px; height: 48px; background: white; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; padding: 2px; flex-shrink: 0;
+            overflow: hidden; padding: 4px; flex-shrink: 0;
         }
         .company-logo { width: 100%; height: 100%; object-fit: contain; }
-        
-        .job-info h3 { font-size: 1.1rem; line-height: 1.4; margin-bottom: 5px; color:white; }
-        .company-name { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
-        
+        .job-info h3 { font-size: 1.1rem; line-height: 1.4; margin-bottom: 5px; color:white; font-weight: 700; }
+        .company-name { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
         .job-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-        
         .meta-badge {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
+            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
-            border: 1px solid var(--border);
-            display: flex; align-items: center; gap: 5px;
+            border: 1px solid var(--border); display: flex; align-items: center; gap: 5px;
         }
-        
         .apply-btn {
-            margin-top: 10px;
-            padding: 10px;
-            background: transparent;
-            color: var(--primary);
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            border: 1px solid var(--primary);
-            transition: 0.2s;
+            margin-top: 10px; padding: 12px; background: transparent; color: var(--primary);
+            text-align: center; text-decoration: none; font-weight: 700; border-radius: 12px;
+            font-size: 0.9rem; border: 1px solid var(--primary); transition: 0.2s;
         }
-        .apply-btn:hover { background: var(--primary); color: #000; }
-
+        .apply-btn:hover { background: var(--primary); color: #020617; }
         #loading { text-align: center; padding: 50px; color: var(--text-muted); }
         #noResults { text-align: center; padding: 40px; color: var(--text-muted); display: none; font-style: italic;}
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">ALL_CAREER // FETCH</div>
-        <a href="index.html" class="back-btn">← Back to Hub</a>
+    <header id="main-header">
+        <a href="index.html" style="text-decoration:none;"><h1>ALL_CAREER</h1></a>
     </header>
 
-    <div class="container">
-        <h1 class="page-title">Daily Job Drops</h1>
-        <p class="stats">Showing <span id="jobCount">0</span> active listings.</p>
-
+    <div class="filter-bar-container">
         <div class="filter-bar">
-            <div class="filter-group">
-                <label class="filter-label">Job Role</label>
-                <input type="text" id="roleFilter" class="filter-input" placeholder="e.g. Developer..." onkeyup="applyFilters()">
-            </div>
-            
-            <div class="filter-group">
-                <label class="filter-label">Location</label>
-                <select id="locationFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">All Locations</option>
-                    <option value="Chennai">Chennai</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Bengaluru">Bengaluru</option>
-                    <option value="Unknown">Unknown/Remote</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">Company</label>
-                <select id="companyFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">All Companies</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label class="filter-label">Date Posted</label>
-                <select id="dateFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">Any Time</option>
-                    <option value="Today">Today</option>
-                    <option value="Recent">Last 3 Days</option>
-                </select>
-            </div>
+            <a href="index.html" class="mini-logo">ALL_CAREER</a>
+            <div class="filter-group"><select id="roleFilter" class="filter-input" onchange="applyFilters()"><option value="All">Role: All</option></select></div>
+            <div class="filter-group"><select id="locationFilter" class="filter-input" onchange="applyFilters()"><option value="All">Location: All</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Bengaluru">Bengaluru</option><option value="Unknown">Unknown/Remote</option></select></div>
+            <div class="filter-group"><select id="companyFilter" class="filter-input" onchange="applyFilters()"><option value="All">Company: All</option></select></div>
+            <div class="filter-group"><select id="dateFilter" class="filter-input" onchange="applyFilters()"><option value="All">Date: All</option></select></div>
+            <a href="index.html" class="btn-back">Hub</a>
         </div>
+    </div>
 
+    <div class="container">
+        <div style="text-align:center; margin-bottom:30px;">
+            <p class="stats">Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> active listings</p>
+        </div>
         <div id="loading">Loading jobs...</div>
-        
         <div id="jobListContainer"></div>
-        
         <div id="noResults">No jobs found matching your filters.</div>
     </div>
 
     <script src="logos.js"></script>
     <script src="jobs_data.js"></script>
-
     <script>
+        window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
         let allJobsData = [];
-
+        const manualLogoMap = { "Amazon Bangalore": "amazon.jobs", "Amazon": "amazon.jobs", "CRED": "cred.club", "IBM": "ibm.com", "HCLTech": "hcltech.com", "TCS": "tcs.com", "RNTBCI": "rntbci.in", "LTIMindtree": "ltimindtree.com", "LatentView": "latentview.com", "Mr. Cooper": "mrcooper.com", "Wipro": "wipro.com", "Accenture": "accenture.com", "Capgemini": "capgemini.com" };
         function getLogoData(name) {
             let cleanName = name.replace(/\(.*\)/, '').trim();
-            let domain = '';
-            if (typeof domainMap !== 'undefined' && domainMap[cleanName]) {
-                domain = domainMap[cleanName];
-            } else {
-                domain = cleanName.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + ".com";
-            }
-            return {
-                clearbit: `https://logo.clearbit.com/${domain}`,
-                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-                initial: cleanName.charAt(0)
-            };
+            if (cleanName === "IBM") return { clearbit: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg", google: "", initial: "I" };
+            let domain = manualLogoMap[cleanName] || (typeof domainMap !== 'undefined' && domainMap[cleanName]) || (cleanName.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + ".com");
+            return { clearbit: `https://logo.clearbit.com/${domain}`, google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`, initial: cleanName.charAt(0) };
         }
-
-        // --- DATE PARSING HELPERS ---
-        function parseDate(dateStr) {
-            // Try to parse typical formats
-            const d = new Date(dateStr);
-            if (!isNaN(d.getTime())) return d;
-            return null; // Could not parse
+        function formatDateString(dateStr) {
+            if (!dateStr) return "Unknown Date";
+            const parts = dateStr.split('-'); if (parts.length !== 3) return dateStr;
+            const year = parts[0]; const monthIndex = parseInt(parts[1]) - 1; const day = parseInt(parts[2]);
+            const dateObj = new Date(year, monthIndex, day);
+            return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
-
-        function isToday(date) {
-            const today = new Date();
-            return date.getDate() === today.getDate() &&
-                   date.getMonth() === today.getMonth() &&
-                   date.getFullYear() === today.getFullYear();
-        }
-
-        function isYesterday(date) {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            return date.getDate() === yesterday.getDate() &&
-                   date.getMonth() === yesterday.getMonth() &&
-                   date.getFullYear() === yesterday.getFullYear();
-        }
-
-        function getGroupLabel(dateStr) {
-            const date = parseDate(dateStr);
-            if (!date) return "Earlier / Unknown Date"; // Fallback for "Posted 2 days ago" text
-
-            if (isToday(date)) return "Today";
-            if (isYesterday(date)) return "Yesterday";
-            
-            // Format: Dec 10, 2025
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-
-        // --- MAIN LOGIC ---
         function init() {
             const loadingEl = document.getElementById('loading');
-            
-            if (typeof activeJobs === 'undefined' || !activeJobs) {
-                loadingEl.innerHTML = `<div style="color:#ef4444;"><h3>No Data Found</h3><p>Run <code>npm start</code></p></div>`;
-                return;
-            }
-
+            if (typeof activeJobs === 'undefined' || !activeJobs) { loadingEl.innerHTML = `<div style="color:#ef4444;"><h3>No Data Found</h3><p>Run <code>npm start</code></p></div>`; return; }
             allJobsData = activeJobs;
-            
-            // Populate Dropdown
             const companySelect = document.getElementById('companyFilter');
             const companies = [...new Set(allJobsData.map(job => job.company))].sort();
-            companies.forEach(company => {
-                const option = document.createElement('option');
-                option.value = company;
-                option.innerText = company;
-                companySelect.appendChild(option);
-            });
-
+            companies.forEach(comp => { const opt = document.createElement('option'); opt.value = comp; opt.innerText = "Company: " + comp; companySelect.appendChild(opt); });
+            const dateSelect = document.getElementById('dateFilter');
+            const uniqueDates = new Set();
+            allJobsData.forEach(job => { if(job.fetchedAt) uniqueDates.add(formatDateString(job.fetchedAt)); });
+            const sortedDates = Array.from(uniqueDates).sort((a, b) => new Date(b) - new Date(a)).reverse();
+            sortedDates.forEach(d => { const opt = document.createElement('option'); opt.value = d; opt.innerText = "Fetched: " + d; dateSelect.appendChild(opt); });
+            const roleSelect = document.getElementById('roleFilter');
+            const commonRoles = ["Manager", "Engineer", "Developer", "Analyst", "Consultant", "Intern", "Designer", "Architect", "Lead", "Full Stack", "Data Scientist", "Associate"];
+            commonRoles.forEach(role => { const opt = document.createElement('option'); opt.value = role; opt.innerText = "Role: " + role; roleSelect.appendChild(opt); });
             applyFilters();
             loadingEl.style.display = 'none';
         }
-
         function applyFilters() {
             const roleTerm = document.getElementById('roleFilter').value.toLowerCase();
             const locTerm = document.getElementById('locationFilter').value.toLowerCase();
             const companyTerm = document.getElementById('companyFilter').value;
             const dateTerm = document.getElementById('dateFilter').value;
-
             const filteredJobs = allJobsData.filter(job => {
-                const matchesRole = job.title.toLowerCase().includes(roleTerm);
-                
+                const jobTitle = job.title.toLowerCase();
+                const matchesRole = roleTerm === 'all' || jobTitle.includes(roleTerm);
                 const jobLoc = job.location.toLowerCase();
                 const matchesLoc = locTerm === 'all' || jobLoc.includes(locTerm);
                 const matchesComp = companyTerm === 'All' || job.company === companyTerm;
-
-                let matchesDate = true;
-                const d = parseDate(job.date);
-                if (dateTerm === 'Today' && d) {
-                    matchesDate = isToday(d);
-                } else if (dateTerm === 'Recent' && d) {
-                    // Last 3 days
-                    const threeDaysAgo = new Date();
-                    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-                    matchesDate = d >= threeDaysAgo;
-                }
-
+                const formattedFetchDate = formatDateString(job.fetchedAt);
+                const matchesDate = dateTerm === 'All' || formattedFetchDate === dateTerm;
                 return matchesRole && matchesLoc && matchesComp && matchesDate;
             });
-
             renderGrouped(filteredJobs);
         }
-
         function renderGrouped(jobs) {
             const container = document.getElementById('jobListContainer');
             const countEl = document.getElementById('jobCount');
             const noResultsEl = document.getElementById('noResults');
-            
-            container.innerHTML = '';
-            countEl.innerText = jobs.length;
-
-            if (jobs.length === 0) {
-                noResultsEl.style.display = 'block';
-                return;
-            }
+            container.innerHTML = ''; countEl.innerText = jobs.length;
+            if (jobs.length === 0) { noResultsEl.style.display = 'block'; return; }
             noResultsEl.style.display = 'none';
-
-            // 1. Group jobs by Date Label
             const groups = {};
-            jobs.forEach(job => {
-                const label = getGroupLabel(job.date);
-                if (!groups[label]) groups[label] = [];
-                groups[label].push(job);
-            });
-
-            // 2. Sort labels (Today first, then Yesterday, then dates)
-            const sortedLabels = Object.keys(groups).sort((a, b) => {
-                if (a === "Today") return -1;
-                if (b === "Today") return 1;
-                if (a === "Yesterday") return -1;
-                if (b === "Yesterday") return 1;
-                if (a === "Earlier / Unknown Date") return 1; // Put unknowns at bottom
-                if (b === "Earlier / Unknown Date") return -1;
-                // Reverse chronological for dates
-                return new Date(b) - new Date(a);
-            });
-
-            // 3. Render Groups
+            jobs.forEach(job => { const label = formatDateString(job.fetchedAt); if (!groups[label]) groups[label] = []; groups[label].push(job); });
+            const sortedLabels = Object.keys(groups); 
             sortedLabels.forEach(label => {
-                // Render Header
-                const header = document.createElement('div');
-                header.className = 'date-divider';
-                header.innerHTML = `<span class="date-label">${label}</span>`;
+                const header = document.createElement('div'); header.className = 'date-divider';
+                const todayStr = formatDateString(new Date().toISOString().split('T')[0]);
+                let displayText = label;
+                if (label === todayStr) displayText = "Today (" + label + ")";
+                header.innerHTML = `<span class="date-label">${displayText}</span>`;
                 container.appendChild(header);
-
-                // Render Grid for this group
-                const grid = document.createElement('div');
-                grid.className = 'job-group-grid';
-
+                const grid = document.createElement('div'); grid.className = 'job-group-grid';
                 groups[label].forEach(job => {
                     const logo = getLogoData(job.company);
-                    const card = document.createElement('div');
-                    card.className = 'job-card';
-                    card.innerHTML = `
-                        <div class="card-top">
-                            <div class="logo-box">
-                                <img src="${logo.clearbit}" class="company-logo" 
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <img src="${logo.google}" class="company-logo" style="display:none;" 
-                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">
-                                    ${logo.initial}
-                                </div>
-                            </div>
-                            <div>
-                                <div class="company-name">${job.company}</div>
-                                <h3>${job.title}</h3>
-                            </div>
-                        </div>
-                        
-                        <div class="job-meta">
-                            <div class="meta-badge">📍 ${job.location}</div>
-                            </div>
-
-                        <a href="${job.url}" target="_blank" class="apply-btn">View & Apply</a>
-                    `;
+                    const card = document.createElement('div'); card.className = 'job-card';
+                    card.innerHTML = `<div class="card-top"><div class="logo-box"><img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><img src="${logo.google}" class="company-logo" style="display:none;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">${logo.initial}</div></div><div><div class="company-name">${job.company}</div><h3>${job.title}</h3></div></div><div class="job-meta"><div class="meta-badge">📍 ${job.location}</div><div class="meta-badge" style="border-color:rgba(16, 185, 129, 0.3); color:#10b981;">📅 Fetched: ${label}</div></div><a href="${job.url}" target="_blank" class="apply-btn">View & Apply</a>`;
                     grid.appendChild(card);
                 });
-
                 container.appendChild(grid);
             });
         }
-
         init();
     </script>
 </body>
