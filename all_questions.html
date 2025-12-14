@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All_Career / LeetCode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* DEEP DARK THEME (Matches other tabs) */
+            --bg-deep: #020617;        /* Deepest Navy/Black */
+            --bg-surface: #0f172a;     /* Slate 900 (Dark Blue) */
+            --bg-glass: rgba(15, 23, 42, 0.95);
+            
+            --primary: #3b82f6;
+            --accent: #fbbf24;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            
+            --easy: #00b8a3; --medium: #ffc01e; --hard: #ff375f;
+            --freq-bar-fill: #2cbb5d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at top center, rgba(59, 130, 246, 0.08), transparent 50%);
+            display: flex; flex-direction: column;
+        }
+
+        /* --- BIG ANIMATED HEADER --- */
+        #main-header {
+            text-align: center;
+            padding-top: 60px;
+            padding-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 1;
+            height: auto;
+            transform: scale(1);
+        }
+        
+        body.scrolled #main-header {
+            opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: letter-spacing 0.5s ease;
+            letter-spacing: -1px;
+            text-decoration: none;
+            margin: 0;
+        }
+
+        h1:hover { letter-spacing: 5px; }
+
+        .btn-back {
+            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+            padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
+            transition: 0.2s; white-space: nowrap; margin-left: auto;
+        }
+        .btn-back:hover { color: white; border-color: white; }
+
+        /* --- CONTAINER --- */
+        .container {
+            max-width: 1300px; margin: 0 auto; padding: 0 20px 100px; width: 100%;
+        }
+
+        /* --- TOPIC BAR --- */
+        .topic-wrapper {
+            background: var(--bg-surface); padding: 15px; border-radius: 16px;
+            border: 1px solid var(--border); margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .topic-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .topic-label { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; }
+        .toggle-btn { background: transparent; border: none; color: var(--primary); font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+        .toggle-btn:hover { text-decoration: underline; }
+
+        .topic-grid {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            max-height: 40px; overflow: hidden; transition: max-height 0.3s ease-out;
+        }
+        .topic-grid.expanded { max-height: 1000px; }
+        
+        .topic-btn {
+            background: rgba(0, 0, 0, 0.3); color: var(--text-muted);
+            border: 1px solid var(--border); padding: 6px 14px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 500; cursor: pointer; white-space: nowrap;
+            transition: 0.2s;
+        }
+        .topic-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+        .topic-btn.active { background: var(--primary); color: #020617; border-color: var(--primary); font-weight: 700; }
+
+        /* --- FILTER BAR (Matching Practice Tab Style) --- */
+        .filter-bar-container {
+            position: sticky; top: 20px; z-index: 100;
+            padding: 0 20px; display: flex; justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-bar {
+            width: 100%; max-width: 1300px; /* Matches container width */
+            display: flex; gap: 15px; margin-bottom: 20px; align-items: center;
+            background: var(--bg-glass); backdrop-filter: blur(12px);
+            padding: 12px 20px; border-radius: 50px;
+            border: 1px solid var(--border); flex-wrap: wrap;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        /* Make filter bar container relative for sticky positioning */
+        .filter-sticky-wrapper {
+             position: sticky; top: 20px; z-index: 90; margin-bottom: 30px;
+        }
+
+        .filter-input {
+            background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border);
+            color: white; padding: 10px 15px; border-radius: 20px; outline: none;
+            font-family: inherit; transition: 0.3s; cursor: pointer;
+            min-width: 160px;
+        }
+        .filter-input:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.5); }
+        
+        select.filter-input option { background-color: var(--bg-deep); color: white; padding: 10px; }
+
+        .search-input { flex-grow: 1; min-width: 200px; }
+
+        .stats-text { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-left: auto; }
+        .highlight { color: var(--primary); }
+
+
+        /* --- TABLE --- */
+        .table-container {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden; margin-bottom: 30px;
+            min-height: 600px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .problem-table { width: 100%; border-collapse: collapse; }
+        
+        .problem-table th {
+            text-align: left; padding: 15px 20px; color: var(--text-muted);
+            border-bottom: 1px solid var(--border); font-size: 0.8rem;
+            text-transform: uppercase; font-weight: 600; cursor: pointer;
+            transition: 0.2s; background: rgba(0,0,0,0.2);
+        }
+        .problem-table th:hover { color: white; background: rgba(255,255,255,0.05); }
+
+        .problem-table td {
+            padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.9rem; vertical-align: middle;
+        }
+        .problem-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        .problem-link { color: var(--text-main); text-decoration: none; font-weight: 500; transition:0.2s; }
+        .problem-link:hover { color: var(--primary); transform: translateX(2px); display:inline-block; }
+
+        /* --- PAGINATION BAR --- */
+        .pagination-container {
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            padding: 20px 0;
+        }
+        .page-btn {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            color: var(--text-muted); min-width: 40px; height: 40px;
+            border-radius: 10px; cursor: pointer; font-weight: 600;
+            transition: 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .page-btn:hover:not(:disabled) { border-color: var(--primary); color: white; background: rgba(59, 130, 246, 0.1); }
+        .page-btn.active { background: var(--primary); color: #020617; border-color: var(--primary); }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* BADGES */
+        .diff-tag { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .diff-Easy { color: var(--easy); background: rgba(0, 184, 163, 0.1); }
+        .diff-Medium { color: var(--medium); background: rgba(255, 192, 30, 0.1); }
+        .diff-Hard { color: var(--hard); background: rgba(255, 55, 95, 0.1); }
+
+        .topic-tag {
+            font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
+            background: rgba(255,255,255,0.05); color: var(--text-muted);
+            border: 1px solid var(--border); display: inline-block; margin-right: 4px; margin-bottom: 4px;
+        }
+
+        .freq-bar-container { width: 100%; height: 6px; background: #262626; border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .freq-bar-fill { height: 100%; background: var(--freq-bar-fill); border-radius: 10px; }
+
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <a href="index.html" style="text-decoration:none;"><h1>ALL_CAREER</h1></a>
+    </header>
+
+    <div class="container">
+        
+        <!-- TOPIC FILTER -->
+        <div class="topic-wrapper">
+            <div class="topic-header-row">
+                <span class="topic-label">Filter by Topic:</span>
+                <button class="toggle-btn" id="toggleTopicsBtn" onclick="toggleTopicBar()">Show All Topics ▼</button>
+            </div>
+            <div class="topic-grid" id="topicContainer">
+                <button class="topic-btn active" onclick="filterByTopic('All', this)">All Topics</button>
+            </div>
+        </div>
+
+        <!-- FILTER BAR (Sticky Wrapper) -->
+        <div class="filter-sticky-wrapper">
+            <div class="filter-bar">
+                <div style="color:var(--text-muted); font-weight:600; margin-right:15px;">// MASTER LIST</div>
+
+                <input type="text" id="searchInput" class="filter-input search-input" placeholder="Search ID or Name..." onkeyup="resetSearch()">
+                
+                <select id="diffFilter" class="filter-input" onchange="resetSearch()">
+                    <option value="All">All Difficulties</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+
+                <select id="sortFilter" class="filter-input" onchange="resetSearch()">
+                    <option value="id">Sort: ID (1-3000)</option>
+                    <option value="freq">Sort: Frequency (High-Low)</option>
+                    <option value="accept">Sort: Acceptance (High-Low)</option>
+                </select>
+
+                <div class="stats-text">Showing <span id="displayCount" class="highlight">0</span> problems</div>
+                <a href="index.html" class="btn-back">Hub</a>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table class="problem-table">
+                <thead>
+                    <tr>
+                        <th width="80">ID</th>
+                        <th>Problem Name</th>
+                        <th width="300">Topics</th>
+                        <th width="100">Acceptance</th>
+                        <th width="100">Difficulty</th>
+                        <th width="120">Frequency</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Bar -->
+        <div class="pagination-container" id="paginationBar"></div>
+
+    </div>
+
+    <script src="leetcode_data.js"></script>
+
+    <script>
+        // HEADER ANIMATION
+        window.addEventListener('scroll', () => {
+            document.body.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        let allProblems = [];
+        let filteredList = []; 
+        let uniqueTopics = new Map();
+        let currentTopic = 'All';
+        
+        // PAGINATION SETTINGS
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 100;
+
+        function init() {
+            if (typeof leetcodeData === 'undefined') return;
+
+            const problemMap = new Map();
+
+            // 1. Process Data
+            Object.keys(leetcodeData).forEach(company => {
+                leetcodeData[company].forEach(p => {
+                    const id = parseInt(p.id);
+                    if (!id) return;
+                    if (!problemMap.has(id)) {
+                        problemMap.set(id, { ...p, id: id });
+                    } else {
+                        const existing = problemMap.get(id);
+                        if ((p.frequency || 0) > (existing.frequency || 0)) {
+                            problemMap.set(id, { ...p, id: id });
+                        }
+                    }
+                });
+            });
+
+            allProblems = Array.from(problemMap.values());
+            
+            // 2. Count Topics
+            allProblems.forEach(p => {
+                if (p.topics && Array.isArray(p.topics)) {
+                    p.topics.forEach(t => uniqueTopics.set(t, (uniqueTopics.get(t) || 0) + 1));
+                }
+            });
+
+            // 3. Default Sort (ID)
+            allProblems.sort((a, b) => a.id - b.id);
+
+            renderTopicBar();
+            resetSearch(); 
+        }
+
+        // --- FILTERING ---
+        function resetSearch() {
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function filterByTopic(topic, btnElement) {
+            currentTopic = topic;
+            document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            
+            resetSearch();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const diff = document.getElementById('diffFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            
+            filteredList = allProblems.filter(p => {
+                // Search Text
+                const matchesSearch = p.title.toLowerCase().includes(search) || String(p.id).includes(search);
+                
+                // Difficulty
+                const matchesDiff = diff === 'All' || p.difficulty === diff;
+
+                // Topic
+                let matchesTopic = true;
+                if (currentTopic !== 'All') {
+                    matchesTopic = p.topics && p.topics.includes(currentTopic);
+                }
+
+                return matchesSearch && matchesDiff && matchesTopic;
+            });
+
+            // Sorting Logic
+            if (sort === 'id') {
+                filteredList.sort((a, b) => a.id - b.id);
+            } else if (sort === 'freq') {
+                filteredList.sort((a, b) => (b.frequency || 0) - (a.frequency || 0));
+            } else if (sort === 'accept') {
+                const getVal = (str) => parseFloat((str || "0").replace('%', ''));
+                filteredList.sort((a, b) => getVal(b.acceptance) - getVal(a.acceptance));
+            }
+
+            renderPage();
+            renderPagination();
+        }
+
+        // --- RENDER CURRENT PAGE ---
+        function renderPage() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            const total = filteredList.length;
+            if (total === 0) {
+                document.getElementById('displayCount').innerText = "0";
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--text-muted);">No problems found.</td></tr>`;
+                return;
+            }
+
+            // Calculate Slice
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, total);
+            
+            // Update Count Display
+            document.getElementById('displayCount').innerText = `${startIndex + 1}-${endIndex} of ${total}`;
+
+            const pageItems = filteredList.slice(startIndex, endIndex);
+
+            pageItems.forEach(p => {
+                const freq = p.frequency || 0;
+                let barColor = freq > 70 ? '#2cbb5d' : (freq > 40 ? '#fbbf24' : '#94a3b8');
+                
+                let topicHtml = '';
+                if (p.topics && p.topics.length > 0) {
+                    topicHtml = p.topics.slice(0, 3).map(t => `<span class="topic-tag">${t}</span>`).join('');
+                    if (p.topics.length > 3) topicHtml += `<span class="topic-tag" style="opacity:0.5">+${p.topics.length - 3}</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:var(--text-muted); font-family:monospace;">${p.id}</td>
+                    <td><a href="${p.url}" target="_blank" class="problem-link">${p.title}</a></td>
+                    <td>${topicHtml}</td>
+                    <td style="color:var(--text-muted); font-size:0.85rem;">${p.acceptance || '-'}</td>
+                    <td><span class="diff-tag diff-${p.difficulty}">${p.difficulty}</span></td>
+                    <td>
+                        <div style="font-size:0.8rem; margin-bottom:2px;">${freq}%</div>
+                        <div class="freq-bar-container"><div class="freq-bar-fill" style="width:${freq}%; background:${barColor};"></div></div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- PAGINATION CONTROLS ---
+        function renderPagination() {
+            const container = document.getElementById('paginationBar');
+            container.innerHTML = '';
+            
+            const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
+            if (totalPages <= 1) return; 
+
+            // Prev
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerText = '←';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => goToPage(currentPage - 1);
+            container.appendChild(prevBtn);
+
+            // Logic: Show first, last, and neighbors
+            let pagesToShow = [];
+            if (totalPages <= 7) {
+                for(let i=1; i<=totalPages; i++) pagesToShow.push(i);
+            } else {
+                if (currentPage <= 4) {
+                    pagesToShow = [1, 2, 3, 4, 5, "...", totalPages];
+                } else if (currentPage >= totalPages - 3) {
+                    pagesToShow = [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                } else {
+                    pagesToShow = [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+                }
+            }
+
+            pagesToShow.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn';
+                if (p === "...") {
+                    btn.innerText = "...";
+                    btn.disabled = true;
+                    btn.style.border = "none";
+                    btn.style.background = "transparent";
+                } else {
+                    btn.innerText = p;
+                    if (p === currentPage) btn.classList.add('active');
+                    btn.onclick = () => goToPage(p);
+                }
+                container.appendChild(btn);
+            });
+
+            // Next
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerText = '→';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => goToPage(currentPage + 1);
+            container.appendChild(nextBtn);
+        }
+
+        function goToPage(pageNum) {
+            currentPage = pageNum;
+            renderPage();
+            renderPagination();
+            document.querySelector('.table-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- TOPIC BAR HELPER ---
+        function renderTopicBar() {
+            const container = document.getElementById('topicContainer');
+            const sortedTopics = [...uniqueTopics.entries()].sort((a, b) => b[1] - a[1]);
+            sortedTopics.forEach(([topic, count]) => {
+                const btn = document.createElement('button');
+                btn.className = 'topic-btn';
+                btn.innerText = `${topic} (${count})`;
+                btn.onclick = () => filterByTopic(topic, btn);
+                container.appendChild(btn);
+            });
+        }
+        function toggleTopicBar() {
+            const grid = document.getElementById('topicContainer');
+            const btn = document.getElementById('toggleTopicsBtn');
+            grid.classList.toggle('expanded');
+            btn.innerText = grid.classList.contains('expanded') ? 'Show Less ▲' : 'Show All Topics ▼';
+        }
+
+        init();
+    </script>
+</body>
+</html>

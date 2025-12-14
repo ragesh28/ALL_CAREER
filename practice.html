@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ALL_CAREER | LEARN CODING</title>
+    <title>All_Career - Learn Coding</title>
+    <link rel="icon" href="String_Theory.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -32,12 +33,10 @@
 
         /* --- STICKY BAR CONTAINER --- */
         .filter-bar-container {
-            /* Sticks to the very top now */
             position: sticky; top: 0; z-index: 100;
             padding: 10px 20px;
             display: flex; justify-content: center;
             background: transparent;
-            /* Added explicit height to help with layout calcs */
             height: 70px; 
             box-sizing: border-box;
         }
@@ -64,7 +63,6 @@
             display: flex; 
             flex: 1; 
             overflow: hidden; 
-            /* 100vh - 70px (height of sticky bar container) */
             height: calc(100vh - 70px); 
             max-width:1400px; margin: 0 auto; width:100%; 
         }
@@ -104,12 +102,11 @@
         .content { 
             flex: 1; 
             padding: 0; 
-            overflow-y: auto; /* Independent Scroll */
+            overflow-y: auto; 
             display: flex; flex-direction: column; 
             position: relative; 
             height: 100%;
             background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent 40%);
-            /* EXTRA PADDING AT BOTTOM */
             padding-bottom: 150px; 
         }
         .welcome-msg { text-align: center; margin-top: 100px; color: var(--text-muted); }
@@ -122,7 +119,7 @@
             backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 5;
             display: flex; align-items: center; justify-content: space-between;
-            min-height: 60px; /* Small height */
+            min-height: 60px; 
         }
         .company-title-row { display: flex; align-items: center; gap: 12px; }
         .company-name-large { font-family: 'Outfit', sans-serif; font-size: 1.4rem; color: var(--text-main); font-weight: 700; }
@@ -167,11 +164,8 @@
 </head>
 <body>
 
-    <!-- Header Removed - Just the Sticky Bar now -->
-
     <div class="filter-bar-container">
         <div class="filter-bar">
-            <!-- Left Side Title -->
             <div style="color:var(--text-muted); font-weight:600; margin-right:auto; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
                <span style="color:var(--primary);">//</span> LEARN CODING
             </div>
@@ -223,6 +217,8 @@
         // --- RENDER SIDEBAR ---
         function renderSidebar(list) {
             companyListEl.innerHTML = '';
+            
+            // 1. TOP 150 INTERVIEW QUESTIONS (Yellow)
             const topDiv = document.createElement('div');
             topDiv.className = 'company-item';
             topDiv.style.border = "1px solid #fbbf24";
@@ -236,6 +232,22 @@
             `;
             companyListEl.appendChild(topDiv);
 
+            // 2. MASTER LIST / ALL QUESTIONS (Purple) - NEW!
+            const allDiv = document.createElement('div');
+            allDiv.className = 'company-item';
+            allDiv.style.border = "1px solid #a855f7"; // Purple accent
+            // This links to the other file we created
+            allDiv.onclick = () => window.location.href = 'all_questions.html'; 
+            allDiv.innerHTML = `
+                <div class="company-info">
+                    <div style="width:20px; height:20px; background:#a855f7; border-radius:4px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:1rem;">∞</div>
+                    <span style="color:#a855f7; font-weight:bold;">All Questions</span>
+                </div>
+                <span class="count-tag" style="background:#a855f7; color:white;">Master</span>
+            `;
+            companyListEl.appendChild(allDiv);
+
+            // 3. COMPANY LIST
             list.forEach(name => {
                 const count = leetcodeData[name] ? leetcodeData[name].length : 0;
                 const div = document.createElement('div');
