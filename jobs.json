@@ -1,4 +1,4 @@
-const activeJobs = [
+[
   {
     "company": "Freshworks",
     "title": "Executive Assistant to the Chief Customer & Marketing Officer (CCMO)",
@@ -1447,4 +1447,4 @@ const activeJobs = [
     "date": "Check Link",
     "fetchedAt": "2025-12-14"
   }
-];
+]
