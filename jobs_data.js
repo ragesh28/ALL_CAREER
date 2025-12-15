@@ -1,5 +1,293 @@
 const activeJobs = [
   {
+    "company": "Caterpillar",
+    "title": "Customer Services Coordinator",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339611/customer-services-coordinator/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Advanced Excavator Systems Development Sr. Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339784/advanced-excavator-systems-development-sr-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000316710/accounting-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Manager III, Finance, FinOps",
+    "url": "https://www.amazon.jobs/jobs/3076830",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Customer Experience and Business Trends",
+    "url": "https://www.amazon.jobs/jobs/3142533",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Manager II, Finance, FinOps",
+    "url": "https://www.amazon.jobs/jobs/3063118",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development II",
+    "url": "https://www.amazon.jobs/jobs/3140241",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior RTL Design Engineer, Hardware Compute Group",
+    "url": "https://www.amazon.jobs/jobs/3082253",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5155316-S1904639_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029886-S1892254_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029885-S1892260_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Architect",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029979-S1892255_en&title=Security+Architect",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029887-S1892259_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Architect",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5061325-S1892243_en&title=Security+Architect",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Architect",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029981-S1892258_en&title=Security+Architect",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Architect",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5029980-S1892261_en&title=Security+Architect",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Total Rewards Specialist",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=R00292500_en&title=Total+Rewards+Specialist",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5155319-S1904638_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Delivery Lead",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5155320-S1904644_en&title=Security+Delivery+Lead",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Accenture",
+    "title": "Security Architect",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5155906-S1900382_en&title=Security+Architect",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Technical Architect-Red Hat Platform",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=48834&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Experience Front End",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=58954&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=56456&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Linux Development Manager",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=61143&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=62366&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-AWS Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=64788&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA FIN FI",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=67221&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=67175&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Manager – Financial Planning & Analysis (FP&A)",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=61131&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP Cloud Integration",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=70838&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM WMS",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=71625&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Oracle HCM Cloud",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=67279&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Microsoft .NET Stack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=55896&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-SAP HANA Basis",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=73475&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Adobe Experience Manager",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=63303&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Oracle HCM Cloud",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=68748&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
     "company": "Freshworks",
     "title": "Executive Assistant to the Chief Customer & Marketing Officer (CCMO)",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000093254851-executive-assistant-to-the-chief-customer-marketing-officer-ccmo-",
