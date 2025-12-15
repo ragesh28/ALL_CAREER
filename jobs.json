@@ -1,5 +1,413 @@
 [
   {
+    "company": "Freshworks",
+    "title": "Senior Account Executive - Outbound (Commercial - Germany)",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098889550-senior-account-executive-outbound-commercial-germany-",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Account Executive - Outbound (Commercial - French)",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098889496-senior-account-executive-outbound-commercial-french-",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Solution Engineer",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098887855-lead-solution-engineer",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Solution Engineer",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098886955-senior-solution-engineer",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Learning & Development Manager",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098879936-learning-development-manager",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Data Platform Engineering",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098886810-lead-data-platform-engineering",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Specialist - Data Platform Engineering",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098886333-specialist-data-platform-engineering",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Solution Engineer",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098887555-lead-solution-engineer",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Solution Engineer",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098886326-senior-solution-engineer",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Business Analyst",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098882635-senior-business-analyst",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Data Specialist (IT Analyst - Data Engineer)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000325860/data-specialist-it-analyst-data-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Associate Design Engineer-TF Piping Checker EPC",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338388/associate-design-engineer-tf-piping-checker-epc/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager Production Scheduling (m/w/d)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339880/manager-production-scheduling-mwd/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Maschinenbediener (m/w/d)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000269419/maschinenbediener-mwd/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manufacturing Engineer Assistant工艺助理工程师（焊接）",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000331277/manufacturing-engineer-assistant%E5%B7%A5%E8%89%BA%E5%8A%A9%E7%90%86%E5%B7%A5%E7%A8%8B%E5%B8%88-%E7%84%8A%E6%8E%A5/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager Service Information & Technology",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340115/manager-service-information-technology/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Montageplaner / Fertigungs-IT (m/w/d)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000306393/montageplaner-fertigungs-it-mwd/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "CA Intern",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000322226/ca-intern/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Associate-1",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000317995/accounting-associate-1/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Associate Design Engineer  - MasterList",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338634/associate-design-engineer-masterlist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager Risk & Compliance",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339684/manager-risk-compliance/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Engineering Team Leader -EPC Process & Piping",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338627/engineering-team-leader-epc-process-piping/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Credit & AML Junior Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336098/credit-aml-junior-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Value Chain Designer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339577/value-chain-designer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Payroll Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338339/payroll-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager Service Information & Technology",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340114/manager-service-information-technology/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant (Financial Specialist)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000330003/accountant-financial-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Foreign trade analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000322873/foreign-trade-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "CNC Machine Technician",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336664/cnc-machine-technician/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon",
+    "title": "Brand Specialist -  AVS US, Paid Selling Partner Services",
+    "url": "https://www.amazon.jobs/jobs/3129005",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Brand Specialist -  AVS US, Paid Selling Partner Services",
+    "url": "https://www.amazon.jobs/jobs/3129005",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, AI Automation, Prime Video",
+    "url": "https://www.amazon.jobs/jobs/3142748",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer",
+    "url": "https://www.amazon.jobs/jobs/3137832",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr.Business Intelligence Engineer, -",
+    "url": "https://www.amazon.jobs/jobs/3132881",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Front-End Engineer II, Amazon Music Design",
+    "url": "https://www.amazon.jobs/jobs/3023618",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Support Engineer IV",
+    "url": "https://www.amazon.jobs/jobs/3134140",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Category Marketing Manager, Shoes, IN Apparel",
+    "url": "https://www.amazon.jobs/jobs/3142734",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Category Manager, IN Shoes",
+    "url": "https://www.amazon.jobs/jobs/3134913",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "SBS -Brand Manager, India Consumables",
+    "url": "https://www.amazon.jobs/jobs/3142728",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Brand Specialist",
+    "url": "https://www.amazon.jobs/jobs/3126621",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Wipro",
+    "title": "Software Asset Management",
+    "url": "https://careers.wipro.com/job/Software-Asset-Management/58731-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Wipro",
+    "title": "Sr ETL Test Engineer",
+    "url": "https://careers.wipro.com/job/Sr-ETL-Test-Engineer/87229-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Software Engineer B2",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066377117/sr-software-engineer-b2/",
+    "location": "Chennai, Tamil Nadu, India / Bangalore, Karnataka, India / Hyderabad, Telangana, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Business Analyst",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066556801/business-analyst/",
+    "location": "BANGALORE, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "Capgemini",
+    "title": "RPM I 1 TO 6 YEARS I CHENNAI",
+    "url": "https://www.capgemini.com/in-en/jobs/366004-en_GB+sap_btp",
+    "location": "Chennai (ex Madras)",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-SAP ABAP HANA",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=37637&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Manager – Financial Planning & Analysis (FP&A)",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=60557&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Manager – Financial Planning & Analysis (FP&A)",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=60567&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Workday Data Conversion",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=59206&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-AWS Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=66739&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
+    "company": "IBM",
+    "title": "Linux Distro/system Development Engineer",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=57418&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-15"
+  },
+  {
     "company": "Caterpillar",
     "title": "Customer Services Coordinator",
     "url": "https://careers.caterpillar.com/en/jobs/r0000339611/customer-services-coordinator/",
