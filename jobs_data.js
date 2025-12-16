@@ -1,6 +1,190 @@
 const activeJobs = [
   {
     "company": "Freshworks",
+    "title": "Senior Business Analyst",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000098971555-senior-business-analyst",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Mr. Cooper",
+    "title": "Lead Software Engineer (FullStack)",
+    "url": "https://careers.mrcooper.com/us/en/job/024348/Lead-Software-Engineer-FullStack",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Business Insights Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340467/business-insights-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Sales Representative",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340156/sales-representative/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Business Insights Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339325/business-insights-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Embedded Cybersecurity Software Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336420/embedded-cybersecurity-software-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Accounting Consultant",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340205/senior-accounting-consultant/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electronic Systems Verification & Validation Engineer – Mining Products",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337799/electronic-systems-verification-validation-engineer-mining-products/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Corporate Counsel",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339971/senior-corporate-counsel/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Logistics Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336805/logistics-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Engineering Checker - Drawing Quality",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339627/engineering-checker-drawing-quality/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Intelligence Engineer , Seller Enablement",
+    "url": "https://www.amazon.jobs/jobs/3143507",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Amazon MGM Studios Tech, Fintech",
+    "url": "https://www.amazon.jobs/jobs/3143157",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer - II, Sales Technology, Amazon Advertising",
+    "url": "https://www.amazon.jobs/jobs/3142197",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, Amazon - Ads Sales Tech",
+    "url": "https://www.amazon.jobs/jobs/3142199",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer - II, Sales Technology, Amazon Advertising",
+    "url": "https://www.amazon.jobs/jobs/3142196",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, AFT Flow",
+    "url": "https://www.amazon.jobs/jobs/3143132",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Amazon Fulfilment Tech - Business Intelligence Engineer, Inventory",
+    "url": "https://www.amazon.jobs/jobs/3143071",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Infrastructure Deployment Engineer, IT Services",
+    "url": "https://www.amazon.jobs/jobs/3142977",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer 2, Prime Video App Experience",
+    "url": "https://www.amazon.jobs/jobs/3140512",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Device Associate, Quality Services, Device Tech Support",
+    "url": "https://www.amazon.jobs/jobs/3142914",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-SAP HANA Basis",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=66792&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Open Source",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=68846&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-16"
+  },
+  {
+    "company": "Freshworks",
     "title": "Senior Account Executive - Outbound (Commercial - Germany)",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000098889550-senior-account-executive-outbound-commercial-germany-",
     "location": "Unknown",
