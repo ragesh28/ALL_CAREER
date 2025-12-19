@@ -1,6 +1,302 @@
 const activeJobs = [
   {
     "company": "Freshworks",
+    "title": "Principal AI Knowledge AI Architect",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000077238974-principal-ai-knowledge-ai-architect",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Lumel",
+    "title": "Product Developer Intern / Trainee",
+    "url": "https://lumel.keka.com/careers/jobdetails/114730/",
+    "location": "Chennai,India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Site Solutions Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337919/site-solutions-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Site Solutions Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337922/site-solutions-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Account Manager - Middle East & Eurasia",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340627/account-manager-middle-east-eurasia/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Territory Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000333106/territory-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Associate (Indirect Tax)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340841/accounting-associate-indirect-tax/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Performance & Control Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000325841/performance-control-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Design Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340532/senior-design-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "maintenance Operator V",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339311/maintenance-operator-v/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Commercial Job Site Solutions - 12 Month Placement Scheme",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000323147/commercial-job-site-solutions-12-month-placement-scheme/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager, Operations",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340905/manager-operations/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Gerente de Planejamento de Demanda e Pedido",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340349/gerente-de-planejamento-de-demanda-e-pedido/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Welder 1 - 2nd & 3rd Shifts",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000332372/welder-1-2nd-3rd-shifts/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Yard Preservation- Flex Associate Victoria Texas",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000334588/yard-preservation-flex-associate-victoria-texas/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Operator",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340294/operator/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Control systems-3",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340086/senior-control-systems-3/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manager Accounting",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339364/manager-accounting/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon",
+    "title": "Language Engineer, Artificial General Intelligence - Data Services",
+    "url": "https://www.amazon.jobs/jobs/3145654",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon",
+    "title": "Language Engineer, Artificial General Intelligence - Data Services",
+    "url": "https://www.amazon.jobs/jobs/3145652",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Alexa Smart Properties",
+    "url": "https://www.amazon.jobs/jobs/3146036",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Alexa Smart Properties",
+    "url": "https://www.amazon.jobs/jobs/3146041",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineer I, CMT Dataplatform & Analytics",
+    "url": "https://www.amazon.jobs/jobs/3138878",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineer I, CMT Dataplatform & Analytics",
+    "url": "https://www.amazon.jobs/jobs/3117219",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager- Finance AI and ML Dev, Finance AI and ML Forecasting and Core Engineering",
+    "url": "https://www.amazon.jobs/jobs/3145863",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, Worldwide Grocery Tech, Site Foundation Engineering",
+    "url": "https://www.amazon.jobs/jobs/3145864",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineering Manager, GMT Global Operations Engineering and Support",
+    "url": "https://www.amazon.jobs/jobs/3145867",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Associate - Retail Process, CMT",
+    "url": "https://www.amazon.jobs/jobs/3145803",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Brand Specialist",
+    "url": "https://www.amazon.jobs/jobs/3132974",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer II, IES Shopping",
+    "url": "https://www.amazon.jobs/jobs/3132043",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Specialist - Data Sciences",
+    "url": "https://ltimindtree.ripplehire.com/candidate/?token=xviyQvbnyYZdGtozXoNm&lang=en&source=CAREERSITE#detail/job/824840",
+    "location": "Bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Senior Specialist - Data Sciences",
+    "url": "https://ltimindtree.ripplehire.com/candidate/?token=xviyQvbnyYZdGtozXoNm&lang=en&source=CAREERSITE#detail/job/824834",
+    "location": "Bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Mobile iOS",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=75744&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP UX",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=76736&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "IBM",
+    "title": "Procurement Support Specialist",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=76256&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=78985&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "IBM",
+    "title": "Silicon validation lead",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=75265&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-19"
+  },
+  {
+    "company": "Freshworks",
     "title": "Frontend AI UI Engineer",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000077298565-frontend-ai-ui-engineer",
     "location": "Unknown",
