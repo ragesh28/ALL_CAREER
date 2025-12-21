@@ -1,5 +1,109 @@
 const activeJobs = [
   {
+    "company": "Amazon Bangalore",
+    "title": "AI Platform Data Engineer, Ring Decisions Sciences Platform",
+    "url": "https://www.amazon.jobs/jobs/3126544",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Intelligence Engineer, FinOps FP&A",
+    "url": "https://www.amazon.jobs/jobs/3146999",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Intelligence Engineer, FinOps FP&A",
+    "url": "https://www.amazon.jobs/jobs/3146998",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Software Engineer B2",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066015283/sr-software-engineer-b2/",
+    "location": "Bangalore, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Software Engineer B3",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066532881/sr-software-engineer-b3/",
+    "location": "Bangalore, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Software Engineer B2",
+    "url": "https://careers.cognizant.com/india-en/jobs/00065961483/sr-software-engineer-b2/",
+    "location": "BANGALORE, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Associate Architect",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066409631/associate-architect/",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Software Engineer B3",
+    "url": "https://careers.cognizant.com/india-en/jobs/00065961831/sr-software-engineer-b3/",
+    "location": "Bangalore, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "IBM",
+    "title": "Sr. Process Analyst Finance & Administration Delivery - Order to Cash",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79853&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-SAP UX",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=81543&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=81596&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "IBM",
+    "title": "DELIVERY MANAGER-TALENT DEVELOPMENT OPTIMIZATION PROCESSES",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=81895&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=80127&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-21"
+  },
+  {
     "company": "Freshworks",
     "title": "Lead - IT Operations",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000099757735-lead-it-operations",
