@@ -1,5 +1,77 @@
 [
   {
+    "company": "Caterpillar",
+    "title": "Fabricator/Welder Apprentice - Level 3",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340607/fabricatorwelder-apprentice-level-3/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Business Admin Apprenticeship",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000331275/business-admin-apprenticeship/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Human Resources Business Partner",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000334383/human-resources-business-partner/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Mechanical Fitter Apprentice - Level 3",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340611/mechanical-fitter-apprentice-level-3/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electrician Apprentice - Level 3",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340615/electrician-apprentice-level-3/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Financial Analyst, IN Marketing Finance",
+    "url": "https://www.amazon.jobs/jobs/3133790",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "UX Designer I, Amazon Music Design",
+    "url": "https://www.amazon.jobs/jobs/3027044",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "Cognizant",
+    "title": "AWS DevOps Engineer",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066686891/aws-devops-engineer/",
+    "location": "BANGALORE, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Process Management (BPM)",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=78137&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-22"
+  },
+  {
     "company": "Amazon Bangalore",
     "title": "AI Platform Data Engineer, Ring Decisions Sciences Platform",
     "url": "https://www.amazon.jobs/jobs/3126544",
