@@ -1,5 +1,309 @@
 const activeJobs = [
   {
+    "company": "CRED",
+    "title": "payments & partnership ops",
+    "url": "https://jobs.lever.co/cred/e0609036-4432-49bc-9c61-6f3b5362d163",
+    "location": "bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Marketing Director – Digital and Customer Engagement",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341535/marketing-director-digital-and-customer-engagement/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Marketing Director – Digital and Customer Engagement",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341539/marketing-director-digital-and-customer-engagement/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Packaging Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341625/packaging-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Project Leader / Black Belt",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000317983/project-leader-black-belt/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339094/accountant-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Account Manager- Mining",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336321/senior-account-manager-mining/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339092/accountant-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339089/accountant-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339091/accountant-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Marketing Director, Digital and Customer Engagement",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341154/marketing-director-digital-and-customer-engagement/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Assembler",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341617/assembler/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Zone Supervisor",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341756/zone-supervisor/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339099/accountant-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "CNC Machine Specialist I",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340856/cnc-machine-specialist-i/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Práctica Recursos Humanos",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337235/practica-recursos-humanos/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Customer Solution Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341741/senior-customer-solution-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Commercial Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341755/commercial-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Associate Engineer-EPC- Civil Structures",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341279/senior-associate-engineer-epc-civil-structures/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Customer Services Coordinator - Dammam",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341266/customer-services-coordinator-dammam/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340353/software-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr Program Manager: Cost to Serve, RBS : Cost to Serve",
+    "url": "https://www.amazon.jobs/jobs/3148902",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Manager,  E-reader Products Team",
+    "url": "https://www.amazon.jobs/jobs/3148843",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Account Manager - GCC Practice",
+    "url": "https://www.amazon.jobs/jobs/3149062",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Account Manager - GCC Practice",
+    "url": "https://www.amazon.jobs/jobs/3149061",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Technical Program Manager, Alexa Connected Devices",
+    "url": "https://www.amazon.jobs/jobs/3121200",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Software Development Engineer, Prime Video, Living Room Device Services",
+    "url": "https://www.amazon.jobs/jobs/3149019",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "System Development Engineer, Payments Acceptance and Experience",
+    "url": "https://www.amazon.jobs/jobs/3149013",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "System Dev Engineer I, Device OS",
+    "url": "https://www.amazon.jobs/jobs/3148173",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Investigation Specialist [ENG]",
+    "url": "https://www.amazon.jobs/jobs/3120596",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Brand Manager - SBS, Kitchen",
+    "url": "https://www.amazon.jobs/jobs/3142610",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Chatbot Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/220555-en_GB+sap_btp",
+    "location": "Chennai (ex Madras), Hyderabad, Bangalore, Pune + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Azure Fabric Data Engineer",
+    "url": "https://www.capgemini.com/in-en/jobs/277302-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Chennai (ex Madras), Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Oracle Onestream",
+    "url": "https://www.capgemini.com/in-en/jobs/221033-en_GB+sap_btp",
+    "location": "Chennai (ex Madras), Navi Mumbai, Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Windows Active Directory Administrator",
+    "url": "https://www.capgemini.com/in-en/jobs/255167-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Commerce Transformation",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79063&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP Cloud Integration",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79166&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
+    "company": "IBM",
+    "title": "Security Consultant-Application Security",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=81182&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-25"
+  },
+  {
     "company": "Caterpillar",
     "title": "Warehouse Associate -  Victoria, TX",
     "url": "https://careers.caterpillar.com/en/jobs/r0000341682/warehouse-associate-victoria-tx/",
