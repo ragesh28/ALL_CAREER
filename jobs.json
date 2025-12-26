@@ -1,5 +1,149 @@
 [
   {
+    "company": "Caterpillar",
+    "title": "Fabricator I",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340855/fabricator-i/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Associate Engineer - CAB Components",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340382/associate-engineer-cab-components/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Fabricator I",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340857/fabricator-i/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Analyst, Finance & Accounting",
+    "url": "https://www.amazon.jobs/jobs/3149128",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Grocery Tech",
+    "url": "https://www.amazon.jobs/jobs/3149114",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "SOC Emulation Engineer, Silicon and Systems Group",
+    "url": "https://www.amazon.jobs/jobs/3149112",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP BTP IS",
+    "url": "https://www.capgemini.com/in-en/jobs/384478-en_US+sap_btp",
+    "location": "Bangalore, Gandhinagar, Mumbai, Noida + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Data Engineer(Python with Gen AI)",
+    "url": "https://www.capgemini.com/in-en/jobs/307089-en_GB+sap_btp",
+    "location": "Hyderabad, Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Label management/Loftware - Tech Lead",
+    "url": "https://www.capgemini.com/in-en/jobs/365004-en_GB+sap_btp",
+    "location": "Pune, Bangalore, Mumbai",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Solution Architect",
+    "url": "https://www.capgemini.com/in-en/jobs/357971-en_GB+sap_btp",
+    "location": "Bangalore, Chennai (ex Madras), Coimbatore, Gandhinagar + 6",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Storage Administrator",
+    "url": "https://www.capgemini.com/in-en/jobs/261181-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Pre-sales Solution Architect",
+    "url": "https://www.capgemini.com/in-en/jobs/297204-en_US+sap_btp",
+    "location": "Pune, Mumbai, Chennai (ex Madras), Kolkata + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP Migration Architect",
+    "url": "https://www.capgemini.com/in-en/jobs/297207-en_US+sap_btp",
+    "location": "Pune, Chennai (ex Madras), Bangalore, Kolkata + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM SD",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=70999&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP Cloud Integration",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79181&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79416&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Commerce Transformation",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79315&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Oracle EPM Cloud",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=79367&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-26"
+  },
+  {
     "company": "CRED",
     "title": "payments & partnership ops",
     "url": "https://jobs.lever.co/cred/e0609036-4432-49bc-9c61-6f3b5362d163",
