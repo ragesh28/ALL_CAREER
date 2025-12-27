@@ -1,6 +1,174 @@
 const activeJobs = [
   {
     "company": "Caterpillar",
+    "title": "Accounting Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338389/accounting-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Associate Engineer(Engine Design)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341317/senior-associate-engineer-engine-design/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Automation Engineer – Power Automate & Python",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340914/automation-engineer-power-automate-python/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Site Performance Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000328634/site-performance-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338390/accounting-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Associate Engineer - Turbomachinery",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000335646/senior-associate-engineer-turbomachinery/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Software Development Engineer, Alexa Smart Properties",
+    "url": "https://www.amazon.jobs/jobs/3149384",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineer Manager, Buyer Fraud",
+    "url": "https://www.amazon.jobs/jobs/3128960",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "VRMO Seller Onboard Asc - German,  In-Person Verification - VAR",
+    "url": "https://www.amazon.jobs/jobs/3149375",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Prompt Engineer, TSE",
+    "url": "https://www.amazon.jobs/jobs/3138320",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "CTK Svc Associate (S), CTK Svc Associate (S)",
+    "url": "https://www.amazon.jobs/jobs/3147126",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Process Assistant, FCD",
+    "url": "https://www.amazon.jobs/jobs/3149348",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Ops Associate , Seller Inventory Management Services (SIMS)",
+    "url": "https://www.amazon.jobs/jobs/3149331",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "SDE 2, Finance Technology, FinTech TAX",
+    "url": "https://www.amazon.jobs/jobs/3134653",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "SDE II, Alexa Connected Devices",
+    "url": "https://www.amazon.jobs/jobs/3136639",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Capgemini",
+    "title": "AEP Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/220522-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Bangalore, Chennai (ex Madras), Pune + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP BTP CAPM Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/385015-en_US+sap_btp",
+    "location": "Pune, Gandhinagar, Noida, Bangalore + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Technical Lead",
+    "url": "https://www.capgemini.com/in-en/jobs/203336-en_GB+sap_btp",
+    "location": "Noida, Pune, Bangalore, Hyderabad",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP ABAP RAP",
+    "url": "https://www.capgemini.com/in-en/jobs/383957-en_US+sap_btp",
+    "location": "Pune, Gandhinagar, Noida, Bangalore + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Oracle Tax Reporting Cloud Service Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/295048-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Pune, Chennai (ex Madras), Hyderabad + 1",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=78989&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-27"
+  },
+  {
+    "company": "Caterpillar",
     "title": "Fabricator I",
     "url": "https://careers.caterpillar.com/en/jobs/r0000340855/fabricator-i/",
     "location": "Unknown",
