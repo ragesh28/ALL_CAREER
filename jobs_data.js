@@ -1,5 +1,109 @@
 const activeJobs = [
   {
+    "company": "Amazon",
+    "title": "Associate, ML Data Operations, GO-AI Operations",
+    "url": "https://www.amazon.jobs/jobs/3134191",
+    "location": "Chennai - Virtual, TN, IND",
+    "date": "Chennai - Virtual, TN, IND",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Associate, ML Data Operations, GO-AI Operations",
+    "url": "https://www.amazon.jobs/jobs/3134191",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Manager III, Risk Management, REs-Q - Risk Mitigation, Escalation Reduction, and Quality Assurance",
+    "url": "https://www.amazon.jobs/jobs/3149432",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Manager III, Risk Management, REs-Q - Risk Mitigation, Escalation Reduction, and Quality Assurance",
+    "url": "https://www.amazon.jobs/jobs/3149435",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP BPC Embedded Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/284316-en_GB+sap_btp",
+    "location": "Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Postgresql Database Administrator",
+    "url": "https://www.capgemini.com/in-en/jobs/261178-en_GB+sap_btp",
+    "location": "Bangalore, Mumbai (ex Bombay), Pune",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP SAC Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/284317-en_GB+sap_btp",
+    "location": "Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Informatica IICS Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/380187-en_GB+sap_btp",
+    "location": "Hyderabad, Pune, Chennai (ex Madras)",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Guidewire Lead",
+    "url": "https://www.capgemini.com/in-en/jobs/380204-en_GB+sap_btp",
+    "location": "Hyderabad, Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP S4EA Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/301463-en_GB+sap_btp",
+    "location": "Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "Capgemini",
+    "title": "OpenText Vendor Invoice Management",
+    "url": "https://www.capgemini.com/in-en/jobs/220523-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Pune, Bangalore, Hyderabad",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "IBM",
+    "title": "Project Manager-ADM",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=73481&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=82585&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-28"
+  },
+  {
     "company": "Caterpillar",
     "title": "Accounting Analyst",
     "url": "https://careers.caterpillar.com/en/jobs/r0000338389/accounting-analyst/",
