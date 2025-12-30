@@ -1,5 +1,277 @@
 [
   {
+    "company": "Freshworks",
+    "title": "Lead Software Engineer - Backend",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000100869820-lead-software-engineer-backend",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Associate - Customer Success",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000100864156-associate-customer-success",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Engineering Manager",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000100863018-engineering-manager",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "CRED",
+    "title": "payment partnerships",
+    "url": "https://jobs.lever.co/cred/d3527198-4b79-489f-8e37-2cd7b1575bf0",
+    "location": "bengaluru, mumbai",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Mr. Cooper",
+    "title": "AVP Data Engineering",
+    "url": "https://careers.mrcooper.com/us/en/job/024368/AVP-Data-Engineering",
+    "location": "Location Chennai, Tamil Nadu, 600089",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Mr. Cooper",
+    "title": "Senior ML Engineer",
+    "url": "https://careers.mrcooper.com/us/en/job/024298/Senior-ML-Engineer",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Shipping & Warehouse Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340845/shipping-warehouse-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Banco de Talentos - Mine Star Application Specialist",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000333140/banco-de-talentos-mine-star-application-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Test Engineer-2",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338604/software-test-engineer-2/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Pintor",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000335707/pintor/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338342/software-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Supply Network Specialist II",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339360/supply-network-specialist-ii/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337506/software-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Account Manager (Electric Power)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000335820/account-manager-electric-power/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Quality Inspector III 质量检验员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339884/quality-inspector-iii-%E8%B4%A8%E9%87%8F%E6%A3%80%E9%AA%8C%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Test Engineer-1",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338603/software-test-engineer-1/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Production Supervisor (Fabrication)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339073/production-supervisor-fabrication/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Sr. Software Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000312212/sr-software-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Supply Chain Manager (m/w/d)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341861/supply-chain-manager-mwd/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Banco de Talentos - Mine Star Onboard Specialist",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000333528/banco-de-talentos-mine-star-onboard-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon",
+    "title": "Area Manager (L4), Inbound operation",
+    "url": "https://www.amazon.jobs/jobs/3149578",
+    "location": "Chennai, IND",
+    "date": "Chennai, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Transportation Representative, Transportation Representative , RCP",
+    "url": "https://www.amazon.jobs/jobs/3147103",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Transportation Representative, AV",
+    "url": "https://www.amazon.jobs/jobs/3102870",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Transportation Representative, Transportation Representative , RCP",
+    "url": "https://www.amazon.jobs/jobs/3147105",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Transportation Specialist",
+    "url": "https://www.amazon.jobs/jobs/3141031",
+    "location": "Bangalore - Virtual, KA, IND",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Analyst Support, AOP",
+    "url": "https://www.amazon.jobs/jobs/3078267",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer II",
+    "url": "https://www.amazon.jobs/jobs/3123303",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "System Dev Engineer II",
+    "url": "https://www.amazon.jobs/jobs/3149829",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Quality Assurance Engineer, Alexa Connect Kit, Alexa Smart Home, Alexa Connect Kit",
+    "url": "https://www.amazon.jobs/jobs/3149797",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Product Manager-Tech III, FAAS",
+    "url": "https://www.amazon.jobs/jobs/3149742",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Accenture",
+    "title": "Learning Advisor",
+    "url": "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-5015724-S1871913_en&title=Learning+Advisor",
+    "location": "Various locations",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP Concur Configuration Administrator",
+    "url": "https://www.capgemini.com/in-en/jobs/368899-en_GB+sap_btp",
+    "location": "Bhubaneswar, Navi Mumbai, Bangalore, Hyderabad + 7",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "Capgemini",
+    "title": "IBM Datastage developer",
+    "url": "https://www.capgemini.com/in-en/jobs/380244-en_GB+sap_btp",
+    "location": "Hyderabad, Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
+    "company": "IBM",
+    "title": "Technical Consultant-Application Security",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=82279&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2025-12-30"
+  },
+  {
     "company": "Caterpillar",
     "title": "AGENT II MONTAGE-1",
     "url": "https://careers.caterpillar.com/en/jobs/r0000336910/agent-ii-montage-1/",
