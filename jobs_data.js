@@ -1,6 +1,190 @@
 const activeJobs = [
   {
     "company": "Freshworks",
+    "title": "Lead Software Engineer - Backend",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000101139055-lead-software-engineer-backend",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Maintenance Specialist (Drafter)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336677/maintenance-specialist-drafter/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Smart Manufacturing Intern",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000331055/smart-manufacturing-intern/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Procurement Quality Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000331482/procurement-quality-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Analyst I, Customer Experience and Business Trends (CXBT) Capability Team",
+    "url": "https://www.amazon.jobs/jobs/3150840",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Team Lead, FCD",
+    "url": "https://www.amazon.jobs/jobs/3150650",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer",
+    "url": "https://www.amazon.jobs/jobs/3122786",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer",
+    "url": "https://www.amazon.jobs/jobs/3123500",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "AI Benchmarking Specialist, SP Support - Spanish, International Seller Growth",
+    "url": "https://www.amazon.jobs/jobs/3150526",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "AI Benchmarking Specialist, SP Support - German, International Seller Growth",
+    "url": "https://www.amazon.jobs/jobs/3150532",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "AI Benchmarking Spec. - Spanish, SFIX",
+    "url": "https://www.amazon.jobs/jobs/3150041",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "AI Benchmarking Specialist, SP Support - Italian, International Seller Growth",
+    "url": "https://www.amazon.jobs/jobs/3149579",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Software Dev Engineer, Core Services",
+    "url": "https://www.amazon.jobs/jobs/3150499",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Wipro",
+    "title": "Application Architect - L1",
+    "url": "https://careers.wipro.com/job/Application-Architect-L1/69880-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Wipro",
+    "title": "Production Specialist L1",
+    "url": "https://careers.wipro.com/job/Production-Specialist-L1/112460-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Wipro",
+    "title": "Production Specialist L1",
+    "url": "https://careers.wipro.com/job/Production-Specialist-L1/112628-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Wipro",
+    "title": "Production Agent L1",
+    "url": "https://careers.wipro.com/job/Production-Agent-L1/112627-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Cognizant",
+    "title": "GCC Brownfield Sales Leader",
+    "url": "https://careers.cognizant.com/india-en/jobs/00065223961/gcc-brownfield-sales-leader/",
+    "location": "Hyderabad, Telangana, India / CHENNAI, Tamil Nadu, India / BANGALORE, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Capgemini",
+    "title": "FICO lead / Architect",
+    "url": "https://www.capgemini.com/in-en/jobs/294969-en_US+sap_btp",
+    "location": "Hyderabad, Kolkata, Bangalore, Pune + 1",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Architect - MuleSoft",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=83518&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "IBM",
+    "title": "ML Engineer-Advanced Analytics",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=83694&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=83708&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=83880&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-01"
+  },
+  {
+    "company": "Freshworks",
     "title": "Senior Business Development Manager - North America",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000101006165-senior-business-development-manager-north-america",
     "location": "Unknown",
