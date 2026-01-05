@@ -1,6 +1,222 @@
 const activeJobs = [
   {
     "company": "Caterpillar",
+    "title": "Assembler",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342043/assembler/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electronic Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341469/electronic-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electronic Component Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340816/electronic-component-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Assembler",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342044/assembler/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Simulation Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337094/simulation-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Design Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000323493/design-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线打胶员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341795/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E6%89%93%E8%83%B6%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Assembly Intern (装配实习生) - 5",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341742/assembly-intern-%E8%A3%85%E9%85%8D%E5%AE%9E%E4%B9%A0%E7%94%9F-5/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线粘接员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341888/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E7%B2%98%E6%8E%A5%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Test Technician V-4",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340361/test-technician-v-4/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Maintenance Operator 维修技术员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341943/maintenance-operator-%E7%BB%B4%E4%BF%AE%E6%8A%80%E6%9C%AF%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线粘接员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341887/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E7%B2%98%E6%8E%A5%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线打胶员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341793/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E6%89%93%E8%83%B6%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线打胶员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341796/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E6%89%93%E8%83%B6%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Battery System Technical Lead",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341278/battery-system-technical-lead/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Maintenance Operator 维修技术员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341944/maintenance-operator-%E7%BB%B4%E4%BF%AE%E6%8A%80%E6%9C%AF%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "发动机电气实习生",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000319093/%E5%8F%91%E5%8A%A8%E6%9C%BA%E7%94%B5%E6%B0%94%E5%AE%9E%E4%B9%A0%E7%94%9F/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Clerk",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000335604/clerk/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manufacturing intern",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000333083/manufacturing-intern/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Painter III 喷漆线粘接员",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341886/painter-iii-%E5%96%B7%E6%BC%86%E7%BA%BF%E7%B2%98%E6%8E%A5%E5%91%98/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer 2, Prime Video App Experience",
+    "url": "https://www.amazon.jobs/jobs/3140513",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. SDE, Prime Video Clients",
+    "url": "https://www.amazon.jobs/jobs/3097942",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, Prime Video",
+    "url": "https://www.amazon.jobs/jobs/3092888",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr Technical Program Manager - Prime Video, AI Automation",
+    "url": "https://www.amazon.jobs/jobs/3151548",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Voip Engineer",
+    "url": "https://www.capgemini.com/in-en/jobs/362512-en_GB+sap_btp",
+    "location": "Bangalore, Bhubaneswar, Chennai (ex Madras), Coimbatore + 11",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Axiom Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/283564-en_GB+sap_btp",
+    "location": "Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Big id developer",
+    "url": "https://www.capgemini.com/in-en/jobs/283580-en_GB+sap_btp",
+    "location": "Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-05"
+  },
+  {
+    "company": "Caterpillar",
     "title": "Logistics and Warehouse Manager (m/w/d)",
     "url": "https://careers.caterpillar.com/en/jobs/r0000337547/logistics-and-warehouse-manager-mwd/",
     "location": "Unknown",
