@@ -1,5 +1,245 @@
 const activeJobs = [
   {
+    "company": "Freshworks",
+    "title": "Senior Business Development Manager - North America",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000101565515-senior-business-development-manager-north-america",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Software Engineer - Frontend",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000101541686-senior-software-engineer-frontend",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "CRED",
+    "title": "copywriter",
+    "url": "https://jobs.lever.co/cred/f846af12-7da9-4737-a0b1-3770c55830fc",
+    "location": "bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "CRED",
+    "title": "on deck payments - new opportunities",
+    "url": "https://jobs.lever.co/cred/c2ec5648-ca1b-431e-96ff-0943349c98f5",
+    "location": "bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "CRED",
+    "title": "utility bill payments category lead",
+    "url": "https://jobs.lever.co/cred/9c4bb850-264e-4012-8ccc-d1fd804f24fe",
+    "location": "bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Transportation Analyst Intern",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342038/transportation-analyst-intern/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338368/accounting-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Associate(R2R)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341856/accounting-associate-r2r/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Forklift Driver - Manufacturing 2nd / 3rd Shift - Decatur, IL",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000321759/forklift-driver-manufacturing-2nd-3rd-shift-decatur-il/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Warehouse Associate 2nd & 3rd Shifts",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342155/warehouse-associate-2nd-3rd-shifts/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Start Reliability Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000325700/start-reliability-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Software Verification Engineer (Electric Drive Controls)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342143/software-verification-engineer-electric-drive-controls/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Logistics Coordinator (Grief Analyst) - 3rd SHIFT",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340709/logistics-coordinator-grief-analyst-3rd-shift/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Service Information Specialist",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000330452/service-information-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Data Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000328100/data-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Customer Services Administrator",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341270/customer-services-administrator/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "NPI Lead",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000325831/npi-lead/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Parts Product Specialist",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341973/parts-product-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "STAGE PFE Février 2026 (Ingénieur) Chargé de Projet Méthodes - Optimisation des Flux Procédés de Fabrication H/F",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338250/stage-pfe-fevrier-2026-ingenieur-charge-de-projet-methodes-optimisation-des-flux-procedes-de-fabrication-hf/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Dev Engineer II, Alexa AI - Personalization and Delivery Experiences",
+    "url": "https://www.amazon.jobs/jobs/3152879",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "HRBP, ROW PXT India",
+    "url": "https://www.amazon.jobs/jobs/3152864",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, E Reader Products",
+    "url": "https://www.amazon.jobs/jobs/3152838",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Manager III, Program Mgmt, FinOps",
+    "url": "https://www.amazon.jobs/jobs/3107954",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "AV Deployment Engineer, AV Hardware Deployments",
+    "url": "https://www.amazon.jobs/jobs/3141361",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Staff Accountant",
+    "url": "https://www.amazon.jobs/jobs/3100282",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Financial Analyst II",
+    "url": "https://www.amazon.jobs/jobs/3090833",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Associate Principal - Architecture",
+    "url": "https://ltimindtree.ripplehire.com/candidate/?token=xviyQvbnyYZdGtozXoNm&lang=en&source=CAREERSITE#detail/job/830834",
+    "location": "Bengaluru",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP BW4 HANA Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/303684-en_GB+sap_btp",
+    "location": "Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP F&R Consultant",
+    "url": "https://www.capgemini.com/in-en/jobs/379973-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
+    "company": "Capgemini",
+    "title": "SAP EWM (Extended Warehouse Management) Functional",
+    "url": "https://www.capgemini.com/in-en/jobs/163425-en_GB+sap_btp",
+    "location": "Pune, Mumbai, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-06"
+  },
+  {
     "company": "Caterpillar",
     "title": "Assembler",
     "url": "https://careers.caterpillar.com/en/jobs/r0000342043/assembler/",
