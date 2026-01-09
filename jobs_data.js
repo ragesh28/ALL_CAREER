@@ -1,6 +1,318 @@
 const activeJobs = [
   {
     "company": "Freshworks",
+    "title": "Senior Business Development Manager",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102275010-senior-business-development-manager",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Revenue Enablement",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102211355-lead-revenue-enablement",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Manager - Professional Services Operations & Strategy",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102386586-senior-manager-professional-services-operations-strategy",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Account Executive - Inside Sales (UK)",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102242151-senior-account-executive-inside-sales-uk-",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Account Executive - Inside Sales",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102231955-senior-account-executive-inside-sales",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Business Analyst",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102211855-senior-business-analyst",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Specialist - Data Analytics",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102209115-specialist-data-analytics",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Transportation Intern",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342031/transportation-intern/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Quality Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337854/quality-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Credit Assistant Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342240/credit-assistant-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Procurement Solutions Professional",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000340928/procurement-solutions-professional/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Maintenance Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000328318/maintenance-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "2nd Shift Warehouse Associate",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343060/2nd-shift-warehouse-associate/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accounting Associate",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342187/accounting-associate/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Assembly - 1st Shift - Bldg SS",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343074/assembly-1st-shift-bldg-ss/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Warehouse Associate Team Lead - Second Shift",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342838/warehouse-associate-team-lead-second-shift/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manufacturing Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337853/manufacturing-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Data Specialist",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000338101/data-specialist/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Associate Procurement Professional-7",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342323/associate-procurement-professional-7/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Knowledge Management & Integration Lead",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341527/knowledge-management-integration-lead/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Anlista de Materiales",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343028/anlista-de-materiales/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Director Finance",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342845/senior-director-finance/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Production Operator - 2nd & 3rd Shift",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343046/production-operator-2nd-3rd-shift/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "VMPE Shiploose Team Lead",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342542/vmpe-shiploose-team-lead/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Shipping & Receiving Clerk Multiple Shifts",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343112/shipping-receiving-clerk-multiple-shifts/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Product Service Engineer-1",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342069/product-service-engineer-1/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Manager, Grocery Management Tech",
+    "url": "https://www.amazon.jobs/jobs/3155727",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Applied Scientist, Alexa Sensitive Content Intelligence (ASCI)",
+    "url": "https://www.amazon.jobs/jobs/3155415",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Dev Engineer-II, Publisher Tools",
+    "url": "https://www.amazon.jobs/jobs/3051057",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer",
+    "url": "https://www.amazon.jobs/jobs/3051168",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Fleet Manager, AMZL (Last Mile) - South",
+    "url": "https://www.amazon.jobs/jobs/3142626",
+    "location": "Unknown",
+    "date": "Bangalore, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Investigation Specialist - Japanese",
+    "url": "https://www.amazon.jobs/jobs/3155327",
+    "location": "Unknown",
+    "date": "Bangalore - Virtual, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Appstore, Appstore",
+    "url": "https://www.amazon.jobs/jobs/3155270",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, Appstore, Appstore",
+    "url": "https://www.amazon.jobs/jobs/3155289",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Applied Scientist I, Alexa AIDo",
+    "url": "https://www.amazon.jobs/jobs/3155236",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "BI Engineer, Prime Data Engineering and Anaytics",
+    "url": "https://www.amazon.jobs/jobs/3153027",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Wipro",
+    "title": "Technical Lead L1",
+    "url": "https://careers.wipro.com/job/Technical-Lead-L1/114308-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Network Administrator",
+    "url": "https://www.capgemini.com/in-en/jobs/266952-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Bangalore, Pune",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-MuleSoft",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=74354&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-09"
+  },
+  {
+    "company": "Freshworks",
     "title": "Partner and Paid Support Director",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000069700352-partner-and-paid-support-director",
     "location": "Unknown",
