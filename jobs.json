@@ -1,6 +1,134 @@
 [
   {
     "company": "Freshworks",
+    "title": "Software Engineer - Test",
+    "url": "https://jobs.smartrecruiters.com/Freshworks/744000102772273-software-engineer-test",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Regional Product Application Specialist (Earthmoving)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343189/regional-product-application-specialist-earthmoving/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, AI Business Automation, Prime Video",
+    "url": "https://www.amazon.jobs/jobs/3156764",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer, AI Business Automation, Prime Video",
+    "url": "https://www.amazon.jobs/jobs/3156763",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Software Dev Engineer, Core Services",
+    "url": "https://www.amazon.jobs/jobs/3156756",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Financial Analyst, FOAA Fixed Assets",
+    "url": "https://www.amazon.jobs/jobs/3156727",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Financial Analyst, FOAA Fixed Assets",
+    "url": "https://www.amazon.jobs/jobs/3156728",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Technical Program Manager, Ads Tech",
+    "url": "https://www.amazon.jobs/jobs/3156724",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer II, Ads Tech",
+    "url": "https://www.amazon.jobs/jobs/3156721",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Program Manager, Visual Shopping",
+    "url": "https://www.amazon.jobs/jobs/3155844",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Program Manager, Visual Shopping",
+    "url": "https://www.amazon.jobs/jobs/3155849",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Wipro",
+    "title": "Developer L3",
+    "url": "https://careers.wipro.com/job/Developer-L3/121406-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Java, Selenium - Automation Testing",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066147021/java-selenium-automation-testing/",
+    "location": "CHENNAI, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Ansible Developer",
+    "url": "https://www.capgemini.com/in-en/jobs/353446-en_GB+sap_btp",
+    "location": "Mumbai (ex Bombay), Pune, Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=83800&source=WEB_Search_INDIA",
+    "location": "Entry LevelBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM TM",
+    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=78062&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-11"
+  },
+  {
+    "company": "Freshworks",
     "title": "Executive Assistant to the Chief Customer & Marketing Officer (CCMO)",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000102604246-executive-assistant-to-the-chief-customer-marketing-officer-ccmo-",
     "location": "Unknown",
