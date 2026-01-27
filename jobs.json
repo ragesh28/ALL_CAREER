@@ -1,6 +1,206 @@
 [
   {
     "company": "Caterpillar",
+    "title": "Territory Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337737/territory-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Accountant",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000345854/accountant/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Digital Learning Consultant",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000339186/digital-learning-consultant/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Cat Digital/Cat Technology – Data Scientist/Technical Analyst",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346431/cat-digitalcat-technology-data-scientisttechnical-analyst/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior DevOps Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346441/senior-devops-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Connectivity Project Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000344139/connectivity-project-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Packaging Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343005/packaging-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Associate Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000345762/associate-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Product Procurement Engineer (m/w/d)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000337377/product-procurement-engineer-mwd/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Autonomy Validation Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346150/autonomy-validation-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Production Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346447/senior-production-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Lead Data Solutions Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000345285/lead-data-solutions-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Team Lead, Quality/ Trainer - 1st Shift",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000345952/team-lead-quality-trainer-1st-shift/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "2nd Shift Logistics Production Manager",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000336336/2nd-shift-logistics-production-manager/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "实验室实习生-金相",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000345058/%E5%AE%9E%E9%AA%8C%E5%AE%A4%E5%AE%9E%E4%B9%A0%E7%94%9F-%E9%87%91%E7%9B%B8/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer II, IES Shopping",
+    "url": "https://www.amazon.jobs/jobs/3166910",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Software Development Engineer II, Digital Acceleration",
+    "url": "https://www.amazon.jobs/jobs/3104437",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Sr. Account Manager, GenAI Startups, India Startup",
+    "url": "https://www.amazon.jobs/jobs/3166803",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Cloud Sales Representative, India Startups",
+    "url": "https://www.amazon.jobs/jobs/3166809",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Ads account manager, Amazon",
+    "url": "https://www.amazon.jobs/jobs/3156867",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Financial Analyst Intern, AMZL Finance team",
+    "url": "https://www.amazon.jobs/jobs/3166367",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Quality Assurance Engineer, Prime Video Sports",
+    "url": "https://www.amazon.jobs/jobs/3166350",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Quality Assurance Engineer, Prime Video Sports",
+    "url": "https://www.amazon.jobs/jobs/3166351",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Anaplan BIE II, GFS",
+    "url": "https://www.amazon.jobs/jobs/3132342",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Wipro",
+    "title": "First Line Manager (FLM) L1",
+    "url": "https://careers.wipro.com/job/First-Line-Manager-%28FLM%29-L1/122157-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-01-27"
+  },
+  {
+    "company": "Caterpillar",
     "title": "OPS Admin",
     "url": "https://careers.caterpillar.com/en/jobs/r0000345760/ops-admin/",
     "location": "Unknown",
@@ -7526,109 +7726,5 @@
     "location": "Pune, Mumbai (ex Bombay), Bangalore",
     "date": "Check Link",
     "fetchedAt": "2025-12-29"
-  },
-  {
-    "company": "Amazon",
-    "title": "Associate, ML Data Operations, GO-AI Operations",
-    "url": "https://www.amazon.jobs/jobs/3134191",
-    "location": "Chennai - Virtual, TN, IND",
-    "date": "Chennai - Virtual, TN, IND",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Associate, ML Data Operations, GO-AI Operations",
-    "url": "https://www.amazon.jobs/jobs/3134191",
-    "location": "Bangalore - Virtual, KA, IND",
-    "date": "Bangalore - Virtual, KA, IND",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Manager III, Risk Management, REs-Q - Risk Mitigation, Escalation Reduction, and Quality Assurance",
-    "url": "https://www.amazon.jobs/jobs/3149432",
-    "location": "Bangalore - Virtual, KA, IND",
-    "date": "Bangalore - Virtual, KA, IND",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Manager III, Risk Management, REs-Q - Risk Mitigation, Escalation Reduction, and Quality Assurance",
-    "url": "https://www.amazon.jobs/jobs/3149435",
-    "location": "Bangalore - Virtual, KA, IND",
-    "date": "Bangalore - Virtual, KA, IND",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "SAP BPC Embedded Consultant",
-    "url": "https://www.capgemini.com/in-en/jobs/284316-en_GB+sap_btp",
-    "location": "Bangalore, Pune",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Postgresql Database Administrator",
-    "url": "https://www.capgemini.com/in-en/jobs/261178-en_GB+sap_btp",
-    "location": "Bangalore, Mumbai (ex Bombay), Pune",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "SAP SAC Consultant",
-    "url": "https://www.capgemini.com/in-en/jobs/284317-en_GB+sap_btp",
-    "location": "Bangalore, Pune",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Informatica IICS Developer",
-    "url": "https://www.capgemini.com/in-en/jobs/380187-en_GB+sap_btp",
-    "location": "Hyderabad, Pune, Chennai (ex Madras)",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Guidewire Lead",
-    "url": "https://www.capgemini.com/in-en/jobs/380204-en_GB+sap_btp",
-    "location": "Hyderabad, Pune, Bangalore",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "SAP S4EA Consultant",
-    "url": "https://www.capgemini.com/in-en/jobs/301463-en_GB+sap_btp",
-    "location": "Pune, Bangalore",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "Capgemini",
-    "title": "OpenText Vendor Invoice Management",
-    "url": "https://www.capgemini.com/in-en/jobs/220523-en_GB+sap_btp",
-    "location": "Mumbai (ex Bombay), Pune, Bangalore, Hyderabad",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "IBM",
-    "title": "Project Manager-ADM",
-    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=73481&source=WEB_Search_INDIA",
-    "location": "ProfessionalBANGALORE, IN",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
-  },
-  {
-    "company": "IBM",
-    "title": "Quality Engineer-Automation",
-    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=82585&source=WEB_Search_INDIA",
-    "location": "Entry LevelBANGALORE, IN",
-    "date": "Check Link",
-    "fetchedAt": "2025-12-28"
   }
 ]
