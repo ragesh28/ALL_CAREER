@@ -1,5 +1,133 @@
 const activeJobs = [
   {
+    "company": "Caterpillar",
+    "title": "Account Manager - Oil & Gas",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346547/account-manager-oil-gas/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon",
+    "title": "Quality Specialist, AGI Data Services",
+    "url": "https://www.amazon.jobs/jobs/3124383",
+    "location": "Chennai, TN, IND",
+    "date": "Chennai, TN, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Product Manager-Tech III, Finance Automation",
+    "url": "https://www.amazon.jobs/jobs/3171142",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineer, Amazon Operations Finance Standardisation and Automation",
+    "url": "https://www.amazon.jobs/jobs/3168540",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Financial Analyst CA Industrial Trainee, AMET Operations Finance",
+    "url": "https://www.amazon.jobs/jobs/3165460",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Data Engineer, Amazon Operations Finance Standardisation and Automation",
+    "url": "https://www.amazon.jobs/jobs/3165403",
+    "location": "Bengaluru, KA, IND",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Intelligence Engineer, S&A",
+    "url": "https://www.amazon.jobs/jobs/3124291",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Wipro",
+    "title": "Production Specialist L1",
+    "url": "https://careers.wipro.com/job/Production-Specialist-L1/122178-en_US",
+    "location": "Chennai, IND-33, IND, 600119",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Guidewire- Business Analyst",
+    "url": "https://careers.cognizant.com/india-en/jobs/00062573541/guidewire-business-analyst/",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "Cognizant",
+    "title": "T24 Technical Developer with Securities",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066237554/t24-technical-developer-with-securities/",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA FIN FICA",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=88309&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-TALENT DEVELOPMENT OPTIMIZATION PROCESSES",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=89326&source=WEB_Search_INDIA",
+    "location": "Administration & TechnicianBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Java & Web Technologies",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=75368&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Mobile iOS",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=75523&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Database Engineer - Storage and Query",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=81266&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Azure Cloud FullStack",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=84266&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-01"
+  },
+  {
     "company": "Freshworks",
     "title": "Associate - Customer Success",
     "url": "https://jobs.smartrecruiters.com/Freshworks/744000106513507-associate-customer-success",
@@ -8110,173 +8238,5 @@ const activeJobs = [
     "location": "Entry LevelBANGALORE, IN",
     "date": "Check Link",
     "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "2026校园招聘-制造运营类(无锡/徐州/苏州/天津)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000318772/2026%E6%A0%A1%E5%9B%AD%E6%8B%9B%E8%81%98-%E5%88%B6%E9%80%A0%E8%BF%90%E8%90%A5%E7%B1%BB-%E6%97%A0%E9%94%A1%E5%BE%90%E5%B7%9E%E8%8B%8F%E5%B7%9E%E5%A4%A9%E6%B4%A5/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Welder - 2nd and 3rd Shift - Athens, GA",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341551/welder-2nd-and-3rd-shift-athens-ga/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Assembler - 1st & 2nd shift - Athens, GA",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341563/assembler-1st-2nd-shift-athens-ga/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Experienced Welder-2 (2nd and 3rd Shift)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341687/experienced-welder-2-2nd-and-3rd-shift/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Production Associate (Paint)-1st, 2nd and 3rd Shift",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341530/production-associate-paint-1st-2nd-and-3rd-shift/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon",
-    "title": "Software Development Engineer II, Amazon",
-    "url": "https://www.amazon.jobs/jobs/2816879",
-    "location": "Chennai, TN, IND",
-    "date": "Chennai, TN, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon",
-    "title": "Software Development Engineer II, Amazon",
-    "url": "https://www.amazon.jobs/jobs/3123331",
-    "location": "Chennai, TN, IND",
-    "date": "Chennai, TN, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Business Intelligence Engineer - II, External Fulfillment",
-    "url": "https://www.amazon.jobs/jobs/3150035",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Software Development Engineer II, Amazon",
-    "url": "https://www.amazon.jobs/jobs/2816879",
-    "location": "Bangalore, KA, IND",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Software Development Engineer II, Amazon",
-    "url": "https://www.amazon.jobs/jobs/3123331",
-    "location": "Bengaluru, KA, IND",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "AI Benchmarking Spec. - French, SFIX",
-    "url": "https://www.amazon.jobs/jobs/3150855",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "AI Benchmarking Specialist, SFIX",
-    "url": "https://www.amazon.jobs/jobs/3150854",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "People Manager EMSX , EMSX",
-    "url": "https://www.amazon.jobs/jobs/3150852",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "People Manager EMSX - Spanish, EMSX",
-    "url": "https://www.amazon.jobs/jobs/3150859",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "AI Benchmarking Spec. - Italian, SFIX",
-    "url": "https://www.amazon.jobs/jobs/3150851",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "AI Benchmarking Spec. - German, SFIX",
-    "url": "https://www.amazon.jobs/jobs/3150850",
-    "location": "Unknown",
-    "date": "Bangalore, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Principal PM, Agentic AI Shopping, RBS",
-    "url": "https://www.amazon.jobs/jobs/3150848",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Wipro",
-    "title": "Business Analyst L4",
-    "url": "https://careers.wipro.com/job/Business-Analyst-L4/112973-en_US",
-    "location": "Chennai, IND-33, IND, 600119",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Control M Administrator",
-    "url": "https://www.capgemini.com/in-en/jobs/332851-en_GB+sap_btp",
-    "location": "Pune, Mumbai (ex Bombay), Bangalore",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Capgemini",
-    "title": "AMS Solution Architect",
-    "url": "https://www.capgemini.com/in-en/jobs/336024-en_GB+sap_btp",
-    "location": "Gurgaon, Bangalore, Hyderabad, Navi Mumbai + 1",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Senior Database Administrator",
-    "url": "https://www.capgemini.com/in-en/jobs/350570-en_GB+sap_btp",
-    "location": "Pune, Mumbai (ex Bombay), Bangalore",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-02"
   }
 ];
