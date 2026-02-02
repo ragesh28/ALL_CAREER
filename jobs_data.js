@@ -1,6 +1,198 @@
 const activeJobs = [
   {
     "company": "Caterpillar",
+    "title": "Engineering Intern (May - Aug 2026 Intake)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346682/engineering-intern-may-aug-2026-intake/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Senior Autonomy Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000342902/senior-autonomy-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electronic Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343437/electronic-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Production Rep I-4",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346357/production-rep-i-4/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Digital Product Owner",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000347327/digital-product-owner/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Embedded System Team Lead",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000341635/embedded-system-team-lead/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Electronic Engineer",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000343434/electronic-engineer/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Welding Inspector (PFEW Project)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000346637/welding-inspector-pfew-project/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Quality Specialist (CMM)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000347815/quality-specialist-cmm/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
+    "title": "Manufacturing Process Technician (Welding)",
+    "url": "https://careers.caterpillar.com/en/jobs/r0000347525/manufacturing-process-technician-welding/",
+    "location": "Unknown",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Business Intelligence Engineer, WHS Data",
+    "url": "https://www.amazon.jobs/jobs/3171184",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Senior Product Manager, Retail Business Services (RBS)",
+    "url": "https://www.amazon.jobs/jobs/3169433",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Amazon Bangalore",
+    "title": "Transportation Sepcialist- Amazon Shipping, Amazon Shipping",
+    "url": "https://www.amazon.jobs/jobs/3161991",
+    "location": "Unknown",
+    "date": "Bengaluru, KA, IND",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Base24 Classic Developers",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066838892/base24-classic-developers/",
+    "location": "Bangalore, Karnataka, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Payments Architecture (ISG)",
+    "url": "https://careers.cognizant.com/india-en/jobs/00066616971/payments-architecture-isg/",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Fenergo Developer",
+    "url": "https://careers.cognizant.com/india-en/jobs/00065683531/fenergo-developer/",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Engagement Director | 15+ years | Bangalore",
+    "url": "https://www.capgemini.com/in-en/jobs/345001-en_GB+sap_btp",
+    "location": "Bangalore",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Contact Center",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=79046&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=78093&source=WEB_Search_INDIA",
+    "location": "Administration & TechnicianBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=78099&source=WEB_Search_INDIA",
+    "location": "Administration & TechnicianBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS INNOVATION PROFESSIONAL-RECORD TO REPORT",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=78465&source=WEB_Search_INDIA",
+    "location": "ProfessionalChennai, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "BUSINESS TRANSFORMATION CONSULTANT-TALENT DEVELOPMENT OPTIMIZATION PROCESSES",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=88141&source=WEB_Search_INDIA",
+    "location": "Administration & TechnicianBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA Analytics",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=88382&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "IBM",
+    "title": "Advisory DFT Engineer",
+    "url": "https://careers.ibm.com/careers/JobDetail?jobId=85070&source=WEB_Search_INDIA",
+    "location": "ProfessionalBANGALORE, IN",
+    "date": "Check Link",
+    "fetchedAt": "2026-02-02"
+  },
+  {
+    "company": "Caterpillar",
     "title": "Account Manager - Oil & Gas",
     "url": "https://careers.caterpillar.com/en/jobs/r0000346547/account-manager-oil-gas/",
     "location": "Unknown",
@@ -7934,309 +8126,5 @@ const activeJobs = [
     "location": "Unknown",
     "date": "Bengaluru, KA, IND",
     "fetchedAt": "2026-01-04"
-  },
-  {
-    "company": "Freshworks",
-    "title": "Specialist - Product Adoption",
-    "url": "https://jobs.smartrecruiters.com/Freshworks/744000101297655-specialist-product-adoption",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Lumel",
-    "title": "Information Security – Compliance Program Manager",
-    "url": "https://lumel.keka.com/careers/jobdetails/115547/",
-    "location": "Plano,United States",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Lumel",
-    "title": "Senior .NET Developer",
-    "url": "https://lumel.keka.com/careers/jobdetails/115110/",
-    "location": "Chennai,India",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Lumel",
-    "title": "Senior Front-End Developer (React.js)",
-    "url": "https://lumel.keka.com/careers/jobdetails/115103/",
-    "location": "Chennai,India",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Lumel",
-    "title": "Lead/Manager – .NET Backend Developer",
-    "url": "https://lumel.keka.com/careers/jobdetails/115101/",
-    "location": "Chennai,India",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Senior Staff Accountant",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000340655/senior-staff-accountant/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Manager, Marketing (Sales Funnel)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000340493/manager-marketing-sales-funnel/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "NPI Team Leader (Service Options)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000334850/npi-team-leader-service-options/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Production Manager",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000340297/production-manager/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Design Engineer",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341761/design-engineer/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Finance Specialist – Foreign Exchange",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341351/finance-specialist-foreign-exchange/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Finance Analyst Business Unit (Billing Specialist)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341814/finance-analyst-business-unit-billing-specialist/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Iron Technician I",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000332414/iron-technician-i/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Senior Design Engineer",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000336816/senior-design-engineer/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Senior Product Procurement Engineer",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000338533/senior-product-procurement-engineer/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Category Buyer III",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000330907/category-buyer-iii/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Category Buyer",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000337717/category-buyer/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Attachment Strategy and Sales Development Consultant",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000340744/attachment-strategy-and-sales-development-consultant/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Manager Technology - Turbomachinery",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341767/manager-technology-turbomachinery/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Welder 1 - 1st Shift",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000342003/welder-1-1st-shift/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Finance Analyst Business Unit(Accounting Associate – Collections)",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341811/finance-analyst-business-unit-accounting-associate-collections/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Embedded Software Sr Engineering Specialist",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000340440/embedded-software-sr-engineering-specialist/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Production Manager",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000341166/production-manager/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Caterpillar",
-    "title": "Accountant",
-    "url": "https://careers.caterpillar.com/en/jobs/r0000336985/accountant/",
-    "location": "Unknown",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Salesforce Developer I, Sales Technology, Amazon Advertising, Sales and Partner Enablement",
-    "url": "https://www.amazon.jobs/jobs/3151387",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Salesforce Developer I, Sales Technology, Amazon Advertising, Sales and Partner Enablement",
-    "url": "https://www.amazon.jobs/jobs/3151391",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Salesforce Developer I, Sales Technology, Amazon Advertising, Sales and Partner Enablement",
-    "url": "https://www.amazon.jobs/jobs/3151397",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Salesforce Developer, Sales Technology, Amazon Advertising, Sales and Partner Enablement",
-    "url": "https://www.amazon.jobs/jobs/3151396",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Salesforce Developer, Sales Technology, Amazon Advertising, Sales and Partner Enablement",
-    "url": "https://www.amazon.jobs/jobs/3151395",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Software Development Engineer II",
-    "url": "https://www.amazon.jobs/jobs/3151362",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Software Development Engineer II",
-    "url": "https://www.amazon.jobs/jobs/3151381",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Sales Manager, Amazon Business",
-    "url": "https://www.amazon.jobs/jobs/3134834",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Amazon Bangalore",
-    "title": "Sales Manager, Amazon Business",
-    "url": "https://www.amazon.jobs/jobs/3134832",
-    "location": "Unknown",
-    "date": "Bengaluru, KA, IND",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Wipro",
-    "title": "Software Engineer - L3",
-    "url": "https://careers.wipro.com/job/Software-Engineer-L3/47944-en_US",
-    "location": "Chennai, IND-33, IND, 600119",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Wipro",
-    "title": "Automation Engineer - L4",
-    "url": "https://careers.wipro.com/job/Automation-Engineer-L4/98862-en_US",
-    "location": "Chennai, IND-33, IND, 600119",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Wipro",
-    "title": "Administrator - L3",
-    "url": "https://careers.wipro.com/job/Administrator-L3/65711-en_US",
-    "location": "Chennai, IND-33, IND, 600119",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "Capgemini",
-    "title": "Collibra Workflow Developer",
-    "url": "https://www.capgemini.com/in-en/jobs/380188-en_GB+sap_btp",
-    "location": "Pune, Hyderabad, Bangalore",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
-  },
-  {
-    "company": "IBM",
-    "title": "Quality Engineer-FullStack",
-    "url": "https://ibmglobal.avature.net/en_IN/careers/JobDetail?jobId=82722&source=WEB_Search_INDIA",
-    "location": "Entry LevelBANGALORE, IN",
-    "date": "Check Link",
-    "fetchedAt": "2026-01-03"
   }
 ];
