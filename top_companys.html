@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL_CAREER - Top Companys</title>
+    <link rel="icon" href="String_Theory.png" type="image/png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-surface: #0f172a;
+            --bg-glass: rgba(15, 23, 42, 0.95);
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --gold: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.12), transparent 50%);
+        }
+
+        /* Header */
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            cursor: pointer;
+            transition: letter-spacing 0.5s ease;
+            text-decoration: none;
+        }
+
+        h1:hover {
+            letter-spacing: 5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 50px;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: white;
+            border-color: white;
+        }
+
+        /* Cards grid */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px 35px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 2.5rem;
+            transition: 0.3s;
+        }
+
+        .card:hover .card-icon {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.1);
+        }
+
+        .card-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--gold);
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .highlight-green {
+            color: var(--accent);
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="/hub" class="back-link">← Back to Hub</a>
+
+    <a href="/hub" style="text-decoration:none;">
+        <h1>Top Companys</h1>
+    </a>
+    <p class="subtitle">Explore companies and find your next opportunity</p>
+
+    <div class="cards">
+        <!-- Big Company → 150 companies static page -->
+        <a href="career_explorer.html" class="card">
+            <div class="card-icon">🏢</div>
+            <div class="card-name">Big Company</div>
+            <div class="card-desc">
+                Browse 150+ top tech companies with career page links.
+                <span class="highlight">₹5 LPA – ₹45 LPA+</span>
+            </div>
+        </a>
+
+        <!-- Big Company Jobs → Google jobs page -->
+        <a href="/" class="card" style="border-color: rgba(16, 185, 129, 0.2);">
+            <div class="card-icon">💼</div>
+            <div class="card-name">Big Company Jobs</div>
+            <div class="card-desc">
+                Live Google jobs in Bangalore with direct apply links.
+                <span class="highlight-green">Direct Apply → careers.google.com</span>
+            </div>
+        </a>
+    </div>
+
+</body>
+
+</html>

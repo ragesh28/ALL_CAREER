@@ -23,3 +23,15 @@ desktop.ini
 # Log files
 *.log
 npm-debug.log*
+
+# Batch files (local only)
+run.bat
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Scraper temp files
+scrape_progress.json
+big_company_jobs.csv
+jobs.csv

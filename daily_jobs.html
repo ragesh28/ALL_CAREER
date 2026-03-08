@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All_Career - Daily Jobs</title>
     <link rel="icon" href="String_Theory.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             /* YOUR PREFERRED DARK THEME */
             --bg-deep: #020617;
-            --bg-surface: #0f172a; /* Restored this specific color */
+            --bg-surface: #0f172a;
+            /* Restored this specific color */
             --bg-glass: rgba(15, 23, 42, 0.95);
-            --primary: #10b981; 
+            --primary: #10b981;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
@@ -26,7 +36,7 @@
             background-image: radial-gradient(circle at top center, rgba(16, 185, 129, 0.08), transparent 50%);
             background-attachment: fixed;
         }
-        
+
         /* --- ANIMATED HEADER --- */
         #main-header {
             text-align: center;
@@ -38,9 +48,15 @@
             height: auto;
             transform: scale(1);
         }
+
         body.scrolled #main-header {
-            opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0;
+            opacity: 0;
+            padding-top: 0;
+            height: 0;
+            transform: scale(0.8);
+            margin-bottom: 0;
         }
+
         h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 3.5rem;
@@ -54,121 +70,355 @@
             text-decoration: none;
             margin: 0;
         }
-        h1:hover { letter-spacing: 5px; }
+
+        h1:hover {
+            letter-spacing: 5px;
+        }
 
         /* --- STICKY FILTER --- */
         .filter-bar-container {
-            position: sticky; top: 20px; z-index: 100;
-            padding: 0 20px; display: flex; justify-content: center;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
             margin-bottom: 40px;
         }
-        .filter-bar {
-            width: 100%; max-width: 1000px;
-            display: flex; gap: 15px;
-            background: var(--bg-glass); backdrop-filter: blur(12px);
-            padding: 12px 20px; border-radius: 50px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            align-items: center; flex-wrap: wrap;
-        }
-        .mini-logo {
-            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
-            overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none; margin-right: 0;
-        }
-        body.scrolled .mini-logo { max-width: 150px; opacity: 1; margin-right: 15px; }
-        
-        .btn-back {
-            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
-            padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
-            transition: 0.2s; white-space: nowrap; margin-left: auto;
-        }
-        .btn-back:hover { color: white; border-color: white; }
-        
-        .filter-group { flex: 1; min-width: 130px; display: flex; flex-direction: column; }
-        .filter-input {
-            background: var(--bg-deep); /* Use deep bg for inputs */
-            border: 1px solid var(--border);
-            color: white; padding: 10px 15px; border-radius: 20px; outline: none;
-            font-family: inherit; transition: 0.3s; cursor: pointer;
-        }
-        .filter-input:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
-        select.filter-input option { background-color: var(--bg-deep); color: white; padding: 10px; }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 100px; }
-        .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
-        
-        .date-divider { display: flex; justify-content: center; margin: 40px 0 20px 0; }
+        .filter-bar {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            gap: 15px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .mini-logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+            white-space: nowrap;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            margin-right: 0;
+        }
+
+        body.scrolled .mini-logo {
+            max-width: 150px;
+            opacity: 1;
+            margin-right: 15px;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: 0.2s;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+
+        .btn-back:hover {
+            color: white;
+            border-color: white;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 130px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-input {
+            background: var(--bg-deep);
+            /* Use deep bg for inputs */
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            outline: none;
+            font-family: inherit;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .filter-input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        select.filter-input option {
+            background-color: var(--bg-deep);
+            color: white;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 100px;
+        }
+
+        .stats {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .date-divider {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 20px 0;
+        }
+
         .date-label {
-            background: rgba(255, 255, 255, 0.1); color: var(--text-main);
-            padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
             border: 1px solid var(--border);
         }
-        
-        .job-group-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-        
+
+        .job-group-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
         .job-card {
-            background: var(--bg-surface); /* RESTORED COLOR */
+            background: var(--bg-surface);
+            /* RESTORED COLOR */
             border: 1px solid var(--border);
-            padding: 24px; border-radius: 20px; display: flex; flex-direction: column;
-            gap: 15px; transition: 0.2s;
+            padding: 24px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: 0.2s;
         }
-        .job-card:hover { 
-            border-color: var(--primary); transform: translateY(-5px); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+
+        .job-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        
-        .card-top { display: flex; gap: 15px; align-items: flex-start; }
+
+        .card-top {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
         .logo-box {
-            width: 48px; height: 48px; background: white; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; padding: 4px; flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 4px;
+            flex-shrink: 0;
         }
-        .company-logo { width: 100%; height: 100%; object-fit: contain; }
-        .job-info h3 { font-size: 1.1rem; line-height: 1.4; margin-bottom: 5px; color:white; font-weight: 700; }
-        .company-name { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-        .job-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+
+        .company-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .job-info h3 {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .company-name {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
         .meta-badge {
-            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
-            border: 1px solid var(--border); display: flex; align-items: center; gap: 5px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
+
         .apply-btn {
-            margin-top: 10px; padding: 12px; background: transparent; color: var(--primary);
-            text-align: center; text-decoration: none; font-weight: 700; border-radius: 12px;
-            font-size: 0.9rem; border: 1px solid var(--primary); transition: 0.2s;
+            margin-top: 10px;
+            padding: 12px;
+            background: transparent;
+            color: var(--primary);
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            border: 1px solid var(--primary);
+            transition: 0.2s;
         }
-        .apply-btn:hover { background: var(--primary); color: #020617; }
-        #loading { text-align: center; padding: 50px; color: var(--text-muted); }
-        #noResults { text-align: center; padding: 40px; color: var(--text-muted); display: none; font-style: italic;}
+
+        .apply-btn:hover {
+            background: var(--primary);
+            color: #020617;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-muted);
+        }
+
+        #noResults {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            display: none;
+            font-style: italic;
+        }
+
+        /* --- PAGINATION --- */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 50px;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .page-btn.nav-btn {
+            width: auto;
+            padding: 0 16px;
+            font-size: 1.2rem;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-ellipsis {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
+
 <body>
 
     <header id="main-header">
-        <a href="index.html" style="text-decoration:none;"><h1>ALL_CAREER</h1></a>
+        <a href="index.html" style="text-decoration:none;">
+            <h1>ALL_CAREER</h1>
+        </a>
     </header>
 
     <div class="filter-bar-container">
         <div class="filter-bar">
             <a href="index.html" class="mini-logo">ALL_CAREER</a>
-            <div class="filter-group"><select id="roleFilter" class="filter-input" onchange="applyFilters()"><option value="All">Role: All</option></select></div>
-            <div class="filter-group"><select id="locationFilter" class="filter-input" onchange="applyFilters()"><option value="All">Location: All</option><option value="Chennai">Chennai</option><option value="Bangalore">Bangalore</option><option value="Bengaluru">Bengaluru</option><option value="Unknown">Unknown/Remote</option></select></div>
-            <div class="filter-group"><select id="companyFilter" class="filter-input" onchange="applyFilters()"><option value="All">Company: All</option></select></div>
-            <div class="filter-group"><select id="dateFilter" class="filter-input" onchange="applyFilters()"><option value="All">Date: All</option></select></div>
+            <div class="filter-group"><select id="roleFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Role: All</option>
+                </select></div>
+            <div class="filter-group"><select id="locationFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Location: All</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Unknown">Unknown/Remote</option>
+                </select></div>
+            <div class="filter-group"><select id="companyFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Company: All</option>
+                </select></div>
+            <div class="filter-group"><select id="dateFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Date: All</option>
+                </select></div>
             <a href="index.html" class="btn-back">Hub</a>
         </div>
     </div>
 
     <div class="container">
         <div style="text-align:center; margin-bottom:30px;">
-            <p class="stats">Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> active listings</p>
+            <p class="stats">Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> active listings
+            </p>
         </div>
         <div id="loading">Loading jobs...</div>
         <div id="jobListContainer"></div>
         <div id="noResults">No jobs found matching your filters.</div>
+        <div id="pagination" class="pagination-container"></div>
     </div>
 
     <script src="logos.js"></script>
@@ -176,6 +426,10 @@
     <script>
         window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
         let allJobsData = [];
+        let filteredJobsData = [];
+        let currentPage = 1;
+        const JOBS_PER_PAGE = 100;
+
         const manualLogoMap = { "Amazon Bangalore": "amazon.jobs", "Amazon": "amazon.jobs", "CRED": "cred.club", "IBM": "ibm.com", "HCLTech": "hcltech.com", "TCS": "tcs.com", "RNTBCI": "rntbci.in", "LTIMindtree": "ltimindtree.com", "LatentView": "latentview.com", "Mr. Cooper": "mrcooper.com", "Wipro": "wipro.com", "Accenture": "accenture.com", "Capgemini": "capgemini.com" };
         function getLogoData(name) {
             let cleanName = name.replace(/\(.*\)/, '').trim();
@@ -199,7 +453,7 @@
             companies.forEach(comp => { const opt = document.createElement('option'); opt.value = comp; opt.innerText = "Company: " + comp; companySelect.appendChild(opt); });
             const dateSelect = document.getElementById('dateFilter');
             const uniqueDates = new Set();
-            allJobsData.forEach(job => { if(job.fetchedAt) uniqueDates.add(formatDateString(job.fetchedAt)); });
+            allJobsData.forEach(job => { if (job.fetchedAt) uniqueDates.add(formatDateString(job.fetchedAt)); });
             const sortedDates = Array.from(uniqueDates).sort((a, b) => new Date(b) - new Date(a)).reverse();
             sortedDates.forEach(d => { const opt = document.createElement('option'); opt.value = d; opt.innerText = "Fetched: " + d; dateSelect.appendChild(opt); });
             const roleSelect = document.getElementById('roleFilter');
@@ -213,7 +467,7 @@
             const locTerm = document.getElementById('locationFilter').value.toLowerCase();
             const companyTerm = document.getElementById('companyFilter').value;
             const dateTerm = document.getElementById('dateFilter').value;
-            const filteredJobs = allJobsData.filter(job => {
+            filteredJobsData = allJobsData.filter(job => {
                 const jobTitle = job.title.toLowerCase();
                 const matchesRole = roleTerm === 'all' || jobTitle.includes(roleTerm);
                 const jobLoc = job.location.toLowerCase();
@@ -223,18 +477,83 @@
                 const matchesDate = dateTerm === 'All' || formattedFetchDate === dateTerm;
                 return matchesRole && matchesLoc && matchesComp && matchesDate;
             });
-            renderGrouped(filteredJobs);
+            currentPage = 1;
+            renderPage();
         }
-        function renderGrouped(jobs) {
+        function renderPage() {
+            const totalPages = Math.max(1, Math.ceil(filteredJobsData.length / JOBS_PER_PAGE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * JOBS_PER_PAGE;
+            const end = start + JOBS_PER_PAGE;
+            const pageJobs = filteredJobsData.slice(start, end);
+            renderGrouped(pageJobs, filteredJobsData.length);
+            renderPagination(totalPages);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function goToPage(page) {
+            currentPage = page;
+            renderPage();
+        }
+        function renderPagination(totalPages) {
+            const container = document.getElementById('pagination');
+            container.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn nav-btn';
+            prevBtn.innerHTML = '←';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => goToPage(currentPage - 1);
+            container.appendChild(prevBtn);
+
+            // Page numbers with ellipsis
+            const pages = [];
+            if (totalPages <= 7) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+            } else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                    pages.push(i);
+                }
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
+            }
+
+            pages.forEach(p => {
+                if (p === '...') {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'page-ellipsis';
+                    ellipsis.textContent = '...';
+                    container.appendChild(ellipsis);
+                } else {
+                    const btn = document.createElement('button');
+                    btn.className = 'page-btn' + (p === currentPage ? ' active' : '');
+                    btn.textContent = p;
+                    btn.onclick = () => goToPage(p);
+                    container.appendChild(btn);
+                }
+            });
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn nav-btn';
+            nextBtn.innerHTML = '→';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => goToPage(currentPage + 1);
+            container.appendChild(nextBtn);
+        }
+        function renderGrouped(jobs, totalCount) {
             const container = document.getElementById('jobListContainer');
             const countEl = document.getElementById('jobCount');
             const noResultsEl = document.getElementById('noResults');
-            container.innerHTML = ''; countEl.innerText = jobs.length;
+            container.innerHTML = ''; countEl.innerText = totalCount !== undefined ? totalCount : jobs.length;
             if (jobs.length === 0) { noResultsEl.style.display = 'block'; return; }
             noResultsEl.style.display = 'none';
             const groups = {};
             jobs.forEach(job => { const label = formatDateString(job.fetchedAt); if (!groups[label]) groups[label] = []; groups[label].push(job); });
-            const sortedLabels = Object.keys(groups); 
+            const sortedLabels = Object.keys(groups);
             sortedLabels.forEach(label => {
                 const header = document.createElement('div'); header.className = 'date-divider';
                 const todayStr = formatDateString(new Date().toISOString().split('T')[0]);
@@ -255,4 +574,5 @@
         init();
     </script>
 </body>
+
 </html>
