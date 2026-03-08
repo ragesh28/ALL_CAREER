@@ -6,26 +6,32 @@
 */
 
 const fs = require('fs');
+const path = require('path');
+
+const JOBS_FILE = path.join(__dirname, 'jobs.json');
+const JOBS_DATA_FILE = path.join(__dirname, 'jobs_data.js');
+
+const KEEP_DAYS = 10; // Delete jobs older than 10 days
 
 try {
     // 1. Load the current database
-    const jobs = require('./jobs.json');
+    const jobs = require(JOBS_FILE);
     console.log(`Total jobs before cleanup: ${jobs.length}`);
-    
-    // 2. Set the Cutoff Date (Today - 30 Days)
+
+    // 2. Set the Cutoff Date (Today - KEEP_DAYS Days)
     const today = new Date();
     const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(today.getDate() - 30); 
-    
+    thirtyDaysAgo.setDate(today.getDate() - KEEP_DAYS);
+
     console.log(`Removing jobs fetched before: ${thirtyDaysAgo.toISOString().split('T')[0]}`);
 
     // 3. Filter the list
     const freshJobs = jobs.filter(job => {
         // If a job has no 'fetchedAt' (from old version of scraper), keep it safe for now.
-        if (!job.fetchedAt) return true; 
+        if (!job.fetchedAt) return true;
 
         const fetchDate = new Date(job.fetchedAt);
-        
+
         // Return TRUE to keep the job if it is newer than the cutoff
         return fetchDate >= thirtyDaysAgo;
     });
@@ -37,7 +43,7 @@ try {
     // 4. Save to Database (jobs.json)
     fs.writeFileSync('jobs.json', JSON.stringify(freshJobs, null, 2));
     console.log('Updated jobs.json');
-    
+
     // 5. Save to Website Data (jobs_data.js)
     const jsContent = `const activeJobs = ${JSON.stringify(freshJobs, null, 2)};`;
     fs.writeFileSync('jobs_data.js', jsContent);

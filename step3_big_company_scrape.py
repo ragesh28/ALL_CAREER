@@ -20,11 +20,22 @@ import os
 import sys
 import json
 import time
-import csv
 import traceback
 from datetime import datetime
 
 import pandas as pd
+
+# ---------------------------------------------------------------------------
+# TIMER — gracefully stop before GitHub's 6-hour hard kill
+# ---------------------------------------------------------------------------
+START_TIME = time.time()
+MAX_RUN_SECONDS = 5 * 3600 + 59 * 60  # 5 hours 59 minutes
+
+
+def is_time_limit_approaching():
+    """Return True if we are within 1 minute of the 5h59m limit."""
+    elapsed = time.time() - START_TIME
+    return elapsed >= MAX_RUN_SECONDS
 
 # ---------------------------------------------------------------------------
 # CONFIG
@@ -266,6 +277,17 @@ def run(test_limit=None):
             time.sleep(5)
 
         print(f"\n[{i + 1}/{total}] 🏢 {company}")
+
+        # ---- TIME LIMIT CHECK: stop gracefully before GitHub kills us ----
+        if is_time_limit_approaching():
+            elapsed_min = int((time.time() - START_TIME) / 60)
+            print(f"\n⏰ TIME LIMIT APPROACHING ({elapsed_min} min elapsed). Saving progress and stopping gracefully.")
+            print(f"   Last completed company index: {i - 1}")
+            save_progress(i - 1)  # Mark previous as last completed so next run resumes from i
+            merged = new_jobs + existing_jobs
+            save_jobs(merged)
+            print(f"✅ Progress saved. GitHub Action will restart in 10 minutes.")
+            return  # Exit cleanly so workflow can detect scrape_progress.json
 
         retries = 0
         while retries <= MAX_RETRIES:
