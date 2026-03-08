@@ -44,9 +44,11 @@ LOCATIONS = [
 ]
 
 PROGRESS_FILE = "scrape_progress.json"
-JOBS_JSON = "jobs.json"
-JOBS_DATA_JS = "jobs_data.js"
-BIG_COMPANY_CSV = "big_company_jobs.csv"
+# Big company scraper uses SEPARATE files from the daily Puppeteer scraper
+# daily_jobs.html uses jobs.json/jobs_data.js (from scrape.js/companies.json only)
+# Big company jobs go to big_jobs.json/big_jobs_data.js
+JOBS_JSON = "big_jobs.json"
+JOBS_DATA_JS = "big_jobs_data.js"
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -119,7 +121,7 @@ def save_progress(index):
 
 
 def load_existing_jobs():
-    """Load existing jobs from jobs.json."""
+    """Load existing big company jobs from big_jobs.json."""
     try:
         with open(JOBS_JSON, "r", encoding="utf-8") as f:
             return json.load(f)
