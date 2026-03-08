@@ -1,0 +1,34 @@
+name: Big Company Jobs Scraper
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 1 * * *'  # 7:00 AM IST (1:30 AM UTC) daily
+
+jobs:
+  scrape-big-companies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements_py.txt
+
+      # Scrape 150 top companies via JobSpy (last 24 hours only)
+      - name: Run Big Company Scraper
+        run: python step3_big_company_scrape.py
+
+      # Save big_jobs.json and big_jobs_data.js back to repo
+      - name: Commit and Push Big Jobs
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add -f big_jobs.json big_jobs_data.js
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Big company jobs update (150 companies, last 24h)" && git push)

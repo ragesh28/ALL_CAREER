@@ -173,8 +173,8 @@ def scrape_company(company_name, locations, results_wanted=50):
                 location=location,
                 results_wanted=results_wanted,
                 country_indeed="India",
-                hours_old=168,  # Last 7 days
-                linkedin_fetch_description=False,  # FAST mode
+                hours_old=24,  # Only jobs posted in the last 24 hours
+                linkedin_fetch_description=False,  # FAST mode - no page visits
                 verbose=0,
             )
 
