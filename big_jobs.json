@@ -1,4 +1,4 @@
-const bigJobs = [
+[
   {
     "company": "Google",
     "title": "Product Data Scientist, Analytics, Insights and Measurement",
@@ -4415,4 +4415,4 @@ const bigJobs = [
     "date": "None",
     "fetchedAt": "2026-03-09"
   }
-];
+]
