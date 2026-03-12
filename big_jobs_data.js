@@ -1,6 +1,14950 @@
 const bigJobs = [
   {
     "company": "Google",
+    "title": "Software Engineer II, Google Ads",
+    "url": "https://www.linkedin.com/jobs/view/4372443806",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Growth Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382875901",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Product Manager, YouTube Create",
+    "url": "https://www.linkedin.com/jobs/view/4383202910",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Data Engineer, Play Data Science and Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4372449555",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Product Data Scientist, Google Pay",
+    "url": "https://www.linkedin.com/jobs/view/4372851652",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "RTL Design Engineer, Google Cloud",
+    "url": "https://www.linkedin.com/jobs/view/4373313956",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Customer Solutions Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372854571",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Senior Leadership Technical Program Manager, AI and ML",
+    "url": "https://www.linkedin.com/jobs/view/4383259545",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Customer Solutions Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372843754",
+    "location": "Hyderabad, Telangana, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Technical Strategy and Operations Lead, gTech",
+    "url": "https://www.linkedin.com/jobs/view/4372856579",
+    "location": "Hyderabad, Telangana, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Business Systems Analyst, Spaces Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4372846713",
+    "location": "Hyderabad, Telangana, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
+    "title": "Staff Software Engineer, Confidential Computing",
+    "url": "https://www.linkedin.com/jobs/view/4365962803",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4358214650",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Support Escalation Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372263141",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer 2",
+    "url": "https://www.linkedin.com/jobs/view/4384169764",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer 2",
+    "url": "https://www.linkedin.com/jobs/view/4384190001",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Principal Group Engineering Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374719867",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Research Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4384179201",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Sr Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384169759",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384166827",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4358169242",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II (Front-End)",
+    "url": "https://www.linkedin.com/jobs/view/4374731650",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4354694358",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer 2",
+    "url": "https://www.linkedin.com/jobs/view/4384189034",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4374738034",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4374718915",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Product Designer",
+    "url": "https://www.linkedin.com/jobs/view/4366349161",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Sr Director-Applied Sciences",
+    "url": "https://www.linkedin.com/jobs/view/4374128024",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Principal Project Management, Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4384173425",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Software Engineer - C++",
+    "url": "https://www.linkedin.com/jobs/view/4384168792",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Technical Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374725774",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4384353204",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374733466",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Software Engineering IC4",
+    "url": "https://www.linkedin.com/jobs/view/4343694976",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384533260",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Senior Consultant A2 - Data & AI",
+    "url": "https://www.linkedin.com/jobs/view/4366732498",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Microsoft",
+    "title": "Principal Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384167841",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Procurement Manager, APAC PROCUREMENT",
+    "url": "https://www.linkedin.com/jobs/view/4374451446",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Financial Analyst, GFS FP&A",
+    "url": "https://www.linkedin.com/jobs/view/4358147287",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Brand Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4338772666",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Finance Analyst, FinOps IN BP",
+    "url": "https://www.linkedin.com/jobs/view/4268626399",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Senior Operations Associate, Amazon Retail India",
+    "url": "https://www.linkedin.com/jobs/view/4384341216",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Process Assistant, GSF Prime Now",
+    "url": "https://www.linkedin.com/jobs/view/4374710047",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Manager, Vendor Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4228461692",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Category Marketing Manager, Amazon Consumables",
+    "url": "https://www.linkedin.com/jobs/view/4384148970",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Program Manager, Sub-Same Day Delivery",
+    "url": "https://www.linkedin.com/jobs/view/4365022447",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Music",
+    "title": "Front-End Engineer II, Amazon Music Design",
+    "url": "https://www.linkedin.com/jobs/view/4373977504",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Analytics & Insights Manager, Amazon Ads",
+    "url": "https://www.linkedin.com/jobs/view/4354579134",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Enterprise Marketing Manager, Amazon Business",
+    "url": "https://www.linkedin.com/jobs/view/4374489884",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Category Manager, IN Core Consumables",
+    "url": "https://www.linkedin.com/jobs/view/4384342162",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Senior Finance Analyst, GREF FP&A",
+    "url": "https://www.linkedin.com/jobs/view/4344239975",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Business Analyst Support, Consumer Inputs",
+    "url": "https://www.linkedin.com/jobs/view/4384328586",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Retail Account Manager, Mass Vendor Relations",
+    "url": "https://www.linkedin.com/jobs/view/4373968935",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Prod Compliance Sr. Associate, Global Solutions & Risk Compliance (GSRC)",
+    "url": "https://www.linkedin.com/jobs/view/4384341213",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Senior Product Manager",
+    "url": "https://www.linkedin.com/jobs/view/4343940743",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Senior Tax Analyst, VAT Compliance",
+    "url": "https://www.linkedin.com/jobs/view/4344187100",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr Vendor Ops Associate, AWIPL",
+    "url": "https://www.linkedin.com/jobs/view/4384328561",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "MEP Design Engineer, Global Engineering Services",
+    "url": "https://www.linkedin.com/jobs/view/4373969958",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Risk Manager I, Relay Product Excellence",
+    "url": "https://www.linkedin.com/jobs/view/4358260878",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Software Engineer, Amazon",
+    "url": "https://www.linkedin.com/jobs/view/4384334476",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Prime Video & Amazon MGM Studios",
+    "title": "Software Development Engineer, Prime Video App Experience",
+    "url": "https://www.linkedin.com/jobs/view/4374706469",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Advertising ops specialist, IN Advertising",
+    "url": "https://www.linkedin.com/jobs/view/4384325692",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr. Planning & Ops Mgr, SIMS",
+    "url": "https://www.linkedin.com/jobs/view/4384333488",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Data Specialist LMS and L&D, GSF Learning and Development",
+    "url": "https://www.linkedin.com/jobs/view/4384333506",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr. Software Dev Engineer, Amazon Smart Vehicles, Amazon Smart Vehicles",
+    "url": "https://www.linkedin.com/jobs/view/4257451239",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Salesforce Developer, Ads Tech",
+    "url": "https://www.linkedin.com/jobs/view/4384148972",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer, Alexa Ads",
+    "url": "https://www.linkedin.com/jobs/view/4374454398",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Data Engineer II, ITA - Workforce Intelligence, Core Data Acquisition, Core Data Acquisition",
+    "url": "https://www.linkedin.com/jobs/view/4344390612",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Business Intelligence Engineer, GFS (Global Finance Solutiion)",
+    "url": "https://www.linkedin.com/jobs/view/4384328564",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Business",
+    "title": "Manager, Applied Science, RBS Tech",
+    "url": "https://www.linkedin.com/jobs/view/4374441789",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Business",
+    "title": "Applied Scientist II, Buyer Risk Prevention (BRP)",
+    "url": "https://www.linkedin.com/jobs/view/4384399686",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "SDE II, Selling Partner Experience",
+    "url": "https://www.linkedin.com/jobs/view/4384168307",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Process Assistant, ICQA",
+    "url": "https://www.linkedin.com/jobs/view/4366365151",
+    "location": "Tiruvallur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Process Assistant, ICQA",
+    "url": "https://www.linkedin.com/jobs/view/4366367127",
+    "location": "Tiruvallur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Associate, Quality Services",
+    "url": "https://www.linkedin.com/jobs/view/4374494690",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Associate, Quality Services, Quality Services",
+    "url": "https://www.linkedin.com/jobs/view/4374455326",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4366371095",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4366372051",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Associate, Quality Services, Device Tech support",
+    "url": "https://www.linkedin.com/jobs/view/4358290872",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384163576",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Testing Associate, Accessibility, Trust, Privacy & Accessibility",
+    "url": "https://www.linkedin.com/jobs/view/4374712005",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384167326",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "EXECUTIVE ASSISTANT , Retail Business Services",
+    "url": "https://www.linkedin.com/jobs/view/4384500654",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384157640",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384157646",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384156663",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384152736",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384162563",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384152737",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Dev Engineer I, Amazon University Talent Acquisition",
+    "url": "https://www.linkedin.com/jobs/view/4358137435",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384159648",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384147989",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr. Prgm Mgr-Org Exc, Retail Business Services",
+    "url": "https://www.linkedin.com/jobs/view/4358300794",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I, V-CARE",
+    "url": "https://www.linkedin.com/jobs/view/4384169288",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384160669",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384158668",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384147990",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4374438953",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I",
+    "url": "https://www.linkedin.com/jobs/view/4384148973",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate I, V-CARE",
+    "url": "https://www.linkedin.com/jobs/view/4384155646",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Transportation Representative",
+    "url": "https://www.linkedin.com/jobs/view/4267275703",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Area Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374708361",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Network Operations Support",
+    "url": "https://www.linkedin.com/jobs/view/4374756660",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, US-PR [S]",
+    "url": "https://www.linkedin.com/jobs/view/4366358813",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "WHS Officer",
+    "url": "https://www.linkedin.com/jobs/view/4384161581",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "RME Coordinator, RME",
+    "url": "https://www.linkedin.com/jobs/view/4354593714",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, MLOA [S], Disability and Leave Services",
+    "url": "https://www.linkedin.com/jobs/view/4366358817",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366374003",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366214393",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "MyHR Live Support Advisor [S], MHLS Advisor [S]",
+    "url": "https://www.linkedin.com/jobs/view/4373980412",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Data Engineer, SCOT WW Long Term Planning and Forecasting",
+    "url": "https://www.linkedin.com/jobs/view/4365412832",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366364181",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366355850",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, MLOA [S], Disability and Leave Services",
+    "url": "https://www.linkedin.com/jobs/view/4366355849",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366358819",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366358818",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366367125",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Last Mile Team leader , GSF Last Mile",
+    "url": "https://www.linkedin.com/jobs/view/4338777247",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr, S/L [S], Standalone",
+    "url": "https://www.linkedin.com/jobs/view/4366356849",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Business Analyst II, SPT Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4374705511",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Case Mgr (CRT) [S]",
+    "url": "https://www.linkedin.com/jobs/view/4374441736",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate-II",
+    "url": "https://www.linkedin.com/jobs/view/4384167327",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Listing Specialist , International Seller Growth",
+    "url": "https://www.linkedin.com/jobs/view/4384338402",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Data Centre Linux & HW Engineer, India, Data Center Operations",
+    "url": "https://www.linkedin.com/jobs/view/4358118092",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Data Engineer I, AP Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4344236576",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate-II",
+    "url": "https://www.linkedin.com/jobs/view/4384147992",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Oracle Applications Functional Consultant, FinTech Billing",
+    "url": "https://www.linkedin.com/jobs/view/4358300792",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ML Data Associate-II",
+    "url": "https://www.linkedin.com/jobs/view/4384151882",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Manager, Amazon Business",
+    "url": "https://www.linkedin.com/jobs/view/4366713198",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer - III",
+    "url": "https://www.linkedin.com/jobs/view/4358355233",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Data Engineer, ShipTech Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4366708450",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer, Shipment Optimization, Shipment Optimization",
+    "url": "https://www.linkedin.com/jobs/view/4358356427",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer (SDE II) - FinTech, FinTech",
+    "url": "https://www.linkedin.com/jobs/view/4366282414",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Solution Architect, AGS-APJ-India-ISV-SA",
+    "url": "https://www.linkedin.com/jobs/view/4384341229",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Tririga Application Engineer, Close Systems",
+    "url": "https://www.linkedin.com/jobs/view/4354524813",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Prime Video & Amazon MGM Studios",
+    "title": "Coordinator, Hindi Original Movies, India",
+    "url": "https://www.linkedin.com/jobs/view/4384333489",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Finance Manager, MX Player, Amazon MX Player",
+    "url": "https://www.linkedin.com/jobs/view/4384321817",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Logisitcs Specialist 3, BOM - Logistics, AWS Infra-Logistics",
+    "url": "https://www.linkedin.com/jobs/view/4373990265",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Music Coordinator, Amazon MGM Studios Music",
+    "url": "https://www.linkedin.com/jobs/view/4373987327",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sales Specialist, IN-SWA",
+    "url": "https://www.linkedin.com/jobs/view/4344410580",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Dev Engineer I, Amazon University Talent Acquisition",
+    "url": "https://www.linkedin.com/jobs/view/4358315829",
+    "location": "Borivali, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Data Center Technician (DCO), Data Center Operations (DCO)",
+    "url": "https://www.linkedin.com/jobs/view/4384336462",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "WHS Officer",
+    "url": "https://www.linkedin.com/jobs/view/4384169289",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Data Center Technician, Data Center Operations (DCO)",
+    "url": "https://www.linkedin.com/jobs/view/4384340231",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "Data Center Manager, Data Center Operations",
+    "url": "https://www.linkedin.com/jobs/view/4384319844",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon Web Services (AWS)",
+    "title": "NW Deployment Build Lead, GND India Team",
+    "url": "https://www.linkedin.com/jobs/view/4384333502",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Cluster Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373990260",
+    "location": "Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "WHS Officer",
+    "url": "https://www.linkedin.com/jobs/view/4384165481",
+    "location": "Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "FinOps Analyst - AP",
+    "url": "https://www.linkedin.com/jobs/view/4374438949",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr. FinOps Analyst - AP, Accounts Payable",
+    "url": "https://www.linkedin.com/jobs/view/4384323803",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "ITL - Lab Incharge, All Process paths",
+    "url": "https://www.linkedin.com/jobs/view/4373969950",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Project Manager II, Global Engineering Services",
+    "url": "https://www.linkedin.com/jobs/view/4373978516",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "FinOps Analyst - AP, AP Healthcare",
+    "url": "https://www.linkedin.com/jobs/view/4384330530",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr. FinOps Analyst - AP",
+    "url": "https://www.linkedin.com/jobs/view/4384323806",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Quality Assurance Engineer II, Alexa Endpoints",
+    "url": "https://www.linkedin.com/jobs/view/4366722037",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer, AFFS, Amazon",
+    "url": "https://www.linkedin.com/jobs/view/4366710260",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Sr.Technical Program Manager, Identity",
+    "url": "https://www.linkedin.com/jobs/view/4358431358",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer II, Alexa AI Developer Tech",
+    "url": "https://www.linkedin.com/jobs/view/4343922371",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Amazon",
+    "title": "Software Development Engineer II, Alexa AI Developer Tech",
+    "url": "https://www.linkedin.com/jobs/view/4343902500",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Apple",
+    "title": "Channel Manager – Apple Enterprise and SMB",
+    "url": "https://www.linkedin.com/jobs/view/4382866238",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Apple",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383262355",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Netflix",
+    "title": "Coordinator - Post Production",
+    "url": "https://www.linkedin.com/jobs/view/4382558197",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Product Designer, Adobe Express",
+    "url": "https://www.linkedin.com/jobs/view/4346003417",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Director, Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4346062428",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Computer Scientist I",
+    "url": "https://www.linkedin.com/jobs/view/4372894037",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Engineering Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373348623",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Computer Scientist-I Fullstack (Front-end heavy)",
+    "url": "https://www.linkedin.com/jobs/view/4322116367",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Software Development Engineer 4 - C++ Desktop & Javascript",
+    "url": "https://www.linkedin.com/jobs/view/4324420296",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Computer Scientist II - Backend(Java, Big Data)",
+    "url": "https://www.linkedin.com/jobs/view/4322060304",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Automation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383215550",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Professional Services Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4324641767",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Enterprise Architect",
+    "url": "https://www.linkedin.com/jobs/view/4272844830",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Sr Network Engineer (L3) – F5 & DC Fabric Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4319415672",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Site Reliability Engineer - 4",
+    "url": "https://www.linkedin.com/jobs/view/4324532814",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Sr. Computer Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4383230034",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Program Manager - Services",
+    "url": "https://www.linkedin.com/jobs/view/4296070663",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Adobe",
+    "title": "Consulting Services Sales Acct Manager",
+    "url": "https://www.linkedin.com/jobs/view/4315574492",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Oracle",
+    "title": "Software Development Director",
+    "url": "https://www.linkedin.com/jobs/view/4382552134",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "2026-03-11",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Oracle",
+    "title": "Software Development Director",
+    "url": "https://www.linkedin.com/jobs/view/4382536966",
+    "location": "Hyderabad, Telangana, India",
+    "date": "2026-03-11",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Procurement",
+    "url": "https://www.linkedin.com/jobs/view/4382585436",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Procurement",
+    "url": "https://www.linkedin.com/jobs/view/4382591011",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Facilities Management – Governance & Assurance Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4372489718",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://www.linkedin.com/jobs/view/4372492595",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Workday Recruiting",
+    "url": "https://www.linkedin.com/jobs/view/4382589057",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382577520",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382573969",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382575766",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://www.linkedin.com/jobs/view/4372485733",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-Workday Testing",
+    "url": "https://www.linkedin.com/jobs/view/4372454844",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Automation Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382572244",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Deputy Manager Risk and Compliance - Transaction Monitoring",
+    "url": "https://www.linkedin.com/jobs/view/4382571230",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Workday Talent Management",
+    "url": "https://www.linkedin.com/jobs/view/4382571222",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Workday Talent Management",
+    "url": "https://www.linkedin.com/jobs/view/4382574096",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-TALENT DEVELOPMENT OPTIMIZATION PROCESSES",
+    "url": "https://www.linkedin.com/jobs/view/4382571913",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://www.linkedin.com/jobs/view/4382573261",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://www.linkedin.com/jobs/view/4382551946",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-SAP HANA Application Security",
+    "url": "https://www.linkedin.com/jobs/view/4371969344",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382571231",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Vendor Risk Management Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382585431",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382555840",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-SAP Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382712557",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM MM",
+    "url": "https://www.linkedin.com/jobs/view/4382555845",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM SD",
+    "url": "https://www.linkedin.com/jobs/view/4350282195",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Business Transformation Consultant-Digital Change",
+    "url": "https://www.linkedin.com/jobs/view/4382584317",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Open Source",
+    "url": "https://www.linkedin.com/jobs/view/4372602235",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://www.linkedin.com/jobs/view/4382569188",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Business Transformation Consultant-IoT & PLM",
+    "url": "https://www.linkedin.com/jobs/view/4382569233",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS INNOVATION PROFESSIONAL-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382574088",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS INNOVATION PROFESSIONAL-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382573254",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS INNOVATION PROFESSIONAL-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382571225",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS INNOVATION PROFESSIONAL-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382558694",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382552921",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382556821",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382585434",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://www.linkedin.com/jobs/view/4382552916",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://www.linkedin.com/jobs/view/4382575039",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://www.linkedin.com/jobs/view/4382554831",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Consultant-DevOps",
+    "url": "https://www.linkedin.com/jobs/view/4372494672",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382561698",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382553911",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382556823",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Advanced Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4382573268",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382564506",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382572212",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382552894",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Automation",
+    "url": "https://www.linkedin.com/jobs/view/4363105566",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://www.linkedin.com/jobs/view/4372487754",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382574058",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382574060",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382572201",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382574029",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382570159",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382568228",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382560653",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-PROCURE TO PAY",
+    "url": "https://www.linkedin.com/jobs/view/4382568240",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-LEAD TO CASH",
+    "url": "https://www.linkedin.com/jobs/view/4382573180",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-Commerce Transformation",
+    "url": "https://www.linkedin.com/jobs/view/4382553897",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382561638",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382573240",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Microsoft .NET Stack",
+    "url": "https://www.linkedin.com/jobs/view/4372498429",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "PROCESS DELIVERY SPECIALIST-RECORD TO REPORT",
+    "url": "https://www.linkedin.com/jobs/view/4382556758",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Engineer-Data Platforms-Google",
+    "url": "https://www.linkedin.com/jobs/view/4372471215",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Cloud FullStack",
+    "url": "https://www.linkedin.com/jobs/view/4382577621",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Quality Engineer-Data",
+    "url": "https://www.linkedin.com/jobs/view/4372494636",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-ReactJS",
+    "url": "https://www.linkedin.com/jobs/view/4382575788",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM MM",
+    "url": "https://www.linkedin.com/jobs/view/4382564504",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Infrastructure Specialist-Red Hat Platform",
+    "url": "https://www.linkedin.com/jobs/view/4372603009",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA FIN FI",
+    "url": "https://www.linkedin.com/jobs/view/4382573250",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Architect-SAP NextGen Technical Innovation",
+    "url": "https://www.linkedin.com/jobs/view/4363003405",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM PP",
+    "url": "https://www.linkedin.com/jobs/view/4382568289",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM TM",
+    "url": "https://www.linkedin.com/jobs/view/4382570210",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Designer-Visual Design",
+    "url": "https://www.linkedin.com/jobs/view/4382566396",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Scientist-Artificial Intelligence",
+    "url": "https://www.linkedin.com/jobs/view/4372604025",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Solution Architect-Data Platforms",
+    "url": "https://www.linkedin.com/jobs/view/4364424300",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Software deveoper",
+    "url": "https://www.linkedin.com/jobs/view/4382577617",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM MM",
+    "url": "https://www.linkedin.com/jobs/view/4382562597",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Engineer-Data Platforms-AWS",
+    "url": "https://www.linkedin.com/jobs/view/4372486759",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Business Transformation Consultant-Asset Management",
+    "url": "https://www.linkedin.com/jobs/view/4382572168",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-SAP Application Security",
+    "url": "https://www.linkedin.com/jobs/view/4371979099",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Specialist-SAP GRC",
+    "url": "https://www.linkedin.com/jobs/view/4372466364",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP HANA SCM PP",
+    "url": "https://www.linkedin.com/jobs/view/4372467373",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Engineer-Data Platforms-AWS",
+    "url": "https://www.linkedin.com/jobs/view/4382562598",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Data Engineer-Data Platforms-AWS",
+    "url": "https://www.linkedin.com/jobs/view/4382553904",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Application Developer-Asset Management",
+    "url": "https://www.linkedin.com/jobs/view/4382568288",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "IBM",
+    "title": "Package Consultant-SAP FIN PS-Capital Accounting",
+    "url": "https://www.linkedin.com/jobs/view/4382571223",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Intel",
+    "title": "System software development engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372846949",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Intel",
+    "title": "Software Enabling and Optimization Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382853542",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Intel",
+    "title": "SoC Design Verification Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382883836",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Akron Intel",
+    "title": "Performance Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382563133",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "Finance Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4358421986",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366341881",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384363887",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "Embedded Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384186868",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "IC Package layout designer - 4 to 8 Years - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4366708202",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "ASIC RTL Design Technical Leader | RTL, System Design, Micro Architecture",
+    "url": "https://www.linkedin.com/jobs/view/4383220266",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cisco",
+    "title": "Account Executive - Architecture",
+    "url": "https://www.linkedin.com/jobs/view/4374757285",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Design (WLAN )",
+    "url": "https://www.linkedin.com/jobs/view/4330466454",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Facilities Mechanical Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4350272187",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "CPU RTL Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4330174574",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "NoC (RTL) Design - PE/Director",
+    "url": "https://www.linkedin.com/jobs/view/4324255697",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Senior HW Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4360834396",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer, Senior - Bluetooth Development",
+    "url": "https://www.linkedin.com/jobs/view/4330400628",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer - CPU DSP",
+    "url": "https://www.linkedin.com/jobs/view/4372538071",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Director - SQA",
+    "url": "https://www.linkedin.com/jobs/view/4382893750",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Physical Verification Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383207233",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Wlan Firmware- Engineer,Senior Staff/Manager",
+    "url": "https://www.linkedin.com/jobs/view/4330167338",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "NPU/AI Processor Senior Staff Design Verification Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382892687",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer, Senior - AI Sotware team",
+    "url": "https://www.linkedin.com/jobs/view/4382896508",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Security & Access Control Engineer/Lead",
+    "url": "https://www.linkedin.com/jobs/view/4343832620",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Camera IP Design Verification Staff Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372867268",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer, Senior - AI Software team",
+    "url": "https://www.linkedin.com/jobs/view/4383200503",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Lead Engineer, Senior - AI Software Team",
+    "url": "https://www.linkedin.com/jobs/view/4382895701",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "2026 Campus Hire_ System Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4324159613",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff, Engineer – RISC-V Software",
+    "url": "https://www.linkedin.com/jobs/view/4382896510",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Lead Engineer, Senior - AI Software team",
+    "url": "https://www.linkedin.com/jobs/view/4383210072",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Lead Engineer, Senior",
+    "url": "https://www.linkedin.com/jobs/view/4383213006",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer - AI Software Enigneer",
+    "url": "https://www.linkedin.com/jobs/view/4383208199",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Serdes PHY Analog Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382896548",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Lead AI Compiler/Framework VulkanEngineer",
+    "url": "https://www.linkedin.com/jobs/view/4330525893",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "MBIST Diagnostics Engineer - Sr Staff/Staff Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372875210",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Core Tech - Kernel and Services",
+    "url": "https://www.linkedin.com/jobs/view/4372881068",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "WLAN Test Automation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4372873177",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Senior Software Systems Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383208198",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer - C++/Audio/Linux",
+    "url": "https://www.linkedin.com/jobs/view/4382891705",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Senior Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382889915",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Physical Design Engineer, Lead",
+    "url": "https://www.linkedin.com/jobs/view/4281545635",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "GAOC Accountant, Senior",
+    "url": "https://www.linkedin.com/jobs/view/4372870240",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Associate Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382898517",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Sr Engineer- Gen AI Software",
+    "url": "https://www.linkedin.com/jobs/view/4372873174",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Wireless R&D IP Verification Staff/Sr Staff Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4343961964",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer- PPAT",
+    "url": "https://www.linkedin.com/jobs/view/4330255174",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Sr Engineer- Camera Kernel",
+    "url": "https://www.linkedin.com/jobs/view/4372867269",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "2026 Campus Hire_ Sr.Engineer_ HW",
+    "url": "https://www.linkedin.com/jobs/view/4372873176",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "AIML- Staff Enginerr",
+    "url": "https://www.linkedin.com/jobs/view/4383205321",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer - Chipset Power",
+    "url": "https://www.linkedin.com/jobs/view/4330761397",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Principal Engineer Manager  - IoT Multimedia Software",
+    "url": "https://www.linkedin.com/jobs/view/4366000487",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Sr Engineer- Camera Development",
+    "url": "https://www.linkedin.com/jobs/view/4365988728",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Sr Engineer- Camera HWL",
+    "url": "https://www.linkedin.com/jobs/view/4372876115",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer, Staff-Machine Learning-Tools",
+    "url": "https://www.linkedin.com/jobs/view/4330550607",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Engineer, Staff-Machine Learning-Tools",
+    "url": "https://www.linkedin.com/jobs/view/4330450637",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer - Android system performance",
+    "url": "https://www.linkedin.com/jobs/view/4372872186",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Staff Engineer- Audio Test",
+    "url": "https://www.linkedin.com/jobs/view/4382893729",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Qualcomm",
+    "title": "Senior Engineer - Audio DSP",
+    "url": "https://www.linkedin.com/jobs/view/4383296453",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "NVIDIA",
+    "title": "CAD Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384551326",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "NVIDIA",
+    "title": "ASIC Verification Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384548324",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "NVIDIA",
+    "title": "Senior IP Design Verification Engineer - XBAR IP",
+    "url": "https://www.linkedin.com/jobs/view/4384540691",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Sony Music Entertainment",
+    "title": "Associate Director, Marketing, India & South Asia",
+    "url": "https://www.linkedin.com/jobs/view/4382853299",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Specialist 1, Inside Product",
+    "url": "https://www.linkedin.com/jobs/view/4384141514",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Quality Senior Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384143323",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Systems Development Engineer 2",
+    "url": "https://www.linkedin.com/jobs/view/4384126996",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Senior Principal Engineer, Solutions Architecture",
+    "url": "https://www.linkedin.com/jobs/view/4384145311",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384195704",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384308390",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Senior Systems Development Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384134706",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Principal Systems Development Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384128791",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Senior Principal Systems Development Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384137667",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384146086",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384146085",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384146087",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Dell Technologies",
+    "title": "Software Principal Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384145309",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Product Manager - AgenticAI S/4",
+    "url": "https://www.linkedin.com/jobs/view/4384310582",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android QA Lead",
+    "url": "https://www.linkedin.com/jobs/view/4384315338",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Camera Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384198950",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Graphics Expert",
+    "url": "https://www.linkedin.com/jobs/view/4384317374",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Devops SCM leader",
+    "url": "https://www.linkedin.com/jobs/view/4384309608",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Framework Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384311615",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Systems Expert",
+    "url": "https://www.linkedin.com/jobs/view/4384311617",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Security Expert",
+    "url": "https://www.linkedin.com/jobs/view/4384198951",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "Android Platform Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384197995",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HP",
+    "title": "New Product Introduction- Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384316362",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "Staff Firmware Engineer I – UEFI",
+    "url": "https://www.linkedin.com/jobs/view/4382887360",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "ISG Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382849141",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "Global Account Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382881689",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "Critical Incident Manager",
+    "url": "https://www.linkedin.com/jobs/view/4366454915",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "SA - Account Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382878765",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Lenovo",
+    "title": "Enterprise Acquisition West (Mumbai & Pune)",
+    "url": "https://www.linkedin.com/jobs/view/4382882531",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374159401",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374147664",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4373985780",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4373974974",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363150586",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363140805",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4371285366",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374149567",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374151508",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363131508",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371084229",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374143948",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Claims Management Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382850837",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374162343",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4374152530",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380142565",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Recruiting Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382728372",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380144608",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363140804",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371079633",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363102419",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382168857",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4358536488",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380185206",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Procurement Practice Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382864381",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Team Lead",
+    "url": "https://www.linkedin.com/jobs/view/4380205174",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Quality Engineer (Tester)",
+    "url": "https://www.linkedin.com/jobs/view/4382867148",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371085219",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371077669",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371074744",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Packaged App Development Manager",
+    "url": "https://www.linkedin.com/jobs/view/4278839960",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371077670",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371073776",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371070716",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Regulatory Compliance New Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384360928",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Team Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382596434",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382853817",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Team Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382091174",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "User Experience Designer",
+    "url": "https://www.linkedin.com/jobs/view/4369678608",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382870101",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Procure to Pay Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382704023",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Underwriting Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382716826",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Procure to Pay Operations New Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384363692",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Regulatory Compliance Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382584862",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4351570715",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4371976692",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4381643647",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380162352",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380156445",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380172987",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380151467",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4344419526",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Payroll Operations New Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384359888",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Quality Engineering Lead (Test Lead)",
+    "url": "https://www.linkedin.com/jobs/view/4382863449",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382852882",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382851906",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Test Automation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382864388",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Test Automation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382866194",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Test Automation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382851926",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4347399800",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382866208",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Quality Engineering Lead (Test Lead)",
+    "url": "https://www.linkedin.com/jobs/view/4384165284",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4340457833",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382861464",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382851910",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4347509570",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Application Support Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382851899",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4347580623",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382868150",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382848936",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "S&C Global Network - AI - Supply Chain Analytics - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4337495206",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384395147",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384388479",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384389521",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384396073",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384381749",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384374970",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Utility Bill Associate-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4382702073",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Utility Bill Associate-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4382598244",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Utility Bill Associate-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4382585930",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Utility Bill Associate-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4382701092",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382723622",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382722712",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382731210",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382733180",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382730258",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382714938",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Mobilization Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384318429",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "S&C GN - Tech Strategy & Advisory - Enterprise Architecture – Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384325164",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382723623",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382720779",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4372101029",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4371436611",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380154429",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380151468",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4381645603",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4371898182",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4381644608",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4381652239",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380789320",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382856736",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Quality Engineer (Tester)",
+    "url": "https://www.linkedin.com/jobs/view/4382855816",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Quality Engineer (Tester)",
+    "url": "https://www.linkedin.com/jobs/view/4384322038",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "GN-A&D-MRO-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4345985730",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384393307",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384502035",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "DevOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382871078",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "GN-T&O – Talent Development and Learning – Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382593471",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Application Support Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382843968",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382872019",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382863486",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382859565",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382863480",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382871091",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4379979536",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382869155",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382863459",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382871075",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382860455",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4379971621",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382863473",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4379971622",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384314558",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Solution Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382854768",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384384711",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Data Platform Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382867137",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382855755",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384391154",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4370362890",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4368848634",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373138117",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Senior Analyst-Voice",
+    "url": "https://www.linkedin.com/jobs/view/4371612508",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373132447",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4356203921",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4355987425",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist-Messaging",
+    "url": "https://www.linkedin.com/jobs/view/4356194599",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363280684",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363290634",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Claims Management New Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382863441",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371431503",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4373704450",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371450020",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371443148",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374835855",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4375878514",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4373702462",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363069310",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Team Lead",
+    "url": "https://www.linkedin.com/jobs/view/4373134762",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363183791",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4348094407",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4373709409",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363290635",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363242130",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363193648",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363183790",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363174311",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363106166",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363290637",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Delivery Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4373704458",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363260851",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4337715146",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4349617751",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363280685",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4363260855",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371445121",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4343738974",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Supply Chain Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4343559838",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Associate",
+    "url": "https://www.linkedin.com/jobs/view/4373721250",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Test Automation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382864372",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371445120",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371443149",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371435317",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371446129",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371443150",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371441165",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371440187",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371433341",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Network & Svcs Operation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4371424998",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4380772844",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Quality Engineer (Tester)",
+    "url": "https://www.linkedin.com/jobs/view/4382870074",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Web Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382166942",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382850876",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382855778",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Tax Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384397249",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Tax Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384390566",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382856799",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Test Automation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382848953",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Application Support Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382853852",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Application Support Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382854846",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382744836",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382754302",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Full Stack Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382843997",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382848912",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382866217",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 Delivery Operations Associate Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382757250",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384321049",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "S&C Global Network - AI - CFO & EV - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4372461980",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382848935",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "AI / ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382717809",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "S&C Global Network - AI - Life Sciences -Data Science Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4350374143",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 Delivery Operations Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384565075",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 Delivery Operations Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384561418",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382862449",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture services Pvt Ltd",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382869110",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 HR Service Delivery Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383508502",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Application Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382701107",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 HR Service Delivery Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383513122",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 HR Service Delivery Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384557567",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "VA02 HR Service Delivery Senior Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384555649",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Security Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384375882",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384396071",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Security Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384377886",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384393136",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Security Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384375881",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Security Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384382777",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384375880",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Accenture in India",
+    "title": "Custom Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382717807",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Python developer",
+    "url": "https://www.linkedin.com/jobs/view/4366041238",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Steel Detailer",
+    "url": "https://www.linkedin.com/jobs/view/4365899859",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Facilities Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382838827",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Manufacturing Engineer – Aerospace",
+    "url": "https://www.linkedin.com/jobs/view/4382840885",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "C programming",
+    "url": "https://www.linkedin.com/jobs/view/4365835203",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Healthcare Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383235894",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Salesforce Associate COnsultant",
+    "url": "https://www.linkedin.com/jobs/view/4373058632",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "SAP FINANCE",
+    "url": "https://www.linkedin.com/jobs/view/4366405498",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "MRO Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366408052",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Performance Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373095294",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4366099472",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "IT Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4373075017",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "ICETS - Q4-26 - Graphic Design",
+    "url": "https://www.linkedin.com/jobs/view/4366438018",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Wireless Testing",
+    "url": "https://www.linkedin.com/jobs/view/4382887822",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4383203155",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Oil and Gas Lead_FY26Q4",
+    "url": "https://www.linkedin.com/jobs/view/4366093598",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Cards and Payments Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366094543",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Oracle PLSQL Lead",
+    "url": "https://www.linkedin.com/jobs/view/4366096497",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Gen AI Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366435094",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "IT Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4372854896",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "IT Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4382862000",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Mainframe Lead",
+    "url": "https://www.linkedin.com/jobs/view/4365828676",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "C/C Plus Plus Developer-I",
+    "url": "https://www.linkedin.com/jobs/view/4382852406",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "GPP Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365860932",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Java Backend Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382839881",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Liferay Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365952105",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Solution Architect",
+    "url": "https://www.linkedin.com/jobs/view/4321499741",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Gen AI Lead",
+    "url": "https://www.linkedin.com/jobs/view/4366403567",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "ETL/DWT Testing - IHLCP - Quality Engineering Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382846593",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Network SME",
+    "url": "https://www.linkedin.com/jobs/view/4382840714",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Python Cloud Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382888792",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "ALTIUS_RPO_Proximus_GCC Hiring_Unit",
+    "url": "https://www.linkedin.com/jobs/view/4366043336",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": ".net React Senior Lead",
+    "url": "https://www.linkedin.com/jobs/view/4366099447",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "DLP/Ms Purview",
+    "url": "https://www.linkedin.com/jobs/view/4373088579",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "OSS and Telecom Developer",
+    "url": "https://www.linkedin.com/jobs/view/4365940481",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "IT Consulting - Q4 (Amazon Redshift (or) Amazon Aurora DBA, WebLogic Admin)",
+    "url": "https://www.linkedin.com/jobs/view/4365932956",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "SAP EWM Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382839879",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "SAP CPI Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4321449770",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Azure Databricks Fullstack developer",
+    "url": "https://www.linkedin.com/jobs/view/4365931993",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Mechanical Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4373066230",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "AWS Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366049252",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "AS400 Lead",
+    "url": "https://www.linkedin.com/jobs/view/4366086817",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Genesys Expert",
+    "url": "https://www.linkedin.com/jobs/view/4365988525",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": ".Net Core Lead",
+    "url": "https://www.linkedin.com/jobs/view/4365902695",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Performance Testing,Jmeter+Loadrunner,Neoload",
+    "url": "https://www.linkedin.com/jobs/view/4383289508",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Employee Relations Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382884248",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Technology Architect",
+    "url": "https://www.linkedin.com/jobs/view/4321496431",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "TIBCO Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366403556",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Mainframe Developer",
+    "url": "https://www.linkedin.com/jobs/view/4383237810",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "IAM Expert - SailPoint/OIM/Azure AD",
+    "url": "https://www.linkedin.com/jobs/view/4383250308",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "React JS Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365919023",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "AWS Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366059009",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "QT/QML Developer",
+    "url": "https://www.linkedin.com/jobs/view/4330107583",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Infosys",
+    "title": "Oracle SCM Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366415966",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "Associate Corporate Counsel",
+    "url": "https://www.linkedin.com/jobs/view/4384330519",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION SPECIALIST L1",
+    "url": "https://www.linkedin.com/jobs/view/4383232264",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DATA ANALYST L4",
+    "url": "https://www.linkedin.com/jobs/view/4384131897",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DATA ANALYST L4",
+    "url": "https://www.linkedin.com/jobs/view/4384136795",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382835954",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SERVICE DESK LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384334461",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "Business Finance (BFM) 1",
+    "url": "https://www.linkedin.com/jobs/view/4384107814",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TEST ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384336363",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384136177",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TEST ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384335454",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384129312",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384322840",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384329569",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384336452",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384143564",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384131996",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384138875",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384143563",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384149158",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384150109",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384134845",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384139082",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SOLUTION ARCHITECT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384141330",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384328550",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L4",
+    "url": "https://www.linkedin.com/jobs/view/4382550458",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384351528",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384319834",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNOLOGY ARCHITECT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384124573",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384331458",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384328486",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384346016",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNO FUNCTIONAL CONSULTANT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384340220",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L3",
+    "url": "https://www.linkedin.com/jobs/view/4384136231",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4383237145",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL CONSULTANT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384141465",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4383218847",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "Lead Administrator L1",
+    "url": "https://www.linkedin.com/jobs/view/4384303833",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384325684",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384321801",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384327515",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384123863",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382848297",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382852231",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382856116",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382852233",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382848298",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382835953",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382848292",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SERVICE DESK LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384326616",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382838740",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382848301",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TEST ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384133758",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TEST ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4382561007",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384122470",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TEST ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384132737",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SYSTEM ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384321723",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L3",
+    "url": "https://www.linkedin.com/jobs/view/4384138527",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384136105",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384129650",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384335455",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "INTEGRATION ARCHITECT L1",
+    "url": "https://www.linkedin.com/jobs/view/4384327607",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384349717",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384325681",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384334395",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384336453",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "Storage Implementation",
+    "url": "https://www.linkedin.com/jobs/view/4384314687",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384137726",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "INFRASTRUCTURE AND PLATFORM ARCHITECT L2",
+    "url": "https://www.linkedin.com/jobs/view/4384127707",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION SPECIALIST L1",
+    "url": "https://www.linkedin.com/jobs/view/4383220765",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384155231",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SERVICE DELIVERY LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384325602",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384338308",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384339239",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384341194",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384326613",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384342100",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384335373",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384321718",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384151343",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384143759",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384145181",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "ADMINISTRATOR L2",
+    "url": "https://www.linkedin.com/jobs/view/4384127774",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SYSTEM ENGINEER L2",
+    "url": "https://www.linkedin.com/jobs/view/4384143176",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SYSTEM ENGINEER L2",
+    "url": "https://www.linkedin.com/jobs/view/4384136481",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384320774",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "Lead Administrator L1",
+    "url": "https://www.linkedin.com/jobs/view/4384545619",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DATA ANALYST L4",
+    "url": "https://www.linkedin.com/jobs/view/4384141627",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DATA ANALYST L4",
+    "url": "https://www.linkedin.com/jobs/view/4384142605",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4382847418",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "BUSINESS ANALYST L3",
+    "url": "https://www.linkedin.com/jobs/view/4384196920",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "SERVICE DESK LEAD L2",
+    "url": "https://www.linkedin.com/jobs/view/4384340214",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION AGENT L1",
+    "url": "https://www.linkedin.com/jobs/view/4383217477",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "BUSINESS ANALYST L3",
+    "url": "https://www.linkedin.com/jobs/view/4384181967",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRODUCTION SPECIALIST L3",
+    "url": "https://www.linkedin.com/jobs/view/4383220767",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384149407",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384131995",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384130959",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384151142",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384131898",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "TECHNICAL LEAD L1",
+    "url": "https://www.linkedin.com/jobs/view/4384331459",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "LEAD ADMINISTRATOR L1",
+    "url": "https://www.linkedin.com/jobs/view/4384119714",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L4",
+    "url": "https://www.linkedin.com/jobs/view/4384322841",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "PRINCIPAL CONSULTANT - ADV. & MGMT",
+    "url": "https://www.linkedin.com/jobs/view/4384135031",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVOPS ENGINEER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384340222",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384330518",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DOMAIN CONSULTANT L4",
+    "url": "https://www.linkedin.com/jobs/view/4384107853",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384128911",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384178414",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "MANAGING CONSULTANT - TECH & IMPL",
+    "url": "https://www.linkedin.com/jobs/view/4384117684",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384304659",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384181970",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "MANAGING CONSULTANT - TECH & IMPL",
+    "url": "https://www.linkedin.com/jobs/view/4384121353",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "MANAGING CONSULTANT - TECH & IMPL",
+    "url": "https://www.linkedin.com/jobs/view/4384138063",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wipro",
+    "title": "DEVELOPER L3",
+    "url": "https://www.linkedin.com/jobs/view/4384547328",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Analog Designer",
+    "url": "https://www.linkedin.com/jobs/view/4383204016",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Technical Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382573392",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Lead Engineer - STA",
+    "url": "https://www.linkedin.com/jobs/view/4382878913",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "SAP Joule",
+    "url": "https://www.linkedin.com/jobs/view/4382878414",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Webmethods Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384145753",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Procurement Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384127679",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "HCL Tech _ Voice Process - Fresher - Direct walk-in interview - Sholinganallur-13th Mar 2026 (11 AM to 2 PM)",
+    "url": "https://www.linkedin.com/jobs/view/4384145734",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Walk-In Drive | Technical Chat Support | 14th Mar 26 | Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4381196694",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Business Development Executive",
+    "url": "https://www.linkedin.com/jobs/view/4382553962",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HCLTech",
+    "title": "Solutions Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382585148",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Developer",
+    "url": "https://www.linkedin.com/jobs/view/4330147645",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr Manager-IPA Delivery Mgmt",
+    "url": "https://www.linkedin.com/jobs/view/4373032104",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4373090784",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Transition Manager",
+    "url": "https://www.linkedin.com/jobs/view/4383255348",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Salesforce FSC Developer",
+    "url": "https://www.linkedin.com/jobs/view/4330651571",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Salesforce Financial Services Cloud (FSC) Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384120710",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Tandem-Cards & Payments domain",
+    "url": "https://www.linkedin.com/jobs/view/4383244761",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "GeoSpatial Lead Java",
+    "url": "https://www.linkedin.com/jobs/view/4373088887",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Salesforce Technical Architect",
+    "url": "https://www.linkedin.com/jobs/view/4383241838",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Test Complete Automation - Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4382841889",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "AD-IPA Delivery Mgmt",
+    "url": "https://www.linkedin.com/jobs/view/4373032106",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "AD-IPA Delivery Mgmt",
+    "url": "https://www.linkedin.com/jobs/view/4373018605",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Architect",
+    "url": "https://www.linkedin.com/jobs/view/4330622067",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr. Developer - React & Node",
+    "url": "https://www.linkedin.com/jobs/view/4383261065",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "MLOPS Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382859302",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Multimedia Designer",
+    "url": "https://www.linkedin.com/jobs/view/4373032105",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Senior Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373022466",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Manager-Consulting",
+    "url": "https://www.linkedin.com/jobs/view/4330555843",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Service Line Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4324324603",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "GTM Data Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4373347154",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "PE-Digital Marketing",
+    "url": "https://www.linkedin.com/jobs/view/4383251547",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sales Program  Data & Ops Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4373348101",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr Product Specialist -Functnl",
+    "url": "https://www.linkedin.com/jobs/view/4095211362",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "GeoSpatial Developer Java",
+    "url": "https://www.linkedin.com/jobs/view/4330447879",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "Sr.Architect",
+    "url": "https://www.linkedin.com/jobs/view/4327064851",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cognizant",
+    "title": "AIML Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4382855527",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Angular Developer",
+    "url": "https://www.linkedin.com/jobs/view/4375677150",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "validation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382875240",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Gen AI Lead (ME) | Grade - E2",
+    "url": "https://www.linkedin.com/jobs/view/4382876204",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "ServiceNow ITOM (Developer/Lead's/Architect's)",
+    "url": "https://www.linkedin.com/jobs/view/4382878184",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "PLM Asset Development Leader | Grade - E1",
+    "url": "https://www.linkedin.com/jobs/view/4382875241",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Windchill Customization Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382861779",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382872327",
+    "location": "Kanchipuram, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382876206",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "FBS Application Developer III - Mainframe",
+    "url": "https://www.linkedin.com/jobs/view/4382549852",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Java + Angular Developer | 4 to 6 Years | Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4382871412",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Test Automation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382879153",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "INNOVATION PMO || Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4382878185",
+    "location": "Sion, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "INNOVATION PMO | Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4382858959",
+    "location": "Sion, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "GCP Enterprise Architect | Grade - E1",
+    "url": "https://www.linkedin.com/jobs/view/4382860797",
+    "location": "Sion, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Financial Planning & Analysis",
+    "url": "https://www.linkedin.com/jobs/view/4382858960",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Quality Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382870409",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Backend Java Developer (Developer, Technical Lead, Technical Manager)",
+    "url": "https://www.linkedin.com/jobs/view/4382876205",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "FBS Application Developer III - Mainframe",
+    "url": "https://www.linkedin.com/jobs/view/4382561437",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Temenos Transact Structured Products and Derivates Solution Lead",
+    "url": "https://www.linkedin.com/jobs/view/4374894623",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Pega Lead System Architect (LSA)",
+    "url": "https://www.linkedin.com/jobs/view/4375212821",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Capgemini",
+    "title": "Java with AWS Japanese Language N3 Certification",
+    "url": "https://www.linkedin.com/jobs/view/4382872326",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Senior Specialist - Architecture",
+    "url": "https://www.linkedin.com/jobs/view/4382552691",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Sap Advanced Business Application Programming Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382552562",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Associate Principal - Research Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382597451",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Java Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384165202",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Specialist - Cloud and Infra Management",
+    "url": "https://www.linkedin.com/jobs/view/4382858366",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382849675",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "GCP Devops Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382865099",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "GCP Devops Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382862196",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LTIMindtree",
+    "title": "AI engineer Trainer",
+    "url": "https://www.linkedin.com/jobs/view/4382554372",
+    "location": "Pune District, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Tech Mahindra",
+    "title": "Business Intelligence Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382555749",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Tech Mahindra",
+    "title": "BLUE PLANET INVENTORY DEVELOPER",
+    "url": "https://www.linkedin.com/jobs/view/4384193828",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Tech Mahindra",
+    "title": "Functional Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382566547",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Tech Mahindra",
+    "title": "Integration Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384166870",
+    "location": "Pune District, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Technical Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384163412",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Full Stack Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384159606",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "React Java Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384162163",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Java React Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382553542",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Power BI developer",
+    "url": "https://www.linkedin.com/jobs/view/4384146389",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Python Gen AI Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382568425",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Senior Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382548955",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": ".Net React Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382562344",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Persistent Systems",
+    "title": "Agentic AI Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382561846",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Swiggy",
+    "title": "Manager - Business Finance",
+    "url": "https://www.linkedin.com/jobs/view/4382864468",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Swiggy",
+    "title": "Partner Success Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382867210",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PhonePe",
+    "title": "Operations Associate, VKYC",
+    "url": "https://www.linkedin.com/jobs/view/4384120623",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PhonePe",
+    "title": "Associate Manager, KYC",
+    "url": "https://www.linkedin.com/jobs/view/4384119715",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PhonePe",
+    "title": "TA Partner, Merchant Business",
+    "url": "https://www.linkedin.com/jobs/view/4384128158",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PhonePe",
+    "title": "Site Reliability Engineer 3 - Cloud",
+    "url": "https://www.linkedin.com/jobs/view/4384177228",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PhonePe",
+    "title": "Network Delivery Engineer 1 (Pune)",
+    "url": "https://www.linkedin.com/jobs/view/4384181136",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Razorpay",
+    "title": "Senior Manager, Customer Success Partner",
+    "url": "https://www.linkedin.com/jobs/view/4384186843",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Razorpay",
+    "title": "Incident Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384134354",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Razorpay",
+    "title": "Senior Incident Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384127576",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Associate Director - Business Finance",
+    "url": "https://www.linkedin.com/jobs/view/4169742505",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Associate Director- FP&A",
+    "url": "https://www.linkedin.com/jobs/view/4333926603",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Senior Manager Partnership- Financial Services",
+    "url": "https://www.linkedin.com/jobs/view/4214010190",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Data Scientist III",
+    "url": "https://www.linkedin.com/jobs/view/4190155357",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Senior Product Manager",
+    "url": "https://www.linkedin.com/jobs/view/4358109164",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Group Product Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374100775",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Senior Associate - Collection strategy, Financial Services",
+    "url": "https://www.linkedin.com/jobs/view/4384335128",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Software Development Engineer III -Backend",
+    "url": "https://www.linkedin.com/jobs/view/4080964426",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "AM/ Manager - Risk & Decision Science - Financial Services",
+    "url": "https://www.linkedin.com/jobs/view/4300832697",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Meesho",
+    "title": "Software Development Engineer - IV - Backend",
+    "url": "https://www.linkedin.com/jobs/view/4090630785",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Groww",
+    "title": "Assistant Manager - Growth (Engagement)",
+    "url": "https://www.linkedin.com/jobs/view/4382878252",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Groww",
+    "title": "Platform Engineer - III",
+    "url": "https://www.linkedin.com/jobs/view/4382865702",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Software Engineer II - Backend",
+    "url": "https://www.linkedin.com/jobs/view/4384156043",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Sr Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4373942973",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Engineering Manager II, Payments 3P",
+    "url": "https://www.linkedin.com/jobs/view/4384353406",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Sr Staff Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4354308424",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Engineering Manager II",
+    "url": "https://www.linkedin.com/jobs/view/4384184294",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Staff Software Engineer - iOS",
+    "url": "https://www.linkedin.com/jobs/view/4384392288",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Data Engineer-II",
+    "url": "https://www.linkedin.com/jobs/view/4382889346",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Machine Learning Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4384154086",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Sr Staff Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4354308422",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Uber",
+    "title": "Staff Software Engineer - Tax Calculations",
+    "url": "https://www.linkedin.com/jobs/view/4374722787",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ola",
+    "title": "Lead - Internal Auditor",
+    "url": "https://www.linkedin.com/jobs/view/4384184316",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ola Electric",
+    "title": "Senior Legal Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384133414",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Myntra",
+    "title": "Associate - Hyperlocal Demand Planning",
+    "url": "https://www.linkedin.com/jobs/view/4384322769",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Myntra",
+    "title": "Associate - Sourcing",
+    "url": "https://www.linkedin.com/jobs/view/4384155573",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Analyst, US Payroll",
+    "url": "https://www.linkedin.com/jobs/view/4384362804",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer II - QA Automation",
+    "url": "https://www.linkedin.com/jobs/view/4384540368",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Applied AI ML Associate Senior",
+    "url": "https://www.linkedin.com/jobs/view/4384537719",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III - Java Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384363677",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Technology Support III",
+    "url": "https://www.linkedin.com/jobs/view/4384179855",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III - Java, AWS",
+    "url": "https://www.linkedin.com/jobs/view/4384359870",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer II - React, UI, AWS",
+    "url": "https://www.linkedin.com/jobs/view/4384354983",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - Python Full Stack",
+    "url": "https://www.linkedin.com/jobs/view/4373968565",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Senior Lead Software Engineer - Java, AWS",
+    "url": "https://www.linkedin.com/jobs/view/4384377025",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - Kubernetes, Terraform, AWS, Python/Java - Athena Cloud Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384374158",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III - QA Automation",
+    "url": "https://www.linkedin.com/jobs/view/4384357999",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Applied AI ML Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384527981",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Site Reliability Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4303025083",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III - Java, Python, AWS",
+    "url": "https://www.linkedin.com/jobs/view/4372709635",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Security Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384373276",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4384546211",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - Python (Data engineering), Equities Technology",
+    "url": "https://www.linkedin.com/jobs/view/4373984005",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - Java, Linux, SQL",
+    "url": "https://www.linkedin.com/jobs/view/4384365621",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer II - Techno Functional Quality Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373971533",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - C++, Unix/Linux, Data Structures- Electronic Trading Tech",
+    "url": "https://www.linkedin.com/jobs/view/4373981090",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Lead Software Engineer - Java, SpringBoot, Oracle",
+    "url": "https://www.linkedin.com/jobs/view/4370990378",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4384193479",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "JPMorganChase",
+    "title": "Software Engineer III - AWS Cloud",
+    "url": "https://www.linkedin.com/jobs/view/4384359872",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - Equity Structuring - Associate- Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4330088508",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "GBM - Private Dept-Bengaluru-Analyst-Banker - Industry/Country Coverage",
+    "url": "https://www.linkedin.com/jobs/view/4303394208",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM XIG Strats - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4366434809",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Public Finance Data Tech - Analyst - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4366445587",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management Operations - AM Alts Pvt Portfolio Services - Analyst - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4373306579",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management Operations - Onboarding - Alts - Shared - Senior Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4373305733",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Engineering-L2-Bengaluru-Vice President-Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4303388298",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - Pwm Client Web/desktop/digital - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4373099944",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Trading Technology - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4365957611",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management Operations - WM Bus Intelligence - Analyst - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4383223395",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "GBM - Public - Transformation Office -Bengaluru-Associate",
+    "url": "https://www.linkedin.com/jobs/view/4330741924",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management -Seismic Content Strategy - Analyst-Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4384150471",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Research & Analytics Tech - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4383210960",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Engineering - Core Data Platform - Analyst - Project Management - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4383265341",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management Operations - WM Bus Intelligence - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4383220445",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Position Data Technology - Vice President - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4366438690",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Investment Servicing Tech - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4384151467",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Portfolio Srvc Core Tech - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4366442635",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM Reconciliation Technology - Associate - Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4366444635",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management Operations - PWM Client Onboarding - Senior Associate - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4373306578",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - AM FI Portfolio Mgmt Tech - Associate - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4366760887",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Goldman Sachs",
+    "title": "Asset & Wealth Management - Ayco Wellness Engineering - Analyst - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4384148603",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Global Marketing Operations - Marketing Data Associate",
+    "url": "https://www.linkedin.com/jobs/view/4383226230",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Client Reporting_Associate_Client Services & Relationship Mgmt IM",
+    "url": "https://www.linkedin.com/jobs/view/4382875242",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Technical Project Manager - Director - Cybersecurity Operations",
+    "url": "https://www.linkedin.com/jobs/view/4382869451",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Client Implementation - Director - Core Services",
+    "url": "https://www.linkedin.com/jobs/view/4382862754",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "FSCAT PE - Senior Associate - Fund Services",
+    "url": "https://www.linkedin.com/jobs/view/4382860796",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Java Developer_Director_Cloud & Infrastructure Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4383215597",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "iOS App Development Lead - Vice President - Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382873285",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Snowflake Engineer _ Director _ Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4370427507",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Project Manager_Capital Markets",
+    "url": "https://www.linkedin.com/jobs/view/4319536102",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Java Developer_Director_Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4319557955",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Global Marketing Operations - Marketing Data Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384148954",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Legal Entity Controller, Associate/Director, Corporate Controllers, Reporting & Accounting",
+    "url": "https://www.linkedin.com/jobs/view/4320470859",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Associate, Technology Audit",
+    "url": "https://www.linkedin.com/jobs/view/4373310228",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Derivatives Structuring (Pricing ) Asia_ Manager_Institutional Equity Division",
+    "url": "https://www.linkedin.com/jobs/view/4374713699",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Client coverage / Onboarding role - Senior Associate - Prime Brokerage",
+    "url": "https://www.linkedin.com/jobs/view/4384327596",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Crypto Trade Support_Associate_Product Support & Services",
+    "url": "https://www.linkedin.com/jobs/view/4365841340",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Senior Associate – Quantitative Investment Strategies_ Institutional Equity Division",
+    "url": "https://www.linkedin.com/jobs/view/4373304735",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Product Development - Manager - Fund Services",
+    "url": "https://www.linkedin.com/jobs/view/4344566926",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Investment Performance_Associate_Product Support & Services IM",
+    "url": "https://www.linkedin.com/jobs/view/4382880093",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Conversion, Fund Accounting – Senior Associate - Fund Services",
+    "url": "https://www.linkedin.com/jobs/view/4383212833",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Commodity Strats, Manager / Senior Manager, Fixed Income Division",
+    "url": "https://www.linkedin.com/jobs/view/4321618157",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Senior Associate - Software Engineer Data Applications",
+    "url": "https://www.linkedin.com/jobs/view/4366285647",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Morgan Stanley",
+    "title": "Intellimatch/SQL Developer_ Director_ Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4383221350",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Software Engineer I A - GBS IND",
+    "url": "https://www.linkedin.com/jobs/view/4384340052",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Business Support Lead IIA GBS India",
+    "url": "https://www.linkedin.com/jobs/view/4384326456",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Software Engineer III - GBS IND",
+    "url": "https://www.linkedin.com/jobs/view/4384327427",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Senior Operations Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384337249",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Business Support Lead IIA GBS India",
+    "url": "https://www.linkedin.com/jobs/view/4384321643",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Software Engineer III - GBS IND",
+    "url": "https://www.linkedin.com/jobs/view/4384323635",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Team Leader",
+    "url": "https://www.linkedin.com/jobs/view/4350272393",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Senior Operations Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384337245",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Bank of America",
+    "title": "Senior Operations Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384325522",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Wells Fargo",
+    "title": "Senior Business Execution Consultant-(French Canadian Translator/Linguist)",
+    "url": "https://www.linkedin.com/jobs/view/4384132717",
+    "location": "Bengaluru South, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Assistant Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382718374",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "AVP- CORE",
+    "url": "https://www.linkedin.com/jobs/view/4382748063",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Full Stack Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382723178",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382718376",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Technical Product Owner",
+    "url": "https://www.linkedin.com/jobs/view/4382707737",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382717334",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382714472",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382705871",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382566469",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382706918",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Scrum Master",
+    "url": "https://www.linkedin.com/jobs/view/4382722214",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Full Stack Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382717336",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Data Privacy Officer",
+    "url": "https://www.linkedin.com/jobs/view/4382702982",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Assistant Vice President - Derivative Middle Office",
+    "url": "https://www.linkedin.com/jobs/view/4382742444",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "AVP- CORE",
+    "url": "https://www.linkedin.com/jobs/view/4382705862",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Dev Ops Engineer - Vice President",
+    "url": "https://www.linkedin.com/jobs/view/4382717337",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Employee Compliance - Regulatory Authorizations & Permissions",
+    "url": "https://www.linkedin.com/jobs/view/4382718375",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Tech Lead / PM",
+    "url": "https://www.linkedin.com/jobs/view/4382701969",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Cyber Risk and Control Lead - Vice President",
+    "url": "https://www.linkedin.com/jobs/view/4382717331",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Technical Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382702981",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Employee Compliance - Regulatory Authorizations and Permissions",
+    "url": "https://www.linkedin.com/jobs/view/4382705868",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Engineering Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382720320",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Senior developer /Tech lead",
+    "url": "https://www.linkedin.com/jobs/view/4382720326",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Performance Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382715359",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Java Developer Lead - Vice President",
+    "url": "https://www.linkedin.com/jobs/view/4382724064",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "Senior Java Developer - RAMP",
+    "url": "https://www.linkedin.com/jobs/view/4382724062",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Barclays",
+    "title": "DDA Senior DevOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382742443",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Analyst - Credit Risk",
+    "url": "https://www.linkedin.com/jobs/view/4373592863",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Contact Centre Shared Services Representative",
+    "url": "https://www.linkedin.com/jobs/view/4374154311",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Business Analysis",
+    "url": "https://www.linkedin.com/jobs/view/4384312522",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Conversational Banking Agent",
+    "url": "https://www.linkedin.com/jobs/view/4374152395",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Analyst - Global Banking",
+    "url": "https://www.linkedin.com/jobs/view/4384306632",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President Global Banking Operations support",
+    "url": "https://www.linkedin.com/jobs/view/4384146241",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Fund Administrator",
+    "url": "https://www.linkedin.com/jobs/view/4383249923",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager Central Approval Team",
+    "url": "https://www.linkedin.com/jobs/view/4383265129",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "TA Sourcing Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384149194",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Associate Director, Loan and Distribution Settlements",
+    "url": "https://www.linkedin.com/jobs/view/4384131861",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager, FC Risk Analys and Disc",
+    "url": "https://www.linkedin.com/jobs/view/4384129908",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President - Global Research",
+    "url": "https://www.linkedin.com/jobs/view/4384140726",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President - BUSINESS INTELLIGENCE",
+    "url": "https://www.linkedin.com/jobs/view/4384135826",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "First Line Risk and Control",
+    "url": "https://www.linkedin.com/jobs/view/4383256683",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager - Employee Workplace Solutions, MSF- South India",
+    "url": "https://www.linkedin.com/jobs/view/4338810900",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President - Compensation Services",
+    "url": "https://www.linkedin.com/jobs/view/4384316299",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "PEOPLE MANAGER - USER ACCEPTANCE TESTING",
+    "url": "https://www.linkedin.com/jobs/view/4384557461",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President - Finance System Operations",
+    "url": "https://www.linkedin.com/jobs/view/4384301766",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager - Finance System Operations",
+    "url": "https://www.linkedin.com/jobs/view/4384306642",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Vice President - Management Reporting",
+    "url": "https://www.linkedin.com/jobs/view/4384310637",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Global Head of Talent Acquisition Capability Centres",
+    "url": "https://www.linkedin.com/jobs/view/4384128934",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Learning And Development/Manager Learning and Developme",
+    "url": "https://www.linkedin.com/jobs/view/4384316289",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager - Performance and Reward Systems",
+    "url": "https://www.linkedin.com/jobs/view/4384308605",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Senior Vice President Credit Operations",
+    "url": "https://www.linkedin.com/jobs/view/4384311722",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Assistant Manager VCIP Support",
+    "url": "https://www.linkedin.com/jobs/view/4374157298",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "AVP - Investment Operations",
+    "url": "https://www.linkedin.com/jobs/view/4384315283",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Vice President Risk Operations Lead",
+    "url": "https://www.linkedin.com/jobs/view/4373940127",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "AVP Sales and Distribution",
+    "url": "https://www.linkedin.com/jobs/view/4384310522",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "AM GCOO Operations- LEA",
+    "url": "https://www.linkedin.com/jobs/view/4384151074",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "AM GCOO Operations- LEA",
+    "url": "https://www.linkedin.com/jobs/view/4384140728",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "AM GCOO Operations- LEA",
+    "url": "https://www.linkedin.com/jobs/view/4384139728",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Manager LG Mortgage Asset Specialist, MSF",
+    "url": "https://www.linkedin.com/jobs/view/4384305639",
+    "location": "Delhi Cantonment, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Program & Delivery Management /Sr. Associate Director, Delivery Management Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384303679",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Consultant Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384131986",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Android Developer/Consultant Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384318303",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "IOS Developer/Consultant Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384314416",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "HSBC",
+    "title": "Global BT Trade Floor Voice Support SME/Senior Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384300835",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Reference Data Analyst (BRDS), AS",
+    "url": "https://www.linkedin.com/jobs/view/4384169453",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Financial & Regulatory Reporting, Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384507832",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Divisional Risk and Control Specialist, VP",
+    "url": "https://www.linkedin.com/jobs/view/4373937858",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Credit Officer, NCT",
+    "url": "https://www.linkedin.com/jobs/view/4384172125",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Real Estate Intelligence Unit Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384339522",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Divisional Risk and Controls Senior Analyst, AS",
+    "url": "https://www.linkedin.com/jobs/view/4384165664",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Quantitative Strategist, VP",
+    "url": "https://www.linkedin.com/jobs/view/4384507828",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Real Estate Intelligence Unit, Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384325954",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Real Estate Intelligence Unit, Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384349055",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Regulatory Advisor, Sustainability Regulation Function, Chief Sustainability Office, VP",
+    "url": "https://www.linkedin.com/jobs/view/4371212075",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Valuations Specialist - Vice President",
+    "url": "https://www.linkedin.com/jobs/view/4384171159",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Real Estate Intelligence Unit, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4384512623",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Real Estate Intelligence Unit, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4384512622",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Group Strategic Analytics – Quantitative Strategist – Valuation Control, AS",
+    "url": "https://www.linkedin.com/jobs/view/4384167492",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "ICM/TFFI Center of Excellence – ICM AAR CoE Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384153909",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Associate Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384509864",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "QA Lead Engineer, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4384504905",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Developer/Software Engineer, AS",
+    "url": "https://www.linkedin.com/jobs/view/4384509863",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "QA Automation Engineer, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4384501903",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Engineer, AS",
+    "url": "https://www.linkedin.com/jobs/view/4384337670",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "AEM Front End Junior Developer",
+    "url": "https://www.linkedin.com/jobs/view/4384331774",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Senior Engineer (Front End Expert), AS",
+    "url": "https://www.linkedin.com/jobs/view/4384165665",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Network Engineer - Global Monitoring Center, NCT",
+    "url": "https://www.linkedin.com/jobs/view/4372172535",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Senior Engineer – Data Engineer, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4381117898",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Jasper Report Developer, AS",
+    "url": "https://www.linkedin.com/jobs/view/4384511651",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Senior AI Engineer, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4384167498",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deutsche Bank",
+    "title": "Corporate Bank Technology – Cash Management Transformation & Governance, AVP",
+    "url": "https://www.linkedin.com/jobs/view/4371455774",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Lead, Development",
+    "url": "https://www.linkedin.com/jobs/view/4382860892",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Vice President, Treasury Product Control",
+    "url": "https://www.linkedin.com/jobs/view/4382877328",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "KDB QA Specialist 1",
+    "url": "https://www.linkedin.com/jobs/view/4382874329",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Senior Manager, Regulatory Compliance, Risk",
+    "url": "https://www.linkedin.com/jobs/view/4382869566",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Analyst PMO",
+    "url": "https://www.linkedin.com/jobs/view/4383228242",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Specialist, Cyber Threat Response",
+    "url": "https://www.linkedin.com/jobs/view/4383214789",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Sr. Test Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382861869",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Manager, Group CIB TB",
+    "url": "https://www.linkedin.com/jobs/view/4382873386",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382868555",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382860942",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Manager, Internal Financial Controls Framework",
+    "url": "https://www.linkedin.com/jobs/view/4382866656",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Database Engineer - Platform Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4383231164",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Database Engineer - Platform Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4383225349",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "AVP, System Reliability Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382868621",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Relationship Manager - Employee Banking",
+    "url": "https://www.linkedin.com/jobs/view/4382865826",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Associate Director - Startups - SME Liabilities",
+    "url": "https://www.linkedin.com/jobs/view/4382876350",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Senior Relationship Manager - Equity",
+    "url": "https://www.linkedin.com/jobs/view/4382869622",
+    "location": "Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Standard Chartered India",
+    "title": "Trade Specialist - SME Trade",
+    "url": "https://www.linkedin.com/jobs/view/4382868562",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4382580300",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4268772725",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Hiring For Financial Spreading Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382865733",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Automation Tester-Senior Consultant-HYD/BLR",
+    "url": "https://www.linkedin.com/jobs/view/4373309124",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "USI | Audit | Data Science Staff",
+    "url": "https://www.linkedin.com/jobs/view/4373097798",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4268771762",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP ABAP Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365999772",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Pre-Sales-IAM Product Group- Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373303676",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382868057",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Kinaxis/o9 - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366003739",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CO/PC Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365993785",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "MS Dynamics Finance - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4366012104",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry- SF DevOps-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210497",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Salesforce Functional BA-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210505",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CO/PC Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366003738",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle Functional-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383213376",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM- One Identity - Senior Consultant 2",
+    "url": "https://www.linkedin.com/jobs/view/4383210496",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Gen AI- Specialist Master",
+    "url": "https://www.linkedin.com/jobs/view/4383210519",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CrystalBridge SNP Migration Consultant/Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4373312016",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4269069687",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4268770900",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Pre-Sales-IAM Product Group- Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373311029",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382856660",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CO/PC Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365997792",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM-One Identity-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210493",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CO/PC Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4366011490",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382858529",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Salesforce Functional BA-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383215140",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle Functional-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210509",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-Adobe Magento Developer-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383211427",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry- SF DevOps-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382898904",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-AEP & AJO Developer -Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383218109",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383214322",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM- One Identity - Senior Consultant 2",
+    "url": "https://www.linkedin.com/jobs/view/4383203776",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383208620",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Gen AI- Specialist Master",
+    "url": "https://www.linkedin.com/jobs/view/4382897964",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle CPQ-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383200946",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-Adobe Magento Developer-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382898914",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CrystalBridge SNP Migration Consultant/Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4373309100",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4268773526",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "GFS-GRM– Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383214326",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Automation Tester-Senior Consultant-HYD/BLR",
+    "url": "https://www.linkedin.com/jobs/view/4373301735",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "USI | Audit | Data Science Staff",
+    "url": "https://www.linkedin.com/jobs/view/4373095806",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte Legal",
+    "title": "Analyst – Finance MDM",
+    "url": "https://www.linkedin.com/jobs/view/4383510538",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Tax Consultant I-Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4382863358",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "BSA - Assistant Manager - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4382856659",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- DocuSign - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4269063798",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Assistant Manager/ Deputy Manager - Internal Federal & State Direct Tax - USI",
+    "url": "https://www.linkedin.com/jobs/view/4330384519",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Legal business associate Manager -Tax-Legal Management Consulting - Hyderabad/Gurugram",
+    "url": "https://www.linkedin.com/jobs/view/4366439359",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Assistant Manager - Virtual Events Producer and Strategist - Growth and Purpose - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4382718420",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP ABAP Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365997798",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382846984",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Pre-Sales-IAM Product Group- Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373309114",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Data Analytics Engineer - Asst Manager - Hyderabad/Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4382502790",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Jutro Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382848382",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CO/PC Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4365993786",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle Functional-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383209447",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383218128",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM- One Identity - Senior Consultant 2",
+    "url": "https://www.linkedin.com/jobs/view/4383212402",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-AEP & AJO Developer -Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210508",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM-One Identity-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383219088",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383216120",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-Adobe Magento Developer-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382897953",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Cyber-Identity-Fixed Term Hire -Sr. Con-Saviynt(Hyderabad)",
+    "url": "https://www.linkedin.com/jobs/view/4373093836",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle CPQ-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383213388",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Gen AI- Specialist Master",
+    "url": "https://www.linkedin.com/jobs/view/4383208619",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Payroll Executive",
+    "url": "https://www.linkedin.com/jobs/view/4382542954",
+    "location": "Thane, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Deputy Manager - Growth & Development (DLHP - IFT) - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4327852301",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382853743",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382851840",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM-One Identity-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383219090",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle CPQ-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383215164",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Gen AI Engineer - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4373303677",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Pre-Sales-IAM Product Group- Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373095795",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consultant-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382861383",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "MS Dynamics SCM - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4365987783",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry- SF DevOps-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383214303",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Salesforce Functional BA-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383210507",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-AEP & AJO Developer -Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383208605",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-Adobe Magento Developer-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383216096",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Senior Consultant - Tax-TTC- Agiloft - Hyderabad/Bengaluru/Gurugram/Pune/Chennai/Mumbai/Kolkata",
+    "url": "https://www.linkedin.com/jobs/view/4382855678",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383202798",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Customer-Digital Foundry-Adobe Magento Developer-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383200923",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle Functional-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383211434",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM-One Identity-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382896884",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "Consulting-C&M-Digital Foundry-MS Dynamics CRM-Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383211447",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Gen AI- Specialist Master",
+    "url": "https://www.linkedin.com/jobs/view/4383202797",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "IAM- One Identity - Senior Consultant 2",
+    "url": "https://www.linkedin.com/jobs/view/4383217104",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "C&M-Digital Foundry-Oracle CPQ-Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383200947",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Deloitte",
+    "title": "SAP CrystalBridge SNP Migration Consultant/Sr Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4373304488",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Data Analytics Tester - Senior Associate - Operate",
+    "url": "https://www.linkedin.com/jobs/view/4350160086",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Senior Associate_ Python Developers _Advisory Corporate_ Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4292875116",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Business Analyst - Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382715575",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "APAC -GES- Associate",
+    "url": "https://www.linkedin.com/jobs/view/4351431253",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Associate _ QA Automation_ Advisory Corporate _Advisory _ PAN India",
+    "url": "https://www.linkedin.com/jobs/view/4292868550",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce Tester - Manual/Automation - Associate - Operate",
+    "url": "https://www.linkedin.com/jobs/view/4372604247",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate-SME Vendor Management",
+    "url": "https://www.linkedin.com/jobs/view/4356048328",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate - Deals Advisory - Deals Strategy",
+    "url": "https://www.linkedin.com/jobs/view/4371975485",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate - Deals Advisory - Deals Strategy",
+    "url": "https://www.linkedin.com/jobs/view/4371978389",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Manager_SAP ABAP_SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4374117415",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce Consumer Goods QA-Associate",
+    "url": "https://www.linkedin.com/jobs/view/4372401556",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate - Deals - Private Equity Value Creation (PEVC)",
+    "url": "https://www.linkedin.com/jobs/view/4351159683",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Senior Associate – SAP ABAP –AI in Delivery- Advisory – Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4372106853",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Data engineer-Associate-Analytics as service - operate",
+    "url": "https://www.linkedin.com/jobs/view/4372478055",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Managed Services-BOS Exp Associate - AR Follow Up (Hospital Billing)/EPIC - Operate",
+    "url": "https://www.linkedin.com/jobs/view/4350320803",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Experience Associate_Accelerated Solutions (M&A IT)",
+    "url": "https://www.linkedin.com/jobs/view/4350232621",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Senior Associate_Internal Audit_Internal audit services_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4371808526",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate - Deals - Private Equity Value Creation (PEVC)",
+    "url": "https://www.linkedin.com/jobs/view/4351209753",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Data Engineer(Wherescape)-Associate-Analytics as service - operate",
+    "url": "https://www.linkedin.com/jobs/view/4372455987",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce Consumer Goods QA- Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4372405364",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Senior Manager_Internal Audit_Internal audit services_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4371808525",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "API developer- Associate-Analytics as service - operate",
+    "url": "https://www.linkedin.com/jobs/view/4372461679",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Full Stack Developer_Digital Integration_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4374727667",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce B2B Commerce Cloud QA- Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4372405366",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_Java Backend Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384357091",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_Java Backend Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384351243",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce QA Lead(Functional (CG&S)+ Automation))- Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372404376",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Data Engineer-Senior Associate-Analytics as service - operate",
+    "url": "https://www.linkedin.com/jobs/view/4372465620",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Corp Managed Svcs RCMS - Associate - Eligibility Specialist - Operate",
+    "url": "https://www.linkedin.com/jobs/view/4372603369",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP ABAP Hana_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384124314",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384177151",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384174292",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384173370",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384165925",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384165924",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_.Net Full Stack Developer_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384164997",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Pricing, Promo & Revenue Mgmt. – Technology Enablement-Associate-Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4344004172",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Manager_SAP ABAP_Enterprise Apps SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4374106938",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP ABAP Hana_GCC_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384345437",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Senior Associate_OneStream Implementation_Finance Solutions",
+    "url": "https://www.linkedin.com/jobs/view/4371968771",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Manager_SAP BW4HANA_Data & Analytics_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384346473",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "CD&E-Cybersecurity-CyberArk Conjur-Senior Associate-Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4382577146",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP EWM_SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384184058",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP FICO_Enterprise Apps SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384120562",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "SAP - Syniti - Senior Associate - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4382585638",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP FICO_Enterprise Apps SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384165928",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "MS Engineering Operations – Associate– .Net Framework, Visual Basic, iFrame, SSIS/SSRS - Operate",
+    "url": "https://www.linkedin.com/jobs/view/4382585639",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Director_Tax Technology Consultant_Tax Tech_TRS_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384531126",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP FICO_Enterprise Apps SAP_Advisory_Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4384339811",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_Internal Audit_Internal Audit Services _Advisory_Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4373086303",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Validation Assessment - Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372457870",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "US Indirect Tax - Excise & Fuel Tax - Experienced Associate",
+    "url": "https://www.linkedin.com/jobs/view/4351461232",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "US Indirect Tax - Sales & Use Tax Compliance - Experienced Associate",
+    "url": "https://www.linkedin.com/jobs/view/4351199778",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "UK M&A Editorial and Design- Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4351299599",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "FS Tax - Credit Fund - Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4350210096",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Experienced Associate – Digital & Automation (ERP – Indirect Tax)",
+    "url": "https://www.linkedin.com/jobs/view/4350130051",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_ Senior Associate _ IRDA-Debt_ Debt - Advisory_Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4384340794",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Senior Manager-Oracle fusion SCM-Oracle-Advisory-Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4366388578",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "UK BCS- Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4351175670",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Oracle FPnA -  Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372460745",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_GIS_iGT - Citizen and Business Services_Advisory_Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4343744817",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Manager_Contracts & Compliance _Regulatory & Business Solutions_TRS_Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4384178132",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Premium Tax, 1120 PC -Manager-BLR/KOL/HYD",
+    "url": "https://www.linkedin.com/jobs/view/4350190060",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Specialist 3_international tax_GTO - SCO_TRS_Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4384345435",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Specialist 3_international tax_GTO - SCO_TRS_Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4384348364",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "SAP - Syniti - Senior Associate - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4382597125",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_FT,P2P,RTR_FE_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4371862110",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Strategy Risk & Compliance Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4371977446",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN-Associate_Internal Audit_Internal audit services_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4371804601",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Specialist 3_Control Testing_Internal Audit Services _Advisory -Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4373090254",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_Post Merger Integration_DDV_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384128095",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SOC_Managed Services_ Advisory _Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384167773",
+    "location": "Thane, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_Post Merger Integration_DDV_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384106999",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_Post Merger Integration_DDV_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384132015",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SOC_Managed Services_ Advisory _Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384342711",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_ Financial Modelling_Valuations_ Advisory_ Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384351236",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SOC_Managed Services_ Advisory _Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384345436",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP CPI_AI_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4372125049",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Manager_Financial Modelling_Valuations_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384338968",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_Lending_FS tech_Advisory _Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384176192",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_SAP MM_Enterprise Apps SAP_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4384120564",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4358271849",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384189007",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "Associate",
+    "url": "https://www.linkedin.com/jobs/view/4384184100",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_Data Privacy_Investigations & Disputes_Advisory_Pune",
+    "url": "https://www.linkedin.com/jobs/view/4373089294",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Senior Associate_Data Scientist Gen AI_Data & Analytics_Advisory_Pune",
+    "url": "https://www.linkedin.com/jobs/view/4384166787",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC India",
+    "title": "IN_Associate_SAP FICO_SAP_Advisory_Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4374117416",
+    "location": "Goregaon, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PwC Acceleration Center India",
+    "title": "Salesforce Agentforce + Lightning- Senior Associate",
+    "url": "https://www.linkedin.com/jobs/view/4382597124",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Law - RRM - Advanced Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4320929378",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - TAX - TMT - TAX - GCR - Global Compliance & Reporting - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4366084439",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "TTT - QA Automation - Tax Senior",
+    "url": "https://www.linkedin.com/jobs/view/4372471180",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Analyst - TAX - TMT - TAX - ITTS - Transfer Pricing - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4351410836",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - Business Consulting Risk - TMT - CNS - RISK - PROCESS & CONTROLS - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4372419361",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant - Digital Procurement",
+    "url": "https://www.linkedin.com/jobs/view/4351460799",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Global GDS Company Secretary",
+    "url": "https://www.linkedin.com/jobs/view/4372474012",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "RPA Developer - ServiceNow",
+    "url": "https://www.linkedin.com/jobs/view/4344169440",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Assistant Director - Business Change Manager",
+    "url": "https://www.linkedin.com/jobs/view/4371970210",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "CT-NITRO - Research Innovation Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4372542474",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Manager - Business Consulting Risk - TMT - CNS - Risk - Process & Controls - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4280222471",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Executive - Business Consulting Risk - National - CBS - RM - Proj & Operations - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4364789728",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Assistant Manager - Assurance - National - ASU - FAAS - Financial&AccountingAdv - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4351145310",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Assistant Manager - Assurance - National - ASU - FAAS - Financial&AccountingAdv - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4351274976",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "DE-Python-Mgr-GDS",
+    "url": "https://www.linkedin.com/jobs/view/4356154620",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GMS-Senior- Email Security-ProofPoint",
+    "url": "https://www.linkedin.com/jobs/view/4361757517",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "CBS-AWS-SSR-EA CoE- Supervising Associate-Executive Assistant",
+    "url": "https://www.linkedin.com/jobs/view/4382876863",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Analyst - TAX - National - TAX - PAS - Mobility Core - Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4351460800",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "MS-CRM technical - D365 CRM Integration and Data Migration Consultant-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4371932155",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "RC-RISK MANAGEMENT-NON FS TPRM-Senior- E",
+    "url": "https://www.linkedin.com/jobs/view/4356123368",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356186807",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BODS-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4324474287",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "TTT-PSI-Fiori-Tax Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356301713",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP RAP CDS - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351139543",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant-Tech Consulting-FS-CNS-TC-TECHNOLOGY STRATEGY & TRANSFORMATION-Bangalore",
+    "url": "https://www.linkedin.com/jobs/view/4372470225",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GRC - SAP Controls - ITAC - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356253539",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP Integration Suite - Architect_Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372454760",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SCT-Planning-Kinaxis-Solution Architect-GDS02",
+    "url": "https://www.linkedin.com/jobs/view/4356113287",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate - TAX - National - TAX - GCR - ACR - Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4320269070",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Analyst - TAX - TMT - TAX - Indirect Tax - Core - Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4351206846",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - Assurance - TMT - ASU - TR - Technology Risk - Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4344025323",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP IBP - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4350453778",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "MS-CRM technical - D365 CRM Integration and Data Migration Consultant-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4364795537",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "FS-RISK CONSULTING-FSRM - QTB-SENIOR",
+    "url": "https://www.linkedin.com/jobs/view/4343876460",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP TM Technical-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4351125372",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Fintech - FCPM - High Radius - Manager - GDS02",
+    "url": "https://www.linkedin.com/jobs/view/4355954499",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356127992",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP RAP CDS - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351309207",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant-Forensics-National-ASU-Forensics-Investigations & Compliance-Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4382840487",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant-Forensics-National-ASU-Forensics-Investigations & Compliance-Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4382843357",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356225870",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BODS-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4324504227",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant-Forensics-National-ASU-Forensics-Investigations & Compliance-Chennai",
+    "url": "https://www.linkedin.com/jobs/view/4382849215",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "DE-AE- Omniverse Engineer Staff-GDSF04",
+    "url": "https://www.linkedin.com/jobs/view/4382887427",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GRC - SAP Controls - ITAC - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356253540",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP Integration Suite - Architect_Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372462371",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - TAX - TMT - TAX - ITTS - Transfer Pricing - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4327604895",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - TAX - TMT - TAX - GCR - Global Compliance & Reporting - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4343979316",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - TAX - TMT - TAX - GCR - Global Compliance & Reporting - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4344171153",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - TAX - TMT - TAX - GCR - Global Compliance & Reporting - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4356430379",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - TAX - TMT - TAX - GCR - Global Compliance & Reporting - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4356530338",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Executive - Assurance - National - ASU - FAAS - Financial&AccountingAdv - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4372402200",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GMS-Senior- Email Security-ProofPoint",
+    "url": "https://www.linkedin.com/jobs/view/4361881033",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate - SaT - National - SaT - TCF - Capital and Debt Advisory - Hyderabad",
+    "url": "https://www.linkedin.com/jobs/view/4351791066",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "MS-CRM technical - D365 CRM Integration and Data Migration Consultant-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4371927321",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP IBP - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4350443764",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "FS RC-EY COMPLY and RVS - AXIOM_Staff",
+    "url": "https://www.linkedin.com/jobs/view/4326705067",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Fintech - FCPM - High Radius - Manager - GDS02",
+    "url": "https://www.linkedin.com/jobs/view/4356101886",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356215878",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP RAP CDS - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351199457",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BODS-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4324285131",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356340602",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SCT-Planning-Kinaxis-Solution Architect-GDS02",
+    "url": "https://www.linkedin.com/jobs/view/4355984795",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GRC - SAP Controls - ITAC - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356340598",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP Integration Suite - Architect_Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372463348",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Intern 1 - Assurance - TMT - ASU - Assurance Services - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4382889345",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant - Business Consulting PI - AMI - CNS - BC - Supply Chain & Operations - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4351920394",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant - Business Consulting PI - AMI - CNS - BC - Supply Chain & Operations - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4351781139",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Business Consulting Risk - National - CNS - Risk - Risk Management - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4320279027",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - Forensics - National - ASU - Forensics - Investigations & Compliance - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4356193735",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Manager - Capital Markets (Calypso Specialist)",
+    "url": "https://www.linkedin.com/jobs/view/4372455706",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP IBP - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4350633695",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Assurance - FS - ASU - TR - Technology Risk - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4373049452",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Analyst - Assurance - FS - ASU - TR - Technology Risk - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4373056193",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Assurance - FS - ASU - TR - Technology Risk - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4373044559",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - SaT - FS - SaT - S&E - Corporate Strategy - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4344210592",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Business Consulting Risk - AMI - CNS - Risk - Process & Controls - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4382853146",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Project Consultant - Business Consulting PI - GOV - CNS - BC - Transformation Delivery - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4320331591",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Business Consulting Risk - AMI - CNS - Risk - Process & Controls - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4382844427",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "MS-CRM technical - D365 CRM Integration and Data Migration Consultant-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4371928316",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Tech Consulting - National - CNS - TC - AI and Data - Mumbai",
+    "url": "https://www.linkedin.com/jobs/view/4373323675",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356320655",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356320656",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BODS-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4324285132",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate - Operations - Operations - CBS - FIN - Controlling-General Accounting - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4372897907",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - SaT - CHS - SaT - TCF - M&A Advisory - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4373059020",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - TAX - TMT - TAX - Indirect Tax - Core - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4320129567",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Analyst - TAX - National - TAX - Indirect Tax - Core - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4351450777",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - Business Consulting Risk - TMT - CNS - RISK - PROCESS & CONTROLS - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4382843355",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Director - Markets - National - CBS - MKT - Global Markets/Client Service - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4337371241",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Consultant - Business Consulting PI - CHS - CNS - BC - Marketing Sales & Service - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4372423212",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Associate Consultant - Business Consulting PI - GOV - CNS - BC - Transformation Delivery - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4320159236",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Analyst - TAX - AMI - TAX - Indirect Tax - Core - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4382837769",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant - Business Consulting PI - CHS - CNS - BC - Supply Chain & Operations - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4347495848",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant - TAX - TMT - TAX - Indirect Tax - Core - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4331743691",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Manager - Business Consulting Risk - National - CBS - RM - Proj & Operations - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4372406040",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Project Manager - Business Consulting PI - GOV - CNS - BC - Transformation Delivery - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4356182114",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Project Consultant-Tech Consulting-GOV-CNS-TC-Technology Strategy & Transformation-New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4372495536",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "CS Article 1 - TAX - AMI - TAX - Indirect Tax - Core - New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4382843354",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Manager - Business Consulting Risk - National - CBS - FIN - FP&A Account Support - NCR",
+    "url": "https://www.linkedin.com/jobs/view/4344166329",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Consultant-Tech Consulting-GOV-CNS-TC-Technology Strategy & Transformation-New Delhi",
+    "url": "https://www.linkedin.com/jobs/view/4372487659",
+    "location": "Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Senior Manager - Assurance - CHS - ASU - Audit - Audit Services - Pune",
+    "url": "https://www.linkedin.com/jobs/view/4337371239",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Digital - GEN AI - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4355856291",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "MS-CRM technical - D365 CRM Integration and Data Migration Consultant-Senior",
+    "url": "https://www.linkedin.com/jobs/view/4371930196",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "FS RC-EY COMPLY and RVS - AXIOM_Staff",
+    "url": "https://www.linkedin.com/jobs/view/4326714800",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "Egrc ServiceNow_BA Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356281834",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BODS-Manager",
+    "url": "https://www.linkedin.com/jobs/view/4324504226",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP RAP CDS - Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351289322",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "GRC - SAP Controls - ITAC - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4356047990",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SAP BTP Integration Suite - Architect_Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372455705",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "EY",
+    "title": "SCT - Planning - Kinaxis Configuration Developer - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4354019602",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "KPMG India",
+    "title": "Assistant Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372571684",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "KPMG India",
+    "title": "D365 Functional",
+    "url": "https://www.linkedin.com/jobs/view/4384302327",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "KPMG India",
+    "title": "D365 Technical",
+    "url": "https://www.linkedin.com/jobs/view/4384300324",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "KPMG India",
+    "title": "Assistant Manager_MS Fabric",
+    "url": "https://www.linkedin.com/jobs/view/4383261612",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "KPMG India",
+    "title": "KGS - SAP GTS ABAP - M",
+    "url": "https://www.linkedin.com/jobs/view/4382864906",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "McKinsey & Company",
+    "title": "Capabilities and Insights Specialist - GenAI",
+    "url": "https://www.linkedin.com/jobs/view/4354667108",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Boston Consulting Group (BCG)",
+    "title": "Traditional Consulting - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382885002",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Boston Consulting Group (BCG)",
+    "title": "Traditional Consulting - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382871610",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Boston Consulting Group (BCG)",
+    "title": "Traditional Consulting - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382874445",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Boston Consulting Group (BCG)",
+    "title": "Traditional Consulting - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382868689",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Boston Consulting Group (BCG)",
+    "title": "Traditional Consulting - Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382877395",
+    "location": "New Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Fractal",
+    "title": "PowerBI- Engineer/Senior Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383210322",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Fractal",
+    "title": "Full stack Developer (Java+React) and (Python+ React)",
+    "url": "https://www.linkedin.com/jobs/view/3964259507",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Fractal",
+    "title": "Lead Architect_BI",
+    "url": "https://www.linkedin.com/jobs/view/4372866545",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Fractal",
+    "title": "Azure Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/3983073093",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Fractal",
+    "title": "Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4228774903",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Tiger Analytics",
+    "title": "Senior Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4383218869",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4255737177",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Senior Analyst, Workforce Strategy and Planning",
+    "url": "https://www.linkedin.com/jobs/view/4355403425",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4382579592",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4382571954",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4382568352",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SOFTWARE ENGINEER III",
+    "url": "https://www.linkedin.com/jobs/view/4382584428",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) Senior Manager, Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382572991",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR MANAGER, SOFTWARE ENGINEERING",
+    "url": "https://www.linkedin.com/jobs/view/4331722629",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4355759055",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4351155309",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Senior, Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4351169665",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Staff Software Engineer - Front end",
+    "url": "https://www.linkedin.com/jobs/view/4382586405",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382587402",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382594032",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382581591",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382581590",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382590170",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SOFTWARE ENGINEER III",
+    "url": "https://www.linkedin.com/jobs/view/4371981074",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4372455861",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4382583411",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "SOFTWARE ENGINEER III",
+    "url": "https://www.linkedin.com/jobs/view/4364769710",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) Software Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4372456761",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "IND SENIOR, SOFTWARE ENGINEER",
+    "url": "https://www.linkedin.com/jobs/view/4382555899",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Walmart Global Tech India",
+    "title": "(IND) PRINCIPAL, SYSTEMS AND INFRASTRUCTURE ENGINEER, INFORMATION SECURITY",
+    "url": "https://www.linkedin.com/jobs/view/4382581592",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Target Edge",
+    "title": "Project Coordinator",
+    "url": "https://www.linkedin.com/jobs/view/4382882278",
+    "location": "Goregaon, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Esse India | Canada immigration consultants in delhi | visa consultant delhi",
+    "title": "Senior Logistics Manager – Overseas Opportunity",
+    "url": "https://www.linkedin.com/jobs/view/4382849377",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Esse India | Canada immigration consultants in delhi | visa consultant delhi",
+    "title": "Senior Logistics Manager for Overseas Opportunities",
+    "url": "https://www.linkedin.com/jobs/view/4382850205",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Esse India | Canada immigration consultants in delhi | visa consultant delhi",
+    "title": "Senior Information Technology Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382887168",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Esse India | Canada immigration consultants in delhi | visa consultant delhi",
+    "title": "Senior Managing Director",
+    "url": "https://www.linkedin.com/jobs/view/4384101809",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Visa",
+    "title": "Technical Product Manager - A.I. & M.L (Individual Contributor Role)",
+    "url": "https://www.linkedin.com/jobs/view/4382865985",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Visa",
+    "title": "Sr. ML Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4379183076",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Visa",
+    "title": "Staff Data Engineer(Exp in AI/ML Mandate)",
+    "url": "https://www.linkedin.com/jobs/view/4382841538",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Visa",
+    "title": "Senior Consultant (11-15 Years, Distributed Systems, Java/Go/Python, Gen AI)",
+    "url": "https://www.linkedin.com/jobs/view/4379143940",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Esse India | Canada immigration consultants in delhi | visa consultant delhi",
+    "title": "Chief Information Officer for Australia opportunities",
+    "url": "https://www.linkedin.com/jobs/view/4382888168",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Specialist - Campus Recruitment",
+    "url": "https://www.linkedin.com/jobs/view/4384152240",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Accountant HRB Accounting",
+    "url": "https://www.linkedin.com/jobs/view/4384143811",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Director, Product Management (Transaction Processing)",
+    "url": "https://www.linkedin.com/jobs/view/4355947665",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Senior Software Engineer - Java Full Stack/Kafka/AWS",
+    "url": "https://www.linkedin.com/jobs/view/4372608268",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Manager Software Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382599150",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "BizOps Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4372401703",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Senior Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384141955",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Senior BizOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4371991861",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Lead Software Engineer (ServiceNow Developer)",
+    "url": "https://www.linkedin.com/jobs/view/4382724443",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Platform Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4382577951",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Mastercard",
+    "title": "Senior BizOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382726327",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "American Express Global Business Travel",
+    "title": "Director - Delivery Management",
+    "url": "https://www.linkedin.com/jobs/view/4382729924",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "American Express Global Business Travel",
+    "title": "Test Strategist / Test Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382729923",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "American Express Global Business Travel",
+    "title": "Quality Analyst – SDET (UI + API Automation)",
+    "url": "https://www.linkedin.com/jobs/view/4382737673",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "American Express",
+    "title": "Manager-Data Science",
+    "url": "https://www.linkedin.com/jobs/view/4384159576",
+    "location": "Bengaluru South, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "American Express Global Business Travel",
+    "title": "Senior Travel Consultant",
+    "url": "https://www.linkedin.com/jobs/view/4382736625",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PayPal",
+    "title": "Sr Analyst, Payroll",
+    "url": "https://www.linkedin.com/jobs/view/4382594024",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PayPal",
+    "title": "Sr Manager, Payroll Accounting",
+    "url": "https://www.linkedin.com/jobs/view/4382589183",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "PayPal",
+    "title": "Software Engineer - Java",
+    "url": "https://www.linkedin.com/jobs/view/4286780264",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "Head of India Marketing",
+    "url": "https://www.linkedin.com/jobs/view/4366703473",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "Payments Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4319968129",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "Global People Support - Team Lead",
+    "url": "https://www.linkedin.com/jobs/view/4365718903",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "SDC Operations Manager, Financial Crimes (AML)",
+    "url": "https://www.linkedin.com/jobs/view/4333104437",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "Software Engineer, Internal Systems",
+    "url": "https://www.linkedin.com/jobs/view/4366712093",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Stripe",
+    "title": "Technical Program Manager, Risk",
+    "url": "https://www.linkedin.com/jobs/view/4384192818",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Intuit",
+    "title": "Principal Technical Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372874702",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Intuit",
+    "title": "Staff Software engineer - Android",
+    "url": "https://www.linkedin.com/jobs/view/4343886272",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ServiceNow",
+    "title": "Staff Systems Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366180611",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Workday",
+    "title": "Product Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384175573",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Workday",
+    "title": "Collaboration Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4351304690",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Snowflake",
+    "title": "Enterprise Account Executive - GCC (FSI)",
+    "url": "https://www.linkedin.com/jobs/view/4384305107",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Snowflake",
+    "title": "Enterprise Account Executive - GCC (FSI)",
+    "url": "https://www.linkedin.com/jobs/view/4384194776",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Databricks",
+    "title": "Cash Application Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4372457202",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Databricks",
+    "title": "Revenue Accounting Manager",
+    "url": "https://www.linkedin.com/jobs/view/4372440981",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Databricks",
+    "title": "Senior Billing Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4372457203",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Databricks",
+    "title": "Senior Collections Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4372449740",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Software Engineer - Test",
+    "url": "https://www.linkedin.com/jobs/view/4374480615",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4374469751",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Staff Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384107727",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "2026-03-11",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Staff Program Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384121165",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "2026-03-11",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Manager - Deals Desk",
+    "url": "https://www.linkedin.com/jobs/view/4384120719",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Lead - Workplace Management",
+    "url": "https://www.linkedin.com/jobs/view/4366295808",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Manager - Sales Commission",
+    "url": "https://www.linkedin.com/jobs/view/4382878121",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior SOC Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382569465",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Freshworks",
+    "title": "Senior Software Engineer - Frontend",
+    "url": "https://www.linkedin.com/jobs/view/4373953073",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Postman",
+    "title": "Manager, Corporate Sales, Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4343575594",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Postman",
+    "title": "Strategic Account Director, Bengaluru",
+    "url": "https://www.linkedin.com/jobs/view/4366343277",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "BrowserStack",
+    "title": "Lead - Developer Marketing",
+    "url": "https://www.linkedin.com/jobs/view/4366623065",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Thoughtworks",
+    "title": "Senior Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382876724",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Thoughtworks",
+    "title": "Lead Mobile Developer",
+    "url": "https://www.linkedin.com/jobs/view/4383285131",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Associate Director - Data Analytics, Science & AI Enablement",
+    "url": "https://www.linkedin.com/jobs/view/4371115771",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382842294",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Design Technologist",
+    "url": "https://www.linkedin.com/jobs/view/4382830975",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Staff Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4376727225",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382851040",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382849397",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4371802547",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Chargebee",
+    "title": "Senior Lead Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382857092",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Accounting Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384195676",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Communications Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384300598",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Director Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4374495746",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Finance Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384377722",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Finance Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384374804",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Mech Design Engr II",
+    "url": "https://www.linkedin.com/jobs/view/4374752945",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384375696",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384368964",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Asst Mgr Financial Services",
+    "url": "https://www.linkedin.com/jobs/view/4384313248",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384368965",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384383555",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384382594",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384386513",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384377711",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384373958",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384379627",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384386511",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Asst Mgr Financial Services",
+    "url": "https://www.linkedin.com/jobs/view/4384551350",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384388316",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Financial Svcs Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384377712",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Tax Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384381581",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Controllership Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384301482",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Software Engr II",
+    "url": "https://www.linkedin.com/jobs/view/4384143316",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Project Mgmt Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384378638",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Data Science Supervisor",
+    "url": "https://www.linkedin.com/jobs/view/4384134698",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Software Eng Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374769183",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Controllership Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384305374",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374769173",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374760408",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384389337",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384367972",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384372901",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Advanced Hardware Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374763351",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Software Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374757703",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Advanced Software Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374770090",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Cyber Sec Archt/Engr I",
+    "url": "https://www.linkedin.com/jobs/view/4384141506",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384373955",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Lead IT Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384389331",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Embedded Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374765267",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Embedded Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374762370",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Project Mgmt Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384375704",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384389334",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384388327",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384388325",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384387358",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384386522",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384382606",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384381590",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384379633",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384379632",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384376714",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384371910",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384379638",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384377721",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr IT Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384368963",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Lead IT Architect",
+    "url": "https://www.linkedin.com/jobs/view/4384371909",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Field Service Engr I",
+    "url": "https://www.linkedin.com/jobs/view/4374705581",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Lead Project Administrator",
+    "url": "https://www.linkedin.com/jobs/view/4384301485",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sales Manager",
+    "url": "https://www.linkedin.com/jobs/view/4366705626",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Software Engr I",
+    "url": "https://www.linkedin.com/jobs/view/4384302444",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Systems Eng Supervisor",
+    "url": "https://www.linkedin.com/jobs/view/4366374129",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Systems Engr I",
+    "url": "https://www.linkedin.com/jobs/view/4374493848",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Technician - ISC-Mfg",
+    "url": "https://www.linkedin.com/jobs/view/4384131742",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Proj Mgmt Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4384376712",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Systems Engr II",
+    "url": "https://www.linkedin.com/jobs/view/4366622995",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Software Engr II",
+    "url": "https://www.linkedin.com/jobs/view/4374707506",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Systems Engr II",
+    "url": "https://www.linkedin.com/jobs/view/4374497686",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Honeywell",
+    "title": "Sr Advanced Software Engr",
+    "url": "https://www.linkedin.com/jobs/view/4374499710",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Factory SCM Controller",
+    "url": "https://www.linkedin.com/jobs/view/4371963658",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Python Developer",
+    "url": "https://www.linkedin.com/jobs/view/4383270109",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Vice President – Finance and Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383262459",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "UX Designer",
+    "url": "https://www.linkedin.com/jobs/view/4383270118",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Domain Manual Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383263300",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens EDA (Siemens Digital Industries Software)",
+    "title": "Support Application Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383271092",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4363024581",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Senior Engineer - Design & Development (C#,.Net,Angular)",
+    "url": "https://www.linkedin.com/jobs/view/4363086420",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Assistant Manager - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383263318",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Chief Scientist / Fellow (f/m/d) Research and Predevelopment",
+    "url": "https://www.linkedin.com/jobs/view/4383273037",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Junior Vehicle Control System Tester",
+    "url": "https://www.linkedin.com/jobs/view/4383265267",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Structural Engineer - Oil & Gas Projects",
+    "url": "https://www.linkedin.com/jobs/view/4383274021",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Process Expert - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383272069",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Software Developer - C++ (OOPs,DSA)",
+    "url": "https://www.linkedin.com/jobs/view/4382729724",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr Process Associate - FPS",
+    "url": "https://www.linkedin.com/jobs/view/4383267225",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr. Process Associate - Hire to Retire",
+    "url": "https://www.linkedin.com/jobs/view/4383266204",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Customs Professional",
+    "url": "https://www.linkedin.com/jobs/view/4382732616",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr.Process Associate - Marcom, Sales and Delivery Services",
+    "url": "https://www.linkedin.com/jobs/view/4383262437",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr.Process Associate - Marcom, Sales and Delivery Services",
+    "url": "https://www.linkedin.com/jobs/view/4383251970",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Senior Software Developer - Frontend",
+    "url": "https://www.linkedin.com/jobs/view/4383258629",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Data Engineering Lead",
+    "url": "https://www.linkedin.com/jobs/view/4383272073",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Digital Industries Software",
+    "title": "SW QA Engineer Associate - Python & CLI Testing",
+    "url": "https://www.linkedin.com/jobs/view/4383260609",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Digital Industries Software",
+    "title": "Cybersecurity Engineer / Product and Solution Security Expert",
+    "url": "https://www.linkedin.com/jobs/view/4383257673",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "L2 Remote Centre Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383233008",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "SCADA L1 Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383215683",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "SCADA L1 Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383215684",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4383270128",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "RC L1 Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383229144",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "SCADA L1 Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383214800",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Assistant Manager - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383253844",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Digital Industries Software",
+    "title": "Applications Engineer (HF-Electromagnetic Simulation)",
+    "url": "https://www.linkedin.com/jobs/view/4383274017",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Gamesa",
+    "title": "RC L1 Operator",
+    "url": "https://www.linkedin.com/jobs/view/4383217616",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Test Professional",
+    "url": "https://www.linkedin.com/jobs/view/4383272074",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Project Manager - Data center",
+    "url": "https://www.linkedin.com/jobs/view/4383261512",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Application specialist MR",
+    "url": "https://www.linkedin.com/jobs/view/4361898381",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Regional Manager - West",
+    "url": "https://www.linkedin.com/jobs/view/4382740256",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Senior Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4383259699",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Technical Sales Specialist – PLCC, FOTE",
+    "url": "https://www.linkedin.com/jobs/view/4384386168",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Process Lead- Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383260601",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Assistant Manager- Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383272086",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Process Expert - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383266219",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Assistant Manager - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383263312",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Healthineers",
+    "title": "Customs Professional",
+    "url": "https://www.linkedin.com/jobs/view/4382746058",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Service Engineer Transformer",
+    "url": "https://www.linkedin.com/jobs/view/4383269120",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr. Process Associate - Finance & Procurement Services",
+    "url": "https://www.linkedin.com/jobs/view/4383269132",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Energy",
+    "title": "Dimensional Inspector – Raw/Machined Cast Parts & Large Steel Fabrication",
+    "url": "https://www.linkedin.com/jobs/view/4227323231",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Energy",
+    "title": "NDT Inspector - Castings & Large Steel Fabrication",
+    "url": "https://www.linkedin.com/jobs/view/4293552307",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Energy",
+    "title": "Instrumentation & Control Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366025142",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Associate Scrum Master",
+    "url": "https://www.linkedin.com/jobs/view/4383267244",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Energy",
+    "title": "Cost Engineer - Auxiliary Commodities Large Gas & Steam Turbines & Generators",
+    "url": "https://www.linkedin.com/jobs/view/4365964349",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Test Automation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383274015",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Energy",
+    "title": "Customer Success Champion (IT Escalation Management)",
+    "url": "https://www.linkedin.com/jobs/view/4373317144",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "DevOps Engineer (Site Reliability Engineering)",
+    "url": "https://www.linkedin.com/jobs/view/4383252966",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Software Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383272076",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "System Engineer (Projects) - Railway Infrastructure",
+    "url": "https://www.linkedin.com/jobs/view/4383270117",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Senior Software Test Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383264300",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Software Engineer- Data Engineer / Data Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383260608",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Substation Design Engineer– Primary",
+    "url": "https://www.linkedin.com/jobs/view/4383505649",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Substation Design Engineer– Factory Interface",
+    "url": "https://www.linkedin.com/jobs/view/4383251985",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "DevOps Engineer - AWS, Teamwork Cloud, MagicDraw",
+    "url": "https://www.linkedin.com/jobs/view/4383265244",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "System Engineering Project Manager –  Rolling stock",
+    "url": "https://www.linkedin.com/jobs/view/4383259672",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Senior Software Engineer - GoLang Microservices & Event-Driven Systems",
+    "url": "https://www.linkedin.com/jobs/view/4383272068",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Full Stack Developer (Java+Angular) 3-5years",
+    "url": "https://www.linkedin.com/jobs/view/4383264293",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens Digital Industries Software",
+    "title": "Software Engineer Senior - Teamcenter",
+    "url": "https://www.linkedin.com/jobs/view/4383252956",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Senior DevOps Engineer- IT Asset/Application",
+    "url": "https://www.linkedin.com/jobs/view/4383268207",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Siemens",
+    "title": "Sr. Engineer - IXL SW",
+    "url": "https://www.linkedin.com/jobs/view/4383272094",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "HR Operations Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4379934782",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Finance Analyst - Intercompany",
+    "url": "https://www.linkedin.com/jobs/view/4380367632",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Procurement and Logistics Manager",
+    "url": "https://www.linkedin.com/jobs/view/4379921969",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Accounting & Reporting Analyst-Intercompany",
+    "url": "https://www.linkedin.com/jobs/view/4379262204",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Material Planner",
+    "url": "https://www.linkedin.com/jobs/view/4379923829",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Financial Planning & Analysis Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4380546331",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Production Supervisor",
+    "url": "https://www.linkedin.com/jobs/view/4384324307",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Buyer",
+    "url": "https://www.linkedin.com/jobs/view/4382869461",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Accounting & Reporting Analyst - Account",
+    "url": "https://www.linkedin.com/jobs/view/4379263394",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Procurement Specialist with English for South Africa",
+    "url": "https://www.linkedin.com/jobs/view/4379262182",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Buyer",
+    "url": "https://www.linkedin.com/jobs/view/4384324294",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Financial Planning & Analysis Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382875256",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4336660918",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "ACCOUNTING & REPORTING SPECIALIST - ACCO",
+    "url": "https://www.linkedin.com/jobs/view/4379094917",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Process Quality Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382860803",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Associate Project Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4379259509",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Supplier Development & Quality Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384326157",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "HR Operations Specialist - ELC",
+    "url": "https://www.linkedin.com/jobs/view/4379921968",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Business Development Specialist - South Zone",
+    "url": "https://www.linkedin.com/jobs/view/4384313985",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Global Product Manager, User Tools",
+    "url": "https://www.linkedin.com/jobs/view/4377692939",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Transfer Pricing Analyst - Tax",
+    "url": "https://www.linkedin.com/jobs/view/4379205541",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Commercial Excellence Finance Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382880105",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "R&D Engineer Fullstack",
+    "url": "https://www.linkedin.com/jobs/view/4382879165",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Senior Network Monitoring Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382866519",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "R&D Senior Engineer Test Automation",
+    "url": "https://www.linkedin.com/jobs/view/4384309991",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "SAP S/4HANA Public & Private Cloud Specialist – Logistics Procurement",
+    "url": "https://www.linkedin.com/jobs/view/4384365380",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "SAP S/4HANA Public & Private Cloud Specialist – Sales and Service",
+    "url": "https://www.linkedin.com/jobs/view/4384540280",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Enterprise Domain Architect for Application & AI",
+    "url": "https://www.linkedin.com/jobs/view/4382861792",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "SAP S/4HANA Public & Private Cloud Specialist – Finance",
+    "url": "https://www.linkedin.com/jobs/view/4383204217",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "IS Deficiency, Audit and SAP Compliance Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382872331",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Senior Domain Architect for Functional Domains",
+    "url": "https://www.linkedin.com/jobs/view/4382158206",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Enterprise Domain Architect for Information",
+    "url": "https://www.linkedin.com/jobs/view/4381996101",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Principal Network Architect - Automation Ecosystem",
+    "url": "https://www.linkedin.com/jobs/view/4382725924",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Field Service Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374700669",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Sales Manager - West Zone",
+    "url": "https://www.linkedin.com/jobs/view/4384310977",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "ABB",
+    "title": "Sales Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382863766",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Digital Marketing and Communication Specialist – DCS",
+    "url": "https://www.linkedin.com/jobs/view/4383226614",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Analyst - CSH 24x7 Remote Support",
+    "url": "https://www.linkedin.com/jobs/view/4382870830",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Lead - ERP Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382873691",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Electrical & Firmware Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383234250",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Senior/Lead/Expert, ERP Business Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383219839",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Application Engineer - ECAD",
+    "url": "https://www.linkedin.com/jobs/view/4383234224",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Manager - BMS Software",
+    "url": "https://www.linkedin.com/jobs/view/4383236197",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Manager - BMS Software",
+    "url": "https://www.linkedin.com/jobs/view/4383229402",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Manager - BMS Software",
+    "url": "https://www.linkedin.com/jobs/view/4383220759",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Manager - BMS Hardware Design",
+    "url": "https://www.linkedin.com/jobs/view/4383224719",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Services bFS E2E & ERP specialist",
+    "url": "https://www.linkedin.com/jobs/view/4383283086",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Experienced, Software Developer M2C",
+    "url": "https://www.linkedin.com/jobs/view/4383233323",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Expert, ERP Technical Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4383237161",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Expert, Data Platforms Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383233347",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Deputy Manager - LV Sales - Chennai - SZ",
+    "url": "https://www.linkedin.com/jobs/view/4383266615",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "Senior Manager LV Sales",
+    "url": "https://www.linkedin.com/jobs/view/4382553650",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "General Project Engineering  - Experienced Professional",
+    "url": "https://www.linkedin.com/jobs/view/4382889123",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Schneider Electric",
+    "title": "RES Business Development Manager",
+    "url": "https://www.linkedin.com/jobs/view/4384105768",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Lead Manufacturing Specialist - Production Quality",
+    "url": "https://www.linkedin.com/jobs/view/4374139158",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Engineer, EHS",
+    "url": "https://www.linkedin.com/jobs/view/4384300292",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366677115",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366339812",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Staff Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4366203727",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Aerospace",
+    "title": "Failure Analysis Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384166877",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Aerospace",
+    "title": "Lead Engineer - Fleet Management",
+    "url": "https://www.linkedin.com/jobs/view/4374127094",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Instructional Designer / Developer – Healthcare IT & AI Focus",
+    "url": "https://www.linkedin.com/jobs/view/4384361805",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Senior Staff Data Scientist",
+    "url": "https://www.linkedin.com/jobs/view/4384196135",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Staff Technical Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4374116968",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Aerospace",
+    "title": "Staff Enterprise Architect",
+    "url": "https://www.linkedin.com/jobs/view/4374125111",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366671260",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Senior Software engineer(Full Stack Java)",
+    "url": "https://www.linkedin.com/jobs/view/4366337983",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Senior Software Engineer(Full Stack Java)",
+    "url": "https://www.linkedin.com/jobs/view/4366343717",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE HealthCare",
+    "title": "Staff Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373981083",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Aerospace",
+    "title": "Lead Engineer – Mechanical Systems Hardware (Bearing & Sump Systems)- Hardware Owner",
+    "url": "https://www.linkedin.com/jobs/view/4374720871",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Sr Manufacturing Staff Manager - Production Quality",
+    "url": "https://www.linkedin.com/jobs/view/4366607829",
+    "location": "Pallavaram, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Engineer - Systems Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4366711107",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Engineer - Systems Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4366693943",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Verification & Validation Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384302139",
+    "location": "Pallavaram, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "System Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384539747",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "System Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384544458",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Project Management Specialist - Project Mgmt",
+    "url": "https://www.linkedin.com/jobs/view/4384302140",
+    "location": "Sriperumbudur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Lead HMI Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384374399",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Solution  Architect (Platform 20)",
+    "url": "https://www.linkedin.com/jobs/view/4384131552",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Solution Architect - Digital Cyber",
+    "url": "https://www.linkedin.com/jobs/view/4384143172",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Sr. Manager/Sr. Staff Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384125737",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Sr. Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384142240",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Staff Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384141331",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Vernova",
+    "title": "Services Engineer - Digital Implementation Services",
+    "url": "https://www.linkedin.com/jobs/view/4384193739",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "GE Aerospace",
+    "title": "Junior Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4370530139",
+    "location": "Khed, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Software Technologist I - C#",
+    "url": "https://www.linkedin.com/jobs/view/4372842606",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Software Technologist I -C++",
+    "url": "https://www.linkedin.com/jobs/view/4372854420",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Data Scientist - Computer Vision",
+    "url": "https://www.linkedin.com/jobs/view/4382869924",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "SW Product Quality Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382888212",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Senior Data Engineer - I",
+    "url": "https://www.linkedin.com/jobs/view/4382886199",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Usability Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4369133814",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Operational Buyer / Planner",
+    "url": "https://www.linkedin.com/jobs/view/4368977941",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Operational Buyer / Planner",
+    "url": "https://www.linkedin.com/jobs/view/4368976921",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Product Marketing Manager-Fixed DXR",
+    "url": "https://www.linkedin.com/jobs/view/4383223773",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "R&D Engineer - Cleaning & Disinfection",
+    "url": "https://www.linkedin.com/jobs/view/4372844596",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Philips",
+    "title": "Technical Project Manager - STET",
+    "url": "https://www.linkedin.com/jobs/view/4382881546",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382721448",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Salesforce Developer",
+    "url": "https://www.linkedin.com/jobs/view/4382574904",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Senior Manager - HVAC Sales Sustainability",
+    "url": "https://www.linkedin.com/jobs/view/4382589243",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Project Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4371969495",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "BIM Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4351187198",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Project Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382717482",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Project engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382724208",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "HR Operations Specialist - (L&D Administration)",
+    "url": "https://www.linkedin.com/jobs/view/4382750300",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Compliance Manager, India",
+    "url": "https://www.linkedin.com/jobs/view/4372444144",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "HR Technologist | Workday Learning & Talent Management",
+    "url": "https://www.linkedin.com/jobs/view/4372431592",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "IT Technical Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382728053",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "IT Ops Manager",
+    "url": "https://www.linkedin.com/jobs/view/4382585554",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Fire Alarm Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356057190",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Integrated Solutions Service Tech 3",
+    "url": "https://www.linkedin.com/jobs/view/4382705999",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Johnson Controls",
+    "title": "Oracle Fusion (SPM) Incentive Compensation Support Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382712873",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Senior Customer Service Support",
+    "url": "https://www.linkedin.com/jobs/view/4374704863",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Software Engineer - C# - Web Development - (2 to 5 years)",
+    "url": "https://www.linkedin.com/jobs/view/4374705867",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Software Engineer - C# - Desktop Development - (2 to 5 years)",
+    "url": "https://www.linkedin.com/jobs/view/4374714201",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Principal Application Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384163718",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Application Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4384120388",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Application Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4384111802",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Engineer/ Senior Engineer - Application Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4384343106",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Engineer/ Senior Engineer - Application Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4384327857",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Senior QPS Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4366362744",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Senior Proposals Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4384103909",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Lead Engineer Compliance",
+    "url": "https://www.linkedin.com/jobs/view/4354355336",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Manager/ Senior Manager Service Operations - RS",
+    "url": "https://www.linkedin.com/jobs/view/4384111803",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Service and Repair Professional 1",
+    "url": "https://www.linkedin.com/jobs/view/4384165633",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Global Purchasing Executive",
+    "url": "https://www.linkedin.com/jobs/view/4384174017",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Manager Sales",
+    "url": "https://www.linkedin.com/jobs/view/4384119447",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Engineer/ Senior Engineer Sales",
+    "url": "https://www.linkedin.com/jobs/view/4384165634",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Intern or Co op",
+    "url": "https://www.linkedin.com/jobs/view/4384331730",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Senior Engineer Projects",
+    "url": "https://www.linkedin.com/jobs/view/4384158813",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Emerson",
+    "title": "Software Applications Test Lead",
+    "url": "https://www.linkedin.com/jobs/view/4384171135",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Škoda Auto Volkswagen India Private Limited",
+    "title": "SET Speaker IN 2.O",
+    "url": "https://www.linkedin.com/jobs/view/4374480610",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Škoda Auto Volkswagen India Private Limited",
+    "title": "ADAS Development Engineer Safety & High Speed",
+    "url": "https://www.linkedin.com/jobs/view/4373992791",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Škoda Auto Volkswagen India Private Limited",
+    "title": "Specialist Instrument Cluster",
+    "url": "https://www.linkedin.com/jobs/view/4384554874",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "Logistics Forward Model Costing",
+    "url": "https://www.linkedin.com/jobs/view/4384185733",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384139148",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "IMG Material Flow and Packaging Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384184738",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372139282",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "Engineer - ED & BOM",
+    "url": "https://www.linkedin.com/jobs/view/4384120866",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ford Motor Company",
+    "title": "Senior Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384363442",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Continental Device India Pvt. Ltd.",
+    "title": "Field Application Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382826992",
+    "location": "New Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Continental Device India Pvt. Ltd.",
+    "title": "Senior Sales Manager",
+    "url": "https://www.linkedin.com/jobs/view/4383515350",
+    "location": "New Delhi, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Accountant(R2R)",
+    "url": "https://www.linkedin.com/jobs/view/4381421065",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Supplier Development Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382156586",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Accountant",
+    "url": "https://www.linkedin.com/jobs/view/4381412304",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Supplier Development Engineer I",
+    "url": "https://www.linkedin.com/jobs/view/4382169007",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Validation Lead",
+    "url": "https://www.linkedin.com/jobs/view/4384194691",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "College Intern",
+    "url": "https://www.linkedin.com/jobs/view/4384134480",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Condition Monitoring Advisor",
+    "url": "https://www.linkedin.com/jobs/view/4384303124",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Software Engineer-Google Analytics",
+    "url": "https://www.linkedin.com/jobs/view/4384187881",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384384084",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Senior Electrical Design Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384197356",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Technical Lead - Java",
+    "url": "https://www.linkedin.com/jobs/view/4384198288",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Lead Software Engineer - Omniverse",
+    "url": "https://www.linkedin.com/jobs/view/4382602048",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Platform System Architect – OnPrem Kubernetes Platform",
+    "url": "https://www.linkedin.com/jobs/view/4384197357",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Technical Lead - Java | Spring Webflux | Kubernetes",
+    "url": "https://www.linkedin.com/jobs/view/4384304053",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Associate Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4384197401",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Application Support Analyst - Technical",
+    "url": "https://www.linkedin.com/jobs/view/4384303113",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Condition monitoring advisor",
+    "url": "https://www.linkedin.com/jobs/view/4384189921",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Principal Software Engineer - Data Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382602023",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Caterpillar Inc.",
+    "title": "Senior Manager Software Engineering - Performance & System Test Architecture",
+    "url": "https://www.linkedin.com/jobs/view/4382387760",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cummins India",
+    "title": "Analyst - Cummins CARE Operations",
+    "url": "https://www.linkedin.com/jobs/view/4383203743",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cummins India",
+    "title": "Analyst - Cummins CARE Operations",
+    "url": "https://www.linkedin.com/jobs/view/4383217074",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cummins India",
+    "title": "Digital Manufacturing IT Application Analyst - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4332728308",
+    "location": "Pune District, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cummins India",
+    "title": "IT Technical Analyst - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4383259382",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Cummins India",
+    "title": "Digital Manufacturing IT Application Analyst - Senior",
+    "url": "https://www.linkedin.com/jobs/view/4384133246",
+    "location": "Pune District, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Product Manager (PQ) - Data center -White Space",
+    "url": "https://www.linkedin.com/jobs/view/4341888810",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Head - Supply Chain , Mobility India",
+    "url": "https://www.linkedin.com/jobs/view/4382589066",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Associate Analyst GTM",
+    "url": "https://www.linkedin.com/jobs/view/4371979007",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Engineer - Electrical",
+    "url": "https://www.linkedin.com/jobs/view/4382718164",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Senior Data Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382584326",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Associate Engineer - FEA - M&S CoE - Mobility",
+    "url": "https://www.linkedin.com/jobs/view/4382569928",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Engineer - System Modeling (Mechanical) 1",
+    "url": "https://www.linkedin.com/jobs/view/4382583310",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Engineer - Technical Support (TRC)",
+    "url": "https://www.linkedin.com/jobs/view/4382578549",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Senior Engineer - Design Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382584360",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Senior Engineer - Design Automation",
+    "url": "https://www.linkedin.com/jobs/view/4382572907",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Eaton",
+    "title": "Specialist-Data Engineering -IT",
+    "url": "https://www.linkedin.com/jobs/view/4382568953",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Shell",
+    "title": "Security Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4330484411",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Baker Hughes",
+    "title": "Workday Adaptive Planning Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4380917841",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Baker Hughes",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373532905",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Baker Hughes",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373532904",
+    "location": "Navi Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Baker Hughes",
+    "title": "Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4373552159",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Baker Hughes",
+    "title": "Sr. Data Management",
+    "url": "https://www.linkedin.com/jobs/view/4374490783",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Halliburton",
+    "title": "Senior Payroll Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382893059",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "TotalEnergies",
+    "title": "Research And Development Scientist (On 3rd party)",
+    "url": "https://www.linkedin.com/jobs/view/4384104845",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "2026-03-11",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "TotalEnergies",
+    "title": "Key Account Manager - Alternate Channel (OEM Authorized Workshops, O2O & Large Car Fleet accounts)",
+    "url": "https://www.linkedin.com/jobs/view/4384564322",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ericsson",
+    "title": "Administrative Assistant",
+    "url": "https://www.linkedin.com/jobs/view/4383223316",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ericsson",
+    "title": "5G RAN System Verification Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4366021060",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ericsson",
+    "title": "Technical Customer Experience Leader",
+    "url": "https://www.linkedin.com/jobs/view/4383225219",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ericsson",
+    "title": "Technical Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382870371",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Ericsson",
+    "title": "Lead DevOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4383221304",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Care Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356184003",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "MS Expert Transmission & IP",
+    "url": "https://www.linkedin.com/jobs/view/4351349952",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Finance Data Steward",
+    "url": "https://www.linkedin.com/jobs/view/4364788489",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Finance Data Steward",
+    "url": "https://www.linkedin.com/jobs/view/4371975222",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Customer Solutions Architect 2",
+    "url": "https://www.linkedin.com/jobs/view/4372407084",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "SW QA Engineer 2 (Optical)",
+    "url": "https://www.linkedin.com/jobs/view/4382571175",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Senior Technical Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382581540",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Software Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382569273",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "SW QA Engineer 2 (Optical)",
+    "url": "https://www.linkedin.com/jobs/view/4382558653",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382571896",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Applied R&D Engineer 3 - SW",
+    "url": "https://www.linkedin.com/jobs/view/4351450862",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Software Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382552910",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Finance Solution Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382571894",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Database Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382573195",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Engineer NPO",
+    "url": "https://www.linkedin.com/jobs/view/4351400954",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Global Category Manager R&D Solutions",
+    "url": "https://www.linkedin.com/jobs/view/4382707608",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Engineer NPO",
+    "url": "https://www.linkedin.com/jobs/view/4351510806",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Care Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356270668",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Senior Technical Specialist (Testing - Wifi Mesh)",
+    "url": "https://www.linkedin.com/jobs/view/4382554817",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382571898",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Specialist - SW Wifi",
+    "url": "https://www.linkedin.com/jobs/view/4371994496",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Specialist - Test",
+    "url": "https://www.linkedin.com/jobs/view/4382566366",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Tech Lead",
+    "url": "https://www.linkedin.com/jobs/view/4351391023",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Specialist NPO",
+    "url": "https://www.linkedin.com/jobs/view/4351450864",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Specialist NPO",
+    "url": "https://www.linkedin.com/jobs/view/4351351209",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Domain Technical Project Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351391035",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382583353",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Software Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382556777",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Database Architect",
+    "url": "https://www.linkedin.com/jobs/view/4382561646",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Expert NPO",
+    "url": "https://www.linkedin.com/jobs/view/4351400963",
+    "location": "Thiruporur, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Technical Lead",
+    "url": "https://www.linkedin.com/jobs/view/4382570907",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nokia",
+    "title": "Senior Technical Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4382578599",
+    "location": "Chennai, Tamil Nadu, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Marvell Technology",
+    "title": "Principle Product manager - Data Center Networking Software",
+    "url": "https://www.linkedin.com/jobs/view/4382556898",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nutanix",
+    "title": "Member of Technical Staff 4 (Fullstack)",
+    "url": "https://www.linkedin.com/jobs/view/4381413758",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nutanix",
+    "title": "Systems Reliability Engineer III",
+    "url": "https://www.linkedin.com/jobs/view/4384322130",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Nutanix",
+    "title": "Inside Account Executive",
+    "url": "https://www.linkedin.com/jobs/view/4381432094",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Quoting Analyst II",
+    "url": "https://www.linkedin.com/jobs/view/4354565463",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Customer Experience Manager II",
+    "url": "https://www.linkedin.com/jobs/view/4358342568",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Customer Experience Manager II",
+    "url": "https://www.linkedin.com/jobs/view/4358184295",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Manager,Product Design",
+    "url": "https://www.linkedin.com/jobs/view/4358340919",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Senior Product Designer",
+    "url": "https://www.linkedin.com/jobs/view/4344286805",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Rubrik",
+    "title": "Application Security Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374493135",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Manager, Technical Support",
+    "url": "https://www.linkedin.com/jobs/view/4356172669",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Incident Commander",
+    "url": "https://www.linkedin.com/jobs/view/4355956169",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Service Delivery Leader",
+    "url": "https://www.linkedin.com/jobs/view/4355947263",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Senior Technical Support Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4355956108",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Senior Consultant, Offensive Security",
+    "url": "https://www.linkedin.com/jobs/view/4356182297",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Transformation Success Architect",
+    "url": "https://www.linkedin.com/jobs/view/4355976114",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Sr. Product Manager, Prisma AIRS (NetSec)",
+    "url": "https://www.linkedin.com/jobs/view/4356192284",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "MDR Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4382566411",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Principal Engineer Software",
+    "url": "https://www.linkedin.com/jobs/view/4356093478",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Principal Professional Services Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4355965964",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Staff Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356192305",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Principal Engineer Software",
+    "url": "https://www.linkedin.com/jobs/view/4356221445",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Senior Principal DevOps Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4372603144",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Principal Consultant, Proactive Security",
+    "url": "https://www.linkedin.com/jobs/view/4355937308",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Sr Staff IT Cloud Network Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356192239",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Senior IT Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356162718",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Principal Engineer Software",
+    "url": "https://www.linkedin.com/jobs/view/4355947207",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Partner Technical Enablement Manager",
+    "url": "https://www.linkedin.com/jobs/view/4356153029",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Sr. Product Manager (AI Security, Primsa AIRS) - NetSec",
+    "url": "https://www.linkedin.com/jobs/view/4382570215",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Staff IT Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4356211507",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Solutions Consultant 2",
+    "url": "https://www.linkedin.com/jobs/view/4356093469",
+    "location": "Delhi Cantonment, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Sr Professional Services Consultant (PSC)",
+    "url": "https://www.linkedin.com/jobs/view/4356153074",
+    "location": "Delhi Cantonment, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Cortex Cloud Sales Specialist",
+    "url": "https://www.linkedin.com/jobs/view/4355965957",
+    "location": "Delhi Cantonment, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Palo Alto Networks",
+    "title": "Solution Consultant GSI",
+    "url": "https://www.linkedin.com/jobs/view/4356230292",
+    "location": "Delhi Cantonment, Delhi, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Legal Counsel",
+    "url": "https://www.linkedin.com/jobs/view/4382760226",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Engineer - C++ / Linux",
+    "url": "https://www.linkedin.com/jobs/view/4371962205",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Engineer - Backend",
+    "url": "https://www.linkedin.com/jobs/view/4299271726",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Regional Sales Manager",
+    "url": "https://www.linkedin.com/jobs/view/4351124522",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Legal Counsel",
+    "url": "https://www.linkedin.com/jobs/view/4382750619",
+    "location": "Mumbai, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Legal Counsel",
+    "url": "https://www.linkedin.com/jobs/view/4382758388",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr. Manager, Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4350120033",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Legal AI Analyst - Agent Portfolio and Validation",
+    "url": "https://www.linkedin.com/jobs/view/4350280023",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Manager, Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4364797743",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "CrowdStrike",
+    "title": "Sr CLM Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4350070594",
+    "location": "Pune City, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Zscaler",
+    "title": "Senior Technical Marketing Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4374706199",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Zscaler",
+    "title": "Staff Software Development Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4338750558",
+    "location": "Hyderabad, Telangana, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Zscaler",
+    "title": "Account Executive - Majors",
+    "url": "https://www.linkedin.com/jobs/view/4312007971",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Elastic",
+    "title": "Sr. Sourcing Analyst - Corporate Services",
+    "url": "https://www.linkedin.com/jobs/view/4384330054",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Elastic",
+    "title": "Salesforce Automation QA Analyst",
+    "url": "https://www.linkedin.com/jobs/view/4384333014",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Datadog",
+    "title": "Senior Enterprise IT Support Technician (APAC)",
+    "url": "https://www.linkedin.com/jobs/view/4384559704",
+    "location": "Bangalore Urban, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Okta",
+    "title": "Infrastructure Support Engineer - Customer Acceleration",
+    "url": "https://www.linkedin.com/jobs/view/4356226784",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Okta",
+    "title": "Senior Manager, Solution Engineering(Presales)",
+    "url": "https://www.linkedin.com/jobs/view/4356312578",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Okta",
+    "title": "Staff Software Engineer, Security",
+    "url": "https://www.linkedin.com/jobs/view/4356206762",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Okta",
+    "title": "Solutions Engineer (Presales)",
+    "url": "https://www.linkedin.com/jobs/view/4382748530",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "UiPath",
+    "title": "Director, Sales Engineering",
+    "url": "https://www.linkedin.com/jobs/view/4382574961",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "UiPath",
+    "title": "Senior Sales Engineer II",
+    "url": "https://www.linkedin.com/jobs/view/4355966242",
+    "location": "Bengaluru East, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "UiPath",
+    "title": "Principal Software Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382564663",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Senior Counsel, Employment Law",
+    "url": "https://www.linkedin.com/jobs/view/4382704033",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Staff System Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4343586225",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Applied AI Demo Engineer",
+    "url": "https://www.linkedin.com/jobs/view/4382701116",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Applied AI Engineer (Value Engineering)",
+    "url": "https://www.linkedin.com/jobs/view/4371978707",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Senior Applied AI Engineer (Value Engineering)",
+    "url": "https://www.linkedin.com/jobs/view/4364798967",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Celonis",
+    "title": "Senior Applied (AI) Engineer (Value Engineering)",
+    "url": "https://www.linkedin.com/jobs/view/4371986204",
+    "location": "",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Unity South APAC (SEA, ANZ, IND Subcont.)",
+    "title": "Senior Recruiter",
+    "url": "https://www.linkedin.com/jobs/view/4382702200",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Unity",
+    "title": "Senior Recruiter",
+    "url": "https://www.linkedin.com/jobs/view/4384165855",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "UNITY BIOLOGICALS",
+    "title": "Accounatat",
+    "url": "https://www.linkedin.com/jobs/view/4383246292",
+    "location": "Pune Division, Maharashtra, India",
+    "date": "None",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LinkedIn",
+    "title": "Software Engineer - Applications",
+    "url": "https://www.linkedin.com/jobs/view/4384157808",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LinkedIn",
+    "title": "Technical Services Manager",
+    "url": "https://www.linkedin.com/jobs/view/4373085556",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LinkedIn",
+    "title": "Senior Software Engineer - Applications",
+    "url": "https://www.linkedin.com/jobs/view/4384171162",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LinkedIn",
+    "title": "Staff Software Engineer - Applications",
+    "url": "https://www.linkedin.com/jobs/view/4384164736",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "LinkedIn",
+    "title": "Sr. Manager, Software Engineering, Systems Infrastructure",
+    "url": "https://www.linkedin.com/jobs/view/4373303106",
+    "location": "Bengaluru, Karnataka, India",
+    "date": "nan",
+    "fetchedAt": "2026-03-12"
+  },
+  {
+    "company": "Google",
     "title": "Web Application Engineer",
     "url": "https://www.linkedin.com/jobs/view/4372548358",
     "location": "Bengaluru, Karnataka, India",
