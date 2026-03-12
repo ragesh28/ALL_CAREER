@@ -35,3 +35,10 @@ __pycache__/
 scrape_progress.json
 big_company_jobs.csv
 jobs.csv
+
+# Test files (local only)
+test_*.html
+test_*.json
+test_*.py
+verify_turso.py
+store_to_turso.py
