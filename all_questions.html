@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -201,6 +201,11 @@
     </style>
 </head>
 <body>
+    <!-- Global Logo -->
+    <a href="index.html" style="position: absolute; top: 20px; left: 30px; display: flex; align-items: center; gap: 12px; text-decoration: none; z-index: 1000; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+        <img src="String_Theory.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
+    </a>
 
     <header id="main-header">
         <a href="index.html" style="text-decoration:none;"><h1>ALL_CAREER</h1></a>
@@ -212,7 +217,7 @@
         <div class="topic-wrapper">
             <div class="topic-header-row">
                 <span class="topic-label">Filter by Topic:</span>
-                <button class="toggle-btn" id="toggleTopicsBtn" onclick="toggleTopicBar()">Show All Topics ▼</button>
+                <button class="toggle-btn" id="toggleTopicsBtn" onclick="toggleTopicBar()">Show All Topics â–¼</button>
             </div>
             <div class="topic-grid" id="topicContainer">
                 <button class="topic-btn active" onclick="filterByTopic('All', this)">All Topics</button>
@@ -427,7 +432,7 @@
             // Prev
             const prevBtn = document.createElement('button');
             prevBtn.className = 'page-btn';
-            prevBtn.innerText = '←';
+            prevBtn.innerText = 'â†';
             prevBtn.disabled = currentPage === 1;
             prevBtn.onclick = () => goToPage(currentPage - 1);
             container.appendChild(prevBtn);
@@ -465,7 +470,7 @@
             // Next
             const nextBtn = document.createElement('button');
             nextBtn.className = 'page-btn';
-            nextBtn.innerText = '→';
+            nextBtn.innerText = 'â†’';
             nextBtn.disabled = currentPage === totalPages;
             nextBtn.onclick = () => goToPage(currentPage + 1);
             container.appendChild(nextBtn);
@@ -494,7 +499,7 @@
             const grid = document.getElementById('topicContainer');
             const btn = document.getElementById('toggleTopicsBtn');
             grid.classList.toggle('expanded');
-            btn.innerText = grid.classList.contains('expanded') ? 'Show Less ▲' : 'Show All Topics ▼';
+            btn.innerText = grid.classList.contains('expanded') ? 'Show Less â–²' : 'Show All Topics â–¼';
         }
 
         init();
