@@ -448,6 +448,7 @@
         <div id="pagination" class="pagination-container"></div>
     </div>
 
+    <script src="logos.js"></script>
     <script src="big_jobs_data.js"></script>
     <script>
         window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
@@ -459,10 +460,13 @@
 
         function getLogoData(name) {
             const clean = name.replace(/\(.*\)/, '').trim();
-            const domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            let domain = '';
+            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
             return {
                 clearbit: `https://logo.clearbit.com/${domain}`,
                 google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
                 initial: clean.charAt(0).toUpperCase()
             };
         }
@@ -544,8 +548,9 @@
             <div class="job-card" style="animation-delay:${i * 0.03}s">
                 <div class="card-top">
                     <div class="logo-box">
-                        <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='none'; this.nextElementSibling.nextElementSibling.style.display='flex'">
-                        <img src="${logo.google}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="${logo.google}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="${logo.ddg}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="logo-fallback">${logo.initial}</div>
                     </div>
                     <div>
