@@ -1,9 +1,10 @@
 """
 ALL JOBS Aggregator Scraper via JobSpy → Turso + JS file
-Scrapes Google + LinkedIn for jobs across ALL tech & non-tech roles.
+Scrapes ALL portals (LinkedIn, Indeed, Google, Glassdoor, ZipRecruiter)
+for jobs across ALL tech & non-tech roles.
 Stores in Turso database AND generates all_jobs_data.js for GitHub Pages.
 
-Skips Indeed (links expire fast). Priority: LinkedIn links.
+Priority: LinkedIn > Google > Indeed > Glassdoor > ZipRecruiter.
 
 Usage (local):   py -3.11 scrape_google_jobs.py --test 3
 Usage (GitHub):  python scrape_google_jobs.py
@@ -302,8 +303,10 @@ def scrape_all_jobs(test_limit=None):
             retries = 0
             while retries <= MAX_RETRIES:
                 try:
+                    # Scrape ALL portals for maximum coverage
+                    # LinkedIn, Indeed, Google Jobs, Glassdoor, ZipRecruiter
                     jobs_df = scrape_jobs(
-                        site_name=["linkedin", "google"],
+                        site_name=["linkedin", "indeed", "google", "glassdoor", "zip_recruiter"],
                         search_term=role,
                         google_search_term=f"{role} jobs in {location}",
                         location=location,
@@ -396,13 +399,13 @@ def generate_js_file(jobs):
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     print("=" * 60)
-    print("  ALL JOBS AGGREGATOR (Google + LinkedIn → Turso)")
+    print("  ALL JOBS AGGREGATOR (All Portals → Turso)")
     print("=" * 60)
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d')}")
     print(f"  🔍 Roles: {len(SEARCH_ROLES)}")
     print(f"  📍 Locations: {len(LOCATIONS)}")
     print(f"  📊 {RESULTS_PER_SEARCH}/combo, max {MAX_JOBS}")
-    print(f"  🚫 No Indeed (links expire)")
+    print(f"  🌐 Sources: LinkedIn, Indeed, Google, Glassdoor, ZipRecruiter")
     print(f"  📦 Turso: {'✅ configured' if TURSO_URL else '❌ not configured (local only)'}")
     print(f"  📆 Retention: {KEEP_DAYS} days")
     print("=" * 60)

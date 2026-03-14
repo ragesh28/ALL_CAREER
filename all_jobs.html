@@ -32,21 +32,14 @@
         }
 
         #main-header {
-            text-align: center;
-            padding-top: 60px;
-            padding-bottom: 20px;
+            text-align: center; padding-top: 60px; padding-bottom: 20px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            opacity: 1; height: auto; transform: scale(1);
+            overflow: hidden; opacity: 1; height: auto; transform: scale(1);
         }
-
-        body.scrolled #main-header {
-            opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0;
-        }
+        body.scrolled #main-header { opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0; }
 
         h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3.5rem; font-weight: 800;
+            font-family: 'Outfit', sans-serif; font-size: 3.5rem; font-weight: 800;
             background: linear-gradient(135deg, #10b981, #3b82f6);
             -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -55,32 +48,24 @@
         }
         h1:hover { letter-spacing: 5px; }
 
+        /* --- FILTER BAR --- */
         .filter-bar-container {
             position: sticky; top: 20px; z-index: 100;
-            padding: 0 20px; display: flex; justify-content: center; margin-bottom: 40px;
+            padding: 0 20px; display: flex; justify-content: center; margin-bottom: 10px;
         }
         .filter-bar {
-            width: 100%; max-width: 1100px;
+            width: 100%; max-width: 1000px;
             display: flex; gap: 12px; background: var(--bg-glass);
-            backdrop-filter: blur(12px); padding: 12px 18px;
-            border-radius: 50px; border: 1px solid var(--border);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px); padding: 12px 18px; border-radius: 50px;
+            border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             align-items: center; flex-wrap: wrap;
         }
         .mini-logo {
             font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
             color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
-            overflow: hidden; transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
-            text-decoration: none; margin-right: 0;
+            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 0;
         }
         body.scrolled .mini-logo { max-width: 180px; opacity: 1; margin-right: 15px; }
-        .btn-back {
-            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
-            padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
-            transition: 0.2s; white-space: nowrap; margin-left: auto;
-        }
-        .btn-back:hover { color: white; border-color: white; }
-
         .filter-group { flex: 1; min-width: 120px; }
         .filter-input {
             width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
@@ -90,15 +75,98 @@
         .filter-input:focus { border-color: var(--primary); }
         select.filter-input option { background-color: var(--bg-deep); color: white; }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
-        .stats {
-            color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem;
+        /* Experience toggle */
+        .exp-group { display: flex; gap: 6px; }
+        .exp-btn {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted); cursor: pointer;
+            font-weight: 600; font-size: 0.82rem; transition: 0.2s;
+            font-family: inherit; white-space: nowrap;
         }
+        .exp-btn:hover { border-color: var(--primary); color: white; }
+        .exp-btn.active { background: var(--primary); color: #020617; border-color: var(--primary); }
 
-        .jobs-grid {
-            display: grid; gap: 18px;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        /* Roles tree button */
+        .roles-toggle {
+            padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(139,92,246,0.4);
+            background: rgba(139,92,246,0.1); color: #a78bfa; cursor: pointer;
+            font-weight: 700; font-size: 0.85rem; transition: 0.2s;
+            font-family: inherit; white-space: nowrap; display: flex; align-items: center; gap: 6px;
         }
+        .roles-toggle:hover { background: rgba(139,92,246,0.2); }
+        .roles-toggle.active { background: #8b5cf6; color: white; border-color: #8b5cf6; }
+        .roles-toggle .arrow { transition: transform 0.3s; display: inline-block; }
+        .roles-toggle.active .arrow { transform: rotate(180deg); }
+
+        /* --- MIND MAP PANEL --- */
+        .mindmap-panel {
+            max-width: 1000px; margin: 0 auto 20px;
+            padding: 0 20px; overflow: hidden;
+            max-height: 0; opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+        }
+        .mindmap-panel.open { max-height: 2000px; opacity: 1; }
+        .mindmap-inner {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .mindmap-title {
+            text-align: center; font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 1.2rem; color: #a78bfa; margin-bottom: 25px;
+        }
+        .active-role-badge {
+            display: inline-block; background: rgba(139,92,246,0.15); color: #a78bfa;
+            padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px;
+            border: 1px solid rgba(139,92,246,0.3);
+        }
+        .clear-role { cursor: pointer; margin-left: 6px; opacity: 0.7; }
+        .clear-role:hover { opacity: 1; }
+
+        .tree { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+        .tree-branch { flex: 1; min-width: 300px; max-width: 450px; }
+        .branch-header {
+            padding: 10px 20px; border-radius: 12px; font-weight: 700;
+            font-size: 0.95rem; margin-bottom: 12px; cursor: default;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .branch-tech { background: rgba(6,182,212,0.1); color: #06b6d4; border: 1px solid rgba(6,182,212,0.2); }
+        .branch-nontech { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.2); }
+
+        .tier { margin-left: 20px; margin-bottom: 14px; position: relative; }
+        .tier::before {
+            content: ''; position: absolute; left: -12px; top: 0; bottom: 10px;
+            width: 2px; background: rgba(255,255,255,0.06);
+        }
+        .tier-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 0; margin-bottom: 6px; }
+        .tier-high .tier-label { color: #f43f5e; }
+        .tier-mid .tier-label { color: #eab308; }
+        .tier-low .tier-label { color: #64748b; }
+
+        .role-nodes { display: flex; flex-wrap: wrap; gap: 6px; }
+        .role-node {
+            position: relative; padding: 6px 14px; border-radius: 20px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.78rem; font-weight: 500;
+            cursor: pointer; transition: all 0.2s; user-select: none;
+        }
+        .role-node::before {
+            content: ''; position: absolute; left: -14px; top: 50%;
+            width: 12px; height: 2px; background: rgba(255,255,255,0.06);
+        }
+        .role-node:hover { border-color: #a78bfa; color: white; background: rgba(139,92,246,0.1); }
+        .role-node.active { background: #8b5cf6; color: white; border-color: #8b5cf6; }
+        .role-node .node-dot {
+            display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--text-muted); margin-right: 6px; transition: 0.2s;
+        }
+        .role-node:hover .node-dot { background: #a78bfa; }
+        .role-node.active .node-dot { background: white; }
+
+        /* --- JOBS --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
+        .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
+        .jobs-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
 
         .job-card {
             background: var(--bg-surface); border: 1px solid var(--border);
@@ -107,21 +175,12 @@
             transition: all 0.2s ease;
             opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
         }
-        .job-card:hover {
-            border-color: var(--primary); transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
+        .job-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
 
         .card-top { display: flex; gap: 14px; align-items: flex-start; }
-        .logo-box {
-            width: 48px; height: 48px; position: relative;
-            background: white; border-radius: 12px; padding: 4px; flex-shrink: 0;
-        }
-        .company-logo {
-            width: 40px; height: 40px; object-fit: contain;
-            position: absolute; top: 4px; left: 4px;
-        }
+        .logo-box { width: 48px; height: 48px; position: relative; background: white; border-radius: 12px; padding: 4px; flex-shrink: 0; }
+        .company-logo { width: 40px; height: 40px; object-fit: contain; position: absolute; top: 4px; left: 4px; }
         .logo-fallback {
             width: 100%; height: 100%; background: linear-gradient(135deg, #10b981, #3b82f6);
             border-radius: 8px; display: none; align-items: center; justify-content: center;
@@ -129,7 +188,6 @@
         }
         .company-name { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
         .job-title { font-size: 1.05rem; line-height: 1.4; color: white; font-weight: 700; }
-
         .job-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
         .meta-badge {
             font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
@@ -138,7 +196,6 @@
         }
         .source-linkedin { color: #0a66c2; border-color: rgba(10,102,194,0.3); }
         .source-google { color: #4285f4; border-color: rgba(66,133,244,0.3); }
-
         .card-footer {
             display: flex; justify-content: space-between; align-items: center;
             padding-top: 14px; border-top: 1px solid var(--border);
@@ -163,21 +220,19 @@
             border: 1px solid var(--border); color: var(--text-muted);
             font-weight: 700; font-size: 0.95rem; cursor: pointer;
             transition: all 0.2s ease; display: flex; align-items: center;
-            justify-content: center; font-family: 'Plus Jakarta Sans', sans-serif;
+            justify-content: center; font-family: inherit;
         }
         .page-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
-        .page-btn.active {
-            background: #10b981; color: #020617; border-color: #10b981;
-            box-shadow: 0 4px 15px rgba(16,185,129,0.4);
-        }
+        .page-btn.active { background: #10b981; color: #020617; border-color: #10b981; box-shadow: 0 4px 15px rgba(16,185,129,0.4); }
         .page-btn.nav-btn { width: auto; padding: 0 16px; font-size: 1.2rem; }
         .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-        .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; display: flex; align-items: center; }
+        .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; }
 
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .jobs-grid { grid-template-columns: 1fr; }
-            .filter-bar { gap: 8px; padding: 10px 14px; }
+            .tree { flex-direction: column; gap: 20px; }
+            .tree-branch { max-width: 100%; }
         }
     </style>
 </head>
@@ -185,9 +240,7 @@
 <body>
 
     <header id="main-header">
-        <a href="index.html" style="text-decoration:none;">
-            <h1>All Jobs</h1>
-        </a>
+        <a href="index.html" style="text-decoration:none;"><h1>All Jobs</h1></a>
         <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;">
             All roles • Google + LinkedIn aggregated • Tech & Non-Tech
         </p>
@@ -197,25 +250,111 @@
         <div class="filter-bar">
             <a href="index.html" class="mini-logo">ALL_CAREER</a>
             <div class="filter-group">
-                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..."
-                    oninput="applyFilters()">
+                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
             </div>
-            <div class="filter-group">
+            <div class="filter-group" style="flex:0.7;">
                 <select id="locationFilter" class="filter-input" onchange="applyFilters()">
                     <option value="All">Location: All</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Pune">Pune</option>
                 </select>
             </div>
-            <div class="filter-group">
-                <select id="companyFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">Company: All</option>
-                </select>
+            <div class="exp-group">
+                <button class="exp-btn" onclick="setExperience('junior')" id="expJr">Junior</button>
+                <button class="exp-btn" onclick="setExperience('senior')" id="expSr">Senior</button>
             </div>
-            <div class="filter-group">
-                <select id="roleFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">Role: All</option>
-                </select>
+            <button class="roles-toggle" id="rolesToggle" onclick="toggleMindmap()">
+                🗺️ Roles <span class="arrow">▾</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MIND MAP PANEL -->
+    <div class="mindmap-panel" id="mindmapPanel">
+        <div class="mindmap-inner">
+            <div class="mindmap-title">
+                Role Explorer <span id="activeRoleBadge" class="active-role-badge" style="display:none;"></span>
             </div>
-            <a href="index.html" class="btn-back">Hub</a>
+            <div class="tree">
+                <!-- TECHNICAL -->
+                <div class="tree-branch">
+                    <div class="branch-header branch-tech">⚡ Technical Roles</div>
+                    <div class="tier tier-high">
+                        <div class="tier-label">🔥 High Demand</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Engineer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Full Stack Developer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Scientist</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>AI Engineer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>ML Engineer</div>
+                        </div>
+                    </div>
+                    <div class="tier tier-mid">
+                        <div class="tier-label">⚡ In Demand</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Frontend Developer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Backend Developer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>DevOps Engineer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Cloud Architect</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Engineer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Analyst</div>
+                        </div>
+                    </div>
+                    <div class="tier tier-low">
+                        <div class="tier-label">💼 Specialized</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Mobile App Developer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Architect</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Security Analyst</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Network Engineer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>QA Analyst</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>SDET</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>DBA</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Penetration Tester</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Systems Administrator</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- NON-TECHNICAL -->
+                <div class="tree-branch">
+                    <div class="branch-header branch-nontech">🏢 Non-Technical Roles</div>
+                    <div class="tier tier-high">
+                        <div class="tier-label">🔥 High Demand</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Product Manager</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Project Manager</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>UI/UX Designer</div>
+                        </div>
+                    </div>
+                    <div class="tier tier-mid">
+                        <div class="tier-label">⚡ In Demand</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Scrum Master</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Technical Writer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Digital Marketer</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Technical Recruiter</div>
+                        </div>
+                    </div>
+                    <div class="tier tier-low">
+                        <div class="tier-label">💼 Specialized</div>
+                        <div class="role-nodes">
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>HR Business Partner</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Customer Success Manager</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Operations Manager</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Financial Analyst</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Sales Executive</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Pre-Sales Consultant</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>UX Researcher</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>IT Support</div>
+                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Legal Counsel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -236,6 +375,50 @@
         let filteredJobs = [];
         let currentPage = 1;
         const JOBS_PER_PAGE = 100;
+        let activeRole = '';
+        let activeExp = '';
+
+        const JUNIOR_KEYWORDS = ['junior', 'jr', 'entry', 'associate', 'intern', 'fresher', 'graduate', 'trainee', 'entry level', 'entry-level'];
+        const SENIOR_KEYWORDS = ['senior', 'sr', 'lead', 'principal', 'staff', 'manager', 'director', 'head', 'chief', 'vp', 'architect', 'distinguished'];
+
+        const ROLE_KEYWORDS = {
+            'Software Engineer': ['software engineer', 'software developer', 'swe', 'sde'],
+            'Full Stack Developer': ['full stack', 'fullstack', 'full-stack'],
+            'Data Scientist': ['data scientist', 'data science'],
+            'AI Engineer': ['ai engineer', 'artificial intelligence'],
+            'ML Engineer': ['machine learning', 'ml engineer', 'deep learning'],
+            'Frontend Developer': ['frontend', 'front-end', 'front end', 'react', 'angular', 'vue'],
+            'Backend Developer': ['backend', 'back-end', 'back end'],
+            'DevOps Engineer': ['devops', 'dev ops', 'site reliability', 'sre'],
+            'Cloud Architect': ['cloud architect', 'cloud engineer', 'aws', 'azure', 'gcp'],
+            'Data Engineer': ['data engineer', 'data pipeline', 'etl'],
+            'Data Analyst': ['data analyst', 'business analyst', 'analytics'],
+            'Mobile App Developer': ['mobile', 'ios', 'android', 'flutter', 'react native'],
+            'Software Architect': ['software architect', 'solution architect', 'technical architect'],
+            'Security Analyst': ['security analyst', 'cybersecurity', 'information security', 'infosec'],
+            'Network Engineer': ['network engineer', 'network admin'],
+            'QA Analyst': ['qa analyst', 'qa engineer', 'quality assurance', 'tester'],
+            'SDET': ['sdet', 'test automation', 'automation engineer'],
+            'DBA': ['database admin', 'dba', 'database engineer'],
+            'Penetration Tester': ['penetration', 'pentest', 'ethical hacker', 'red team'],
+            'Systems Administrator': ['system admin', 'sysadmin', 'systems engineer'],
+            'Product Manager': ['product manager', 'product owner', 'product lead'],
+            'Project Manager': ['project manager', 'program manager', 'pmo'],
+            'UI/UX Designer': ['ui', 'ux', 'user experience', 'user interface', 'designer'],
+            'Scrum Master': ['scrum master', 'agile coach', 'agile'],
+            'Technical Writer': ['technical writer', 'content writer', 'documentation'],
+            'Digital Marketer': ['digital market', 'seo', 'social media', 'marketing'],
+            'Technical Recruiter': ['recruiter', 'talent acquisition', 'hiring'],
+            'HR Business Partner': ['hr', 'human resource', 'people ops'],
+            'Customer Success Manager': ['customer success', 'client success', 'csm'],
+            'Operations Manager': ['operations manager', 'ops manager'],
+            'Financial Analyst': ['financial analyst', 'finance', 'accounting'],
+            'Sales Executive': ['sales', 'account executive', 'business development'],
+            'Pre-Sales Consultant': ['pre-sales', 'presales', 'solutions consultant'],
+            'UX Researcher': ['ux research', 'user research'],
+            'IT Support': ['it support', 'helpdesk', 'help desk', 'tech support'],
+            'Legal Counsel': ['legal', 'counsel', 'compliance', 'attorney'],
+        };
 
         function getLogoData(name) {
             const clean = name.replace(/\(.*\)/, '').trim();
@@ -268,35 +451,56 @@
             return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
+        function toggleMindmap() {
+            const panel = document.getElementById('mindmapPanel');
+            const btn = document.getElementById('rolesToggle');
+            panel.classList.toggle('open');
+            btn.classList.toggle('active');
+        }
+
+        function selectRole(el) {
+            const roleName = el.textContent.trim();
+            if (el.classList.contains('active')) {
+                el.classList.remove('active'); activeRole = '';
+                document.getElementById('activeRoleBadge').style.display = 'none';
+            } else {
+                document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
+                el.classList.add('active'); activeRole = roleName;
+                const badge = document.getElementById('activeRoleBadge');
+                badge.innerHTML = `${roleName} <span class="clear-role" onclick="clearRole(event)">✕</span>`;
+                badge.style.display = 'inline-block';
+            }
+            applyFilters();
+        }
+
+        function clearRole(e) {
+            e.stopPropagation();
+            document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
+            activeRole = '';
+            document.getElementById('activeRoleBadge').style.display = 'none';
+            applyFilters();
+        }
+
+        function setExperience(level) {
+            const jrBtn = document.getElementById('expJr');
+            const srBtn = document.getElementById('expSr');
+            if (activeExp === level) {
+                activeExp = ''; jrBtn.classList.remove('active'); srBtn.classList.remove('active');
+            } else {
+                activeExp = level;
+                jrBtn.classList.toggle('active', level === 'junior');
+                srBtn.classList.toggle('active', level === 'senior');
+            }
+            applyFilters();
+        }
+
         function init() {
             const loading = document.getElementById('loading');
             if (typeof allJobsData === 'undefined' || !allJobsData || allJobsData.length === 0) {
-                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs yet</h3><p style="margin-top:10px">Run the scraper or wait for the GitHub Action to populate jobs here.</p></div>';
+                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs yet</h3><p style="margin-top:10px">Run the scraper or wait for the GitHub Action to populate.</p></div>';
                 return;
             }
             allJobs = allJobsData;
-
-            // Populate location filter
-            const locSel = document.getElementById('locationFilter');
-            [...new Set(allJobs.map(j => {
-                const loc = (j.location || '').split(',')[0].trim();
-                return loc;
-            }).filter(Boolean))].sort().forEach(l => {
-                const o = document.createElement('option'); o.value = l; o.textContent = l; locSel.appendChild(o);
-            });
-
-            // Populate company filter
-            const compSel = document.getElementById('companyFilter');
-            [...new Set(allJobs.map(j => j.company).filter(Boolean))].sort().forEach(c => {
-                const o = document.createElement('option'); o.value = c; o.textContent = c; compSel.appendChild(o);
-            });
-
-            // Populate role filter
-            const roleSel = document.getElementById('roleFilter');
-            [...new Set(allJobs.map(j => j.role_search).filter(Boolean))].sort().forEach(r => {
-                const o = document.createElement('option'); o.value = r; o.textContent = r; roleSel.appendChild(o);
-            });
-
             applyFilters();
             loading.style.display = 'none';
         }
@@ -304,17 +508,30 @@
         function applyFilters() {
             const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
             const loc = document.getElementById('locationFilter').value;
-            const comp = document.getElementById('companyFilter').value;
-            const role = document.getElementById('roleFilter').value;
 
             filteredJobs = allJobs.filter(j => {
-                if (search) {
-                    const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
-                    if (!hay.includes(search)) return false;
-                }
+                const titleLow = (j.title || '').toLowerCase();
+                const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
+
+                if (search && !hay.includes(search)) return false;
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
-                if (comp !== 'All' && j.company !== comp) return false;
-                if (role !== 'All' && j.role_search !== role) return false;
+
+                // Role filter — check title keywords OR role_search field
+                if (activeRole && ROLE_KEYWORDS[activeRole]) {
+                    const keywords = ROLE_KEYWORDS[activeRole];
+                    const roleSearch = (j.role_search || '').toLowerCase();
+                    const matchTitle = keywords.some(kw => titleLow.includes(kw));
+                    const matchRole = keywords.some(kw => roleSearch.includes(kw));
+                    if (!matchTitle && !matchRole) return false;
+                }
+
+                // Experience filter
+                if (activeExp === 'junior') {
+                    if (!JUNIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
+                } else if (activeExp === 'senior') {
+                    if (!SENIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
+                }
+
                 return true;
             });
             currentPage = 1;
@@ -325,8 +542,7 @@
             const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
             if (currentPage > totalPages) currentPage = totalPages;
             const start = (currentPage - 1) * JOBS_PER_PAGE;
-            const pageJobs = filteredJobs.slice(start, start + JOBS_PER_PAGE);
-            renderJobs(pageJobs);
+            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
             renderPagination(totalPages);
             document.getElementById('jobCount').textContent = filteredJobs.length;
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -339,15 +555,13 @@
             const noRes = document.getElementById('noResults');
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
-
             grid.innerHTML = jobs.map((job, i) => {
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
-                const applyUrl = job.url || '';
+                const url = job.url || '';
                 const source = (job.source || '').toLowerCase();
                 const sourceClass = source.includes('linkedin') ? 'source-linkedin' : source.includes('google') ? 'source-google' : '';
                 const sourceLabel = source.includes('linkedin') ? 'LinkedIn' : source.includes('google') ? 'Google' : source;
-
                 return `
             <div class="job-card" style="animation-delay:${i * 0.03}s">
                 <div class="card-top">
@@ -369,7 +583,7 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${esc(job.role_search || '')}</span>
-                    ${applyUrl ? `<a href="${esc(applyUrl)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
+                    ${url ? `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
                 </div>
             </div>`;
             }).join('');
