@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All_Career - All Jobs</title>
+    <link rel="icon" href="String_Theory.png" type="image/png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-surface: #0f172a;
+            --bg-glass: rgba(15, 23, 42, 0.95);
+            --primary: #10b981;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at top center, rgba(16, 185, 129, 0.08), transparent 50%);
+            background-attachment: fixed;
+        }
+
+        #main-header {
+            text-align: center;
+            padding-top: 60px;
+            padding-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            opacity: 1; height: auto; transform: scale(1);
+        }
+
+        body.scrolled #main-header {
+            opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem; font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer; transition: letter-spacing 0.5s ease;
+            letter-spacing: -1px; text-decoration: none; margin: 0;
+        }
+        h1:hover { letter-spacing: 5px; }
+
+        .filter-bar-container {
+            position: sticky; top: 20px; z-index: 100;
+            padding: 0 20px; display: flex; justify-content: center; margin-bottom: 40px;
+        }
+        .filter-bar {
+            width: 100%; max-width: 1100px;
+            display: flex; gap: 12px; background: var(--bg-glass);
+            backdrop-filter: blur(12px); padding: 12px 18px;
+            border-radius: 50px; border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            align-items: center; flex-wrap: wrap;
+        }
+        .mini-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
+            color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
+            overflow: hidden; transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+            text-decoration: none; margin-right: 0;
+        }
+        body.scrolled .mini-logo { max-width: 180px; opacity: 1; margin-right: 15px; }
+        .btn-back {
+            text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+            padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px;
+            transition: 0.2s; white-space: nowrap; margin-left: auto;
+        }
+        .btn-back:hover { color: white; border-color: white; }
+
+        .filter-group { flex: 1; min-width: 120px; }
+        .filter-input {
+            width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
+            color: white; padding: 10px 14px; border-radius: 20px; outline: none;
+            font-family: inherit; transition: 0.3s;
+        }
+        .filter-input:focus { border-color: var(--primary); }
+        select.filter-input option { background-color: var(--bg-deep); color: white; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
+        .stats {
+            color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem;
+        }
+
+        .jobs-grid {
+            display: grid; gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        }
+
+        .job-card {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            padding: 22px; border-radius: 20px;
+            display: flex; flex-direction: column; gap: 14px;
+            transition: all 0.2s ease;
+            opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
+        }
+        .job-card:hover {
+            border-color: var(--primary); transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+        .card-top { display: flex; gap: 14px; align-items: flex-start; }
+        .logo-box {
+            width: 48px; height: 48px; position: relative;
+            background: white; border-radius: 12px; padding: 4px; flex-shrink: 0;
+        }
+        .company-logo {
+            width: 40px; height: 40px; object-fit: contain;
+            position: absolute; top: 4px; left: 4px;
+        }
+        .logo-fallback {
+            width: 100%; height: 100%; background: linear-gradient(135deg, #10b981, #3b82f6);
+            border-radius: 8px; display: none; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.3rem; color: white;
+        }
+        .company-name { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+        .job-title { font-size: 1.05rem; line-height: 1.4; color: white; font-weight: 700; }
+
+        .job-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+        .meta-badge {
+            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
+            background: rgba(255,255,255,0.05); color: var(--text-muted);
+            border: 1px solid var(--border); display: flex; align-items: center; gap: 5px;
+        }
+        .source-linkedin { color: #0a66c2; border-color: rgba(10,102,194,0.3); }
+        .source-google { color: #4285f4; border-color: rgba(66,133,244,0.3); }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 14px; border-top: 1px solid var(--border);
+        }
+        .card-date { color: var(--text-muted); font-size: 0.8rem; }
+        .apply-btn {
+            padding: 10px 22px; background: transparent; color: var(--primary);
+            text-decoration: none; font-weight: 700; border-radius: 12px;
+            font-size: 0.85rem; border: 1px solid var(--primary); transition: 0.2s;
+        }
+        .apply-btn:hover { background: var(--primary); color: #020617; }
+
+        #loading { text-align: center; padding: 50px; color: var(--text-muted); }
+        #noResults { text-align: center; padding: 40px; color: var(--text-muted); display: none; font-style: italic; }
+
+        .pagination-container {
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            margin-top: 50px; padding: 20px 0; flex-wrap: wrap;
+        }
+        .page-btn {
+            width: 48px; height: 48px; border-radius: 12px; background: var(--bg-surface);
+            border: 1px solid var(--border); color: var(--text-muted);
+            font-weight: 700; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center;
+            justify-content: center; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .page-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
+        .page-btn.active {
+            background: #10b981; color: #020617; border-color: #10b981;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.4);
+        }
+        .page-btn.nav-btn { width: auto; padding: 0 16px; font-size: 1.2rem; }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; display: flex; align-items: center; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .jobs-grid { grid-template-columns: 1fr; }
+            .filter-bar { gap: 8px; padding: 10px 14px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="main-header">
+        <a href="index.html" style="text-decoration:none;">
+            <h1>All Jobs</h1>
+        </a>
+        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;">
+            All roles • Google + LinkedIn aggregated • Tech & Non-Tech
+        </p>
+    </header>
+
+    <div class="filter-bar-container">
+        <div class="filter-bar">
+            <a href="index.html" class="mini-logo">ALL_CAREER</a>
+            <div class="filter-group">
+                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..."
+                    oninput="applyFilters()">
+            </div>
+            <div class="filter-group">
+                <select id="locationFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Location: All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="companyFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Company: All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="roleFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">Role: All</option>
+                </select>
+            </div>
+            <a href="index.html" class="btn-back">Hub</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="stats">Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> jobs</p>
+        <div id="loading">Loading jobs...</div>
+        <div class="jobs-grid" id="jobsGrid"></div>
+        <div id="noResults">No jobs found matching your filters.</div>
+        <div id="pagination" class="pagination-container"></div>
+    </div>
+
+    <script src="logos.js"></script>
+    <script src="all_jobs_data.js"></script>
+    <script>
+        window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
+
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentPage = 1;
+        const JOBS_PER_PAGE = 100;
+
+        function getLogoData(name) {
+            const clean = name.replace(/\(.*\)/, '').trim();
+            let domain = '';
+            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            return {
+                clearbit: `https://logo.clearbit.com/${domain}`,
+                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+                initial: clean.charAt(0).toUpperCase()
+            };
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return null;
+                const diff = Math.floor((new Date() - d) / 86400000);
+                if (diff === 0) return 'Today';
+                if (diff === 1) return 'Yesterday';
+                if (diff < 7) return `${diff} days ago`;
+                return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+            } catch { return null; }
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function init() {
+            const loading = document.getElementById('loading');
+            if (typeof allJobsData === 'undefined' || !allJobsData || allJobsData.length === 0) {
+                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs yet</h3><p style="margin-top:10px">Run the scraper or wait for the GitHub Action to populate jobs here.</p></div>';
+                return;
+            }
+            allJobs = allJobsData;
+
+            // Populate location filter
+            const locSel = document.getElementById('locationFilter');
+            [...new Set(allJobs.map(j => {
+                const loc = (j.location || '').split(',')[0].trim();
+                return loc;
+            }).filter(Boolean))].sort().forEach(l => {
+                const o = document.createElement('option'); o.value = l; o.textContent = l; locSel.appendChild(o);
+            });
+
+            // Populate company filter
+            const compSel = document.getElementById('companyFilter');
+            [...new Set(allJobs.map(j => j.company).filter(Boolean))].sort().forEach(c => {
+                const o = document.createElement('option'); o.value = c; o.textContent = c; compSel.appendChild(o);
+            });
+
+            // Populate role filter
+            const roleSel = document.getElementById('roleFilter');
+            [...new Set(allJobs.map(j => j.role_search).filter(Boolean))].sort().forEach(r => {
+                const o = document.createElement('option'); o.value = r; o.textContent = r; roleSel.appendChild(o);
+            });
+
+            applyFilters();
+            loading.style.display = 'none';
+        }
+
+        function applyFilters() {
+            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const loc = document.getElementById('locationFilter').value;
+            const comp = document.getElementById('companyFilter').value;
+            const role = document.getElementById('roleFilter').value;
+
+            filteredJobs = allJobs.filter(j => {
+                if (search) {
+                    const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
+                    if (!hay.includes(search)) return false;
+                }
+                if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
+                if (comp !== 'All' && j.company !== comp) return false;
+                if (role !== 'All' && j.role_search !== role) return false;
+                return true;
+            });
+            currentPage = 1;
+            renderPage();
+        }
+
+        function renderPage() {
+            const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * JOBS_PER_PAGE;
+            const pageJobs = filteredJobs.slice(start, start + JOBS_PER_PAGE);
+            renderJobs(pageJobs);
+            renderPagination(totalPages);
+            document.getElementById('jobCount').textContent = filteredJobs.length;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToPage(p) { currentPage = p; renderPage(); }
+
+        function renderJobs(jobs) {
+            const grid = document.getElementById('jobsGrid');
+            const noRes = document.getElementById('noResults');
+            if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+            noRes.style.display = 'none';
+
+            grid.innerHTML = jobs.map((job, i) => {
+                const logo = getLogoData(job.company || '');
+                const date = formatDate(job.date || job.fetchedAt);
+                const applyUrl = job.url || '';
+                const source = (job.source || '').toLowerCase();
+                const sourceClass = source.includes('linkedin') ? 'source-linkedin' : source.includes('google') ? 'source-google' : '';
+                const sourceLabel = source.includes('linkedin') ? 'LinkedIn' : source.includes('google') ? 'Google' : source;
+
+                return `
+            <div class="job-card" style="animation-delay:${i * 0.03}s">
+                <div class="card-top">
+                    <div class="logo-box">
+                        <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="${logo.google}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="${logo.ddg}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="logo-fallback">${logo.initial}</div>
+                    </div>
+                    <div>
+                        <div class="company-name">${esc(job.company)}</div>
+                        <div class="job-title">${esc(job.title || 'Position')}</div>
+                    </div>
+                </div>
+                <div class="job-meta">
+                    <div class="meta-badge">📍 ${esc(job.location || 'India')}</div>
+                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
+                    ${sourceLabel ? `<div class="meta-badge ${sourceClass}">via ${esc(sourceLabel)}</div>` : ''}
+                </div>
+                <div class="card-footer">
+                    <span class="card-date">${esc(job.role_search || '')}</span>
+                    ${applyUrl ? `<a href="${esc(applyUrl)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
+                </div>
+            </div>`;
+            }).join('');
+        }
+
+        function renderPagination(totalPages) {
+            const c = document.getElementById('pagination');
+            c.innerHTML = '';
+            if (totalPages <= 1) return;
+            const prev = document.createElement('button');
+            prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
+            prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
+            const pages = [];
+            if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
+            else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
+            }
+            pages.forEach(p => {
+                if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
+                else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
+            });
+            const next = document.createElement('button');
+            next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
+            next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
