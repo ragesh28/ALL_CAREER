@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -244,10 +244,11 @@
         <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
     </a>
 
+
     <header id="main-header">
         <a href="index.html" style="text-decoration:none;"><h1>All Jobs</h1></a>
         <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;">
-            All roles â€¢ Google + LinkedIn aggregated â€¢ Tech & Non-Tech
+            All roles • Google + LinkedIn aggregated • Tech & Non-Tech
         </p>
     </header>
 
@@ -255,7 +256,7 @@
         <div class="filter-bar">
             <a href="index.html" class="mini-logo">ALL_CAREER</a>
             <div class="filter-group">
-                <input type="text" id="searchInput" class="filter-input" placeholder="ðŸ” Search jobs..." oninput="applyFilters()">
+                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
             </div>
             <div class="filter-group" style="flex:0.7;">
                 <select id="locationFilter" class="filter-input" onchange="applyFilters()">
@@ -273,7 +274,7 @@
                 <button class="exp-btn" onclick="setExperience('senior')" id="expSr">Senior</button>
             </div>
             <button class="roles-toggle" id="rolesToggle" onclick="toggleMindmap()">
-                ðŸ—ºï¸ Roles <span class="arrow">â–¾</span>
+                🗺️ Roles <span class="arrow">▾</span>
             </button>
         </div>
     </div>
@@ -287,9 +288,9 @@
             <div class="tree">
                 <!-- TECHNICAL -->
                 <div class="tree-branch">
-                    <div class="branch-header branch-tech">âš¡ Technical Roles</div>
+                    <div class="branch-header branch-tech">⚡ Technical Roles</div>
                     <div class="tier tier-high">
-                        <div class="tier-label">ðŸ”¥ High Demand</div>
+                        <div class="tier-label">🔥 High Demand</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Engineer</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Full Stack Developer</div>
@@ -299,7 +300,7 @@
                         </div>
                     </div>
                     <div class="tier tier-mid">
-                        <div class="tier-label">âš¡ In Demand</div>
+                        <div class="tier-label">⚡ In Demand</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Frontend Developer</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Backend Developer</div>
@@ -310,7 +311,7 @@
                         </div>
                     </div>
                     <div class="tier tier-low">
-                        <div class="tier-label">ðŸ’¼ Specialized</div>
+                        <div class="tier-label">💼 Specialized</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Mobile App Developer</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Architect</div>
@@ -326,9 +327,9 @@
                 </div>
                 <!-- NON-TECHNICAL -->
                 <div class="tree-branch">
-                    <div class="branch-header branch-nontech">ðŸ¢ Non-Technical Roles</div>
+                    <div class="branch-header branch-nontech">🏢 Non-Technical Roles</div>
                     <div class="tier tier-high">
-                        <div class="tier-label">ðŸ”¥ High Demand</div>
+                        <div class="tier-label">🔥 High Demand</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Product Manager</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Project Manager</div>
@@ -336,7 +337,7 @@
                         </div>
                     </div>
                     <div class="tier tier-mid">
-                        <div class="tier-label">âš¡ In Demand</div>
+                        <div class="tier-label">⚡ In Demand</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Scrum Master</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Technical Writer</div>
@@ -345,7 +346,7 @@
                         </div>
                     </div>
                     <div class="tier tier-low">
-                        <div class="tier-label">ðŸ’¼ Specialized</div>
+                        <div class="tier-label">💼 Specialized</div>
                         <div class="role-nodes">
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>HR Business Partner</div>
                             <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Customer Success Manager</div>
@@ -472,7 +473,7 @@
                 document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
                 el.classList.add('active'); activeRole = roleName;
                 const badge = document.getElementById('activeRoleBadge');
-                badge.innerHTML = `${roleName} <span class="clear-role" onclick="clearRole(event)">âœ•</span>`;
+                badge.innerHTML = `${roleName} <span class="clear-role" onclick="clearRole(event)">✕</span>`;
                 badge.style.display = 'inline-block';
             }
             applyFilters();
@@ -521,7 +522,7 @@
                 if (search && !hay.includes(search)) return false;
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
 
-                // Role filter â€” check title keywords OR role_search field
+                // Role filter — check title keywords OR role_search field
                 if (activeRole && ROLE_KEYWORDS[activeRole]) {
                     const keywords = ROLE_KEYWORDS[activeRole];
                     const roleSearch = (j.role_search || '').toLowerCase();
@@ -582,13 +583,13 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge">ðŸ“ ${esc(job.location || 'India')}</div>
-                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">ðŸ“… ${date}</div>` : ''}
+                    <div class="meta-badge">📍 ${esc(job.location || 'India')}</div>
+                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
                     ${sourceLabel ? `<div class="meta-badge ${sourceClass}">via ${esc(sourceLabel)}</div>` : ''}
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${esc(job.role_search || '')}</span>
-                    ${url ? `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply â†’</a>` : ''}
+                    ${url ? `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
                 </div>
             </div>`;
             }).join('');
@@ -599,7 +600,7 @@
             c.innerHTML = '';
             if (totalPages <= 1) return;
             const prev = document.createElement('button');
-            prev.className = 'page-btn nav-btn'; prev.innerHTML = 'â†'; prev.disabled = currentPage === 1;
+            prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
             prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
             const pages = [];
             if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
@@ -615,7 +616,7 @@
                 else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
             });
             const next = document.createElement('button');
-            next.className = 'page-btn nav-btn'; next.innerHTML = 'â†’'; next.disabled = currentPage === totalPages;
+            next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
             next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
         }
 
@@ -624,4 +625,3 @@
 </body>
 
 </html>
-

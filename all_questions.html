@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -207,6 +207,7 @@
         <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
     </a>
 
+
     <header id="main-header">
         <a href="index.html" style="text-decoration:none;"><h1>ALL_CAREER</h1></a>
     </header>
@@ -217,7 +218,7 @@
         <div class="topic-wrapper">
             <div class="topic-header-row">
                 <span class="topic-label">Filter by Topic:</span>
-                <button class="toggle-btn" id="toggleTopicsBtn" onclick="toggleTopicBar()">Show All Topics â–¼</button>
+                <button class="toggle-btn" id="toggleTopicsBtn" onclick="toggleTopicBar()">Show All Topics ▼</button>
             </div>
             <div class="topic-grid" id="topicContainer">
                 <button class="topic-btn active" onclick="filterByTopic('All', this)">All Topics</button>
@@ -432,7 +433,7 @@
             // Prev
             const prevBtn = document.createElement('button');
             prevBtn.className = 'page-btn';
-            prevBtn.innerText = 'â†';
+            prevBtn.innerText = '←';
             prevBtn.disabled = currentPage === 1;
             prevBtn.onclick = () => goToPage(currentPage - 1);
             container.appendChild(prevBtn);
@@ -470,7 +471,7 @@
             // Next
             const nextBtn = document.createElement('button');
             nextBtn.className = 'page-btn';
-            nextBtn.innerText = 'â†’';
+            nextBtn.innerText = '→';
             nextBtn.disabled = currentPage === totalPages;
             nextBtn.onclick = () => goToPage(currentPage + 1);
             container.appendChild(nextBtn);
@@ -499,7 +500,7 @@
             const grid = document.getElementById('topicContainer');
             const btn = document.getElementById('toggleTopicsBtn');
             grid.classList.toggle('expanded');
-            btn.innerText = grid.classList.contains('expanded') ? 'Show Less â–²' : 'Show All Topics â–¼';
+            btn.innerText = grid.classList.contains('expanded') ? 'Show Less ▲' : 'Show All Topics ▼';
         }
 
         init();
