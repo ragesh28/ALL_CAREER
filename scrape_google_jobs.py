@@ -303,10 +303,8 @@ def scrape_all_jobs(test_limit=None):
             retries = 0
             while retries <= MAX_RETRIES:
                 try:
-                    # Scrape ALL portals for maximum coverage
-                    # LinkedIn, Indeed, Google Jobs, Glassdoor, ZipRecruiter
+                    # Scrape ALL available portals that JobSpy supports
                     jobs_df = scrape_jobs(
-                        site_name=["linkedin", "indeed", "google", "glassdoor", "zip_recruiter"],
                         search_term=role,
                         google_search_term=f"{role} jobs in {location}",
                         location=location,
