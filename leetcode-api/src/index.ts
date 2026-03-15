@@ -61,6 +61,20 @@ export default {
 				});
 			}
 
+			if (url.pathname === "/api/companies") {
+				const { results } = await env.DB.prepare(
+					"SELECT company_name as name, COUNT(problem_id) as count FROM company_problems GROUP BY company_name ORDER BY company_name ASC"
+				).all();
+				
+				return new Response(JSON.stringify(results), {
+					headers: { 
+						"Content-Type": "application/json",
+						"Access-Control-Allow-Origin": "*" 
+					}
+				});
+			}
+
+
 			if (url.pathname === "/api/company") {
 				const company = url.searchParams.get("name");
 				if (!company) {
@@ -71,10 +85,10 @@ export default {
 					SELECT p.*, cp.frequency 
 					FROM problems p 
 					JOIN company_problems cp ON p.id = cp.problem_id 
-					WHERE cp.company_name = ?
+					WHERE LOWER(cp.company_name) = ?
 					ORDER BY cp.frequency DESC
-					LIMIT 200
-				`).bind(company).all();
+					LIMIT 1000
+				`).bind(company.toLowerCase()).all();
 				
 				return new Response(JSON.stringify(results), {
 					headers: { 

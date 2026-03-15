@@ -256,20 +256,27 @@
             companyListEl.appendChild(allDiv);
 
             // 3. COMPANY LIST
-            list.forEach(name => {
+            list.forEach(comp => {
+                const name = typeof comp === 'string' ? comp : comp.name;
+                const count = typeof comp === 'string' ? '' : comp.count;
+
+                // Format string to be Title Case since DB stores lowercase
+                const dName = name.replace(/\b\w/g, l => l.toUpperCase());
+
                 const div = document.createElement('div');
                 div.className = 'company-item';
                 div.onclick = () => loadCompany(name, div);
-                const logoData = getLogoData(name);
+                const logoData = getLogoData(dName);
                 div.innerHTML = `
                     <div class="company-info">
                         <div style="position:relative; width:20px; height:20px;">
                             <img src="${logoData.clearbit}" class="sidebar-logo" style="position:absolute; top:0; left:0; width:100%; height:100%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <img src="${logoData.google}" class="sidebar-logo" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none; width:100%; height:100%; background:#334155; color:white; border-radius:4px; align-items:center; justify-content:center; font-weight:bold; font-size:0.7rem;">${logoData.cleanName.charAt(0)}</div>
+                            <div style="display:none; width:100%; height:100%; background:#334155; color:white; border-radius:4px; align-items:center; justify-content:center; font-weight:bold; font-size:0.7rem;">${dName.charAt(0)}</div>
                         </div>
-                        <span>${name}</span>
+                        <span>${dName}</span>
                     </div>
+                    ${count !== '' ? `<span class="count-tag">${count}</span>` : ''}
                 `;
                 companyListEl.appendChild(div);
             });
@@ -352,7 +359,8 @@
             document.querySelectorAll('.company-item').forEach(el => el.classList.remove('active'));
             if(element) element.classList.add('active');
 
-            const logoData = getLogoData(name);
+            const dName = name.replace(/\b\w/g, l => l.toUpperCase());
+            const logoData = getLogoData(dName);
             
             // Loading State
             mainContentEl.innerHTML = `<div style="text-align:center; padding:50px; color:#94a3b8;">Loading questions from Cloudflare DB...</div>`;
@@ -371,7 +379,7 @@
                                 <img src="${logoData.clearbit}" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                 <img src="${logoData.google}" style="display:none; width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none';">
                             </div>
-                            <div class="company-name-large" style="font-size: 1.3rem;">${name} <span style="font-size:14px; font-weight:400; color:#fbbf24;">(${data.length} questions)</span></div>
+                            <div class="company-name-large" style="font-size: 1.3rem;">${dName} <span style="font-size:14px; font-weight:400; color:#fbbf24;">(${data.length} questions)</span></div>
                         </div>
 
                         <div class="toolbar">
@@ -470,15 +478,26 @@
 
         function filterCompanies() {
             const term = document.getElementById('compSearch').value.toLowerCase();
-            const filtered = companies.filter(c => c.toLowerCase().includes(term));
+            const filtered = companies.filter(c => {
+                const name = typeof c === 'string' ? c : c.name;
+                return name.toLowerCase().includes(term);
+            });
             renderSidebar(filtered);
         }
 
-        // Static top tech list so we don't need a heavy query for initializing the sidebar
-        const topTech = ['Amazon', 'Google', 'Microsoft', 'Meta', 'Apple', 'Netflix', 'Uber', 'Airbnb', 'Stripe', 'Palantir', 'TikTok', 'Oracle', 'Nvidia', 'LinkedIn', 'Adobe', 'Bloomberg'];
-
-        companies = topTech.sort();
-        renderSidebar(companies);
+        async function initCompanies() {
+            try {
+                companyListEl.innerHTML = '<div style="padding:20px; text-align:center; color:#94a3b8;">Loading companies...</div>';
+                const res = await fetch(`${API_BASE}/api/companies`);
+                companies = await res.json();
+                companies.sort((a,b) => b.count - a.count); // desc sort
+                renderSidebar(companies);
+            } catch (err) {
+                console.error("Failed to fetch companies:", err);
+                companyListEl.innerHTML = '<div style="padding:20px; text-align:center; color:#ff375f;">Failed to load companies</div>';
+            }
+        }
+        initCompanies();
 
     </script>
 </body>
