@@ -195,15 +195,17 @@
         </main>
     </div>
 
-    <script src="leetcode_data.js"></script>
+    <!-- Removed local 6MB JS payload: leetcode_data.js -->
     <script src="logos.js"></script>
     <script src="top150.js"></script>
 
     <script>
+        const API_BASE = 'https://leetcode-api.ragesh-l.workers.dev';
         const companyListEl = document.getElementById('companyList');
         const mainContentEl = document.getElementById('mainContent');
         let companies = [];
         let currentCompanyName = "";
+        let currentCompanyData = [];
 
         function getLogoData(name) {
             let cleanName = name.replace(/\(.*\)/, '').replace(/ India/i, '').trim();
@@ -255,7 +257,6 @@
 
             // 3. COMPANY LIST
             list.forEach(name => {
-                const count = leetcodeData[name] ? leetcodeData[name].length : 0;
                 const div = document.createElement('div');
                 div.className = 'company-item';
                 div.onclick = () => loadCompany(name, div);
@@ -269,7 +270,6 @@
                         </div>
                         <span>${name}</span>
                     </div>
-                    <span class="count-tag">${count}</span>
                 `;
                 companyListEl.appendChild(div);
             });
@@ -346,71 +346,85 @@
         }
 
         // --- LOAD COMPANY ---
-        function loadCompany(name, element) {
+        async function loadCompany(name, element) {
             currentCompanyName = name;
             
             document.querySelectorAll('.company-item').forEach(el => el.classList.remove('active'));
             if(element) element.classList.add('active');
 
             const logoData = getLogoData(name);
-
-            // COMPACT HEADER FOR COMPANY
-            const html = `
-                <div class="company-header-bar">
-                    <div class="company-title-row">
-                        <div style="width:36px; height:36px; background:white; border-radius:8px; padding:3px; display:flex; align-items:center; justify-content:center;">
-                            <img src="${logoData.clearbit}" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <img src="${logoData.google}" style="display:none; width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none';">
-                        </div>
-                        <div class="company-name-large" style="font-size: 1.3rem;">${name}</div>
-                    </div>
-
-                    <div class="toolbar">
-                        <input type="text" id="probSearch" class="filter-select" style="width:180px; color:white;" placeholder="Search..." onkeyup="applyProblemFilters()">
-                        
-                        <select id="diffFilter" class="filter-select" onchange="applyProblemFilters()">
-                            <option value="All">All Difficulties</option>
-                            <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                        </select>
-
-                        <select id="sortFilter" class="filter-select" onchange="applyProblemFilters()">
-                            <option value="freq">Sort: Frequency</option>
-                            <option value="accept">Sort: Acceptance</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="problem-table">
-                        <thead>
-                            <tr>
-                                <th width="40">#</th>
-                                <th>Title</th>
-                                <th width="120">Acceptance</th>
-                                <th width="100">Difficulty</th>
-                                <th width="150">Frequency</th>
-                            </tr>
-                        </thead>
-                        <tbody id="problemTableBody"></tbody>
-                    </table>
-                </div>
-            `;
             
-            mainContentEl.innerHTML = html;
-            applyProblemFilters();
+            // Loading State
+            mainContentEl.innerHTML = `<div style="text-align:center; padding:50px; color:#94a3b8;">Loading questions from Cloudflare DB...</div>`;
+
+            try {
+                // Fetch dynamically instead of relying on local 6MB payload
+                const res = await fetch(`${API_BASE}/api/company?name=${encodeURIComponent(name)}`);
+                const data = await res.json();
+                currentCompanyData = data;
+
+                // COMPACT HEADER FOR COMPANY
+                const html = `
+                    <div class="company-header-bar">
+                        <div class="company-title-row">
+                            <div style="width:36px; height:36px; background:white; border-radius:8px; padding:3px; display:flex; align-items:center; justify-content:center;">
+                                <img src="${logoData.clearbit}" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <img src="${logoData.google}" style="display:none; width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none';">
+                            </div>
+                            <div class="company-name-large" style="font-size: 1.3rem;">${name} <span style="font-size:14px; font-weight:400; color:#fbbf24;">(${data.length} questions)</span></div>
+                        </div>
+
+                        <div class="toolbar">
+                            <input type="text" id="probSearch" class="filter-select" style="width:180px; color:white;" placeholder="Search..." onkeyup="applyProblemFilters()">
+                            
+                            <select id="diffFilter" class="filter-select" onchange="applyProblemFilters()">
+                                <option value="All">All Difficulties</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+
+                            <select id="sortFilter" class="filter-select" onchange="applyProblemFilters()">
+                                <option value="freq">Sort: Frequency</option>
+                                <option value="accept">Sort: Acceptance</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="problem-table">
+                            <thead>
+                                <tr>
+                                    <th width="40">#</th>
+                                    <th>Title</th>
+                                    <th width="120">Acceptance</th>
+                                    <th width="100">Difficulty</th>
+                                    <th width="150">Frequency</th>
+                                </tr>
+                            </thead>
+                            <tbody id="problemTableBody"></tbody>
+                        </table>
+                    </div>
+                `;
+                
+                mainContentEl.innerHTML = html;
+                applyProblemFilters();
+            } catch (err) {
+                console.error(err);
+                mainContentEl.innerHTML = `<div style="text-align:center; padding:50px; color:#ff375f;">Failed to load from DB</div>`;
+            }
         }
 
         // --- FILTER LOGIC ---
         function applyProblemFilters() {
-            if (!currentCompanyName || !leetcodeData[currentCompanyName]) return;
+            if (!currentCompanyData.length) return;
 
-            const problems = [...leetcodeData[currentCompanyName]]; 
-            const search = document.getElementById('probSearch').value.toLowerCase();
-            const diff = document.getElementById('diffFilter').value;
-            const sort = document.getElementById('sortFilter').value;
+            const problems = [...currentCompanyData]; 
+            const search = document.getElementById('probSearch')?.value.toLowerCase() || '';
+            const diff = document.getElementById('diffFilter')?.value || 'All';
+            const sort = document.getElementById('sortFilter')?.value || 'freq';
             const tbody = document.getElementById('problemTableBody');
+            if(!tbody) return;
             
             tbody.innerHTML = '';
 
@@ -460,14 +474,11 @@
             renderSidebar(filtered);
         }
 
-        try {
-            if (typeof leetcodeData !== 'undefined') {
-                companies = Object.keys(leetcodeData).sort();
-                renderSidebar(companies);
-            } else {
-                companyListEl.innerHTML = '<div style="padding:20px; text-align:center;">Error: leetcode_data.js missing</div>';
-            }
-        } catch (e) { console.error(e); }
+        // Static top tech list so we don't need a heavy query for initializing the sidebar
+        const topTech = ['Amazon', 'Google', 'Microsoft', 'Meta', 'Apple', 'Netflix', 'Uber', 'Airbnb', 'Stripe', 'Palantir', 'TikTok', 'Oracle', 'Nvidia', 'LinkedIn', 'Adobe', 'Bloomberg'];
+
+        companies = topTech.sort();
+        renderSidebar(companies);
 
     </script>
 </body>
