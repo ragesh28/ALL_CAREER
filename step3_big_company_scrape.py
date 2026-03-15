@@ -58,8 +58,53 @@ LOCATIONS = [
 ]
 
 PROGRESS_FILE = "scrape_progress.json"
-JOBS_JSON = "big_jobs.json"
-JOBS_DATA_JS = "big_jobs_data.js"
+
+TURSO_URL = os.environ.get("TURSO_URL", "https://jobsdata-ragesh.aws-ap-south-1.turso.io")
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
+
+def turso_execute(statements):
+    if not TURSO_URL or not TURSO_TOKEN:
+        print("⚠️ TURSO not configured, skipping DB storage")
+        return None
+
+    import requests
+    url = f"{TURSO_URL}/v2/pipeline"
+    headers = {
+        "Authorization": f"Bearer {TURSO_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    requests_body = []
+    for stmt in statements:
+        if isinstance(stmt, str):
+            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
+        elif isinstance(stmt, dict):
+            requests_body.append({"type": "execute", "stmt": stmt})
+    requests_body.append({"type": "close"})
+
+    try:
+        resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
+        return resp.json() if resp.status_code == 200 else None
+    except Exception as e:
+        print(f"❌ Turso connection error: {e}")
+        return None
+
+def setup_database():
+    print("📦 Setting up Turso database (big_jobs table)...")
+    sql = """
+    CREATE TABLE IF NOT EXISTS big_jobs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        company TEXT NOT NULL,
+        location TEXT,
+        date_posted TEXT,
+        url TEXT NOT NULL,
+        linkedin_url TEXT,
+        fetched_at TEXT NOT NULL,
+        UNIQUE(url)
+    )
+    """
+    turso_execute([sql])
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -128,14 +173,6 @@ def save_progress(index):
         }, f)
 
 
-def load_existing_jobs():
-    try:
-        with open(JOBS_JSON, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-
 def clean_old_jobs(jobs):
     """Remove jobs older than KEEP_DAYS days."""
     cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
@@ -148,19 +185,38 @@ def clean_old_jobs(jobs):
 
 
 def save_jobs(all_jobs):
-    """Save jobs to both big_jobs.json and big_jobs_data.js."""
-    # Clean old jobs before saving
+    """Save jobs directly to Turso big_jobs table."""
+    if not all_jobs: return
+
+    # Clean old jobs
     all_jobs = clean_old_jobs(all_jobs)
 
-    with open(JOBS_JSON, "w", encoding="utf-8") as f:
-        json.dump(all_jobs, f, indent=2, ensure_ascii=False)
+    statements = []
+    for job in all_jobs:
+        statements.append({
+            "sql": "INSERT OR IGNORE INTO big_jobs (title, company, location, date_posted, url, linkedin_url, fetched_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "args": [
+                {"type": "text", "value": str(job.get("title", ""))},
+                {"type": "text", "value": str(job.get("company", ""))},
+                {"type": "text", "value": str(job.get("location", ""))},
+                {"type": "text", "value": str(job.get("date", ""))},
+                {"type": "text", "value": str(job.get("url", ""))},
+                {"type": "text", "value": str(job.get("linkedin_url", ""))},
+                {"type": "text", "value": str(job.get("fetchedAt", ""))}
+            ]
+        })
 
-    # IMPORTANT: variable name must be 'bigJobs' to match big_company_jobs.html
-    js_content = f"const bigJobs = {json.dumps(all_jobs, indent=2, ensure_ascii=False)};"
-    with open(JOBS_DATA_JS, "w", encoding="utf-8") as f:
-        f.write(js_content)
+    # Chunk into 50 statements
+    total_inserted = 0
+    for i in range(0, len(statements), 50):
+        chunk = statements[i:i+50]
+        res = turso_execute(chunk)
+        if res:
+            for r in res.get("results", []):
+                if r.get("type") == "ok":
+                    total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
 
-    print(f"💾 Saved {len(all_jobs)} total jobs to {JOBS_JSON} and {JOBS_DATA_JS}")
+    print(f"💾 Inserted {total_inserted} new jobs to Turso 'big_jobs' table out of {len(all_jobs)} total tracked.")
 
 
 def is_linkedin_block(error):
@@ -262,6 +318,8 @@ def run(test_limit=None):
     print(f"  🔗 Mode: Direct links only (linkedin_fetch_description=True)")
     print("=" * 60)
 
+    setup_database()
+
     # Check for resume from previous blocked run
     progress = load_progress()
     start_index = 0
@@ -273,12 +331,10 @@ def run(test_limit=None):
             print(f"\n✅ All companies already scraped today!")
             return
 
-    # Load existing jobs
-    existing_jobs = load_existing_jobs()
-    existing_urls = set(job.get("url", "") for job in existing_jobs)
-    print(f"📊 Existing jobs in database: {len(existing_jobs)}")
+    # No need to load existing jobs anymore; Turso INSERT OR IGNORE handles deduplication.
+    print("📋 Will rely on Turso `UNIQUE(url)` for deduplication.")
 
-    new_jobs = []
+    new_jobs_count = 0
     blocked_count = 0
 
     for i in range(start_index, total):
@@ -289,7 +345,7 @@ def run(test_limit=None):
         if i > start_index and i % BATCH_SIZE == 0:
             print(f"\n{'─' * 50}")
             print(f"  🔄 Starting batch {batch_num} (fresh session)")
-            print(f"  📊 New direct-link jobs so far: {len(new_jobs)}")
+            print(f"  📊 Direct-link jobs saved so far: {new_jobs_count}")
             print(f"{'─' * 50}\n")
             time.sleep(5)
 
@@ -300,8 +356,6 @@ def run(test_limit=None):
             elapsed_min = int((time.time() - START_TIME) / 60)
             print(f"\n⏰ TIME LIMIT ({elapsed_min} min). Saving progress and stopping.")
             save_progress(i - 1)
-            merged = new_jobs + existing_jobs
-            save_jobs(merged)
             print(f"✅ Progress saved. GitHub Action will restart in 10 minutes.")
             return
 
@@ -311,11 +365,9 @@ def run(test_limit=None):
                 company, LOCATIONS, RESULTS_PER_SEARCH
             )
 
-            # Add non-duplicate jobs
-            for job in company_jobs:
-                if job["url"] not in existing_urls:
-                    new_jobs.append(job)
-                    existing_urls.add(job["url"])
+            if company_jobs:
+                save_jobs(company_jobs)
+                new_jobs_count += len(company_jobs)
 
             if was_blocked:
                 blocked_count += 1
@@ -323,8 +375,6 @@ def run(test_limit=None):
 
                 # Save progress before cooldown
                 save_progress(i - 1)
-                merged = new_jobs + existing_jobs
-                save_jobs(merged)
 
                 if retries <= MAX_RETRIES:
                     print(f"\n⏳ Blocked! Waiting {COOLDOWN_SECONDS}s... (retry {retries}/{MAX_RETRIES})")
@@ -338,13 +388,7 @@ def run(test_limit=None):
 
         # Periodic save every 10 companies
         if (i + 1) % 10 == 0:
-            merged = new_jobs + existing_jobs
-            save_jobs(merged)
-            print(f"💾 Checkpoint: {len(new_jobs)} new direct-link jobs saved")
-
-    # Final save
-    merged = new_jobs + existing_jobs
-    save_jobs(merged)
+            print(f"💾 Checkpoint: {new_jobs_count} direct-link jobs processed")
 
     # Clean up progress file (all done)
     try:
@@ -354,8 +398,7 @@ def run(test_limit=None):
 
     print(f"\n{'=' * 60}")
     print(f"  📊 RESULTS:")
-    print(f"     🆕 New direct-link jobs found: {len(new_jobs)}")
-    print(f"     📦 Total jobs in DB: {len(merged)}")
+    print(f"     🆕 New direct-link jobs processed: {new_jobs_count}")
     print(f"     🚫 Times blocked: {blocked_count}")
     print(f"={'=' * 59}")
     print(f"\n✅ DONE!")
@@ -375,9 +418,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Fatal error: {e}")
         traceback.print_exc()
-        try:
-            existing = load_existing_jobs()
-            save_jobs(existing)
-        except Exception:
-            pass
         sys.exit(1)

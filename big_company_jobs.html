@@ -376,7 +376,6 @@
     </div>
 
     <script src="logos.js"></script>
-    <script src="big_jobs_data.js"></script>
     <script>
         window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
 
@@ -510,13 +509,79 @@
             applyFilters();
         }
 
-        function init() {
+        async function fetchJobsFromTurso() {
+            const url = "https://jobsdata-ragesh.aws-ap-south-1.turso.io/v2/pipeline";
+            const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3NzM1Mzk1MDAsImlkIjoiMDE5Y2UwYWItMWQwMS03MzBjLWEwYjUtNWVlNGRjMWQwOGQ4IiwicmlkIjoiMGNjZWYzMWMtZTFjNy00MDM3LTgwN2EtYjFjZDgyZjRkNGE2In0.28QX2VgyVwawxboCthFrM-WASW3_ytEwsjDd8spd1a4s84KGPvyvStHliZTvf9h54wlwc_64wY_cuYhsz8vpDw";
+            
+            const body = {
+                "requests": [
+                    {
+                        "type": "execute",
+                        "stmt": {
+                            "sql": "SELECT title, company, location, date_posted, url, linkedin_url, fetched_at FROM big_jobs ORDER BY fetched_at DESC"
+                        }
+                    },
+                    { "type": "close" }
+                ]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) throw new Error("Failed to connect to database");
+                
+                const data = await response.json();
+                
+                const resultObj = data.results.find(r => r.type === "ok" && r.response && r.response.type === "execute");
+                if (!resultObj) throw new Error("No data returned");
+                
+                const table = resultObj.response.result;
+                const cols = table.cols.map(c => c.name);
+                
+                const fetchedJobs = [];
+                for (const row of table.rows) {
+                    const job = {};
+                    cols.forEach((col, i) => {
+                        job[col] = (row[i] && row[i].type !== "null") ? row[i].value : "";
+                    });
+                    
+                    fetchedJobs.push({
+                        title: job.title,
+                        company: job.company,
+                        location: job.location,
+                        date: job.date_posted,
+                        url: job.url,
+                        linkedin_url: job.linkedin_url,
+                        fetchedAt: job.fetched_at
+                    });
+                }
+                
+                return fetchedJobs;
+                
+            } catch (error) {
+                console.error("Error fetching big jobs:", error);
+                return [];
+            }
+        }
+
+        async function init() {
             const loading = document.getElementById('loading');
-            if (typeof bigJobs === 'undefined' || !bigJobs || bigJobs.length === 0) {
-                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs yet</h3><p style="margin-top:10px">The GitHub Action runs daily and will populate jobs here.</p></div>';
+            loading.innerHTML = 'Connecting to database and loading jobs...';
+            
+            allJobs = await fetchJobsFromTurso();
+            
+            if (allJobs.length === 0) {
+                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p style="margin-top:10px">Could not load jobs from database or none exist yet.</p></div>';
                 return;
             }
-            allJobs = bigJobs;
+            
             applyFilters();
             loading.style.display = 'none';
         }

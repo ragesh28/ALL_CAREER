@@ -24,17 +24,18 @@ jobs:
 
       # Scrape 150 top companies with direct links (linkedin_fetch_description=True)
       - name: Run Big Company Scraper (Direct Links)
+        env:
+          TURSO_URL: ${{ secrets.TURSO_URL }}
+          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
         run: python step3_big_company_scrape.py
 
-      # Save results — force-add even though in .gitignore
-      - name: Commit and Push Big Jobs
+      # Save progress checkpoint so it can resume if rate limited/timeout
+      - name: Commit and Push Scrape Progress
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add -f big_jobs.json big_jobs_data.js
-          # Also commit progress file if scraper stopped mid-run
           git add -f scrape_progress.json 2>/dev/null || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Big company jobs update (direct links)" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save big company scraper progress" && git push)
 
       # If scrape_progress.json exists → scraper hit time limit → restart in 10 min
       - name: Auto-Restart if Not Finished
