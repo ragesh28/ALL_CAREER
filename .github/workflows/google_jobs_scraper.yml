@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Google Jobs Aggregator
         env:
-          TURSO_URL: ${{ secrets.TURSO_URL }}
-          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+          TURSO_ALLJOBS_URL: ${{ secrets.TURSO_ALLJOBS_URL }}
+          TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
         run: python scrape_google_jobs.py
 

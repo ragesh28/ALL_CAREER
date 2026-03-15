@@ -23,11 +23,11 @@ from playwright.sync_api import sync_playwright
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
-TURSO_URL = os.environ.get("TURSO_URL", "")
-TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "")
+TURSO_URL = os.environ.get("TURSO_ALLJOBS_URL", "")
+TURSO_TOKEN = os.environ.get("TURSO_ALLJOBS_TOKEN", "")
 
-MAX_JOBS = 500              # Per run cap
-RESULTS_PER_SEARCH = 10    # Per role+location combo
+MAX_JOBS = 500000           # Per run cap
+RESULTS_PER_SEARCH = 20    # Per role+location combo
 KEEP_DAYS = 10              # Delete jobs older than 10 days
 COOLDOWN_SECONDS = 60       # Wait on block
 MAX_RETRIES = 3
@@ -276,11 +276,28 @@ def is_blocked(error):
     err = str(error).lower()
     return any(x in err for x in ["429", "blocked", "rate limit", "timeout", "captcha", "forbidden"])
 
+def get_proxies():
+    """Download a fresh list of free proxies to rotate IPs and avoid blocks."""
+    print("🌍 Downloading fresh proxy list for IP rotation...")
+    try:
+        import urllib.request
+        # Using a reliable free proxy list (HTTP/S)
+        url = "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        response = urllib.request.urlopen(req, timeout=10)
+        content = response.read().decode('utf-8')
+        proxies = [f"http://{line.strip()}" for line in content.splitlines() if line.strip()]
+        print(f"✅ Loaded {len(proxies)} proxies for rotation.")
+        return proxies
+    except Exception as e:
+        print(f"⚠️ Failed to fetch proxies: {e}. Running without proxy rotation.")
+        return []
+
 def scrape_all_jobs(test_limit=None):
     roles = SEARCH_ROLES
     if test_limit:
         roles = roles[:test_limit]
-        print(f"\n🧪 TEST MODE: {test_limit} roles only\n")
+        print(f"\\n🧪 TEST MODE: {test_limit} roles only\\n")
 
     all_jobs = []
     seen_keys = set()
@@ -288,6 +305,9 @@ def scrape_all_jobs(test_limit=None):
     total_combos = len(roles) * len(LOCATIONS)
     combo_num = 0
     total_stored = 0
+    
+    proxy_list = get_proxies()
+    import random
 
     with sync_playwright() as p:
         # Launching Chromium with automation bypass flags
@@ -295,13 +315,6 @@ def scrape_all_jobs(test_limit=None):
             headless=True,
             args=["--disable-blink-features=AutomationControlled"]
         )
-        context = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-            viewport={'width': 1920, 'height': 1080}
-        )
-        page = context.new_page()
-        # Stealth bypass for navigator.webdriver
-        page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         
         for role in roles:
             for location in LOCATIONS:
@@ -309,7 +322,7 @@ def scrape_all_jobs(test_limit=None):
 
                 # Time limit check
                 if time.time() - START_TIME >= MAX_RUN_SECONDS:
-                    print(f"\n⏰ TIME LIMIT. Saving and stopping.")
+                    print(f"\\n⏰ TIME LIMIT. Saving and stopping.")
                     break
 
                 print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
@@ -321,6 +334,19 @@ def scrape_all_jobs(test_limit=None):
                 success = False
                 while retries <= MAX_RETRIES and not success:
                     try:
+                        # Rotate proxy for every context if available
+                        proxy_config = None
+                        if proxy_list:
+                            selected_proxy = random.choice(proxy_list)
+                            proxy_config = {"server": selected_proxy}
+                            
+                        context = browser.new_context(
+                            proxy=proxy_config,
+                            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                            viewport={'width': 1920, 'height': 1080}
+                        )
+                        page = context.new_page()
+                        page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
                         page.goto(job_url, wait_until="domcontentloaded", timeout=60000)
                         page.wait_for_timeout(3000)
                         
@@ -449,9 +475,9 @@ if __name__ == "__main__":
 
     # Local testing fallback
     if not TURSO_URL:
-        TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
+        TURSO_URL = "https://alljobs-ragesh.aws-ap-south-1.turso.io"
     if not TURSO_TOKEN:
-        TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg"
+        TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM1NTM5OTksImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.mtjC1aL0M1rcwS2pJsM70Ytqk06Jqct2dVChPGcgEV0zvcv8hAb9opCC5L76xuEXnO6ZuUZU-Edlex7ABWgVCg"
 
     test_count = None
     if "--test" in sys.argv:
@@ -470,19 +496,11 @@ if __name__ == "__main__":
 
         # Scrape
         jobs, stored = scrape_all_jobs(test_limit=test_count)
-        print(f"\n📊 Scraped: {len(jobs)} unique jobs, Stored: {stored} new in Turso")
+        print(f"\\n📊 Scraped: {len(jobs)} unique jobs, Stored: {stored} new in Turso")
 
-        # Fetch ALL jobs from Turso (including previous days) for JS file
-        if TURSO_URL:
-            all_turso_jobs = fetch_all_from_turso()
-            print(f"📦 Total in Turso: {len(all_turso_jobs)} jobs")
-            generate_js_file(all_turso_jobs)
-        else:
-            generate_js_file(jobs)
+        # Removed JS file generation to prevent saving to Github repository storage.
+        # Data is exclusively stored in Turso now.
 
-        # Also save JSON
-        with open("google_jobs.json", "w", encoding="utf-8") as f:
-            json.dump(jobs, f, indent=2, ensure_ascii=False)
 
         final = get_total_jobs() if TURSO_URL else len(jobs)
         print(f"\n{'=' * 60}")
