@@ -490,7 +490,7 @@
                 companyListEl.innerHTML = '<div style="padding:20px; text-align:center; color:#94a3b8;">Loading companies...</div>';
                 const res = await fetch(`${API_BASE}/api/companies`);
                 companies = await res.json();
-                companies.sort((a,b) => b.count - a.count); // desc sort
+                companies.sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical sort A-Z
                 renderSidebar(companies);
             } catch (err) {
                 console.error("Failed to fetch companies:", err);
