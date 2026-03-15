@@ -16,8 +16,9 @@ import json
 import time
 import requests
 import traceback
+import urllib.parse
 from datetime import datetime, timedelta
-from jobspy import scrape_jobs
+from playwright.sync_api import sync_playwright
 
 # ---------------------------------------------------------------------------
 # CONFIG
@@ -273,8 +274,7 @@ def get_total_jobs():
 # ---------------------------------------------------------------------------
 def is_blocked(error):
     err = str(error).lower()
-    return any(x in err for x in ["429", "blocked", "rate limit", "timeout", "captcha", "forbidden", "max retries"])
-
+    return any(x in err for x in ["429", "blocked", "rate limit", "timeout", "captcha", "forbidden"])
 
 def scrape_all_jobs(test_limit=None):
     roles = SEARCH_ROLES
@@ -289,97 +289,136 @@ def scrape_all_jobs(test_limit=None):
     combo_num = 0
     total_stored = 0
 
-    for role in roles:
-        for location in LOCATIONS:
-            combo_num += 1
+    with sync_playwright() as p:
+        # Launching Chromium with automation bypass flags
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled"]
+        )
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            viewport={'width': 1920, 'height': 1080}
+        )
+        page = context.new_page()
+        # Stealth bypass for navigator.webdriver
+        page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        
+        for role in roles:
+            for location in LOCATIONS:
+                combo_num += 1
 
-            # Time limit check
-            if time.time() - START_TIME >= MAX_RUN_SECONDS:
-                print(f"\n⏰ TIME LIMIT. Saving and stopping.")
-                break
+                # Time limit check
+                if time.time() - START_TIME >= MAX_RUN_SECONDS:
+                    print(f"\n⏰ TIME LIMIT. Saving and stopping.")
+                    break
 
-            print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
+                print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
 
-            retries = 0
-            while retries <= MAX_RETRIES:
-                try:
-                    # Scrape ALL available portals that JobSpy supports
-                    jobs_df = scrape_jobs(
-                        search_term=role,
-                        google_search_term=f"{role} jobs in {location}",
-                        location=location,
-                        results_wanted=RESULTS_PER_SEARCH,
-                        hours_old=72,
-                        country_indeed="India",
-                        verbose=0,
-                    )
+                encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
+                job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
 
-                    if jobs_df is None or jobs_df.empty:
-                        print("0 jobs")
-                        break
+                retries = 0
+                success = False
+                while retries <= MAX_RETRIES and not success:
+                    try:
+                        page.goto(job_url, wait_until="domcontentloaded", timeout=60000)
+                        page.wait_for_timeout(3000)
+                        
+                        try:
+                            # Wait for job container
+                            page.wait_for_selector('a.MQUd2b', timeout=10000)
+                        except Exception:
+                            # Usually means 0 jobs found
+                            print("0 jobs found")
+                            success = True
+                            break
+                            
+                        # Scroll to load a few more
+                        page.mouse.move(300, 500)
+                        for _ in range(3):
+                            page.mouse.wheel(0, 1500)
+                            page.wait_for_timeout(1000)
+                            
+                        list_items = page.locator('a.MQUd2b').all()
+                        
+                        batch = []
+                        count = 0
+                        
+                        for card in list_items:
+                            if count >= RESULTS_PER_SEARCH:
+                                break
+                                
+                            try:
+                                title_loc = card.locator('.tNxQIb')
+                                title = title_loc.inner_text().strip() if title_loc.count() > 0 else ""
+                                
+                                comp_locs = card.locator('.wHYlTd').all()
+                                company = comp_locs[0].inner_text().strip() if len(comp_locs) > 0 else ""
+                                
+                                loc_via = comp_locs[1].inner_text().strip() if len(comp_locs) > 1 else ""
+                                loc_clean = loc_via.split('•')[0].strip() if '•' in loc_via else loc_via
+                                site = "google"
+                                if 'via' in loc_via:
+                                    site = loc_via.split('via')[-1].strip().lower()
+                                    
+                                if not title or not company:
+                                    continue
+                                    
+                                key = f"{title.lower().strip()}|{company.lower().strip()}"
+                                if key in seen_keys:
+                                    continue
+                                seen_keys.add(key)
+                                
+                                # Fetch direct URL from right pane by clicking
+                                card.click(force=True)
+                                page.wait_for_timeout(1000)
+                                
+                                direct_url = ""
+                                apply_links = page.locator('.yVRmze-s2gQvd a').all()
+                                if apply_links:
+                                    direct_url = apply_links[0].get_attribute('href')
+                                if not direct_url:
+                                    direct_url = card.get_attribute('href')
+                                    
+                                batch.append({
+                                    "title": title,
+                                    "company": company,
+                                    "location": loc_clean,
+                                    "url": direct_url or "#",
+                                    "linkedin_url": "",
+                                    "date": "Recent",
+                                    "source": site,
+                                    "role_search": role,
+                                    "fetchedAt": fetched_at,
+                                })
+                                count += 1
+                                
+                            except Exception:
+                                continue
+                                
+                        all_jobs.extend(batch)
 
-                    batch = []
-                    for _, row in jobs_df.iterrows():
-                        job_url = str(row.get("job_url", ""))
-                        title = str(row.get("title", ""))
-                        company = str(row.get("company", ""))
-                        source = str(row.get("site", ""))
+                        # Store batch in Turso
+                        if batch and TURSO_URL:
+                            inserted = store_jobs_batch(batch)
+                            total_stored += inserted
 
-                        if not job_url or job_url in ("nan", "None", ""):
-                            continue
+                        print(f"✅ {len(batch)} new (total: {len(all_jobs)}, stored: {total_stored})")
+                        success = True
 
-                        key = f"{title.lower().strip()}|{company.lower().strip()}"
-                        if key in seen_keys:
-                            continue
-                        seen_keys.add(key)
-
-                        direct_url = str(row.get("job_url_direct", ""))
-                        if direct_url in ("", "nan", "None"):
-                            direct_url = job_url
-
-                        batch.append({
-                            "title": title,
-                            "company": company,
-                            "location": str(row.get("location", location.split(",")[0])),
-                            "url": direct_url,
-                            "linkedin_url": job_url if "linkedin" in source.lower() else "",
-                            "date": str(row.get("date_posted", "")),
-                            "source": source,
-                            "role_search": role,
-                            "fetchedAt": fetched_at,
-                        })
-
-                    all_jobs.extend(batch)
-
-                    # Store batch in Turso
-                    if batch and TURSO_URL:
-                        inserted = store_jobs_batch(batch)
-                        total_stored += inserted
-
-                    print(f"✅ {len(batch)} new (total: {len(all_jobs)}, stored: {total_stored})")
-                    break  # Success, move to next combo
-
-                except Exception as e:
-                    if is_blocked(e):
+                    except Exception as e:
                         retries += 1
                         if retries <= MAX_RETRIES:
-                            print(f"🚫 BLOCKED! Waiting {COOLDOWN_SECONDS}s (retry {retries}/{MAX_RETRIES})...")
+                            print(f"🚫 Error: {e}. Retrying {retries}/{MAX_RETRIES}...")
                             time.sleep(COOLDOWN_SECONDS)
                         else:
                             print(f"❌ Max retries. Skipping.")
-                    else:
-                        print(f"⚠️ {str(e)[:80]}")
-                        break
-
-            if len(all_jobs) >= MAX_JOBS:
-                print(f"\n🎯 Reached {MAX_JOBS} cap.")
+                if len(all_jobs) >= MAX_JOBS or (time.time() - START_TIME >= MAX_RUN_SECONDS):
+                    break
+            if len(all_jobs) >= MAX_JOBS or (time.time() - START_TIME >= MAX_RUN_SECONDS):
                 break
 
-        if len(all_jobs) >= MAX_JOBS or (time.time() - START_TIME >= MAX_RUN_SECONDS):
-            break
-
     return all_jobs, total_stored
-
 
 # ---------------------------------------------------------------------------
 # JS FILE GENERATION
