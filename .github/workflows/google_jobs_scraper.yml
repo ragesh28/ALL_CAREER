@@ -31,3 +31,27 @@ jobs:
           TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
         run: python scrape_google_jobs.py
 
+      # Save progress checkpoint so it can resume if rate limited/timeout
+      - name: Commit and Push Scrape Progress
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add -f google_progress.json 2>/dev/null || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save google scraper progress" && git push)
+
+      # If google_progress.json exists -> scraper hit time limit -> restart in 10 min
+      - name: Auto-Restart if Not Finished
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f google_progress.json ]; then
+            echo "⚠️  Scraper stopped mid-run (time limit). Waiting 10 minutes then restarting..."
+            sleep 600
+            echo "🔄 Triggering workflow restart..."
+            gh workflow run google_jobs_scraper.yml --repo ${{ github.repository }}
+            echo "✅ Restart triggered. It will resume from where it stopped."
+          else
+            echo "✅ Scraper completed all roles and locations. No restart needed."
+          fi
+

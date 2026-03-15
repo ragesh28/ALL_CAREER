@@ -293,6 +293,30 @@ def get_proxies():
         print(f"⚠️ Failed to fetch proxies: {e}. Running without proxy rotation.")
         return []
 
+def load_progress():
+    try:
+        with open("google_progress.json", "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"role_idx": 0, "loc_idx": 0, "date": datetime.now().strftime("%Y-%m-%d")}
+
+def save_progress(role_idx, loc_idx, finished_all=False):
+    # If finished_all is True, we erase the file, next run starts fresh
+    if finished_all:
+        try:
+            os.remove("google_progress.json")
+        except FileNotFoundError:
+            pass
+        return
+
+    with open("google_progress.json", "w") as f:
+        json.dump({
+            "role_idx": role_idx,
+            "loc_idx": loc_idx,
+            "date": datetime.now().strftime("%Y-%m-%d")
+        }, f)
+
+
 def scrape_all_jobs(test_limit=None):
     roles = SEARCH_ROLES
     if test_limit:
@@ -303,11 +327,21 @@ def scrape_all_jobs(test_limit=None):
     seen_keys = set()
     fetched_at = datetime.now().strftime("%Y-%m-%d")
     total_combos = len(roles) * len(LOCATIONS)
-    combo_num = 0
     total_stored = 0
     
     proxy_list = get_proxies()
     import random
+
+    progress = load_progress()
+    start_role_idx = progress.get("role_idx", 0)
+    start_loc_idx = progress.get("loc_idx", 0)
+    
+    # If the progress file is from a different day, start fresh (unless you want it to carry over for days)
+    # We will let it carry over until it finishes the loop.
+    
+    print(f"🔄 Resuming from Role Index: {start_role_idx}/{len(roles)}, Location Index: {start_loc_idx}/{len(LOCATIONS)}")
+    
+    combo_num = start_role_idx * len(LOCATIONS) + start_loc_idx
 
     with sync_playwright() as p:
         # Launching Chromium with automation bypass flags
@@ -316,13 +350,23 @@ def scrape_all_jobs(test_limit=None):
             args=["--disable-blink-features=AutomationControlled"]
         )
         
-        for role in roles:
-            for location in LOCATIONS:
+        hit_time_limit = False
+        
+        for r_idx in range(start_role_idx, len(roles)):
+            role = roles[r_idx]
+            
+            # Start location index from where we left off only for the FIRST role in the loop
+            curr_start_loc_idx = start_loc_idx if r_idx == start_role_idx else 0
+            
+            for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
+                location = LOCATIONS[l_idx]
                 combo_num += 1
 
                 # Time limit check
                 if time.time() - START_TIME >= MAX_RUN_SECONDS:
-                    print(f"\\n⏰ TIME LIMIT. Saving and stopping.")
+                    print(f"\\n⏰ TIME LIMIT REACHED. Saving state and stopping.")
+                    save_progress(r_idx, l_idx)
+                    hit_time_limit = True
                     break
 
                 print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
@@ -439,9 +483,24 @@ def scrape_all_jobs(test_limit=None):
                             time.sleep(COOLDOWN_SECONDS)
                         else:
                             print(f"❌ Max retries. Skipping.")
-                if len(all_jobs) >= MAX_JOBS or (time.time() - START_TIME >= MAX_RUN_SECONDS):
+                            
+                # Save progress after every successful location scrape (for redundancy)
+                if not hit_time_limit:
+                    next_loc_idx = l_idx + 1
+                    next_role_idx = r_idx
+                    if next_loc_idx >= len(LOCATIONS):
+                        next_loc_idx = 0
+                        next_role_idx += 1
+                        
+                    # If we just finished the absolute last item, erase progress
+                    if next_role_idx >= len(roles):
+                        save_progress(0, 0, finished_all=True)
+                    else:
+                        save_progress(next_role_idx, next_loc_idx)
+                        
+                if len(all_jobs) >= MAX_JOBS or hit_time_limit:
                     break
-            if len(all_jobs) >= MAX_JOBS or (time.time() - START_TIME >= MAX_RUN_SECONDS):
+            if len(all_jobs) >= MAX_JOBS or hit_time_limit:
                 break
 
     return all_jobs, total_stored
