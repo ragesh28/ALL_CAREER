@@ -33,5 +33,5 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add -f all_jobs_data.js
-          git diff --quiet && git diff --staged --quiet || (git commit -m "All jobs update (Google + LinkedIn aggregator)" && git push)
+          git add -A
+          git diff-index --quiet HEAD || (git commit -m "chore: Update scraped jobs data" && git push)
