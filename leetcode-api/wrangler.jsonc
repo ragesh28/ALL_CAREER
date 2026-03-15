@@ -12,6 +12,13 @@
 	},
 	"compatibility_flags": [
 		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "important-problems",
+			"database_id": "2de62fd4-7cb4-4d55-a30a-5fb151e8d63e"
+		}
 	]
 	/**
 	 * Smart Placement
