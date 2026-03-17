@@ -41,7 +41,7 @@ jobs:
 
       # If google_progress.json exists -> scraper hit time limit -> restart in 10 min
       - name: Auto-Restart if Not Finished
-        if: always()
+        if: always() && !cancelled()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
