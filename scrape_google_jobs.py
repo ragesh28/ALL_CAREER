@@ -350,7 +350,21 @@ def scrape_all_jobs(test_limit=None):
                 proxy_config = None
                 if proxy_list:
                     selected_proxy = random.choice(proxy_list)
-                    proxy_config = {"server": selected_proxy}
+                    # Playwright expects proxy="http://ip:port", username="...", password="..."
+                    # Example: http://lsqobibv:rx4gf7dbfphq@31.59.20.176:6754/
+                    try:
+                        clean_url = selected_proxy.replace("http://", "").replace("https://", "").replace("/", "")
+                        credentials, host_port = clean_url.split("@")
+                        user, pwd = credentials.split(":")
+                        
+                        proxy_config = {
+                            "server": f"http://{host_port}",
+                            "username": user,
+                            "password": pwd
+                        }
+                    except Exception:
+                        # Fallback if it's already just host:port
+                        proxy_config = {"server": selected_proxy}
 
                 try:
                     context = browser.new_context(
