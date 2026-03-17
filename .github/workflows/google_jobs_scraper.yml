@@ -20,7 +20,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install python-jobspy pandas requests
+        run: |
+          pip install playwright pandas requests
+          playwright install chromium
 
       - name: Run Google Jobs Aggregator
         env:
