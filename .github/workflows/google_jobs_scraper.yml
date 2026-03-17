@@ -33,6 +33,7 @@ jobs:
 
       # Save progress checkpoint so it can resume if rate limited/timeout
       - name: Commit and Push Scrape Progress
+        if: always()
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
