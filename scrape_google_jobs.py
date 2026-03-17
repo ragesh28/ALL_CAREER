@@ -18,7 +18,6 @@ import requests
 import traceback
 import urllib.parse
 from datetime import datetime, timedelta
-from jobspy import scrape_jobs
 import pandas as pd
 import random
 
@@ -27,6 +26,7 @@ import random
 # ---------------------------------------------------------------------------
 TURSO_URL = os.environ.get("TURSO_ALLJOBS_URL", "")
 TURSO_TOKEN = os.environ.get("TURSO_ALLJOBS_TOKEN", "")
+WEBSHARE_PROXIES_ENV = os.environ.get("WEBSHARE_PROXIES", "")
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
@@ -300,6 +300,12 @@ def save_progress(role_idx, loc_idx, finished_all=False):
         }, f)
 
 def scrape_all_jobs(test_limit=None):
+    from playwright.sync_api import sync_playwright
+
+    proxy_list = [p.strip() for p in WEBSHARE_PROXIES_ENV.split(",")] if WEBSHARE_PROXIES_ENV else []
+    if proxy_list:
+        print(f"🌍 Loaded {len(proxy_list)} Webshare Proxies for rotation.")
+
     roles = SEARCH_ROLES
     if test_limit:
         roles = roles[:test_limit]
@@ -318,96 +324,148 @@ def scrape_all_jobs(test_limit=None):
     
     combo_num = start_role_idx * len(LOCATIONS) + start_loc_idx
     hit_time_limit = False
-    
-    for r_idx in range(start_role_idx, len(roles)):
-        role = roles[r_idx]
-        curr_start_loc_idx = start_loc_idx if r_idx == start_role_idx else 0
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled"]
+        )
         
-        for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
-            location = LOCATIONS[l_idx]
-            combo_num += 1
+        for r_idx in range(start_role_idx, len(roles)):
+            role = roles[r_idx]
+            curr_start_loc_idx = start_loc_idx if r_idx == start_role_idx else 0
+            
+            for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
+                location = LOCATIONS[l_idx]
+                combo_num += 1
 
-            if time.time() - START_TIME >= MAX_RUN_SECONDS:
-                print(f"\n⏰ TIME LIMIT REACHED. Saving state and stopping.")
-                save_progress(r_idx, l_idx)
-                hit_time_limit = True
-                break
-                
-            print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
-
-            try:
-                jobs_df = scrape_jobs(
-                    site_name=["linkedin", "indeed", "glassdoor", "zip_recruiter", "google"],
-                    search_term=role,
-                    location=location,
-                    results_wanted=RESULTS_PER_SEARCH,
-                    country_indeed='India',
-                    hours_old=72,
-                    linkedin_fetch_description=False,
-                    verbose=0,
-                )
-                
-                if jobs_df is not None and not jobs_df.empty:
-                    jobs_df = jobs_df.fillna("")
-                    batch = []
+                if time.time() - START_TIME >= MAX_RUN_SECONDS:
+                    print(f"\n⏰ TIME LIMIT REACHED. Saving state and stopping.")
+                    save_progress(r_idx, l_idx)
+                    hit_time_limit = True
+                    break
                     
-                    for _, row in jobs_df.iterrows():
-                        title = str(row.get('title', '')).strip()
-                        company = str(row.get('company', '')).strip()
-                        loc = str(row.get('location', '')).strip()
-                        job_url = str(row.get('job_url', '')).strip()
-                        site = str(row.get('site', 'unknown')).strip()
-                        date_str = str(row.get('date_posted', 'Recent')).strip()
+                print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
 
-                        if not title or not company:
+                proxy_config = None
+                if proxy_list:
+                    selected_proxy = random.choice(proxy_list)
+                    proxy_config = {"server": selected_proxy}
+
+                try:
+                    context = browser.new_context(
+                        proxy=proxy_config,
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                        viewport={'width': 1920, 'height': 1080}
+                    )
+                    page = context.new_page()
+                    page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+
+                    encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
+                    job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
+
+                    page.goto(job_url, wait_until="domcontentloaded", timeout=60000)
+                    page.wait_for_timeout(3000)
+                    
+                    try:
+                        page.wait_for_selector('a.MQUd2b', timeout=10000)
+                    except Exception:
+                        print("0 jobs found")
+                        context.close()
+                        continue
+                        
+                    # Scroll to load a few more
+                    page.mouse.move(300, 500)
+                    for _ in range(3):
+                        page.mouse.wheel(0, 1500)
+                        page.wait_for_timeout(1000)
+                        
+                    list_items = page.locator('a.MQUd2b').all()
+                    
+                    batch = []
+                    count = 0
+                    
+                    for card in list_items:
+                        if count >= RESULTS_PER_SEARCH:
+                            break
+                            
+                        try:
+                            title_loc = card.locator('.tNxQIb')
+                            title = title_loc.inner_text().strip() if title_loc.count() > 0 else ""
+                            
+                            comp_locs = card.locator('.wHYlTd').all()
+                            company = comp_locs[0].inner_text().strip() if len(comp_locs) > 0 else ""
+                            
+                            loc_via = comp_locs[1].inner_text().strip() if len(comp_locs) > 1 else ""
+                            loc_clean = loc_via.split('•')[0].strip() if '•' in loc_via else loc_via
+                            site = "google"
+                            if 'via' in loc_via:
+                                site = loc_via.split('via')[-1].strip().lower()
+                                
+                            if not title or not company:
+                                continue
+                                
+                            key = f"{title.lower().strip()}|{company.lower().strip()}"
+                            if key in seen_keys:
+                                continue
+                            seen_keys.add(key)
+                            
+                            # Fetch direct URL from right pane by clicking
+                            card.click(force=True)
+                            page.wait_for_timeout(1000)
+                            
+                            direct_url = ""
+                            apply_links = page.locator('.yVRmze-s2gQvd a').all()
+                            if apply_links:
+                                direct_url = apply_links[0].get_attribute('href')
+                            if not direct_url:
+                                direct_url = card.get_attribute('href')
+                                
+                            batch.append({
+                                "title": title,
+                                "company": company,
+                                "location": loc_clean,
+                                "url": direct_url or "#",
+                                "linkedin_url": "",
+                                "date": "Recent",
+                                "source": site,
+                                "role_search": role,
+                                "fetchedAt": fetched_at,
+                            })
+                            count += 1
+                            
+                        except Exception:
                             continue
                             
-                        # Unique keys
-                        key = f"{title.lower()}|{company.lower()}"
-                        if key in seen_keys:
-                            continue
-                        seen_keys.add(key)
-                        
-                        batch.append({
-                            "title": title,
-                            "company": company,
-                            "location": loc,
-                            "url": job_url if job_url != "nan" else "#",
-                            "linkedin_url": "",
-                            "date": date_str if date_str and date_str != "nan" else "Recent",
-                            "source": site.lower() if site != "nan" else "unknown",
-                            "role_search": role,
-                            "fetchedAt": fetched_at,
-                        })
-                        
                     all_jobs.extend(batch)
+
                     if batch and TURSO_URL:
                         inserted = store_jobs_batch(batch)
                         total_stored += inserted
+
                     print(f"✅ {len(batch)} new (total: {len(all_jobs)}, stored: {total_stored})")
-                else:
-                    print("0 jobs found")
+                    context.close()
 
-            except Exception as e:
-                print(f"🚫 Error: {e}")
+                except Exception as e:
+                    print(f"🚫 Error: {e}")
 
-            if not hit_time_limit:
-                next_loc_idx = l_idx + 1
-                next_role_idx = r_idx
-                if next_loc_idx >= len(LOCATIONS):
-                    next_loc_idx = 0
-                    next_role_idx += 1
-                    
-                if next_role_idx >= len(roles):
-                    save_progress(0, 0, finished_all=True)
-                else:
-                    save_progress(next_role_idx, next_loc_idx)
+                if not hit_time_limit:
+                    next_loc_idx = l_idx + 1
+                    next_role_idx = r_idx
+                    if next_loc_idx >= len(LOCATIONS):
+                        next_loc_idx = 0
+                        next_role_idx += 1
+                        
+                    if next_role_idx >= len(roles):
+                        save_progress(0, 0, finished_all=True)
+                    else:
+                        save_progress(next_role_idx, next_loc_idx)
+                        
+                if len(all_jobs) >= MAX_JOBS or hit_time_limit:
+                    break
                     
             if len(all_jobs) >= MAX_JOBS or hit_time_limit:
                 break
-                
-        if len(all_jobs) >= MAX_JOBS or hit_time_limit:
-            break
 
     return all_jobs, total_stored
 

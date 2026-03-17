@@ -26,6 +26,7 @@ jobs:
         env:
           TURSO_ALLJOBS_URL: ${{ secrets.TURSO_ALLJOBS_URL }}
           TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
+          WEBSHARE_PROXIES: ${{ secrets.WEBSHARE_PROXIES }}
         run: python scrape_google_jobs.py
 
       # Save progress checkpoint so it can resume if rate limited/timeout
