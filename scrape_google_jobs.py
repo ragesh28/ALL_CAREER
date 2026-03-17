@@ -381,13 +381,21 @@ def scrape_all_jobs(test_limit=None):
                     encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
                     job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
 
-                    page.goto(job_url, wait_until="domcontentloaded", timeout=60000)
+                    try:
+                        page.goto(job_url, wait_until="domcontentloaded", timeout=30000)
+                    except Exception as e:
+                        print(f"⚠️ Page timeout, but attempting to parse DOM anyway...")
+                        
                     page.wait_for_timeout(3000)
                     
                     try:
                         page.wait_for_selector('a.MQUd2b', timeout=10000)
                     except Exception:
-                        print("0 jobs found")
+                        title_lower = page.title().lower()
+                        if "sorry" in title_lower or "captcha" in title_lower or "robot" in title_lower:
+                            print("🚫 HIT GOOGLE CAPTCHA! Proxy IP is temporarily blocked by Google.")
+                        else:
+                            print("0 jobs found (or page failed to load)")
                         context.close()
                         continue
                         
