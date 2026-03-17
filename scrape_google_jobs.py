@@ -375,21 +375,28 @@ def scrape_all_jobs(test_limit=None):
                         user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
                         viewport={'width': 1920, 'height': 1080}
                     )
+                    def abort_resources(route):
+                        if route.request.resource_type in ["image", "stylesheet", "font", "media"]:
+                            route.abort()
+                        else:
+                            route.continue_()
+
                     page = context.new_page()
                     page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                    page.route("**/*", abort_resources)
 
                     encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
                     job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
 
                     try:
-                        page.goto(job_url, wait_until="domcontentloaded", timeout=30000)
+                        page.goto(job_url, wait_until="commit", timeout=30000)
                     except Exception as e:
                         print(f"⚠️ Page timeout, but attempting to parse DOM anyway...")
                         
-                    page.wait_for_timeout(3000)
+                    page.wait_for_timeout(5000)
                     
                     try:
-                        page.wait_for_selector('a.MQUd2b', timeout=10000)
+                        page.wait_for_selector('a.MQUd2b', timeout=15000)
                     except Exception:
                         title_lower = page.title().lower()
                         if "sorry" in title_lower or "captcha" in title_lower or "robot" in title_lower:
