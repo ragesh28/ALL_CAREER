@@ -299,10 +299,13 @@ def save_progress(role_idx, loc_idx, finished_all=False):
             "date": datetime.now().strftime("%Y-%m-%d")
         }, f)
 
-def scrape_all_jobs(test_limit=None):
-    from playwright.sync_api import sync_playwright
+import re
+from playwright.sync_api import sync_playwright
 
-    proxy_list = [p.strip() for p in WEBSHARE_PROXIES_ENV.split(",")] if WEBSHARE_PROXIES_ENV else []
+def scrape_all_jobs(test_limit=None):
+    proxy_pattern = re.compile(r'http://(?:[^:]+:[^@]+@)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+')
+    proxy_list = proxy_pattern.findall(WEBSHARE_PROXIES_ENV) if WEBSHARE_PROXIES_ENV else []
+    
     if proxy_list:
         print(f"🌍 Loaded {len(proxy_list)} Webshare Proxies for rotation.")
 
