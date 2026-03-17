@@ -350,63 +350,91 @@ def scrape_all_jobs(test_limit=None):
                     
                 print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
 
-                proxy_config = None
-                if proxy_list:
-                    selected_proxy = random.choice(proxy_list)
-                    # Playwright expects proxy="http://ip:port", username="...", password="..."
-                    # Example: http://lsqobibv:rx4gf7dbfphq@31.59.20.176:6754/
+                # --- RETRY with different proxies ---
+                max_retries = min(3, len(proxy_list)) if proxy_list else 1
+                success = False
+                
+                for attempt in range(max_retries):
+                    proxy_config = None
+                    if proxy_list:
+                        selected_proxy = proxy_list[(combo_num + attempt) % len(proxy_list)]
+                        try:
+                            clean_url = selected_proxy.replace("http://", "").replace("https://", "").replace("/", "")
+                            credentials, host_port = clean_url.split("@")
+                            user, pwd = credentials.split(":")
+                            proxy_config = {
+                                "server": f"http://{host_port}",
+                                "username": user,
+                                "password": pwd
+                            }
+                        except Exception:
+                            proxy_config = {"server": selected_proxy}
+
                     try:
-                        clean_url = selected_proxy.replace("http://", "").replace("https://", "").replace("/", "")
-                        credentials, host_port = clean_url.split("@")
-                        user, pwd = credentials.split(":")
+                        context = browser.new_context(
+                            proxy=proxy_config,
+                            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                            viewport={'width': 1920, 'height': 1080}
+                        )
+                        def abort_resources(route):
+                            if route.request.resource_type in ["image", "stylesheet", "font", "media"]:
+                                route.abort()
+                            else:
+                                route.continue_()
+
+                        page = context.new_page()
+                        page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+                        page.route("**/*", abort_resources)
+
+                        encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
+                        job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
+
+                        try:
+                            page.goto(job_url, wait_until="commit", timeout=30000)
+                        except Exception:
+                            pass  # Will try to parse DOM anyway
+                            
+                        page.wait_for_timeout(5000)
                         
-                        proxy_config = {
-                            "server": f"http://{host_port}",
-                            "username": user,
-                            "password": pwd
-                        }
-                    except Exception:
-                        # Fallback if it's already just host:port
-                        proxy_config = {"server": selected_proxy}
-
-                try:
-                    context = browser.new_context(
-                        proxy=proxy_config,
-                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                        viewport={'width': 1920, 'height': 1080}
-                    )
-                    def abort_resources(route):
-                        if route.request.resource_type in ["image", "stylesheet", "font", "media"]:
-                            route.abort()
-                        else:
-                            route.continue_()
-
-                    page = context.new_page()
-                    page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-                    page.route("**/*", abort_resources)
-
-                    encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
-                    job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
-
-                    try:
-                        page.goto(job_url, wait_until="commit", timeout=30000)
+                        try:
+                            page.wait_for_selector('a.MQUd2b', timeout=15000)
+                            success = True
+                        except Exception:
+                            title_lower = page.title().lower()
+                            context.close()
+                            if "sorry" in title_lower or "captcha" in title_lower or "robot" in title_lower:
+                                if attempt < max_retries - 1:
+                                    print(f"🔄 Proxy blocked, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
+                                    continue
+                                else:
+                                    print("🚫 All proxies blocked by Google CAPTCHA")
+                            else:
+                                if attempt < max_retries - 1:
+                                    print(f"🔄 Retry ({attempt+2}/{max_retries})...", end=" ", flush=True)
+                                    continue
+                                else:
+                                    print("0 jobs found (all retries failed)")
+                            break
                     except Exception as e:
-                        print(f"⚠️ Page timeout, but attempting to parse DOM anyway...")
-                        
-                    page.wait_for_timeout(5000)
-                    
-                    try:
-                        page.wait_for_selector('a.MQUd2b', timeout=15000)
-                    except Exception:
-                        title_lower = page.title().lower()
-                        if "sorry" in title_lower or "captcha" in title_lower or "robot" in title_lower:
-                            print("🚫 HIT GOOGLE CAPTCHA! Proxy IP is temporarily blocked by Google.")
+                        try:
+                            context.close()
+                        except Exception:
+                            pass
+                        if attempt < max_retries - 1:
+                            print(f"🔄 Error, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
+                            continue
                         else:
-                            print("0 jobs found (or page failed to load)")
-                        context.close()
-                        continue
-                        
-                    # Scroll to load a few more
+                            print(f"🚫 Error after {max_retries} retries: {e}")
+                        break
+                    
+                    # If we got here, success=True, break out of retry loop
+                    break
+                
+                if not success:
+                    continue
+
+                # --- Scrape job cards (we have a working page + context) ---
+                try:
                     page.mouse.move(300, 500)
                     for _ in range(3):
                         page.mouse.wheel(0, 1500)
@@ -442,7 +470,6 @@ def scrape_all_jobs(test_limit=None):
                                 continue
                             seen_keys.add(key)
                             
-                            # Fetch direct URL from right pane by clicking
                             card.click(force=True)
                             page.wait_for_timeout(1000)
                             
@@ -479,7 +506,11 @@ def scrape_all_jobs(test_limit=None):
                     context.close()
 
                 except Exception as e:
-                    print(f"🚫 Error: {e}")
+                    print(f"🚫 Scrape error: {e}")
+                    try:
+                        context.close()
+                    except Exception:
+                        pass
 
                 if not hit_time_limit:
                     next_loc_idx = l_idx + 1
