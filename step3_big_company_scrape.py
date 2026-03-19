@@ -230,7 +230,7 @@ def is_linkedin_block(error):
     return any(ind in error_str for ind in indicators)
 
 
-def scrape_company(company_name, locations, results_wanted=50):
+def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
     """
     Scrape jobs for a single company across all locations.
     Uses linkedin_fetch_description=True to get job_url_direct (original links).
@@ -238,9 +238,14 @@ def scrape_company(company_name, locations, results_wanted=50):
     Returns a list of job dicts and a flag indicating if blocked.
     """
     from jobspy import scrape_jobs
+    import random
 
     direct_jobs = []
     date_stamp = get_date_stamp()
+
+    proxy_url = None
+    if proxy_list:
+        proxy_url = random.choice(proxy_list)
 
     for location in locations:
         try:
@@ -254,6 +259,7 @@ def scrape_company(company_name, locations, results_wanted=50):
                 hours_old=24,
                 linkedin_fetch_description=True,  # Gets job_url_direct (original links)!
                 verbose=0,
+                proxy=proxy_url
             )
 
             if jobs_df is None or jobs_df.empty:

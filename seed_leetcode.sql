@@ -30875,7 +30875,9 @@ INSERT INTO problems (id, title, url, difficulty, acceptance) VALUES (2147, 'Num
 INSERT INTO problem_topics (problem_id, topic) VALUES (2147, 'Math');
 INSERT INTO problem_topics (problem_id, topic) VALUES (2147, 'String');
 INSERT INTO problem_topics (problem_id, topic) VALUES (2147, 'Dynamic Programming');
-INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zomato', 2147, 100);
+INSERT INTO company_prolems (company_name, problem_id, frequency) VALUES ('zopsmart', 6, 100);
+INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 11, 62.5);
+INSERT INTO company_problems (company_namblems (company_name, problem_id, frequency) VALUES ('zomato', 2147, 100);
 INSERT INTO problems (id, title, url, difficulty, acceptance) VALUES (2505, 'Bitwise OR of All Subsequence Sums', 'https://leetcode.com/problems/bitwise-or-of-all-subsequence-sums', 'Medium', '64.3%');
 INSERT INTO problem_topics (problem_id, topic) VALUES (2505, 'Array');
 INSERT INTO problem_topics (problem_id, topic) VALUES (2505, 'Math');
@@ -30905,9 +30907,7 @@ INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zoox
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zoox', 1419, 75);
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 2, 50);
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 5, 50);
-INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 6, 100);
-INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 11, 62.5);
-INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 15, 50);
+INSERT INTO company_probe, problem_id, frequency) VALUES ('zopsmart', 15, 50);
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 17, 50);
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 25, 50);
 INSERT INTO company_problems (company_name, problem_id, frequency) VALUES ('zopsmart', 42, 87.5);

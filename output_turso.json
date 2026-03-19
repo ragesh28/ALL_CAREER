@@ -1,0 +1,1354 @@
+{
+  "baton": null,
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
+        "type": "execute",
+        "result": {
+          "cols": [
+            {
+              "name": "id",
+              "decltype": "INTEGER"
+            },
+            {
+              "name": "title",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "company",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "location",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "url",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "source",
+              "decltype": "TEXT"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "type": "integer",
+                "value": "2973"
+              },
+              {
+                "type": "text",
+                "value": "Full Stack Developer (React JS and Node JS)"
+              },
+              {
+                "type": "text",
+                "value": "Tata Consultancy Services"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/full-stack-developer-react-js-and-node-js-at-tata-consultancy-services-4384975639?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2976"
+              },
+              {
+                "type": "text",
+                "value": "Frontend React Developer Senior"
+              },
+              {
+                "type": "text",
+                "value": "TALENTMATE"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/frontend-developer-next-js-india-health-link-JV_IC2940587_KO0,26_KE27,44.htm?jl=1009812338949&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2977"
+              },
+              {
+                "type": "text",
+                "value": "MERN Stack Frontend Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Vtricks Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/frontend-react-developer-senior/talentmate/18758221?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2978"
+              },
+              {
+                "type": "text",
+                "value": "SDE-II (Frontend Developer)"
+              },
+              {
+                "type": "text",
+                "value": "RockED"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/mern-stack-frontend-technologies-vtricks-technologies-JV_IC2940587_KO0,32_KE33,53.htm?jl=1010067309980&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2979"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer (m/f/d)"
+              },
+              {
+                "type": "text",
+                "value": "Deutsche Telekom"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/SDE-II-Frontend-Developer-Bengaluru-Bangalore-RockED-ckQWz2db?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2980"
+              },
+              {
+                "type": "text",
+                "value": "Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "Randstad"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/frontend-developer-m-f-d-at-deutsche-telekom-4367932626?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "randstad india"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2981"
+              },
+              {
+                "type": "text",
+                "value": "Front End/UI Developer"
+              },
+              {
+                "type": "text",
+                "value": "YASH Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.randstad.in/jobs/front-end-developer_bengaluru_e3a6b238-8913-40f1-9641-8ad68734110f/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2982"
+              },
+              {
+                "type": "text",
+                "value": "Junior Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "Indegene Private Limited"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/front-endui-developer-bangalore-karnataka-india-169537?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "jobrapido.com"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2983"
+              },
+              {
+                "type": "text",
+                "value": "Lead Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "IAI solution"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.jobrapido.com/jobpreview/8906787585842479104?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2984"
+              },
+              {
+                "type": "text",
+                "value": "Sr. Front End Engineer"
+              },
+              {
+                "type": "text",
+                "value": "Vayavya Labs"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Lead-Frontend-Developer-Bengaluru-Bangalore-IAI-solution--hhrYZZEH?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "instahyre"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2985"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer - CMS Solutions"
+              },
+              {
+                "type": "text",
+                "value": "AMS"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka (+1 other)"
+              },
+              {
+                "type": "text",
+                "value": "https://www.instahyre.com/job-395653-sr-front-end-engineer-at-vayavya-labs-bangalore/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "talent.com"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2986"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer(React Developer)"
+              },
+              {
+                "type": "text",
+                "value": "HOP Financial Services"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.talent.com/view?id=ad984e13ad60&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2987"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Lead (React.js / Next.js)"
+              },
+              {
+                "type": "text",
+                "value": "VGreen Technology Solutions (VGreenTEK)"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Frontend-Developer-React-Developer-Bengaluru-Bangalore-HOP-Financial-Services-fnsbny51?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2988"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developers"
+              },
+              {
+                "type": "text",
+                "value": "SFJ Business Solutions Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/frontend-lead-react-js-next-js-at-vgreen-technology-solutions-vgreentek-4383106546?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2989"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer (ReactJs)"
+              },
+              {
+                "type": "text",
+                "value": "Qrata"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/frontend-developers-bengaluru-karnataka-india-155302?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2990"
+              },
+              {
+                "type": "text",
+                "value": "Front-End Developer for Data Reconciliation"
+              },
+              {
+                "type": "text",
+                "value": "Aviin Tech Business Solutions"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Frontend-Developer-ReactJs-Bengaluru-Bangalore-Qrata-fhe70jcW?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2992"
+              },
+              {
+                "type": "text",
+                "value": "UI Developer/ Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "Qrata"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/junior-frontend-developer-remote-work-ref%23285410-at-bairesdev-4305182003?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2993"
+              },
+              {
+                "type": "text",
+                "value": "Senior Frontend Engineer (React.js & GCP)"
+              },
+              {
+                "type": "text",
+                "value": "Dreampath Services"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/senior-frontend-engineer-react-js-gcp-at-dreampath-services-4385202126?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2995"
+              },
+              {
+                "type": "text",
+                "value": "Customer-Digital Foundry- Ember.js Front End Developer-Consultant"
+              },
+              {
+                "type": "text",
+                "value": "Deloitte"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://careers.caterpillar.com/en/jobs/r0000356326/senior-software-engineer-frontend-developer-react-aws/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "foundit"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2996"
+              },
+              {
+                "type": "text",
+                "value": "React/Next.js Developer"
+              },
+              {
+                "type": "text",
+                "value": "CG-VAK Software & Exports Ltd."
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.foundit.in/job/customer-digital-foundry-ember-js-front-end-developer-consultant-deloitte-chennai-47548831?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2997"
+              },
+              {
+                "type": "text",
+                "value": "TEMP: Frontend Developer (Next.js): 3+ Years Experience"
+              },
+              {
+                "type": "text",
+                "value": "Cortekz Technologies Limited"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/react-next-js-developer-at-cg-vak-software-exports-ltd-4385258696?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3000"
+              },
+              {
+                "type": "text",
+                "value": "Front-end Developer"
+              },
+              {
+                "type": "text",
+                "value": "Foodbuddies"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.simplyhired.co.in/job/HJV1hu6j_Jx6xjLCBkCNEU7mOuNylfW75CMLf7st0j5HG998vVNT9g?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "adzuna"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3006"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer - React.js/AngularJS"
+              },
+              {
+                "type": "text",
+                "value": "House of Shipping"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Software-Engineer-Front-end-React-JS-Chennai-GrowSmart-SMB-Solutions-Pvt-Ltd-gR4Ho1hl?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "foundit"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3008"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Development Engineer"
+              },
+              {
+                "type": "text",
+                "value": "Northern Arc Capital"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.hirist.tech/j/lumel-technologies-llp-lead-frontend-developer-react-js-typescript-1615285?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "instahyre"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3009"
+              },
+              {
+                "type": "text",
+                "value": "Angular Front-End Developer"
+              },
+              {
+                "type": "text",
+                "value": "EY"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.instahyre.com/job-391216-frontend-development-engineer-at-northern-arc-capital-chennai/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3011"
+              },
+              {
+                "type": "text",
+                "value": "Front End UI Developer (Angular)"
+              },
+              {
+                "type": "text",
+                "value": "HoloPundits"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/senior-frontend-developer-react-js-mindera-JV_IC2833209_KO0,34_KE35,42.htm?jl=1009982738069&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3012"
+              },
+              {
+                "type": "text",
+                "value": "Staff Front-End Software Engineer"
+              },
+              {
+                "type": "text",
+                "value": "Genesys"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/front-end-ui-developer-angular-holopundits-JV_IC2833209_KO0,30_KE31,42.htm?jl=1008270108270&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3013"
+              },
+              {
+                "type": "text",
+                "value": "Javascript Developer (HTML, CSS)"
+              },
+              {
+                "type": "text",
+                "value": "KAAPRO"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/javascript-developer-html-css-at-kaapro-4385205318?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3019"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer React Js With Aws Mumbai (India)"
+              },
+              {
+                "type": "text",
+                "value": "L&T Technology Services"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://in.trabajo.org/job-1940-5da480fa87c86eabdb836178bbbef1fc?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "jobrapido.com"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3021"
+              },
+              {
+                "type": "text",
+                "value": "Front End - HTML, CSS, Javascript"
+              },
+              {
+                "type": "text",
+                "value": "Quantum Designs"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://in.talent.com/view?id=b8433a4bfb15&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3023"
+              },
+              {
+                "type": "text",
+                "value": "Principal Full Stack Developer"
+              },
+              {
+                "type": "text",
+                "value": "SMARTSTREAM TECHNOLOGIES INDIA DISTRIBUTOR PRIVATE LIMITED"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Frontend-Developer-Intern-Mumbai-Rejolut-Technology-Solutions-Pvt-Ltd--5Dnj741N?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3025"
+              },
+              {
+                "type": "text",
+                "value": "JavaScript Front-End"
+              },
+              {
+                "type": "text",
+                "value": "Neosoft Technologies Pvt.Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/javascript-frontend-reactjs-mumbai-maharashtra-india-80670?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3026"
+              },
+              {
+                "type": "text",
+                "value": "Aertrip - HTML Developer - Frontend Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Aertrip"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/javascript-front-end-neosoft-JV_IC2851180_KO0,20_KE21,28.htm?jl=1008217447992&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "hirist.tech"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3027"
+              },
+              {
+                "type": "text",
+                "value": "Front-End Developer"
+              },
+              {
+                "type": "text",
+                "value": "WEQ Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://www.hirist.tech/j/aertrip-html-developer-frontend-technologies-1573247?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3028"
+              },
+              {
+                "type": "text",
+                "value": "Web Engineer"
+              },
+              {
+                "type": "text",
+                "value": "Swiggy"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://cutshort.io/job/Front-End-Developer-Mumbai-WEQ-Technologies-twyMWK4a?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "instahyre"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3031"
+              },
+              {
+                "type": "text",
+                "value": "Fresher Frontend Developer Jobs in Mumbai"
+              },
+              {
+                "type": "text",
+                "value": "Cosmoquick"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/adobe-aem-frontend-developer-at-deloitte-4375527574?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "cosmoquick"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3032"
+              },
+              {
+                "type": "text",
+                "value": "React JS Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "Aquaria Solutions"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "https://cosmoquick.com/fresher-jobs-in/mumbai/frontend-developer-jobs?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "270"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "Mobileprogramming"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=5f1badf06cdeb2ab"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "271"
+              },
+              {
+                "type": "text",
+                "value": "Specialist Software Engineer - Java Angular"
+              },
+              {
+                "type": "text",
+                "value": "Soci\u00e9t\u00e9 G\u00e9n\u00e9rale"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=96981410b95e1b94"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "272"
+              },
+              {
+                "type": "text",
+                "value": "Full Stack Developer(.Net & Angular)"
+              },
+              {
+                "type": "text",
+                "value": "Siemens Healthineers"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=ade6cf5e0285cbda"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "273"
+              },
+              {
+                "type": "text",
+                "value": "Dot Net Full Stack Developer with Angular"
+              },
+              {
+                "type": "text",
+                "value": "Tata Consultancy Services (TCS)"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=8d451bc472b5fd75"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "274"
+              },
+              {
+                "type": "text",
+                "value": "MERN Stack Frontend Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Vtricks Technologies"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=265142042b198d9c"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "275"
+              },
+              {
+                "type": "text",
+                "value": "Sr.Software Engineer - Java, Angular - BLR"
+              },
+              {
+                "type": "text",
+                "value": "Photon"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=0069625f64d44756"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "276"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Engineer"
+              },
+              {
+                "type": "text",
+                "value": "Tekit Solutions"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=db20ccee59edb3d2"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "277"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Engineer Bangalore: React, AWS (Good to have)"
+              },
+              {
+                "type": "text",
+                "value": "Quest Global"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=acb39ae5d2ec4a6b"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "278"
+              },
+              {
+                "type": "text",
+                "value": "Lead React Native Developer"
+              },
+              {
+                "type": "text",
+                "value": "Modefin Server Private Limited"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=ac1112755258d561"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "279"
+              },
+              {
+                "type": "text",
+                "value": "(Senior Software Engineer - Frontend Developer \u2013 React & AWS)"
+              },
+              {
+                "type": "text",
+                "value": "Caterpillar"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=6e8eddccd72a6d02"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "280"
+              },
+              {
+                "type": "text",
+                "value": "Software Engineer 1 - Full Stack (Frontend Leaning)"
+              },
+              {
+                "type": "text",
+                "value": "Rippling"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=8efaf124bdf8167a"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "281"
+              },
+              {
+                "type": "text",
+                "value": "Web Designer/Developer"
+              },
+              {
+                "type": "text",
+                "value": "Brand Vantage Marketing Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=79432419d88b41df"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "282"
+              },
+              {
+                "type": "text",
+                "value": "IN_Senior Associate_MERN\u00a0Developer_GCC_Advisory_Bangalore"
+              },
+              {
+                "type": "text",
+                "value": "PwC"
+              },
+              {
+                "type": "text",
+                "value": "KA, IN"
+              },
+              {
+                "type": "text",
+                "value": "https://in.indeed.com/viewjob?jk=4d21db2bc84470fd"
+              },
+              {
+                "type": "text",
+                "value": "indeed"
+              }
+            ]
+          ],
+          "affected_row_count": 0,
+          "last_insert_rowid": null,
+          "replication_index": null,
+          "rows_read": 5984,
+          "rows_written": 0,
+          "query_duration_ms": 102.35
+        }
+      }
+    },
+    {
+      "type": "ok",
+      "response": {
+        "type": "close"
+      }
+    }
+  ]
+}

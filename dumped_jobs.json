@@ -1,0 +1,2170 @@
+{
+  "baton": null,
+  "base_url": null,
+  "results": [
+    {
+      "type": "ok",
+      "response": {
+        "type": "execute",
+        "result": {
+          "cols": [
+            {
+              "name": "id",
+              "decltype": "INTEGER"
+            },
+            {
+              "name": "title",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "company",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "location",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "date_posted",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "url",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "linkedin_url",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "source",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "role_search",
+              "decltype": "TEXT"
+            },
+            {
+              "name": "fetched_at",
+              "decltype": "TEXT"
+            }
+          ],
+          "rows": [
+            [
+              {
+                "type": "integer",
+                "value": "1"
+              },
+              {
+                "type": "text",
+                "value": "Software Engineer, Front-End - X Delivery"
+              },
+              {
+                "type": "text",
+                "value": "Boston Consulting Group"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka (+1 other)"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DFOAYcZ9miRYBCbDsAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "bcg careers - boston consulting group"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "2"
+              },
+              {
+                "type": "text",
+                "value": "Frontend React Developer Senior"
+              },
+              {
+                "type": "text",
+                "value": "TALENTMATE"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DyUqpjCnOVvyMLBOQAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "3"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Web Developer"
+              },
+              {
+                "type": "text",
+                "value": "Trigent Software Private Limited"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DCMPn0Z2xzd8vviBWAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "adzuna"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "4"
+              },
+              {
+                "type": "text",
+                "value": "Looking for a front end engineer to join our Bangalore team"
+              },
+              {
+                "type": "text",
+                "value": "100x"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DA7oLitL-aiCD2ptTAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "y combinator"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "5"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Lead (React.js / Next.js)"
+              },
+              {
+                "type": "text",
+                "value": "VGreen Technology Solutions (VGreenTEK)"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DT0L7MebGprsGWXNBAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "6"
+              },
+              {
+                "type": "text",
+                "value": "SDE-II (Frontend Developer)"
+              },
+              {
+                "type": "text",
+                "value": "RockED"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DOSIBzsZCsNHKJUS2AAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "cutshort"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "7"
+              },
+              {
+                "type": "text",
+                "value": "Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "Randstad"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3D1WdbkbFKOquheMwpAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "randstad india"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "8"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developers"
+              },
+              {
+                "type": "text",
+                "value": "SFJ Business Solutions Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.google.com/search?q=Frontend+Developer+jobs+in+Bangalore,+India&udm=8&sei=MUu2aZiRFf61hbIPosuO0QY#vhid=vt%3D20/docid%3DoNlX7IgXIIzQZ9HwAAAAAA%3D%3D&vssid=jobs-detail-viewer"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "9"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer (m/f/d)"
+              },
+              {
+                "type": "text",
+                "value": "Deutsche Telekom"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://careers.bcg.com/global/en/job/55285/Software-Engineer-Front-End-X-Delivery?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "10"
+              },
+              {
+                "type": "text",
+                "value": "Senior Front end Developer (ReactJS)"
+              },
+              {
+                "type": "text",
+                "value": "Luxoft"
+              },
+              {
+                "type": "text",
+                "value": "Bengaluru, Karnataka"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://career.luxoft.com/jobs/senior-front-end-developer-reactjs-22587?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "careers with luxoft"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "11"
+              },
+              {
+                "type": "text",
+                "value": "Senior Frontend Engineer (React)"
+              },
+              {
+                "type": "text",
+                "value": "Dreampath Services"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/senior-frontend-engineer-react-at-dreampath-services-4384214975?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "13"
+              },
+              {
+                "type": "text",
+                "value": "React Next JS Developer - Chennai"
+              },
+              {
+                "type": "text",
+                "value": "Diverse Lynx"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/front-end-designer-at-different-hair-pvt-ltd-4384260074?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "ziprecruiter india"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "14"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developers"
+              },
+              {
+                "type": "text",
+                "value": "concertcare india pvt. ltd."
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.ziprecruiter.in/jobs/509963706-react-next-js-developer-chennai-at-diverse-lynx?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "simplyhired"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "15"
+              },
+              {
+                "type": "text",
+                "value": "Web Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "Yaazh Software Studio"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.simplyhired.co.in/job/3nn6hD-Jnb7DWL0ZlK-KPGdtFBa-dZWj-gu1ph7Y0cYPuAiJCcpaCw?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "16"
+              },
+              {
+                "type": "text",
+                "value": "TEMP: Frontend Developer (Next.js): 3+ Years Experience"
+              },
+              {
+                "type": "text",
+                "value": "Cortekz Technologies Limited"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/web-frontend-developer/yaazh-software-studio/18615529?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "17"
+              },
+              {
+                "type": "text",
+                "value": "Remote Frontend Developer (React.Js)"
+              },
+              {
+                "type": "text",
+                "value": "Talentgigs"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/temp-frontend-developer-next-js-3-years-experience-accentra-technologies-JV_IC2833209_KO0,50_KE51,72.htm?jl=1010063577961&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "18"
+              },
+              {
+                "type": "text",
+                "value": "Senior Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "IDFC FIRST Bank"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/remote-frontend-developer-reactjs/talentgigs/18730507?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "idfc first bank"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "19"
+              },
+              {
+                "type": "text",
+                "value": "Front end Dev- .net/SQL"
+              },
+              {
+                "type": "text",
+                "value": "Highbrow Technology Inc"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://careers.idfcfirstbank.com/in/en/job/P-177161/Senior-Frontend-Developer?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "20"
+              },
+              {
+                "type": "text",
+                "value": "Front-end Developer"
+              },
+              {
+                "type": "text",
+                "value": "Foodbuddies"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/front-end-dev-net-sql-at-highbrow-technology-inc-4382838591?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "adzuna"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "21"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer (1-2 years exp)"
+              },
+              {
+                "type": "text",
+                "value": "Pickyourtrail"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.adzuna.in/details/5576828426?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "talent.com"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "22"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer - React.js/AngularJS"
+              },
+              {
+                "type": "text",
+                "value": "House of Shipping"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.talent.com/view?id=608074287312807061&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "foundit"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "23"
+              },
+              {
+                "type": "text",
+                "value": "Sr Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "VARITE INC"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.foundit.in/job/frontend-developer-react-js-angularjs-house-of-shipping-chennai-41019236?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "24"
+              },
+              {
+                "type": "text",
+                "value": "Front-End Development"
+              },
+              {
+                "type": "text",
+                "value": "Myproject.Ai"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/sr-front-end-developer-chennai-tamil-nadu-india-127662?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "adzuna"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "25"
+              },
+              {
+                "type": "text",
+                "value": "Senior Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "Ciklum Limited"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.adzuna.in/details/5132829471?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "26"
+              },
+              {
+                "type": "text",
+                "value": "Fullstack Developer ( Node + React ) - Contract - GO/JC/1544/2025"
+              },
+              {
+                "type": "text",
+                "value": "Golden Opportunities"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/senior-front-end-developer/ciklum-limited/18552463?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "27"
+              },
+              {
+                "type": "text",
+                "value": "Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "TRS Forms & Services Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/fullstack-developer-node-%2B-react-contract-go-jc-1544-2025-at-golden-opportunities-4384245130?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "smartrecruiters job search"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "28"
+              },
+              {
+                "type": "text",
+                "value": "Front End Developer Intern"
+              },
+              {
+                "type": "text",
+                "value": "Emayam Technologies Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://jobs.smartrecruiters.com/TRSFormsServicesPvtLtd/744000087833075-front-end-developer?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "glassdoor"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "29"
+              },
+              {
+                "type": "text",
+                "value": "Angular Front-End Developer"
+              },
+              {
+                "type": "text",
+                "value": "EY"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.glassdoor.co.in/job-listing/front-end-developer-intern-emayam-technologies-pvt-ltd-JV_IC2833209_KO0,26_KE27,54.htm?jl=1009963239614&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "30"
+              },
+              {
+                "type": "text",
+                "value": "Full Stack Developer \u2013 React & Node.js"
+              },
+              {
+                "type": "text",
+                "value": "Highbrow Technology Inc"
+              },
+              {
+                "type": "text",
+                "value": "Chennai, Tamil Nadu"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/angular-front-end-developer-chennai-tamil-nadu-india-114745?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "31"
+              },
+              {
+                "type": "text",
+                "value": "Javascript Developer - GO/JC/1421/2025"
+              },
+              {
+                "type": "text",
+                "value": "Golden Opportunities"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/javascript-developer-go-jc-1421-2025-at-golden-opportunities-4383955900?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "33"
+              },
+              {
+                "type": "text",
+                "value": "Frontend_Developer"
+              },
+              {
+                "type": "text",
+                "value": "Executive Software Guild Inc"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.appitsoftware.com/careers/angular-frontend-developer-hyderabad?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "34"
+              },
+              {
+                "type": "text",
+                "value": "Frontend UI Developer (React)"
+              },
+              {
+                "type": "text",
+                "value": "Trigent Software Limited"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/frontend-developer-hyderabad-telangana-india-147728?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "35"
+              },
+              {
+                "type": "text",
+                "value": "26-3092: Frontend Developer (Angular 19 & Micro-Frontend) - Hyderabad"
+              },
+              {
+                "type": "text",
+                "value": "Navitas"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/frontend-ui-developer-react/trigent-software-limited/18730417?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "navitas - jazzhr"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "36"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer Vue Js Hyderabad (India)"
+              },
+              {
+                "type": "text",
+                "value": "Tanla Platforms"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://navitas.applytojob.com/apply/57Uruvpn8C/263092-Frontend-Developer-Angular-19-MicroFrontend-Hyderabad?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "jobrapido.com"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "37"
+              },
+              {
+                "type": "text",
+                "value": "Angular Spartacus developer (6+yrs-Hybrid Mode)"
+              },
+              {
+                "type": "text",
+                "value": "Infrabyte Technology"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.jobrapido.com/jobpreview/5983562819038085120?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "38"
+              },
+              {
+                "type": "text",
+                "value": "Frontend UI Javascript Developer"
+              },
+              {
+                "type": "text",
+                "value": "Wenger & Watson"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/angular-spartacus-developer-6%2Byrs-hybrid-mode-at-infrabyte-technology-4382870086?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "jooble"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "39"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer With Ionic Framework"
+              },
+              {
+                "type": "text",
+                "value": "People Prime Worldwide"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.jooble.org/rjdp/-3835768083832832330?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "shine"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "40"
+              },
+              {
+                "type": "text",
+                "value": "Angular FRONT END DEVELOPER"
+              },
+              {
+                "type": "text",
+                "value": "Pronix Inc"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.shine.com/jobs/frontend-developer-with-ionic-framework/people-prime-worldwide/18658926?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "41"
+              },
+              {
+                "type": "text",
+                "value": "Senior React Developer"
+              },
+              {
+                "type": "text",
+                "value": "APPIT Software Solutions"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/angular-front-end-developer-gachibowli-hyderabad-telangana-india-48479?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "appit software"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "42"
+              },
+              {
+                "type": "text",
+                "value": "Lead Front End Engineer"
+              },
+              {
+                "type": "text",
+                "value": "CareerNet Technologies Pvt Ltd"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.appitsoftware.com/careers/senior-react-developer-hyderabad?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "iitjobs"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "43"
+              },
+              {
+                "type": "text",
+                "value": "ReactJs Developer for Hyderabad Location IRC288872"
+              },
+              {
+                "type": "text",
+                "value": "Hitachi Careers"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.iitjobs.com/job/lead-front-end-engineer-hyderabad-telangana-india-141561?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "hitachi careers - hitachi global"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "44"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer(Angular)"
+              },
+              {
+                "type": "text",
+                "value": "Ariqt Global Technologies"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://careers.hitachi.com/jobs/17348463-reactjs-developer-for-hyderabad-location-irc288872?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "45"
+              },
+              {
+                "type": "text",
+                "value": "Staff Engineer - Frontend"
+              },
+              {
+                "type": "text",
+                "value": "Freshworks"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/frontend-developer-angular-at-ariqt-global-technologies-4366422916?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "smartrecruiters job search"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "46"
+              },
+              {
+                "type": "text",
+                "value": "Senior Frontend Engineer I"
+              },
+              {
+                "type": "text",
+                "value": "Marriott Tech Accelerator"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://jobs.smartrecruiters.com/Freshworks/744000112341248-staff-engineer-frontend?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "adzuna"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "47"
+              },
+              {
+                "type": "text",
+                "value": "Web content frontend developer-Senior Analyst- Hyderabad"
+              },
+              {
+                "type": "text",
+                "value": "Deloitte"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://www.adzuna.in/details/5628799191?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "getmereferred"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "48"
+              },
+              {
+                "type": "text",
+                "value": "Lead Front-End Developer"
+              },
+              {
+                "type": "text",
+                "value": "Kpmg India Services Llp"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://getmereferred.com/job-listing/web-content-frontend-developersenior-analyst-hyderabad-deloitte-hyderabad-5-to-10-years-experience-242e04de-3058-4db1-b2f9-05d08bffbfdf?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "bebee"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "49"
+              },
+              {
+                "type": "text",
+                "value": "Software Engineering Manager (Frontend Development) || Hyderabad Only ||"
+              },
+              {
+                "type": "text",
+                "value": "Hyland"
+              },
+              {
+                "type": "text",
+                "value": "Hyderabad, Telangana"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.bebee.com/job/6eec04ccfa6dbfcfa2f98ee1588fff83?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "linkedin"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "50"
+              },
+              {
+                "type": "text",
+                "value": "Associate, Front End Developer"
+              },
+              {
+                "type": "text",
+                "value": "BlackRock"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://careers.blackrock.com/job/mumbai/associate-front-end-developer/45831/91936971120?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "blackrock careers"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "52"
+              },
+              {
+                "type": "text",
+                "value": "Shopify Front end Developer (Mumbai Based)"
+              },
+              {
+                "type": "text",
+                "value": "Mesmerize"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://in.linkedin.com/jobs/view/full-stack-web-developer-react-next-js-node-immediate-joiners-preferred-at-bombaydc-4383741910?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "jobs.weekday.works"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ],
+            [
+              {
+                "type": "integer",
+                "value": "53"
+              },
+              {
+                "type": "text",
+                "value": "Front-End Developer - Director- Data & Analytics Engineering | Mumbai, IN"
+              },
+              {
+                "type": "text",
+                "value": "Morgan Stanley"
+              },
+              {
+                "type": "text",
+                "value": "Mumbai, Maharashtra"
+              },
+              {
+                "type": "text",
+                "value": "Recent"
+              },
+              {
+                "type": "text",
+                "value": "https://jobs.weekday.works/shopify-front-end-developer-mumbai-based-at-mesmerize-4382880571?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+              },
+              {
+                "type": "text",
+                "value": ""
+              },
+              {
+                "type": "text",
+                "value": "efinancialcareers"
+              },
+              {
+                "type": "text",
+                "value": "Frontend Developer"
+              },
+              {
+                "type": "text",
+                "value": "2026-03-15"
+              }
+            ]
+          ],
+          "affected_row_count": 0,
+          "last_insert_rowid": null,
+          "replication_index": null,
+          "rows_read": 50,
+          "rows_written": 0,
+          "query_duration_ms": 0.54
+        }
+      }
+    },
+    {
+      "type": "ok",
+      "response": {
+        "type": "close"
+      }
+    }
+  ]
+}
