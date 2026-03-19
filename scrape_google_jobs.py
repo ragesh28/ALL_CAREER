@@ -277,20 +277,23 @@ def get_total_jobs():
 
 
 def load_progress():
+    today = datetime.now().strftime("%Y-%m-%d")
     try:
         with open("google_progress.json", "r") as f:
-            return json.load(f)
+            data = json.load(f)
+        # If progress is from a previous day, reset to start
+        if data.get("date") != today:
+            print(f"📅 New day detected (was {data.get('date')}, now {today}). Resetting progress to start.")
+            return {"role_idx": 0, "loc_idx": 0, "date": today}
+        return data
     except (FileNotFoundError, json.JSONDecodeError):
-        return {"role_idx": 0, "loc_idx": 0, "date": datetime.now().strftime("%Y-%m-%d")}
+        return {"role_idx": 0, "loc_idx": 0, "date": today}
 
 def save_progress(role_idx, loc_idx, finished_all=False):
-    # If finished_all is True, we erase the file, next run starts fresh
+    # If finished_all, reset to 0 so next run starts fresh
     if finished_all:
-        try:
-            os.remove("google_progress.json")
-        except FileNotFoundError:
-            pass
-        return
+        role_idx = 0
+        loc_idx = 0
 
     with open("google_progress.json", "w") as f:
         json.dump({

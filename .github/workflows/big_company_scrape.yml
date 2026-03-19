@@ -31,11 +31,12 @@ jobs:
 
       # Save progress checkpoint so it can resume if rate limited/timeout
       - name: Commit and Push Scrape Progress
+        if: always()
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add -f scrape_progress.json 2>/dev/null || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save big company scraper progress" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save big company scraper progress" && git pull --rebase && git push)
 
       # If scrape_progress.json exists → scraper hit time limit → restart in 10 min
       - name: Auto-Restart if Not Finished
