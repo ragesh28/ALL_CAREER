@@ -1,0 +1,60 @@
+name: All Jobs 2 (LinkedIn + Indeed → Turso)
+
+on:
+  workflow_dispatch:   # Manual trigger
+  schedule:
+    - cron: '30 1 * * *'  # 7:00 AM IST (1:30 AM UTC)
+
+jobs:
+  scrape-linkedin-indeed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # 6 hours max
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install python-jobspy pandas requests
+
+      - name: Run LinkedIn + Indeed Scraper
+        env:
+          TURSO_ALLJOBS_URL: ${{ secrets.TURSO_ALLJOBS_URL }}
+          TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
+        run: python scrape_alljobs2.py
+
+      # Always save progress (even on timeout/failure)
+      - name: Commit and Push Scrape Progress
+        if: always()
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add -f alljobs2_progress.json 2>/dev/null || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save alljobs2 scraper progress" && git pull --rebase && git push)
+
+      # Auto-restart if stopped mid-run
+      - name: Auto-Restart if Not Finished
+        if: always() && !cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f alljobs2_progress.json ]; then
+            FINISHED=$(python -c "import json; print(json.load(open('alljobs2_progress.json')).get('finished', False))")
+            if [ "$FINISHED" = "False" ]; then
+              echo "⚠️  Scraper stopped mid-run. Waiting 10 minutes then restarting..."
+              sleep 600
+              echo "🔄 Triggering workflow restart..."
+              gh workflow run all_jobs_2.yml --repo ${{ github.repository }}
+              echo "✅ Restart triggered."
+            else
+              echo "✅ Scraper completed all roles. No restart needed."
+            fi
+          else
+            echo "✅ No progress file. Scraper completed normally."
+          fi
