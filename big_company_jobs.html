@@ -170,9 +170,9 @@
         .role-node.active .node-dot { background: white; }
 
         /* --- JOBS --- */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
+        .container { max-width: 100%; margin: 0 auto; padding: 0 30px 100px; }
         .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
-        .jobs-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+        .jobs-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 
         .job-card {
             background: var(--bg-surface); border: 1px solid var(--border);
@@ -232,11 +232,37 @@
         .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
         .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .jobs-grid { grid-template-columns: 1fr; }
+        /* Responsive grid */
+        @media (max-width: 500px) {
+            .jobs-grid { grid-template-columns: 1fr; gap: 10px; }
+            .container { padding: 0 12px 80px; }
+            h1 { font-size: 2rem; }
             .tree { flex-direction: column; gap: 20px; }
             .tree-branch { max-width: 100%; }
+        }
+        @media (min-width: 501px) and (max-width: 768px) {
+            .jobs-grid { grid-template-columns: repeat(2, 1fr); }
+            h1 { font-size: 2.5rem; }
+            .tree { flex-direction: column; gap: 20px; }
+            .tree-branch { max-width: 100%; }
+        }
+        @media (min-width: 769px) and (max-width: 1100px) {
+            .jobs-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1101px) and (max-width: 1500px) {
+            .jobs-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (min-width: 1501px) and (max-width: 1900px) {
+            .jobs-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+        @media (min-width: 1901px) and (max-width: 2400px) {
+            .jobs-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+        @media (min-width: 2401px) and (max-width: 3000px) {
+            .jobs-grid { grid-template-columns: repeat(8, 1fr); }
+        }
+        @media (min-width: 3001px) {
+            .jobs-grid { grid-template-columns: repeat(10, 1fr); }
         }
     </style>
 </head>
@@ -269,6 +295,11 @@
                     <option value="Mumbai">Mumbai</option>
                     <option value="Delhi">Delhi</option>
                     <option value="Pune">Pune</option>
+                </select>
+            </div>
+            <div class="filter-group" style="flex:0.7;">
+                <select id="dateFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">📅 Date: All</option>
                 </select>
             </div>
             <div class="exp-group">
@@ -571,6 +602,30 @@
             }
         }
 
+        function buildDateDropdown() {
+            const sel = document.getElementById('dateFilter');
+            const dates = new Map();
+            allJobs.forEach(j => {
+                const d = j.fetchedAt || '';
+                if (d) dates.set(d, (dates.get(d) || 0) + 1);
+            });
+            const sortedDates = [...dates.keys()].sort().reverse().slice(0, 10);
+            const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            sel.innerHTML = `<option value="All">📅 All Dates (${allJobs.length})</option>`;
+            sortedDates.forEach(dateStr => {
+                const d = new Date(dateStr + 'T00:00:00');
+                const dayName = dayNames[d.getDay()];
+                const label = `${monthNames[d.getMonth()]} ${d.getDate()}`;
+                const count = dates.get(dateStr);
+                const today = new Date();
+                const isToday = d.toDateString() === today.toDateString();
+                const isYesterday = d.toDateString() === new Date(today - 86400000).toDateString();
+                const tag = isToday ? 'Today' : isYesterday ? 'Yesterday' : dayName;
+                sel.innerHTML += `<option value="${dateStr}">${tag} — ${label} (${count})</option>`;
+            });
+        }
+
         async function init() {
             const loading = document.getElementById('loading');
             loading.innerHTML = 'Connecting to database and loading jobs...';
@@ -582,6 +637,7 @@
                 return;
             }
             
+            buildDateDropdown();
             applyFilters();
             loading.style.display = 'none';
         }
@@ -596,6 +652,10 @@
 
                 if (search && !hay.includes(search)) return false;
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
+
+                // Date filter
+                const dateVal = document.getElementById('dateFilter').value;
+                if (dateVal !== 'All' && j.fetchedAt !== dateVal) return false;
 
                 // Role filter
                 if (activeRole && ROLE_KEYWORDS[activeRole]) {

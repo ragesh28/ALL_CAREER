@@ -228,32 +228,6 @@
         .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
         .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; }
 
-        /* --- DATE FILTER BAR --- */
-        .date-bar-container {
-            max-width: 1000px; margin: 0 auto 16px; padding: 0 20px;
-        }
-        .date-bar {
-            display: flex; gap: 8px; overflow-x: auto; padding: 8px 0;
-            scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
-            -ms-overflow-style: none;
-        }
-        .date-bar::-webkit-scrollbar { height: 4px; }
-        .date-bar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
-        .date-pill {
-            flex-shrink: 0; padding: 8px 18px; border-radius: 20px;
-            background: var(--bg-surface); border: 1px solid var(--border);
-            color: var(--text-muted); cursor: pointer; font-size: 0.82rem;
-            font-weight: 600; transition: all 0.2s; font-family: inherit;
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-            min-width: 85px; text-align: center;
-        }
-        .date-pill:hover { border-color: #3b82f6; color: white; }
-        .date-pill.active { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border-color: #6366f1; box-shadow: 0 4px 15px rgba(99,102,241,0.4); }
-        .date-pill .date-day { font-size: 0.7rem; opacity: 0.7; }
-        .date-pill .date-count {
-            font-size: 0.65rem; background: rgba(255,255,255,0.15); padding: 1px 8px;
-            border-radius: 10px; margin-top: 2px;
-        }
         .date-pill.active .date-count { background: rgba(255,255,255,0.25); }
 
         /* Responsive grid: adapts from 1 col (mobile) to 10+ cols (ultra-wide) */
@@ -321,6 +295,11 @@
                     <option value="Mumbai">Mumbai</option>
                     <option value="Delhi">Delhi</option>
                     <option value="Pune">Pune</option>
+                </select>
+            </div>
+            <div class="filter-group" style="flex:0.7;">
+                <select id="dateFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">📅 Date: All</option>
                 </select>
             </div>
             <div class="exp-group">
@@ -416,11 +395,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- DATE FILTER BAR -->
-    <div class="date-bar-container">
-        <div class="date-bar" id="dateBar"></div>
     </div>
 
     <div class="container">
@@ -625,25 +599,17 @@
             }
         }
 
-        function buildDateBar() {
-            const bar = document.getElementById('dateBar');
+        function buildDateDropdown() {
+            const sel = document.getElementById('dateFilter');
             const dates = new Map();
-            // Count jobs per date
             allJobs.forEach(j => {
                 const d = j.fetchedAt || '';
                 if (d) dates.set(d, (dates.get(d) || 0) + 1);
             });
-            // Sort dates descending
             const sortedDates = [...dates.keys()].sort().reverse().slice(0, 10);
             const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
             const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-            // "All" pill
-            let html = `<button class="date-pill active" onclick="setDate('All', this)">
-                <span>All</span>
-                <span class="date-count">${allJobs.length} jobs</span>
-            </button>`;
-
+            sel.innerHTML = `<option value="All">📅 All Dates (${allJobs.length})</option>`;
             sortedDates.forEach(dateStr => {
                 const d = new Date(dateStr + 'T00:00:00');
                 const dayName = dayNames[d.getDay()];
@@ -653,20 +619,8 @@
                 const isToday = d.toDateString() === today.toDateString();
                 const isYesterday = d.toDateString() === new Date(today - 86400000).toDateString();
                 const tag = isToday ? 'Today' : isYesterday ? 'Yesterday' : dayName;
-                html += `<button class="date-pill" onclick="setDate('${dateStr}', this)">
-                    <span>${label}</span>
-                    <span class="date-day">${tag}</span>
-                    <span class="date-count">${count} jobs</span>
-                </button>`;
+                sel.innerHTML += `<option value="${dateStr}">${tag} — ${label} (${count})</option>`;
             });
-            bar.innerHTML = html;
-        }
-
-        function setDate(date, el) {
-            activeDate = date;
-            document.querySelectorAll('.date-pill').forEach(p => p.classList.remove('active'));
-            if (el) el.classList.add('active');
-            applyFilters();
         }
 
         async function init() {
@@ -680,7 +634,7 @@
                 return;
             }
             
-            buildDateBar();
+            buildDateDropdown();
             applyFilters();
             loading.style.display = 'none';
         }
@@ -697,7 +651,8 @@
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
 
                 // Date filter
-                if (activeDate !== 'All' && j.fetchedAt !== activeDate) return false;
+                const dateVal = document.getElementById('dateFilter').value;
+                if (dateVal !== 'All' && j.fetchedAt !== dateVal) return false;
 
                 // Role filter — check title keywords OR role_search field
                 if (activeRole && ROLE_KEYWORDS[activeRole]) {
