@@ -42,7 +42,7 @@ if not TURSO_TOKEN:
     TURSO_TOKEN = ""
 
 RESULTS_PER_SEARCH = 20
-KEEP_DAYS = 10
+KEEP_DAYS = 20
 PROGRESS_FILE = "alljobs2_progress.json"
 
 START_TIME = time.time()

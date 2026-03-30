@@ -33,7 +33,7 @@ BATCH_SIZE = 50
 COOLDOWN_SECONDS = 60     # 1 minute wait on block (GitHub gives new IP)
 MAX_RETRIES = 3
 RESULTS_PER_SEARCH = 50
-KEEP_DAYS = 10            # Delete jobs older than 10 days
+KEEP_DAYS = 20            # Delete jobs older than 20 days
 
 START_TIME = time.time()
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes (safe margin)

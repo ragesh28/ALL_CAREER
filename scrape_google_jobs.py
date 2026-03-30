@@ -30,7 +30,7 @@ WEBSHARE_PROXIES_ENV = os.environ.get("WEBSHARE_PROXIES", "")
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
-KEEP_DAYS = 10              # Delete jobs older than 10 days
+KEEP_DAYS = 20              # Delete jobs older than 20 days
 COOLDOWN_SECONDS = 60       # Wait on block
 MAX_RETRIES = 3
 
