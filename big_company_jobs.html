@@ -172,7 +172,7 @@
         /* --- JOBS --- */
         .container { max-width: 100%; margin: 0 auto; padding: 0 30px 100px; }
         .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
-        .jobs-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+        .jobs-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); align-items: stretch; }
 
         .job-card {
             background: var(--bg-surface); border: 1px solid var(--border);
@@ -180,6 +180,7 @@
             display: flex; flex-direction: column; gap: 14px;
             transition: all 0.2s ease;
             opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
+            height: 100%; box-sizing: border-box;
         }
         .job-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
