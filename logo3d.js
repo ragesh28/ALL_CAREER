@@ -1,35 +1,30 @@
 /**
- * ALL_CAREER — Quantum String Theory 3D Logo Auto-Injector
- * Finds any generic logo <a> block and replaces it with the animated 3D version.
+ * ALL_CAREER — Logo injector (plain image, no animation)
  */
 (function () {
-    // Inject the CSS link if not already present
-    if (!document.querySelector('link[href="logo3d.css"]')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'logo3d.css';
-        document.head.appendChild(link);
-    }
-
     function buildLogo() {
-        // Remove any existing plain logo anchor at top-left
-        const existing = document.querySelector('a[href="index.html"][style*="position: absolute"]');
+        // Remove any existing static logo
+        document.querySelectorAll('a[href="index.html"]').forEach(el => {
+            if (el.querySelector('img[src="String_Theory.png"]')) el.remove();
+        });
+        const existing = document.getElementById('logo3d-wrapper');
         if (existing) existing.remove();
 
         const a = document.createElement('a');
         a.href = 'index.html';
-        a.className = 'logo-3d-wrapper';
+        a.id   = 'logo3d-wrapper';
+        Object.assign(a.style, {
+            position: 'fixed', top: '14px', left: '20px', zIndex: '9999',
+            display: 'flex', alignItems: 'center', gap: '12px',
+            textDecoration: 'none', cursor: 'pointer',
+        });
         a.innerHTML = `
-            <div class="logo-3d-stage">
-                <div class="logo-3d-spin">
-                    <img src="String_Theory.png" alt="ALL_CAREER Logo">
-                </div>
-                <div class="logo-3d-ring"></div>
-                <div class="logo-3d-ring2"></div>
-                <div class="logo-3d-dot"></div>
-                <div class="logo-3d-dot2"></div>
-            </div>
-            <span class="logo-3d-text">ALL_CAREER</span>
+            <img src="String_Theory.png" alt="Logo"
+                style="width:38px;height:38px;border-radius:10px;
+                       box-shadow:0 4px 15px rgba(0,0,0,0.3);display:block;">
+            <span style="font-family:'Outfit',sans-serif;font-weight:800;
+                         font-size:1.4rem;color:#ffffff;letter-spacing:1px;
+                         text-shadow:0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
         `;
         document.body.prepend(a);
     }
