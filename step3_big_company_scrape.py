@@ -59,8 +59,8 @@ LOCATIONS = [
 
 PROGRESS_FILE = "scrape_progress.json"
 
-TURSO_URL = os.environ.get("TURSO_URL", "https://jobsdata-ragesh.aws-ap-south-1.turso.io")
-TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
+TURSO_URL   = os.environ.get("TURSO_URL", "")
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "")  # Set via GitHub Secret — never hardcode!
 
 def turso_execute(statements):
     if not TURSO_URL or not TURSO_TOKEN:
