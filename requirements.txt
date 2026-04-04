@@ -1,5 +1,0 @@
-python-jobspy
-pandas
-requests
-playwright
-schedule
