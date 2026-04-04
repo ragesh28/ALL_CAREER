@@ -11,7 +11,7 @@ Features:
 - LinkedIn block detection with 1-minute cooldown + auto-resume
 - Merges results into big_jobs.json and big_jobs_data.js (no duplicates)
 - Progress tracking via scrape_progress.json
-- 10-day retention: removes old jobs
+- 20-day retention: removes old jobs
 
 Usage:
   py -3.11 step3_big_company_scrape.py           # Full run (all 150 companies)
@@ -91,20 +91,22 @@ def turso_execute(statements):
 
 def setup_database():
     print("📦 Setting up Turso database (big_jobs table)...")
-    sql = """
-    CREATE TABLE IF NOT EXISTS big_jobs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        company TEXT NOT NULL,
-        location TEXT,
-        date_posted TEXT,
-        url TEXT NOT NULL,
-        linkedin_url TEXT,
-        fetched_at TEXT NOT NULL,
-        UNIQUE(url)
-    )
-    """
-    turso_execute([sql])
+    turso_execute(["""
+        CREATE TABLE IF NOT EXISTS big_jobs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            company TEXT NOT NULL,
+            location TEXT,
+            date_posted TEXT,
+            url TEXT NOT NULL,
+            linkedin_url TEXT,
+            fetched_at TEXT NOT NULL,
+            source TEXT DEFAULT 'linkedin',
+            UNIQUE(url)
+        )
+    """])
+    # Add source column if upgrading from older schema
+    turso_execute(["ALTER TABLE big_jobs ADD COLUMN source TEXT DEFAULT 'linkedin'"])
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -194,7 +196,7 @@ def save_jobs(all_jobs):
     statements = []
     for job in all_jobs:
         statements.append({
-            "sql": "INSERT OR IGNORE INTO big_jobs (title, company, location, date_posted, url, linkedin_url, fetched_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            "sql": "INSERT OR IGNORE INTO big_jobs (title, company, location, date_posted, url, linkedin_url, fetched_at, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             "args": [
                 {"type": "text", "value": str(job.get("title", ""))},
                 {"type": "text", "value": str(job.get("company", ""))},
@@ -202,7 +204,8 @@ def save_jobs(all_jobs):
                 {"type": "text", "value": str(job.get("date", ""))},
                 {"type": "text", "value": str(job.get("url", ""))},
                 {"type": "text", "value": str(job.get("linkedin_url", ""))},
-                {"type": "text", "value": str(job.get("fetchedAt", ""))}
+                {"type": "text", "value": str(job.get("fetchedAt", ""))},
+                {"type": "text", "value": str(job.get("source", "linkedin"))},
             ]
         })
 
@@ -216,7 +219,7 @@ def save_jobs(all_jobs):
                 if r.get("type") == "ok":
                     total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
 
-    print(f"💾 Inserted {total_inserted} new jobs to Turso 'big_jobs' table out of {len(all_jobs)} total tracked.")
+    print(f"💾 Inserted {total_inserted} new jobs to Turso 'big_jobs' table out of {len(all_jobs)} total.")
 
 
 def is_linkedin_block(error):
@@ -232,15 +235,14 @@ def is_linkedin_block(error):
 
 def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
     """
-    Scrape jobs for a single company across all locations.
-    Uses linkedin_fetch_description=True to get job_url_direct (original links).
-    Only keeps jobs with direct apply links (ignores LinkedIn-only links).
+    Scrape jobs for a single company from LinkedIn + Indeed.
+    Stores the LinkedIn/Indeed job URL directly — no extra fetching needed.
     Returns a list of job dicts and a flag indicating if blocked.
     """
     from jobspy import scrape_jobs
     import random
 
-    direct_jobs = []
+    all_jobs = []
     date_stamp = get_date_stamp()
 
     proxy_url = None
@@ -251,13 +253,12 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
         try:
             print(f"   📍 {location}...", end=" ", flush=True)
             jobs_df = scrape_jobs(
-                site_name=["linkedin"],
+                site_name=["linkedin", "indeed"],  # Both sources
                 search_term=company_name,
                 location=location,
                 results_wanted=results_wanted,
                 country_indeed="India",
-                hours_old=24,
-                linkedin_fetch_description=True,  # Gets job_url_direct (original links)!
+                hours_old=72,               # Last 3 days per scrape run
                 verbose=0,
                 proxy=proxy_url
             )
@@ -266,44 +267,44 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
                 print("0 jobs")
                 continue
 
-            # Filter to matching company
+            # Filter to matching company name
             mask = jobs_df["company"].str.lower().str.contains(
                 company_name.lower().split()[0], na=False
             )
             matched = jobs_df[mask]
 
-            direct_count = 0
+            count = 0
             for _, row in matched.iterrows():
-                # Get the direct URL (original company career page link)
-                direct_url = str(row.get("job_url_direct", ""))
-                linkedin_url = str(row.get("job_url", ""))
+                # Use the LinkedIn/Indeed job URL directly
+                job_url = str(row.get("job_url", ""))
+                if job_url in ("", "nan", "None"):
+                    continue
 
-                # Only keep jobs with direct apply links
-                if direct_url in ("", "nan", "None"):
-                    continue  # Skip — no direct link, only LinkedIn redirect
+                source = str(row.get("site", "linkedin"))
 
-                direct_jobs.append({
-                    "company": str(row.get("company", company_name)),
-                    "title": str(row.get("title", "Unknown")),
-                    "url": direct_url,  # Original company career page URL
-                    "linkedin_url": linkedin_url,
-                    "location": str(row.get("location", location.split(",")[0])),
-                    "date": str(row.get("date_posted", "None")),
-                    "fetchedAt": date_stamp,
+                all_jobs.append({
+                    "company":    str(row.get("company", company_name)),
+                    "title":      str(row.get("title", "Unknown")),
+                    "url":        job_url,           # LinkedIn or Indeed URL
+                    "linkedin_url": job_url if "linkedin" in source else "",
+                    "location":   str(row.get("location", location.split(",")[0])),
+                    "date":       str(row.get("date_posted", "None")),
+                    "fetchedAt":  date_stamp,
+                    "source":     source,
                 })
-                direct_count += 1
+                count += 1
 
-            print(f"✅ {direct_count} direct links")
+            print(f"✅ {count} jobs")
 
         except Exception as e:
             if is_linkedin_block(e):
                 print(f"🚫 BLOCKED!")
-                return direct_jobs, True
+                return all_jobs, True
             else:
                 print(f"⚠️ Error: {str(e)[:80]}")
                 continue
 
-    return direct_jobs, False
+    return all_jobs, False
 
 
 def run(test_limit=None):
@@ -314,14 +315,14 @@ def run(test_limit=None):
 
     total = len(companies)
     print("=" * 60)
-    print(f"  BIG COMPANY SCRAPER ({total} companies → Direct Links)")
+    print(f"  BIG COMPANY SCRAPER ({total} companies → LinkedIn + Indeed)")
     print("=" * 60)
     print(f"  📅 Date: {get_date_stamp()}")
     print(f"  📍 Locations: {len(LOCATIONS)}")
     print(f"  📦 Batch size: {BATCH_SIZE}")
     print(f"  ⏱️  Cooldown on block: {COOLDOWN_SECONDS}s")
     print(f"  📆 Retention: {KEEP_DAYS} days")
-    print(f"  🔗 Mode: Direct links only (linkedin_fetch_description=True)")
+    print(f"  🔗 Mode: LinkedIn + Indeed URLs (no extra fetching)")
     print("=" * 60)
 
     setup_database()
@@ -351,7 +352,7 @@ def run(test_limit=None):
         if i > start_index and i % BATCH_SIZE == 0:
             print(f"\n{'─' * 50}")
             print(f"  🔄 Starting batch {batch_num} (fresh session)")
-            print(f"  📊 Direct-link jobs saved so far: {new_jobs_count}")
+            print(f"  📊 Jobs saved so far: {new_jobs_count}")
             print(f"{'─' * 50}\n")
             time.sleep(5)
 
@@ -394,7 +395,7 @@ def run(test_limit=None):
 
         # Periodic save every 10 companies
         if (i + 1) % 10 == 0:
-            print(f"💾 Checkpoint: {new_jobs_count} direct-link jobs processed")
+            print(f"💾 Checkpoint: {new_jobs_count} jobs processed")
 
     # Clean up progress file (all done)
     try:
@@ -404,9 +405,9 @@ def run(test_limit=None):
 
     print(f"\n{'=' * 60}")
     print(f"  📊 RESULTS:")
-    print(f"     🆕 New direct-link jobs processed: {new_jobs_count}")
+    print(f"     🆕 New jobs processed: {new_jobs_count}")
     print(f"     🚫 Times blocked: {blocked_count}")
-    print(f"={'=' * 59}")
+    print("=" * 60)
     print(f"\n✅ DONE!")
 
 
