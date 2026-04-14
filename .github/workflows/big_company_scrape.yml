@@ -22,8 +22,8 @@ jobs:
       - name: Install Python dependencies
         run: pip install python-jobspy pandas requests
 
-      # Scrape 150 top companies with direct links (linkedin_fetch_description=True)
-      - name: Run Big Company Scraper (Direct Links)
+      # Scrape 150 top companies from Indeed with direct apply links
+      - name: Run Big Company Scraper (Indeed Direct Links)
         env:
           TURSO_URL: ${{ secrets.TURSO_URL }}
           TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
@@ -45,11 +45,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -f scrape_progress.json ]; then
-            echo "⚠️  Scraper stopped mid-run (time limit). Waiting 10 minutes then restarting..."
+            echo "Scraper stopped mid-run (time limit). Waiting 10 minutes then restarting..."
             sleep 600
-            echo "🔄 Triggering workflow restart..."
+            echo "Triggering workflow restart..."
             gh workflow run big_company_scrape.yml --repo ${{ github.repository }}
-            echo "✅ Restart triggered. It will resume from where it stopped."
+            echo "Restart triggered. It will resume from where it stopped."
           else
-            echo "✅ Scraper completed all companies. No restart needed."
+            echo "Scraper completed all companies. No restart needed."
           fi

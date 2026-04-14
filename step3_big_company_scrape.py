@@ -1,15 +1,15 @@
 """
 STEP 3: Big Company Job Scraper (150 Top Companies)
-Uses jobspy to scrape LinkedIn for job listings across multiple locations.
-Gets ORIGINAL direct apply links (not LinkedIn redirect URLs).
+Uses JobSpy to scrape INDEED ONLY for job listings across multiple Indian cities.
+Gets ORIGINAL DIRECT APPLY LINKS (company career page URLs via job_url_direct).
 
 Features:
-- Scrapes 150 top companies across 6 Indian cities
-- Uses linkedin_fetch_description=True to get job_url_direct (original company links)
-- Stores ONLY jobs with direct apply links (skips LinkedIn-only links)
+- Scrapes 150 top companies from Indeed (India)
+- Uses job_url_direct for original company apply links
+- Falls back to Indeed URL if no direct link available
 - Processes in batches of 50 companies (fresh session per batch)
-- LinkedIn block detection with 1-minute cooldown + auto-resume
-- Merges results into big_jobs.json and big_jobs_data.js (no duplicates)
+- Indeed block detection with 1-minute cooldown + auto-resume
+- Stores to Turso DB with deduplication via UNIQUE(url)
 - Progress tracking via scrape_progress.json
 - 20-day retention: removes old jobs
 
@@ -43,7 +43,7 @@ def is_time_limit_approaching():
 # CONFIG
 # ---------------------------------------------------------------------------
 BATCH_SIZE = 50
-COOLDOWN_SECONDS = 60       # 1 minute wait on block (GitHub gives new IP)
+COOLDOWN_SECONDS = 60       # 1 minute wait on block
 MAX_RETRIES = 3
 RESULTS_PER_SEARCH = 50
 KEEP_DAYS = 20              # Delete jobs older than 20 days
@@ -64,7 +64,7 @@ TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "")  # Set via GitHub Secret — nev
 
 def turso_execute(statements):
     if not TURSO_URL or not TURSO_TOKEN:
-        print("⚠️ TURSO not configured, skipping DB storage")
+        print("  [WARN] TURSO not configured, skipping DB storage")
         return None
 
     import requests
@@ -86,11 +86,11 @@ def turso_execute(statements):
         resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
         return resp.json() if resp.status_code == 200 else None
     except Exception as e:
-        print(f"❌ Turso connection error: {e}")
+        print(f"  [ERR] Turso connection error: {e}")
         return None
 
 def setup_database():
-    print("📦 Setting up Turso database (big_jobs table)...")
+    print("  Setting up Turso database (big_jobs table)...")
     turso_execute(["""
         CREATE TABLE IF NOT EXISTS big_jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -101,12 +101,12 @@ def setup_database():
             url TEXT NOT NULL,
             linkedin_url TEXT,
             fetched_at TEXT NOT NULL,
-            source TEXT DEFAULT 'linkedin',
+            source TEXT DEFAULT 'indeed',
             UNIQUE(url)
         )
     """])
     # Add source column if upgrading from older schema
-    turso_execute(["ALTER TABLE big_jobs ADD COLUMN source TEXT DEFAULT 'linkedin'"])
+    turso_execute(["ALTER TABLE big_jobs ADD COLUMN source TEXT DEFAULT 'indeed'"])
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -182,13 +182,14 @@ def clean_old_jobs(jobs):
     jobs = [j for j in jobs if j.get("fetchedAt", "9999") >= cutoff]
     removed = before - len(jobs)
     if removed > 0:
-        print(f"🧹 Removed {removed} jobs older than {cutoff}")
+        print(f"  Cleaned {removed} jobs older than {cutoff}")
     return jobs
 
 
 def save_jobs(all_jobs):
     """Save jobs directly to Turso big_jobs table."""
-    if not all_jobs: return
+    if not all_jobs:
+        return
 
     # Clean old jobs
     all_jobs = clean_old_jobs(all_jobs)
@@ -203,9 +204,9 @@ def save_jobs(all_jobs):
                 {"type": "text", "value": str(job.get("location", ""))},
                 {"type": "text", "value": str(job.get("date", ""))},
                 {"type": "text", "value": str(job.get("url", ""))},
-                {"type": "text", "value": str(job.get("linkedin_url", ""))},
+                {"type": "text", "value": str(job.get("indeed_url", ""))},
                 {"type": "text", "value": str(job.get("fetchedAt", ""))},
-                {"type": "text", "value": str(job.get("source", "linkedin"))},
+                {"type": "text", "value": str(job.get("source", "indeed"))},
             ]
         })
 
@@ -219,14 +220,14 @@ def save_jobs(all_jobs):
                 if r.get("type") == "ok":
                     total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
 
-    print(f"💾 Inserted {total_inserted} new jobs to Turso 'big_jobs' table out of {len(all_jobs)} total.")
+    print(f"  -> Inserted {total_inserted} new jobs out of {len(all_jobs)} total.")
 
 
-def is_linkedin_block(error):
+def is_blocked(error):
     error_str = str(error).lower()
     indicators = [
         "429", "too many requests", "rate limit", "blocked",
-        "captcha", "forbidden", "access denied", "authwall",
+        "captcha", "forbidden", "access denied",
         "connectionerror", "connection reset", "timeout",
         "max retries exceeded",
     ]
@@ -235,8 +236,9 @@ def is_linkedin_block(error):
 
 def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
     """
-    Scrape jobs for a single company from LinkedIn + Indeed.
-    Stores the LinkedIn/Indeed job URL directly — no extra fetching needed.
+    Scrape jobs for a single company from Indeed ONLY.
+    Uses job_url_direct for original company apply links.
+    Falls back to Indeed URL if no direct link found.
     Returns a list of job dicts and a flag indicating if blocked.
     """
     from jobspy import scrape_jobs
@@ -251,14 +253,14 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
 
     for location in locations:
         try:
-            print(f"   📍 {location}...", end=" ", flush=True)
+            print(f"   > {location}...", end=" ", flush=True)
             jobs_df = scrape_jobs(
-                site_name=["linkedin", "indeed"],  # Both sources
+                site_name=["indeed"],           # Indeed ONLY
                 search_term=company_name,
                 location=location,
                 results_wanted=results_wanted,
                 country_indeed="India",
-                hours_old=72,               # Last 3 days per scrape run
+                hours_old=72,                   # Last 3 days
                 verbose=0,
                 proxy=proxy_url
             )
@@ -275,33 +277,38 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
 
             count = 0
             for _, row in matched.iterrows():
-                # Use the LinkedIn/Indeed job URL directly
-                job_url = str(row.get("job_url", ""))
-                if job_url in ("", "nan", "None"):
-                    continue
+                # Prefer job_url_direct (original company apply link)
+                direct_url = str(row.get("job_url_direct", ""))
+                indeed_url = str(row.get("job_url", ""))
 
-                source = str(row.get("site", "linkedin"))
+                # Use direct link (original company career page) if available
+                if direct_url not in ("", "nan", "None"):
+                    apply_url = direct_url
+                elif indeed_url not in ("", "nan", "None"):
+                    apply_url = indeed_url
+                else:
+                    continue
 
                 all_jobs.append({
                     "company":    str(row.get("company", company_name)),
                     "title":      str(row.get("title", "Unknown")),
-                    "url":        job_url,           # LinkedIn or Indeed URL
-                    "linkedin_url": job_url if "linkedin" in source else "",
+                    "url":        apply_url,         # Original company apply link (or Indeed fallback)
+                    "indeed_url": indeed_url,         # Keep Indeed URL as reference
                     "location":   str(row.get("location", location.split(",")[0])),
                     "date":       str(row.get("date_posted", "None")),
                     "fetchedAt":  date_stamp,
-                    "source":     source,
+                    "source":     "indeed",
                 })
                 count += 1
 
-            print(f"✅ {count} jobs")
+            print(f"{count} jobs")
 
         except Exception as e:
-            if is_linkedin_block(e):
-                print(f"🚫 BLOCKED!")
+            if is_blocked(e):
+                print(f"BLOCKED!")
                 return all_jobs, True
             else:
-                print(f"⚠️ Error: {str(e)[:80]}")
+                print(f"Error: {str(e)[:80]}")
                 continue
 
     return all_jobs, False
@@ -311,21 +318,27 @@ def run(test_limit=None):
     companies = TOP_COMPANIES
     if test_limit:
         companies = companies[:test_limit]
-        print(f"\n🧪 TEST MODE: Scraping only {test_limit} companies\n")
+        print(f"\n  TEST MODE: Scraping only {test_limit} companies\n")
 
     total = len(companies)
     print("=" * 60)
-    print(f"  BIG COMPANY SCRAPER ({total} companies → LinkedIn + Indeed)")
+    print(f"  BIG COMPANY SCRAPER ({total} companies via Indeed)")
     print("=" * 60)
-    print(f"  📅 Date: {get_date_stamp()}")
-    print(f"  📍 Locations: {len(LOCATIONS)}")
-    print(f"  📦 Batch size: {BATCH_SIZE}")
-    print(f"  ⏱️  Cooldown on block: {COOLDOWN_SECONDS}s")
-    print(f"  📆 Retention: {KEEP_DAYS} days")
-    print(f"  🔗 Mode: LinkedIn + Indeed URLs (no extra fetching)")
+    print(f"  Date: {get_date_stamp()}")
+    print(f"  Locations: {len(LOCATIONS)}")
+    print(f"  Batch size: {BATCH_SIZE}")
+    print(f"  Cooldown on block: {COOLDOWN_SECONDS}s")
+    print(f"  Retention: {KEEP_DAYS} days")
+    print(f"  Mode: Indeed -> Original Direct Apply Links")
     print("=" * 60)
 
     setup_database()
+
+    # Also clean old jobs from DB on startup
+    if TURSO_URL and TURSO_TOKEN:
+        cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
+        turso_execute([f"DELETE FROM big_jobs WHERE fetched_at < '{cutoff}'"])
+        print(f"  Cleaned DB jobs older than {cutoff}")
 
     # Check for resume from previous blocked run
     progress = load_progress()
@@ -333,13 +346,12 @@ def run(test_limit=None):
     if progress["date"] == get_date_stamp() and progress["last_completed_index"] >= 0:
         start_index = progress["last_completed_index"] + 1
         if start_index < total:
-            print(f"\n🔄 Resuming from company #{start_index + 1}: {companies[start_index]}")
+            print(f"\n  Resuming from company #{start_index + 1}: {companies[start_index]}")
         else:
-            print(f"\n✅ All companies already scraped today!")
+            print(f"\n  All companies already scraped today!")
             return
 
-    # No need to load existing jobs anymore; Turso INSERT OR IGNORE handles deduplication.
-    print("📋 Will rely on Turso `UNIQUE(url)` for deduplication.")
+    print("  Turso UNIQUE(url) handles deduplication.")
 
     new_jobs_count = 0
     blocked_count = 0
@@ -350,20 +362,20 @@ def run(test_limit=None):
 
         # Log batch transitions
         if i > start_index and i % BATCH_SIZE == 0:
-            print(f"\n{'─' * 50}")
-            print(f"  🔄 Starting batch {batch_num} (fresh session)")
-            print(f"  📊 Jobs saved so far: {new_jobs_count}")
-            print(f"{'─' * 50}\n")
+            print(f"\n{'_' * 50}")
+            print(f"  Starting batch {batch_num}")
+            print(f"  Jobs saved so far: {new_jobs_count}")
+            print(f"{'_' * 50}\n")
             time.sleep(5)
 
-        print(f"\n[{i + 1}/{total}] 🏢 {company}")
+        print(f"\n[{i + 1}/{total}] {company}")
 
         # Time limit check
         if is_time_limit_approaching():
             elapsed_min = int((time.time() - START_TIME) / 60)
-            print(f"\n⏰ TIME LIMIT ({elapsed_min} min). Saving progress and stopping.")
+            print(f"\n  TIME LIMIT ({elapsed_min} min). Saving progress and stopping.")
             save_progress(i - 1)
-            print(f"✅ Progress saved. GitHub Action will restart in 10 minutes.")
+            print(f"  Progress saved. GitHub Action will restart in 10 minutes.")
             return
 
         retries = 0
@@ -384,10 +396,10 @@ def run(test_limit=None):
                 save_progress(i - 1)
 
                 if retries <= MAX_RETRIES:
-                    print(f"\n⏳ Blocked! Waiting {COOLDOWN_SECONDS}s... (retry {retries}/{MAX_RETRIES})")
+                    print(f"\n  Blocked! Waiting {COOLDOWN_SECONDS}s... (retry {retries}/{MAX_RETRIES})")
                     time.sleep(COOLDOWN_SECONDS)
                 else:
-                    print(f"\n❌ Max retries for {company}. Moving on.")
+                    print(f"\n  Max retries for {company}. Moving on.")
                     break
             else:
                 save_progress(i)
@@ -395,7 +407,7 @@ def run(test_limit=None):
 
         # Periodic save every 10 companies
         if (i + 1) % 10 == 0:
-            print(f"💾 Checkpoint: {new_jobs_count} jobs processed")
+            print(f"  Checkpoint: {new_jobs_count} jobs processed")
 
     # Clean up progress file (all done)
     try:
@@ -404,11 +416,11 @@ def run(test_limit=None):
         pass
 
     print(f"\n{'=' * 60}")
-    print(f"  📊 RESULTS:")
-    print(f"     🆕 New jobs processed: {new_jobs_count}")
-    print(f"     🚫 Times blocked: {blocked_count}")
+    print(f"  RESULTS:")
+    print(f"     New jobs processed: {new_jobs_count}")
+    print(f"     Times blocked: {blocked_count}")
     print("=" * 60)
-    print(f"\n✅ DONE!")
+    print(f"\n  DONE!")
 
 
 if __name__ == "__main__":
@@ -423,6 +435,6 @@ if __name__ == "__main__":
     try:
         run(test_limit=test_count)
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}")
+        print(f"\n  Fatal error: {e}")
         traceback.print_exc()
         sys.exit(1)
