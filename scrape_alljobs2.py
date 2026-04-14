@@ -32,14 +32,8 @@ from datetime import datetime, timedelta
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
-TURSO_URL = os.environ.get("TURSO_ALLJOBS_URL", "")
-TURSO_TOKEN = os.environ.get("TURSO_ALLJOBS_TOKEN", "")
-
-# If running locally with hardcoded creds (fallback)
-if not TURSO_URL:
-    TURSO_URL = "https://alljobs-ragesh.aws-ap-south-1.turso.io"
-if not TURSO_TOKEN:
-    TURSO_TOKEN = ""
+CLOUDFLARE_URL = os.environ.get("CLOUDFLARE_D1_URL", "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query")
+CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
 RESULTS_PER_SEARCH = 20
 KEEP_DAYS = 20
@@ -119,48 +113,39 @@ def save_progress(role_idx, loc_idx, finished_all=False):
 # ---------------------------------------------------------------------------
 # TURSO HELPERS
 # ---------------------------------------------------------------------------
-def turso_execute(statements):
-    if not TURSO_URL or not TURSO_TOKEN:
-        print("❌ Turso not configured!")
+def d1_execute(sql, params=None):
+    if not CLOUDFLARE_URL or not CLOUDFLARE_TOKEN:
+        print("❌ Cloudflare D1 not configured!")
         return None
-    url = f"{TURSO_URL}/v2/pipeline"
     headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
+        "Authorization": f"Bearer {CLOUDFLARE_TOKEN}",
         "Content-Type": "application/json",
     }
-    body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            body.append({"type": "execute", "stmt": stmt})
-    body.append({"type": "close"})
+    body = {"sql": sql}
+    if params:
+        body["params"] = params
+        
     try:
-        resp = requests.post(url, headers=headers, json={"requests": body}, timeout=30)
+        resp = requests.post(CLOUDFLARE_URL, headers=headers, json=body, timeout=30)
         if resp.status_code != 200:
-            print(f"❌ Turso error {resp.status_code}: {resp.text[:200]}")
+            print(f"❌ D1 error {resp.status_code}: {resp.text[:200]}")
             return None
         return resp.json()
     except Exception as e:
-        print(f"❌ Turso error: {e}")
+        print(f"❌ D1 connection error: {e}")
         return None
 
 
 def setup_database():
-    print("📦 Setting up Turso database (all_jobs table)...")
-    turso_execute(["""
+    print("📦 Setting up D1 database (all_jobs table)...")
+    d1_execute("""
         CREATE TABLE IF NOT EXISTS all_jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL, company TEXT NOT NULL,
-            location TEXT, date_posted TEXT, url TEXT NOT NULL,
-            linkedin_url TEXT, source TEXT, role_search TEXT,
-            fetched_at TEXT NOT NULL, indeed_jk TEXT, permanent_url TEXT,
-            UNIQUE(url)
+            company_name TEXT, location TEXT, 
+            role TEXT, job_posted_date TEXT, 
+            apply_link TEXT, platform TEXT, search_keyword TEXT, UNIQUE(apply_link)
         )
-    """])
-    # Add columns if they don't exist (safe for existing tables)
-    turso_execute(["ALTER TABLE all_jobs ADD COLUMN indeed_jk TEXT"])
-    turso_execute(["ALTER TABLE all_jobs ADD COLUMN permanent_url TEXT"])
+    """)
     print("✅ Database ready!")
 
 
@@ -170,58 +155,45 @@ def store_jobs_batch(jobs):
     total_inserted = 0
     for i in range(0, len(jobs), 50):
         chunk = jobs[i:i + 50]
-        statements = []
+        params = []
+        placeholders = []
         for job in chunk:
-            stmt = {
-                "sql": """INSERT OR IGNORE INTO all_jobs
-                          (title, company, location, date_posted, url, linkedin_url,
-                           source, role_search, fetched_at, indeed_jk, permanent_url)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                "args": [
-                    {"type": "text", "value": str(job.get("title", ""))},
-                    {"type": "text", "value": str(job.get("company", ""))},
-                    {"type": "text", "value": str(job.get("location", ""))},
-                    {"type": "text", "value": str(job.get("date_posted", ""))},
-                    {"type": "text", "value": str(job.get("url", ""))},
-                    {"type": "text", "value": str(job.get("linkedin_url", ""))},
-                    {"type": "text", "value": str(job.get("source", ""))},
-                    {"type": "text", "value": str(job.get("role_search", ""))},
-                    {"type": "text", "value": str(job.get("fetched_at", ""))},
-                    {"type": "text", "value": str(job.get("indeed_jk", ""))},
-                    {"type": "text", "value": str(job.get("permanent_url", ""))},
-                ],
-            }
-            statements.append(stmt)
-        result = turso_execute(statements)
-        if result:
-            for r in result.get("results", []):
-                if r.get("type") == "ok":
-                    total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
+            placeholders.append("(?, ?, ?, ?, ?, ?, ?)")
+            params.extend([
+                str(job.get("company", "")),
+                str(job.get("location", "")),
+                str(job.get("title", "")),       # Map title to role
+                str(job.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
+                str(job.get("url", "")),
+                str(job.get("source", "")),      # Map source to platform
+                str(job.get("role_search", ""))  
+            ])
+            
+        sql = f"INSERT OR IGNORE INTO all_jobs (company_name, location, role, job_posted_date, apply_link, platform, search_keyword) VALUES {','.join(placeholders)}"
+        result = d1_execute(sql, params)
+        if result and result.get("success"):
+            for res in result.get("result", []):
+                total_inserted += res.get("meta", {}).get("changes", 0)
     return total_inserted
 
 
 def cleanup_old_jobs():
     cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
     print(f"🧹 Cleaning jobs older than {cutoff}...")
-    result = turso_execute([{
-        "sql": "DELETE FROM all_jobs WHERE fetched_at < ?",
-        "args": [{"type": "text", "value": cutoff}]
-    }])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                deleted = r.get("response", {}).get("result", {}).get("affected_row_count", 0)
-                print(f"🗑️ Removed {deleted} old jobs")
+    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
+    if result and result.get("success"):
+        for res in result.get("result", []):
+            deleted = res.get("meta", {}).get("changes", 0)
+            print(f"🗑️ Removed {deleted} old jobs")
 
 
 def get_total_jobs():
-    result = turso_execute(["SELECT COUNT(*) FROM all_jobs"])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                rows = r.get("response", {}).get("result", {}).get("rows", [])
-                if rows:
-                    return int(rows[0][0].get("value", 0))
+    result = d1_execute("SELECT COUNT(*) as c FROM all_jobs")
+    if result and result.get("success"):
+        for res in result.get("result", []):
+            rows = res.get("results", [])
+            if rows:
+                return int(rows[0].get("c", 0))
     return 0
 
 

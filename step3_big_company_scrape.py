@@ -59,54 +59,43 @@ LOCATIONS = [
 
 PROGRESS_FILE = "scrape_progress.json"
 
-TURSO_URL   = os.environ.get("TURSO_URL", "")
-TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "")  # Set via GitHub Secret — never hardcode!
+CLOUDFLARE_URL = os.environ.get("CLOUDFLARE_D1_URL", "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query")
+CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
-def turso_execute(statements):
-    if not TURSO_URL or not TURSO_TOKEN:
-        print("  [WARN] TURSO not configured, skipping DB storage")
+def d1_execute(sql, params=None):
+    if not CLOUDFLARE_URL or not CLOUDFLARE_TOKEN:
+        print("  [WARN] Cloudflare D1 not configured, skipping DB storage")
         return None
 
     import requests
-    url = f"{TURSO_URL}/v2/pipeline"
     headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
+        "Authorization": f"Bearer {CLOUDFLARE_TOKEN}",
         "Content-Type": "application/json",
     }
-
-    requests_body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            requests_body.append({"type": "execute", "stmt": stmt})
-    requests_body.append({"type": "close"})
+    body = {"sql": sql}
+    if params:
+        body["params"] = params
 
     try:
-        resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
+        resp = requests.post(CLOUDFLARE_URL, headers=headers, json=body, timeout=30)
         return resp.json() if resp.status_code == 200 else None
     except Exception as e:
-        print(f"  [ERR] Turso connection error: {e}")
+        print(f"  [ERR] D1 connection error: {e}")
         return None
 
 def setup_database():
-    print("  Setting up Turso database (big_jobs table)...")
-    turso_execute(["""
-        CREATE TABLE IF NOT EXISTS big_jobs (
+    print("  Setting up D1 database (big_company_jobs table)...")
+    d1_execute("""
+        CREATE TABLE IF NOT EXISTS big_company_jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            company TEXT NOT NULL,
+            company_name TEXT NOT NULL,
             location TEXT,
-            date_posted TEXT,
-            url TEXT NOT NULL,
-            linkedin_url TEXT,
-            fetched_at TEXT NOT NULL,
-            source TEXT DEFAULT 'indeed',
-            UNIQUE(url)
+            role TEXT NOT NULL,
+            job_posted_date TEXT,
+            apply_link TEXT NOT NULL,
+            UNIQUE(apply_link)
         )
-    """])
-    # Add source column if upgrading from older schema
-    turso_execute(["ALTER TABLE big_jobs ADD COLUMN source TEXT DEFAULT 'indeed'"])
+    """)
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -187,38 +176,32 @@ def clean_old_jobs(jobs):
 
 
 def save_jobs(all_jobs):
-    """Save jobs directly to Turso big_jobs table."""
+    """Save jobs directly to D1 big_company_jobs table."""
     if not all_jobs:
         return
 
-    # Clean old jobs
     all_jobs = clean_old_jobs(all_jobs)
 
-    statements = []
-    for job in all_jobs:
-        statements.append({
-            "sql": "INSERT OR IGNORE INTO big_jobs (title, company, location, date_posted, url, linkedin_url, fetched_at, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            "args": [
-                {"type": "text", "value": str(job.get("title", ""))},
-                {"type": "text", "value": str(job.get("company", ""))},
-                {"type": "text", "value": str(job.get("location", ""))},
-                {"type": "text", "value": str(job.get("date", ""))},
-                {"type": "text", "value": str(job.get("url", ""))},
-                {"type": "text", "value": str(job.get("indeed_url", ""))},
-                {"type": "text", "value": str(job.get("fetchedAt", ""))},
-                {"type": "text", "value": str(job.get("source", "indeed"))},
-            ]
-        })
-
-    # Chunk into 50 statements
     total_inserted = 0
-    for i in range(0, len(statements), 50):
-        chunk = statements[i:i+50]
-        res = turso_execute(chunk)
-        if res:
-            for r in res.get("results", []):
-                if r.get("type") == "ok":
-                    total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
+    for i in range(0, len(all_jobs), 50):
+        chunk = all_jobs[i:i+50]
+        params = []
+        placeholders = []
+        for job in chunk:
+            placeholders.append("(?, ?, ?, ?, ?)")
+            params.extend([
+                str(job.get("company", "")),
+                str(job.get("location", "")),
+                str(job.get("title", "")),
+                str(job.get("date", datetime.now().strftime("%Y-%m-%d"))),
+                str(job.get("url", ""))
+            ])
+            
+        sql = f"INSERT OR IGNORE INTO big_company_jobs (company_name, location, role, job_posted_date, apply_link) VALUES {','.join(placeholders)}"
+        res = d1_execute(sql, params)
+        if res and res.get("success"):
+            for r in res.get("result", []):
+                total_inserted += r.get("meta", {}).get("changes", 0)
 
     print(f"  -> Inserted {total_inserted} new jobs out of {len(all_jobs)} total.")
 
@@ -335,9 +318,9 @@ def run(test_limit=None):
     setup_database()
 
     # Also clean old jobs from DB on startup
-    if TURSO_URL and TURSO_TOKEN:
+    if CLOUDFLARE_URL and CLOUDFLARE_TOKEN:
         cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
-        turso_execute([f"DELETE FROM big_jobs WHERE fetched_at < '{cutoff}'"])
+        d1_execute("DELETE FROM big_company_jobs WHERE job_posted_date < ?", [cutoff])
         print(f"  Cleaned DB jobs older than {cutoff}")
 
     # Check for resume from previous blocked run

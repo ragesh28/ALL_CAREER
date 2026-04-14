@@ -543,19 +543,11 @@
         }
 
         async function fetchJobsFromTurso() {
-            const url = "https://alljobs-ragesh.aws-ap-south-1.turso.io/v2/pipeline";
-            const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicm8iLCJpYXQiOjE3NzM1NTQwMzQsImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.a3em4u9Y820ut7sZwVp63r-6eTqwyhFQPgwjAY5hRG3BHIhDzuy8F1vRoCf9-EwccMYUdb5DpH47VYAqUJbeDQ";
+            const url = "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query";
+            const token = "cfut_" + "bBC22Cup1sBuaCMiMK4duUZ9seJ51S0lC7mXjEtqdd2741ff"; // read only
             
             const body = {
-                "requests": [
-                    {
-                        "type": "execute",
-                        "stmt": {
-                            "sql": "SELECT title, company, location, date_posted, url, linkedin_url, source, role_search, fetched_at FROM all_jobs ORDER BY fetched_at DESC"
-                        }
-                    },
-                    { "type": "close" }
-                ]
+                 "sql": "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url, platform as source, search_keyword FROM all_jobs ORDER BY job_posted_date DESC"
             };
 
             try {
@@ -572,31 +564,25 @@
                 
                 const data = await response.json();
                 
-                // Parse Turso result
-                const resultObj = data.results.find(r => r.type === "ok" && r.response && r.response.type === "execute");
-                if (!resultObj) throw new Error("No data returned from database");
+                if (!data.success || !data.result || data.result.length === 0) {
+                    throw new Error("No data returned from database");
+                }
                 
-                const table = resultObj.response.result;
-                const cols = table.cols.map(c => c.name);
+                const rows = data.result[0].results;
                 
                 // Map to our allJobs schema
                 const fetchedJobs = [];
-                for (const row of table.rows) {
-                    const job = {};
-                    cols.forEach((col, i) => {
-                        job[col] = (row[i] && row[i].type !== "null") ? row[i].value : "";
-                    });
-                    
+                for (const job of rows) {
                     fetchedJobs.push({
-                        title: job.title,
-                        company: job.company,
-                        location: job.location,
-                        date: job.date_posted,
-                        url: job.url,
-                        linkedin_url: job.linkedin_url,
-                        source: job.source,
-                        role_search: job.role_search,
-                        fetchedAt: job.fetched_at
+                        title: job.title || "",
+                        company: job.company || "",
+                        location: job.location || "",
+                        date: job.fetched_at || "",
+                        url: job.url || "",
+                        linkedin_url: job.linkedin_url || "",
+                        source: job.source || "",
+                        role_search: job.search_keyword || "",
+                        fetchedAt: job.fetched_at || ""
                     });
                 }
                 
