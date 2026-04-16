@@ -25,8 +25,7 @@ jobs:
       # Scrape 150 top companies from Indeed with direct apply links
       - name: Run Big Company Scraper (Indeed Direct Links)
         env:
-          TURSO_URL: ${{ secrets.TURSO_URL }}
-          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: python step3_big_company_scrape.py
 
       # Save progress checkpoint so it can resume if rate limited/timeout

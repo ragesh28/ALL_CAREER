@@ -25,8 +25,7 @@ jobs:
 
       - name: Run LinkedIn + Indeed Scraper
         env:
-          TURSO_ALLJOBS_URL: ${{ secrets.TURSO_ALLJOBS_URL }}
-          TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: python scrape_alljobs2.py
 
       # Always save progress (even on timeout/failure)
