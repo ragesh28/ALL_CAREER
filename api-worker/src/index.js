@@ -19,7 +19,7 @@ export default {
         try {
             if (url.pathname === '/api/all_jobs') {
                 const { results } = await env.DB.prepare(
-                    "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url, platform as source, search_keyword FROM all_jobs ORDER BY id ASC LIMIT 200"
+                    "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url, platform as source, search_keyword FROM all_jobs ORDER BY id DESC LIMIT 200000"
                 ).all();
                 
                 return new Response(JSON.stringify(results), { 
@@ -29,7 +29,7 @@ export default {
             
             if (url.pathname === '/api/big_company_jobs') {
                 const { results } = await env.DB.prepare(
-                    "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url FROM big_company_jobs ORDER BY id ASC LIMIT 200"
+                    "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url FROM big_company_jobs ORDER BY id DESC LIMIT 200000"
                 ).all();
                 
                 return new Response(JSON.stringify(results), { 
