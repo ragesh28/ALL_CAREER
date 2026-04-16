@@ -543,32 +543,13 @@
         }
 
         async function fetchJobsFromTurso() {
-            const url = "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query";
-            const token = "cfut_" + "bBC22Cup1sBuaCMiMK4duUZ9seJ51S0lC7mXjEtqdd2741ff"; // read only
+            const url = "https://all-career-api.ragesh-jobs.workers.dev/api/all_jobs";
             
-            const body = {
-                 "sql": "SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url, platform as source, search_keyword FROM all_jobs ORDER BY job_posted_date DESC"
-            };
-
             try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
-                });
-
+                const response = await fetch(url);
                 if (!response.ok) throw new Error("Failed to connect to jobs database");
                 
-                const data = await response.json();
-                
-                if (!data.success || !data.result || data.result.length === 0) {
-                    throw new Error("No data returned from database");
-                }
-                
-                const rows = data.result[0].results;
+                const rows = await response.json();
                 
                 // Map to our allJobs schema
                 const fetchedJobs = [];
@@ -590,7 +571,7 @@
                 
             } catch (error) {
                 console.error("Error fetching jobs:", error);
-                return [];
+                return { error: error.message || String(error) };
             }
         }
 
@@ -624,7 +605,12 @@
             
             allJobs = await fetchJobsFromTurso();
             
-            if (allJobs.length === 0) {
+            if (allJobs.error) {
+                loading.innerHTML = `<div style="color:#ef4444; text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p><p>Please try clearing your browser cache and doing a hard refresh (Ctrl+F5).</p></div>`;
+                return;
+            }
+            
+            if (!Array.isArray(allJobs) || allJobs.length === 0) {
                 loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p style="margin-top:10px">Could not load jobs from database or none exist yet.</p></div>';
                 return;
             }
