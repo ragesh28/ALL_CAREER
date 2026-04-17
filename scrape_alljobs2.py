@@ -251,21 +251,21 @@ def extract_indeed_jk(url):
 # ---------------------------------------------------------------------------
 def main():
     print("=" * 60)
-    print("  ALL JOBS 2 — LinkedIn + Indeed (JobSpy → Turso)")
+    print("  ALL JOBS 2 — LinkedIn + Indeed (JobSpy → Cloudflare D1)")
     print("=" * 60)
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"  🔍 Roles: {len(SEARCH_ROLES)}")
     print(f"  📍 Locations: {len(LOCATIONS)}")
     print(f"  📊 {RESULTS_PER_SEARCH}/combo")
     print(f"  🌐 Sources: LinkedIn, Indeed")
-    print(f"  📦 Turso: {'✅' if TURSO_URL else '❌'}")
+    print(f"  📦 D1 Database: {'✅' if CLOUDFLARE_API_TOKEN else '❌'}")
     if TEST_MODE:
         print(f"  🧪 TEST MODE: {TEST_LIMIT} results")
     print("=" * 60)
 
     setup_database()
     cleanup_old_jobs()
-    print(f"📊 Current jobs in Turso: {get_total_jobs()}")
+    print(f"📊 Current jobs in D1: {get_total_jobs()}")
 
     # Import jobspy
     try:
