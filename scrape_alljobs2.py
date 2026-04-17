@@ -258,7 +258,7 @@ def main():
     print(f"  📍 Locations: {len(LOCATIONS)}")
     print(f"  📊 {RESULTS_PER_SEARCH}/combo")
     print(f"  🌐 Sources: LinkedIn, Indeed")
-    print(f"  📦 D1 Database: {'✅' if CLOUDFLARE_API_TOKEN else '❌'}")
+    print(f"  📦 D1 Database: {'✅' if CLOUDFLARE_TOKEN else '❌'}")
     if TEST_MODE:
         print(f"  🧪 TEST MODE: {TEST_LIMIT} results")
     print("=" * 60)

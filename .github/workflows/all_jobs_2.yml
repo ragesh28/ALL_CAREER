@@ -1,4 +1,4 @@
-name: All Jobs 2 (LinkedIn + Indeed → Turso)
+name: All Jobs 2 (LinkedIn + Indeed → Cloudflare D1)
 
 on:
   workflow_dispatch:   # Manual trigger
