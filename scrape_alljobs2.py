@@ -152,9 +152,40 @@ def setup_database():
 def store_jobs_batch(jobs):
     if not jobs:
         return 0
+
+    # 1. Fetch existing jobs natively from Cloudflare worker for strictly pure python deduplication
+    existing_urls = set()
+    try:
+        import requests
+        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
+        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/all_jobs", timeout=20)
+        if resp.status_code == 200:
+            existing_jobs = resp.json()
+            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
+    except Exception as e:
+        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
+
+    # 2. Deduplicate strictly in Python memory (ignoring D1 matches and internal duplicates)
+    new_jobs = []
+    seen_local_urls = set()
+    for job in jobs:
+        u = str(job.get("url", ""))
+        # Ignore if it exists already in Cloudflare, OR if we already saw it in this exact batch repeatedly!
+        if u and u not in existing_urls and u not in seen_local_urls:
+            new_jobs.append(job)
+            seen_local_urls.add(u)
+            
+    skipped = len(jobs) - len(new_jobs)
+    if skipped > 0:
+        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (either already in D1 or duplicate across cities).")
+
+    if not new_jobs:
+        return 0
+
     total_inserted = 0
-    for i in range(0, len(jobs), 50):
-        chunk = jobs[i:i + 50]
+    from datetime import datetime
+    for i in range(0, len(new_jobs), 14):
+        chunk = new_jobs[i:i + 14]
         params = []
         placeholders = []
         for job in chunk:

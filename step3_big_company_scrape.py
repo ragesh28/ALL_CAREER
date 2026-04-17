@@ -182,9 +182,40 @@ def save_jobs(all_jobs):
 
     all_jobs = clean_old_jobs(all_jobs)
 
+    # 1. Fetch existing jobs natively from Cloudflare worker for strictly pure python deduplication
+    existing_urls = set()
+    try:
+        import requests
+        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
+        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/big_company_jobs", timeout=20)
+        if resp.status_code == 200:
+            existing_jobs = resp.json()
+            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
+    except Exception as e:
+        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
+
+    # 2. Deduplicate strictly in Python memory (ignoring D1 matches and internal duplicates)
+    new_jobs = []
+    seen_local_urls = set()
+    for job in all_jobs:
+        u = str(job.get("url", ""))
+        # Ignore if it exists already in Cloudflare, OR if we already saw it in this exact batch repeatedly!
+        if u and u not in existing_urls and u not in seen_local_urls:
+            new_jobs.append(job)
+            seen_local_urls.add(u)
+            
+    skipped = len(all_jobs) - len(new_jobs)
+    if skipped > 0:
+        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (either already in D1 or duplicate across cities).")
+
+    if not new_jobs:
+        print(f"  -> Inserted 0 new jobs out of {len(all_jobs)} total.")
+        return
+
+    # 3. Securely batch and insert the truly new UNIQUE jobs
     total_inserted = 0
-    for i in range(0, len(all_jobs), 50):
-        chunk = all_jobs[i:i+50]
+    for i in range(0, len(new_jobs), 16):
+        chunk = new_jobs[i:i+16]
         params = []
         placeholders = []
         for job in chunk:
@@ -203,7 +234,7 @@ def save_jobs(all_jobs):
             for r in res.get("result", []):
                 total_inserted += r.get("meta", {}).get("changes", 0)
 
-    print(f"  -> Inserted {total_inserted} new jobs out of {len(all_jobs)} total.")
+    print(f"  -> Inserted {total_inserted} strictly new jobs out of {len(all_jobs)} total parsed.")
 
 
 def is_blocked(error):
