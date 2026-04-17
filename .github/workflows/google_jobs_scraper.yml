@@ -1,4 +1,4 @@
-name: Google Jobs Aggregator (Turso)
+name: Google Jobs Aggregator (Cloudflare D1)
 
 on:
   workflow_dispatch:   # Manual trigger
@@ -26,8 +26,7 @@ jobs:
 
       - name: Run Google Jobs Aggregator
         env:
-          TURSO_ALLJOBS_URL: ${{ secrets.TURSO_ALLJOBS_URL }}
-          TURSO_ALLJOBS_TOKEN: ${{ secrets.TURSO_ALLJOBS_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           WEBSHARE_PROXIES: ${{ secrets.WEBSHARE_PROXIES }}
         run: python scrape_google_jobs.py
 

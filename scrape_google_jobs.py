@@ -24,8 +24,9 @@ import random
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
-TURSO_URL = os.environ.get("TURSO_ALLJOBS_URL", "")
-TURSO_TOKEN = os.environ.get("TURSO_ALLJOBS_TOKEN", "")
+CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
+ACCOUNT_ID = "283008c384af43c0a9f25f7e501fdd53"
+DATABASE_ID = "019ce14b-1801-72d6-b42c-8b3a645a1f15"
 WEBSHARE_PROXIES_ENV = os.environ.get("WEBSHARE_PROXIES", "")
 
 MAX_JOBS = 500000           # Per run cap
@@ -110,164 +111,132 @@ LOCATIONS = [
 
 
 # ---------------------------------------------------------------------------
-# TURSO HELPERS
+# CLOUDFLARE D1 HELPERS
 # ---------------------------------------------------------------------------
-def turso_execute(statements):
-    """Execute SQL statements via Turso HTTP API."""
-    if not TURSO_URL or not TURSO_TOKEN:
-        print("⚠️ TURSO not configured, skipping DB storage")
+def d1_execute(sql, params=None):
+    """Execute SQL via Cloudflare D1 REST API."""
+    if not CLOUDFLARE_API_TOKEN:
+        print("⚠️ CLOUDFLARE_API_TOKEN not configured, skipping DB storage")
         return None
 
-    url = f"{TURSO_URL}/v2/pipeline"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/d1/database/{DATABASE_ID}/query"
     headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
+        "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
         "Content-Type": "application/json",
     }
-
-    requests_body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            requests_body.append({"type": "execute", "stmt": stmt})
-    requests_body.append({"type": "close"})
+    payload = {"sql": sql, "params": params or []}
 
     try:
-        resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
-        if resp.status_code != 200:
-            print(f"❌ Turso API error {resp.status_code}: {resp.text[:200]}")
-            return None
-        return resp.json()
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        if resp.status_code == 200:
+            return resp.json()
+        print(f"❌ D1 Error {resp.status_code}: {resp.text[:200]}")
     except Exception as e:
-        print(f"❌ Turso connection error: {e}")
-        return None
+        print(f"❌ D1 Connection error: {e}")
+    return None
 
 
 def setup_database():
     """Create all_jobs table if not exists."""
-    print("📦 Setting up Turso database (all_jobs table)...")
+    print("📦 Setting up Cloudflare D1 database (all_jobs table)...")
     sql = """
     CREATE TABLE IF NOT EXISTS all_jobs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        company TEXT NOT NULL,
-        location TEXT,
-        date_posted TEXT,
-        url TEXT NOT NULL,
-        linkedin_url TEXT,
-        source TEXT,
-        role_search TEXT,
-        fetched_at TEXT NOT NULL,
-        UNIQUE(url)
+        company_name TEXT, location TEXT, 
+        role TEXT, job_posted_date TEXT, 
+        apply_link TEXT, platform TEXT, search_keyword TEXT, UNIQUE(apply_link)
     )
     """
-    result = turso_execute([sql])
+    result = d1_execute(sql)
     if result:
         print("✅ Database ready!")
     return result is not None
 
 
 def store_jobs_batch(jobs):
-    """Store a batch of jobs in Turso. Returns count inserted."""
-    if not jobs or not TURSO_URL:
+    """Store a batch of jobs in D1. Returns count inserted."""
+    if not jobs or not CLOUDFLARE_API_TOKEN:
+        return 0
+
+    # 1. Fetch existing jobs natively from Cloudflare worker for pure python deduplication
+    existing_urls = set()
+    try:
+        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
+        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/all_jobs", timeout=20)
+        if resp.status_code == 200:
+            existing_jobs = resp.json()
+            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
+    except Exception as e:
+        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
+
+    # 2. Deduplicate strictly in Python memory
+    new_jobs = []
+    seen_local_urls = set()
+    for job in jobs:
+        u = str(job.get("url", ""))
+        if u and u not in existing_urls and u not in seen_local_urls:
+            new_jobs.append(job)
+            seen_local_urls.add(u)
+            
+    skipped = len(jobs) - len(new_jobs)
+    if skipped > 0:
+        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (already in D1).")
+
+    if not new_jobs:
         return 0
 
     # Send in chunks of 50 to avoid payload limits
     total_inserted = 0
-    for i in range(0, len(jobs), 50):
-        chunk = jobs[i:i + 50]
-        statements = []
+    for i in range(0, len(new_jobs), 20):
+        chunk = new_jobs[i:i + 20]
+        params = []
+        placeholders = []
         for job in chunk:
-            stmt = {
-                "sql": """INSERT OR IGNORE INTO all_jobs
-                          (title, company, location, date_posted, url, linkedin_url, source, role_search, fetched_at)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                "args": [
-                    {"type": "text", "value": str(job.get("title", ""))},
-                    {"type": "text", "value": str(job.get("company", ""))},
-                    {"type": "text", "value": str(job.get("location", ""))},
-                    {"type": "text", "value": str(job.get("date", ""))},
-                    {"type": "text", "value": str(job.get("url", ""))},
-                    {"type": "text", "value": str(job.get("linkedin_url", ""))},
-                    {"type": "text", "value": str(job.get("source", ""))},
-                    {"type": "text", "value": str(job.get("role_search", ""))},
-                    {"type": "text", "value": str(job.get("fetchedAt", ""))},
-                ],
-            }
-            statements.append(stmt)
+            placeholders.append("(?, ?, ?, ?, ?, ?, ?)")
+            params.extend([
+                str(job.get("company", "")),
+                str(job.get("location", "")),
+                str(job.get("title", "")),       # Map title to role
+                str(job.get("date", datetime.now().strftime("%Y-%m-%d"))),
+                str(job.get("url", "")),
+                str(job.get("source", "")),      # Map source to platform
+                str(job.get("role_search", ""))  
+            ])
 
-        result = turso_execute(statements)
-        if result:
-            for r in result.get("results", []):
-                if r.get("type") == "ok":
-                    total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
+        sql = f"INSERT OR IGNORE INTO all_jobs (company_name, location, role, job_posted_date, apply_link, platform, search_keyword) VALUES {','.join(placeholders)}"
+        result = d1_execute(sql, params)
+        if result and result.get("success"):
+            for res in result.get("result", []):
+                total_inserted += res.get("meta", {}).get("changes", 0)
 
     return total_inserted
 
 
 def cleanup_old_jobs():
     """Delete jobs older than KEEP_DAYS days."""
-    if not TURSO_URL:
+    if not CLOUDFLARE_API_TOKEN:
         return 0
     cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
     print(f"🧹 Cleaning jobs older than {cutoff}...")
-    result = turso_execute([{
-        "sql": "DELETE FROM all_jobs WHERE fetched_at < ?",
-        "args": [{"type": "text", "value": cutoff}]
-    }])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                deleted = r.get("response", {}).get("result", {}).get("affected_row_count", 0)
-                print(f"🗑️ Removed {deleted} old jobs")
-                return deleted
+    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
+    if result and result.get("success"):
+        for res in result.get("result", []):
+            deleted = res.get("meta", {}).get("changes", 0)
+            print(f"🗑️ Removed {deleted} old jobs")
+            return deleted
     return 0
 
 
-def fetch_all_from_turso():
-    """Fetch all jobs from Turso for JS file generation."""
-    if not TURSO_URL:
-        return []
-
-    result = turso_execute(["SELECT title, company, location, date_posted, url, linkedin_url, source, role_search, fetched_at FROM all_jobs ORDER BY fetched_at DESC"])
-    if not result:
-        return []
-
-    jobs = []
-    for r in result.get("results", []):
-        if r.get("type") == "ok":
-            cols = [c.get("name", "") for c in r.get("response", {}).get("result", {}).get("cols", [])]
-            for row in r.get("response", {}).get("result", {}).get("rows", []):
-                job = {}
-                for ci, col_name in enumerate(cols):
-                    val = row[ci].get("value", "") if ci < len(row) else ""
-                    job[col_name] = val
-                # Map to JS-compatible keys
-                jobs.append({
-                    "title": job.get("title", ""),
-                    "company": job.get("company", ""),
-                    "location": job.get("location", ""),
-                    "date": job.get("date_posted", ""),
-                    "url": job.get("url", ""),
-                    "linkedin_url": job.get("linkedin_url", ""),
-                    "source": job.get("source", ""),
-                    "role_search": job.get("role_search", ""),
-                    "fetchedAt": job.get("fetched_at", ""),
-                })
-    return jobs
-
-
 def get_total_jobs():
-    """Get total job count from Turso."""
-    if not TURSO_URL:
+    """Get total job count from D1."""
+    if not CLOUDFLARE_API_TOKEN:
         return 0
-    result = turso_execute(["SELECT COUNT(*) FROM all_jobs"])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                rows = r.get("response", {}).get("result", {}).get("rows", [])
-                if rows:
-                    return int(rows[0][0].get("value", 0))
+    result = d1_execute("SELECT COUNT(*) as c FROM all_jobs")
+    if result and result.get("success"):
+        for res in result.get("result", []):
+            rows = res.get("results", [])
+            if rows:
+                return int(rows[0].get("c", 0))
     return 0
 
 
@@ -551,22 +520,16 @@ def generate_js_file(jobs):
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     print("=" * 60)
-    print("  ALL JOBS AGGREGATOR (All Portals → Turso)")
+    print("  ALL JOBS AGGREGATOR (All Portals → Cloudflare D1)")
     print("=" * 60)
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d')}")
     print(f"  🔍 Roles: {len(SEARCH_ROLES)}")
     print(f"  📍 Locations: {len(LOCATIONS)}")
     print(f"  📊 {RESULTS_PER_SEARCH}/combo, max {MAX_JOBS}")
-    print(f"  🌐 Sources: LinkedIn, Indeed, Google, Glassdoor, ZipRecruiter")
-    print(f"  📦 Turso: {'✅ configured' if TURSO_URL else '❌ not configured (local only)'}")
+    print(f"  🌐 Sources: Google Jobs Aggregator")
+    print(f"  📦 D1 Database: {'✅ configured' if CLOUDFLARE_API_TOKEN else '❌ not configured (local only)'}")
     print(f"  📆 Retention: {KEEP_DAYS} days")
     print("=" * 60)
-
-    # Local testing fallback
-    if not TURSO_URL:
-        TURSO_URL = "https://alljobs-ragesh.aws-ap-south-1.turso.io"
-    if not TURSO_TOKEN:
-        TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM1NTM5OTksImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.mtjC1aL0M1rcwS2pJsM70Ytqk06Jqct2dVChPGcgEV0zvcv8hAb9opCC5L76xuEXnO6ZuUZU-Edlex7ABWgVCg"
 
     test_count = None
     if "--test" in sys.argv:
@@ -578,24 +541,20 @@ if __name__ == "__main__":
 
     try:
         # Setup DB
-        if TURSO_URL:
+        if CLOUDFLARE_API_TOKEN:
             setup_database()
             cleanup_old_jobs()
-            print(f"📊 Current jobs in Turso: {get_total_jobs()}")
+            print(f"📊 Current jobs in D1: {get_total_jobs()}")
 
         # Scrape
         jobs, stored = scrape_all_jobs(test_limit=test_count)
-        print(f"\\n📊 Scraped: {len(jobs)} unique jobs, Stored: {stored} new in Turso")
+        print(f"\\n📊 Scraped: {len(jobs)} unique jobs, Stored: {stored} new in Cloudflare D1")
 
-        # Removed JS file generation to prevent saving to Github repository storage.
-        # Data is exclusively stored in Turso now.
-
-
-        final = get_total_jobs() if TURSO_URL else len(jobs)
+        final = get_total_jobs() if CLOUDFLARE_API_TOKEN else len(jobs)
         print(f"\n{'=' * 60}")
         print(f"  📊 RESULTS:")
         print(f"     🆕 New jobs scraped: {len(jobs)}")
-        print(f"     💾 Stored in Turso: {stored}")
+        print(f"     💾 Stored in D1: {stored}")
         print(f"     📦 Total in DB: {final}")
         print(f"{'=' * 60}")
         print(f"\n✅ DONE!")
