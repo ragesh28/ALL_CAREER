@@ -27,7 +27,7 @@ jobs:
       - name: Run Google Jobs Aggregator
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          WEBSHARE_PROXIES: ${{ secrets.WEBSHARE_PROXIES }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: python scrape_google_jobs.py
 
       - name: Cleanup

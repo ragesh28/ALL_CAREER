@@ -27,7 +27,7 @@ import random
 CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = "283008c384af43c0a9f25f7e501fdd53"
 DATABASE_ID = "019ce14b-1801-72d6-b42c-8b3a645a1f15"
-WEBSHARE_PROXIES_ENV = os.environ.get("WEBSHARE_PROXIES", "")
+SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
@@ -275,11 +275,17 @@ import re
 from playwright.sync_api import sync_playwright
 
 def scrape_all_jobs(test_limit=None):
-    proxy_pattern = re.compile(r'http://(?:[^:]+:[^@]+@)?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+')
-    proxy_list = proxy_pattern.findall(WEBSHARE_PROXIES_ENV) if WEBSHARE_PROXIES_ENV else []
-    
-    if proxy_list:
-        print(f"🌍 Loaded {len(proxy_list)} Webshare Proxies for rotation.")
+    # Build ScraperAPI proxy config (single endpoint, ScraperAPI handles rotation)
+    proxy_config = None
+    if SCRAPERAPI_KEY:
+        proxy_config = {
+            "server": "http://proxy-server.scraperapi.com:8001",
+            "username": "scraperapi",
+            "password": SCRAPERAPI_KEY,
+        }
+        print(f"🌍 ScraperAPI proxy configured (proxy-server.scraperapi.com:8001)")
+    else:
+        print(f"⚠️  No SCRAPERAPI_KEY set — running without proxy (Google may block)")
 
     roles = SEARCH_ROLES
     if test_limit:
@@ -322,25 +328,11 @@ def scrape_all_jobs(test_limit=None):
                     
                 print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
 
-                # --- RETRY with different proxies ---
-                max_retries = min(3, len(proxy_list)) if proxy_list else 1
+                # --- RETRY ---
+                max_retries = 3 if proxy_config else 1
                 success = False
                 
                 for attempt in range(max_retries):
-                    proxy_config = None
-                    if proxy_list:
-                        selected_proxy = proxy_list[(combo_num + attempt) % len(proxy_list)]
-                        try:
-                            clean_url = selected_proxy.replace("http://", "").replace("https://", "").replace("/", "")
-                            credentials, host_port = clean_url.split("@")
-                            user, pwd = credentials.split(":")
-                            proxy_config = {
-                                "server": f"http://{host_port}",
-                                "username": user,
-                                "password": pwd
-                            }
-                        except Exception:
-                            proxy_config = {"server": selected_proxy}
 
                     try:
                         context = browser.new_context(
