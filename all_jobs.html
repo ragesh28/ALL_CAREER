@@ -75,6 +75,82 @@
         .filter-input:focus { border-color: var(--primary); }
         select.filter-input option { background-color: var(--bg-deep); color: white; }
 
+        /* --- CALENDAR BUTTON & POPUP --- */
+        .cal-wrap { position: relative; }
+        .cal-btn {
+            display: flex; align-items: center; gap: 7px;
+            padding: 9px 16px; border-radius: 20px;
+            border: 1px solid rgba(16,185,129,0.4);
+            background: rgba(16,185,129,0.08); color: #10b981;
+            cursor: pointer; font-weight: 700; font-size: 0.85rem;
+            font-family: inherit; white-space: nowrap; transition: 0.2s; user-select: none;
+        }
+        .cal-btn:hover { background: rgba(16,185,129,0.16); }
+        .cal-btn.active {
+            background: #10b981; color: #020617; border-color: #10b981;
+        }
+        .cal-btn .cal-x {
+            display: none; width: 16px; height: 16px; border-radius: 50%;
+            background: rgba(0,0,0,0.2); align-items: center; justify-content: center;
+            font-size: 0.65rem; line-height: 1;
+        }
+        .cal-btn.active .cal-x { display: flex; }
+        .cal-popup {
+            position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
+            background: #0d1526; border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 18px; padding: 18px; width: 290px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(16,185,129,0.08);
+            display: none;
+        }
+        .cal-popup.open { display: block; animation: calPop 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes calPop {
+            from { opacity:0; transform:scale(0.9) translateY(-6px); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+        .cal-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+        .cal-nav-btn {
+            background:none; border:none; color:var(--text-muted); font-size:1.1rem;
+            cursor:pointer; padding:4px 8px; border-radius:8px; transition:0.2s;
+        }
+        .cal-nav-btn:hover { background:rgba(255,255,255,0.06); color:white; }
+        .cal-month-lbl { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.95rem; color:white; }
+        .cal-dow-row { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:6px; }
+        .cal-dow { text-align:center; font-size:0.65rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; padding:2px 0; }
+        .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+        .cal-day {
+            aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
+            justify-content:center; border-radius:9px; cursor:pointer; transition:all 0.15s;
+            font-size:0.82rem; font-weight:600; user-select:none;
+            border:1px solid transparent; position:relative;
+        }
+        .cal-day.empty { cursor:default; }
+        .cal-day.disabled { color:rgba(255,255,255,0.14); cursor:not-allowed; }
+        .cal-day.in-range { color:var(--text-muted); }
+        .cal-day.in-range:hover { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.25); color:white; }
+        .cal-day.has-data { color:white; background:rgba(16,185,129,0.06); border-color:rgba(16,185,129,0.14); }
+        .cal-day.has-data:hover { background:rgba(16,185,129,0.18); border-color:rgba(16,185,129,0.45); transform:scale(1.07); }
+        .cal-day.selected { background:#10b981 !important; border-color:#10b981 !important; color:#020617 !important; font-weight:800; box-shadow:0 3px 12px rgba(16,185,129,0.4); transform:scale(1.09); }
+        .cal-day.is-today::after {
+            content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
+            width:4px; height:4px; border-radius:50%; background:#10b981;
+        }
+        .cal-day.selected.is-today::after { background:#020617; }
+        .cal-day-num { line-height:1; }
+        .cal-day-cnt { font-size:0.55rem; font-weight:700; color:#10b981; margin-top:1px; line-height:1; }
+        .cal-day.selected .cal-day-cnt { color:rgba(2,6,23,0.65); }
+        .cal-ftr {
+            margin-top:14px; padding-top:12px; border-top:1px solid var(--border);
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .cal-ftr-info { font-size:0.76rem; color:var(--text-muted); }
+        .cal-ftr-info strong { color:#10b981; }
+        .cal-ftr-clear {
+            font-size:0.76rem; color:var(--text-muted); cursor:pointer;
+            background:none; border:none; font-family:inherit;
+            padding:3px 8px; border-radius:7px; transition:0.2s;
+        }
+        .cal-ftr-clear:hover { background:rgba(255,255,255,0.06); color:white; }
+
         /* Experience toggle */
         .exp-group { display: flex; gap: 6px; }
         .exp-btn {
@@ -305,10 +381,13 @@
                     <option value="Pune">Pune</option>
                 </select>
             </div>
-            <div class="filter-group" style="flex:0.7;">
-                <select id="dateFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">📅 Date: All</option>
-                </select>
+            <div class="cal-wrap">
+                <button class="cal-btn" id="calBtn" onclick="toggleCal()">
+                    <span>📅</span>
+                    <span id="calBtnLabel">All Dates</span>
+                    <span class="cal-x" id="calBtnX" onclick="clearCalDate(event)">✕</span>
+                </button>
+                <div class="cal-popup" id="calPopup"></div>
             </div>
             <div class="exp-group">
                 <button class="exp-btn" onclick="setExperience('junior')" id="expJr">Junior</button>
@@ -575,29 +654,117 @@
             }
         }
 
-        function buildDateDropdown() {
-            const sel = document.getElementById('dateFilter');
-            const dates = new Map();
+        // ── CALENDAR ──────────────────────────────────────────────
+        let calSelectedDate = null;
+        let calViewYear = null;
+        let calViewMonth = null;
+        let calDateCounts = {};
+
+        function buildCalCounts() {
+            calDateCounts = {};
             allJobs.forEach(j => {
-                const d = j.fetchedAt || '';
-                if (d) dates.set(d, (dates.get(d) || 0) + 1);
-            });
-            const sortedDates = [...dates.keys()].sort().reverse().slice(0, 10);
-            const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-            const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-            sel.innerHTML = `<option value="All">📅 All Dates (${allJobs.length})</option>`;
-            sortedDates.forEach(dateStr => {
-                const d = new Date(dateStr + 'T00:00:00');
-                const dayName = dayNames[d.getDay()];
-                const label = `${monthNames[d.getMonth()]} ${d.getDate()}`;
-                const count = dates.get(dateStr);
-                const today = new Date();
-                const isToday = d.toDateString() === today.toDateString();
-                const isYesterday = d.toDateString() === new Date(today - 86400000).toDateString();
-                const tag = isToday ? 'Today' : isYesterday ? 'Yesterday' : dayName;
-                sel.innerHTML += `<option value="${dateStr}">${tag} — ${label} (${count})</option>`;
+                const d = (j.fetchedAt || '').slice(0,10);
+                if (d) calDateCounts[d] = (calDateCounts[d] || 0) + 1;
             });
         }
+
+        function toggleCal() {
+            const popup = document.getElementById('calPopup');
+            if (popup.classList.contains('open')) { popup.classList.remove('open'); return; }
+            const now = new Date();
+            if (!calViewYear) { calViewYear = now.getFullYear(); calViewMonth = now.getMonth(); }
+            renderCal();
+            popup.classList.add('open');
+        }
+
+        function renderCal() {
+            const popup = document.getElementById('calPopup');
+            const today = new Date(); today.setHours(0,0,0,0);
+            const minDate = new Date(today); minDate.setDate(minDate.getDate() - 19);
+            const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            const DOW = ['S','M','T','W','T','F','S'];
+            const firstDay = new Date(calViewYear, calViewMonth, 1);
+            const startDow = firstDay.getDay();
+            const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
+            let totalJobs = calSelectedDate ? (calDateCounts[calSelectedDate] || 0) : allJobs.length;
+
+            let h = `<div class="cal-hdr">
+                <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+                <div class="cal-month-lbl">${MONTHS[calViewMonth]} ${calViewYear}</div>
+                <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+            </div>
+            <div class="cal-dow-row">${DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div>
+            <div class="cal-grid">`;
+            for (let i=0;i<startDow;i++) h += `<div class="cal-day empty"></div>`;
+            for (let day=1;day<=daysInMonth;day++) {
+                const date = new Date(calViewYear, calViewMonth, day); date.setHours(0,0,0,0);
+                const ds = date.toISOString().slice(0,10);
+                const isFuture = date > today, isTooOld = date < minDate;
+                const disabled = isFuture || isTooOld;
+                const isToday = date.getTime() === today.getTime();
+                const isSel = calSelectedDate === ds;
+                const cnt = calDateCounts[ds];
+                let cls = 'cal-day';
+                if (disabled) cls += ' disabled';
+                else if (cnt) cls += ' has-data';
+                else cls += ' in-range';
+                if (isToday && !disabled) cls += ' is-today';
+                if (isSel) cls += ' selected';
+                const click = disabled ? '' : `onclick="calSelectDay('${ds}')"`;
+                const badge = cnt && !disabled ? `<div class="cal-day-cnt">${cnt>999?'999+':cnt}</div>` : '';
+                h += `<div class="${cls}" ${click}><div class="cal-day-num">${day}</div>${badge}</div>`;
+            }
+            h += `</div><div class="cal-ftr">
+                <div class="cal-ftr-info">${calSelectedDate ? `<strong>${totalJobs.toLocaleString()}</strong> jobs` : `<strong>${totalJobs.toLocaleString()}</strong> total`}</div>
+                ${calSelectedDate ? `<button class="cal-ftr-clear" onclick="clearCalDate(event)">Clear ✕</button>` : ''}
+            </div>`;
+            popup.innerHTML = h;
+        }
+
+        function calNav(dir) {
+            calViewMonth += dir;
+            if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
+            if (calViewMonth < 0)  { calViewMonth = 11; calViewYear--; }
+            renderCal();
+        }
+
+        function calSelectDay(ds) {
+            if (calSelectedDate === ds) { calSelectedDate = null; } else { calSelectedDate = ds; }
+            updateCalBtn();
+            renderCal();
+            applyFilters();
+        }
+
+        function clearCalDate(e) {
+            if (e) e.stopPropagation();
+            calSelectedDate = null;
+            updateCalBtn();
+            document.getElementById('calPopup').classList.remove('open');
+            applyFilters();
+        }
+
+        function updateCalBtn() {
+            const btn = document.getElementById('calBtn');
+            const lbl = document.getElementById('calBtnLabel');
+            const x   = document.getElementById('calBtnX');
+            if (calSelectedDate) {
+                const d = new Date(calSelectedDate + 'T00:00:00');
+                const tod = new Date(); tod.setHours(0,0,0,0);
+                const yes = new Date(tod); yes.setDate(yes.getDate()-1);
+                let txt = d.getTime()===tod.getTime() ? 'Today' : d.getTime()===yes.getTime() ? 'Yesterday'
+                    : d.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
+                lbl.textContent = txt; btn.classList.add('active'); x.style.display='flex';
+            } else {
+                lbl.textContent = 'All Dates'; btn.classList.remove('active'); x.style.display='none';
+            }
+        }
+
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.cal-wrap')) {
+                const p = document.getElementById('calPopup');
+                if (p) p.classList.remove('open');
+            }
+        });
 
         async function init() {
             const loading = document.getElementById('loading');
@@ -615,7 +782,7 @@
                 return;
             }
             
-            buildDateDropdown();
+            buildCalCounts();
             applyFilters();
             loading.style.display = 'none';
         }
@@ -631,9 +798,8 @@
                 if (search && !hay.includes(search)) return false;
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
 
-                // Date filter
-                const dateVal = document.getElementById('dateFilter').value;
-                if (dateVal !== 'All' && j.fetchedAt !== dateVal) return false;
+                // Calendar date filter (last 20 days)
+                if (calSelectedDate && (j.fetchedAt || '').slice(0,10) !== calSelectedDate) return false;
 
                 // Role filter — check title keywords OR role_search field
                 if (activeRole && ROLE_KEYWORDS[activeRole]) {
