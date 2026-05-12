@@ -13,6 +13,7 @@
 
 export interface Env {
 	DB: D1Database;
+	JOBS_DB: D1Database;
 }
 
 export default {
@@ -117,6 +118,24 @@ export default {
 						"Content-Type": "application/json",
 						"Access-Control-Allow-Origin": "*" 
 					}
+				});
+			}
+
+			if (url.pathname === "/api/all_jobs") {
+				const { results } = await env.JOBS_DB.prepare(
+					"SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url, platform as source, search_keyword FROM all_jobs ORDER BY job_posted_date DESC LIMIT 200"
+				).all();
+				return new Response(JSON.stringify(results), { 
+					headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" } 
+				});
+			}
+
+			if (url.pathname === "/api/big_company_jobs") {
+				const { results } = await env.JOBS_DB.prepare(
+					"SELECT role as title, company_name as company, location, job_posted_date as fetched_at, apply_link as url, apply_link as linkedin_url FROM big_company_jobs ORDER BY job_posted_date DESC LIMIT 200"
+				).all();
+				return new Response(JSON.stringify(results), { 
+					headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" } 
 				});
 			}
 

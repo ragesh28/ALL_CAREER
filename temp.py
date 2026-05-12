@@ -1,114 +1,103 @@
-"""Backup all big_jobs, then clear the table."""
+"""Download ALL jobs data from Turso (all_jobs table only, not big_jobs)."""
 import sys, json, requests
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# Big company jobs database
 TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
-# Try the non-expiring token from local_scraper.py (alljobs DB)
-# If that doesn't work, we need the jobsdata token
-TOKENS = [
-    # local_scraper token (no expiry, but for alljobs DB)
-    "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM5MDk4NjQsImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.RTp-3zplnbqlpx6qgu_XwxAWOokQIY1TmR9kQtGmC2J1tyRqy5n7LuitSbYdRmD2zBKQEnDLB_Ca4AUm7wt4CQ",
-    # check_turso token (for alljobs DB, no expiry)
-    "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM1NTM5OTksImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.mtjC1aL0M1rcwS2pJsM70Ytqk06Jqct2dVChPGcgEV0zvcv8hAb9opCC5L76xuEXnO6ZuUZU-Edlex7ABWgVCg",
-    # expired jobsdata token
-    "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg",
-]
+TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzYxNjMxNDksImlkIjoiMDE5Y2UwYWItMWQwMS03MzBjLWEwYjUtNWVlNGRjMWQwOGQ4IiwicmlkIjoiMGNjZWYzMWMtZTFjNy00MDM3LTgwN2EtYjFjZDgyZjRkNGE2In0.bFlqY1nlnLXlkvIe90aAFlz9o2Hjx1f3O2-tVQmzEMmhXxNdLee-gYwPqBWHwz-ckyVx64wy6X53RYHbu3f9AA"
 
-def try_query(sql):
-    for token in TOKENS:
-        try:
-            resp = requests.post(
-                f"{TURSO_URL}/v2/pipeline",
-                headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-                json={"requests": [{"type": "execute", "stmt": {"sql": sql}}, {"type": "close"}]},
-                timeout=15,
-            )
-            if resp.status_code == 200:
-                data = resp.json()
-                if data.get("results") and data["results"][0].get("type") == "ok":
-                    print(f"  Token works! (ends ...{token[-10:]})")
-                    return data, token
-                else:
-                    print(f"  Token auth OK but query error: {data}")
-            else:
-                print(f"  Token ...{token[-10:]} -> HTTP {resp.status_code}")
-        except Exception as e:
-            print(f"  Token ...{token[-10:]} -> Error: {e}")
-    return None, None
+HEADERS = {"Authorization": f"Bearer {TURSO_TOKEN}", "Content-Type": "application/json"}
 
-# Step 1: Test connection
+def query(sql):
+    resp = requests.post(
+        f"{TURSO_URL}/v2/pipeline",
+        headers=HEADERS,
+        json={"requests": [{"type": "execute", "stmt": {"sql": sql}}, {"type": "close"}]},
+        timeout=30,
+    )
+    if resp.status_code != 200:
+        print(f"HTTP {resp.status_code}: {resp.text[:300]}")
+        return None
+    data = resp.json()
+    if data["results"][0]["type"] != "ok":
+        print(f"Error: {data['results'][0]}")
+        return None
+    return data["results"][0]["response"]["result"]
+
+# Step 1: Check connection and list tables
 print("=" * 60)
-print("  Testing Turso connection to jobsdata DB")
+print("  Step 1: Checking Turso connection")
 print("=" * 60)
-result, working_token = try_query("SELECT COUNT(*) FROM big_jobs")
 
+result = query("SELECT name FROM sqlite_master WHERE type='table'")
 if not result:
-    print("\nNo working token found for jobsdata-ragesh DB.")
-    print("You need to generate a new Turso token.")
+    print("Connection failed!")
     sys.exit(1)
 
-# Get count
-count = result["results"][0]["response"]["result"]["rows"][0][0]["value"]
-print(f"\n  Total big_jobs in DB: {count}")
+tables = [row[0]["value"] for row in result["rows"]]
+print(f"  Tables found: {tables}")
 
-# Step 2: Download all jobs
+# Step 2: Get counts for each table
 print("\n" + "=" * 60)
-print("  Downloading all big_jobs...")
+print("  Step 2: Table row counts")
 print("=" * 60)
 
-resp = requests.post(
-    f"{TURSO_URL}/v2/pipeline",
-    headers={"Authorization": f"Bearer {working_token}", "Content-Type": "application/json"},
-    json={"requests": [
-        {"type": "execute", "stmt": {"sql": "SELECT * FROM big_jobs"}},
-        {"type": "close"}
-    ]},
-    timeout=30,
-)
-data = resp.json()
-rows = data["results"][0]["response"]["result"]["rows"]
-cols = [c["name"] for c in data["results"][0]["response"]["result"]["cols"]]
+for table in tables:
+    if table.startswith("_") or table == "sqlite_sequence":
+        continue
+    r = query(f"SELECT COUNT(*) FROM {table}")
+    if r:
+        count = r["rows"][0][0]["value"]
+        print(f"  {table}: {count} rows")
 
-jobs = []
-for row in rows:
-    job = {}
-    for i, col in enumerate(cols):
-        job[col] = row[i]["value"] if row[i]["type"] != "null" else None
-    jobs.append(job)
-
-backup_file = "big_jobs_backup.json"
-with open(backup_file, "w", encoding="utf-8") as f:
-    json.dump(jobs, f, indent=2, ensure_ascii=False)
-
-print(f"  Backed up {len(jobs)} jobs to {backup_file}")
-
-# Step 3: Clear all big_jobs
+# Step 3: Get schema of all_jobs related tables
 print("\n" + "=" * 60)
-print("  Clearing all big_jobs from Turso...")
+print("  Step 3: Downloading all_jobs data")
 print("=" * 60)
 
-resp = requests.post(
-    f"{TURSO_URL}/v2/pipeline",
-    headers={"Authorization": f"Bearer {working_token}", "Content-Type": "application/json"},
-    json={"requests": [
-        {"type": "execute", "stmt": {"sql": "DELETE FROM big_jobs"}},
-        {"type": "close"}
-    ]},
-    timeout=15,
-)
-del_result = resp.json()
-if del_result["results"][0]["type"] == "ok":
-    affected = del_result["results"][0]["response"]["result"]["affected_row_count"]
-    print(f"  Deleted {affected} rows from big_jobs")
-else:
-    print(f"  Error: {del_result}")
+# Find the right table name for "all jobs"
+all_jobs_tables = [t for t in tables if "job" in t.lower() and "big" not in t.lower()]
+print(f"  Candidate tables: {all_jobs_tables}")
 
-# Verify empty
-result2, _ = try_query("SELECT COUNT(*) FROM big_jobs")
-if result2:
-    remaining = result2["results"][0]["response"]["result"]["rows"][0][0]["value"]
-    print(f"  Remaining rows: {remaining}")
+# Download each candidate table
+for table_name in all_jobs_tables:
+    # Get schema first
+    schema = query(f"PRAGMA table_info({table_name})")
+    if schema:
+        cols = [row[1]["value"] for row in schema["rows"]]
+        print(f"\n  Table '{table_name}' columns: {cols}")
 
-print("\nDone!")
+    # Download all rows (paginated to avoid timeout)
+    all_rows = []
+    offset = 0
+    page_size = 1000
+
+    while True:
+        print(f"    Fetching rows {offset} to {offset + page_size}...", end=" ", flush=True)
+        result = query(f"SELECT * FROM {table_name} LIMIT {page_size} OFFSET {offset}")
+        if not result or not result["rows"]:
+            print("done")
+            break
+
+        row_cols = [c["name"] for c in result["cols"]]
+        for row in result["rows"]:
+            job = {}
+            for i, col in enumerate(row_cols):
+                job[col] = row[i]["value"] if row[i]["type"] != "null" else None
+            all_rows.append(job)
+
+        fetched = len(result["rows"])
+        print(f"{fetched} rows")
+        offset += page_size
+
+        if fetched < page_size:
+            break
+
+    # Save to file
+    filename = f"turso_backup_{table_name}.json"
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(all_rows, f, indent=2, ensure_ascii=False)
+
+    print(f"\n  Saved {len(all_rows)} rows to {filename}")
+
+print("\nDone! All jobs data downloaded.")

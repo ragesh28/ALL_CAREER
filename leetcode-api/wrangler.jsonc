@@ -18,6 +18,11 @@
 			"binding": "DB",
 			"database_name": "important-problems",
 			"database_id": "2de62fd4-7cb4-4d55-a30a-5fb151e8d63e"
+		},
+		{
+			"binding": "JOBS_DB",
+			"database_name": "all-career-db",
+			"database_id": "20b71b5c-c070-45b5-9542-27ed1cad89e5"
 		}
 	]
 	/**
