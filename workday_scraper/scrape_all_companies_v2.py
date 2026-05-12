@@ -1281,6 +1281,52 @@ def scrape_uber(url, limit=2):
     except: pass
     return []
 
+def scrape_oracle_cloud(url, limit=2):
+    """Scrape Oracle Cloud HCM jobs."""
+    try:
+        parsed = urlparse(url)
+        base_url = f"{parsed.scheme}://{parsed.netloc}"
+        api_url = f"{base_url}/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
+        
+        jobs = []
+        offset = 0
+        batch_size = 25
+        while len(jobs) < limit:
+            fetch_size = min(batch_size, limit - len(jobs))
+            params = {
+                "offset": offset,
+                "limit": fetch_size,
+                "q": "PrimaryLocationCountry:India"
+            }
+            resp = requests.get(api_url, headers=HEADERS, params=params, timeout=15)
+            if resp.status_code != 200:
+                break
+                
+            data = resp.json()
+            items = data.get("items", [])
+            
+            if not items:
+                break
+                
+            for j in items:
+                loc = j.get("PrimaryLocation", "")
+                jobs.append({
+                    "title": clean(j.get("Title", "")),
+                    "location": clean(loc),
+                    "posted": clean(str(j.get("PostedDate", ""))[:10]),
+                    "apply_url": f"{base_url}/hcmUI/CandidateExperience/en/sites/CX_1/job/{j.get('Id','')}",
+                    "total_jobs": 0,
+                })
+                
+            offset += len(items)
+            if len(items) < fetch_size:
+                break
+                
+        return jobs[:limit]
+    except Exception as e:
+        print(f"    Oracle Cloud API error: {e}")
+    return []
+
 # ============================================================================
 #  ROUTING
 # ============================================================================
@@ -1322,7 +1368,8 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     jobspy_companies = [
         "kaleidofin", "hcltech", "hcl tech", "walmart", 
         "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi",
-        "ramco", "uber", "wells fargo"
+        "ramco", "uber", "wells fargo",
+        "cure.fit", "goldman sachs", "intuit", "target", "sap labs"
     ]
     if any(c in name_lower for c in jobspy_companies):
         print(f"    [JobSpy/LinkedIn fallback]")
