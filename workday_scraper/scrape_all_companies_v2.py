@@ -23,8 +23,8 @@ sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
 TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
 
-def turso_execute(statements):
-    """Execute SQL statements via Turso HTTP API pipeline."""
+def turso_execute(statements, retries=3):
+    """Execute SQL statements via Turso HTTP API pipeline with retries and 120s timeout."""
     url = f"{TURSO_URL}/v2/pipeline"
     headers = {
         "Authorization": f"Bearer {TURSO_TOKEN}",
@@ -38,11 +38,22 @@ def turso_execute(statements):
             requests_body.append({"type": "execute", "stmt": stmt})
     requests_body.append({"type": "close"})
     
-    resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
-    if resp.status_code != 200:
-        print(f"❌ Turso error: {resp.text[:200]}")
-        return None
-    return resp.json()
+    for attempt in range(retries):
+        try:
+            resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=120)
+            if resp.status_code != 200:
+                print(f"❌ Turso error (Attempt {attempt+1}): {resp.text[:200]}")
+                time.sleep(2)
+                continue
+            return resp.json()
+        except requests.exceptions.ReadTimeout:
+            print(f"⚠️ Turso ReadTimeout (Attempt {attempt+1}/{retries})")
+            time.sleep(5)
+        except Exception as e:
+            print(f"⚠️ Turso Error (Attempt {attempt+1}/{retries}): {e}")
+            time.sleep(5)
+            
+    return None
 
 def create_table_if_not_exists():
     sql = """
@@ -83,32 +94,43 @@ def store_jobs_turso(jobs):
     india_jobs = [j for j in jobs if is_india(j.get("location", ""))]
     
     fetched_at = datetime.now().strftime("%Y-%m-%d")
-    print(f"    [💾] Storing {len(india_jobs)} India region jobs in Turso (bigcompany_jobs table)...")
-    statements = []
-    for job in india_jobs:
-        stmt = {
-            "sql": """INSERT OR IGNORE INTO bigcompany_jobs
-                      (title, company, location, date_posted, job_url, direct_url, site, job_type, is_remote, fetched_at)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            "args": [
-                {"type": "text", "value": job.get("title", "")},
-                {"type": "text", "value": job.get("company", "")},
-                {"type": "text", "value": job.get("location", "")},
-                {"type": "text", "value": job.get("posted", "")},
-                {"type": "text", "value": job.get("apply_url", "")},
-                {"type": "text", "value": job.get("apply_url", "")}, # using apply_url as direct_url
-                {"type": "text", "value": "direct-api"},
-                {"type": "text", "value": ""},
-                {"type": "text", "value": ""},
-                {"type": "text", "value": fetched_at},
-            ],
-        }
-        statements.append(stmt)
+    print(f"    [💾] Storing {len(india_jobs)} India region jobs in Turso (bigcompany_jobs table) in batches...")
     
-    result = turso_execute(statements)
-    if result:
-        inserted = sum(r.get("response", {}).get("result", {}).get("affected_row_count", 0) for r in result.get("results", []) if r.get("type") == "ok")
-        print(f"    [✅] Inserted {inserted} new jobs to Turso")
+    batch_size = 100
+    total_inserted = 0
+    
+    for i in range(0, len(india_jobs), batch_size):
+        batch = india_jobs[i:i+batch_size]
+        statements = []
+        for job in batch:
+            stmt = {
+                "sql": """INSERT OR IGNORE INTO bigcompany_jobs
+                          (title, company, location, date_posted, job_url, direct_url, site, job_type, is_remote, fetched_at)
+                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                "args": [
+                    {"type": "text", "value": job.get("title", "")},
+                    {"type": "text", "value": job.get("company", "")},
+                    {"type": "text", "value": job.get("location", "")},
+                    {"type": "text", "value": job.get("posted", "")},
+                    {"type": "text", "value": job.get("apply_url", "")},
+                    {"type": "text", "value": job.get("apply_url", "")}, # using apply_url as direct_url
+                    {"type": "text", "value": "direct-api"},
+                    {"type": "text", "value": ""},
+                    {"type": "text", "value": ""},
+                    {"type": "text", "value": fetched_at},
+                ],
+            }
+            statements.append(stmt)
+        
+        result = turso_execute(statements)
+        if result:
+            inserted = sum(r.get("response", {}).get("result", {}).get("affected_row_count", 0) for r in result.get("results", []) if r.get("type") == "ok")
+            total_inserted += inserted
+            print(f"    [✅] Inserted {inserted} jobs (Batch {i//batch_size + 1}/{(len(india_jobs)-1)//batch_size + 1})")
+        else:
+            print(f"    [❌] Failed batch {i//batch_size + 1}")
+            
+    print(f"    [✅] Finished! Total inserted to Turso: {total_inserted}")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
