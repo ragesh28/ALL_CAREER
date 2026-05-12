@@ -1232,22 +1232,42 @@ def scrape_phenom(url, limit=2):
     return []
 
 def scrape_amazon(url, limit=2):
+    jobs = []
+    offset = 0
+    batch_size = 100
     try:
-        resp = requests.get(f"https://www.amazon.jobs/en/search.json?offset=0&result_limit={limit}&sort=relevant&country=IND", headers={**HEADERS, "Accept": "application/json"}, timeout=10)
-        data = resp.json()
-        total = data.get("hits", 0)
-        jobs = []
-        for j in data.get("jobs", [])[:limit]:
-            jobs.append({
-                "title": clean(j.get("title", "")),
-                "location": clean(j.get("normalized_location", "")),
-                "posted": clean(j.get("posted_date", "")),
-                "apply_url": f"https://www.amazon.jobs{j.get('job_path', '')}",
-                "total_jobs": total,
-            })
-        return jobs
-    except: pass
-    return []
+        while len(jobs) < limit:
+            fetch_size = min(batch_size, limit - len(jobs))
+            api_url = f"https://www.amazon.jobs/en/search.json?offset={offset}&result_limit={fetch_size}&sort=relevant&country=IND"
+            resp = requests.get(api_url, headers={**HEADERS, "Accept": "application/json"}, timeout=15)
+            if resp.status_code != 200:
+                print(f"    Amazon API bad status: {resp.status_code}")
+                break
+                
+            data = resp.json()
+            total = data.get("hits", 0)
+            batch_jobs = data.get("jobs")
+            
+            if not batch_jobs:
+                break
+                
+            for j in batch_jobs:
+                jobs.append({
+                    "title": clean(j.get("title", "")),
+                    "location": clean(j.get("normalized_location", "")),
+                    "posted": clean(j.get("posted_date", "")),
+                    "apply_url": f"https://www.amazon.jobs{j.get('job_path', '')}",
+                    "total_jobs": total,
+                })
+                
+            offset += len(batch_jobs)
+            if len(batch_jobs) < fetch_size:
+                break
+                
+        return jobs[:limit]
+    except Exception as e:
+        print(f"    Amazon API error: {e}")
+    return jobs[:limit]
 
 def scrape_uber(url, limit=2):
     try:
