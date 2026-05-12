@@ -1258,7 +1258,7 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     # ── JOBSPY FALLBACK (LinkedIn/Indeed for companies without direct API) ──
     jobspy_companies = [
         "kaleidofin", "hcltech", "hcl tech", "walmart", 
-        "chargebee", "tcs", "mu sigma"
+        "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi"
     ]
     if any(c in name_lower for c in jobspy_companies):
         print(f"    [JobSpy/LinkedIn fallback]")
@@ -1288,6 +1288,7 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
             return []
     
     # ── EXISTING APIS ──
+    if "wells fargo" in name_lower: return scrape_workday("https://wellsfargo.wd5.myworkdayjobs.com/wday/cxs/wellsfargo/jobs", limit)
     if "myworkdayjobs.com" in url_lower: return scrape_workday(url, limit)
     if "amazon.jobs" in url_lower: return scrape_amazon(url, limit)
     if "uber.com" in url_lower and "career" in url_lower: return scrape_uber(url, limit)
@@ -1370,7 +1371,7 @@ def main():
             continue
 
         url = urls[0]
-        jobs = detect_and_scrape(name, ats, url, limit=5)
+        jobs = detect_and_scrape(name, ats, url, limit=100)
 
         if jobs:
             stats["success"] += 1

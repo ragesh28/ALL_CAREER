@@ -17,22 +17,6 @@
     ]
   },
   {
-    "id": 3,
-    "company": "Zoho",
-    "ats": "Custom",
-    "urls": [
-      "https://careers.zohocorp.com/jobs/careers/193779000024445975/Technical-Support-Engineers?source=CareerSite"
-    ]
-  },
-  {
-    "id": 5,
-    "company": "Flipkart",
-    "ats": "TurboHire",
-    "urls": [
-      "https://flipkart.turbohire.co/dashboardv2?orgId=4d757ba0-3d57-448a-b82c-238ed87ac90f&type=0"
-    ]
-  },
-  {
     "id": 6,
     "company": "PayPal",
     "ats": "Eightfold",
@@ -68,7 +52,9 @@
     "id": 11,
     "company": "Chargebee",
     "ats": "LinkedIn Only",
-    "urls": []
+    "urls": [
+      "https://linkedin.com/company/chargebee"
+    ]
   },
   {
     "id": 13,
