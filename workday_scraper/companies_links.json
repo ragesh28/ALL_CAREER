@@ -1,0 +1,458 @@
+[
+  {
+    "id": 1,
+    "company": "Google",
+    "ats": "Custom",
+    "urls": [
+      "https://www.google.com/about/careers/applications/apply/496f0279-75f0-4954-81e7-2336c966d3a7/role?src=Online%2FLinkedIn%2Flinkedin_us",
+      "https://www.google.com/about/careers/applications/apply?jobId=CiUAL2Fckf_-oSzX2oXhQNVmOTTIsknJN98VaOfVKvNVtC__qGSDEjsACxwdTE7E4FXSTBYkM_9wSEtFfP_caJBn7VdQ3H0twpE9biJZLqLlgycUU2aEDAyzSUt1U29y_jtQ9w%3D%3D_V2&loc=IN&title=Strategic+Partnerships+Development+Manager&src=Online/LinkedIn/linkedin_us"
+    ]
+  },
+  {
+    "id": 2,
+    "company": "Microsoft",
+    "ats": "Custom",
+    "urls": [
+      "https://apply.careers.microsoft.com/careers/apply?pid=1970393556860541&utm_source=linkedin&domain=microsoft.com&src=LinkedIn"
+    ]
+  },
+  {
+    "id": 3,
+    "company": "Zoho",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.zohocorp.com/jobs/careers/193779000024445975/Technical-Support-Engineers?source=CareerSite"
+    ]
+  },
+  {
+    "id": 4,
+    "company": "Freshworks",
+    "ats": "SmartRecruiters",
+    "urls": [
+      "https://jobs.smartrecruiters.com/oneclick-ui/company/Freshworks/publication/182a9a03-0d3f-4492-b04c-3b84cb7ee161?dcr_ci=Freshworks"
+    ]
+  },
+  {
+    "id": 5,
+    "company": "Flipkart",
+    "ats": "TurboHire",
+    "urls": [
+      "https://flipkart.turbohire.co/dashboardv2?orgId=4d757ba0-3d57-448a-b82c-238ed87ac90f&type=0"
+    ]
+  },
+  {
+    "id": 6,
+    "company": "PayPal",
+    "ats": "Eightfold",
+    "urls": [
+      "https://paypal.eightfold.ai/careers/apply?pid=274919406617&domain=paypal.com"
+    ]
+  },
+  {
+    "id": 7,
+    "company": "Amazon",
+    "ats": "Custom",
+    "urls": [
+      "https://www.amazon.jobs/en/jobs/10406385/sr-product-manager-forecasting-tools-demand-planning-workforce-intelligence"
+    ]
+  },
+  {
+    "id": 8,
+    "company": "TCS (Prime/Digital)",
+    "ats": "Custom (TCS iON)",
+    "urls": [
+      "https://www.tcsion.com/EForms/configuredHtml/1016/2000054/application.html"
+    ]
+  },
+  {
+    "id": 9,
+    "company": "Infosys (SP/DSE)",
+    "ats": "Custom",
+    "urls": [
+      "https://career.infosys.com/jobdesc?jobReferenceCode=INFSYS-EXTERNAL-244361&rc=0&jobType=normal"
+    ]
+  },
+  {
+    "id": 10,
+    "company": "KLA Tencor",
+    "ats": "Workday",
+    "urls": [
+      "https://kla.wd1.myworkdayjobs.com/Search?Country=c4f78be1a8f14da0ab49ce1162348a5e"
+    ]
+  },
+  {
+    "id": 11,
+    "company": "Chargebee",
+    "ats": "LinkedIn Only",
+    "urls": []
+  },
+  {
+    "id": 12,
+    "company": "Cred",
+    "ats": "Lever",
+    "urls": [
+      "https://jobs.lever.co/cred/e6e4ce2d-3e20-429a-ae8b-b94b63e0937a?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic"
+    ]
+  },
+  {
+    "id": 13,
+    "company": "Swiggy",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.swiggy.com/#/careers?src=careers"
+    ]
+  },
+  {
+    "id": 14,
+    "company": "Zomato",
+    "ats": "Custom",
+    "urls": [
+      "https://www.eternal.com/careers/"
+    ]
+  },
+  {
+    "id": 15,
+    "company": "Uber",
+    "ats": "Custom",
+    "urls": [
+      "https://www.uber.com/in/en/careers/list/?location=IND-Karn%C4%81taka-Bangalore"
+    ]
+  },
+  {
+    "id": 16,
+    "company": "Samsung R&D",
+    "ats": "Workday",
+    "note": "no jobs",
+    "urls": [
+      "https://sec.wd3.myworkdayjobs.com/en-US/Samsung_Careers?locations=189767dd6c9201b802603c83a5292c78&Location_Country=c4f78be1a8f14da0ab49ce1162348a5e&hiringCompany=189767dd6c9201554f3e5312a7290a85"
+    ]
+  },
+  {
+    "id": 17,
+    "company": "Salesforce",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.salesforce.com/en/jobs/?search=&country=India&pagesize=20#results"
+    ]
+  },
+  {
+    "id": 18,
+    "company": "Atlassian",
+    "ats": "Custom",
+    "urls": [
+      "https://www.atlassian.com/company/careers/all-jobs"
+    ]
+  },
+  {
+    "id": 19,
+    "company": "Rocketlane",
+    "ats": "Kula",
+    "urls": [
+      "https://careers.kula.ai/rocketlane"
+    ]
+  },
+  {
+    "id": 20,
+    "company": "Mad Street Den",
+    "ats": "Unknown",
+    "note": "no jobs",
+    "urls": [
+      "https://careers.salesforce.com/en/jobs/?search=&country=India&pagesize=20#results"
+    ]
+  },
+  {
+    "id": 21,
+    "company": "Uniphore",
+    "ats": "Workday",
+    "urls": [
+      "https://uniphore.wd503.myworkdayjobs.com/Uniphore"
+    ]
+  },
+  {
+    "id": 22,
+    "company": "Yubi",
+    "ats": "Custom",
+    "urls": [
+      "https://www.yubico.com/careers/#join-the-team"
+    ]
+  },
+  {
+    "id": 23,
+    "company": "Kissflow",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.kissflow.com/#viewjobs"
+    ]
+  },
+  {
+    "id": 24,
+    "company": "Walmart Global Tech",
+    "ats": "Custom",
+    "note": "no jobs",
+    "urls": [
+      "https://careers.walmart.com/us/en/results?searchQuery="
+    ]
+  },
+  {
+    "id": 25,
+    "company": "Cisco",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.cisco.com/global/en/search-results?keywords=india"
+    ]
+  },
+  {
+    "id": 26,
+    "company": "JPMorgan Chase",
+    "ats": "Oracle Cloud",
+    "urls": [
+      "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs"
+    ]
+  },
+  {
+    "id": 27,
+    "company": "Wells Fargo",
+    "ats": "Custom",
+    "urls": [
+      "https://www.wellsfargojobs.com/en/jobs/"
+    ]
+  },
+  {
+    "id": 28,
+    "company": "Citi",
+    "ats": "Custom",
+    "urls": [
+      "https://jobs.citi.com/location/karnataka-india-jobs/287/1269750-1267701/3"
+    ]
+  },
+  {
+    "id": 29,
+    "company": "Standard Chartered",
+    "ats": "Custom",
+    "urls": [
+      "https://jobs.standardchartered.com/go/Early-careers-Jobs/9783557/?&feedid=363857"
+    ]
+  },
+  {
+    "id": 30,
+    "company": "LatentView Analytics",
+    "ats": "Darwinbox",
+    "urls": [
+      "https://latentview.darwinbox.in/ms/candidatev2/main/careers/allJobs"
+    ]
+  },
+  {
+    "id": 31,
+    "company": "Tiger Analytics",
+    "ats": "Custom",
+    "urls": [
+      "https://www.tigeranalytics.com/about-us/current-openings/"
+    ]
+  },
+  {
+    "id": 32,
+    "company": "Renault Nissan",
+    "ats": "Workday",
+    "urls": [
+      "https://alliancewd.wd3.myworkdayjobs.com/renault-group-careers/job/IN_REN_RNTBCI-CHENNAI/Sr-Engineer--Proto-Types_JOBREQ_50247029-1"
+    ]
+  },
+  {
+    "id": 33,
+    "company": "Ford Motors",
+    "ats": "Unknown",
+    "note": "no link provided",
+    "urls": []
+  },
+  {
+    "id": 34,
+    "company": "Verizon",
+    "ats": "Workday",
+    "urls": [
+      "https://verizon.wd12.myworkdayjobs.com/verizon-careers/job/Hyderabad-India/Analyst-Contract-Management_R-1091278/apply"
+    ]
+  },
+  {
+    "id": 35,
+    "company": "Comcast",
+    "ats": "Custom",
+    "urls": [
+      "https://jobs.comcast.com/job/chennai/development-engineer-3/45483/94509760128"
+    ]
+  },
+  {
+    "id": 36,
+    "company": "Fireflies.ai",
+    "ats": "Gem",
+    "urls": [
+      "https://jobs.gem.com/fireflies/am9icG9zdDqXUtqNK-Y5LIdSxQYHLBn3"
+    ]
+  },
+  {
+    "id": 37,
+    "company": "Automattic",
+    "ats": "LinkedIn Only",
+    "urls": []
+  },
+  {
+    "id": 38,
+    "company": "Turing",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.turing.com/#job-gradient-menu"
+    ]
+  },
+  {
+    "id": 39,
+    "company": "Accenture",
+    "ats": "Custom",
+    "urls": [
+      "https://www.accenture.com/in-en/careers/jobsearch"
+    ]
+  },
+  {
+    "id": 40,
+    "company": "Wipro",
+    "ats": "SuccessFactors",
+    "urls": [
+      "https://career55.sapsf.eu/careers?company=wiprolimitP2"
+    ]
+  },
+  {
+    "id": 41,
+    "company": "LTIMindtree",
+    "ats": "SuccessFactors",
+    "urls": [
+      "https://career5.successfactors.eu/careers?company=larsentoub"
+    ]
+  },
+  {
+    "id": 42,
+    "company": "Capgemini",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.capgemini.com/job/Mumbai-%28ex-Bombay%29-Senior-Software-Engineer/1387990233/?feedId=388633&utm_source=CareerSite&tcsource=apply"
+    ]
+  },
+  {
+    "id": 43,
+    "company": "Virtusa",
+    "ats": "Custom",
+    "urls": [
+      "https://www.virtusa.com/careers/job-search"
+    ]
+  },
+  {
+    "id": 44,
+    "company": "HCLTech",
+    "ats": "SuccessFactors",
+    "urls": [
+      "https://career55.sapsf.eu/careers?company=HCLPRD"
+    ]
+  },
+  {
+    "id": 45,
+    "company": "Hexaware",
+    "ats": "Oracle Cloud",
+    "urls": [
+      "https://jobs.hexaware.com/#en/sites/CX_1/jobs?mode=location"
+    ]
+  },
+  {
+    "id": 46,
+    "company": "Mr. Cooper",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.mrcooper.com/us/en/search-results"
+    ]
+  },
+  {
+    "id": 47,
+    "company": "Caterpillar",
+    "ats": "Workday",
+    "urls": [
+      "https://cat.wd5.myworkdayjobs.com/en-US/CaterpillarCareers/job/Bangalore-Karnataka/Senior-Software-Engineer_R0000361784/apply"
+    ]
+  },
+  {
+    "id": 48,
+    "company": "Athenahealth",
+    "ats": "Custom",
+    "urls": [
+      "https://careers.athenahealth.com/us/en/search-results"
+    ]
+  },
+  {
+    "id": 49,
+    "company": "Temenos",
+    "ats": "Workday",
+    "urls": [
+      "https://temenos.wd103.myworkdayjobs.com/en-US/Temenoscareers"
+    ]
+  },
+  {
+    "id": 50,
+    "company": "Kaar Tech",
+    "ats": "Custom",
+    "urls": [
+      "https://www.kaartech.com/career/search-and-apply/"
+    ]
+  },
+  {
+    "id": 51,
+    "company": "Ramco Systems",
+    "ats": "Custom",
+    "urls": [
+      "https://www.ramco.com/careers/jobs-by-locations"
+    ]
+  },
+  {
+    "id": 52,
+    "company": "Intellect Design",
+    "ats": "Custom (Adrenalin)",
+    "note": "no jobs",
+    "urls": [
+      "https://cloud.myadrenalin.com/CandidateMAX/#/?CompanyID=INTELLECT"
+    ]
+  },
+  {
+    "id": 53,
+    "company": "Sify Tech",
+    "ats": "Tallite",
+    "urls": [
+      "https://sifycareer.tallite.com/jobs"
+    ]
+  },
+  {
+    "id": 54,
+    "company": "Tata Elxsi",
+    "ats": "Ramco",
+    "urls": [
+      "https://tataelxsi.ramcoes.com/RVW/hub/index.html?portal=true&RVWRTQS_REQID=492b9010-bcb9-41c5-ba69-04935205b380&_dc=1777457819691"
+    ]
+  },
+  {
+    "id": 55,
+    "company": "PhonePe",
+    "ats": "Greenhouse",
+    "urls": [
+      "https://job-boards.greenhouse.io/phonepe/jobs/7616612003"
+    ]
+  },
+  {
+    "id": 56,
+    "company": "Razorpay",
+    "ats": "Greenhouse",
+    "urls": [
+      "https://razorpay.com/jobs/jobs-all/detail/?gh_jid=4685992005"
+    ]
+  },
+  {
+    "id": 57,
+    "company": "Postman",
+    "ats": "Greenhouse",
+    "urls": [
+      "https://job-boards.greenhouse.io/postman/jobs/7689314003"
+    ]
+  }
+]
