@@ -44,15 +44,50 @@ def turso_execute(statements):
         return None
     return resp.json()
 
+def create_table_if_not_exists():
+    sql = """
+    CREATE TABLE IF NOT EXISTS bigcompany_jobs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        company TEXT NOT NULL,
+        location TEXT,
+        date_posted TEXT,
+        job_url TEXT,
+        direct_url TEXT NOT NULL,
+        site TEXT,
+        job_type TEXT,
+        is_remote TEXT,
+        fetched_at TEXT NOT NULL,
+        UNIQUE(direct_url)
+    )
+    """
+    turso_execute([sql])
+
+def is_india(location):
+    if not location: return True
+    loc = location.lower()
+    indian_keywords = [
+        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
+        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
+        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
+    ]
+    return any(k in loc for k in indian_keywords)
+
 def store_jobs_turso(jobs):
     if not jobs:
         return
+    
+    create_table_if_not_exists()
+    
+    # Filter for Indian jobs
+    india_jobs = [j for j in jobs if is_india(j.get("location", ""))]
+    
     fetched_at = datetime.now().strftime("%Y-%m-%d")
-    print(f"    [💾] Storing {len(jobs)} jobs in Turso (daily_jobs table)...")
+    print(f"    [💾] Storing {len(india_jobs)} India region jobs in Turso (bigcompany_jobs table)...")
     statements = []
-    for job in jobs:
+    for job in india_jobs:
         stmt = {
-            "sql": """INSERT OR IGNORE INTO daily_jobs
+            "sql": """INSERT OR IGNORE INTO bigcompany_jobs
                       (title, company, location, date_posted, job_url, direct_url, site, job_type, is_remote, fetched_at)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             "args": [
@@ -1371,7 +1406,7 @@ def main():
             continue
 
         url = urls[0]
-        jobs = detect_and_scrape(name, ats, url, limit=100)
+        jobs = detect_and_scrape(name, ats, url, limit=1000)
 
         if jobs:
             stats["success"] += 1
