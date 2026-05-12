@@ -8,12 +8,70 @@ import csv
 import sys
 import time
 import re
+import os
 import requests
+from datetime import datetime
 from urllib.parse import urlparse, urljoin, urlsplit, urlunsplit
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
+
+# ---- TURSO CONFIG ----
+TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
+
+def turso_execute(statements):
+    """Execute SQL statements via Turso HTTP API pipeline."""
+    url = f"{TURSO_URL}/v2/pipeline"
+    headers = {
+        "Authorization": f"Bearer {TURSO_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    requests_body = []
+    for stmt in statements:
+        if isinstance(stmt, str):
+            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
+        elif isinstance(stmt, dict):
+            requests_body.append({"type": "execute", "stmt": stmt})
+    requests_body.append({"type": "close"})
+    
+    resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
+    if resp.status_code != 200:
+        print(f"❌ Turso error: {resp.text[:200]}")
+        return None
+    return resp.json()
+
+def store_jobs_turso(jobs):
+    if not jobs:
+        return
+    fetched_at = datetime.now().strftime("%Y-%m-%d")
+    print(f"    [💾] Storing {len(jobs)} jobs in Turso (daily_jobs table)...")
+    statements = []
+    for job in jobs:
+        stmt = {
+            "sql": """INSERT OR IGNORE INTO daily_jobs
+                      (title, company, location, date_posted, job_url, direct_url, site, job_type, is_remote, fetched_at)
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            "args": [
+                {"type": "text", "value": job.get("title", "")},
+                {"type": "text", "value": job.get("company", "")},
+                {"type": "text", "value": job.get("location", "")},
+                {"type": "text", "value": job.get("posted", "")},
+                {"type": "text", "value": job.get("apply_url", "")},
+                {"type": "text", "value": job.get("apply_url", "")}, # using apply_url as direct_url
+                {"type": "text", "value": "direct-api"},
+                {"type": "text", "value": ""},
+                {"type": "text", "value": ""},
+                {"type": "text", "value": fetched_at},
+            ],
+        }
+        statements.append(stmt)
+    
+    result = turso_execute(statements)
+    if result:
+        inserted = sum(r.get("response", {}).get("result", {}).get("affected_row_count", 0) for r in result.get("results", []) if r.get("type") == "ok")
+        print(f"    [✅] Inserted {inserted} new jobs to Turso")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -1278,19 +1336,19 @@ def main():
     all_results = []
     stats = {"success": 0, "failed": 0, "total": len(companies)}
 
-    for i, company in enumerate(companies[:15]): # Run for top 15 to test
+    for i, company in enumerate(companies):
         name = company["company"]
         ats = company.get("ats", "Unknown")
         urls = company.get("urls", [])
 
-        print(f"\n[{i+1}/15] {name} ({ats})")
+        print(f"\n[{i+1}/{len(companies)}] {name} ({ats})")
 
         if not urls:
             print(f"    -> NO LINK")
             continue
 
         url = urls[0]
-        jobs = detect_and_scrape(name, ats, url, limit=1)
+        jobs = detect_and_scrape(name, ats, url, limit=5)
 
         if jobs:
             stats["success"] += 1
@@ -1306,7 +1364,11 @@ def main():
 
     print("\n" + "=" * 70)
     print(f"  SUMMARY: {stats['success']} successful, {stats['failed']} failed")
+    print(f"  TOTAL JOBS: {len(all_results)}")
     print("=" * 70)
+    
+    # Store to Turso DB
+    store_jobs_turso(all_results)
 
 if __name__ == "__main__":
     main()
