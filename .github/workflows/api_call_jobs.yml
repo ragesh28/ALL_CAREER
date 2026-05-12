@@ -21,7 +21,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4 playwright pandas
+          pip install requests beautifulsoup4 playwright pandas python-jobspy
           playwright install --with-deps chromium
 
       - name: Run API Scraper

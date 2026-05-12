@@ -14,6 +14,8 @@ from datetime import datetime
 from urllib.parse import urlparse, urljoin, urlsplit, urlunsplit
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+from jobspy import scrape_jobs
+import pandas as pd
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -1255,15 +1257,35 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     
     # ── JOBSPY FALLBACK (LinkedIn/Indeed for companies without direct API) ──
     jobspy_companies = [
-        "zoho", "zomato", "atlassian", "mad street den", "yubi",
-        "walmart", "hcltech", "hcl tech", "chargebee",
-        "sify", "tata elxsi", "mr. cooper", "mr cooper",
-        "kissflow", "ford", "automattic", "kaar tech", "ramco",
-        "latentview", "tcs"
+        "kaleidofin", "hcltech", "hcl tech", "walmart", 
+        "chargebee", "tcs", "mu sigma"
     ]
     if any(c in name_lower for c in jobspy_companies):
         print(f"    [JobSpy/LinkedIn fallback]")
-        return scrape_jobspy(company_name, url, limit)
+        try:
+            jobs_df = scrape_jobs(
+                site_name=["linkedin", "indeed"],
+                search_term="software engineer",
+                location="India",
+                company_name=company_name,
+                results_wanted=limit,
+                country_indeed="India",
+                hours_old=72,
+            )
+            if jobs_df.empty: return []
+            jobs = []
+            for _, row in jobs_df.iterrows():
+                jobs.append({
+                    "title": str(row.get("title", "")),
+                    "location": str(row.get("location", "")),
+                    "posted": str(row.get("date_posted", "")),
+                    "apply_url": str(row.get("job_url", url)),
+                    "total_jobs": len(jobs_df)
+                })
+            return jobs[:limit]
+        except Exception as e:
+            print(f"    JobSpy error: {e}")
+            return []
     
     # ── EXISTING APIS ──
     if "myworkdayjobs.com" in url_lower: return scrape_workday(url, limit)
