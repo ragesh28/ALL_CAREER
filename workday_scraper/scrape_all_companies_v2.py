@@ -86,16 +86,15 @@ def is_india(location):
 
 def store_jobs_turso(jobs):
     if not jobs:
-        return
+        return 0
     
     create_table_if_not_exists()
     
-    # Filter for Indian jobs
     india_jobs = [j for j in jobs if is_india(j.get("location", ""))]
-    
+    if not india_jobs:
+        return 0
+        
     fetched_at = datetime.now().strftime("%Y-%m-%d")
-    print(f"    [💾] Storing {len(india_jobs)} India region jobs in Turso (bigcompany_jobs table) in batches...")
-    
     batch_size = 100
     total_inserted = 0
     
@@ -113,7 +112,7 @@ def store_jobs_turso(jobs):
                     {"type": "text", "value": job.get("location", "")},
                     {"type": "text", "value": job.get("posted", "")},
                     {"type": "text", "value": job.get("apply_url", "")},
-                    {"type": "text", "value": job.get("apply_url", "")}, # using apply_url as direct_url
+                    {"type": "text", "value": job.get("apply_url", "")},
                     {"type": "text", "value": "direct-api"},
                     {"type": "text", "value": ""},
                     {"type": "text", "value": ""},
@@ -126,11 +125,8 @@ def store_jobs_turso(jobs):
         if result:
             inserted = sum(r.get("response", {}).get("result", {}).get("affected_row_count", 0) for r in result.get("results", []) if r.get("type") == "ok")
             total_inserted += inserted
-            print(f"    [✅] Inserted {inserted} jobs (Batch {i//batch_size + 1}/{(len(india_jobs)-1)//batch_size + 1})")
-        else:
-            print(f"    [❌] Failed batch {i//batch_size + 1}")
             
-    print(f"    [✅] Finished! Total inserted to Turso: {total_inserted}")
+    return total_inserted
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -1315,7 +1311,8 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     # ── JOBSPY FALLBACK (LinkedIn/Indeed for companies without direct API) ──
     jobspy_companies = [
         "kaleidofin", "hcltech", "hcl tech", "walmart", 
-        "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi"
+        "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi",
+        "ramco", "uber", "wells fargo"
     ]
     if any(c in name_lower for c in jobspy_companies):
         print(f"    [JobSpy/LinkedIn fallback]")
@@ -1414,7 +1411,9 @@ def main():
         return
 
     all_results = []
-    stats = {"success": 0, "failed": 0, "total": len(companies)}
+    working_companies = []
+    not_working_companies = []
+    total_new_jobs = 0
 
     for i, company in enumerate(companies):
         name = company["company"]
@@ -1425,30 +1424,35 @@ def main():
 
         if not urls:
             print(f"    -> NO LINK")
+            not_working_companies.append(name)
             continue
 
         url = urls[0]
         jobs = detect_and_scrape(name, ats, url, limit=1000)
 
         if jobs:
-            stats["success"] += 1
-            for job in jobs:
-                job["company"] = name
-                all_results.append(job)
-                print(f"    -> SUCCESS: {job['title'][:60]}")
+            newly_inserted = store_jobs_turso(jobs)
+            total_new_jobs += newly_inserted
+            working_companies.append(name)
+            all_results.extend(jobs)
+            print(f"    -> SUCCESS: Scraped {len(jobs)} jobs | Newly Inserted to DB: {newly_inserted}")
         else:
-            stats["failed"] += 1
-            print(f"    -> FAILED")
-
-        time.sleep(1)
+            not_working_companies.append(name)
+            print(f"    -> FAILED (No jobs found or error)")
 
     print("\n" + "=" * 70)
-    print(f"  SUMMARY: {stats['success']} successful, {stats['failed']} failed")
-    print(f"  TOTAL JOBS: {len(all_results)}")
+    print("  FINAL SCRAPE REPORT")
     print("=" * 70)
-    
-    # Store to Turso DB
-    store_jobs_turso(all_results)
+    print(f"  Total Companies Checked : {len(companies)}")
+    print(f"  Working Companies       : {len(working_companies)}")
+    print(f"  Failed Companies        : {len(not_working_companies)}")
+    print(f"  Total Jobs Scraped      : {len(all_results)}")
+    print(f"  NEW JOBS ADDED TO DB    : {total_new_jobs}")
+    print("\n  [WORKING COMPANIES]")
+    print("  " + ", ".join(working_companies))
+    print("\n  [NOT WORKING COMPANIES]")
+    print("  " + ", ".join(not_working_companies))
+    print("=" * 70)
 
 if __name__ == "__main__":
     main()
