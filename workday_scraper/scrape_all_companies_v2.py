@@ -276,74 +276,51 @@ def scrape_zerodha(url, limit=2):
 # ============================================================================
 
 def scrape_google_html(url, limit=2):
-    """Scrape Google jobs via direct HTML parsing - NO browser needed.
-    Approach from stapply-ai/ats-scrapers."""
+    """Scrape Google jobs via direct HTML parsing - NO browser needed. Fast pagination."""
     try:
-        # Step 1: Get list page
-        params = {"hl": "en_US"}
-        resp = requests.get(
-            "https://www.google.com/about/careers/applications/jobs/results",
-            headers={"User-Agent": "Mozilla/5.0 (compatible; JobAggregator/1.0)"},
-            params=params, timeout=30
-        )
-        soup = BeautifulSoup(resp.text, "html.parser")
-        
-        # Extract job links via aria-label pattern
-        links = []
-        for a in soup.find_all("a", attrs={"aria-label": True, "href": True}):
-            if a["aria-label"].startswith("Learn more about"):
-                href = urljoin("https://www.google.com/about/careers/applications/", a["href"])
-                # Canonicalize - strip query params
-                parts = urlsplit(href)
-                href = urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
-                if href not in links:
-                    links.append(href)
-        
-        total = len(links)
-        if not links:
-            print("    Google: No job links found on results page")
-            return []
-        
-        print(f"    Google: Found {total} job links on page 1")
-        
-        # Step 2: Parse individual job pages
         jobs = []
-        for link in links[:limit]:
-            try:
-                r2 = requests.get(link, headers={"User-Agent": "Mozilla/5.0 (compatible; JobAggregator/1.0)"}, timeout=30)
-                soup2 = BeautifulSoup(r2.text, "html.parser")
+        page = 1
+        while len(jobs) < limit:
+            params = {"hl": "en_US", "location": "India"}
+            if page > 1:
+                params["page"] = page
                 
-                # Title: try CSS selector first, fallback to h2/h1
-                title = None
-                for sel in ["div.sPeqm h2", "h2", "h1"]:
-                    elem = soup2.select_one(sel)
-                    if elem:
-                        title = elem.get_text(strip=True)
-                        break
-                
-                # Location
-                location = None
-                loc_elem = soup2.select_one("div.op1BBf span.pwO9Dc span")
-                if loc_elem:
-                    location = loc_elem.get_text(strip=True)
-                else:
-                    text = soup2.get_text("\n", strip=True)
-                    for line in text.splitlines():
-                        if line.startswith("Google |"):
-                            location = line.replace("Google |", "").strip()
+            resp = requests.get(
+                "https://www.google.com/about/careers/applications/jobs/results",
+                headers={"User-Agent": "Mozilla/5.0 (compatible; JobAggregator/1.0)"},
+                params=params, timeout=30
+            )
+            soup = BeautifulSoup(resp.text, "html.parser")
+            
+            links_found = 0
+            for a in soup.find_all("a", attrs={"aria-label": True, "href": True}):
+                label = a["aria-label"]
+                if label.startswith("Learn more about"):
+                    title = label.replace("Learn more about", "").strip()
+                    href = urljoin("https://www.google.com/about/careers/applications/", a["href"])
+                    # Canonicalize href
+                    parts = urlsplit(href)
+                    href = urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
+                    
+                    # Avoid duplicates
+                    if not any(j["apply_url"] == href for j in jobs):
+                        jobs.append({
+                            "title": clean(title),
+                            "location": "India",
+                            "posted": "",
+                            "apply_url": href,
+                            "total_jobs": 0 # Unknown
+                        })
+                        links_found += 1
+                        if len(jobs) >= limit:
                             break
+                            
+            if links_found == 0:
+                break
                 
-                jobs.append({
-                    "title": clean(title or "Unknown"),
-                    "location": clean(location or ""),
-                    "posted": "",
-                    "apply_url": link,
-                    "total_jobs": total
-                })
-                time.sleep(0.5)
-            except Exception as e:
-                print(f"    Google job page error: {e}")
-        
+            page += 1
+            time.sleep(0.5)
+            
         return jobs
     except Exception as e:
         print(f"    Google HTML scraper error: {e}")
@@ -351,43 +328,56 @@ def scrape_google_html(url, limit=2):
 
 
 def scrape_microsoft_api(url, limit=2):
-    """Scrape Microsoft jobs via Eightfold API - NO browser needed.
-    Approach from stapply-ai/ats-scrapers."""
+    """Scrape Microsoft jobs via Eightfold API - NO browser needed."""
     try:
         BASE = "https://apply.careers.microsoft.com"
-        params = {
-            "domain": "microsoft.com",
-            "query": "",
-            "location": "",
-            "start": 0,
-            "sort_by": "timestamp",
-        }
-        resp = requests.get(
-            f"{BASE}/api/pcsx/search",
-            params=params,
-            headers={"accept": "application/json", "user-agent": "Mozilla/5.0"},
-            timeout=15
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        positions = data.get("data", {}).get("positions", [])
-        
-        # Try to get total count
-        total = data.get("data", {}).get("total", len(positions))
-        
         jobs = []
-        for p in positions[:limit]:
-            locs = p.get("locations", [])
-            loc_str = ", ".join(locs) if isinstance(locs, list) else str(locs)
-            jobs.append({
-                "title": clean(p.get("name", "")),
-                "location": clean(loc_str),
-                "posted": "",
-                "apply_url": BASE + p.get("positionUrl", ""),
-                "total_jobs": total,
-                "department": clean(p.get("department", "")),
-            })
-        return jobs
+        offset = 0
+        batch_size = 50
+        
+        while len(jobs) < limit:
+            fetch_size = min(batch_size, limit - len(jobs))
+            params = {
+                "domain": "microsoft.com",
+                "query": "",
+                "location": "India",
+                "start": offset,
+                "sort_by": "timestamp",
+            }
+            resp = requests.get(
+                f"{BASE}/api/pcsx/search",
+                params=params,
+                headers={"accept": "application/json", "user-agent": "Mozilla/5.0"},
+                timeout=15
+            )
+            
+            if resp.status_code != 200:
+                break
+                
+            data = resp.json()
+            positions = data.get("data", {}).get("positions", [])
+            total = data.get("data", {}).get("total", 0)
+            
+            if not positions:
+                break
+                
+            for p in positions:
+                locs = p.get("locations", [])
+                loc_str = ", ".join(locs) if isinstance(locs, list) else str(locs)
+                jobs.append({
+                    "title": clean(p.get("name", "")),
+                    "location": clean(loc_str),
+                    "posted": "",
+                    "apply_url": BASE + p.get("positionUrl", ""),
+                    "total_jobs": total,
+                    "department": clean(p.get("department", "")),
+                })
+                
+            offset += len(positions)
+            if len(positions) < fetch_size:
+                break
+                
+        return jobs[:limit]
     except Exception as e:
         print(f"    Microsoft API error: {e}")
     return []
