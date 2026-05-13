@@ -45,7 +45,7 @@ def is_india(location):
     ]
     return any(k in loc for k in indian_keywords)
 
-def store_jobs_local(jobs, existing_jobs):
+def store_jobs_local(jobs, existing_jobs, company_name):
     if not jobs:
         return 0
     
@@ -61,6 +61,7 @@ def store_jobs_local(jobs, existing_jobs):
     for job in india_jobs:
         url = job.get("apply_url", "")
         if url and url not in existing_urls:
+            job["company"] = company_name
             job["fetched_at"] = fetched_at
             existing_jobs.append(job)
             existing_urls.add(url)
@@ -242,11 +243,20 @@ def scrape_google_html(url, limit=2):
                     parts = urlsplit(href)
                     href = urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
                     
-                    # Avoid duplicates
                     if not any(j["apply_url"] == href for j in jobs):
+                        # Attempt to extract location from the parent card
+                        location_text = "India"
+                        card = a.find_parent("li") or a.find_parent("div", class_=lambda c: c and "card" in c.lower())
+                        if card:
+                            card_text = card.get_text(separator=" | ", strip=True)
+                            if "place | " in card_text:
+                                loc_parts = card_text.split("place | ")
+                                if len(loc_parts) > 1:
+                                    location_text = loc_parts[1].split(" | ")[0]
+                                    
                         jobs.append({
                             "title": clean(title),
-                            "location": "India",
+                            "location": location_text,
                             "posted": "",
                             "apply_url": href,
                             "total_jobs": 0 # Unknown
@@ -1431,7 +1441,7 @@ def main():
         jobs = detect_and_scrape(name, ats, url, limit=1000)
 
         if jobs:
-            newly_inserted = store_jobs_local(jobs, existing_jobs)
+            newly_inserted = store_jobs_local(jobs, existing_jobs, name)
             total_new_jobs += newly_inserted
             working_companies.append(name)
             all_results.extend(jobs)
