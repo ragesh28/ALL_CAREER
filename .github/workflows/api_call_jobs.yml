@@ -35,4 +35,5 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add workday_scraper/big_company_jobs.json
           git commit -m "chore(jobs): Update big company jobs JSON [skip ci]" || echo "No new jobs to commit"
+          git pull --rebase origin main
           git push
