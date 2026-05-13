@@ -1031,27 +1031,44 @@ def scrape_workday(url, limit=2):
         site = path_parts[-3] if len(path_parts) >= 3 else site
     else:
         api_url = f"https://{tenant}.{wd_server}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/jobs"
-    payload = {"appliedFacets": {}, "limit": limit, "offset": 0, "searchText": ""}
-    try:
-        resp = requests.post(api_url, headers={**HEADERS, "Content-Type": "application/json"}, json=payload, timeout=10)
-        if resp.status_code == 200:
-            data = resp.json()
-            total = data.get("total", 0)
-            jobs = []
-            for job in data.get("jobPostings", [])[:limit]:
-                ext_path = job.get("externalPath", "")
-                apply_url = f"https://{tenant}.{wd_server}.myworkdayjobs.com/en-US/{site}{ext_path}" if ext_path else ""
-                jobs.append({
-                    "title": clean(job.get("title", "")),
-                    "location": clean(job.get("locationsText", "")),
-                    "posted": clean(job.get("postedOn", "")),
-                    "apply_url": apply_url,
-                    "total_jobs": total,
-                })
-            return jobs
-    except Exception as e:
-        print(f"    Workday API error: {e}")
-    return []
+    jobs = []
+    offset = 0
+    batch_size = 20
+    
+    while len(jobs) < limit:
+        fetch_size = min(batch_size, limit - len(jobs))
+        payload = {"appliedFacets": {}, "limit": fetch_size, "offset": offset, "searchText": ""}
+        try:
+            resp = requests.post(api_url, headers={**HEADERS, "Content-Type": "application/json"}, json=payload, timeout=10)
+            if resp.status_code == 200:
+                data = resp.json()
+                total = data.get("total", 0)
+                postings = data.get("jobPostings", [])
+                
+                if not postings:
+                    break
+                    
+                for job in postings:
+                    ext_path = job.get("externalPath", "")
+                    apply_url = f"https://{tenant}.{wd_server}.myworkdayjobs.com/en-US/{site}{ext_path}" if ext_path else ""
+                    jobs.append({
+                        "title": clean(job.get("title", "")),
+                        "location": clean(job.get("locationsText", "")),
+                        "posted": clean(job.get("postedOn", "")),
+                        "apply_url": apply_url,
+                        "total_jobs": total,
+                    })
+                    
+                offset += len(postings)
+                if offset >= total:
+                    break
+            else:
+                break
+        except Exception as e:
+            print(f"    Workday API error: {e}")
+            break
+            
+    return jobs
 
 def scrape_eightfold(url, limit=2):
     parsed = urlparse(url)
@@ -1231,51 +1248,6 @@ def scrape_uber(url, limit=2):
     except: pass
     return []
 
-def scrape_oracle_cloud(url, limit=2):
-    """Scrape Oracle Cloud HCM jobs."""
-    try:
-        parsed = urlparse(url)
-        base_url = f"{parsed.scheme}://{parsed.netloc}"
-        api_url = f"{base_url}/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
-        
-        jobs = []
-        offset = 0
-        batch_size = 25
-        while len(jobs) < limit:
-            fetch_size = min(batch_size, limit - len(jobs))
-            params = {
-                "offset": offset,
-                "limit": fetch_size,
-                "q": "PrimaryLocationCountry:India"
-            }
-            resp = requests.get(api_url, headers=HEADERS, params=params, timeout=15)
-            if resp.status_code != 200:
-                break
-                
-            data = resp.json()
-            items = data.get("items", [])
-            
-            if not items:
-                break
-                
-            for j in items:
-                loc = j.get("PrimaryLocation", "")
-                jobs.append({
-                    "title": clean(j.get("Title", "")),
-                    "location": clean(loc),
-                    "posted": clean(str(j.get("PostedDate", ""))[:10]),
-                    "apply_url": f"{base_url}/hcmUI/CandidateExperience/en/sites/CX_1/job/{j.get('Id','')}",
-                    "total_jobs": 0,
-                })
-                
-            offset += len(items)
-            if len(items) < fetch_size:
-                break
-                
-        return jobs[:limit]
-    except Exception as e:
-        print(f"    Oracle Cloud API error: {e}")
-    return []
 
 # ============================================================================
 #  ROUTING
