@@ -1248,14 +1248,123 @@ def scrape_uber(url, limit=2):
     except: pass
     return []
 
+def scrape_radancy(url, limit=2):
+    """Scrape Radancy HTML (Target, Intuit, etc.)"""
+    jobs = []
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        items = soup.select('section#search-results-list ul li')
+        for item in items[:limit]:
+            title_elem = item.select_one('h2, h3, a')
+            loc_elem = item.select_one('.job-location')
+            if not title_elem:
+                continue
+            title = title_elem.text.strip()
+            loc = loc_elem.text.strip() if loc_elem else "India"
+            a_tag = item.select_one('a')
+            apply_url = a_tag['href'] if a_tag and a_tag.has_attr('href') else url
+            if apply_url.startswith('/'):
+                parsed = urlparse(url)
+                apply_url = f"{parsed.scheme}://{parsed.netloc}{apply_url}"
+            jobs.append({
+                "title": clean(title),
+                "location": clean(loc),
+                "posted": "",
+                "apply_url": apply_url,
+                "total_jobs": len(items)
+            })
+    except Exception as e:
+        print(f"    Radancy HTML API error: {e}")
+    return jobs
+
+def scrape_successfactors(url, limit=2):
+    """Scrape SuccessFactors HTML (SAP Labs, etc.)"""
+    jobs = []
+    try:
+        # Append locationsearch=India if not present
+        if "?" not in url:
+            url += "?q=&locationsearch=India"
+        elif "locationsearch" not in url:
+            url += "&locationsearch=India"
+            
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        items = soup.select('tr.data-row')
+        for item in items[:limit]:
+            title_elem = item.select_one('.jobTitle-link')
+            loc_elem = item.select_one('.jobLocation')
+            date_elem = item.select_one('.jobDate')
+            if not title_elem:
+                continue
+            title = title_elem.text.strip()
+            loc = loc_elem.text.strip() if loc_elem else "India"
+            date = date_elem.text.strip() if date_elem else ""
+            apply_url = title_elem['href']
+            if apply_url.startswith('/'):
+                parsed = urlparse(url)
+                apply_url = f"{parsed.scheme}://{parsed.netloc}{apply_url}"
+            jobs.append({
+                "title": clean(title),
+                "location": clean(loc),
+                "posted": clean(date),
+                "apply_url": apply_url,
+                "total_jobs": len(items)
+            })
+    except Exception as e:
+        print(f"    SuccessFactors HTML API error: {e}")
+    return jobs
+
+def scrape_curefit(url, limit=2):
+    """Scrape Cure.fit using Zwayam API with Session Emulation."""
+    jobs = []
+    try:
+        session = requests.Session()
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+            'Referer': 'https://careers.cult.fit/',
+            'Origin': 'https://careers.cult.fit',
+        }
+        # Step A: Collect cookies
+        session.get('https://careers.cult.fit/cult/jobslist', headers=headers, timeout=15)
+        
+        # Step B: Multipart form-data
+        payload = {
+            'domain': (None, 'careers.cult.fit'),
+            'companyId': (None, 'MTU0NzA='),
+            'filterCri': (None, '{"paginationStartNo":0,"selectedCall":"sort","sortCriteria":{"name":"modifiedDate","isAscending":false},"anyOfTheseWords":""}')
+        }
+        resp = session.post('https://public.zwayam.com/jobs/search', files=payload, headers=headers, timeout=15)
+        if resp.status_code == 200:
+            data = resp.json().get('data', {}).get('data', [])
+            for j in data[:limit]:
+                src = j.get('_source', {})
+                jobs.append({
+                    "title": clean(src.get("title", "")),
+                    "location": clean(src.get("city", "India")),
+                    "posted": "",
+                    "apply_url": "https://careers.cult.fit/cult/jobslist",
+                    "total_jobs": len(data)
+                })
+    except Exception as e:
+        print(f"    Cure.fit Zwayam error: {e}")
+    return jobs
 
 # ============================================================================
 #  ROUTING
 # ============================================================================
 
 def detect_and_scrape(company_name, ats_type, url, limit=2):
+    if not url: return []
     url_lower = url.lower()
     name_lower = company_name.lower()
+    
+    if ats_type == "Radancy":
+        return scrape_radancy(url, limit)
+    if ats_type == "SuccessFactors":
+        return scrape_successfactors(url, limit)
+    if ats_type == "Zwayam" or name_lower == "cure.fit":
+        return scrape_curefit(url, limit)
     
     # ── FAANG / BIG COMPANY DEDICATED SCRAPERS ──
     if name_lower == "google" or "google.com/about/careers" in url_lower:
