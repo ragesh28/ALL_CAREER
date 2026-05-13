@@ -6,6 +6,7 @@ Integrates all discovered direct APIs and Playwright fallbacks.
 import json
 import csv
 import sys
+import uuid
 import time
 import re
 import os
@@ -1350,6 +1351,78 @@ def scrape_curefit(url, limit=2):
         print(f"    Cure.fit Zwayam error: {e}")
     return jobs
 
+def scrape_goldmansachs(url, limit=2):
+    """Scrape Goldman Sachs Custom GraphQL API."""
+    jobs = []
+    try:
+        api_url = "https://api-higher.gs.com/gateway/api/v1/graphql"
+        headers = {
+            'accept': '*/*',
+            'content-type': 'application/json',
+            'origin': 'https://higher.gs.com',
+            'referer': 'https://higher.gs.com/',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'x-higher-session-id': str(uuid.uuid4())
+        }
+        
+        offset = 0
+        batch_size = 20
+        while len(jobs) < limit:
+            fetch_size = min(batch_size, limit - len(jobs))
+            payload = {
+                "operationName": "GetRoles",
+                "variables": {
+                    "searchQueryInput": {
+                        "page": {"pageSize": fetch_size, "pageNumber": offset // batch_size},
+                        "sort": {"sortStrategy": "RELEVANCE", "sortOrder": "DESC"},
+                        "filters": [{
+                            "filterCategoryType": "LOCATION",
+                            "filters": [{
+                                "filter": "India",
+                                "subFilters": [
+                                    {"filter": "Karnataka", "subFilters": [{"filter": "Bengaluru", "subFilters": []}]},
+                                    {"filter": "Maharashtra", "subFilters": [{"filter": "Mumbai", "subFilters": []}]},
+                                    {"filter": "Telangana", "subFilters": [{"filter": "Hyderabad", "subFilters": []}]}
+                                ]
+                            }]
+                        }],
+                        "experiences": ["EARLY_CAREER", "PROFESSIONAL"],
+                        "searchTerm": ""
+                    }
+                },
+                "query": "query GetRoles($searchQueryInput: RoleSearchQueryInput!) {\n  roleSearch(searchQueryInput: $searchQueryInput) {\n    totalCount\n    items {\n      roleId\n      corporateTitle\n      jobTitle\n      jobFunction\n      locations {\n        primary\n        state\n        country\n        city\n        __typename\n      }\n      status\n      division\n      skills\n      jobType {\n        code\n        description\n        __typename\n      }\n      externalSource {\n        sourceId\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}"
+            }
+            
+            resp = requests.post(api_url, headers=headers, json=payload, timeout=15)
+            if resp.status_code != 200:
+                break
+                
+            data = resp.json().get('data', {}).get('roleSearch', {})
+            items = data.get('items', [])
+            total_count = data.get('totalCount', 0)
+            
+            if not items:
+                break
+                
+            for j in items:
+                locs = j.get('locations', [])
+                city = locs[0].get('city', 'India') if locs else 'India'
+                jobs.append({
+                    "title": clean(j.get("jobTitle", "")),
+                    "location": clean(city),
+                    "posted": "",
+                    "apply_url": f"https://higher.gs.com/roles/{j.get('roleId', '')}",
+                    "total_jobs": total_count
+                })
+                
+            offset += len(items)
+            if offset >= total_count:
+                break
+                
+    except Exception as e:
+        print(f"    Goldman Sachs API error: {e}")
+    return jobs
+
 # ============================================================================
 #  ROUTING
 # ============================================================================
@@ -1365,6 +1438,8 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
         return scrape_successfactors(url, limit)
     if ats_type == "Zwayam" or name_lower == "cure.fit":
         return scrape_curefit(url, limit)
+    if name_lower == "goldman sachs":
+        return scrape_goldmansachs(url, limit)
     
     # ── FAANG / BIG COMPANY DEDICATED SCRAPERS ──
     if name_lower == "google" or "google.com/about/careers" in url_lower:
