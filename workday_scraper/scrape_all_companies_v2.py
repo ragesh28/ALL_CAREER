@@ -19,60 +19,21 @@ import pandas as pd
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
-# ---- TURSO CONFIG ----
-TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = os.environ.get("TURSO_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
+# ---- LOCAL JSON CONFIG ----
+DB_FILE = "big_company_jobs.json"
 
-def turso_execute(statements, retries=3):
-    """Execute SQL statements via Turso HTTP API pipeline with retries and 120s timeout."""
-    url = f"{TURSO_URL}/v2/pipeline"
-    headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    requests_body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            requests_body.append({"type": "execute", "stmt": stmt})
-    requests_body.append({"type": "close"})
-    
-    for attempt in range(retries):
+def load_existing_jobs():
+    if os.path.exists(DB_FILE):
         try:
-            resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=120)
-            if resp.status_code != 200:
-                print(f"❌ Turso error (Attempt {attempt+1}): {resp.text[:200]}")
-                time.sleep(2)
-                continue
-            return resp.json()
-        except requests.exceptions.ReadTimeout:
-            print(f"⚠️ Turso ReadTimeout (Attempt {attempt+1}/{retries})")
-            time.sleep(5)
-        except Exception as e:
-            print(f"⚠️ Turso Error (Attempt {attempt+1}/{retries}): {e}")
-            time.sleep(5)
-            
-    return None
+            with open(DB_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
 
-def create_table_if_not_exists():
-    sql = """
-    CREATE TABLE IF NOT EXISTS bigcompany_jobs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        company TEXT NOT NULL,
-        location TEXT,
-        date_posted TEXT,
-        job_url TEXT,
-        direct_url TEXT NOT NULL,
-        site TEXT,
-        job_type TEXT,
-        is_remote TEXT,
-        fetched_at TEXT NOT NULL,
-        UNIQUE(direct_url)
-    )
-    """
-    turso_execute([sql])
+def save_jobs(jobs):
+    with open(DB_FILE, "w", encoding="utf-8") as f:
+        json.dump(jobs, f, indent=4)
 
 def is_india(location):
     if not location: return True
@@ -84,47 +45,26 @@ def is_india(location):
     ]
     return any(k in loc for k in indian_keywords)
 
-def store_jobs_turso(jobs):
+def store_jobs_local(jobs, existing_jobs):
     if not jobs:
         return 0
-    
-    create_table_if_not_exists()
     
     india_jobs = [j for j in jobs if is_india(j.get("location", ""))]
     if not india_jobs:
         return 0
         
     fetched_at = datetime.now().strftime("%Y-%m-%d")
-    batch_size = 100
     total_inserted = 0
     
-    for i in range(0, len(india_jobs), batch_size):
-        batch = india_jobs[i:i+batch_size]
-        statements = []
-        for job in batch:
-            stmt = {
-                "sql": """INSERT OR IGNORE INTO bigcompany_jobs
-                          (title, company, location, date_posted, job_url, direct_url, site, job_type, is_remote, fetched_at)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                "args": [
-                    {"type": "text", "value": job.get("title", "")},
-                    {"type": "text", "value": job.get("company", "")},
-                    {"type": "text", "value": job.get("location", "")},
-                    {"type": "text", "value": job.get("posted", "")},
-                    {"type": "text", "value": job.get("apply_url", "")},
-                    {"type": "text", "value": job.get("apply_url", "")},
-                    {"type": "text", "value": "direct-api"},
-                    {"type": "text", "value": ""},
-                    {"type": "text", "value": ""},
-                    {"type": "text", "value": fetched_at},
-                ],
-            }
-            statements.append(stmt)
-        
-        result = turso_execute(statements)
-        if result:
-            inserted = sum(r.get("response", {}).get("result", {}).get("affected_row_count", 0) for r in result.get("results", []) if r.get("type") == "ok")
-            total_inserted += inserted
+    existing_urls = {j.get("apply_url") for j in existing_jobs if j.get("apply_url")}
+    
+    for job in india_jobs:
+        url = job.get("apply_url", "")
+        if url and url not in existing_urls:
+            job["fetched_at"] = fetched_at
+            existing_jobs.append(job)
+            existing_urls.add(url)
+            total_inserted += 1
             
     return total_inserted
 
@@ -1467,6 +1407,9 @@ def main():
         print("  Error: companies_links.json not found.")
         return
 
+    existing_jobs = load_existing_jobs()
+    print(f"  Loaded {len(existing_jobs)} existing jobs from {DB_FILE}.")
+
     all_results = []
     working_companies = []
     not_working_companies = []
@@ -1488,7 +1431,7 @@ def main():
         jobs = detect_and_scrape(name, ats, url, limit=1000)
 
         if jobs:
-            newly_inserted = store_jobs_turso(jobs)
+            newly_inserted = store_jobs_local(jobs, existing_jobs)
             total_new_jobs += newly_inserted
             working_companies.append(name)
             all_results.extend(jobs)
@@ -1496,6 +1439,10 @@ def main():
         else:
             not_working_companies.append(name)
             print(f"    -> FAILED (No jobs found or error)")
+
+    if total_new_jobs > 0:
+        save_jobs(existing_jobs)
+        print(f"\n  Successfully updated {DB_FILE} with new jobs.")
 
     print("\n" + "=" * 70)
     print("  FINAL SCRAPE REPORT")
