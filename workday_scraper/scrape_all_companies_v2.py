@@ -897,6 +897,58 @@ def scrape_wipro(url, limit=2):
     return []
 
 
+def scrape_hcltech(url, limit=2):
+    """Scrape HCLTech via Playwright (SuccessFactors is JS-rendered)."""
+    jobs = []
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            def handle_response(response):
+                nonlocal jobs
+                if len(jobs) >= limit:
+                    return
+                content_type = response.headers.get("content-type", "")
+                if "json" not in content_type:
+                    return
+                try:
+                    data = response.json()
+                    # SuccessFactors returns job data as a list or in a 'results' key
+                    items = []
+                    if isinstance(data, list) and len(data) > 0:
+                        items = data
+                    elif isinstance(data, dict):
+                        for k in ["results", "jobs", "data", "jobSearchResult", "Items"]:
+                            if isinstance(data.get(k), list) and len(data[k]) > 0:
+                                items = data[k]
+                                break
+                    
+                    for j in items[:limit]:
+                        if not isinstance(j, dict):
+                            continue
+                        title = j.get("title", j.get("jobTitle", j.get("name", "")))
+                        loc = j.get("location", j.get("city", j.get("jobLocation", "")))
+                        if isinstance(title, str) and len(title) > 3:
+                            jobs.append({
+                                "title": clean(str(title)),
+                                "location": clean(str(loc)) if loc else "India",
+                                "posted": "",
+                                "apply_url": url,
+                                "total_jobs": len(items)
+                            })
+                except:
+                    pass
+
+            page.on("response", handle_response)
+            page.goto("https://career55.sapsf.eu/career?company=HCLPRD", wait_until="domcontentloaded", timeout=25000)
+            page.wait_for_timeout(10000)
+            browser.close()
+    except Exception as e:
+        print(f"    HCLTech Playwright error: {e}")
+    return jobs[:limit]
+
+
 
 # ============================================================================
 #  INFOSYS (Playwright - intercepts getCareerSearchJobs API)
@@ -913,6 +965,9 @@ def scrape_infosys_playwright(url, limit=2):
             def handle_response(response):
                 nonlocal jobs
                 if "getCareerSearchJobs" in response.url and len(jobs) < limit:
+                    content_type = response.headers.get("content-type", "")
+                    if "json" not in content_type:
+                        return
                     try:
                         data = response.json()
                         # Response is a direct list of job objects
@@ -1444,14 +1499,27 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     url_lower = url.lower()
     name_lower = company_name.lower()
     
+    # ── COMPANY-SPECIFIC DEDICATED SCRAPERS (checked FIRST, before ATS type) ──
+    # These companies have ats="SuccessFactors" in config but need their OWN scrapers
+    if "wipro" in name_lower:
+        return scrape_wipro(url, limit)
+    if "ltimindtree" in name_lower or "lti" in name_lower:
+        return scrape_ltimindtree(url, limit)
+    if "hcltech" in name_lower or "hcl tech" in name_lower:
+        print(f"    [HCLTech SuccessFactors HTML]")
+        return scrape_hcltech(url, limit)
+    
+    # ── NEW CUSTOM API SCRAPERS ──
     if ats_type == "Zwayam" or name_lower == "cure.fit":
         return scrape_curefit(url, limit)
-    if name_lower == "sap labs" or "jobs.sap.com" in url_lower:
-        return scrape_successfactors(url, limit)
-    if name_lower in ["target", "intuit"] or ats_type == "Radancy":
-        return scrape_radancy(url, limit)
     if name_lower == "goldman sachs":
         return scrape_goldmansachs(url, limit)
+    if name_lower == "sap labs" or "jobs.sap.com" in url_lower:
+        print(f"    [SAP SuccessFactors HTML]")
+        return scrape_successfactors(url, limit)
+    if name_lower in ["target", "intuit"]:
+        print(f"    [Radancy HTML]")
+        return scrape_radancy(url, limit)
     
     # ── FAANG / BIG COMPANY DEDICATED SCRAPERS ──
     if name_lower == "google" or "google.com/about/careers" in url_lower:
@@ -1476,27 +1544,23 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     # ── COMPANY-SPECIFIC DIRECT API SCRAPERS ──
     if "paypal" in name_lower: return scrape_paypal(url, limit)
     if "citi" in name_lower and "citi" in url_lower: return scrape_citi(url, limit)
-    if "ltimindtree" in name_lower or "lti" in name_lower: return scrape_ltimindtree(url, limit)
-    if "wipro" in name_lower or "careers.wipro.com" in url_lower: return scrape_wipro(url, limit)
     if "tiger analytics" in name_lower: return scrape_tiger_analytics(url, limit)
     if "virtusa" in name_lower: return scrape_virtusa(url, limit)
     if "accenture" in name_lower: return scrape_accenture(url, limit)
     
     # ── JOBSPY FALLBACK (LinkedIn/Indeed for companies without direct API) ──
     jobspy_companies = [
-        "kaleidofin", "hcltech", "hcl tech", "walmart", 
+        "kaleidofin", "walmart", 
         "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi",
-        "ramco", "uber", "wells fargo",
-        "cure.fit", "goldman sachs", "intuit", "target", "sap labs"
+        "ramco", "uber", "wells fargo"
     ]
     if any(c in name_lower for c in jobspy_companies):
         print(f"    [JobSpy/LinkedIn fallback]")
         try:
             jobs_df = scrape_jobs(
                 site_name=["linkedin", "indeed"],
-                search_term="software engineer",
+                search_term=f"{company_name} jobs",
                 location="India",
-                company_name=company_name,
                 results_wanted=limit,
                 country_indeed="India",
                 hours_old=72,
