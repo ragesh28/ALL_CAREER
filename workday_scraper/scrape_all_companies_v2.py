@@ -1598,7 +1598,6 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     if "ramco" in name_lower:
         print(f"    [Ramco Playwright]")
         return scrape_ramco(url, limit)
-    if "zerodha" in name_lower: return scrape_zerodha(url, limit)
     
     # ── COMPANY-SPECIFIC DIRECT API SCRAPERS ──
     if "paypal" in name_lower: return scrape_paypal(url, limit)

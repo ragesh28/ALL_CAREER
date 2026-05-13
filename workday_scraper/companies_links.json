@@ -303,13 +303,6 @@
         ]
     },
     {
-        "company": "Zerodha",
-        "ats": "Custom API",
-        "urls": [
-            "https://careers.zerodha.com/api/jobs"
-        ]
-    },
-    {
         "company": "Oracle",
         "ats": "Oracle Cloud HCM",
         "urls": [
