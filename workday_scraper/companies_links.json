@@ -318,27 +318,37 @@
     },
     {
         "company": "Cure.fit",
-        "ats": "Unknown",
-        "urls": []
+        "ats": "Zwayam",
+        "urls": [
+            "https://public.zwayam.com/jobs/search"
+        ]
     },
     {
         "company": "Goldman Sachs",
-        "ats": "Unknown",
-        "urls": []
+        "ats": "Custom",
+        "urls": [
+            "https://api-higher.gs.com/gateway/api/v1/graphql"
+        ]
     },
     {
         "company": "Intuit",
-        "ats": "Unknown",
-        "urls": []
+        "ats": "Radancy",
+        "urls": [
+            "https://jobs.intuit.com/search-jobs/results"
+        ]
     },
     {
         "company": "Target",
-        "ats": "Unknown",
-        "urls": []
+        "ats": "Radancy",
+        "urls": [
+            "https://indiajobs.target.com/search-jobs/results"
+        ]
     },
     {
         "company": "SAP Labs",
-        "ats": "Unknown",
-        "urls": []
+        "ats": "SuccessFactors",
+        "urls": [
+            "https://jobs.sap.com/services/jobs/options/facetValues/"
+        ]
     }
 ]
