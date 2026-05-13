@@ -897,55 +897,111 @@ def scrape_wipro(url, limit=2):
     return []
 
 
-def scrape_hcltech(url, limit=2):
-    """Scrape HCLTech via Playwright (SuccessFactors is JS-rendered)."""
+def scrape_jobspy_multi_city(company_keyword, limit=2):
+    """Scrape jobs via JobSpy (LinkedIn) across multiple Indian cities.
+    Used for companies where direct API scraping is impossible (HCLTech, Walmart, Chargebee, TCS, etc).
+    """
+    jobs = []
+    seen_urls = set()
+    cities = ["Chennai", "Bangalore", "Hyderabad", "Mumbai", "Pune", "Kolkata", "Delhi"]
+    search_terms = [
+        f"{company_keyword}",
+        f"{company_keyword} engineer",
+        f"{company_keyword} developer",
+    ]
+    
+    for city in cities:
+        if len(jobs) >= limit:
+            break
+        for term in search_terms:
+            if len(jobs) >= limit:
+                break
+            try:
+                df = scrape_jobs(
+                    site_name=["linkedin"],
+                    search_term=term,
+                    location=f"{city}, India",
+                    results_wanted=min(5, limit - len(jobs)),
+                    country_indeed="India",
+                )
+                if df.empty:
+                    continue
+                for _, row in df.iterrows():
+                    if len(jobs) >= limit:
+                        break
+                    job_url = str(row.get("job_url", ""))
+                    if job_url in seen_urls:
+                        continue
+                    seen_urls.add(job_url)
+                    loc = str(row.get("location", ""))
+                    if not loc or loc == "nan":
+                        loc = f"{city}, India"
+                    jobs.append({
+                        "title": str(row.get("title", "")),
+                        "location": loc,
+                        "posted": str(row.get("date_posted", "")),
+                        "apply_url": job_url,
+                        "total_jobs": len(df)
+                    })
+            except Exception as e:
+                print(f"    JobSpy ({city}/{term}) error: {e}")
+                continue
+    
+    return jobs[:limit]
+
+
+def scrape_ramco(url, limit=2):
+    """Scrape Ramco Systems careers page (JS-rendered job cards)."""
     jobs = []
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-
-            def handle_response(response):
-                nonlocal jobs
-                if len(jobs) >= limit:
-                    return
-                content_type = response.headers.get("content-type", "")
-                if "json" not in content_type:
-                    return
-                try:
-                    data = response.json()
-                    # SuccessFactors returns job data as a list or in a 'results' key
-                    items = []
-                    if isinstance(data, list) and len(data) > 0:
-                        items = data
-                    elif isinstance(data, dict):
-                        for k in ["results", "jobs", "data", "jobSearchResult", "Items"]:
-                            if isinstance(data.get(k), list) and len(data[k]) > 0:
-                                items = data[k]
-                                break
-                    
-                    for j in items[:limit]:
-                        if not isinstance(j, dict):
-                            continue
-                        title = j.get("title", j.get("jobTitle", j.get("name", "")))
-                        loc = j.get("location", j.get("city", j.get("jobLocation", "")))
-                        if isinstance(title, str) and len(title) > 3:
-                            jobs.append({
-                                "title": clean(str(title)),
-                                "location": clean(str(loc)) if loc else "India",
-                                "posted": "",
-                                "apply_url": url,
-                                "total_jobs": len(items)
-                            })
-                except:
-                    pass
-
-            page.on("response", handle_response)
-            page.goto("https://career55.sapsf.eu/career?company=HCLPRD", wait_until="domcontentloaded", timeout=25000)
-            page.wait_for_timeout(10000)
+            page.goto("https://www.ramco.com/careers/jobs-by-locations", wait_until="networkidle", timeout=30000)
+            page.wait_for_timeout(3000)
+            html = page.content()
             browser.close()
+            
+        soup = BeautifulSoup(html, "html.parser")
+        cards = soup.select("a.job-listing__card")
+        for card in cards[:limit]:
+            title_el = card.select_one(".job-listing__job-title")
+            loc_el = card.select_one(".job-listing__job-description")
+            href = card.get("href", "")
+            
+            title = title_el.get_text(strip=True) if title_el else ""
+            loc = loc_el.get_text(strip=True) if loc_el else "India"
+            apply_url = href if href.startswith("http") else f"https://www.ramco.com{href}"
+            
+            # Only include India-based jobs
+            india_keywords = ["india", "chennai", "mumbai", "bangalore", "bengaluru", "hyderabad", "pune", "delhi", "noida", "gurgaon", "kolkata"]
+            if any(kw in loc.lower() for kw in india_keywords):
+                jobs.append({
+                    "title": clean(title),
+                    "location": clean(loc),
+                    "posted": "",
+                    "apply_url": apply_url,
+                    "total_jobs": len(cards)
+                })
+        
+        # If no India jobs found, include all jobs
+        if not jobs:
+            for card in cards[:limit]:
+                title_el = card.select_one(".job-listing__job-title")
+                loc_el = card.select_one(".job-listing__job-description")
+                href = card.get("href", "")
+                title = title_el.get_text(strip=True) if title_el else ""
+                loc = loc_el.get_text(strip=True) if loc_el else "India"
+                apply_url = href if href.startswith("http") else f"https://www.ramco.com{href}"
+                jobs.append({
+                    "title": clean(title),
+                    "location": clean(loc),
+                    "posted": "",
+                    "apply_url": apply_url,
+                    "total_jobs": len(cards)
+                })
     except Exception as e:
-        print(f"    HCLTech Playwright error: {e}")
+        print(f"    Ramco Systems error: {e}")
     return jobs[:limit]
 
 
@@ -1506,8 +1562,8 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     if "ltimindtree" in name_lower or "lti" in name_lower:
         return scrape_ltimindtree(url, limit)
     if "hcltech" in name_lower or "hcl tech" in name_lower:
-        print(f"    [HCLTech SuccessFactors HTML]")
-        return scrape_hcltech(url, limit)
+        print(f"    [JobSpy/LinkedIn multi-city]")
+        return scrape_jobspy_multi_city("HCL Tech", limit)
     
     # ── NEW CUSTOM API SCRAPERS ──
     if ats_type == "Zwayam" or name_lower == "cure.fit":
@@ -1539,6 +1595,9 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     if company_name == "Comcast": return scrape_comcast_html(url, limit)
     if company_name == "Turing" or "careers.turing.com" in url_lower: return scrape_turing(url, limit)
     if "bank of america" in name_lower: return scrape_bofa(url, limit)
+    if "ramco" in name_lower:
+        print(f"    [Ramco Playwright]")
+        return scrape_ramco(url, limit)
     if "zerodha" in name_lower: return scrape_zerodha(url, limit)
     
     # ── COMPANY-SPECIFIC DIRECT API SCRAPERS ──
@@ -1548,37 +1607,23 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     if "virtusa" in name_lower: return scrape_virtusa(url, limit)
     if "accenture" in name_lower: return scrape_accenture(url, limit)
     
-    # ── JOBSPY FALLBACK (LinkedIn/Indeed for companies without direct API) ──
-    jobspy_companies = [
-        "kaleidofin", "walmart", 
-        "chargebee", "tcs", "mu sigma", "latentview", "sify", "tata elxsi",
-        "ramco", "uber", "wells fargo"
-    ]
-    if any(c in name_lower for c in jobspy_companies):
-        print(f"    [JobSpy/LinkedIn fallback]")
-        try:
-            jobs_df = scrape_jobs(
-                site_name=["linkedin", "indeed"],
-                search_term=f"{company_name} jobs",
-                location="India",
-                results_wanted=limit,
-                country_indeed="India",
-                hours_old=72,
-            )
-            if jobs_df.empty: return []
-            jobs = []
-            for _, row in jobs_df.iterrows():
-                jobs.append({
-                    "title": str(row.get("title", "")),
-                    "location": str(row.get("location", "")),
-                    "posted": str(row.get("date_posted", "")),
-                    "apply_url": str(row.get("job_url", url)),
-                    "total_jobs": len(jobs_df)
-                })
-            return jobs[:limit]
-        except Exception as e:
-            print(f"    JobSpy error: {e}")
-            return []
+    # ── JOBSPY MULTI-CITY FALLBACK (LinkedIn for companies without direct API) ──
+    jobspy_keyword_map = {
+        "walmart": "Walmart",
+        "chargebee": "Chargebee",
+        "tcs": "TCS",
+        "mu sigma": "Mu Sigma",
+        "latentview": "LatentView Analytics",
+        "sify": "Sify Technologies",
+        "tata elxsi": "Tata Elxsi",
+        "uber": "Uber",
+        "wells fargo": "Wells Fargo",
+        "kaleidofin": "Kaleidofin",
+    }
+    for key, keyword in jobspy_keyword_map.items():
+        if key in name_lower:
+            print(f"    [JobSpy/LinkedIn multi-city]")
+            return scrape_jobspy_multi_city(keyword, limit)
     
     # ── EXISTING APIS ──
     if "wells fargo" in name_lower: return scrape_workday("https://wellsfargo.wd5.myworkdayjobs.com/wday/cxs/wellsfargo/jobs", limit)
