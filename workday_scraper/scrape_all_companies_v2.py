@@ -1250,12 +1250,24 @@ def scrape_uber(url, limit=2):
     return []
 
 def scrape_radancy(url, limit=2):
-    """Scrape Radancy HTML (Target, Intuit, etc.)"""
+    """Scrape Radancy HTML or JSON (Target, Intuit, etc.)"""
     jobs = []
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
-        soup = BeautifulSoup(resp.text, 'html.parser')
+        html_text = resp.text
+        try:
+            data = resp.json()
+            if "results" in data:
+                html_text = data["results"]
+        except:
+            pass
+            
+        soup = BeautifulSoup(html_text, 'html.parser')
+        # if it was JSON, items are direct <li>s. If it was main page, they are in #search-results-list ul li
         items = soup.select('section#search-results-list ul li')
+        if not items:
+            items = [li for li in soup.find_all('li') if li.select_one('.job-location') or li.select_one('a')]
+            
         for item in items[:limit]:
             title_elem = item.select_one('h2, h3, a')
             loc_elem = item.select_one('.job-location')
@@ -1276,7 +1288,7 @@ def scrape_radancy(url, limit=2):
                 "total_jobs": len(items)
             })
     except Exception as e:
-        print(f"    Radancy HTML API error: {e}")
+        print(f"    Radancy API error: {e}")
     return jobs
 
 def scrape_successfactors(url, limit=2):
@@ -1432,12 +1444,12 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
     url_lower = url.lower()
     name_lower = company_name.lower()
     
-    if ats_type == "Radancy":
-        return scrape_radancy(url, limit)
-    if ats_type == "SuccessFactors":
-        return scrape_successfactors(url, limit)
     if ats_type == "Zwayam" or name_lower == "cure.fit":
         return scrape_curefit(url, limit)
+    if name_lower == "sap labs" or "jobs.sap.com" in url_lower:
+        return scrape_successfactors(url, limit)
+    if name_lower in ["target", "intuit"] or ats_type == "Radancy":
+        return scrape_radancy(url, limit)
     if name_lower == "goldman sachs":
         return scrape_goldmansachs(url, limit)
     
