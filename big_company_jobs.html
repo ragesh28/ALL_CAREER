@@ -628,12 +628,13 @@
             applyFilters();
         }
 
-        async function fetchJobsFromTurso() {
-            const url = "https://all-career-api.ragesh-jobs.workers.dev/api/big_company_jobs";
+        async function fetchJobsFromGitHub() {
+            const url = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
             
             try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Failed to connect to database");
+                // Cache buster to ensure latest jobs are fetched
+                const response = await fetch(url + "?t=" + new Date().getTime());
+                if (!response.ok) throw new Error("Failed to connect to GitHub JSON");
                 
                 const rows = await response.json();
                 
@@ -644,7 +645,7 @@
                         company: job.company || "",
                         location: job.location || "",
                         date: job.fetched_at || "",
-                        url: job.url || "",
+                        url: job.apply_url || job.url || "",
                         linkedin_url: job.linkedin_url || "",
                         fetchedAt: job.fetched_at || ""
                     });
@@ -653,7 +654,7 @@
                 return fetchedJobs;
                 
             } catch (error) {
-                console.error("Error fetching big jobs:", error);
+                console.error("Error fetching big jobs from GitHub:", error);
                 return [];
             }
         }
@@ -772,12 +773,12 @@
 
         async function init() {
             const loading = document.getElementById('loading');
-            loading.innerHTML = 'Connecting to database and loading jobs...';
+            loading.innerHTML = 'Connecting to GitHub repository and loading jobs...';
             
-            allJobs = await fetchJobsFromTurso();
+            allJobs = await fetchJobsFromGitHub();
             
             if (allJobs.length === 0) {
-                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p style="margin-top:10px">Could not load jobs from database or none exist yet.</p></div>';
+                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p style="margin-top:10px">Could not load jobs from GitHub or none exist yet.</p></div>';
                 return;
             }
             
