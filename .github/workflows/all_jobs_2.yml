@@ -8,7 +8,7 @@ on:
 jobs:
   scrape-linkedin-indeed:
     runs-on: ubuntu-latest
-    timeout-minutes: 360  # 6 hours max
+    timeout-minutes: 350  # 5h 50m — leave buffer before 6h hard limit
 
     steps:
       - name: Checkout code
@@ -38,22 +38,23 @@ jobs:
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save alljobs2 scraper progress" && git pull --rebase && git push)
 
       # Auto-restart if stopped mid-run
+      # NOTE: No sleep here — sleeping inside a dying job causes "Operation canceled".
+      #       We trigger the restart immediately; GitHub queues it and runs it fresh.
       - name: Auto-Restart if Not Finished
-        if: always() && !cancelled()
+        # Use always() WITHOUT !cancelled() so it runs even on timeout-triggered cancellation
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -f alljobs2_progress.json ]; then
-            FINISHED=$(python -c "import json; print(json.load(open('alljobs2_progress.json')).get('finished', False))")
+            FINISHED=$(python -c "import json; d=json.load(open('alljobs2_progress.json')); print(d.get('finished', False))")
             if [ "$FINISHED" = "False" ]; then
-              echo "⚠️  Scraper stopped mid-run. Waiting 10 minutes then restarting..."
-              sleep 600
-              echo "🔄 Triggering workflow restart..."
+              echo "⚠️  Scraper stopped mid-run. Triggering restart..."
               gh workflow run all_jobs_2.yml --repo ${{ github.repository }}
-              echo "✅ Restart triggered."
+              echo "✅ Restart triggered. New run will pick up from saved progress."
             else
               echo "✅ Scraper completed all roles. No restart needed."
             fi
           else
-            echo "✅ No progress file. Scraper completed normally."
+            echo "✅ No progress file found. Scraper completed normally."
           fi
