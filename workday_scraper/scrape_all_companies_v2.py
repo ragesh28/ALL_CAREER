@@ -864,58 +864,102 @@ def scrape_ltimindtree(url, limit=2):
 
 
 def scrape_wipro(url, limit=2):
-    """Scrape Wipro via SAP SuccessFactors direct POST API.
-    Falls back to JobSpy/LinkedIn if the API is blocked or returns invalid data.
+    """Scrape ALL Wipro jobs via dynamic pagination.
+    Step 1: Discovery call (facetingOnly=true) to find total jobs.
+    Step 2: Loop through all pages (pageNumber=0,1,2...) to fetch every job.
+    Falls back to JobSpy/LinkedIn if the API is blocked.
     """
-    try:
-        resp = requests.post(
-            "https://careers.wipro.com/services/recruiting/v1/jobs",
-            headers={
-                **HEADERS,
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Origin": "https://careers.wipro.com",
-                "Referer": "https://careers.wipro.com/en-US/search",
-            },
-            json={"locale": "en_US", "limit": limit, "offset": 0},
-            timeout=15
-        )
-        resp.raise_for_status()
+    import json as _json
+    import re as _re
+    import time as _time
 
-        # Use json.loads on stripped text to handle BOM / encoding issues on Linux
+    API_URL = "https://careers.wipro.com/services/recruiting/v1/jobs"
+    API_HEADERS = {
+        **HEADERS,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Origin": "https://careers.wipro.com",
+        "Referer": "https://careers.wipro.com/en-US/search",
+    }
+
+    def _safe_json(resp):
+        """Parse JSON safely, stripping BOM and handling encoding issues."""
         raw = resp.text.lstrip("\ufeff").strip()
-        # Guard against non-object responses (e.g. server returns "true" or "null")
         if not raw.startswith("{"):
-            raise ValueError(f"Unexpected response body: {raw[:80]}")
+            raise ValueError(f"Unexpected response: {raw[:80]}")
+        return _json.loads(raw)
 
-        import json as _json
-        data = _json.loads(raw)
+    def _parse_job(j, total):
+        """Parse a single job item from the API response."""
+        rd = j.get("response", {})
+        title = rd.get("unifiedStandardTitle", rd.get("jobTitle", [""]))
+        if isinstance(title, list):
+            title = title[0] if title else ""
+        loc = rd.get("sfstd_jobLocation_obj", rd.get("jobLocationShort", [""]))
+        loc = loc[0] if isinstance(loc, list) and loc else str(loc)
+        loc = _re.sub(r"<[^>]+>", "", loc).split(",")[0].strip()
+        return {
+            "title": clean(str(title)),
+            "location": clean(loc),
+            "posted": "",
+            "apply_url": f"https://careers.wipro.com/jobs/{rd.get('id', '')}",
+            "total_jobs": total,
+        }
 
-        items = data.get("jobSearchResult", [])
-        total = data.get("totalJobs", len(items))
+    try:
+        # ── STEP 1: Discovery — find total jobs ──
+        print("    [Wipro] Step 1: Discovering total jobs...")
+        disc_resp = requests.post(API_URL, headers=API_HEADERS,
+                                  json={"facetingOnly": True, "locale": "en_US"}, timeout=15)
+        disc_resp.raise_for_status()
+        disc_data = _safe_json(disc_resp)
+        total_jobs = disc_data.get("totalJobs", 0)
+        print(f"    [Wipro] Total jobs found: {total_jobs}")
+
+        if total_jobs == 0:
+            raise ValueError("Discovery returned 0 total jobs")
+
+        # ── STEP 2: Fetch all pages ──
+        PAGE_SIZE = 10  # Wipro API returns 10 per page
+        total_pages = (total_jobs + PAGE_SIZE - 1) // PAGE_SIZE
+        # Cap at limit if user requested fewer
+        max_pages = (limit + PAGE_SIZE - 1) // PAGE_SIZE if limit < total_jobs else total_pages
+
+        print(f"    [Wipro] Fetching {max_pages} pages ({min(limit, total_jobs)} jobs)...")
         jobs = []
-        for j in items[:limit]:
-            resp_data = j.get("response", {})
-            title = resp_data.get("unifiedStandardTitle", resp_data.get("jobTitle", [""]))
-            if isinstance(title, list):
-                title = title[0] if title else ""
-            loc = resp_data.get("sfstd_jobLocation_obj", resp_data.get("jobLocationShort", [""]))
-            loc = loc[0] if isinstance(loc, list) and loc else str(loc)
-            # Strip HTML tags from location (e.g. "Chennai, IND<br/>")
-            import re as _re
-            loc = _re.sub(r"<[^>]+>", "", loc).split(",")[0].strip()
-            jobs.append({
-                "title": clean(str(title)),
-                "location": clean(loc),
-                "posted": "",
-                "apply_url": f"https://careers.wipro.com/jobs/{resp_data.get('id', '')}",
-                "total_jobs": total,
-            })
+        for page in range(max_pages):
+            try:
+                resp = requests.post(API_URL, headers=API_HEADERS,
+                                     json={"pageNumber": page, "locale": "en_US"}, timeout=15)
+                resp.raise_for_status()
+                data = _safe_json(resp)
+                items = data.get("jobSearchResult", [])
+
+                for j in items:
+                    if len(jobs) >= limit:
+                        break
+                    jobs.append(_parse_job(j, total_jobs))
+
+                if len(jobs) >= limit:
+                    break
+
+                # Progress log every 100 pages
+                if (page + 1) % 100 == 0:
+                    print(f"    [Wipro] Progress: page {page + 1}/{max_pages} — {len(jobs)} jobs collected")
+
+                # Rate limit: small delay to avoid getting blocked
+                _time.sleep(0.3)
+
+            except Exception as page_err:
+                print(f"    [Wipro] Page {page} error: {page_err}")
+                _time.sleep(1)  # Longer wait on error, then continue
+                continue
+
+        print(f"    [Wipro] Done: {len(jobs)} jobs collected")
         if jobs:
             return jobs
 
-        # API returned 0 items — fall back to JobSpy
-        raise ValueError("API returned 0 jobs, trying JobSpy fallback")
+        raise ValueError("Pagination returned 0 jobs")
 
     except Exception as e:
         print(f"    Wipro API error ({e}), falling back to JobSpy multi-city")
