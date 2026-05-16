@@ -25,12 +25,12 @@
 - **Pagination**: Increment `offset` by 20
 - **Response**: `total`, `jobPostings[]` → `title`, `locationsText`, `externalPath`
 
-## 5. GE Healthcare (Phenom /widgets) ⚠️ Count only
+## 5. GE Healthcare (Phenom /widgets) ⚠️ Count only (SSR jobs)
 - **Discovery**: `POST https://careers.gehealthcare.com/widgets`
-  - Body: `{"lang":"en_global","deviceType":"desktop","country":"global","ddoKey":"refineSearch","from":0,"size":10,"location":"India"}`
-- **Response**: `refineSearch.totalHits` = 1266 (count works, but `data.jobs` is empty)
+  - Required Header: `x-csrf-token` (extract from `https://careers.gehealthcare.com/global/en/search-results?location=India` HTML `csrfToken`)
+  - Body: `{"lang":"en_global","deviceType":"desktop","pageName":"search-results","ddoKey":"refineSearch","payload":{"from":0,"size":10,"location":"India"}}`
+- **Response**: `refineSearch.totalHits` = 1266 (count works, but `data.jobs` is typically empty because this instance serves jobs via SSR HTML)
 - **Fallback**: JobSpy/LinkedIn multi-city
-- **Note**: This Phenom instance serves job data via SSR HTML, not JSON API
 
 ## 6. Bank of America (REST API) ✅
 - **Discovery**: `GET https://careers.bankofamerica.com/services/jobssearchservlet?start=0&rows=10&search=jobsByLocation&searchstring=India`
@@ -40,10 +40,12 @@
   - `x-requested-with: XMLHttpRequest`
 - **Response**: `totalMatches`, `jobsList[]` → `postingTitle`, `primaryLocation`, `jcrURL`
 
-## 7. Honeywell (Oracle HCM) ❌ Blocked
-- **Endpoint**: `GET https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&limit=25`
-- **Problem**: `locationId` param rejected, `finder` returns search metadata not jobs
-- **Fallback**: JobSpy/LinkedIn multi-city
+## 7. Honeywell (Oracle HCM) ✅
+- **Endpoint**: `GET https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations,flexFieldsFacet.values&finder=findReqs;siteNumber=CX_1,locationId=300000000469485,sortBy=POSTING_DATES_DESC,limit=25`
+- **Pagination**: Add `&offset=25`, `&offset=50`
+- **Requirement**: `finder` must contain `locationId=300000000469485` for India
+- **Response**: `items[0].TotalJobsCount`, jobs inside `items[0].requisitionList[]`
+- **Multi-city**: Handled via `PrimaryLocation` and `otherWorkLocations[]`
 
 ## 8. Bosch (CaaS API) ❌ Auth-gated
 - **Count**: `GET https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/?count&filter={"location.country":"in"}`
@@ -52,10 +54,11 @@
 - **API Keys found**: `b05c4012-4856-4f3d-bb0d-520f2e075e8a`, `2b760fb7-49ef-4e83-b4ba-9c3a8d185e5e`
 - **Fallback**: JobSpy/LinkedIn multi-city
 
-## 9. Maersk (HTML/JS) ❌ JS-rendered
-- **Page**: `GET https://www.maersk.com/careers/vacancies?searchText=&city=INDIA`
-- **Problem**: Page is JS-rendered, needs Playwright
-- **Fallback**: JobSpy/LinkedIn multi-city
+## 9. Maersk (Native API) ✅
+- **Endpoint**: `GET https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india`
+- **Pagination**: Increment `offset` by 24
+- **Required Header**: `consumer-key` (extract dynamically from JS on `https://www.maersk.com/careers/vacancies` or hardcode if static)
+- **Response**: `ResultCount`, jobs inside `Results[]` -> `Title`, `City`, `Key` (for URL)
 
 ## 10. Wipro (SAP SuccessFactors) ✅
 - **Discovery**: `POST https://careers.wipro.com/services/recruiting/v1/jobs`

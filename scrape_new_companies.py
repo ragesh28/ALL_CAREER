@@ -354,58 +354,61 @@ def scrape_amadeus(limit=500):
 
 # ─── 5. GE HEALTHCARE (Phenom /widgets API) ─────────────────
 def scrape_ge_healthcare(limit=500):
-    """Phenom People /widgets API. Discovery via totalHits, paginate with from/size."""
+    """Phenom /widgets API. Unlocked: Extract x-csrf-token from search page first."""
     print("  [GE Healthcare] Phenom /widgets API...")
     API = "https://careers.gehealthcare.com/widgets"
-    hdrs = {
-        **HEADERS,
-        "Content-Type": "application/json",
-        "Referer": "https://careers.gehealthcare.com/global/en/search-results?location=India",
-        "Origin": "https://careers.gehealthcare.com",
-    }
     PAGE = 10
     jobs = []
 
     try:
-        # Step 1: Discovery — get totalHits
-        payload = {
-            "lang": "en_global", "deviceType": "desktop", "country": "global",
-            "ddoKey": "refineSearch", "sortBy": "", "subsearch": "",
-            "from": 0, "size": PAGE, "location": "India",
+        s = requests.Session()
+        s.headers.update(HEADERS)
+        # Step 1: Get CSRF token
+        page_url = "https://careers.gehealthcare.com/global/en/search-results?location=India"
+        pr = s.get(page_url, timeout=15)
+        pr.raise_for_status()
+        
+        token_match = re.search(r'"csrfToken":"([^"]+)"', pr.text)
+        if not token_match:
+            raise ValueError("Could not extract x-csrf-token from page HTML")
+        csrf_token = token_match.group(1)
+        print(f"  [GE Healthcare] Found CSRF Token: {csrf_token[:15]}...")
+
+        hdrs = {
+            **HEADERS,
+            "x-csrf-token": csrf_token,
+            "Content-Type": "application/json",
+            "Referer": page_url,
+            "Origin": "https://careers.gehealthcare.com",
         }
-        r = requests.post(API, headers=hdrs, json=payload, timeout=15)
+
+        # Step 2: Paginate
+        payload = {
+            "lang": "en_global", "deviceType": "desktop", "pageName": "search-results",
+            "ddoKey": "refineSearch",
+            "payload": {"from": 0, "size": PAGE, "location": "India"}
+        }
+
+        # Initial call to get total
+        r = s.post(API, headers=hdrs, json=payload, timeout=15)
         r.raise_for_status()
         data = safe_json(r)
-        total = data.get("refineSearch", {}).get("totalHits", 0)
+        rs = data.get("refineSearch", {})
+        total = rs.get("totalHits", 0)
         print(f"  [GE Healthcare] Total jobs: {total}")
-
-        if total == 0:
-            raise ValueError("0 jobs found")
-
-        # The /widgets endpoint returns totalHits but job data requires the correct ddoKey
-        # Try fetching actual jobs with "searchJobs" ddoKey
-        payload["ddoKey"] = "refineSearch"
-        payload["size"] = PAGE
 
         max_jobs = min(limit, total)
         offset = 0
         while len(jobs) < max_jobs:
             try:
-                payload["from"] = offset
-                r = requests.post(API, headers=hdrs, json=payload, timeout=15)
+                payload["payload"]["from"] = offset
+                r = s.post(API, headers=hdrs, json=payload, timeout=15)
                 r.raise_for_status()
                 data = safe_json(r)
-                rs = data.get("refineSearch", {})
-                job_list = rs.get("data", {}).get("jobs", [])
-
-                if not job_list:
-                    # API returns totalHits but no job data — this Phenom instance
-                    # serves jobs via SSR HTML, not JSON. Fall back to JobSpy.
-                    if len(jobs) == 0:
-                        raise ValueError("API returns count but no job data (SSR-only)")
+                page_jobs = data.get("refineSearch", {}).get("data", {}).get("jobs", [])
+                if not page_jobs:
                     break
-
-                for j in job_list:
+                for j in page_jobs:
                     if len(jobs) >= max_jobs:
                         break
                     jobs.append({
@@ -415,13 +418,10 @@ def scrape_ge_healthcare(limit=500):
                         "apply_url": f"https://careers.gehealthcare.com/global/en/job/{j.get('jobId', '')}",
                         "total_jobs": total,
                     })
-
                 offset += PAGE
-                if (offset // PAGE) % 50 == 0:
+                if (offset // PAGE) % 10 == 0:
                     print(f"  [GE Healthcare] Progress: {len(jobs)} jobs...")
                 time.sleep(0.3)
-            except ValueError:
-                raise
             except Exception as e:
                 print(f"  [GE Healthcare] Page error: {e}")
                 time.sleep(1)
@@ -436,11 +436,76 @@ def scrape_ge_healthcare(limit=500):
         return jobspy_fallback("GE Healthcare", limit)
 
 
-# ─── 6. HONEYWELL (Oracle HCM → JobSpy fallback) ────────────
+# ─── 6. HONEYWELL (Oracle HCM REST API) ───────────────────────
 def scrape_honeywell(limit=500):
-    """Honeywell Oracle HCM API is restrictive. Use JobSpy multi-city."""
-    print("  [Honeywell] Using JobSpy multi-city (Oracle HCM blocked)...")
-    return jobspy_fallback("Honeywell", limit)
+    """Honeywell Oracle HCM API. Unlocked: finder requires locationId."""
+    print("  [Honeywell] Oracle HCM API...")
+    BASE_URL = "https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions"
+    # Added expand=requisitionList because Oracle puts jobs inside the items[0].requisitionList
+    API = f"{BASE_URL}?onlyData=true&expand=requisitionList.secondaryLocations,flexFieldsFacet.values&finder=findReqs;siteNumber=CX_1,locationId=300000000469485,sortBy=POSTING_DATES_DESC"
+    PAGE = 25
+    jobs = []
+
+    try:
+        # Step 1: Discovery
+        r = requests.get(f"{API},limit={PAGE}", headers=HEADERS, timeout=15)
+        r.raise_for_status()
+        data = safe_json(r)
+        items = data.get("items", [])
+        if not items:
+            raise ValueError("Empty items from Oracle HCM")
+        
+        total = items[0].get("TotalJobsCount", 0)
+        print(f"  [Honeywell] Total jobs: {total}")
+
+        def _parse_oracle(items_obj):
+            parsed = []
+            if not items_obj: return parsed
+            req_list = items_obj[0].get("requisitionList", [])
+            for j in req_list:
+                loc = j.get("PrimaryLocation", "India")
+                other_locs = [l.get("Name", "") for l in j.get("otherWorkLocations", [])]
+                if other_locs:
+                    loc += " / " + " / ".join(filter(None, other_locs))
+                parsed.append({
+                    "title": clean(j.get("Title", "")),
+                    "location": clean(loc),
+                    "posted": clean(j.get("PostedDate", "")),
+                    "apply_url": f"https://careers.honeywell.com/us/en/job/{j.get('Id', '')}",
+                    "total_jobs": total,
+                })
+            return parsed
+
+        jobs.extend(_parse_oracle(items))
+
+        # Step 2: Paginate
+        max_jobs = min(limit, total)
+        offset = PAGE
+        while len(jobs) < max_jobs:
+            try:
+                r = requests.get(f"{API},limit={PAGE}&offset={offset}", headers=HEADERS, timeout=15)
+                r.raise_for_status()
+                data = safe_json(r)
+                page_jobs = _parse_oracle(data.get("items", []))
+                if not page_jobs:
+                    break
+                jobs.extend(page_jobs)
+                offset += PAGE
+                if (offset // PAGE) % 5 == 0:
+                    print(f"  [Honeywell] Progress: {len(jobs)} jobs...")
+                time.sleep(0.3)
+            except Exception as e:
+                print(f"  [Honeywell] Page error: {e}")
+                time.sleep(1)
+                offset += PAGE
+                continue
+
+        print(f"  [Honeywell] Done: {len(jobs)} jobs")
+        return jobs[:limit]
+
+    except Exception as e:
+        print(f"  [Honeywell] API failed ({e}), using JobSpy fallback")
+        return jobspy_fallback("Honeywell", limit)
 
 
 # ─── 7. BOSCH (Session Bearer Token → JobSpy fallback) ──────
@@ -522,11 +587,81 @@ def scrape_bosch(limit=500):
         return jobspy_fallback("Bosch", limit)
 
 
-# ─── 8. MAERSK (HTML → JobSpy fallback) ─────────────────────
+# ─── 8. MAERSK (Native GraphQL/REST API) ──────────────────────
 def scrape_maersk(limit=500):
-    """Maersk careers page is JS-rendered. Use JobSpy multi-city."""
-    print("  [Maersk] Using JobSpy multi-city (JS-rendered page)...")
-    return jobspy_fallback("Maersk", limit)
+    """Maersk Careers API. Unlocked: uses api.maersk.com with consumer-key."""
+    print("  [Maersk] Native API...")
+    API = "https://api.maersk.com/careers/vacancies"
+    PAGE = 24
+    jobs = []
+
+    try:
+        # We can extract the latest consumer-key from the main HTML page
+        # but for now we'll use the working one or fallback if it fails.
+        consumer_key = "ean6qqcQIuGza1IZ1Rg9dgfjZhlGE7Dw"
+        
+        # Try dynamic extraction
+        try:
+            r_html = requests.get("https://www.maersk.com/careers/vacancies", headers=HEADERS, timeout=10)
+            key_match = re.search(r'consumer[-_]?key["\']?\s*:\s*["\']([a-zA-Z0-9]+)["\']', r_html.text, re.I)
+            if key_match:
+                consumer_key = key_match.group(1)
+                print(f"  [Maersk] Extracted dynamic consumer-key: {consumer_key[:10]}...")
+        except Exception:
+            pass
+
+        hdrs = {**HEADERS, "consumer-key": consumer_key}
+
+        # Step 1: Discovery
+        r = requests.get(f"{API}?limit={PAGE}&offset=0&city=india", headers=hdrs, timeout=15)
+        r.raise_for_status()
+        data = safe_json(r)
+        total = data.get("ResultCount", 0)
+        print(f"  [Maersk] Total jobs: {total}")
+
+        def _parse_maersk(data_obj):
+            parsed = []
+            for j in data_obj.get("Results", []):
+                loc = j.get("City", j.get("Location", "India"))
+                parsed.append({
+                    "title": clean(j.get("Title", "")),
+                    "location": clean(loc),
+                    "posted": clean(j.get("PostedDT", "")),
+                    "apply_url": f"https://www.maersk.com/careers/vacancies/{j.get('Key', '')}",
+                    "total_jobs": total,
+                })
+            return parsed
+
+        jobs.extend(_parse_maersk(data))
+
+        # Step 2: Paginate
+        max_jobs = min(limit, total)
+        offset = PAGE
+        while len(jobs) < max_jobs:
+            try:
+                r = requests.get(f"{API}?limit={PAGE}&offset={offset}&city=india", headers=hdrs, timeout=15)
+                r.raise_for_status()
+                data = safe_json(r)
+                page_jobs = _parse_maersk(data)
+                if not page_jobs:
+                    break
+                jobs.extend(page_jobs)
+                offset += PAGE
+                if (offset // PAGE) % 5 == 0:
+                    print(f"  [Maersk] Progress: {len(jobs)} jobs...")
+                time.sleep(0.3)
+            except Exception as e:
+                print(f"  [Maersk] Page error: {e}")
+                time.sleep(1)
+                offset += PAGE
+                continue
+
+        print(f"  [Maersk] Done: {len(jobs)} jobs")
+        return jobs[:limit]
+
+    except Exception as e:
+        print(f"  [Maersk] API failed ({e}), using JobSpy fallback")
+        return jobspy_fallback("Maersk", limit)
 
 
 # ─── 9. BANK OF AMERICA (REST API with security headers) ────
