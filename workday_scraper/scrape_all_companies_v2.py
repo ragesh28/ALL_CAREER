@@ -864,37 +864,62 @@ def scrape_ltimindtree(url, limit=2):
 
 
 def scrape_wipro(url, limit=2):
-    """Scrape Wipro via SAP SuccessFactors direct POST API."""
+    """Scrape Wipro via SAP SuccessFactors direct POST API.
+    Falls back to JobSpy/LinkedIn if the API is blocked or returns invalid data.
+    """
     try:
         resp = requests.post(
             "https://careers.wipro.com/services/recruiting/v1/jobs",
-            headers={**HEADERS, "Content-Type": "application/json"},
+            headers={
+                **HEADERS,
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Origin": "https://careers.wipro.com",
+                "Referer": "https://careers.wipro.com/en-US/search",
+            },
             json={"locale": "en_US", "limit": limit, "offset": 0},
             timeout=15
         )
-        data = resp.json()
+        resp.raise_for_status()
+
+        # Use json.loads on stripped text to handle BOM / encoding issues on Linux
+        raw = resp.text.lstrip("\ufeff").strip()
+        # Guard against non-object responses (e.g. server returns "true" or "null")
+        if not raw.startswith("{"):
+            raise ValueError(f"Unexpected response body: {raw[:80]}")
+
+        import json as _json
+        data = _json.loads(raw)
+
         items = data.get("jobSearchResult", [])
         total = data.get("totalJobs", len(items))
         jobs = []
         for j in items[:limit]:
             resp_data = j.get("response", {})
-            # Title is under unifiedStandardTitle in Wipro SAP SF
             title = resp_data.get("unifiedStandardTitle", resp_data.get("jobTitle", [""]))
             if isinstance(title, list):
                 title = title[0] if title else ""
             loc = resp_data.get("sfstd_jobLocation_obj", resp_data.get("jobLocationShort", [""]))
             loc = loc[0] if isinstance(loc, list) and loc else str(loc)
+            # Strip HTML tags from location (e.g. "Chennai, IND<br/>")
+            import re as _re
+            loc = _re.sub(r"<[^>]+>", "", loc).split(",")[0].strip()
             jobs.append({
-                "title": clean(title),
+                "title": clean(str(title)),
                 "location": clean(loc),
                 "posted": "",
-                "apply_url": f"https://careers.wipro.com/jobs/{resp_data.get('id','')}",
+                "apply_url": f"https://careers.wipro.com/jobs/{resp_data.get('id', '')}",
                 "total_jobs": total,
             })
-        return jobs
+        if jobs:
+            return jobs
+
+        # API returned 0 items — fall back to JobSpy
+        raise ValueError("API returned 0 jobs, trying JobSpy fallback")
+
     except Exception as e:
-        print(f"    Wipro SAP SF error: {e}")
-    return []
+        print(f"    Wipro API error ({e}), falling back to JobSpy multi-city")
+        return scrape_jobspy_multi_city("Wipro", limit)
 
 
 def scrape_jobspy_multi_city(company_keyword, limit=2):
