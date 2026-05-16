@@ -46,12 +46,11 @@
 - **Response**: `items[0].TotalJobsCount`, jobs inside `items[0].requisitionList[]`
 - **Multi-city**: Handled via `PrimaryLocation` and `otherWorkLocations[]`
 
-## 8. Bosch (CaaS API) ❌ Auth-gated
+## 8. Bosch (CaaS API) ✅
 - **Count**: `GET https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/?count&filter={"location.country":"in"}`
 - **Jobs**: `GET https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/_aggrs/get_jobs?page=1&pagesize=8&avars={"country":["in"]}`
-- **Required**: `Authorization: Bearer <session_token>` (token from visiting https://jobs.bosch.com)
+- **Required**: `Authorization: Bearer <session_token>` (Token is successfully parsed from the initial `https://jobs.bosch.com` HTML/scripts)
 - **API Keys found**: `b05c4012-4856-4f3d-bb0d-520f2e075e8a`, `2b760fb7-49ef-4e83-b4ba-9c3a8d185e5e`
-- **Fallback**: JobSpy/LinkedIn multi-city
 
 ## 9. Maersk (Native API) ✅
 - **Endpoint**: `GET https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india`
