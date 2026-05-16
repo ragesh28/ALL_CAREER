@@ -352,87 +352,59 @@ def scrape_amadeus(limit=500):
         return jobspy_fallback("Amadeus", limit)
 
 
-# ─── 5. GE HEALTHCARE (Phenom /widgets API) ─────────────────
+# ─── 5. GE HEALTHCARE (HTML Parsing) ──────────────────────────
 def scrape_ge_healthcare(limit=500):
-    """Phenom /widgets API. Unlocked: Extract x-csrf-token from search page first."""
-    print("  [GE Healthcare] Phenom /widgets API...")
-    API = "https://careers.gehealthcare.com/widgets"
-    PAGE = 10
+    """GE Healthcare uses Server-Side Rendering (SSR). Parse HTML directly."""
+    print("  [GE Healthcare] HTML Parsing via BeautifulSoup...")
     jobs = []
-
+    PAGE = 10
+    
     try:
-        s = requests.Session()
-        s.headers.update(HEADERS)
-        # Step 1: Get CSRF token
-        page_url = "https://careers.gehealthcare.com/global/en/search-results?location=India"
-        pr = s.get(page_url, timeout=15)
-        pr.raise_for_status()
-        
-        token_match = re.search(r'"csrfToken":"([^"]+)"', pr.text)
-        if not token_match:
-            raise ValueError("Could not extract x-csrf-token from page HTML")
-        csrf_token = token_match.group(1)
-        print(f"  [GE Healthcare] Found CSRF Token: {csrf_token[:15]}...")
-
-        hdrs = {
-            **HEADERS,
-            "x-csrf-token": csrf_token,
-            "Content-Type": "application/json",
-            "Referer": page_url,
-            "Origin": "https://careers.gehealthcare.com",
-        }
-
-        # Step 2: Paginate
-        payload = {
-            "lang": "en_global", "deviceType": "desktop", "pageName": "search-results",
-            "ddoKey": "refineSearch",
-            "payload": {"from": 0, "size": PAGE, "location": "India"}
-        }
-
-        # Initial call to get total
-        r = s.post(API, headers=hdrs, json=payload, timeout=15)
-        r.raise_for_status()
-        data = safe_json(r)
-        rs = data.get("refineSearch", {})
-        total = rs.get("totalHits", 0)
-        print(f"  [GE Healthcare] Total jobs: {total}")
-
-        max_jobs = min(limit, total)
+        # Step 1: Discovery / Initial Pagination setup
+        # Since we parse HTML, we might not know total jobs immediately without parsing the count text.
+        # But we can just loop until we don't find any job cards on the page.
         offset = 0
-        while len(jobs) < max_jobs:
-            try:
-                payload["payload"]["from"] = offset
-                r = s.post(API, headers=hdrs, json=payload, timeout=15)
-                r.raise_for_status()
-                data = safe_json(r)
-                page_jobs = data.get("refineSearch", {}).get("data", {}).get("jobs", [])
-                if not page_jobs:
+        while len(jobs) < limit:
+            url = f"https://careers.gehealthcare.com/global/en/search-results?from={offset}&location=India"
+            r = requests.get(url, headers=HEADERS, timeout=15)
+            r.raise_for_status()
+            
+            soup = BeautifulSoup(r.text, 'html.parser')
+            job_cards = soup.find_all('li', class_='jobs-list-item')
+            
+            if not job_cards:
+                break
+                
+            for job_card in job_cards:
+                if len(jobs) >= limit:
                     break
-                for j in page_jobs:
-                    if len(jobs) >= max_jobs:
-                        break
-                    jobs.append({
-                        "title": clean(j.get("title", "")),
-                        "location": clean(j.get("city", j.get("multi_location", ["India"])[0] if j.get("multi_location") else "India")),
-                        "posted": clean(j.get("postedDate", "")),
-                        "apply_url": f"https://careers.gehealthcare.com/global/en/job/{j.get('jobId', '')}",
-                        "total_jobs": total,
-                    })
-                offset += PAGE
-                if (offset // PAGE) % 10 == 0:
-                    print(f"  [GE Healthcare] Progress: {len(jobs)} jobs...")
-                time.sleep(0.3)
-            except Exception as e:
-                print(f"  [GE Healthcare] Page error: {e}")
-                time.sleep(1)
-                offset += PAGE
-                continue
-
+                    
+                title_elem = job_card.find('div', class_='job-title')
+                loc_elem = job_card.find('span', class_='job-location')
+                id_elem = job_card.find('span', class_='job-id')
+                
+                title = title_elem.text.strip() if title_elem else "Unknown"
+                location = loc_elem.text.strip() if loc_elem else "India"
+                job_id = id_elem.text.strip() if id_elem else ""
+                
+                jobs.append({
+                    "title": clean(title),
+                    "location": clean(location),
+                    "posted": "", # HTML might not have posted date cleanly
+                    "apply_url": f"https://careers.gehealthcare.com/global/en/job/{job_id.replace('Job ID:', '').strip()}" if job_id else url,
+                    "total_jobs": "Unknown", # Could parse "total-jobs" class if present
+                })
+                
+            offset += PAGE
+            if (offset // PAGE) % 5 == 0:
+                print(f"  [GE Healthcare] Progress: {len(jobs)} jobs...")
+            time.sleep(0.3)
+            
         print(f"  [GE Healthcare] Done: {len(jobs)} jobs")
-        return jobs[:limit]
+        return jobs
 
     except Exception as e:
-        print(f"  [GE Healthcare] API issue ({e}), using JobSpy fallback")
+        print(f"  [GE Healthcare] HTML parsing failed ({e}), using JobSpy fallback")
         return jobspy_fallback("GE Healthcare", limit)
 
 
