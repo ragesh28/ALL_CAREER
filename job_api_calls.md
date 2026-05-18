@@ -160,19 +160,22 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `POST https://careers.abb/widgets`
 - **Fallback**: HTML parsing (SSR). The JSON array is empty, always fall back to parsing the HTML of that same page.
 
-## 25. Publicis Sapient (Playwright / Browser) ⚠️ Slow
-- **Status**: ✅ Working via Browser, but requires Playwright.
-- **Endpoint**: `https://careers.publicissapient.com/job-search`
-- **Note**: WAF blocks API requests from cloud IPs. Headless browser successfully loads page and renders jobs (e.g. 14 jobs in India).
+## 25. Publicis Sapient (Custom) ✅ Working
+- **Endpoint**: `GET https://careers.publicissapient.com/apps/ps-rebrand/careersJobsearch?country=India&start=0&rows=10`
+- **Mandatory Header**: `User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...`
+- **Note**: WAF blocks default Python `requests` User-Agent. Spoofing a real browser User-Agent unlocks the JSON API.
 
-## 26. IBM (Playwright / Browser) ⚠️ Slow
-- **Status**: ✅ Working via Browser, but requires Playwright.
-- **Note**: API throws 400 Bad Request, likely requiring strict browser context.
+## 26. IBM (Custom) ✅ Working
+- **Endpoint**: `POST https://www-api.ibm.com/search/api/v2`
+- **Mandatory Header**: `Origin: https://www.ibm.com` (If missing, returns 400 Bad Request) and `Content-Type: application/json`.
+- **Payload**: `{"query":"India","start":0,"rows":10,"fields":["title","location","url","posted"]}`
 
-## 27. ZS Associates (Playwright / Browser) ⚠️ Slow
-- **Status**: ✅ Working via Browser, but requires Playwright.
-- **Note**: API returns 0 jobs without strict session tracking.
+## 27. ZS Associates (Jibe/iCIMS) ✅ Working
+- **Step 1 (Handshake)**: `GET https://jobs.zs.com/api/jasession?context=login` to get the tracking cookie.
+- **Step 2 (Data)**: `GET https://jobs.zs.com/api/jobs?locations=India&page=1` (Pass the cookies from Step 1).
+- **Note**: Calling `/api/jobs` directly returns 0 jobs without the session cookie.
 
-## 28. Continental (Playwright / Browser) ⚠️ Slow
-- **Status**: ✅ Working via Browser, but requires Playwright.
-- **Note**: API returns 0 jobs via native requests, requires full browser evaluation.
+## 28. Continental (Custom) ✅ Working
+- **Endpoint**: `POST https://jobs.continental.com/en/api/result-list/pagetype-jobs/`
+- **Mandatory Header**: `Referer: https://jobs.continental.com/en/`
+- **Payload Type**: Must be sent as `multipart/form-data` (not JSON).
