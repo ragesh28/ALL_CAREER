@@ -213,7 +213,7 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `GET https://careers.brillio.com/job-listing/`
 - **Pagination**: `https://careers.brillio.com/job-listing/page/2/`
 
-## 37. ITC Infotech (Zwayam) ❌ 400 Bad Request
-- **Endpoint**: `POST https://public.zwayam.com/jobs/search`
-- **Payload**: `filterCri={"paginationStartNo":0}`
-- **Note**: Throws 400 Bad Request. Likely missing mandatory headers (Content-Type/Origin) or valid session cookies.
+## 37. ITC Infotech (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Endpoint**: `https://jobs.itcinfotech.com/itcinfotech/jobslist`
+- **Note**: Native API calls throw 400 Bad Request. A headless browser successfully bypasses the block, loads the dynamic page, and renders the job listings (e.g., 38 open jobs).
