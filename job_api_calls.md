@@ -125,3 +125,18 @@
 1. **Phenom (HPE, Mastercard, GE)**: If the JSON array is empty, always fall back to parsing the HTML of that same page. They use the same layout.
 2. **Oracle (Amex, BNY, Honeywell)**: Always use the `locationId` parameter. You can find this ID by looking at the search results URL in your browser.
 3. **SocGen**: You must call the `/get-token` endpoint every time you start your script, as the token expires in 10 minutes.
+
+
+### HTML Parsing Selectors Reference (SSR-Locked Sites):
+For sites that require HTML parsing (BeautifulSoup), use the following CSS selectors:
+
+| Company | Main Container | Job Row / Card |
+| :--- | :--- | :--- |
+| **Juniper / Mastercard** | `ul.search-results-list` | `li.jobs-list-item` |
+| **Barclays** | `section#search-results` | `div.job-info` |
+| **Fidelity** | `div.search-results-list` | `div.job-item` |
+| **NatWest (Fallback)** | `div#search-results` | `a.job-result` |
+
+### Blocked Sites Mitigation Notes:
+- **NatWest Group**: Attempts to use the native `.json` endpoint require strict headers (`Referer`, `X-Requested-With: XMLHttpRequest`). Even with headers, cloud IPs are often blocked (403). Use the HTML parser fallback above.
+- **Societe Generale**: The `/search-proxy.php` endpoint aggressively blocks Cloud Provider IPs (AWS, GCP, DigitalOcean) via Imperva/Incapsula. Must be run locally or via a Residential Proxy.
