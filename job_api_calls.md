@@ -179,3 +179,41 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `POST https://jobs.continental.com/en/api/result-list/pagetype-jobs/`
 - **Mandatory Header**: `Referer: https://jobs.continental.com/en/`
 - **Payload Type**: Must be sent as `multipart/form-data` (not JSON).
+
+
+## 29. Nokia (Oracle HCM Cloud) ✅
+- **Endpoint**: `GET https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.workLocation&finder=findReqs;siteNumber=CX_1,locationId=300000000471745,limit=23`
+- **Pagination**: Add `&offset=23`, `&offset=46`
+
+## 30. Cognizant (SSR HTML) ✅
+- **Endpoint**: `GET https://careers.cognizant.com/india-en/jobs/#results`
+- **Pagination**: `?page=2#results`
+
+## 31. KPIT Technologies (SSR HTML) ✅
+- **Endpoint**: `GET https://www.kpit.com/job-listing/?country=India&show_all=1`
+
+## 32. Comcast (TalentBrew) ✅
+- **Endpoint**: `POST https://jobs.comcast.com/module/postmodule`
+- **Payload**: `{"p": 1, "location": "India"}`
+
+## 33. Grundfos (SuccessFactors) ⚠️ Needs Validation
+- **Endpoint**: `POST https://jobs.grundfos.com/services/recruiting/v1/jobs`
+- **Payload**: `{"locale":"en_GB","pageNumber":0,"facetFilters":{"jobLocationCountry":["India"]}}`
+- **Note**: API currently returns 0 jobs without strict headers/cookies.
+
+## 34. Tally Solutions (WordPress Custom) ✅
+- **Endpoint**: `POST https://tallysolutions.com/wp-content/themes/tally/api/api-careers-job-listing.php`
+
+## 35. Subex (Darwinbox) ✅
+- **Endpoint**: `POST https://subex.darwinbox.in/ms/candidateapi/job/alljobs?companyId=main`
+- **Payload**: `{"companyId":"main","page":1,"limit":10}`
+- **Note**: API returns a JSON list successfully.
+
+## 36. Brillio (WordPress SSR) ✅
+- **Endpoint**: `GET https://careers.brillio.com/job-listing/`
+- **Pagination**: `https://careers.brillio.com/job-listing/page/2/`
+
+## 37. ITC Infotech (Zwayam) ❌ 400 Bad Request
+- **Endpoint**: `POST https://public.zwayam.com/jobs/search`
+- **Payload**: `filterCri={"paginationStartNo":0}`
+- **Note**: Throws 400 Bad Request. Likely missing mandatory headers (Content-Type/Origin) or valid session cookies.
