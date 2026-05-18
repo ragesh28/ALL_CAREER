@@ -143,3 +143,36 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 ### Blocked Sites Mitigation Notes:
 - **NatWest Group**: Attempts to use the native `.json` endpoint require strict headers (`Referer`, `X-Requested-With: XMLHttpRequest`). Even with headers, cloud IPs are often blocked (403). Use the HTML parser fallback above.
 - **Societe Generale**: The `/search-proxy.php` endpoint aggressively blocks Cloud Provider IPs (AWS, GCP, DigitalOcean) via Imperva/Incapsula. Must be run locally or via a Residential Proxy.
+
+
+## 21. Fractal Analytics (Workday) ✅
+- **Endpoint**: `POST https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Careers/jobs`
+- **Payload**: `{"limit":20,"offset":0,"searchText":""}`
+
+## 22. Broadcom (Workday) ✅
+- **Endpoint**: `POST https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs`
+- **Payload**: `{"limit":20,"offset":0,"searchText":""}`
+
+## 23. Akamai (Oracle HCM) ✅
+- **Endpoint**: `GET https://fa-extu-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs;siteNumber=CX_1,locationId=300000000469285,limit=25`
+
+## 24. ABB (Phenom) ⚠️ Count only (SSR jobs)
+- **Endpoint**: `POST https://careers.abb/widgets`
+- **Fallback**: HTML parsing (SSR). The JSON array is empty, always fall back to parsing the HTML of that same page.
+
+## 25. Publicis Sapient (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Endpoint**: `https://careers.publicissapient.com/job-search`
+- **Note**: WAF blocks API requests from cloud IPs. Headless browser successfully loads page and renders jobs (e.g. 14 jobs in India).
+
+## 26. IBM (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Note**: API throws 400 Bad Request, likely requiring strict browser context.
+
+## 27. ZS Associates (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Note**: API returns 0 jobs without strict session tracking.
+
+## 28. Continental (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Note**: API returns 0 jobs via native requests, requires full browser evaluation.
