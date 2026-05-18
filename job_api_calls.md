@@ -104,7 +104,9 @@
 - **Important**: Do not use `expand` parameters as they cause timeouts. Use this lightweight URL.
 - **Pagination**: Add `&offset=10`, `&offset=20`
 
-## 18. Societe Generale (Proxy API) ✅
+## 18. Societe Generale (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright (due to Imperva blocking cloud IPs).
+- **Note**: Direct API calls via proxy work locally, but cloud IPs return 403 Forbidden. Using Playwright completely bypasses the block but makes the scraping process slower.
 - **Step 1**: `GET https://careers.societegenerale.com/sg-careers-offers/get-token` -> returns Bearer token (expires in 10 mins).
 - **Step 2**: `POST https://careers.societegenerale.com/search-proxy.php`
 - **Required Header**: `authorization-api: Bearer <your_token>`
@@ -115,9 +117,10 @@
 - **Payload**: `{"limit":20,"offset":0,"searchText":""}`
 - **Pagination**: Update `offset` by 20.
 
-## 20. NatWest Group (JSON API) ❌ WAF Blocked
-- **Endpoint**: `GET https://jobs.natwestgroup.com/search/jobs.json?location=india`
-- **Problem**: API returns HTML/Error. Requires specific headers/cookies.
+## 20. NatWest Group (Playwright / Browser) ⚠️ Slow
+- **Status**: ✅ Working via Browser, but requires Playwright.
+- **Endpoint**: `https://jobs.natwestgroup.com/search/jobs/in/country/india`
+- **Note**: WAF blocks API requests from cloud IPs. Must use a headless browser (Playwright) which bypasses the block successfully but takes significantly more time to scrape.
 
 ---
 
