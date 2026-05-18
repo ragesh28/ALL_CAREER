@@ -66,3 +66,62 @@
 - **Page size**: 10 per page
 - **Required Headers**: `Origin: https://careers.wipro.com`, `Referer: https://careers.wipro.com/en-US/search`
 - **Linux fix**: Strip BOM with `resp.text.lstrip("\ufeff")`
+
+
+## 11. Arcesium (Greenhouse) ✅
+- **Endpoint**: `GET https://boards-api.greenhouse.io/v1/boards/arcesiumllc/jobs?content=true`
+- **Pagination**: None. Returns all open positions in a single JSON array.
+- **Response**: `jobs[]` → `title`, `location.name`, `absolute_url`
+
+## 12. Juniper Networks / HPE (Phenom) ⚠️ Count only (SSR jobs)
+- **Endpoint**: `POST https://careers.hpe.com/widgets`
+- **Required**: `x-csrf-token` from `https://careers.hpe.com/us/en/search-results?location=India`
+- **Payload**: `{"lang":"en_us","deviceType":"desktop","pageName":"search-results","ddoKey":"refineSearch","payload":{"from":0,"size":10,"location":"India"}}`
+- **Fallback**: HTML parsing (SSR). The JSON array is empty, always fall back to parsing the HTML of that same page.
+
+## 13. Mastercard (Phenom) ⚠️ Count only (SSR jobs)
+- **Endpoint**: `POST https://careers.mastercard.com/widgets`
+- **Required**: `x-csrf-token` from `https://careers.mastercard.com/us/en/search-results?location=India`
+- **Fallback**: HTML parsing (SSR). If JSON array is empty, parse the HTML.
+
+## 14. Barclays (SSR HTML) ✅
+- **Method**: HTML Parsing (BeautifulSoup)
+- **Endpoint**: `GET https://search.jobs.barclays/search-jobs/India`
+- **Pagination**: URL parameter `p=2`, `p=3` (e.g. `?p=2`)
+
+## 15. Fidelity Investments (SSR HTML) ✅
+- **Method**: HTML Parsing (BeautifulSoup)
+- **Endpoint**: `GET https://jobs.fidelity.com/in/jobs/`
+- **Pagination**: URL parameter `p=2`, `p=3` (e.g. `?p=2`)
+
+## 16. BNY (Oracle HCM) ✅
+- **Endpoint**: `GET https://eofe.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs;siteNumber=CX_1001,locationId=300000000378365,limit=25`
+- **Requirement**: `finder` must contain `locationId=300000000378365` (found in search results URL)
+- **Pagination**: Add `&offset=25`, `&offset=50`
+
+## 17. American Express (Oracle HCM) ✅
+- **Endpoint**: `GET https://egug.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs;siteNumber=CX_1,locationId=300000000228786,limit=10`
+- **Important**: Do not use `expand` parameters as they cause timeouts. Use this lightweight URL.
+- **Pagination**: Add `&offset=10`, `&offset=20`
+
+## 18. Societe Generale (Proxy API) ✅
+- **Step 1**: `GET https://careers.societegenerale.com/sg-careers-offers/get-token` -> returns Bearer token (expires in 10 mins).
+- **Step 2**: `POST https://careers.societegenerale.com/search-proxy.php`
+- **Required Header**: `authorization-api: Bearer <your_token>`
+- **Payload**: `{"profile":"ces_profile_sgcareers","query":{"advanced":[{"name":"geo","op":"eq","value":"INDIA"}]}}`
+
+## 19. Visa (Workday) ✅
+- **Endpoint**: `POST https://visa.wd5.myworkdayjobs.com/wday/cxs/visa/Visa/jobs`
+- **Payload**: `{"limit":20,"offset":0,"searchText":""}`
+- **Pagination**: Update `offset` by 20.
+
+## 20. NatWest Group (JSON API) ❌ WAF Blocked
+- **Endpoint**: `GET https://jobs.natwestgroup.com/search/jobs.json?location=india`
+- **Problem**: API returns HTML/Error. Requires specific headers/cookies.
+
+---
+
+### Global API Rules Updated:
+1. **Phenom (HPE, Mastercard, GE)**: If the JSON array is empty, always fall back to parsing the HTML of that same page. They use the same layout.
+2. **Oracle (Amex, BNY, Honeywell)**: Always use the `locationId` parameter. You can find this ID by looking at the search results URL in your browser.
+3. **SocGen**: You must call the `/get-token` endpoint every time you start your script, as the token expires in 10 minutes.
