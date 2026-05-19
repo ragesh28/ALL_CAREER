@@ -79,7 +79,9 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add scraped_jobs_output.json scrape_checkpoint.json || true
           git commit -m "chore(jobs): Update 51-company scraped jobs [skip ci] - idx ${{ steps.check_remaining.outputs.next_index }}" || echo "No changes to commit"
+          git stash --include-untracked || true
           git pull --rebase origin main
+          git stash pop || true
           git push
 
       - name: Trigger continuation if not complete
