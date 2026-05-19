@@ -1,0 +1,803 @@
+"""
+Master Job Scraper - Reads all company API configs from job_api_calls.md
+Phase 1: Run all native API companies (requests)
+Phase 2: Run all browser-required companies (Playwright)
+"""
+
+import json, re, os, sys, time, requests
+try:
+    from jobspy import scrape_jobs
+    JOBSPY_AVAILABLE = True
+except ImportError:
+    JOBSPY_AVAILABLE = False
+from datetime import datetime
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+
+sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
+
+MD_FILE = "job_api_calls.md"
+OUTPUT_FILE = "scraped_jobs_output.json"
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+HEADERS = {"User-Agent": UA, "Accept": "application/json, text/html, */*"}
+
+# ---------------------------------------------------------------------------
+# 1. PARSER: Read job_api_calls.md and extract all company configs
+# ---------------------------------------------------------------------------
+
+def parse_md_file(filepath):
+    """Parse the markdown file and return two lists: api_companies, browser_companies."""
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    blocks = re.split(r'\n## ', content)
+    api_companies = []
+    browser_companies = []
+
+    for block in blocks:
+        if not block.strip():
+            continue
+
+        # Extract company number and name
+        header_match = re.match(r'(\d+)\.\s+(.+?)(?:\s*\(|$)', block)
+        if not header_match:
+            continue
+
+        num = int(header_match.group(1))
+        name = header_match.group(2).strip()
+        header_line = block.split('\n')[0]
+
+        is_browser = "Playwright" in block and "Browser" in block
+        is_blocked_only = "Blocked" in header_line and "Working" not in header_line
+
+        # Extract endpoint URLs
+        endpoints = re.findall(r'`((?:GET|POST)\s+https?://[^`]+)`', block)
+        # Also find bare endpoint URLs
+        bare_endpoints = re.findall(r'\*\*Endpoint\*\*:\s*`(https?://[^`]+)`', block)
+
+        # Extract payload
+        payload_match = re.findall(r'\*\*Payload[^*]*\*\*[^`]*`([^`]+)`', block)
+        payload = payload_match[0] if payload_match else None
+
+        # Detect method
+        method = "GET"
+        if any("POST" in e for e in endpoints):
+            method = "POST"
+        elif payload:
+            method = "POST"
+
+        # Get primary URL
+        url = None
+        if endpoints:
+            url = endpoints[0].replace("GET ", "").replace("POST ", "").strip()
+        elif bare_endpoints:
+            url = bare_endpoints[0].strip()
+
+        # Detect special types
+        is_handshake = "Step 1" in block and "Step 2" in block
+        is_ssr = "SSR" in block or "HTML Parsing" in block or "BeautifulSoup" in block
+        is_workday = "myworkdayjobs.com" in (url or "")
+        is_greenhouse = "greenhouse.io" in (url or "")
+        is_oracle = "oraclecloud.com" in (url or "")
+
+        # Extract handshake URL if present
+        handshake_url = None
+        if is_handshake:
+            step1_match = re.findall(r'Step 1[^`]*`(?:GET\s+)?(https?://[^`]+)`', block)
+            step2_match = re.findall(r'Step 2[^`]*`(?:POST\s+|GET\s+)?(https?://[^`]+)`', block)
+            if step1_match:
+                handshake_url = step1_match[0]
+            if step2_match:
+                url = step2_match[0]
+
+        # Extract mandatory headers
+        mandatory_headers = {}
+        header_matches = re.findall(r'`(Origin|Referer|x-csrf-token|Content-Type|authorization-api):\s*([^`]+)`', block)
+        for hk, hv in header_matches:
+            mandatory_headers[hk] = hv.strip()
+
+        company_info = {
+            "num": num,
+            "name": name,
+            "url": url,
+            "method": method,
+            "payload": payload,
+            "is_ssr": is_ssr,
+            "is_workday": is_workday,
+            "is_greenhouse": is_greenhouse,
+            "is_oracle": is_oracle,
+            "is_handshake": is_handshake,
+            "handshake_url": handshake_url,
+            "mandatory_headers": mandatory_headers,
+            "raw_block": block,
+        }
+
+        if is_browser or is_blocked_only:
+            browser_companies.append(company_info)
+        else:
+            api_companies.append(company_info)
+
+    return api_companies, browser_companies
+
+
+# ---------------------------------------------------------------------------
+# 2. SCRAPER ENGINES
+# ---------------------------------------------------------------------------
+
+def clean(text):
+    if not text:
+        return ""
+    return re.sub(r'[^\x00-\x7F]+', ' ', str(text)).strip()
+
+
+def scrape_workday(info):
+    """Handle all Workday POST APIs."""
+    try:
+        payload = json.loads(info["payload"]) if info["payload"] else {"limit": 20, "offset": 0, "searchText": ""}
+        r = requests.post(info["url"], headers={**HEADERS, "Content-Type": "application/json"}, json=payload, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            total = data.get("total", 0)
+            postings = data.get("jobPostings", [])
+            jobs = []
+            for j in postings[:5]:
+                jobs.append({
+                    "title": clean(j.get("title", "")),
+                    "location": clean(j.get("locationsText", "")),
+                    "apply_url": f"https://{urlparse(info['url']).netloc}{j.get('externalPath', '')}",
+                })
+            return {"status": "OK", "total": total, "sample_jobs": jobs}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+    return {"status": "FAILED", "total": 0}
+
+
+def scrape_greenhouse(info):
+    """Handle all Greenhouse APIs."""
+    try:
+        url = info["url"]
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            # Handle departments endpoint
+            if "departments" in url:
+                deps = data.get("departments", [])
+                total = sum(len(d.get("jobs", [])) for d in deps)
+                jobs = []
+                for d in deps:
+                    for j in d.get("jobs", []):
+                        jobs.append({"title": clean(j.get("title", "")), "location": clean(j.get("location", {}).get("name", ""))})
+                        if len(jobs) >= 5:
+                            break
+                    if len(jobs) >= 5:
+                        break
+                return {"status": "OK", "total": total, "sample_jobs": jobs}
+            else:
+                all_jobs = data.get("jobs", [])
+                total = data.get("meta", {}).get("total", len(all_jobs))
+                jobs = [{"title": clean(j.get("title", "")), "location": clean(j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else "")} for j in all_jobs[:5]]
+                return {"status": "OK", "total": total, "sample_jobs": jobs}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+    return {"status": "FAILED", "total": 0}
+
+
+def scrape_oracle(info):
+    """Handle all Oracle HCM APIs."""
+    try:
+        r = requests.get(info["url"], headers=HEADERS, timeout=20)
+        if r.status_code == 200:
+            data = r.json()
+            items = data.get("items", [])
+            if items:
+                total = items[0].get("TotalJobsCount", 0)
+                reqs = items[0].get("requisitionList", [])
+                jobs = [{"title": clean(j.get("Title", "")), "location": clean(j.get("PrimaryLocation", ""))} for j in reqs[:5]]
+                return {"status": "OK", "total": total, "sample_jobs": jobs}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+    return {"status": "FAILED", "total": 0}
+
+
+def scrape_ssr_html(info):
+    """Handle SSR/HTML sites with BeautifulSoup."""
+    try:
+        r = requests.get(info["url"], headers={**HEADERS, "Accept": "text/html"}, timeout=15)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            # Try common job selectors
+            selectors = [
+                "li.jobs-list-item", "article.article--result", "div.job-info",
+                "div.job-item", ".job-card", ".card-job", "tr.data-row",
+                ".job-listing", ".job-title", "a.job-result",
+            ]
+            jobs_found = []
+            for sel in selectors:
+                items = soup.select(sel)
+                if items:
+                    jobs_found = items
+                    break
+            # Fallback: count links with job-related text
+            if not jobs_found:
+                jobs_found = soup.find_all("a", href=True)
+                jobs_found = [a for a in jobs_found if any(k in (a.get("href", "") + a.get_text()).lower() for k in ["job", "career", "position", "opening"])]
+
+            titles = []
+            for item in jobs_found[:5]:
+                t = item.select_one("h2, h3, .job-title, .card-title a, a")
+                titles.append({"title": clean(t.get_text(strip=True) if t else item.get_text(strip=True)[:80])})
+
+            return {"status": "OK", "total": len(jobs_found), "sample_jobs": titles}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+    return {"status": "FAILED", "total": 0}
+
+
+def scrape_handshake(info):
+    """Handle two-step handshake APIs (ZS Associates, Danfoss, etc.)."""
+    try:
+        s = requests.Session()
+        s.headers.update(HEADERS)
+
+        # Step 1: Handshake
+        r1 = s.get(info["handshake_url"], timeout=10)
+        if r1.status_code != 200:
+            return {"status": "HANDSHAKE_FAILED", "error": f"Step 1 returned {r1.status_code}"}
+
+        # Check for CSRF token in HTML
+        csrf_match = re.search(r'var CSRFToken\s*=\s*"([^"]+)"', r1.text)
+        if csrf_match:
+            s.headers["x-csrf-token"] = csrf_match.group(1)
+
+        # Step 2: Data
+        if info["method"] == "POST":
+            payload = json.loads(info["payload"]) if info["payload"] else {}
+            extra_headers = {**info.get("mandatory_headers", {}), "Content-Type": "application/json"}
+            s.headers.update(extra_headers)
+            r2 = s.post(info["url"], json=payload, timeout=15)
+        else:
+            r2 = s.get(info["url"], timeout=15)
+
+        if r2.status_code == 200:
+            try:
+                data = r2.json()
+                if isinstance(data, dict):
+                    total = data.get("totalJobCount", data.get("total", data.get("jobs", []).__len__() if isinstance(data.get("jobs"), list) else 0))
+                    jobs_list = data.get("jobs", data.get("jobPostings", []))
+                    sample = [{"title": clean(j.get("title", j.get("name", "")))} for j in (jobs_list[:5] if isinstance(jobs_list, list) else [])]
+                    return {"status": "OK", "total": total, "sample_jobs": sample}
+            except Exception:
+                pass
+            return {"status": "OK", "total": "unknown", "sample_jobs": []}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+    return {"status": "FAILED", "total": 0}
+
+
+def scrape_generic_api(info):
+    """Handle generic GET/POST API calls."""
+    try:
+        extra_h = {**HEADERS}
+        for k, v in info.get("mandatory_headers", {}).items():
+            if "{" not in v:  # Skip template headers
+                extra_h[k] = v
+
+        if info["method"] == "POST":
+            payload = None
+            if info["payload"]:
+                try:
+                    payload = json.loads(info["payload"])
+                except Exception:
+                    payload = info["payload"]
+
+            if isinstance(payload, dict):
+                extra_h["Content-Type"] = "application/json"
+                r = requests.post(info["url"], headers=extra_h, json=payload, timeout=15)
+            elif isinstance(payload, str):
+                # multipart/form-data
+                r = requests.post(info["url"], headers=extra_h, data={"data": payload}, timeout=15)
+            else:
+                r = requests.post(info["url"], headers=extra_h, timeout=15)
+        else:
+            r = requests.get(info["url"], headers=extra_h, timeout=15)
+
+        if r.status_code == 200:
+            try:
+                text = r.text.lstrip("\ufeff")  # Strip BOM
+                data = json.loads(text)
+                # Try to extract job count from common patterns
+                total = 0
+                if isinstance(data, dict):
+                    for key in ["total", "totalHits", "totalMatches", "totalJobCount", "TotalJobsCount", "hits", "count", "ResultCount"]:
+                        if key in data:
+                            total = data[key]
+                            break
+                    if total == 0:
+                        for key in ["jobs", "jobPostings", "jobsList", "data", "results", "Results", "positions", "items"]:
+                            if key in data and isinstance(data[key], list):
+                                total = len(data[key])
+                                break
+                elif isinstance(data, list):
+                    total = len(data)
+
+                return {"status": "OK", "total": total, "response_type": "JSON"}
+            except Exception:
+                # It's HTML or XML
+                return {"status": "OK", "total": "html/xml", "response_type": "HTML"}
+        else:
+            return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+# ---------------------------------------------------------------------------
+# COMPANY-SPECIFIC FIXUPS
+# ---------------------------------------------------------------------------
+
+def scrape_wipro(info):
+    """Wipro needs Content-Type: application/json + BOM strip."""
+    try:
+        h = {**HEADERS, "Content-Type": "application/json",
+             "Origin": "https://careers.wipro.com",
+             "Referer": "https://careers.wipro.com/en-US/search"}
+        r = requests.post("https://careers.wipro.com/services/recruiting/v1/jobs",
+                          headers=h, json={"pageNumber": 0, "locale": "en_US"}, timeout=15)
+        if r.status_code == 200:
+            data = json.loads(r.text.lstrip("\ufeff"))
+            total = data.get("totalJobs", 0)
+            sample = [{"title": clean(j.get("response", {}).get("unifiedStandardTitle", ""))}
+                      for j in data.get("jobSearchResult", [])[:5]]
+            return {"status": "OK", "total": total, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_maersk(info):
+    """Maersk needs a static consumer-key header."""
+    consumer_key = "ean6qqcQIuGza1IZ1Rg9dgfjZhlGE7Dw"
+    # Try dynamic extraction first
+    try:
+        r_html = requests.get("https://www.maersk.com/careers/vacancies",
+                              headers={**HEADERS, "Accept": "text/html"}, timeout=10)
+        m = re.search(r'consumer[-_]?key["\']?\s*:\s*["\']([a-zA-Z0-9]+)["\']', r_html.text, re.I)
+        if m:
+            consumer_key = m.group(1)
+    except Exception:
+        pass
+    try:
+        h = {**HEADERS, "consumer-key": consumer_key}
+        r = requests.get("https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india",
+                         headers=h, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            total = data.get("ResultCount", 0)
+            sample = [{"title": clean(j.get("Title", "")), "location": clean(j.get("City", ""))}
+                      for j in data.get("Results", [])[:5]]
+            return {"status": "OK", "total": total, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_ibm(info):
+    """IBM needs Origin header + correct payload format."""
+    try:
+        h = {**HEADERS, "Content-Type": "application/json",
+             "Origin": "https://www.ibm.com",
+             "Referer": "https://www.ibm.com/careers"}
+        payload = {"query": "India", "start": 0, "rows": 10,
+                   "fields": ["title", "location", "url", "posted"]}
+        r = requests.post("https://www-api.ibm.com/search/api/v2",
+                          headers=h, json=payload, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            hits = data.get("results", [])
+            total = data.get("total", len(hits))
+            sample = [{"title": clean(j.get("title", ""))} for j in hits[:5]]
+            return {"status": "OK", "total": total, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_bosch(info):
+    """Bosch: extract Bearer token from page, fallback to JobSpy."""
+    try:
+        s = requests.Session()
+        s.headers.update(HEADERS)
+        page_r = s.get("https://jobs.bosch.com/en?country=in", timeout=15)
+        tokens = re.findall(r'Bearer\s+([a-zA-Z0-9._-]{20,})', page_r.text)
+        if not tokens:
+            tokens = re.findall(r'accessToken["\s:=]+["\']([^"\']+)["\']', page_r.text, re.I)
+        if tokens:
+            token = tokens[0]
+            API = "https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/_aggrs/get_jobs"
+            r = s.get(f"{API}?page=1&pagesize=8&avars=%7B%22country%22%3A%5B%22in%22%5D%7D",
+                      headers={"Authorization": f"Bearer {token}", "Referer": "https://jobs.bosch.com/"}, timeout=15)
+            if r.status_code == 200:
+                data = r.json()
+                items = data if isinstance(data, list) else data.get("items", [])
+                total = len(items)
+                sample = [{"title": clean(str(i.get("title", i.get("name", ""))))} for i in items[:5]]
+                return {"status": "OK", "total": total, "sample_jobs": sample}
+    except Exception:
+        pass
+    return jobspy_fallback_result("Bosch")
+
+
+def jobspy_fallback_result(company_name):
+    """Use JobSpy/LinkedIn as final fallback for hard companies."""
+    if not JOBSPY_AVAILABLE:
+        return {"status": "FAILED", "error": "JobSpy not installed", "total": 0}
+    try:
+        cities = ["Bangalore", "Mumbai", "Hyderabad", "Chennai", "Pune"]
+        jobs = []
+        seen = set()
+        for city in cities:
+            if len(jobs) >= 10:
+                break
+            try:
+                df = scrape_jobs(site_name=["linkedin"], search_term=company_name,
+                                 location=f"{city}, India", results_wanted=5,
+                                 country_indeed="India")
+                for _, row in df.iterrows():
+                    url = str(row.get("job_url", ""))
+                    if url in seen:
+                        continue
+                    seen.add(url)
+                    jobs.append({"title": clean(str(row.get("title", ""))),
+                                 "location": clean(str(row.get("location", city))),
+                                 "apply_url": url})
+            except Exception:
+                continue
+        if jobs:
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5],
+                    "method": "JobSpy/LinkedIn fallback"}
+        return {"status": "FAILED", "total": 0, "error": "JobSpy returned 0 jobs"}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e), "total": 0}
+
+
+# ---------------------------------------------------------------------------
+# 3. BROWSER ENGINE (Playwright)
+# ---------------------------------------------------------------------------
+
+def scrape_with_browser(info):
+    """Use Playwright headless browser for blocked sites."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return {"status": "ERROR", "error": "Playwright not installed. Run: pip install playwright && playwright install chromium"}
+
+    url = info["url"]
+    if not url:
+        return {"status": "ERROR", "error": "No URL found"}
+
+    name = info.get("name", "").lower()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
+            context = browser.new_context(
+                user_agent=UA,
+                extra_http_headers={"Accept-Language": "en-US,en;q=0.9"}
+            )
+            page = context.new_page()
+
+            # ITC Infotech: use HTTP/1.1 fallback URL
+            if "itc" in name:
+                url = "https://jobs.itcinfotech.com/itcinfotech/"
+
+            page.goto(url, wait_until="domcontentloaded", timeout=45000)
+            page.wait_for_timeout(10000)  # Wait for JS to render
+
+            # For ITC: try navigating to jobslist after home loads
+            if "itc" in name:
+                try:
+                    page.goto("https://jobs.itcinfotech.com/itcinfotech/jobslist",
+                              wait_until="domcontentloaded", timeout=30000)
+                    page.wait_for_timeout(8000)
+                except Exception:
+                    pass
+
+            # Extract job data from the rendered page
+            content = page.content()
+            soup = BeautifulSoup(content, "html.parser")
+
+            # Try common job selectors
+            selectors = [
+                "li.jobs-list-item", ".job-card", ".job-item",
+                "tr[data-job-id]", ".card-job", ".job-listing", ".opening-list li",
+                "div[class*='JobCard']", "div[class*='job-card']",
+                "a[href*='/job/']", "a[href*='jobId']",
+                "div[class*='job']", "div[class*='position']",
+            ]
+            jobs_found = []
+            for sel in selectors:
+                items = soup.select(sel)
+                if len(items) >= 1:
+                    jobs_found = items
+                    break
+
+            titles = []
+            for item in jobs_found[:5]:
+                t = item.select_one("h2, h3, h4, .job-title, a")
+                text = clean(t.get_text(strip=True) if t else item.get_text(strip=True)[:80])
+                if text and len(text) > 3:
+                    titles.append({"title": text})
+
+            browser.close()
+
+            # If browser got 0 jobs, try JobSpy fallback
+            if not jobs_found and JOBSPY_AVAILABLE:
+                orig_name = info.get("name", "")
+                fb = jobspy_fallback_result(orig_name)
+                if fb.get("status") == "OK":
+                    fb["method"] = "Playwright+JobSpy fallback"
+                    return fb
+
+            return {"status": "OK", "total": len(jobs_found), "sample_jobs": titles, "method": "Playwright"}
+    except Exception as e:
+        # Network-level block (ITC HTTP2 error etc) — fallback to JobSpy
+        if JOBSPY_AVAILABLE:
+            orig_name = info.get("name", "")
+            fb = jobspy_fallback_result(orig_name)
+            fb["method"] = f"JobSpy fallback (Playwright blocked: {str(e)[:60]})"
+            return fb
+        return {"status": "ERROR", "error": str(e), "method": "Playwright"}
+
+
+# ---------------------------------------------------------------------------
+# 4. DISPATCHER: Route each company to the right engine
+# ---------------------------------------------------------------------------
+
+def dispatch_api(info):
+    """Route a company to the correct scraper engine based on its config."""
+    name = info["name"]
+    name_lower = name.lower()
+    url = info.get("url", "")
+
+    if not url:
+        return {"status": "SKIPPED", "reason": "No URL extracted"}
+
+    # ── Company-specific overrides (highest priority) ──
+    if "wipro" in name_lower:
+        return scrape_wipro(info)
+    if "maersk" in name_lower:
+        return scrape_maersk(info)
+    if "ibm" in name_lower:
+        result = scrape_ibm(info)
+        if result.get("status") != "OK" and JOBSPY_AVAILABLE:
+            return jobspy_fallback_result("IBM")
+        return result
+    if "bosch" in name_lower:
+        return scrape_bosch(info)
+
+    # HPE/Juniper, Mastercard, ABB all use Phenom /widgets which needs CSRF.
+    # Use the real HTML search page URL via Playwright instead.
+    if "juniper" in name_lower or "hpe" in name_lower:
+        # Phenom People platform renders too slowly for Playwright.
+        # Use JobSpy/LinkedIn fallback for reliable results.
+        if JOBSPY_AVAILABLE:
+            return jobspy_fallback_result("HPE")
+        return scrape_with_browser({**info, "url": "https://careers.hpe.com/us/en/search-results?location=India"})
+    if "mastercard" in name_lower:
+        return scrape_with_browser({**info, "url": "https://careers.mastercard.com/us/en/search-results?location=India"})
+    if "abb" in name_lower:
+        return scrape_with_browser({**info, "url": "https://careers.abb/us/en/search-results?location=India"})
+
+    # ── Standard routing ──
+    # Handshake companies (ZS Associates, Danfoss)
+    if info["is_handshake"] and info["handshake_url"]:
+        return scrape_handshake(info)
+
+    # Workday
+    if info["is_workday"]:
+        return scrape_workday(info)
+
+    # Greenhouse
+    if info["is_greenhouse"]:
+        return scrape_greenhouse(info)
+
+    # Oracle HCM
+    if info["is_oracle"]:
+        return scrape_oracle(info)
+
+    # SSR HTML
+    if info["is_ssr"]:
+        return scrape_ssr_html(info)
+
+    # Generic API
+    result = scrape_generic_api(info)
+    # If generic API fails hard (401/403/400), try JobSpy as last resort
+    if result.get("status") in ("FAILED", "ERROR") and JOBSPY_AVAILABLE:
+        fb = jobspy_fallback_result(name)
+        if fb.get("status") == "OK":
+            return fb
+    return result
+
+
+# ---------------------------------------------------------------------------
+# 5. CHECKPOINT HELPERS
+# ---------------------------------------------------------------------------
+
+CHECKPOINT_FILE = "scrape_checkpoint.json"
+
+def load_checkpoint():
+    """Load existing results + next_index from checkpoint file."""
+    if os.path.exists(CHECKPOINT_FILE):
+        try:
+            with open(CHECKPOINT_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"next_index": 0, "completed": False, "results": {}}
+
+def save_checkpoint(next_index, results, completed=False):
+    """Save progress checkpoint so the workflow can resume."""
+    data = {
+        "next_index": next_index,
+        "completed": completed,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "results": results,
+    }
+    with open(CHECKPOINT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+def save_output(all_results, api_count, browser_count):
+    """Write the final scraped_jobs_output.json."""
+    output = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "total_companies": len(all_results),
+        "api_count": api_count,
+        "browser_count": browser_count,
+        "results": all_results,
+    }
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(output, f, indent=2, ensure_ascii=False)
+
+
+# ---------------------------------------------------------------------------
+# 6. MAIN EXECUTION
+# ---------------------------------------------------------------------------
+
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Master Job Scraper")
+    parser.add_argument("--resume", type=int, default=0,
+                        help="Resume from this global company index (0-based)")
+    parser.add_argument("--timeout", type=int, default=0,
+                        help="Stop scraping after this many seconds (0 = no limit)")
+    args = parser.parse_args()
+
+    resume_index = args.resume
+    timeout_secs = args.timeout
+    start_time   = time.time()
+
+    print("=" * 70)
+    print("  MASTER JOB SCRAPER - Reading configs from job_api_calls.md")
+    print(f"  Resume index : {resume_index}")
+    print(f"  Timeout secs : {timeout_secs if timeout_secs else 'unlimited'}")
+    print("=" * 70)
+
+    if not os.path.exists(MD_FILE):
+        print(f"ERROR: {MD_FILE} not found!")
+        return
+
+    api_companies, browser_companies = parse_md_file(MD_FILE)
+    all_companies = api_companies + browser_companies          # flat ordered list
+    total = len(all_companies)
+    print(f"\nParsed {len(api_companies)} API + {len(browser_companies)} Browser = {total} total")
+    print(f"Starting from index {resume_index}\n")
+
+    # Load any previously saved results (so we don't lose already-scraped data)
+    checkpoint = load_checkpoint()
+    all_results = checkpoint.get("results", {})
+
+    timed_out = False
+
+    # ===== PHASE 1: Native API Companies =====
+    print("=" * 70)
+    print("  PHASE 1: Native API Companies (requests)")
+    print("=" * 70)
+
+    for global_idx, info in enumerate(api_companies):
+        # Skip already-done companies when resuming
+        if global_idx < resume_index:
+            continue
+
+        # Timeout guard — stop before GitHub kills the runner
+        elapsed = time.time() - start_time
+        if timeout_secs and elapsed >= timeout_secs:
+            print(f"\n  ⏰ Timeout reached at {elapsed:.0f}s — saving checkpoint at index {global_idx}")
+            save_checkpoint(global_idx, all_results, completed=False)
+            save_output(all_results, len(api_companies), len(browser_companies))
+            timed_out = True
+            break
+
+        i = global_idx + 1
+        name = f"{info['num']}. {info['name']}"
+        print(f"\n[{i}/{total}] Scraping {name}...")
+        print(f"  URL: {info.get('url', 'N/A')[:80]}")
+        print(f"  Method: {info['method']} | Workday: {info['is_workday']} | "
+              f"Greenhouse: {info['is_greenhouse']} | Oracle: {info['is_oracle']} | "
+              f"SSR: {info['is_ssr']} | Handshake: {info['is_handshake']}")
+
+        result = dispatch_api(info)
+        all_results[name] = result
+
+        status_icon = "OK" if result.get("status") == "OK" else "FAIL"
+        total_jobs  = result.get("total", "?")
+        print(f"  Result: [{status_icon}] Total Jobs: {total_jobs}")
+        if result.get("sample_jobs"):
+            for j in result["sample_jobs"][:2]:
+                print(f"    -> {j.get('title', '?')[:60]}")
+
+        time.sleep(0.3)
+
+    # ===== PHASE 2: Browser Companies =====
+    if not timed_out:
+        print("\n" + "=" * 70)
+        print("  PHASE 2: Browser-Required Companies (Playwright)")
+        print("=" * 70)
+
+        browser_start = len(api_companies)   # global index offset for browser list
+
+        for local_idx, info in enumerate(browser_companies):
+            global_idx = browser_start + local_idx
+
+            if global_idx < resume_index:
+                continue
+
+            elapsed = time.time() - start_time
+            if timeout_secs and elapsed >= timeout_secs:
+                print(f"\n  ⏰ Timeout reached at {elapsed:.0f}s — saving checkpoint at index {global_idx}")
+                save_checkpoint(global_idx, all_results, completed=False)
+                save_output(all_results, len(api_companies), len(browser_companies))
+                timed_out = True
+                break
+
+            i = global_idx + 1
+            name = f"{info['num']}. {info['name']}"
+            print(f"\n[{i}/{total}] Scraping {name} (Browser)...")
+            print(f"  URL: {info.get('url', 'N/A')[:80]}")
+
+            result = scrape_with_browser(info)
+            all_results[name] = result
+
+            status_icon = "OK" if result.get("status") == "OK" else "FAIL"
+            total_jobs  = result.get("total", "?")
+            print(f"  Result: [{status_icon}] Total Jobs: {total_jobs}")
+            if result.get("sample_jobs"):
+                for j in result["sample_jobs"][:2]:
+                    print(f"    -> {j.get('title', '?')[:60]}")
+
+            time.sleep(1)
+
+    # ===== SAVE RESULTS =====
+    save_output(all_results, len(api_companies), len(browser_companies))
+
+    if not timed_out:
+        # Mark run as fully complete — clear checkpoint
+        save_checkpoint(0, {}, completed=True)
+
+    # ===== SUMMARY =====
+    print("\n" + "=" * 70)
+    print("  FINAL SUMMARY")
+    print("=" * 70)
+
+    ok      = sum(1 for r in all_results.values() if r.get("status") == "OK")
+    failed  = sum(1 for r in all_results.values() if r.get("status") in ("FAILED", "ERROR"))
+    skipped = sum(1 for r in all_results.values() if r.get("status") == "SKIPPED")
+
+    print(f"  Total Companies:  {len(all_results)}")
+    print(f"  Successful:       {ok}")
+    print(f"  Failed:           {failed}")
+    print(f"  Skipped:          {skipped}")
+    print(f"  Timed out:        {'YES — will auto-restart' if timed_out else 'No'}")
+    print(f"\n  Results saved to: {OUTPUT_FILE}")
+    print("=" * 70)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,96 @@
+name: 51 Company Jobs Scraper (api_call_jobs2)
+
+on:
+  workflow_dispatch:
+    inputs:
+      resume_from:
+        description: 'Resume from company index (leave blank for fresh start)'
+        required: false
+        default: ''
+  schedule:
+    - cron: '30 21 * * *'  # 3:00 AM IST (UTC+5:30) daily
+
+jobs:
+  scrape-51-companies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355  # 5 hours 55 minutes max
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          pip install requests beautifulsoup4 playwright pandas python-jobspy
+          playwright install --with-deps chromium
+
+      - name: Write job_api_calls.md from Secret
+        env:
+          JOB_API_CALLS: ${{ secrets.job_api_calls }}
+        run: |
+          echo "$JOB_API_CALLS" > job_api_calls.md
+          echo "job_api_calls.md written: $(wc -l < job_api_calls.md) lines"
+
+      - name: Load checkpoint (if resuming)
+        run: |
+          git pull --rebase origin main || true
+
+          RESUME_FROM="${{ github.event.inputs.resume_from }}"
+          if [ -z "$RESUME_FROM" ]; then
+            if [ -f "scrape_checkpoint.json" ]; then
+              RESUME_FROM=$(python3 -c "import json; d=json.load(open('scrape_checkpoint.json')); print(d.get('next_index', 0))")
+              echo "Auto-resuming from checkpoint at index: $RESUME_FROM"
+            else
+              RESUME_FROM=0
+              echo "Fresh start at index 0"
+            fi
+          fi
+          echo "RESUME_INDEX=$RESUME_FROM" >> $GITHUB_ENV
+
+      - name: Run 51-Company Scraper (with checkpoint)
+        run: |
+          python scrape_from_md.py --resume "$RESUME_INDEX" --timeout 19800
+        timeout-minutes: 345
+
+      - name: Check if more companies remain
+        id: check_remaining
+        run: |
+          if [ -f "scrape_checkpoint.json" ]; then
+            DONE=$(python3 -c "import json; d=json.load(open('scrape_checkpoint.json')); print('true' if d.get('completed', False) else 'false')")
+            NEXT=$(python3 -c "import json; d=json.load(open('scrape_checkpoint.json')); print(d.get('next_index', 0))")
+            echo "completed=$DONE" >> $GITHUB_OUTPUT
+            echo "next_index=$NEXT" >> $GITHUB_OUTPUT
+          else
+            echo "completed=true" >> $GITHUB_OUTPUT
+            echo "next_index=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit results and checkpoint
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add scraped_jobs_output.json scrape_checkpoint.json || true
+          git commit -m "chore(jobs): Update 51-company scraped jobs [skip ci] - idx ${{ steps.check_remaining.outputs.next_index }}" || echo "No changes to commit"
+          git pull --rebase origin main
+          git push
+
+      - name: Trigger continuation if not complete
+        if: steps.check_remaining.outputs.completed == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEXT="${{ steps.check_remaining.outputs.next_index }}"
+          echo "Scraper hit timeout. Triggering continuation from index $NEXT..."
+          gh workflow run api_call_jobs2.yml \
+            --ref main \
+            --field resume_from="$NEXT"
+          echo "Continuation workflow triggered successfully."
