@@ -281,3 +281,22 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 | **Subex** | Darwinbox | No | N/A | `"page": 2` |
 
 > **Note on SuccessFactors**: If you automate this, you must first load the search page programmatically to get a fresh session. Reusing old tokens or cookies will result in the `{"totalJobs":0}` response.
+
+
+## 48. Anthropic (Greenhouse) ✅
+- **Endpoint**: `GET https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true`
+- **Pagination**: Returns all jobs in a single request.
+
+## 49. OpenAI (Next.js _rsc) ❌ Blocked
+- **Endpoint**: `GET https://openai.com/careers/search/?_rsc=SUl3vEdiUOxaRb-N`
+- **Note**: This endpoint is heavily protected by Cloudflare Turnstile. Direct requests return the "Just a moment..." challenge page. Requires a full browser (Playwright) bypass.
+
+## 50. Meta (Custom GraphQL) ❌ 400 Bad Request
+- **Endpoint**: `POST https://www.metacareers.com/graphql`
+- **Payload**: `doc_id: 29615178951461218`
+- **Note**: Direct POST without valid session cookies or strict headers (Origin/Referer/CSRF) returns a 400 Bad Request.
+
+## 51. Amazon AI (REST API) ✅
+- **Endpoint**: `GET https://www.amazon.jobs/en/search.json?category[]=artificial-intelligence&normalized_country_code[]=IND&offset=0&result_limit=10&sort=recent`
+- **Pagination**: Increment `offset` parameter (e.g., `offset=10`, `offset=20`).
+- **Note**: API successfully returns a clean JSON (though strict filter combinations might yield 0 hits natively).
