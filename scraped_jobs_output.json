@@ -1,0 +1,1150 @@
+{
+  "timestamp": "2026-05-19 10:31:03",
+  "total_companies": 51,
+  "api_count": 46,
+  "browser_count": 5,
+  "results": {
+    "1. Qualcomm": {
+      "status": "OK",
+      "total": 20,
+      "sample_jobs": [
+        {
+          "title": "Senior Engineer :: Windows Display Team",
+          "location": "Hyderabad, Telangana, India"
+        },
+        {
+          "title": "Senior Engineer :: Camera HAL",
+          "location": "Hyderabad, Telangana, India"
+        },
+        {
+          "title": "Senior Lead Engineer :: Android OS System Security",
+          "location": "Hyderabad, Telangana, India"
+        },
+        {
+          "title": "Sr Engineer- Camera HWL",
+          "location": "Hyderabad, Telangana, India"
+        },
+        {
+          "title": "Sr Engineer- Camera Kernel",
+          "location": "Hyderabad, Telangana, India"
+        }
+      ]
+    },
+    "2. Ericsson": {
+      "status": "OK",
+      "total": 20,
+      "sample_jobs": [
+        {
+          "title": "Integration Engineer",
+          "location": "Pune,Maharashtra,India"
+        },
+        {
+          "title": "Global Business Development Lead - Telco Security",
+          "location": "Pune,Maharashtra,India"
+        },
+        {
+          "title": "Telco Business Consultant",
+          "location": "Pune,Maharashtra,India"
+        },
+        {
+          "title": "Customer Unit Head - Vodafone Idea (Vi)",
+          "location": "Pune,Maharashtra,India"
+        },
+        {
+          "title": "BMC Remedy Senior Developer",
+          "location": "Pune,Maharashtra,India"
+        }
+      ]
+    },
+    "3. Siemens": {
+      "status": "OK",
+      "total": 6,
+      "sample_jobs": [
+        {
+          "title": "Inside Sales Representative"
+        },
+        {
+          "title": "Account Manager"
+        },
+        {
+          "title": "Area Sales Professional"
+        },
+        {
+          "title": "Solutions Consultant"
+        },
+        {
+          "title": "TCMS Test Engineer"
+        }
+      ]
+    },
+    "4. Amadeus": {
+      "status": "OK",
+      "total": 149,
+      "sample_jobs": [
+        {
+          "title": "Service Reliability Engineer",
+          "location": "Bogota",
+          "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Bogota/Cloud-Engineer-Service-Reliability-Engineer_R34156-3"
+        },
+        {
+          "title": "Principal Service Reliability Engineer",
+          "location": "Taguig, Metro Manila",
+          "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Taguig-Metro-Manila/Principal-Service-Reliability-Engineer_R29998-1"
+        },
+        {
+          "title": "Senior DevOps Engineer",
+          "location": "Manila, Metro Manila",
+          "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Manila-Metro-Manila/DevOps-Engineer_R32021-1"
+        },
+        {
+          "title": "L2 Incident Management Specialist",
+          "location": "Taguig, Metro Manila",
+          "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Taguig-Metro-Manila/L2-Incident-Management-Specialist_R32300-1"
+        },
+        {
+          "title": "Instructional Developer   Open to Travel & GDS Content",
+          "location": "Taguig, Metro Manila",
+          "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Taguig-Metro-Manila/Instructional-Developer_R32049"
+        }
+      ]
+    },
+    "5. GE Healthcare": {
+      "status": "OK",
+      "total": 14,
+      "sample_jobs": [
+        {
+          "title": ""
+        },
+        {
+          "title": ""
+        },
+        {
+          "title": "CEO Commitment to Equal Opportunity and Affirmative Action"
+        },
+        {
+          "title": "Integrity at GE HealthCare"
+        },
+        {
+          "title": "Contact Us"
+        }
+      ]
+    },
+    "6. Bank of America": {
+      "status": "OK",
+      "total": 62,
+      "response_type": "JSON"
+    },
+    "7. Honeywell": {
+      "status": "OK",
+      "total": 323,
+      "sample_jobs": [
+        {
+          "title": "Estimator II",
+          "location": "Pune, Maharashtra, India"
+        },
+        {
+          "title": "Software Engr I",
+          "location": "Pune City, Maharashtra, India"
+        },
+        {
+          "title": "Field Service Supervisor",
+          "location": "India"
+        },
+        {
+          "title": "Field Service Engr I",
+          "location": "India"
+        },
+        {
+          "title": "Software Engr II",
+          "location": "Bengaluru, Karnataka, India"
+        }
+      ]
+    },
+    "8. Bosch": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Marketing Manager, Auto, Outdoor & Commercial - Hardlines",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4406374943"
+        },
+        {
+          "title": "Assistant Manager   Talent Acquisition",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413879395"
+        },
+        {
+          "title": "Performance Specialist",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413459126"
+        },
+        {
+          "title": "Revenue Operations Specialist",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4410017334"
+        },
+        {
+          "title": "Service Engineer   Hydraulics  (Pallet Lifting Robots)",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4406271389"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "9. Maersk": {
+      "status": "OK",
+      "total": 1008,
+      "sample_jobs": [
+        {
+          "title": "Area Head of ATR and Financial Controlling, EAF",
+          "location": ""
+        },
+        {
+          "title": "Area Head of ATR and Financial Controlling, EAF",
+          "location": ""
+        },
+        {
+          "title": "Area Head of ATR and Financial Controlling, EAF",
+          "location": ""
+        },
+        {
+          "title": "Area Head of ATR and Financial Controlling, EAF",
+          "location": ""
+        },
+        {
+          "title": "Area Head of ATR and Financial Controlling, EAF",
+          "location": ""
+        }
+      ]
+    },
+    "10. Wipro": {
+      "status": "OK",
+      "total": 9751,
+      "sample_jobs": [
+        {
+          "title": "ADMINISTRATOR L1(CONTRACT)"
+        },
+        {
+          "title": "Sap ABAP+EAM+MRS+Mobile Application Consultant"
+        },
+        {
+          "title": "TECHNICAL CONSULTANT L1(CONTRACT)"
+        },
+        {
+          "title": "LEAD ADMINISTRATOR L1(CONTRACT)"
+        },
+        {
+          "title": "Service Now Developer"
+        }
+      ]
+    },
+    "11. Arcesium": {
+      "status": "OK",
+      "total": 28,
+      "sample_jobs": [
+        {
+          "title": "Analyst - Trade Accounting & Operations",
+          "location": "Lisbon"
+        },
+        {
+          "title": "Client Success Manager",
+          "location": "New York"
+        },
+        {
+          "title": "Intern",
+          "location": "Bengaluru; Gurugram"
+        },
+        {
+          "title": "Lead Data Engineer",
+          "location": "Hyderabad"
+        },
+        {
+          "title": "Lead Engineer - Corp Tech",
+          "location": "Hyderabad"
+        }
+      ]
+    },
+    "12. Juniper Networks / HPE": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Support Engineer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413701814"
+        },
+        {
+          "title": "Senior Product Operations Manager",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4333714866"
+        },
+        {
+          "title": "Systems Engineer, Google Distributed Cloud",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4394485599"
+        },
+        {
+          "title": "Consultant/Senior Consultant - OEM Alliance",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4401960603"
+        },
+        {
+          "title": "Data Center Technician - India - Bangalore - On-site",
+          "location": "Bengaluru East, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4382618404"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "13. Mastercard": {
+      "status": "OK",
+      "total": 5,
+      "sample_jobs": [
+        {
+          "title": "Lead Product Manager- Technical - CI/CD Infra & SCM"
+        },
+        {
+          "title": "Staffing Analyst, Business Process Improvement"
+        },
+        {
+          "title": "Manager, Account Management"
+        },
+        {
+          "title": "Manager, Service Management Engineering"
+        },
+        {
+          "title": "Lead Platform Architect"
+        }
+      ],
+      "method": "Playwright"
+    },
+    "14. Barclays": {
+      "status": "OK",
+      "total": 32,
+      "sample_jobs": [
+        {
+          "title": "Your account"
+        },
+        {
+          "title": "?HelpdeskClick here to connect with our resourcing helpdesk team"
+        },
+        {
+          "title": "Overview"
+        },
+        {
+          "title": "Analyst"
+        },
+        {
+          "title": "Analyst"
+        }
+      ]
+    },
+    "15. Fidelity Investments": {
+      "status": "OK",
+      "total": 20,
+      "sample_jobs": [
+        {
+          "title": "Lead Software Engineer"
+        },
+        {
+          "title": "Senior Manager, Quant Data Analytics and Insights"
+        },
+        {
+          "title": "Senior Manager - Cloud Database Administration"
+        },
+        {
+          "title": "Principal, AI/ML Engineer"
+        },
+        {
+          "title": "Database Administrator"
+        }
+      ]
+    },
+    "16. BNY": {
+      "status": "OK",
+      "total": 189,
+      "sample_jobs": []
+    },
+    "17. American Express": {
+      "status": "OK",
+      "total": 68,
+      "sample_jobs": []
+    },
+    "19. Visa": {
+      "status": "OK",
+      "total": 1111,
+      "sample_jobs": [
+        {
+          "title": "Go-To-Market Manager",
+          "location": "PL - Warsaw, Poland",
+          "apply_url": "https://visa.wd5.myworkdayjobs.com/job/PL---Warsaw-Poland/Go-To-Market-Manager_REF077376W"
+        },
+        {
+          "title": "Data Science Manager",
+          "location": "IN - Bengaluru, India",
+          "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Data-Science-Manager_REF081340W"
+        },
+        {
+          "title": "Sr. Program Mgmt Consultant",
+          "location": "IN - Bengaluru, India",
+          "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Sr-Program-Mgmt-Consultant_REF081791W"
+        },
+        {
+          "title": "Senior Finance Analyst Client Incentives (12month FTC)",
+          "location": "GB - London, United Kingdom",
+          "apply_url": "https://visa.wd5.myworkdayjobs.com/job/GB---London-United-Kingdom/Senior-Finance-Analyst-Client-Incentives--12month-FTC-_REF082005W"
+        },
+        {
+          "title": "Analyst, Business Development Support",
+          "location": "AZ - Baku, Azerbaijan",
+          "apply_url": "https://visa.wd5.myworkdayjobs.com/job/AZ---Baku-Azerbaijan/Analyst--Business-Development-Support_REF082377W"
+        }
+      ]
+    },
+    "21. Fractal Analytics": {
+      "status": "OK",
+      "total": 130,
+      "sample_jobs": [
+        {
+          "title": "Account Executive/GTM, CX Products",
+          "location": "7 Locations",
+          "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/New-York/Sales-Manager_SR-39875-1"
+        },
+        {
+          "title": "Azure Digiops",
+          "location": "Bengaluru",
+          "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/Bengaluru/Azure-Devops_SR-42431"
+        },
+        {
+          "title": "Power BI - Engineer",
+          "location": "8 Locations",
+          "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/Bengaluru/Power-BI---Engineer_SR-42205"
+        },
+        {
+          "title": "Test Manager",
+          "location": "London",
+          "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/London/Test-Manager_SR-42385"
+        },
+        {
+          "title": "Senior Data Engineer Extraction Enhancement",
+          "location": "California",
+          "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/California/Senior-Data-Engineer-Extraction-Enhancement_SR-42224-1"
+        }
+      ]
+    },
+    "22. Broadcom": {
+      "status": "OK",
+      "total": 381,
+      "sample_jobs": [
+        {
+          "title": "Analog/Mixed-Signal Design Engineer",
+          "location": "United Kingdom   Edinburgh   Exchange Tower",
+          "apply_url": "https://broadcom.wd1.myworkdayjobs.com/job/United-Kingdom--Edinburgh--Exchange-Tower/Analog-Mixed-Signal-Design-Engineer_R026075"
+        },
+        {
+          "title": "Analog/Mixed-Signal Design Engineer",
+          "location": "United Kingdom   Edinburgh   Exchange Tower",
+          "apply_url": "https://broadcom.wd1.myworkdayjobs.com/job/United-Kingdom--Edinburgh--Exchange-Tower/Analog-Mixed-Signal-Design-Engineer_R026095"
+        },
+        {
+          "title": "Sr Mainframe Technical Consultant",
+          "location": "104 Locations",
+          "apply_url": "https://broadcom.wd1.myworkdayjobs.com/job/USA-FL-Remote-Location/Sr-Mainframe-Technical-Consultant_R025728"
+        },
+        {
+          "title": "R&D IC Design Engineer",
+          "location": "5 Locations",
+          "apply_url": "https://broadcom.wd1.myworkdayjobs.com/job/USA-CA-Irvine-Alton-Parkway-Bldg-2/R-D-IC-Design-Engineer_R024629"
+        },
+        {
+          "title": "Infrastructure Design Automation Engineer",
+          "location": "USA-Colorado-Fort Collins-4380 Ziegler Road",
+          "apply_url": "https://broadcom.wd1.myworkdayjobs.com/job/USA-Colorado-Fort-Collins-4380-Ziegler-Road/Infrastructure-Design-Automation-Engineer_R026039-1"
+        }
+      ]
+    },
+    "23. Akamai": {
+      "status": "OK",
+      "total": 20,
+      "sample_jobs": []
+    },
+    "24. ABB": {
+      "status": "OK",
+      "total": 1,
+      "sample_jobs": [
+        {
+          "title": "Field Service Engineer"
+        }
+      ],
+      "method": "Playwright"
+    },
+    "25. Publicis Sapient": {
+      "status": "OK",
+      "total": "html/xml",
+      "response_type": "HTML"
+    },
+    "26. IBM": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Procurement Operations Specialist",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4401603836"
+        },
+        {
+          "title": "Procurement Operations Specialist",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4401297813"
+        },
+        {
+          "title": "Frontend UI Developer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4401905850"
+        },
+        {
+          "title": "Procurement Professional",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4400169830"
+        },
+        {
+          "title": "Business Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4361692832"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "27. ZS Associates": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Data Engineer (IIT. NIT, BITs)",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413423614"
+        },
+        {
+          "title": "Associate Counsel",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4401991153"
+        },
+        {
+          "title": "Product Manager   Order Fulfilment",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4411882774"
+        },
+        {
+          "title": "Senior Product Manager - Platforms",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4411886879"
+        },
+        {
+          "title": "Senior Product Manager - Offline Checkout",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4416226115"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "28. Continental": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Demi Chef de Partie (DCDP)   Continental",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4415076572"
+        },
+        {
+          "title": "Commis I (Continental)",
+          "location": "Bengaluru East, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4373227296"
+        },
+        {
+          "title": "Property Manager",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4412589055"
+        },
+        {
+          "title": "Manager - Quality (External Quality)",
+          "location": "Bangalore Urban, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4404585065"
+        },
+        {
+          "title": "Continental Commis -II/I",
+          "location": "Bengaluru East, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4394740438"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "29. Nokia": {
+      "status": "OK",
+      "total": 220,
+      "sample_jobs": [
+        {
+          "title": "Senior Technical Specialist",
+          "location": "India"
+        },
+        {
+          "title": "MS Specialist Core",
+          "location": "India"
+        },
+        {
+          "title": "Technical Lead",
+          "location": "India"
+        },
+        {
+          "title": "Technical Program Manager (Optical Products)",
+          "location": "India"
+        },
+        {
+          "title": "Technical Specialist - L2 Expert (Fixed Networks)",
+          "location": "India"
+        }
+      ]
+    },
+    "30. Cognizant": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Snowflake Architect"
+        },
+        {
+          "title": "Snowflake. Developer"
+        },
+        {
+          "title": "Quadient Inspire - Developer or Senior Developer"
+        },
+        {
+          "title": "Medical Content QA"
+        },
+        {
+          "title": "PP developer"
+        }
+      ]
+    },
+    "31. KPIT Technologies": {
+      "status": "OK",
+      "total": 59,
+      "sample_jobs": [
+        {
+          "title": "Careers"
+        },
+        {
+          "title": "Overview"
+        },
+        {
+          "title": "For Graduates"
+        },
+        {
+          "title": "For Experienced Professionals"
+        },
+        {
+          "title": "English"
+        }
+      ]
+    },
+    "32. Comcast": {
+      "status": "OK",
+      "total": "html/xml",
+      "response_type": "HTML"
+    },
+    "33. Grundfos": {
+      "status": "OK",
+      "total": 8,
+      "sample_jobs": [
+        {
+          "title": "Service Specialist",
+          "location": "Bengaluru East, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4366721550"
+        },
+        {
+          "title": "Sales Engineer, IND",
+          "location": "Bengaluru East, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4387822661"
+        },
+        {
+          "title": "Senior Hardware Engineer",
+          "location": "Chennai, Tamil Nadu, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4382122135"
+        },
+        {
+          "title": "Associate Planning Specialist",
+          "location": "Chennai, Tamil Nadu, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4406192049"
+        },
+        {
+          "title": "Associate Planning Specialist",
+          "location": "Chennai, Tamil Nadu, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4411644962"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "34. Tally Solutions": {
+      "status": "OK",
+      "total": 8,
+      "sample_jobs": [
+        {
+          "title": "User Experience Designer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413523822"
+        },
+        {
+          "title": "Legal Manager",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4404256722"
+        },
+        {
+          "title": "Engineering Manager - AI",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4371536032"
+        },
+        {
+          "title": "Software Architect",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4389576095"
+        },
+        {
+          "title": "Inside Sales Executive",
+          "location": "Mira Bhayandar, Maharashtra, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4412086467"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "35. Subex": {
+      "status": "OK",
+      "total": 10,
+      "response_type": "JSON"
+    },
+    "36. Brillio": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Customer Journey Analytics Consultant- R01565392Bangalore,  IndiaAI & Data Engin"
+        },
+        {
+          "title": "Sr.Product Owner   Healthcare Provider -R01565343Saint Louis,  United StatesDigi"
+        },
+        {
+          "title": "Java Developer- R01565213Bangalore,  IndiaDigital EngineeringR01565213Senior Sof"
+        },
+        {
+          "title": "Architect, Security   R01565241Bangalore,  IndiaCyber SecurityR01565241Architect"
+        },
+        {
+          "title": "Senior Tableau Lead/Architect (Pharma domain)- R01564874Bangalore,  IndiaAI & Da"
+        }
+      ]
+    },
+    "38. Eurofins IT": {
+      "status": "OK",
+      "total": 3108,
+      "response_type": "JSON"
+    },
+    "39. Sabre": {
+      "status": "OK",
+      "total": 169,
+      "sample_jobs": [
+        {
+          "title": "Lead, Internal Communications",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Lead--Internal-Communications_JR107979"
+        },
+        {
+          "title": "Principal, Global Ethics & Compliance - APAC",
+          "location": "Singapore, Singapore",
+          "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/Singapore-Singapore/Principal--Global-Ethics---Compliance---APAC_JR107913"
+        },
+        {
+          "title": "Principal Business Development Manager - Lodging, Ground & Sea.",
+          "location": "ZonAmerica, Montevideo, Uruguay",
+          "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/ZonAmerica-Montevideo-Uruguay/Principal-Business-Development-Manager---Lodging--Ground---Sea_JR107213"
+        },
+        {
+          "title": "Internal Communications Specialist II",
+          "location": "Dallas-Fort Worth Metroplex",
+          "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/Dallas-Fort-Worth-Metroplex/Internal-Communications-Specialist-II_JR107788"
+        },
+        {
+          "title": "Sr Category Management",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Sr-Category-Management_JR107673"
+        }
+      ]
+    },
+    "40. Alstom": {
+      "status": "OK",
+      "total": 25,
+      "sample_jobs": [
+        {
+          "title": "Product cost Analyst"
+        },
+        {
+          "title": "Technical Project Manager"
+        },
+        {
+          "title": "Commodity Buyer _ T&P India"
+        },
+        {
+          "title": "Operation Manager"
+        },
+        {
+          "title": "Supply Chain Engineering Specialist"
+        }
+      ]
+    },
+    "41. Danfoss": {
+      "status": "OK",
+      "total": 13,
+      "sample_jobs": [
+        {
+          "title": "Manager- Customer Service (All India)",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4363222130"
+        },
+        {
+          "title": "Executive Sales Support",
+          "location": "Navi Mumbai, Maharashtra, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4371886737"
+        },
+        {
+          "title": "Executive Sales Support",
+          "location": "Navi Mumbai, Maharashtra, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4407125116"
+        },
+        {
+          "title": "Architect, OnePLM",
+          "location": "Chennai, Tamil Nadu, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4394603816"
+        },
+        {
+          "title": "Engineer - Network Operations Center",
+          "location": "Chennai, Tamil Nadu, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4415351150"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "42. HackerRank": {
+      "status": "OK",
+      "total": 44,
+      "sample_jobs": [
+        {
+          "title": "Web Experience Engineer, Framer",
+          "location": "Hybrid in New York, NY or Santa Clara, CA"
+        },
+        {
+          "title": "Senior Frontend Engineer",
+          "location": "Hybrid in Bangalore, India"
+        },
+        {
+          "title": "Staff Engineer",
+          "location": "Hybrid in Bangalore, India"
+        },
+        {
+          "title": "Software Development Engineer in Test II",
+          "location": "Hybrid in Santa Clara, CA"
+        },
+        {
+          "title": "Director of Information Security",
+          "location": "Hybrid in Bangalore, India"
+        }
+      ]
+    },
+    "43. Crossover": {
+      "status": "OK",
+      "total": 81,
+      "sample_jobs": [
+        {
+          "title": "VP of Operations"
+        },
+        {
+          "title": "Guide K-2"
+        },
+        {
+          "title": "Guide"
+        },
+        {
+          "title": "Head of Academics"
+        },
+        {
+          "title": "VP of Channel Sales"
+        }
+      ]
+    },
+    "44. Sarvam AI": {
+      "status": "OK",
+      "total": "html/xml",
+      "response_type": "HTML"
+    },
+    "45. Cohesity": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Senior Accountant",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4415015697"
+        },
+        {
+          "title": "Senior Accountant",
+          "location": "Bangalore Rural, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4415325655"
+        },
+        {
+          "title": "Sales Development Representative",
+          "location": "Bangalore Rural, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4405407486"
+        },
+        {
+          "title": "Technical Writer",
+          "location": "Bangalore Rural, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4414692035"
+        },
+        {
+          "title": "Technical Support Engineer (L2-L5)",
+          "location": "Bangalore Rural, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4414692023"
+        }
+      ],
+      "method": "JobSpy/LinkedIn fallback"
+    },
+    "46. Nutanix": {
+      "status": "OK",
+      "total": 1,
+      "sample_jobs": [
+        {
+          "title": "view all our open vacancies here"
+        }
+      ]
+    },
+    "47. BrowserStack": {
+      "status": "OK",
+      "total": 20,
+      "sample_jobs": [
+        {
+          "title": "Account Manager - Strategic Sales",
+          "location": "Mumbai Remote",
+          "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Account-Manager---Strategic-Sales_JR103265"
+        },
+        {
+          "title": "Senior Lead - CTO's Office",
+          "location": "Mumbai Remote",
+          "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Senior-Lead---CTO-s-Office_JR103217-1"
+        },
+        {
+          "title": "Account Manager - Strategic Sales",
+          "location": "Mumbai Remote",
+          "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Account-Manager---Strategic-Sales_JR103014"
+        },
+        {
+          "title": "Manager - Product Design",
+          "location": "Mumbai Remote",
+          "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Manager--Product-Design_JR103323"
+        },
+        {
+          "title": "Consultant - Partnerships Strategist",
+          "location": "India Remote",
+          "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/India-Remote/Consultant---Partnerships-Strategist_JR103325"
+        }
+      ]
+    },
+    "48. Anthropic": {
+      "status": "OK",
+      "total": 396,
+      "sample_jobs": [
+        {
+          "title": "Account Executive, Beneficial Deployments (French Speaking)",
+          "location": "London, UK"
+        },
+        {
+          "title": "Account Executive, Beneficial Deployments (French Speaking)",
+          "location": "Dublin, IE"
+        },
+        {
+          "title": "Account Executive, Beneficial Deployments (Portuguese Speaking)",
+          "location": "Dublin, IE"
+        },
+        {
+          "title": "Account Executive, Beneficial Deployments (Portuguese Speaking)",
+          "location": "London, UK"
+        },
+        {
+          "title": "Account Executive, Beneficial Deployments (Spanish Speaking)",
+          "location": "London, UK"
+        }
+      ]
+    },
+    "51. Amazon AI": {
+      "status": "OK",
+      "total": 670,
+      "sample_jobs": [
+        {
+          "title": "Software Development Engineer, Inbound & Inventory Management Tech",
+          "location": "IN, KA, Bengaluru"
+        },
+        {
+          "title": "Software Development Engineer III, HST Health Foundation",
+          "location": "IN, KA, Bengaluru"
+        },
+        {
+          "title": "Software Development Engineer, Ads Campaign Management",
+          "location": "IN, KA, Bengaluru"
+        },
+        {
+          "title": "Senior Audio Software Development Engineer, Silicon and Systems Group",
+          "location": "IN, KA, Bengaluru"
+        },
+        {
+          "title": "Senior Manager, Software Development, Prime Video Commerce Tech",
+          "location": "IN, KA, Bengaluru"
+        }
+      ]
+    },
+    "18. Societe Generale": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Analyst-Accounts Payable",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4414620742"
+        },
+        {
+          "title": "Business Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4404831068"
+        },
+        {
+          "title": "Business Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4404832024"
+        },
+        {
+          "title": "Analyst - KYC",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4326734735"
+        },
+        {
+          "title": "Analyst - HR Services",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4326840715"
+        }
+      ],
+      "method": "Playwright+JobSpy fallback"
+    },
+    "20. NatWest Group": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Data Analyst, AVP",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413736664"
+        },
+        {
+          "title": "Customer Service & Operations Credit Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413739617"
+        },
+        {
+          "title": "Quality Automation Specialist",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413298878"
+        },
+        {
+          "title": "Customer Service & Operations Credit Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4411271189"
+        },
+        {
+          "title": "Customer Service & Operations Credit Analyst",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4411259647"
+        }
+      ],
+      "method": "Playwright+JobSpy fallback"
+    },
+    "37. ITC Infotech": {
+      "status": "OK",
+      "total": 13,
+      "sample_jobs": [
+        {
+          "title": "C++ with C# Developer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4208668035"
+        },
+        {
+          "title": "Reactjs",
+          "location": "",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413882514"
+        },
+        {
+          "title": "Test Analyst - Automation",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4413889317"
+        },
+        {
+          "title": "Internship in HR Recruitment",
+          "location": "Bangalore Urban, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4412638887"
+        },
+        {
+          "title": "Dot Net Developer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4220168059"
+        }
+      ],
+      "method": "JobSpy fallback (Playwright blocked: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://jobs.itc)"
+    },
+    "49. OpenAI": {
+      "status": "OK",
+      "total": 3,
+      "sample_jobs": [
+        {
+          "title": "Skip to main content"
+        }
+      ],
+      "method": "Playwright"
+    },
+    "50. Meta": {
+      "status": "OK",
+      "total": 10,
+      "sample_jobs": [
+        {
+          "title": "Enterprise Technical Sales Manager, APAC",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4394068584"
+        },
+        {
+          "title": "Enterprise Technical Sales Specialist, APAC",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4390547326"
+        },
+        {
+          "title": "Enterprise Technical Sales Specialist, APAC",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4390559747"
+        },
+        {
+          "title": "Partner Engineer, Generative AI",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4337993506"
+        },
+        {
+          "title": "Senior Researcher - Efficient AI",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://www.linkedin.com/jobs/view/4383798605"
+        }
+      ],
+      "method": "Playwright+JobSpy fallback"
+    }
+  }
+}
