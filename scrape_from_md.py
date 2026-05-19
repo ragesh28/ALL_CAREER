@@ -547,6 +547,108 @@ def scrape_with_browser(info):
         return {"status": "ERROR", "error": str(e), "method": "Playwright"}
 
 
+def scrape_qualcomm_phenom(info):
+    """Qualcomm Phenom API — data is nested under data.positions[], numFound is always 0."""
+    try:
+        h = {**HEADERS}
+        r = requests.get(
+            "https://careers.qualcomm.com/api/pcsx/search",
+            headers=h,
+            params={"domain": "qualcomm.com", "location": "india", "start": 0, "num": 10},
+            timeout=15
+        )
+        if r.status_code == 200:
+            positions = r.json().get("data", {}).get("positions", [])
+            # Paginate one more page to estimate real total
+            r2 = requests.get(
+                "https://careers.qualcomm.com/api/pcsx/search",
+                headers=h,
+                params={"domain": "qualcomm.com", "location": "india", "start": 10, "num": 10},
+                timeout=15
+            )
+            p2 = r2.json().get("data", {}).get("positions", []) if r2.status_code == 200 else []
+            # Estimate: if page 2 has 10 jobs, real total is likely 100+
+            estimated = 10 + len(p2) if p2 else len(positions)
+            sample = [{"title": clean(p.get("name", "")),
+                       "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")}
+                      for p in positions[:5]]
+            return {"status": "OK", "total": estimated, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_ericsson_phenom(info):
+    """Ericsson Phenom API — same structure as Qualcomm."""
+    try:
+        h = {**HEADERS}
+        r = requests.get(
+            "https://jobs.ericsson.com/api/pcsx/search",
+            headers=h,
+            params={"domain": "ericsson.com", "location": "India", "start": 0, "num": 10},
+            timeout=15
+        )
+        if r.status_code == 200:
+            positions = r.json().get("data", {}).get("positions", [])
+            r2 = requests.get(
+                "https://jobs.ericsson.com/api/pcsx/search",
+                headers=h,
+                params={"domain": "ericsson.com", "location": "India", "start": 10, "num": 10},
+                timeout=15
+            )
+            p2 = r2.json().get("data", {}).get("positions", []) if r2.status_code == 200 else []
+            estimated = 10 + len(p2) if p2 else len(positions)
+            sample = [{"title": clean(p.get("name", "")),
+                       "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")}
+                      for p in positions[:5]]
+            return {"status": "OK", "total": estimated, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_crossover(info):
+    """Crossover API — total is under totalSize key."""
+    try:
+        r = requests.get("https://profile-api.crossover.com/pipelines?status=Active",
+                         headers=HEADERS, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            total = data.get("totalSize", 0)
+            records = data.get("records", [])
+            sample = [{"title": clean(rec.get("Name", rec.get("name", "")))} for rec in records[:5]]
+            return {"status": "OK", "total": total, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
+def scrape_amazon_ai(info):
+    """Amazon AI jobs — use broader search without strict country filter."""
+    try:
+        url = "https://www.amazon.jobs/en/search.json"
+        params = {
+            "category[]": "software-development",
+            "normalized_country_code[]": "IND",
+            "offset": 0,
+            "result_limit": 10,
+            "sort": "recent"
+        }
+        r = requests.get(url, headers=HEADERS, params=params, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            hits = data.get("hits", 0)
+            jobs = data.get("jobs", [])
+            total = hits if hits else len(jobs)
+            sample = [{"title": clean(j.get("title", "")),
+                       "location": clean(j.get("location", "India"))}
+                      for j in jobs[:5]]
+            return {"status": "OK", "total": total, "sample_jobs": sample}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+
 # ---------------------------------------------------------------------------
 # 4. DISPATCHER: Route each company to the right engine
 # ---------------------------------------------------------------------------
@@ -561,6 +663,10 @@ def dispatch_api(info):
         return {"status": "SKIPPED", "reason": "No URL extracted"}
 
     # ── Company-specific overrides (highest priority) ──
+    if "qualcomm" in name_lower:
+        return scrape_qualcomm_phenom(info)
+    if "ericsson" in name_lower:
+        return scrape_ericsson_phenom(info)
     if "wipro" in name_lower:
         return scrape_wipro(info)
     if "maersk" in name_lower:
@@ -572,12 +678,16 @@ def dispatch_api(info):
         return result
     if "bosch" in name_lower:
         return scrape_bosch(info)
+    if "crossover" in name_lower:
+        return scrape_crossover(info)
+    if "amazon" in name_lower:
+        result = scrape_amazon_ai(info)
+        if not result.get("total") and JOBSPY_AVAILABLE:
+            return jobspy_fallback_result("Amazon")
+        return result
 
-    # HPE/Juniper, Mastercard, ABB all use Phenom /widgets which needs CSRF.
-    # Use the real HTML search page URL via Playwright instead.
+    # HPE/Juniper, Mastercard, ABB — Phenom /widgets needs CSRF, use Playwright/JobSpy
     if "juniper" in name_lower or "hpe" in name_lower:
-        # Phenom People platform renders too slowly for Playwright.
-        # Use JobSpy/LinkedIn fallback for reliable results.
         if JOBSPY_AVAILABLE:
             return jobspy_fallback_result("HPE")
         return scrape_with_browser({**info, "url": "https://careers.hpe.com/us/en/search-results?location=India"})
@@ -586,10 +696,18 @@ def dispatch_api(info):
     if "abb" in name_lower:
         return scrape_with_browser({**info, "url": "https://careers.abb/us/en/search-results?location=India"})
 
+    # Companies known to return 0 — use JobSpy fallback
+    JOBSPY_FALLBACK_COMPANIES = ["continental", "grundfos", "cohesity", "tally"]
+    if any(n in name_lower for n in JOBSPY_FALLBACK_COMPANIES) and JOBSPY_AVAILABLE:
+        return jobspy_fallback_result(name)
+
     # ── Standard routing ──
-    # Handshake companies (ZS Associates, Danfoss)
+    # Handshake companies (ZS Associates, Danfoss) — fallback to JobSpy if 0 returned
     if info["is_handshake"] and info["handshake_url"]:
-        return scrape_handshake(info)
+        result = scrape_handshake(info)
+        if not result.get("total") and JOBSPY_AVAILABLE:
+            return jobspy_fallback_result(name)
+        return result
 
     # Workday
     if info["is_workday"]:
