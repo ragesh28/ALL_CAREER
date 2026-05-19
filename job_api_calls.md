@@ -291,10 +291,10 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `GET https://openai.com/careers/search/?_rsc=SUl3vEdiUOxaRb-N`
 - **Note**: This endpoint is heavily protected by Cloudflare Turnstile. Direct requests return the "Just a moment..." challenge page. Requires a full browser (Playwright) bypass.
 
-## 50. Meta (Custom GraphQL) ❌ 400 Bad Request
+## 50. Meta (Custom GraphQL) ❌ 400 Bad Request natively, ✅ Working via Browser (Playwright)
 - **Endpoint**: `POST https://www.metacareers.com/graphql`
 - **Payload**: `doc_id: 29615178951461218`
-- **Note**: Direct POST without valid session cookies or strict headers (Origin/Referer/CSRF) returns a 400 Bad Request.
+- **Note**: Direct POST without valid session cookies or strict headers (Origin/Referer/CSRF) returns a 400 Bad Request. However, using a headless browser (Playwright) successfully bypasses this block and renders the jobs (e.g. 63 AI jobs).
 
 ## 51. Amazon AI (REST API) ✅
 - **Endpoint**: `GET https://www.amazon.jobs/en/search.json?category[]=artificial-intelligence&normalized_country_code[]=IND&offset=0&result_limit=10&sort=recent`
