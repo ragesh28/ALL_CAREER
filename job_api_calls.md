@@ -287,9 +287,9 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `GET https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true`
 - **Pagination**: Returns all jobs in a single request.
 
-## 49. OpenAI (Next.js _rsc) ❌ Blocked
+## 49. OpenAI (Next.js _rsc) ❌ Blocked natively, ✅ Working via Browser (Playwright)
 - **Endpoint**: `GET https://openai.com/careers/search/?_rsc=SUl3vEdiUOxaRb-N`
-- **Note**: This endpoint is heavily protected by Cloudflare Turnstile. Direct requests return the "Just a moment..." challenge page. Requires a full browser (Playwright) bypass.
+- **Note**: This endpoint is heavily protected by Cloudflare Turnstile. Direct requests return the "Just a moment..." challenge page. However, a headless browser (Playwright) successfully bypasses Cloudflare entirely and renders the job listings (e.g., 671 open jobs).
 
 ## 50. Meta (Custom GraphQL) ❌ 400 Bad Request natively, ✅ Working via Browser (Playwright)
 - **Endpoint**: `POST https://www.metacareers.com/graphql`
