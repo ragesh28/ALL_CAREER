@@ -657,6 +657,26 @@ def save_output(all_results, api_count, browser_count):
         json.dump(output, f, indent=2, ensure_ascii=False)
 
 
+def load_previous_output():
+    """Load previous scraped_jobs_output.json to compare totals (detect new jobs)."""
+    if os.path.exists(OUTPUT_FILE):
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # Build dict: company_name -> old total (int)
+            prev = {}
+            for name, r in data.get("results", {}).items():
+                try:
+                    t = r.get("total", 0)
+                    prev[name] = int(t) if str(t).isdigit() else 0
+                except Exception:
+                    prev[name] = 0
+            return prev
+        except Exception:
+            pass
+    return {}
+
+
 # ---------------------------------------------------------------------------
 # 6. MAIN EXECUTION
 # ---------------------------------------------------------------------------
@@ -694,7 +714,11 @@ def main():
     checkpoint = load_checkpoint()
     all_results = checkpoint.get("results", {})
 
+    # Load previous output to detect new jobs
+    prev_totals = load_previous_output()
+
     timed_out = False
+    total_new_jobs = 0  # accumulator across all companies
 
     # ===== PHASE 1: Native API Companies =====
     print("=" * 70)
@@ -728,7 +752,14 @@ def main():
 
         status_icon = "OK" if result.get("status") == "OK" else "FAIL"
         total_jobs  = result.get("total", "?")
-        print(f"  Result: [{status_icon}] Total Jobs: {total_jobs}")
+        old_total   = prev_totals.get(name, 0)
+        try:
+            new_jobs = max(0, int(total_jobs) - old_total) if str(total_jobs).isdigit() else "?"
+        except Exception:
+            new_jobs = "?"
+        if new_jobs != "?":
+            total_new_jobs += new_jobs
+        print(f"  Result: [{status_icon}] Total: {total_jobs} | New: +{new_jobs}")
         if result.get("sample_jobs"):
             for j in result["sample_jobs"][:2]:
                 print(f"    -> {j.get('title', '?')[:60]}")
@@ -767,7 +798,14 @@ def main():
 
             status_icon = "OK" if result.get("status") == "OK" else "FAIL"
             total_jobs  = result.get("total", "?")
-            print(f"  Result: [{status_icon}] Total Jobs: {total_jobs}")
+            old_total   = prev_totals.get(name, 0)
+            try:
+                new_jobs = max(0, int(total_jobs) - old_total) if str(total_jobs).isdigit() else "?"
+            except Exception:
+                new_jobs = "?"
+            if new_jobs != "?":
+                total_new_jobs += new_jobs
+            print(f"  Result: [{status_icon}] Total: {total_jobs} | New: +{new_jobs}")
             if result.get("sample_jobs"):
                 for j in result["sample_jobs"][:2]:
                     print(f"    -> {j.get('title', '?')[:60]}")
@@ -789,12 +827,19 @@ def main():
     ok      = sum(1 for r in all_results.values() if r.get("status") == "OK")
     failed  = sum(1 for r in all_results.values() if r.get("status") in ("FAILED", "ERROR"))
     skipped = sum(1 for r in all_results.values() if r.get("status") == "SKIPPED")
+    grand_total = sum(
+        int(r.get("total", 0))
+        for r in all_results.values()
+        if str(r.get("total", "")).isdigit()
+    )
 
-    print(f"  Total Companies:  {len(all_results)}")
-    print(f"  Successful:       {ok}")
-    print(f"  Failed:           {failed}")
-    print(f"  Skipped:          {skipped}")
-    print(f"  Timed out:        {'YES — will auto-restart' if timed_out else 'No'}")
+    print(f"  Total Companies   : {len(all_results)}")
+    print(f"  Successful        : {ok}")
+    print(f"  Failed            : {failed}")
+    print(f"  Skipped           : {skipped}")
+    print(f"  Total Jobs Scraped: {grand_total:,}")
+    print(f"  New Jobs This Run : +{total_new_jobs:,}")
+    print(f"  Timed out         : {'YES — will auto-restart' if timed_out else 'No'}")
     print(f"\n  Results saved to: {OUTPUT_FILE}")
     print("=" * 70)
 
