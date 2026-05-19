@@ -233,10 +233,12 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Pagination**: Standard URL navigation: `...&startrow=25`, `...&startrow=50`
 - **Type**: SSR HTML. Requires BeautifulSoup to parse.
 
-## 41. Danfoss (SuccessFactors) ⚠️ Needs Validation
-- **Endpoint**: `POST https://jobs.danfoss.com/services/recruiting/v1/jobs`
-- **Payload (JSON)**: `{"locale":"en_GB","pageNumber":0,"facetFilters":{"jobLocationCountry":["India"]}}`
-- **Note**: API currently returns 0 jobs without strict headers/cookies.
+## 41. Danfoss (SuccessFactors) - FIXED API CALL ✅ Working
+- **Link**: `https://jobs.danfoss.com/search/`
+- **Step 1 (Handshake)**: `GET https://jobs.danfoss.com/search/` to extract `JSESSIONID` and `CSRFToken` from HTML `var CSRFToken = "..."`.
+- **Step 2 (Data)**: `POST https://jobs.danfoss.com/services/recruiting/v1/jobs`
+- **Mandatory Headers**: `Content-Type: application/json`, `x-csrf-token: {Token}`, `Referer: https://jobs.danfoss.com/search/`, `Cookie: JSESSIONID={Cookie}`.
+- **Payload**: `{"locale": "en_GB", "pageNumber": 0, "facetFilters": {"jobLocationCountry": ["India"]}, "sortBy": "POSTING_DATES_DESC"}`
 
 ## 42. HackerRank (Greenhouse) ✅
 - **Endpoint**: `GET https://boards-api.greenhouse.io/v1/boards/hackerrank/departments?render_as=list`
@@ -263,3 +265,19 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Endpoint**: `POST https://browserstack.wd3.myworkdayjobs.com/wday/cxs/browserstack/External/jobs`
 - **Payload (JSON)**: `{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}`
 - **Pagination**: Change `"offset":20`, `"offset":40` etc.
+
+
+---
+
+### Summary of Platform Patterns Found:
+
+| Company | Platform | Handshake Required? | Key Header | Pagination Method |
+| :--- | :--- | :--- | :--- | :--- |
+| **Nokia** | Oracle HCM | No | N/A | `offset=23` |
+| **Sabre** | Workday | No | `x-calypso-csrf-token` | `"offset": 20` |
+| **Danfoss** | SuccessFactors | **YES** | `x-csrf-token` | `"pageNumber": 1` |
+| **Qualcomm** | Eightfold.ai | No | N/A | `start=10` |
+| **ITC Infotech** | Zwayam | No | N/A | `"paginationStartNo": 20` |
+| **Subex** | Darwinbox | No | N/A | `"page": 2` |
+
+> **Note on SuccessFactors**: If you automate this, you must first load the search page programmatically to get a fresh session. Reusing old tokens or cookies will result in the `{"totalJobs":0}` response.
