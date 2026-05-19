@@ -217,3 +217,49 @@ For sites that require HTML parsing (BeautifulSoup), use the following CSS selec
 - **Status**: ✅ Working via Browser, but requires Playwright.
 - **Endpoint**: `https://jobs.itcinfotech.com/itcinfotech/jobslist`
 - **Note**: Native API calls throw 400 Bad Request. A headless browser successfully bypasses the block, loads the dynamic page, and renders the job listings (e.g., 38 open jobs).
+
+
+## 38. Eurofins IT (Custom ATS Integration) ✅
+- **Endpoint**: `GET https://atsintegration.eurofins.com/ATSWebService.asmx/GetJobs?language=en`
+- **Pagination**: Returns all jobs for the selected filters in a single JSON/XML response.
+
+## 39. Sabre (Workday) ✅
+- **Endpoint**: `POST https://sabre.wd1.myworkdayjobs.com/wday/cxs/sabre/SabreJobs/jobs`
+- **Payload (JSON)**: `{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}`
+- **Pagination**: Change `"offset":20`, `"offset":40` etc.
+
+## 40. Alstom (SuccessFactors SSR) ✅
+- **Endpoint**: `GET https://jobsearch.alstom.com/search/?locationsearch=india`
+- **Pagination**: Standard URL navigation: `...&startrow=25`, `...&startrow=50`
+- **Type**: SSR HTML. Requires BeautifulSoup to parse.
+
+## 41. Danfoss (SuccessFactors) ⚠️ Needs Validation
+- **Endpoint**: `POST https://jobs.danfoss.com/services/recruiting/v1/jobs`
+- **Payload (JSON)**: `{"locale":"en_GB","pageNumber":0,"facetFilters":{"jobLocationCountry":["India"]}}`
+- **Note**: API currently returns 0 jobs without strict headers/cookies.
+
+## 42. HackerRank (Greenhouse) ✅
+- **Endpoint**: `GET https://boards-api.greenhouse.io/v1/boards/hackerrank/departments?render_as=list`
+- **Pagination**: All roles are typically listed via the departments/jobs endpoint.
+
+## 43. Crossover (Custom Pipeline API) ✅
+- **Endpoint**: `GET https://profile-api.crossover.com/pipelines?status=Active`
+- **Pagination**: Returns the full active pipeline in one response.
+
+## 44. Sarvam AI (Static Site) ✅
+- **Endpoint**: `GET https://www.sarvam.ai/careers`
+- **Note**: Jobs are embedded directly in the static HTML source or fetched from a static JSON.
+
+## 45. Cohesity (Custom AEM/Veritas Integration) ✅
+- **Endpoint**: `GET https://www.cohesity.com/bin/cohesity/open-positions/`
+- **Pagination**: Returns all jobs globally in a structured JSON.
+
+## 46. Nutanix (Umbraco SSR) ✅
+- **Endpoint**: `GET https://careers.nutanix.com/en/jobs/?location=India&pagesize=20`
+- **Pagination**: Standard URL navigation: `.../?page=2&pagesize=20`
+- **Type**: SSR HTML. Requires BeautifulSoup to parse.
+
+## 47. BrowserStack (Workday) ✅
+- **Endpoint**: `POST https://browserstack.wd3.myworkdayjobs.com/wday/cxs/browserstack/External/jobs`
+- **Payload (JSON)**: `{"appliedFacets":{},"limit":20,"offset":0,"searchText":""}`
+- **Pagination**: Change `"offset":20`, `"offset":40` etc.
