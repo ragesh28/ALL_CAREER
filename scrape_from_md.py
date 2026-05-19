@@ -131,25 +131,38 @@ def clean(text):
 
 
 def scrape_workday(info):
-    """Handle all Workday POST APIs."""
+    """Handle all Workday POST APIs - full pagination."""
     try:
-        payload = json.loads(info["payload"]) if info["payload"] else {"limit": 20, "offset": 0, "searchText": ""}
-        r = requests.post(info["url"], headers={**HEADERS, "Content-Type": "application/json"}, json=payload, timeout=15)
-        if r.status_code == 200:
+        base_payload = json.loads(info["payload"]) if info["payload"] else {"limit": 20, "offset": 0}
+        limit = base_payload.get("limit", 20)
+        h = {**HEADERS, "Content-Type": "application/json"}
+        all_jobs = []
+        offset = 0
+        total = 0
+        while True:
+            payload = {**base_payload, "limit": limit, "offset": offset}
+            r = requests.post(info["url"], headers=h, json=payload, timeout=20)
+            if r.status_code != 200:
+                break
             data = r.json()
-            total = data.get("total", 0)
+            if offset == 0:
+                total = data.get("total", 0)
             postings = data.get("jobPostings", [])
-            jobs = []
-            for j in postings[:5]:
-                jobs.append({
+            if not postings:
+                break
+            for j in postings:
+                all_jobs.append({
                     "title": clean(j.get("title", "")),
                     "location": clean(j.get("locationsText", "")),
                     "apply_url": f"https://{urlparse(info['url']).netloc}{j.get('externalPath', '')}",
                 })
-            return {"status": "OK", "total": total, "sample_jobs": jobs}
+            offset += limit
+            if total and offset >= total:
+                break
+            time.sleep(0.2)
+        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
-    return {"status": "FAILED", "total": 0}
 
 
 def scrape_greenhouse(info):
@@ -183,51 +196,80 @@ def scrape_greenhouse(info):
 
 
 def scrape_oracle(info):
-    """Handle all Oracle HCM APIs."""
+    """Handle all Oracle HCM APIs - full pagination."""
     try:
-        r = requests.get(info["url"], headers=HEADERS, timeout=20)
-        if r.status_code == 200:
+        all_jobs = []
+        total = 0
+        offset = 0
+        limit = 25
+        base_url = info["url"]
+        # Strip existing offset param
+        base_url = re.sub(r'&?offset=\d+', '', base_url)
+        while True:
+            url = f"{base_url}&offset={offset}" if offset > 0 else base_url
+            r = requests.get(url, headers=HEADERS, timeout=20)
+            if r.status_code != 200:
+                break
             data = r.json()
             items = data.get("items", [])
-            if items:
+            if not items:
+                break
+            if offset == 0:
                 total = items[0].get("TotalJobsCount", 0)
-                reqs = items[0].get("requisitionList", [])
-                jobs = [{"title": clean(j.get("Title", "")), "location": clean(j.get("PrimaryLocation", ""))} for j in reqs[:5]]
-                return {"status": "OK", "total": total, "sample_jobs": jobs}
+            reqs = items[0].get("requisitionList", [])
+            if not reqs:
+                break
+            for j in reqs:
+                all_jobs.append({"title": clean(j.get("Title", "")), "location": clean(j.get("PrimaryLocation", ""))})
+            offset += limit
+            if total and offset >= total:
+                break
+            time.sleep(0.3)
+        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
     return {"status": "FAILED", "total": 0}
 
 
 def scrape_ssr_html(info):
-    """Handle SSR/HTML sites with BeautifulSoup."""
+    """Handle SSR/HTML sites with BeautifulSoup - full pagination."""
+    SELECTORS = [
+        "li.jobs-list-item", "article.article--result", "div.job-info",
+        "div.job-item", ".job-card", ".card-job", "tr.data-row",
+        ".job-listing", ".job-title", "a.job-result",
+    ]
+    def parse_page(html):
+        soup = BeautifulSoup(html, "html.parser")
+        for sel in SELECTORS:
+            items = soup.select(sel)
+            if items:
+                return items
+        # Fallback: job-related links
+        links = soup.find_all("a", href=True)
+        return [a for a in links if any(k in (a.get("href","")+a.get_text()).lower() for k in ["job","career","position","opening"])]
+
     try:
-        r = requests.get(info["url"], headers={**HEADERS, "Accept": "text/html"}, timeout=15)
-        if r.status_code == 200:
-            soup = BeautifulSoup(r.text, "html.parser")
-            # Try common job selectors
-            selectors = [
-                "li.jobs-list-item", "article.article--result", "div.job-info",
-                "div.job-item", ".job-card", ".card-job", "tr.data-row",
-                ".job-listing", ".job-title", "a.job-result",
-            ]
-            jobs_found = []
-            for sel in selectors:
-                items = soup.select(sel)
-                if items:
-                    jobs_found = items
-                    break
-            # Fallback: count links with job-related text
-            if not jobs_found:
-                jobs_found = soup.find_all("a", href=True)
-                jobs_found = [a for a in jobs_found if any(k in (a.get("href", "") + a.get_text()).lower() for k in ["job", "career", "position", "opening"])]
-
-            titles = []
-            for item in jobs_found[:5]:
+        all_jobs = []
+        page = 1
+        base_url = info["url"]
+        while True:
+            url = base_url if page == 1 else f"{base_url}{'&' if '?' in base_url else '?'}p={page}"
+            r = requests.get(url, headers={**HEADERS, "Accept": "text/html"}, timeout=15)
+            if r.status_code != 200:
+                break
+            items = parse_page(r.text)
+            if not items:
+                break
+            prev_count = len(all_jobs)
+            for item in items:
                 t = item.select_one("h2, h3, .job-title, .card-title a, a")
-                titles.append({"title": clean(t.get_text(strip=True) if t else item.get_text(strip=True)[:80])})
-
-            return {"status": "OK", "total": len(jobs_found), "sample_jobs": titles}
+                all_jobs.append({"title": clean(t.get_text(strip=True) if t else item.get_text(strip=True)[:80])})
+            # If we got same number as previous (duplicate page), stop
+            if len(all_jobs) == prev_count or page >= 20:
+                break
+            page += 1
+            time.sleep(0.3)
+        return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
     return {"status": "FAILED", "total": 0}
@@ -335,28 +377,43 @@ def scrape_generic_api(info):
 # ---------------------------------------------------------------------------
 
 def scrape_wipro(info):
-    """Wipro needs Content-Type: application/json + BOM strip."""
+    """Wipro SAP SuccessFactors - full pagination."""
+    return _scrape_wipro_paginated(info)
+
+
+def _scrape_wipro_paginated(info):
+    """Wipro SAP SuccessFactors - full pagination by pageNumber."""
     try:
         h = {**HEADERS, "Content-Type": "application/json",
              "Origin": "https://careers.wipro.com",
              "Referer": "https://careers.wipro.com/en-US/search"}
-        r = requests.post("https://careers.wipro.com/services/recruiting/v1/jobs",
-                          headers=h, json={"pageNumber": 0, "locale": "en_US"}, timeout=15)
-        if r.status_code == 200:
+        all_jobs = []
+        page = 0
+        total = 0
+        while True:
+            r = requests.post("https://careers.wipro.com/services/recruiting/v1/jobs",
+                              headers=h, json={"pageNumber": page, "locale": "en_US"}, timeout=20)
+            if r.status_code != 200:
+                break
             data = json.loads(r.text.lstrip("\ufeff"))
-            total = data.get("totalJobs", 0)
-            sample = [{"title": clean(j.get("response", {}).get("unifiedStandardTitle", ""))}
-                      for j in data.get("jobSearchResult", [])[:5]]
-            return {"status": "OK", "total": total, "sample_jobs": sample}
-        return {"status": "FAILED", "http_code": r.status_code}
+            if page == 0:
+                total = data.get("totalJobs", 0)
+            batch = data.get("jobSearchResult", [])
+            if not batch:
+                break
+            for j in batch:
+                all_jobs.append({"title": clean(j.get("response", {}).get("unifiedStandardTitle", ""))})
+            page += 1
+            if total and len(all_jobs) >= total:
+                break
+            time.sleep(0.2)
+        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
 
-
 def scrape_maersk(info):
-    """Maersk needs a static consumer-key header."""
+    """Maersk - full pagination by offset=24."""
     consumer_key = "ean6qqcQIuGza1IZ1Rg9dgfjZhlGE7Dw"
-    # Try dynamic extraction first
     try:
         r_html = requests.get("https://www.maersk.com/careers/vacancies",
                               headers={**HEADERS, "Accept": "text/html"}, timeout=10)
@@ -367,42 +424,67 @@ def scrape_maersk(info):
         pass
     try:
         h = {**HEADERS, "consumer-key": consumer_key}
-        r = requests.get("https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india",
-                         headers=h, timeout=15)
-        if r.status_code == 200:
+        all_jobs = []
+        offset = 0
+        limit = 24
+        total = 0
+        while True:
+            r = requests.get(f"https://api.maersk.com/careers/vacancies?limit={limit}&offset={offset}&city=india",
+                             headers=h, timeout=15)
+            if r.status_code != 200:
+                break
             data = r.json()
-            total = data.get("ResultCount", 0)
-            sample = [{"title": clean(j.get("Title", "")), "location": clean(j.get("City", ""))}
-                      for j in data.get("Results", [])[:5]]
-            return {"status": "OK", "total": total, "sample_jobs": sample}
-        return {"status": "FAILED", "http_code": r.status_code}
+            if offset == 0:
+                total = data.get("ResultCount", 0)
+            batch = data.get("Results", [])
+            if not batch:
+                break
+            for j in batch:
+                all_jobs.append({"title": clean(j.get("Title", "")), "location": clean(j.get("City", ""))})
+            offset += limit
+            if total and offset >= total:
+                break
+            time.sleep(0.2)
+        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
 
 
 def scrape_ibm(info):
-    """IBM needs Origin header + correct payload format."""
+    """IBM - full pagination by start."""
     try:
         h = {**HEADERS, "Content-Type": "application/json",
-             "Origin": "https://www.ibm.com",
-             "Referer": "https://www.ibm.com/careers"}
-        payload = {"query": "India", "start": 0, "rows": 10,
-                   "fields": ["title", "location", "url", "posted"]}
-        r = requests.post("https://www-api.ibm.com/search/api/v2",
-                          headers=h, json=payload, timeout=15)
-        if r.status_code == 200:
+             "Origin": "https://www.ibm.com", "Referer": "https://www.ibm.com/careers"}
+        all_jobs = []
+        start = 0
+        rows = 10
+        total = 0
+        while True:
+            payload = {"query": "India", "start": start, "rows": rows,
+                       "fields": ["title", "location", "url", "posted"]}
+            r = requests.post("https://www-api.ibm.com/search/api/v2",
+                              headers=h, json=payload, timeout=15)
+            if r.status_code != 200:
+                break
             data = r.json()
+            if start == 0:
+                total = data.get("total", 0)
             hits = data.get("results", [])
-            total = data.get("total", len(hits))
-            sample = [{"title": clean(j.get("title", ""))} for j in hits[:5]]
-            return {"status": "OK", "total": total, "sample_jobs": sample}
-        return {"status": "FAILED", "http_code": r.status_code}
+            if not hits:
+                break
+            for j in hits:
+                all_jobs.append({"title": clean(j.get("title", ""))})
+            start += rows
+            if total and start >= total:
+                break
+            time.sleep(0.2)
+        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
 
 
 def scrape_bosch(info):
-    """Bosch: extract Bearer token from page, fallback to JobSpy."""
+    """Bosch: extract Bearer token + paginate by page number."""
     try:
         s = requests.Session()
         s.headers.update(HEADERS)
@@ -413,14 +495,26 @@ def scrape_bosch(info):
         if tokens:
             token = tokens[0]
             API = "https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/_aggrs/get_jobs"
-            r = s.get(f"{API}?page=1&pagesize=8&avars=%7B%22country%22%3A%5B%22in%22%5D%7D",
-                      headers={"Authorization": f"Bearer {token}", "Referer": "https://jobs.bosch.com/"}, timeout=15)
-            if r.status_code == 200:
+            all_jobs = []
+            page = 1
+            pagesize = 20
+            while True:
+                r = s.get(f"{API}?page={page}&pagesize={pagesize}&avars=%7B%22country%22%3A%5B%22in%22%5D%7D",
+                          headers={"Authorization": f"Bearer {token}", "Referer": "https://jobs.bosch.com/"}, timeout=15)
+                if r.status_code != 200:
+                    break
                 data = r.json()
                 items = data if isinstance(data, list) else data.get("items", [])
-                total = len(items)
-                sample = [{"title": clean(str(i.get("title", i.get("name", ""))))} for i in items[:5]]
-                return {"status": "OK", "total": total, "sample_jobs": sample}
+                if not items:
+                    break
+                for i in items:
+                    all_jobs.append({"title": clean(str(i.get("title", i.get("name", ""))))})
+                if len(items) < pagesize:
+                    break
+                page += 1
+                time.sleep(0.2)
+            if all_jobs:
+                return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception:
         pass
     return jobspy_fallback_result("Bosch")
@@ -548,61 +642,57 @@ def scrape_with_browser(info):
 
 
 def scrape_qualcomm_phenom(info):
-    """Qualcomm Phenom API — data is nested under data.positions[], numFound is always 0."""
+    """Qualcomm Phenom API - full pagination by start=10."""
     try:
         h = {**HEADERS}
-        r = requests.get(
-            "https://careers.qualcomm.com/api/pcsx/search",
-            headers=h,
-            params={"domain": "qualcomm.com", "location": "india", "start": 0, "num": 10},
-            timeout=15
-        )
-        if r.status_code == 200:
-            positions = r.json().get("data", {}).get("positions", [])
-            # Paginate one more page to estimate real total
-            r2 = requests.get(
+        all_jobs = []
+        start = 0
+        while True:
+            r = requests.get(
                 "https://careers.qualcomm.com/api/pcsx/search",
                 headers=h,
-                params={"domain": "qualcomm.com", "location": "india", "start": 10, "num": 10},
+                params={"domain": "qualcomm.com", "location": "india", "start": start, "num": 10},
                 timeout=15
             )
-            p2 = r2.json().get("data", {}).get("positions", []) if r2.status_code == 200 else []
-            # Estimate: if page 2 has 10 jobs, real total is likely 100+
-            estimated = 10 + len(p2) if p2 else len(positions)
-            sample = [{"title": clean(p.get("name", "")),
-                       "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")}
-                      for p in positions[:5]]
-            return {"status": "OK", "total": estimated, "sample_jobs": sample}
-        return {"status": "FAILED", "http_code": r.status_code}
+            if r.status_code != 200:
+                break
+            positions = r.json().get("data", {}).get("positions", [])
+            if not positions:
+                break
+            for p in positions:
+                all_jobs.append({"title": clean(p.get("name", "")),
+                                 "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")})
+            start += 10
+            time.sleep(0.2)
+        return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
 
 
 def scrape_ericsson_phenom(info):
-    """Ericsson Phenom API — same structure as Qualcomm."""
+    """Ericsson Phenom API - full pagination by start=10."""
     try:
         h = {**HEADERS}
-        r = requests.get(
-            "https://jobs.ericsson.com/api/pcsx/search",
-            headers=h,
-            params={"domain": "ericsson.com", "location": "India", "start": 0, "num": 10},
-            timeout=15
-        )
-        if r.status_code == 200:
-            positions = r.json().get("data", {}).get("positions", [])
-            r2 = requests.get(
+        all_jobs = []
+        start = 0
+        while True:
+            r = requests.get(
                 "https://jobs.ericsson.com/api/pcsx/search",
                 headers=h,
-                params={"domain": "ericsson.com", "location": "India", "start": 10, "num": 10},
+                params={"domain": "ericsson.com", "location": "India", "start": start, "num": 10},
                 timeout=15
             )
-            p2 = r2.json().get("data", {}).get("positions", []) if r2.status_code == 200 else []
-            estimated = 10 + len(p2) if p2 else len(positions)
-            sample = [{"title": clean(p.get("name", "")),
-                       "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")}
-                      for p in positions[:5]]
-            return {"status": "OK", "total": estimated, "sample_jobs": sample}
-        return {"status": "FAILED", "http_code": r.status_code}
+            if r.status_code != 200:
+                break
+            positions = r.json().get("data", {}).get("positions", [])
+            if not positions:
+                break
+            for p in positions:
+                all_jobs.append({"title": clean(p.get("name", "")),
+                                 "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India")})
+            start += 10
+            time.sleep(0.2)
+        return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
 
