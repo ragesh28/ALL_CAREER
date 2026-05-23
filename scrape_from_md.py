@@ -134,6 +134,10 @@ def scrape_workday(info):
     """Handle all Workday POST APIs - full pagination."""
     try:
         base_payload = json.loads(info["payload"]) if info["payload"] else {"limit": 20, "offset": 0}
+        
+        # Override searchText to "India" to target only India jobs and avoid global paging timeouts
+        base_payload["searchText"] = "India"
+        
         limit = base_payload.get("limit", 20)
         h = {**HEADERS, "Content-Type": "application/json"}
         all_jobs = []
@@ -484,40 +488,33 @@ def scrape_ibm(info):
 
 
 def scrape_bosch(info):
-    """Bosch: extract Bearer token + paginate by page number."""
+    """Bosch: SmartRecruiters API - full pagination."""
     try:
-        s = requests.Session()
-        s.headers.update(HEADERS)
-        page_r = s.get("https://jobs.bosch.com/en?country=in", timeout=15)
-        tokens = re.findall(r'Bearer\s+([a-zA-Z0-9._-]{20,})', page_r.text)
-        if not tokens:
-            tokens = re.findall(r'accessToken["\s:=]+["\']([^"\']+)["\']', page_r.text, re.I)
-        if tokens:
-            token = tokens[0]
-            API = "https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/_aggrs/get_jobs"
-            all_jobs = []
-            page = 1
-            pagesize = 20
-            while True:
-                r = s.get(f"{API}?page={page}&pagesize={pagesize}&avars=%7B%22country%22%3A%5B%22in%22%5D%7D",
-                          headers={"Authorization": f"Bearer {token}", "Referer": "https://jobs.bosch.com/"}, timeout=15)
-                if r.status_code != 200:
-                    break
-                data = r.json()
-                items = data if isinstance(data, list) else data.get("items", [])
-                if not items:
-                    break
-                for i in items:
-                    all_jobs.append({"title": clean(str(i.get("title", i.get("name", ""))))})
-                if len(items) < pagesize:
-                    break
-                page += 1
-                time.sleep(0.2)
-            if all_jobs:
-                return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
-    except Exception:
-        pass
-    return jobspy_fallback_result("Bosch")
+        all_jobs = []
+        offset = 0
+        limit = 100
+        while True:
+            url = f"https://api.smartrecruiters.com/v1/companies/BoschGroup/postings?country=in&limit={limit}&offset={offset}"
+            r = requests.get(url, headers=HEADERS, timeout=15)
+            if r.status_code != 200:
+                break
+            data = r.json()
+            content = data.get("content", [])
+            if not content:
+                break
+            for j in content:
+                all_jobs.append({
+                    "title": clean(j.get("name", "")),
+                    "location": clean(j.get("location", {}).get("city", "India")),
+                    "apply_url": f"https://jobs.smartrecruiters.com/BoschGroup/{j.get('id', '')}"
+                })
+            offset += limit
+            if len(content) < limit:
+                break
+            time.sleep(0.2)
+        return {"status": "OK", "total": len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
 
 
 def jobspy_fallback_result(company_name):
@@ -525,29 +522,33 @@ def jobspy_fallback_result(company_name):
     if not JOBSPY_AVAILABLE:
         return {"status": "FAILED", "error": "JobSpy not installed", "total": 0}
     try:
-        cities = ["Bangalore", "Mumbai", "Hyderabad", "Chennai", "Pune"]
+        # Strip trailing Phenom or other tags to query cleanly: "Mastercard (Phenom)" -> "Mastercard"
+        clean_company = re.sub(r'\s*\(.*\)', '', company_name)
+        clean_company = re.sub(r'^\d+\.\s+', '', clean_company).strip()
+        
+        print(f"  [JobSpy Fallback] Scraping LinkedIn for '{clean_company}' in India...")
+        df = scrape_jobs(
+            site_name=["linkedin"],
+            search_term=clean_company,
+            location="India",
+            results_wanted=100,
+            country_indeed="India"
+        )
         jobs = []
         seen = set()
-        for city in cities:
-            if len(jobs) >= 10:
-                break
-            try:
-                df = scrape_jobs(site_name=["linkedin"], search_term=company_name,
-                                 location=f"{city}, India", results_wanted=5,
-                                 country_indeed="India")
-                for _, row in df.iterrows():
-                    url = str(row.get("job_url", ""))
-                    if url in seen:
-                        continue
-                    seen.add(url)
-                    jobs.append({"title": clean(str(row.get("title", ""))),
-                                 "location": clean(str(row.get("location", city))),
-                                 "apply_url": url})
-            except Exception:
+        for _, row in df.iterrows():
+            url = str(row.get("job_url", ""))
+            if not url or url in seen:
                 continue
+            seen.add(url)
+            jobs.append({
+                "title": clean(str(row.get("title", ""))),
+                "location": clean(str(row.get("location", "India"))),
+                "apply_url": url
+            })
         if jobs:
-            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5],
-                    "method": "JobSpy/LinkedIn fallback"}
+            print(f"  [JobSpy Fallback] Successfully fetched {len(jobs)} jobs for '{clean_company}'!")
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "JobSpy/LinkedIn fallback"}
         return {"status": "FAILED", "total": 0, "error": "JobSpy returned 0 jobs"}
     except Exception as e:
         return {"status": "ERROR", "error": str(e), "total": 0}
@@ -761,11 +762,8 @@ def dispatch_api(info):
         return scrape_wipro(info)
     if "maersk" in name_lower:
         return scrape_maersk(info)
-    if "ibm" in name_lower:
-        result = scrape_ibm(info)
-        if result.get("status") != "OK" and JOBSPY_AVAILABLE:
-            return jobspy_fallback_result("IBM")
-        return result
+    if "ibm" in name_lower and JOBSPY_AVAILABLE:
+        return jobspy_fallback_result("IBM")
     if "bosch" in name_lower:
         return scrape_bosch(info)
     if "crossover" in name_lower:
@@ -782,12 +780,19 @@ def dispatch_api(info):
             return jobspy_fallback_result("HPE")
         return scrape_with_browser({**info, "url": "https://careers.hpe.com/us/en/search-results?location=India"})
     if "mastercard" in name_lower:
+        if JOBSPY_AVAILABLE:
+            return jobspy_fallback_result("Mastercard")
         return scrape_with_browser({**info, "url": "https://careers.mastercard.com/us/en/search-results?location=India"})
     if "abb" in name_lower:
+        if JOBSPY_AVAILABLE:
+            return jobspy_fallback_result("ABB")
         return scrape_with_browser({**info, "url": "https://careers.abb/us/en/search-results?location=India"})
 
-    # Companies known to return 0 — use JobSpy fallback
-    JOBSPY_FALLBACK_COMPANIES = ["continental", "grundfos", "cohesity", "tally"]
+    # Companies known to return 0 / few jobs — use JobSpy fallback
+    JOBSPY_FALLBACK_COMPANIES = [
+        "continental", "grundfos", "cohesity", "tally", 
+        "zs associates", "nutanix", "cognizant", "brillio"
+    ]
     if any(n in name_lower for n in JOBSPY_FALLBACK_COMPANIES) and JOBSPY_AVAILABLE:
         return jobspy_fallback_result(name)
 
@@ -913,6 +918,9 @@ def update_big_company_jobs(all_results, company_info_map):
         existing_keys.add((comp, title, clean_url))
         
     fetched_at = datetime.now().strftime("%Y-%m-%d")
+    
+    total_scraped = 0
+    total_india = 0
     new_jobs_added = 0
     
     for raw_company_name, result in all_results.items():
@@ -935,11 +943,13 @@ def update_big_company_jobs(all_results, company_info_map):
             if not title or len(title) < 2:
                 continue
                 
+            total_scraped += 1
             location = clean(raw_job.get("location", ""))
             
             if not is_india(location):
                 continue
                 
+            total_india += 1
             apply_url = raw_job.get("apply_url") or raw_job.get("url") or company_url or ""
             
             comp_lower = clean_name.lower()
@@ -974,6 +984,8 @@ def update_big_company_jobs(all_results, company_info_map):
             print(f"Error saving updated big_company_jobs.json: {e}")
     else:
         print("No new unique jobs found to add to big_company_jobs.json.")
+        
+    return total_scraped, total_india, new_jobs_added
 
 
 def save_output(all_results, api_count, browser_count):
@@ -988,6 +1000,10 @@ def save_output(all_results, api_count, browser_count):
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
+    total_scraped = 0
+    total_india = 0
+    new_jobs_added = 0
+
     try:
         if os.path.exists(MD_FILE):
             api_companies, browser_companies = parse_md_file(MD_FILE)
@@ -997,9 +1013,18 @@ def save_output(all_results, api_count, browser_count):
                 name = f"{info['num']}. {info['name']}"
                 company_info_map[name] = info
             
-            update_big_company_jobs(all_results, company_info_map)
+            total_scraped, total_india, new_jobs_added = update_big_company_jobs(all_results, company_info_map)
     except Exception as e:
         print(f"Error during big_company_jobs update inside save_output: {e}")
+
+    # Display the user's requested metrics in a beautiful, prominent box
+    print("\n" + "=" * 70)
+    print("                METRICS & STATS SUMMARY")
+    print("=" * 70)
+    print(f"  Total Jobs Scraped (Raw Global)     : {total_scraped:,}")
+    print(f"  India-Location Jobs (After Filter)  : {total_india:,}")
+    print(f"  New Unique Jobs Added to Database  : +{new_jobs_added:,}")
+    print("=" * 70 + "\n")
 
 
 def load_previous_output():
