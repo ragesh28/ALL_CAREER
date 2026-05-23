@@ -852,6 +852,130 @@ def save_checkpoint(next_index, results, completed=False):
     with open(CHECKPOINT_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
+def is_india(location):
+    if not location:
+        return True
+    loc = location.lower()
+    indian_keywords = [
+        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
+        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
+        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
+    ]
+    return any(k in loc for k in indian_keywords)
+
+
+def clean_company_name(name):
+    # Strip leading number and dot: "4. Amadeus" -> "Amadeus"
+    # Also strip any parenthetical info: "ZS Associates (Playwright)" -> "ZS Associates"
+    cleaned = re.sub(r'^\d+\.\s+', '', name)
+    cleaned = re.sub(r'\s*\(.*\)', '', cleaned)
+    return cleaned.strip()
+
+
+def get_company_career_url(info):
+    url = info.get("url", "")
+    if not url:
+        return ""
+    if info.get("is_workday"):
+        parsed = urlparse(url)
+        netloc = parsed.netloc
+        parts = parsed.path.split('/')
+        company_segment = ""
+        for part in parts:
+            if part and part not in ("wday", "cxs", "jobs"):
+                company_segment = part
+                break
+        if company_segment:
+            return f"https://{netloc}/en-US/{company_segment}/"
+        return f"https://{netloc}/"
+    parsed = urlparse(url)
+    return f"{parsed.scheme}://{parsed.netloc}/"
+
+
+def update_big_company_jobs(all_results, company_info_map):
+    big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
+    
+    existing_jobs = []
+    if os.path.exists(big_jobs_path):
+        try:
+            with open(big_jobs_path, "r", encoding="utf-8") as f:
+                existing_jobs = json.load(f)
+        except Exception as e:
+            print(f"Error loading existing big_company_jobs.json: {e}")
+            existing_jobs = []
+            
+    existing_keys = set()
+    for job in existing_jobs:
+        comp = (job.get("company") or "").strip().lower()
+        title = (job.get("title") or "").strip().lower()
+        url = (job.get("apply_url") or "").strip().lower()
+        clean_url = url.split('?')[0] if url else ""
+        existing_keys.add((comp, title, clean_url))
+        
+    fetched_at = datetime.now().strftime("%Y-%m-%d")
+    new_jobs_added = 0
+    
+    for raw_company_name, result in all_results.items():
+        if result.get("status") != "OK":
+            continue
+            
+        clean_name = clean_company_name(raw_company_name)
+        info = company_info_map.get(raw_company_name, {})
+        company_url = get_company_career_url(info)
+        
+        jobs_list = result.get("all_jobs") or result.get("sample_jobs") or []
+        if not isinstance(jobs_list, list):
+            continue
+            
+        for raw_job in jobs_list:
+            if not isinstance(raw_job, dict):
+                continue
+                
+            title = clean(raw_job.get("title", ""))
+            if not title or len(title) < 2:
+                continue
+                
+            location = clean(raw_job.get("location", ""))
+            
+            if not is_india(location):
+                continue
+                
+            apply_url = raw_job.get("apply_url") or raw_job.get("url") or company_url or ""
+            
+            comp_lower = clean_name.lower()
+            title_lower = title.strip().lower()
+            url_lower = apply_url.strip().lower()
+            clean_url = url_lower.split('?')[0] if url_lower else ""
+            
+            job_key = (comp_lower, title_lower, clean_url)
+            
+            if job_key not in existing_keys:
+                new_job = {
+                    "title": title,
+                    "location": location or "India",
+                    "posted": "",
+                    "apply_url": apply_url,
+                    "total_jobs": 0,
+                    "fetched_at": fetched_at,
+                    "company": clean_name
+                }
+                existing_jobs.append(new_job)
+                existing_keys.add(job_key)
+                new_jobs_added += 1
+                
+    if new_jobs_added > 0:
+        print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
+        os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)
+        try:
+            with open(big_jobs_path, "w", encoding="utf-8") as f:
+                json.dump(existing_jobs, f, indent=4, ensure_ascii=False)
+            print("Successfully updated big_company_jobs.json!")
+        except Exception as e:
+            print(f"Error saving updated big_company_jobs.json: {e}")
+    else:
+        print("No new unique jobs found to add to big_company_jobs.json.")
+
+
 def save_output(all_results, api_count, browser_count):
     """Write the final scraped_jobs_output.json."""
     output = {
@@ -863,6 +987,19 @@ def save_output(all_results, api_count, browser_count):
     }
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
+
+    try:
+        if os.path.exists(MD_FILE):
+            api_companies, browser_companies = parse_md_file(MD_FILE)
+            all_companies = api_companies + browser_companies
+            company_info_map = {}
+            for info in all_companies:
+                name = f"{info['num']}. {info['name']}"
+                company_info_map[name] = info
+            
+            update_big_company_jobs(all_results, company_info_map)
+    except Exception as e:
+        print(f"Error during big_company_jobs update inside save_output: {e}")
 
 
 def load_previous_output():
