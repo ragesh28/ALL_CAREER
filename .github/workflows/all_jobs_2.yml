@@ -8,11 +8,14 @@ on:
 jobs:
   scrape-linkedin-indeed:
     runs-on: ubuntu-latest
-    timeout-minutes: 350  # 5h 50m — leave buffer before 6h hard limit
+    timeout-minutes: 355  # 5h 55m — leave buffer before 6h hard limit
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v4
@@ -32,10 +35,12 @@ jobs:
       - name: Commit and Push Scrape Progress
         if: always()
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add -f alljobs2_progress.json 2>/dev/null || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save alljobs2 scraper progress" && git pull --rebase && git push)
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add alljobs2_progress.json || true
+          git commit -m "chore: save alljobs2 scraper progress [skip ci]" || echo "No changes to commit"
+          git pull --rebase --autostash origin main
+          git push
 
       # Auto-restart if stopped mid-run
       # NOTE: No sleep here — sleeping inside a dying job causes "Operation canceled".

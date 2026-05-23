@@ -40,7 +40,7 @@ KEEP_DAYS = 20
 PROGRESS_FILE = "alljobs2_progress.json"
 
 START_TIME = time.time()
-MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5h50m
+MAX_RUN_SECONDS = 5 * 3600 + 40 * 60  # 5h40m (leaves buffer before 355m GitHub Action limit)
 
 # Parse --test
 TEST_MODE = "--test" in sys.argv
