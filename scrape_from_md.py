@@ -1164,6 +1164,14 @@ def main():
 
     # Load previous output to detect new jobs
     prev_totals = load_previous_output()
+    
+    seen_ids_db = {}
+    if os.path.exists("seen_job_ids.json"):
+        try:
+            with open("seen_job_ids.json", "r", encoding="utf-8") as f:
+                seen_ids_db = json.load(f)
+        except Exception:
+            pass
 
     timed_out = False
     total_new_jobs = 0  # accumulator across all companies
@@ -1200,14 +1208,22 @@ def main():
 
         status_icon = "OK" if result.get("status") == "OK" else "FAIL"
         total_jobs  = result.get("total", "?")
-        old_total   = prev_totals.get(name, 0)
-        try:
-            new_jobs = max(0, int(total_jobs) - old_total) if str(total_jobs).isdigit() else "?"
-        except Exception:
-            new_jobs = "?"
-        if new_jobs != "?":
-            total_new_jobs += new_jobs
-        print(f"  Result: [{status_icon}] Total: {total_jobs} | New: +{new_jobs}")
+        
+        jobs_list = result.get("all_jobs") or result.get("sample_jobs") or []
+        india_jobs = [j for j in jobs_list if is_india(j.get("location", ""))]
+        india_count = len(india_jobs) if jobs_list else 0
+        
+        new_jobs = 0
+        clean_name = clean_company_name(name)
+        seen_for_comp = seen_ids_db.get(clean_name, [])
+        for j in india_jobs:
+            apply_url = j.get("apply_url") or j.get("url") or ""
+            unique_job_id = str(j.get("job_id", apply_url)).strip()
+            if unique_job_id and unique_job_id not in seen_for_comp:
+                new_jobs += 1
+                
+        total_new_jobs += new_jobs
+        print(f"  Result: [{status_icon}] Total Scraped: {total_jobs} | India Filtered: {india_count} | New India Jobs: +{new_jobs}")
         if result.get("sample_jobs"):
             for j in result["sample_jobs"][:2]:
                 print(f"    -> {j.get('title', '?')[:60]}")
@@ -1246,14 +1262,22 @@ def main():
 
             status_icon = "OK" if result.get("status") == "OK" else "FAIL"
             total_jobs  = result.get("total", "?")
-            old_total   = prev_totals.get(name, 0)
-            try:
-                new_jobs = max(0, int(total_jobs) - old_total) if str(total_jobs).isdigit() else "?"
-            except Exception:
-                new_jobs = "?"
-            if new_jobs != "?":
-                total_new_jobs += new_jobs
-            print(f"  Result: [{status_icon}] Total: {total_jobs} | New: +{new_jobs}")
+            
+            jobs_list = result.get("all_jobs") or result.get("sample_jobs") or []
+            india_jobs = [j for j in jobs_list if is_india(j.get("location", ""))]
+            india_count = len(india_jobs) if jobs_list else 0
+            
+            new_jobs = 0
+            clean_name = clean_company_name(name)
+            seen_for_comp = seen_ids_db.get(clean_name, [])
+            for j in india_jobs:
+                apply_url = j.get("apply_url") or j.get("url") or ""
+                unique_job_id = str(j.get("job_id", apply_url)).strip()
+                if unique_job_id and unique_job_id not in seen_for_comp:
+                    new_jobs += 1
+                    
+            total_new_jobs += new_jobs
+            print(f"  Result: [{status_icon}] Total Scraped: {total_jobs} | India Filtered: {india_count} | New India Jobs: +{new_jobs}")
             if result.get("sample_jobs"):
                 for j in result["sample_jobs"][:2]:
                     print(f"    -> {j.get('title', '?')[:60]}")

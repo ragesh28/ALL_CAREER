@@ -79,7 +79,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add scraped_jobs_output.json scrape_checkpoint.json workday_scraper/big_company_jobs.json seen_job_ids.json || true
           git commit -m "chore(jobs): Update 51-company scraped jobs [skip ci] - idx ${{ steps.check_remaining.outputs.next_index }}" || echo "No changes to commit"
-          git pull --rebase --autostash origin main
+          git pull --rebase -X theirs --autostash origin main
           git push
 
       - name: Trigger continuation if not complete
