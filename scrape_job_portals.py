@@ -263,38 +263,48 @@ def parse_date_posted(date_val):
 
 def scrape_shine(role, city):
     print("  - Scraping Shine...")
-    # Use HTML scraper — Shine removed their public API endpoint
+    # Shine uses Next.js — jobs are in __NEXT_DATA__.initialState.jsrp.searchresult.data.results
     role_slug = role.replace(" ", "-").lower()
     city_slug = city.lower().split(",")[0].strip().replace(" ", "-")
-    role_enc = urllib.parse.quote(role)
-    url = f"https://www.shine.com/job-search/{role_slug}-jobs-in-{city_slug}/?q={role_enc}&city={urllib.parse.quote(city)}"
+    url = f"https://www.shine.com/job-search/{role_slug}-jobs-in-{city_slug}"
     proxy = get_oxylabs_proxy()
     try:
         r = requests.get(url, headers=HEADERS, proxies=proxy, timeout=25, verify=False)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, "html.parser")
             jobs = []
-            # Try __NEXT_DATA__ first (Shine uses Next.js)
             next_data = soup.find("script", id="__NEXT_DATA__")
             if next_data:
                 try:
                     js_data = json.loads(next_data.string)
                     page_props = js_data.get("props", {}).get("pageProps", {})
-                    # Try multiple key paths
+                    # Actual path: initialState -> jsrp -> searchresult -> data -> results
                     results = (
-                        page_props.get("jobs", [])
-                        or page_props.get("jobList", [])
-                        or page_props.get("searchResult", {}).get("jobs", [])
-                        or page_props.get("data", {}).get("jobs", [])
-                        or []
+                        page_props
+                        .get("initialState", {})
+                        .get("jsrp", {})
+                        .get("searchresult", {})
+                        .get("data", {})
+                        .get("results", [])
                     )
                     for item in results:
-                        title = (item.get("title") or item.get("designation") or "").strip()
-                        company = (item.get("companyName") or item.get("company_name") or "").strip()
-                        loc = item.get("location") or item.get("city") or city
-                        date_posted = item.get("createdDate") or item.get("created_date") or item.get("postedDate")
+                        # Shine uses abbreviated field names:
+                        # jJT=title, jCName=company, jLoc=location, jPDate=posted, jSlug=url slug
+                        title = (item.get("jJT") or item.get("title") or "").strip()
+                        company = (item.get("jCName") or item.get("companyName") or "").strip()
+                        loc = item.get("jLoc") or item.get("location") or city
+                        if isinstance(loc, list):
+                            loc = ", ".join(loc)
+                        date_posted = item.get("jPDate") or item.get("postedDate")
                         date_str = parse_date_posted(date_posted)
-                        job_url = item.get("jobUrl") or item.get("share_url") or item.get("url") or ""
+                        slug = item.get("jSlug") or item.get("slug") or ""
+                        job_id = item.get("id") or ""
+                        if slug:
+                            job_url = f"https://www.shine.com/jobs/{slug}"
+                        elif job_id:
+                            job_url = f"https://www.shine.com/jobs/{job_id}"
+                        else:
+                            job_url = item.get("jRUrl") or item.get("url") or ""
                         if job_url and job_url.startswith("/"):
                             job_url = "https://www.shine.com" + job_url
                         if title and job_url:
@@ -305,35 +315,6 @@ def scrape_shine(role, city):
                             })
                 except Exception:
                     pass
-            # HTML fallback with current Shine selectors
-            if not jobs:
-                cards = soup.select(".job-bx, .shine-job-list li, .srp-job-row, [class*='job-container']")
-                for card in cards:
-                    title_el = card.select_one(".job-ttl a, h2 a, .jobDesig a, [class*='job-title'] a")
-                    if not title_el:
-                        continue
-                    title = title_el.get_text(strip=True)
-                    job_url = title_el.get("href", "")
-                    if job_url.startswith("/"):
-                        job_url = "https://www.shine.com" + job_url
-                    company = ""
-                    comp_el = card.select_one(".info-detail a, .company-name, [class*='comp']")
-                    if comp_el:
-                        company = comp_el.get_text(strip=True)
-                    loc = city
-                    loc_el = card.select_one(".info-detail span, .location, [class*='loc']")
-                    if loc_el:
-                        loc = loc_el.get_text(strip=True)
-                    date_str = datetime.now().strftime("%Y-%m-%d")
-                    date_el = card.select_one(".posted-date, .sim-posted, [class*='date']")
-                    if date_el:
-                        date_str = parse_date_posted(date_el.get_text(strip=True))
-                    if title and job_url:
-                        jobs.append({
-                            "title": title, "company": company, "location": loc,
-                            "date_posted": date_str, "url": job_url,
-                            "source": "shine", "role_search": role
-                        })
             return jobs
     except Exception as e:
         print(f"    Shine error: {e}")
@@ -341,42 +322,42 @@ def scrape_shine(role, city):
 
 def scrape_timesjobs(role, city):
     print("  - Scraping TimesJobs...")
-    # Use HTML scraper directly — internal API (tjapi.timesjobs.com) is blocked externally
-    proxy = get_oxylabs_proxy()
+    # TimesJobs is now a Next.js SPA — server HTML is an empty shell.
+    # Must use ScraperAPI with render=true to execute JavaScript.
+    if not SCRAPERAPI_KEY:
+        print("    TimesJobs (Skipped: No ScraperAPI Key for JS rendering)")
+        return []
     role_enc = urllib.parse.quote(role)
     city_enc = urllib.parse.quote(city)
     url = f"https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords={role_enc}&txtLocation={city_enc}"
+    encoded_url = urllib.parse.quote(url)
+    endpoint = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={encoded_url}&render=true"
     jobs = []
     try:
-        r = requests.get(url, headers=HEADERS, proxies=proxy, timeout=25, verify=False)
+        r = requests.get(endpoint, timeout=90, verify=False)
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, "html.parser")
-            # Current TimesJobs HTML structure (updated 2024-2025)
-            cards = soup.select("li.clearfix.job-bx, li.job-bx, .joblist-comp-info")
+            # After JS rendering, job cards should appear
+            cards = soup.select("li.clearfix.job-bx, li.job-bx, .joblist-comp-info, [class*='job-bx']")
             for card in cards:
-                # Title: inside <header> h2 or h2.heading-trun
-                title_el = card.select_one("h2.heading-trun a, header h2 a, .job-ttl a")
+                title_el = card.select_one("h2.heading-trun a, header h2 a, .job-ttl a, h2 a")
                 if not title_el:
                     continue
                 title = title_el.get_text(strip=True)
                 job_url = title_el.get("href", "")
                 if not job_url:
                     continue
-                # Company name
                 company = ""
-                comp_el = card.select_one("h3.joblist-comp-name, .joblist-comp-name")
+                comp_el = card.select_one("h3.joblist-comp-name, .joblist-comp-name, .company-name")
                 if comp_el:
                     company = comp_el.get_text(separator=" ", strip=True)
-                    # Remove embedded rating text like "3.5 ★"
-                    company = re.sub(r'\s*\d+(\.\d+)?\s*', '', company).strip()
-                # Location from span with skills/location area
+                    company = re.sub(r'\s*\d+(\.\d+)?\s*$', '', company).strip()
                 loc = city
-                loc_el = card.select_one(".srp-skills, ul.top-jd-dtl span, span[title]")
+                loc_el = card.select_one(".srp-skills, ul.top-jd-dtl span, span[title], .location")
                 if loc_el:
                     loc = loc_el.get_text(strip=True)
-                # Date posted
                 date_str = datetime.now().strftime("%Y-%m-%d")
-                date_el = card.select_one("span.sim-posted, .sim-posted span, [class*='posted-date']")
+                date_el = card.select_one("span.sim-posted, .sim-posted span, [class*='posted']")
                 if date_el:
                     date_str = parse_date_posted(date_el.get_text(strip=True))
                 if title and job_url:
@@ -391,96 +372,15 @@ def scrape_timesjobs(role, city):
 
 def scrape_hirist(role, city):
     print("  - Scraping Hirist...")
-    role_enc = urllib.parse.quote(role)
-    city_enc = urllib.parse.quote(city)
-    url = f"https://www.hirist.tech/search.html?keyword={role_enc}&location={city_enc}"
-    proxy = get_oxylabs_proxy()
-    try:
-        r = requests.get(url, headers=HEADERS, proxies=proxy, timeout=25, verify=False)
-        if r.status_code == 200:
-            soup = BeautifulSoup(r.text, "html.parser")
-            jobs = []
-
-            next_data = soup.find("script", id="__NEXT_DATA__")
-            if next_data:
-                try:
-                    js_data = json.loads(next_data.string)
-                    page_props = js_data.get("props", {}).get("pageProps", {})
-                    # FIXED: correct key paths for Hirist's __NEXT_DATA__ structure
-                    results = (
-                        page_props.get("jobList", {}).get("jobs", [])
-                        or page_props.get("jobsList", [])
-                        or page_props.get("jobs", [])
-                        or page_props.get("searchResults", [])
-                        or page_props.get("data", {}).get("jobs", [])
-                        or []
-                    )
-                    for item in results:
-                        title = (item.get("title") or item.get("jobTitle") or "").strip()
-                        company = (item.get("companyName") or item.get("recruiterName") or item.get("company", "")).strip()
-                        loc = item.get("location") or item.get("locationName") or item.get("city") or city
-                        date_posted = item.get("date") or item.get("postedDate") or item.get("created") or item.get("datePosted")
-                        date_str = parse_date_posted(date_posted)
-                        job_id = item.get("id") or item.get("jobId")
-                        slug = item.get("slug") or item.get("jobSlug")
-                        if slug:
-                            job_url = f"https://www.hirist.tech/j/{slug}.html"
-                        elif job_id:
-                            job_url = f"https://www.hirist.tech/j/{job_id}.html"
-                        else:
-                            job_url = item.get("url") or item.get("jobUrl") or ""
-                        if title and job_url:
-                            jobs.append({
-                                "title": title, "company": company, "location": loc,
-                                "date_posted": date_str, "url": job_url,
-                                "source": "hirist", "role_search": role
-                            })
-                except Exception:
-                    pass
-
-            if not jobs:
-                # FIXED: Hirist uses slug-based URLs like /j/senior-python-developer-123456.html
-                for a in soup.find_all("a", href=re.compile(r"/j/[a-z0-9\-]+-\d+\.html")):
-                    title = a.get_text(strip=True)
-                    if not title or len(title) < 3:
-                        continue
-                    job_url = a["href"]
-                    if job_url.startswith("/"):
-                        job_url = "https://www.hirist.tech" + job_url
-                    company = ""
-                    loc = city
-                    date_str = datetime.now().strftime("%Y-%m-%d")
-                    parent = a.find_parent("div", class_=re.compile(r"job|card|box|tuple")) or a.parent.parent
-                    if parent:
-                        comp_el = parent.find(class_=re.compile(r"comp|recruiter|company"))
-                        if comp_el:
-                            company = comp_el.get_text(strip=True)
-                        loc_el = parent.find(class_=re.compile(r"loc|location|city"))
-                        if loc_el:
-                            loc = loc_el.get_text(strip=True)
-                        date_el = parent.find(class_=re.compile(r"date|posted|time|ago"))
-                        if date_el:
-                            date_str = parse_date_posted(date_el.get_text(strip=True))
-                    jobs.append({
-                        "title": title, "company": company, "location": loc,
-                        "date_posted": date_str, "url": job_url,
-                        "source": "hirist", "role_search": role
-                    })
-            return jobs
-    except Exception as e:
-        print(f"    Hirist error: {e}")
-    return []
-
-def scrape_workindia(role, city):
-    print("  - Scraping Workindia...")
-    # FIXED: WorkIndia is a React SPA — use ScraperAPI with render=true for JS rendering
-    # Oxylabs plain HTTP requests return an empty shell with no job data
+    # Hirist uses slug URLs /{role}-jobs-in-{city} (search.html?keyword= returns 404).
+    # Jobs load client-side (initialState.job.jobfeed=[] isLoading=True),
+    # so we need ScraperAPI with render=true to let JS execute.
     if not SCRAPERAPI_KEY:
-        print("  - Workindia (Skipped: No ScraperAPI Key for JS rendering)")
+        print("    Hirist (Skipped: No ScraperAPI Key for JS rendering)")
         return []
-    city_clean = city.lower().split(",")[0].strip()
-    role_enc = urllib.parse.quote(role)
-    url = f"https://www.workindia.in/jobs-in-{city_clean}/?search={role_enc}"
+    role_slug = role.replace(" ", "-").lower()
+    city_slug = city.lower().split(",")[0].strip().replace(" ", "-")
+    url = f"https://www.hirist.tech/{role_slug}-jobs-in-{city_slug}"
     encoded_url = urllib.parse.quote(url)
     endpoint = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={encoded_url}&render=true"
     try:
@@ -488,7 +388,58 @@ def scrape_workindia(role, city):
         if r.status_code == 200:
             soup = BeautifulSoup(r.text, "html.parser")
             jobs = []
-            # Try JSON-LD structured data first
+            # After JS render, try finding job cards/links
+            # Hirist job links match pattern /j/{slug}.html or /j/{id}.html
+            job_links = soup.find_all("a", href=re.compile(r"/j/[a-z0-9\-]+\.html|/j/\d+\.html"))
+            seen_urls = set()
+            for a in job_links:
+                title = a.get_text(strip=True)
+                if not title or len(title) < 3:
+                    continue
+                job_url = a.get("href", "")
+                if job_url.startswith("/"):
+                    job_url = "https://www.hirist.tech" + job_url
+                if job_url in seen_urls:
+                    continue
+                seen_urls.add(job_url)
+                company = ""
+                loc = city
+                date_str = datetime.now().strftime("%Y-%m-%d")
+                parent = a.find_parent("div", class_=re.compile(r"job|card|box|tuple|feed")) or a.parent
+                if parent:
+                    comp_el = parent.find(class_=re.compile(r"comp|recruiter|company|employer"))
+                    if comp_el:
+                        company = comp_el.get_text(strip=True)
+                    loc_el = parent.find(class_=re.compile(r"loc|location|city"))
+                    if loc_el:
+                        loc = loc_el.get_text(strip=True)
+                    date_el = parent.find(class_=re.compile(r"date|posted|time|ago"))
+                    if date_el:
+                        date_str = parse_date_posted(date_el.get_text(strip=True))
+                jobs.append({
+                    "title": title, "company": company, "location": loc,
+                    "date_posted": date_str, "url": job_url,
+                    "source": "hirist", "role_search": role
+                })
+            return jobs
+    except Exception as e:
+        print(f"    Hirist error: {e}")
+    return []
+
+def scrape_workindia(role, city):
+    print("  - Scraping Workindia...")
+    # WorkIndia serves JSON-LD with flat ListItem objects (just name+url, no nested JobPosting).
+    # No JS rendering needed — the JSON-LD is in the SSR HTML, we just need to parse it correctly.
+    city_clean = city.lower().split(",")[0].strip()
+    role_enc = urllib.parse.quote(role)
+    url = f"https://www.workindia.in/jobs-in-{city_clean}/?search={role_enc}"
+    proxy = get_oxylabs_proxy()
+    try:
+        r = requests.get(url, headers=HEADERS, proxies=proxy, timeout=25, verify=False)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            jobs = []
+            # Parse JSON-LD: WorkIndia uses flat ListItem objects with name+url (NOT nested JobPosting)
             json_ld_scripts = soup.find_all("script", type="application/ld+json")
             for script in json_ld_scripts:
                 try:
@@ -496,17 +447,20 @@ def scrape_workindia(role, city):
                     if isinstance(js_data, dict):
                         if js_data.get("@type") == "ItemList":
                             for item in js_data.get("itemListElement", []):
-                                job_data = item.get("item", {})
-                                if job_data.get("@type") == "JobPosting":
-                                    title = job_data.get("title", "").strip()
-                                    company = job_data.get("hiringOrganization", {}).get("name", "").strip()
-                                    loc = job_data.get("jobLocation", {}).get("address", {}).get("addressLocality", city)
-                                    date_str = parse_date_posted(job_data.get("datePosted"))
-                                    job_url = job_data.get("url")
-                                    if title and job_url:
-                                        jobs.append({"title": title, "company": company, "location": loc,
-                                                     "date_posted": date_str, "url": job_url,
-                                                     "source": "workindia", "role_search": role})
+                                # Flat ListItem: {"@type":"ListItem","name":"...","url":"..."}
+                                title = (item.get("name") or "").strip()
+                                job_url = item.get("url") or ""
+                                # Also check nested 'item' in case they add it later
+                                if not title and isinstance(item.get("item"), dict):
+                                    nested = item["item"]
+                                    title = (nested.get("title") or nested.get("name") or "").strip()
+                                    job_url = nested.get("url") or job_url
+                                if title and job_url:
+                                    jobs.append({
+                                        "title": title, "company": "", "location": city,
+                                        "date_posted": datetime.now().strftime("%Y-%m-%d"),
+                                        "url": job_url, "source": "workindia", "role_search": role
+                                    })
                         elif js_data.get("@type") == "JobPosting":
                             title = js_data.get("title", "").strip()
                             company = js_data.get("hiringOrganization", {}).get("name", "").strip()
@@ -519,45 +473,20 @@ def scrape_workindia(role, city):
                                              "source": "workindia", "role_search": role})
                 except Exception:
                     pass
-            # HTML card fallback for rendered page
+            # HTML link fallback
             if not jobs:
-                cards = soup.select(".job-card, .jobCard, [class*='job-card'], [class*='jobCard'], a[href*='/job-details/']")
-                for card in cards:
-                    title_el = card.select_one(".job-title, .title, [class*='job-title'], h2, h3")
-                    if not title_el:
-                        title_el = card if card.name == "a" else None
-                    if not title_el:
+                for a in soup.find_all("a", href=re.compile(r"/jobs/[a-z0-9_\-]+")):
+                    title = a.get_text(strip=True)
+                    if not title or len(title) < 3:
                         continue
-                    title = title_el.get_text(strip=True)
-                    job_url = ""
-                    if card.name == "a":
-                        job_url = card.get("href", "")
-                    elif title_el.name == "a":
-                        job_url = title_el.get("href", "")
-                    else:
-                        a_el = card.find("a", href=re.compile(r"/job"))
-                        if a_el:
-                            job_url = a_el.get("href", "")
-                    if not job_url:
-                        continue
+                    job_url = a.get("href", "")
                     if job_url.startswith("/"):
                         job_url = "https://www.workindia.in" + job_url
-                    company = ""
-                    comp_el = card.select_one(".company-name, [class*='company'], [class*='employer']")
-                    if comp_el:
-                        company = comp_el.get_text(strip=True)
-                    loc = city
-                    loc_el = card.select_one(".location, [class*='location'], [class*='city']")
-                    if loc_el:
-                        loc = loc_el.get_text(strip=True)
-                    date_str = datetime.now().strftime("%Y-%m-%d")
-                    date_el = card.select_one(".date, [class*='posted'], [class*='time']")
-                    if date_el:
-                        date_str = parse_date_posted(date_el.get_text(strip=True))
-                    if title and job_url:
-                        jobs.append({"title": title, "company": company, "location": loc,
-                                     "date_posted": date_str, "url": job_url,
-                                     "source": "workindia", "role_search": role})
+                    jobs.append({
+                        "title": title, "company": "", "location": city,
+                        "date_posted": datetime.now().strftime("%Y-%m-%d"),
+                        "url": job_url, "source": "workindia", "role_search": role
+                    })
             return jobs
     except Exception as e:
         print(f"    Workindia error: {e}")
@@ -573,7 +502,8 @@ def scrape_foundit(role, city):
     url = f"https://www.foundit.in/search/{role_enc}-jobs-in-{city_enc}"
     encoded_url = urllib.parse.quote(url)
     # FIXED: Foundit has Cloudflare protection — use premium=true
-    endpoint = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={encoded_url}&premium=true"
+    # Foundit uses Akamai WAF — need both render=true AND premium=true to bypass
+    endpoint = f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={encoded_url}&render=true&premium=true"
     try:
         r = requests.get(endpoint, timeout=90, verify=False)
         if r.status_code == 200:
@@ -884,57 +814,65 @@ def scrape_naukri(role, city):
     jobs = []
     try:
         context = browser_instance.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
             viewport={"width": 1440, "height": 900},
             locale="en-IN",
             timezone_id="Asia/Kolkata",
         )
         page = context.new_page()
+        # Stealth: hide automation markers
         page.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-            Object.defineProperty(navigator, 'plugins', {get: () => [1,2,3]});
-            Object.defineProperty(navigator, 'languages', {get: () => ['en-IN','en']});
+            Object.defineProperty(navigator, 'plugins', {get: () => [1,2,3,4,5]});
+            Object.defineProperty(navigator, 'languages', {get: () => ['en-IN','en','hi']});
+            window.chrome = { runtime: {} };
+            Object.defineProperty(navigator, 'maxTouchPoints', {get: () => 0});
         """)
-        page.goto(url, wait_until="domcontentloaded", timeout=35000)
-        page.wait_for_timeout(4000)
-        # FIXED: updated selectors for Naukri 2025 redesign
+        page.goto(url, wait_until="networkidle", timeout=45000)
+        page.wait_for_timeout(5000)
+
+        # Scroll down to trigger lazy-loaded job cards
+        page.evaluate("window.scrollBy(0, 800)")
+        page.wait_for_timeout(2000)
+        page.evaluate("window.scrollBy(0, 800)")
+        page.wait_for_timeout(2000)
+
+        # Wait for job cards to appear
+        card_selector = ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, [class*='jobTuple'], .job-tuple-container"
         try:
-            page.wait_for_selector(
-                ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, .job-tuple-container",
-                timeout=12000
-            )
+            page.wait_for_selector(card_selector, timeout=15000)
         except Exception:
             pass
 
         content = page.content()
         soup = BeautifulSoup(content, "html.parser")
 
-        # FIXED: updated card and field selectors for Naukri 2025 redesign
-        job_cards = soup.select(
-            ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, .job-tuple-container"
-        )
+        job_cards = soup.select(card_selector)
 
         for card in job_cards:
-            # Title: try multiple selector variants used in 2025 redesign
+            # Title
             title_el = (
                 card.select_one("a.title")
                 or card.select_one(".row1 a[title]")
                 or card.select_one(".jobTupleHeader a")
                 or card.select_one("a[class*='title']")
+                or card.select_one("a[href*='naukri.com/job-listings']")
             )
-            # Company: try multiple variants
+            # Company
             company_el = (
                 card.select_one("a.comp-name")
                 or card.select_one(".comp-name")
                 or card.select_one(".subTitle a")
                 or card.select_one("a[class*='comp']")
+                or card.select_one("[class*='companyInfo'] a")
             )
             # Location
             location_el = (
                 card.select_one("span.locWdth")
                 or card.select_one(".location-container span")
                 or card.select_one(".loc span")
-                or card.select_one("[class*='location']")
+                or card.select_one("[class*='location'] span")
+                or card.select_one("[class*='loc']")
             )
             # Date posted
             post_el = (
