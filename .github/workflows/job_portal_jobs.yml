@@ -1,0 +1,40 @@
+name: Job Portal Jobs Scraper
+
+on:
+  workflow_dispatch:   # Manual trigger
+  schedule:
+    - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC previous day)
+
+jobs:
+  scrape-job-portals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # 6 hours maximum runtime
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          pip install requests beautifulsoup4 playwright pandas
+
+      - name: Install Playwright Chromium with dependencies
+        run: |
+          playwright install --with-deps chromium
+
+      - name: Run Job Portals Scraper
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SCRAPERAPI_KEY_2: ${{ secrets.SCRAPERAPI_KEY_2 }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+          OXYLABS_USERNAME: ${{ secrets.OXYLABS_USERNAME }}
+          OXYLABS_PASSWORD: ${{ secrets.OXYLABS_PASSWORD }}
+          OXYLABS_ENTRYPOINT: ${{ vars.OXYLABS_ENTRYPOINT }}
+          OXYLABS_PORTS: ${{ vars.OXYLABS_PORTS }}
+        run: |
+          python scrape_job_portals.py
