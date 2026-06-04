@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
@@ -38,3 +41,33 @@ jobs:
           PYTHONUNBUFFERED: "1"
         run: |
           python -u scrape_job_portals.py
+
+      # Always commit and push progress to save state (even on timeout/failure)
+      - name: Commit and Push Scrape Progress
+        if: always()
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add job_portals_progress.json || true
+          git commit -m "chore: save job portals scraper progress [skip ci]" || echo "No progress changes to commit"
+          git pull --rebase -X theirs --autostash origin main
+          git push
+
+      # Auto-restart if stopped mid-run
+      - name: Auto-Restart if Not Finished
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f job_portals_progress.json ]; then
+            FINISHED=$(python -c "import json; d=json.load(open('job_portals_progress.json')); print(d.get('finished', False))")
+            if [ "$FINISHED" = "False" ]; then
+              echo "⚠️ Scraper stopped mid-run. Triggering restart..."
+              gh workflow run job_portal_jobs.yml --repo ${{ github.repository }}
+              echo "✅ Restart triggered. New run will resume progress."
+            else
+              echo "✅ Scraper completed all combinations. No restart needed."
+            fi
+          else
+            echo "✅ No progress file found. Scraper completed normally."
+          fi

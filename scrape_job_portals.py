@@ -39,6 +39,32 @@ if OXYLABS_USER and OXYLABS_PASS:
 playwright_instance = None
 browser_instance = None
 
+# Progress Checkpointing Configuration
+PROGRESS_FILE = "job_portals_progress.json"
+START_TIME = time.time()
+MAX_RUN_SECONDS = 5 * 3600 + 40 * 60  # 5 hours 40 minutes (leaves 20 min buffer under 6h limit)
+
+def load_progress():
+    today = datetime.now().strftime("%Y-%m-%d")
+    try:
+        with open(PROGRESS_FILE, "r") as f:
+            data = json.load(f)
+        if data.get("date") != today:
+            print(f"📅 New day detected (was {data.get('date')}, now {today}). Resetting progress to start.")
+            return {"role_idx": 0, "loc_idx": 0, "date": today}
+        return data
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {"role_idx": 0, "loc_idx": 0, "date": today}
+
+def save_progress(role_idx, loc_idx, finished_all=False):
+    today = datetime.now().strftime("%Y-%m-%d")
+    if finished_all:
+        data = {"role_idx": 0, "loc_idx": 0, "date": today, "finished": True}
+    else:
+        data = {"role_idx": role_idx, "loc_idx": loc_idx, "date": today, "finished": False}
+    with open(PROGRESS_FILE, "w") as f:
+        json.dump(data, f)
+
 def init_playwright():
     global playwright_instance, browser_instance
     try:
@@ -930,11 +956,40 @@ def main():
     # Initialize Playwright once
     init_playwright()
 
+    # Load progress
+    progress = load_progress()
+    start_role = progress.get("role_idx", 0)
+    start_loc = progress.get("loc_idx", 0)
+
     total_inserted = 0
-    
-    for role in SEARCH_ROLES:
-        for city in LOCATIONS:
-            print(f"\n🔍 Searching for '{role}' in '{city}'...")
+    total_combos = len(SEARCH_ROLES) * len(LOCATIONS)
+    combo_num = start_role * len(LOCATIONS) + start_loc
+    hit_time_limit = False
+
+    if start_role > 0 or start_loc > 0:
+        print(f"\n🔄 Resuming scraping from Role Index: {start_role}/{len(SEARCH_ROLES)}, Location Index: {start_loc}/{len(LOCATIONS)}")
+        print(f"   Resuming at: '{SEARCH_ROLES[start_role]}' in '{LOCATIONS[start_loc]}'")
+
+    for r_idx in range(start_role, len(SEARCH_ROLES)):
+        role = SEARCH_ROLES[r_idx]
+        curr_start_loc_idx = start_loc if r_idx == start_role else 0
+        
+        for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
+            city = LOCATIONS[l_idx]
+            combo_num += 1
+
+            # Check time limit before running combo
+            elapsed = time.time() - START_TIME
+            if elapsed >= MAX_RUN_SECONDS:
+                print(f"\n⏰ Time limit reached ({elapsed:.0f}s). Saving progress at role={r_idx}, loc={l_idx}...")
+                save_progress(r_idx, l_idx, finished_all=False)
+                hit_time_limit = True
+                break
+
+            # Save progress before starting so if we crash or get killed, we start exactly here next run
+            save_progress(r_idx, l_idx, finished_all=False)
+
+            print(f"\n[{combo_num}/{total_combos}] 🔍 Searching for '{role}' in '{city}'...")
             
             scraped_jobs = []
             
@@ -978,8 +1033,17 @@ def main():
             # Cool-down to prevent rate-limiting between search combinations
             time.sleep(3)
 
+        if hit_time_limit:
+            break
+
     # Close Playwright browser resources
     close_playwright()
+
+    if not hit_time_limit:
+        save_progress(0, 0, finished_all=True)
+        print("\n✅ Scraper completed all roles. Progress reset.")
+    else:
+        print(f"\n💾 Progress saved at role_idx={r_idx}, loc_idx={l_idx}")
 
     print("\n" + "=" * 70)
     print(f"  🏁 SCRAPING COMPLETED")
