@@ -1,0 +1,126 @@
+name: Check API Credits
+
+on:
+  workflow_dispatch:  # Only manual trigger - run whenever you want to check
+
+jobs:
+  check-credits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check ScraperAPI Credits + Oxylabs Proxy
+        env:
+          SCRAPERAPI_KEY_2: ${{ secrets.SCRAPERAPI_KEY_2 }}
+          OXYLABS_USERNAME: ${{ secrets.OXYLABS_USERNAME }}
+          OXYLABS_PASSWORD: ${{ secrets.OXYLABS_PASSWORD }}
+          OXYLABS_ENTRYPOINT: ${{ vars.OXYLABS_ENTRYPOINT }}
+        run: |
+          python - << 'EOF'
+          import os, requests
+          from urllib.parse import quote
+
+          SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2", "")
+          OXYLABS_USER   = os.environ.get("OXYLABS_USERNAME", "")
+          OXYLABS_PASS   = os.environ.get("OXYLABS_PASSWORD", "")
+          OXYLABS_HOST   = os.environ.get("OXYLABS_ENTRYPOINT", "dc.oxylabs.io")
+
+          requests.packages.urllib3.disable_warnings()
+
+          print("=" * 55)
+          print("ScraperAPI Account Status")
+          print("=" * 55)
+          if not SCRAPERAPI_KEY:
+              print("  SCRAPERAPI_KEY_2 secret NOT SET")
+          else:
+              try:
+                  r = requests.get(
+                      f"https://api.scraperapi.com/account?api_key={SCRAPERAPI_KEY}",
+                      timeout=10
+                  )
+                  if r.status_code == 200:
+                      data = r.json()
+                      used      = data.get("requestCount", 0)
+                      limit     = data.get("requestLimit", 0)
+                      remaining = limit - used
+                      pct_used  = (used / limit * 100) if limit > 0 else 0
+                      print(f"  Email         : {data.get('email', 'N/A')}")
+                      print(f"  Credits used  : {used:,}")
+                      print(f"  Credits limit : {limit:,}")
+                      print(f"  Credits LEFT  : {remaining:,}  ({100-pct_used:.1f}% remaining)")
+                      if remaining == 0:
+                          print("  STATUS: LIMIT REACHED")
+                      elif remaining < 200:
+                          print("  STATUS: ALMOST EMPTY")
+                      else:
+                          print("  STATUS: OK")
+                  else:
+                      print(f"  Status {r.status_code}: {r.text[:100]}")
+              except Exception as e:
+                  print(f"  Error: {e}")
+
+          print()
+          print("=" * 55)
+          print("ScraperAPI Live Test (1 credit)")
+          print("=" * 55)
+          if SCRAPERAPI_KEY:
+              try:
+                  r = requests.get(
+                      f"http://api.scraperapi.com?api_key={SCRAPERAPI_KEY}&url={quote('https://httpbin.org/get')}",
+                      timeout=30
+                  )
+                  if r.status_code == 200:
+                      print("  WORKING - credits available")
+                  elif r.status_code in (401, 403):
+                      print("  FAILED - exhausted or invalid key")
+                  else:
+                      print(f"  Status {r.status_code}")
+              except Exception as e:
+                  print(f"  Error: {e}")
+
+          print()
+          print("=" * 55)
+          print("Oxylabs Proxy Test")
+          print("=" * 55)
+          if not OXYLABS_USER or not OXYLABS_PASS:
+              print("  Oxylabs credentials NOT SET")
+          else:
+              proxy_url = f"http://{OXYLABS_USER}:{OXYLABS_PASS}@{OXYLABS_HOST}:8001"
+              try:
+                  r = requests.get(
+                      "https://ip.oxylabs.io/location",
+                      proxies={"http": proxy_url, "https": proxy_url},
+                      timeout=15, verify=False
+                  )
+                  if r.status_code == 200:
+                      print(f"  WORKING - {r.text.strip()[:150]}")
+                  elif r.status_code == 407:
+                      print("  FAILED - auth error or trial expired")
+                  else:
+                      print(f"  Status {r.status_code}: {r.text[:100]}")
+              except Exception as e:
+                  print(f"  Error: {e}")
+
+          print()
+          print("=" * 55)
+          print("FREE TIER LIMITS")
+          print("=" * 55)
+          print("  ScraperAPI : 1,000 credits/month forever free")
+          print("    standard request  = 1 credit")
+          print("    render=true       = 5 credits")
+          print("    premium           = 10 credits")
+          print("    render + premium  = 25 credits")
+          print()
+          print("  Oxylabs    : FREE TRIAL ONLY (~1 GB then pay)")
+          EOF
