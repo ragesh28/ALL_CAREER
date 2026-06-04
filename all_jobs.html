@@ -280,6 +280,13 @@
         }
         .source-linkedin { color: #0a66c2; border-color: rgba(10,102,194,0.3); }
         .source-google { color: #4285f4; border-color: rgba(66,133,244,0.3); }
+        .portal-badge {
+            display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+            border-radius: 8px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); font-size: 0.72rem;
+            color: var(--text-muted); flex-shrink: 0;
+        }
+        .portal-logo { width: 16px; height: 16px; object-fit: contain; border-radius: 3px; flex-shrink: 0; display: block; }
         .card-footer {
             display: flex; justify-content: space-between; align-items: center;
             padding-top: 14px; border-top: 1px solid var(--border);
@@ -846,7 +853,23 @@
                 const url = job.url || '';
                 const source = (job.source || '').toLowerCase();
                 const sourceClass = source.includes('linkedin') ? 'source-linkedin' : source.includes('google') ? 'source-google' : '';
-                const sourceLabel = source.includes('linkedin') ? 'LinkedIn' : source.includes('google') ? 'Google' : source;
+                const sourceLabel = source.includes('linkedin') ? 'LinkedIn' : source.includes('google') ? 'Google' : source ? (source.charAt(0).toUpperCase() + source.slice(1)) : '';
+                // Determine portal logo path (prefer png, fallback to ico, then svg)
+                const portalLogoMap = {
+                    'linkedin': 'logos/portals/linkedin.png',
+                    'indeed': 'logos/portals/indeed.png',
+                    'naukri': 'logos/portals/naukri.png',
+                    'internshala': 'logos/portals/internshala.png',
+                    'glassdoor': 'logos/portals/glassdoor.ico',
+                    'shine': 'logos/portals/shine.ico',
+                    'timesjobs': 'logos/portals/timesjobs.svg',
+                    'hirist': 'logos/portals/hirist.ico',
+                    'workindia': 'logos/portals/workindia.png',
+                    'foundit': 'logos/portals/foundit.png',
+                    'apna': 'logos/portals/apna.png',
+                    'freshersworld': 'logos/portals/freshersworld.ico',
+                };
+                const portalLogoSrc = portalLogoMap[source] || '';
                 return `
             <div class="job-card" style="animation-delay:${i * 0.03}s">
                 <div class="card-top">
@@ -864,7 +887,7 @@
                 <div class="job-meta">
                     <div class="meta-badge">📍 ${esc(job.location || 'India')}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
-                    ${sourceLabel ? `<div class="meta-badge ${sourceClass}">via ${esc(sourceLabel)}</div>` : ''}
+                    ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${esc(job.role_search || '')}</span>
