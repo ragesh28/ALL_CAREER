@@ -102,10 +102,15 @@ def store_jobs_batch(jobs):
     if not jobs:
         return 0
     
+    cutoff_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
     unique_jobs = []
     seen_urls = set()
     for j in jobs:
         url = j.get("url")
+        date_str = j.get("date_posted", "")
+        # Filter out jobs that are 30 days or older
+        if date_str and date_str < cutoff_date:
+            continue
         if url and url not in seen_urls:
             unique_jobs.append(j)
             seen_urls.add(url)
