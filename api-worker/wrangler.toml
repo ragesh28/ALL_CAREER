@@ -1,6 +1,7 @@
 name = "all-career-api"
 main = "src/index.js"
 compatibility_date = "2024-04-16"
+account_id = "62eacb67a7ee0b199f58ccb540a3eff7"
 
 [[d1_databases]]
 binding = "DB"
