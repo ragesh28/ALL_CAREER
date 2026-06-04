@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="20" fill="#e8392a"/>
+  <text x="64" y="52" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="white" text-anchor="middle">Times</text>
+  <text x="64" y="84" font-family="Arial, sans-serif" font-weight="bold" font-size="22" fill="white" text-anchor="middle">Jobs</text>
+</svg>
