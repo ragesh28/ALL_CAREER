@@ -36,7 +36,7 @@ CLOUDFLARE_URL = os.environ.get("CLOUDFLARE_D1_URL", "https://api.cloudflare.com
 CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
 RESULTS_PER_SEARCH = 20
-KEEP_DAYS = 20
+KEEP_DAYS = 30
 PROGRESS_FILE = "alljobs2_progress.json"
 
 START_TIME = time.time()

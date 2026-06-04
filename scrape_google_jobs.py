@@ -31,7 +31,7 @@ SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
-KEEP_DAYS = 20              # Delete jobs older than 20 days
+KEEP_DAYS = 30              # Delete jobs older than 20 days
 COOLDOWN_SECONDS = 60       # Wait on block
 MAX_RETRIES = 3
 

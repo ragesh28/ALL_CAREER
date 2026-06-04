@@ -136,6 +136,17 @@ def store_jobs_batch(jobs):
                 inserted_count += res.get("meta", {}).get("changes", 0)
     return inserted_count
 
+def cleanup_old_jobs():
+    if not CLOUDFLARE_API_TOKEN:
+        return
+    cutoff = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    print(f"🧹 Cleaning jobs older than {cutoff} (30 days retention)...")
+    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
+    if result and result.get("success"):
+        for res in result.get("result", []):
+            deleted = res.get("meta", {}).get("changes", 0)
+            print(f"🗑️ Removed {deleted} old jobs from D1 database.")
+
 # ---------------------------------------------------------------------------
 # UTILITIES
 # ---------------------------------------------------------------------------
@@ -887,6 +898,9 @@ def main():
     print(f"  ScraperAPI Key: {'Configured' if SCRAPERAPI_KEY else 'NOT Configured'}")
     print(f"  Oxylabs Proxies: {len(oxylabs_proxies)} ports configured")
     print("=" * 70)
+
+    # Run DB cleanup
+    cleanup_old_jobs()
 
     total_inserted = 0
     
