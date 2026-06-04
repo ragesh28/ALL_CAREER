@@ -20,8 +20,8 @@ CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = "62eacb67a7ee0b199f58ccb540a3eff7"
 DATABASE_ID = "20b71b5c-c070-45b5-9542-27ed1cad89e5"
 
-# Priority for ScraperAPI Key: SCRAPERAPI_KEY_2 (if set), otherwise SCRAPERAPI_KEY
-SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2") or os.environ.get("SCRAPERAPI_KEY", "")
+# Priority for ScraperAPI Key: SCRAPERAPI_KEY_2 ONLY
+SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2", "")
 
 # Oxylabs Proxies Config
 OXYLABS_USER = os.environ.get("OXYLABS_USERNAME", "")
@@ -34,6 +34,34 @@ if OXYLABS_USER and OXYLABS_PASS:
     ports = [p.strip() for p in OXYLABS_PORTS_STR.split(",") if p.strip()]
     for port in ports:
         oxylabs_proxies.append(f"http://{OXYLABS_USER}:{OXYLABS_PASS}@{OXYLABS_HOST}:{port}")
+
+# Global Playwright Browser Instances
+playwright_instance = None
+browser_instance = None
+
+def init_playwright():
+    global playwright_instance, browser_instance
+    try:
+        from playwright.sync_api import sync_playwright
+        playwright_instance = sync_playwright().start()
+        browser_instance = playwright_instance.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
+        )
+        print("🚀 Playwright Chromium browser initialized successfully!")
+    except Exception as e:
+        print(f"⚠️ Playwright initialization error: {e}")
+
+def close_playwright():
+    global playwright_instance, browser_instance
+    try:
+        if browser_instance:
+            browser_instance.close()
+        if playwright_instance:
+            playwright_instance.stop()
+        print("🛑 Playwright Chromium browser closed.")
+    except Exception as e:
+        print(f"⚠️ Error closing Playwright: {e}")
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 HEADERS = {
@@ -823,69 +851,61 @@ def scrape_internshala(role, city):
     return []
 
 def scrape_naukri(role, city):
+    global browser_instance
+    if not browser_instance:
+        return []
     print("  - Scraping Naukri (via Playwright)...")
     role_clean = role.replace(" ", "-").lower()
     city_clean = city.lower().split(",")[0].strip()
     url = f"https://www.naukri.com/{role_clean}-jobs-in-{city_clean}"
     
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        print("    Playwright not installed! Skipping Naukri.")
-        return []
-        
     jobs = []
     try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
-            )
-            context = browser.new_context(
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                viewport={"width": 1280, "height": 800}
-            )
-            page = context.new_page()
-            page.add_init_script("delete navigator.__proto__.webdriver;")
+        context = browser_instance.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            viewport={"width": 1280, "height": 800}
+        )
+        page = context.new_page()
+        page.add_init_script("delete navigator.__proto__.webdriver;")
+        
+        page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_timeout(3000)
+        
+        try:
+            page.wait_for_selector(".srp-jobtuple-container, article.jobTuple, a.title", timeout=10000)
+        except Exception:
+            pass
             
-            page.goto(url, wait_until="domcontentloaded", timeout=40000)
-            page.wait_for_timeout(6000)
+        content = page.content()
+        soup = BeautifulSoup(content, "html.parser")
+        job_cards = soup.select(".srp-jobtuple-wrapper")
+        
+        for card in job_cards:
+            title_el = card.select_one("a.title")
+            company_el = card.select_one("a.comp-name")
+            location_el = card.select_one("span.locWdth")
+            post_el = card.select_one("span.job-post-day")
             
-            try:
-                page.wait_for_selector(".srp-jobtuple-container, article.jobTuple, a.title", timeout=15000)
-            except Exception:
-                pass
-                
-            content = page.content()
-            soup = BeautifulSoup(content, "html.parser")
-            job_cards = soup.select(".srp-jobtuple-wrapper")
+            title = title_el.get_text(strip=True) if title_el else ""
+            company = company_el.get_text(strip=True) if company_el else ""
+            loc = location_el.get_text(strip=True) if location_el else city
+            job_url = title_el.get("href", "") if title_el else ""
             
-            for card in job_cards:
-                title_el = card.select_one("a.title")
-                company_el = card.select_one("a.comp-name")
-                location_el = card.select_one("span.locWdth")
-                post_el = card.select_one("span.job-post-day")
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            if post_el:
+                date_str = parse_date_posted(post_el.get_text(strip=True))
                 
-                title = title_el.get_text(strip=True) if title_el else ""
-                company = company_el.get_text(strip=True) if company_el else ""
-                loc = location_el.get_text(strip=True) if location_el else city
-                job_url = title_el.get("href", "") if title_el else ""
-                
-                date_str = datetime.now().strftime("%Y-%m-%d")
-                if post_el:
-                    date_str = parse_date_posted(post_el.get_text(strip=True))
-                    
-                if title and job_url:
-                    jobs.append({
-                        "title": title,
-                        "company": company,
-                        "location": loc,
-                        "date_posted": date_str,
-                        "url": job_url,
-                        "source": "naukri",
-                        "role_search": role
-                    })
-            browser.close()
+            if title and job_url:
+                jobs.append({
+                    "title": title,
+                    "company": company,
+                    "location": loc,
+                    "date_posted": date_str,
+                    "url": job_url,
+                    "source": "naukri",
+                    "role_search": role
+                })
+        context.close()
     except Exception as e:
         print(f"    Naukri Playwright error: {e}")
     return jobs
@@ -906,6 +926,9 @@ def main():
 
     # Run DB cleanup
     cleanup_old_jobs()
+
+    # Initialize Playwright once
+    init_playwright()
 
     total_inserted = 0
     
@@ -954,6 +977,9 @@ def main():
             
             # Cool-down to prevent rate-limiting between search combinations
             time.sleep(3)
+
+    # Close Playwright browser resources
+    close_playwright()
 
     print("\n" + "=" * 70)
     print(f"  🏁 SCRAPING COMPLETED")
