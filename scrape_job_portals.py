@@ -966,6 +966,18 @@ def main():
     combo_num = start_role * len(LOCATIONS) + start_loc
     hit_time_limit = False
 
+    # Stats tracking per portal
+    scraped_counts = {
+        "shine": 0, "timesjobs": 0, "hirist": 0, "workindia": 0,
+        "foundit": 0, "apna": 0, "freshersworld": 0, "glassdoor": 0,
+        "internshala": 0, "naukri": 0
+    }
+    stored_counts = {
+        "shine": 0, "timesjobs": 0, "hirist": 0, "workindia": 0,
+        "foundit": 0, "apna": 0, "freshersworld": 0, "glassdoor": 0,
+        "internshala": 0, "naukri": 0
+    }
+
     if start_role > 0 or start_loc > 0:
         print(f"\n🔄 Resuming scraping from Role Index: {start_role}/{len(SEARCH_ROLES)}, Location Index: {start_loc}/{len(LOCATIONS)}")
         print(f"   Resuming at: '{SEARCH_ROLES[start_role]}' in '{LOCATIONS[start_loc]}'")
@@ -991,44 +1003,95 @@ def main():
 
             print(f"\n[{combo_num}/{total_combos}] 🔍 Searching for '{role}' in '{city}'...")
             
-            scraped_jobs = []
-            
             # Group 1: Shine (Direct API + Oxylabs)
-            scraped_jobs.extend(scrape_shine(role, city))
+            shine_jobs = scrape_shine(role, city)
+            scraped_counts["shine"] += len(shine_jobs)
+            inserted_shine = store_jobs_batch(shine_jobs)
+            stored_counts["shine"] += inserted_shine
+            total_inserted += inserted_shine
+            if shine_jobs:
+                print(f"    -> Shine: Found {len(shine_jobs)} raw jobs, stored {inserted_shine} new.")
             
             # Group 2: TimesJobs (Direct API / HTML + Oxylabs)
-            scraped_jobs.extend(scrape_timesjobs(role, city))
+            tj_jobs = scrape_timesjobs(role, city)
+            scraped_counts["timesjobs"] += len(tj_jobs)
+            inserted_tj = store_jobs_batch(tj_jobs)
+            stored_counts["timesjobs"] += inserted_tj
+            total_inserted += inserted_tj
+            if tj_jobs:
+                print(f"    -> TimesJobs: Found {len(tj_jobs)} raw jobs, stored {inserted_tj} new.")
             
             # Group 3: Hirist (HTML + Oxylabs)
-            scraped_jobs.extend(scrape_hirist(role, city))
+            hirist_jobs = scrape_hirist(role, city)
+            scraped_counts["hirist"] += len(hirist_jobs)
+            inserted_hirist = store_jobs_batch(hirist_jobs)
+            stored_counts["hirist"] += inserted_hirist
+            total_inserted += inserted_hirist
+            if hirist_jobs:
+                print(f"    -> Hirist: Found {len(hirist_jobs)} raw jobs, stored {inserted_hirist} new.")
             
             # Group 4: Workindia (HTML + Oxylabs)
-            scraped_jobs.extend(scrape_workindia(role, city))
+            workindia_jobs = scrape_workindia(role, city)
+            scraped_counts["workindia"] += len(workindia_jobs)
+            inserted_workindia = store_jobs_batch(workindia_jobs)
+            stored_counts["workindia"] += inserted_workindia
+            total_inserted += inserted_workindia
+            if workindia_jobs:
+                print(f"    -> Workindia: Found {len(workindia_jobs)} raw jobs, stored {inserted_workindia} new.")
             
             # Group 5: Foundit (ScraperAPI Standard)
-            scraped_jobs.extend(scrape_foundit(role, city))
+            foundit_jobs = scrape_foundit(role, city)
+            scraped_counts["foundit"] += len(foundit_jobs)
+            inserted_foundit = store_jobs_batch(foundit_jobs)
+            stored_counts["foundit"] += inserted_foundit
+            total_inserted += inserted_foundit
+            if foundit_jobs:
+                print(f"    -> Foundit: Found {len(foundit_jobs)} raw jobs, stored {inserted_foundit} new.")
             
             # Group 6: Apna Jobs (ScraperAPI Standard)
-            scraped_jobs.extend(scrape_apna(role, city))
+            apna_jobs = scrape_apna(role, city)
+            scraped_counts["apna"] += len(apna_jobs)
+            inserted_apna = store_jobs_batch(apna_jobs)
+            stored_counts["apna"] += inserted_apna
+            total_inserted += inserted_apna
+            if apna_jobs:
+                print(f"    -> Apna: Found {len(apna_jobs)} raw jobs, stored {inserted_apna} new.")
             
             # Group 7: Freshersworld (ScraperAPI Standard)
-            scraped_jobs.extend(scrape_freshersworld(role, city))
+            fw_jobs = scrape_freshersworld(role, city)
+            scraped_counts["freshersworld"] += len(fw_jobs)
+            inserted_fw = store_jobs_batch(fw_jobs)
+            stored_counts["freshersworld"] += inserted_fw
+            total_inserted += inserted_fw
+            if fw_jobs:
+                print(f"    -> Freshersworld: Found {len(fw_jobs)} raw jobs, stored {inserted_fw} new.")
             
             # Group 8: Glassdoor (ScraperAPI Premium)
-            scraped_jobs.extend(scrape_glassdoor(role, city))
+            gd_jobs = scrape_glassdoor(role, city)
+            scraped_counts["glassdoor"] += len(gd_jobs)
+            inserted_gd = store_jobs_batch(gd_jobs)
+            stored_counts["glassdoor"] += inserted_gd
+            total_inserted += inserted_gd
+            if gd_jobs:
+                print(f"    -> Glassdoor: Found {len(gd_jobs)} raw jobs, stored {inserted_gd} new.")
             
             # Group 9: Internshala (ScraperAPI Premium)
-            scraped_jobs.extend(scrape_internshala(role, city))
+            ishala_jobs = scrape_internshala(role, city)
+            scraped_counts["internshala"] += len(ishala_jobs)
+            inserted_ishala = store_jobs_batch(ishala_jobs)
+            stored_counts["internshala"] += inserted_ishala
+            total_inserted += inserted_ishala
+            if ishala_jobs:
+                print(f"    -> Internshala: Found {len(ishala_jobs)} raw jobs, stored {inserted_ishala} new.")
             
             # Group 10: Naukri (Playwright Stealth)
-            scraped_jobs.extend(scrape_naukri(role, city))
-            
-            print(f"  -> Found {len(scraped_jobs)} raw jobs for combo: '{role}' in '{city}'")
-            
-            # Insert to D1 database
-            inserted = store_jobs_batch(scraped_jobs)
-            total_inserted += inserted
-            print(f"  -> Successfully stored {inserted} new unique jobs in D1 database.")
+            naukri_jobs = scrape_naukri(role, city)
+            scraped_counts["naukri"] += len(naukri_jobs)
+            inserted_naukri = store_jobs_batch(naukri_jobs)
+            stored_counts["naukri"] += inserted_naukri
+            total_inserted += inserted_naukri
+            if naukri_jobs:
+                print(f"    -> Naukri: Found {len(naukri_jobs)} raw jobs, stored {inserted_naukri} new.")
             
             # Cool-down to prevent rate-limiting between search combinations
             time.sleep(3)
@@ -1045,10 +1108,23 @@ def main():
     else:
         print(f"\n💾 Progress saved at role_idx={r_idx}, loc_idx={l_idx}")
 
+    # Display final statistics per job portal
+    total_raw_scraped = sum(scraped_counts.values())
+    print("\n" + "=" * 70)
+    print("                    JOB PORTAL STATISTICS SUMMARY")
+    print("=" * 70)
+    print(f"{'Job Portal':<22} | {'Scraped (Raw)':<16} | {'Stored (New D1)':<16}")
+    print("-" * 70)
+    for portal in sorted(scraped_counts.keys()):
+        print(f"{portal.upper():<22} | {scraped_counts[portal]:<16} | {stored_counts[portal]:<16}")
+    print("=" * 70)
+    print(f"{'TOTAL SUM':<22} | {total_raw_scraped:<16} | {total_inserted:<16}")
+    print("=" * 70)
+
     print("\n" + "=" * 70)
     print(f"  🏁 SCRAPING COMPLETED")
     print(f"  📅 End Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"  🆕 New Unique Jobs Stored in D1: {total_inserted}")
+    print(f"  🆕 Total New Unique Jobs Stored in D1: {total_inserted}")
     print("=" * 70)
 
 if __name__ == "__main__":
