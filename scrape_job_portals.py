@@ -223,131 +223,107 @@ def parse_date_posted(date_val):
 # ---------------------------------------------------------------------------
 
 def scrape_naukri(role, city):
-    global browser_instance
-    if not browser_instance or not SCRAPERAPI_KEY:
+    if not SCRAPERAPI_KEY:
         return []
-    print("  - Scraping Naukri (via ScraperAPI Premium Proxy)...")
+    print("  - Scraping Naukri (via ScraperAPI Premium Proxy + Rendering)...")
     role_clean = role.replace(" ", "-").lower()
     city_clean = city.lower().split(",")[0].strip()
-    # Adding ?jobAge=1 to only get 1-day old jobs
     url = f"https://www.naukri.com/{role_clean}-jobs-in-{city_clean}?jobAge=1"
 
     jobs = []
     try:
-        # Configure ScraperAPI Proxy for Playwright
-        proxy_config = {
-            "server": "http://proxy-server.scraperapi.com:8001",
-            "username": "scraperapi.premium=true",
-            "password": SCRAPERAPI_KEY
+        scraperapi_url = "http://api.scraperapi.com"
+        payload = {
+            'api_key': SCRAPERAPI_KEY,
+            'url': url,
+            'premium': 'true',
+            'render': 'true'
         }
         
-        context = browser_instance.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            viewport={"width": 1440, "height": 900},
-            proxy=proxy_config,
-            ignore_https_errors=True
-        )
-        page = context.new_page()
-        page.goto(url, wait_until="networkidle", timeout=60000)
-        page.wait_for_timeout(5000)
+        resp = requests.get(scraperapi_url, params=payload, timeout=90)
+        
+        if resp.status_code == 200:
+            soup = BeautifulSoup(resp.text, "html.parser")
+            card_selector = ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, [class*='jobTuple'], .job-tuple-container"
+            job_cards = soup.select(card_selector)
 
-        # Scroll down to trigger lazy-loaded job cards
-        page.evaluate("window.scrollBy(0, 800)")
-        page.wait_for_timeout(2000)
-        page.evaluate("window.scrollBy(0, 800)")
-        page.wait_for_timeout(2000)
+            for card in job_cards:
+                title_el = card.select_one("a.title") or card.select_one("a[class*='title']")
+                company_el = card.select_one("a.comp-name") or card.select_one("a[class*='comp']")
+                location_el = card.select_one("span.locWdth") or card.select_one("[class*='loc']")
+                post_el = card.select_one("span.job-post-day") or card.select_one("[class*='posted']")
 
-        content = page.content()
-        soup = BeautifulSoup(content, "html.parser")
+                title = title_el.get_text(strip=True) if title_el else ""
+                company = company_el.get_text(strip=True) if company_el else ""
+                loc = location_el.get_text(strip=True) if location_el else city
+                job_url = title_el.get("href", "") if title_el else ""
 
-        card_selector = ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, [class*='jobTuple'], .job-tuple-container"
-        job_cards = soup.select(card_selector)
+                date_str = datetime.now().strftime("%Y-%m-%d")
+                if post_el:
+                    date_str = parse_date_posted(post_el.get_text(strip=True))
 
-        for card in job_cards:
-            title_el = card.select_one("a.title") or card.select_one("a[class*='title']")
-            company_el = card.select_one("a.comp-name") or card.select_one("a[class*='comp']")
-            location_el = card.select_one("span.locWdth") or card.select_one("[class*='loc']")
-            post_el = card.select_one("span.job-post-day") or card.select_one("[class*='posted']")
-
-            title = title_el.get_text(strip=True) if title_el else ""
-            company = company_el.get_text(strip=True) if company_el else ""
-            loc = location_el.get_text(strip=True) if location_el else city
-            job_url = title_el.get("href", "") if title_el else ""
-
-            date_str = datetime.now().strftime("%Y-%m-%d")
-            if post_el:
-                date_str = parse_date_posted(post_el.get_text(strip=True))
-
-            if title and job_url:
-                jobs.append({
-                    "title": title, "company": company, "location": loc,
-                    "date_posted": date_str, "url": job_url,
-                    "source": "naukri", "role_search": role
-                })
-        context.close()
+                if title and job_url:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": date_str, "url": job_url,
+                        "source": "naukri", "role_search": role
+                    })
+        else:
+            print(f"    Naukri ScraperAPI returned {resp.status_code}")
     except Exception as e:
-        print(f"    Naukri Playwright error: {e}")
+        print(f"    Naukri request error: {e}")
     return jobs
 
 def scrape_foundit(role, city):
-    global browser_instance
-    if not browser_instance or not SCRAPERAPI_KEY:
+    if not SCRAPERAPI_KEY:
         return []
-    print("  - Scraping Foundit (via ScraperAPI Premium Proxy)...")
+    print("  - Scraping Foundit (via ScraperAPI Premium Proxy + Rendering)...")
     role_enc = urllib.parse.quote(role)
     city_enc = urllib.parse.quote(city)
     url = f"https://www.foundit.in/srp/results?query={role_enc}&locations={city_enc}&searchId=123"
 
     jobs = []
     try:
-        # Configure ScraperAPI Proxy for Playwright
-        proxy_config = {
-            "server": "http://proxy-server.scraperapi.com:8001",
-            "username": "scraperapi.premium=true",
-            "password": SCRAPERAPI_KEY
+        scraperapi_url = "http://api.scraperapi.com"
+        payload = {
+            'api_key': SCRAPERAPI_KEY,
+            'url': url,
+            'premium': 'true',
+            'render': 'true'
         }
         
-        context = browser_instance.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            viewport={"width": 1440, "height": 900},
-            proxy=proxy_config,
-            ignore_https_errors=True
-        )
-        page = context.new_page()
-        page.goto(url, wait_until="networkidle", timeout=60000)
-        page.wait_for_timeout(5000)
+        resp = requests.get(scraperapi_url, params=payload, timeout=90)
         
-        content = page.content()
-        soup = BeautifulSoup(content, "html.parser")
-        
-        cards = soup.select(".card-apply-content, .job-tuple")
-        for card in cards:
-            title_el = card.select_one(".jobTitle") or card.select_one("h3 a")
-            if not title_el:
-                continue
-            title = title_el.get_text(strip=True)
-            job_url = title_el.get("href", "")
-            if job_url and job_url.startswith("/"):
-                job_url = "https://www.foundit.in" + job_url
-            
-            comp_el = card.select_one(".companyName a") or card.select_one(".companyName")
-            company = comp_el.get_text(strip=True) if comp_el else ""
-            
-            loc_el = card.select_one(".details .loc") or card.select_one("[class*='loc']")
-            loc = loc_el.get_text(strip=True) if loc_el else city
-            
-            # Foundit sometimes hides date or puts it as "Updated: X days ago"
-            date_str = datetime.now().strftime("%Y-%m-%d")
-            
-            if title and job_url:
-                jobs.append({
-                    "title": title, "company": company, "location": loc,
-                    "date_posted": date_str, "url": job_url,
-                    "source": "foundit", "role_search": role
-                })
-        context.close()
+        if resp.status_code == 200:
+            soup = BeautifulSoup(resp.text, "html.parser")
+            cards = soup.select(".card-apply-content, .job-tuple")
+            for card in cards:
+                title_el = card.select_one(".jobTitle") or card.select_one("h3 a")
+                if not title_el:
+                    continue
+                title = title_el.get_text(strip=True)
+                job_url = title_el.get("href", "")
+                if job_url and job_url.startswith("/"):
+                    job_url = "https://www.foundit.in" + job_url
+                
+                comp_el = card.select_one(".companyName a") or card.select_one(".companyName")
+                company = comp_el.get_text(strip=True) if comp_el else ""
+                
+                loc_el = card.select_one(".details .loc") or card.select_one("[class*='loc']")
+                loc = loc_el.get_text(strip=True) if loc_el else city
+                
+                date_str = datetime.now().strftime("%Y-%m-%d")
+                
+                if title and job_url:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": date_str, "url": job_url,
+                        "source": "foundit", "role_search": role
+                    })
+        else:
+            print(f"    Foundit ScraperAPI returned {resp.status_code}")
     except Exception as e:
-        print(f"    Foundit Playwright error: {e}")
+        print(f"    Foundit request error: {e}")
     return jobs
 
 # ---------------------------------------------------------------------------
