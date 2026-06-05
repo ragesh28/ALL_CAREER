@@ -34,7 +34,7 @@ jobs:
           SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2", "")
           OXYLABS_USER   = os.environ.get("OXYLABS_USERNAME", "")
           OXYLABS_PASS   = os.environ.get("OXYLABS_PASSWORD", "")
-          OXYLABS_HOST   = os.environ.get("OXYLABS_ENTRYPOINT", "dc.oxylabs.io")
+          OXYLABS_HOST   = os.environ.get("OXYLABS_ENTRYPOINT", "").strip() or "dc.oxylabs.io"
 
           requests.packages.urllib3.disable_warnings()
 

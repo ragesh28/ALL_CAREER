@@ -26,8 +26,11 @@ SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2", "")
 # Oxylabs Proxies Config
 OXYLABS_USER = os.environ.get("OXYLABS_USERNAME", "")
 OXYLABS_PASS = os.environ.get("OXYLABS_PASSWORD", "")
-OXYLABS_HOST = os.environ.get("OXYLABS_ENTRYPOINT", "dc.oxylabs.io")
-OXYLABS_PORTS_STR = os.environ.get("OXYLABS_PORTS", "8001,8002,8003,8004,8005")
+OXYLABS_HOST = os.environ.get("OXYLABS_ENTRYPOINT", "").strip() or "dc.oxylabs.io"
+OXYLABS_PORTS_STR = os.environ.get("OXYLABS_PORTS", "").strip() or "8001,8002,8003,8004,8005"
+
+# Toggle this flag to scrape only Naukri or all 10 portals
+SCRAPE_ONLY_NAUKRI = True
 
 oxylabs_proxies = []
 if OXYLABS_USER and OXYLABS_PASS:
@@ -99,28 +102,13 @@ HEADERS = {
 
 # Roles & Cities
 SEARCH_ROLES = [
-    "Frontend Developer", "Backend Developer", "Full Stack Developer",
-    "Mobile App Developer", "Software Architect", "Software Engineer",
-    "AI Engineer", "Machine Learning Engineer", "Data Scientist",
-    "Data Engineer", "Data Analyst",
-    "DevOps Engineer", "Cloud Architect", "Systems Administrator",
-    "Database Administrator",
-    "Security Analyst", "Penetration Tester", "Network Engineer",
-    "QA Analyst", "SDET",
-    "Product Manager", "Project Manager", "Scrum Master",
-    "UI UX Designer", "UX Researcher", "Technical Writer",
-    "Sales Executive", "Pre-Sales Consultant", "Digital Marketer",
-    "Product Marketing Manager",
-    "Technical Recruiter", "HR Business Partner",
-    "Customer Success Manager", "IT Support Specialist",
-    "Operations Manager", "Financial Analyst", "Legal Counsel",
+    "Software Developer",
+    "Software Engineer",
 ]
 
 LOCATIONS = [
     "Bangalore",
     "Chennai",
-    "Hyderabad",
-    "Mumbai",
 ]
 
 TEST_MODE = "--test" in sys.argv
@@ -813,11 +801,21 @@ def scrape_naukri(role, city):
 
     jobs = []
     try:
+        proxy_config = None
+        if OXYLABS_USER and OXYLABS_PASS:
+            proxy_config = {
+                "server": f"http://{OXYLABS_HOST}:8001",
+                "username": OXYLABS_USER,
+                "password": OXYLABS_PASS
+            }
+            print(f"    Routing Naukri traffic through Oxylabs proxy: {OXYLABS_HOST}:8001")
+        
         context = browser_instance.new_context(
             user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
             viewport={"width": 1440, "height": 900},
             locale="en-IN",
             timezone_id="Asia/Kolkata",
+            proxy=proxy_config
         )
         page = context.new_page()
         # Stealth: hide automation markers
@@ -972,68 +970,69 @@ def main():
             combo_raw   = 0  # total raw jobs scraped this combo
             combo_stored = 0  # total new jobs stored this combo
 
-            # ── Group 1: Shine (HTML + Oxylabs) ─────────────────────────────
-            shine_jobs = scrape_shine(role, city)
-            n = len(shine_jobs); ins = store_jobs_batch(shine_jobs)
-            scraped_counts["shine"] += n; stored_counts["shine"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Shine         : {n:>4} scraped  |  {ins:>4} new stored")
+            if not SCRAPE_ONLY_NAUKRI:
+                # ── Group 1: Shine (HTML + Oxylabs) ─────────────────────────────
+                shine_jobs = scrape_shine(role, city)
+                n = len(shine_jobs); ins = store_jobs_batch(shine_jobs)
+                scraped_counts["shine"] += n; stored_counts["shine"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Shine         : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 2: TimesJobs (HTML + Oxylabs) ──────────────────────────
-            tj_jobs = scrape_timesjobs(role, city)
-            n = len(tj_jobs); ins = store_jobs_batch(tj_jobs)
-            scraped_counts["timesjobs"] += n; stored_counts["timesjobs"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      TimesJobs     : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 2: TimesJobs (HTML + Oxylabs) ──────────────────────────
+                tj_jobs = scrape_timesjobs(role, city)
+                n = len(tj_jobs); ins = store_jobs_batch(tj_jobs)
+                scraped_counts["timesjobs"] += n; stored_counts["timesjobs"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      TimesJobs     : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 3: Hirist (HTML + Oxylabs) ─────────────────────────────
-            hirist_jobs = scrape_hirist(role, city)
-            n = len(hirist_jobs); ins = store_jobs_batch(hirist_jobs)
-            scraped_counts["hirist"] += n; stored_counts["hirist"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Hirist        : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 3: Hirist (HTML + Oxylabs) ─────────────────────────────
+                hirist_jobs = scrape_hirist(role, city)
+                n = len(hirist_jobs); ins = store_jobs_batch(hirist_jobs)
+                scraped_counts["hirist"] += n; stored_counts["hirist"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Hirist        : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 4: WorkIndia (ScraperAPI render=true) ───────────────────
-            workindia_jobs = scrape_workindia(role, city)
-            n = len(workindia_jobs); ins = store_jobs_batch(workindia_jobs)
-            scraped_counts["workindia"] += n; stored_counts["workindia"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      WorkIndia     : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 4: WorkIndia (ScraperAPI render=true) ───────────────────
+                workindia_jobs = scrape_workindia(role, city)
+                n = len(workindia_jobs); ins = store_jobs_batch(workindia_jobs)
+                scraped_counts["workindia"] += n; stored_counts["workindia"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      WorkIndia     : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 5: Foundit (ScraperAPI Premium) ────────────────────────
-            foundit_jobs = scrape_foundit(role, city)
-            n = len(foundit_jobs); ins = store_jobs_batch(foundit_jobs)
-            scraped_counts["foundit"] += n; stored_counts["foundit"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Foundit       : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 5: Foundit (ScraperAPI Premium) ────────────────────────
+                foundit_jobs = scrape_foundit(role, city)
+                n = len(foundit_jobs); ins = store_jobs_batch(foundit_jobs)
+                scraped_counts["foundit"] += n; stored_counts["foundit"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Foundit       : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 6: Apna (ScraperAPI Standard) ──────────────────────────
-            apna_jobs = scrape_apna(role, city)
-            n = len(apna_jobs); ins = store_jobs_batch(apna_jobs)
-            scraped_counts["apna"] += n; stored_counts["apna"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Apna          : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 6: Apna (ScraperAPI Standard) ──────────────────────────
+                apna_jobs = scrape_apna(role, city)
+                n = len(apna_jobs); ins = store_jobs_batch(apna_jobs)
+                scraped_counts["apna"] += n; stored_counts["apna"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Apna          : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 7: Freshersworld (ScraperAPI Premium) ───────────────────
-            fw_jobs = scrape_freshersworld(role, city)
-            n = len(fw_jobs); ins = store_jobs_batch(fw_jobs)
-            scraped_counts["freshersworld"] += n; stored_counts["freshersworld"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      FreshersWorld : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 7: Freshersworld (ScraperAPI Premium) ───────────────────
+                fw_jobs = scrape_freshersworld(role, city)
+                n = len(fw_jobs); ins = store_jobs_batch(fw_jobs)
+                scraped_counts["freshersworld"] += n; stored_counts["freshersworld"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      FreshersWorld : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 8: Glassdoor (ScraperAPI Premium) ───────────────────────
-            gd_jobs = scrape_glassdoor(role, city)
-            n = len(gd_jobs); ins = store_jobs_batch(gd_jobs)
-            scraped_counts["glassdoor"] += n; stored_counts["glassdoor"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Glassdoor     : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 8: Glassdoor (ScraperAPI Premium) ───────────────────────
+                gd_jobs = scrape_glassdoor(role, city)
+                n = len(gd_jobs); ins = store_jobs_batch(gd_jobs)
+                scraped_counts["glassdoor"] += n; stored_counts["glassdoor"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Glassdoor     : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── Group 9: Internshala (ScraperAPI Premium) ────────────────────
-            ishala_jobs = scrape_internshala(role, city)
-            n = len(ishala_jobs); ins = store_jobs_batch(ishala_jobs)
-            scraped_counts["internshala"] += n; stored_counts["internshala"] += ins
-            total_inserted += ins; combo_raw += n; combo_stored += ins
-            print(f"      Internshala   : {n:>4} scraped  |  {ins:>4} new stored")
+                # ── Group 9: Internshala (ScraperAPI Premium) ────────────────────
+                ishala_jobs = scrape_internshala(role, city)
+                n = len(ishala_jobs); ins = store_jobs_batch(ishala_jobs)
+                scraped_counts["internshala"] += n; stored_counts["internshala"] += ins
+                total_inserted += ins; combo_raw += n; combo_stored += ins
+                print(f"      Internshala   : {n:>4} scraped  |  {ins:>4} new stored")
 
             # ── Group 10: Naukri (Playwright Stealth) ────────────────────────
             naukri_jobs = scrape_naukri(role, city)
