@@ -1,0 +1,79 @@
+name: Naukri Scraper (Playwright - FREE)
+
+on:
+  workflow_dispatch:     # Manual trigger anytime
+  schedule:
+    - cron: '0 22 * * *'  # 3:30 AM IST (10:00 PM UTC)
+
+jobs:
+  scrape-naukri:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360   # 6 h hard limit
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      # ── 2. Python ──────────────────────────────────────────────────────
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install requests playwright
+
+      # ── 3. Playwright Chromium ─────────────────────────────────────────
+      - name: Install Playwright Chromium + system deps
+        run: playwright install --with-deps chromium
+
+      # ── 4. Virtual display (headful Playwright needs a real display) ───
+      - name: Install and start Xvfb virtual display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 2
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      # ── 5. Run scraper ─────────────────────────────────────────────────
+      - name: Run Naukri Scraper
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          PYTHONUNBUFFERED: "1"
+          DISPLAY: ":99"
+        run: python -u scrape_naukri.py
+
+      # ── 6. Save progress checkpoint ────────────────────────────────────
+      - name: Commit progress checkpoint
+        if: always()
+        run: |
+          git config --local user.name  "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add naukri_progress.json || true
+          git diff --cached --quiet || git commit -m "chore: naukri progress checkpoint [skip ci]"
+          git pull --rebase -X theirs --autostash origin main
+          git push || true
+
+      # ── 7. Auto-restart if not finished ────────────────────────────────
+      - name: Auto-restart if time limit hit
+        if: always() && !cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f naukri_progress.json ]; then
+            FINISHED=$(python -c "import json; d=json.load(open('naukri_progress.json')); print(d.get('finished', False))")
+            if [ "$FINISHED" = "False" ]; then
+              echo "Time limit hit — restarting from checkpoint..."
+              gh workflow run naukri_scraper.yml --repo ${{ github.repository }}
+              echo "Restart queued."
+            else
+              echo "All roles/cities finished. No restart needed."
+            fi
+          else
+            echo "No progress file found — scraper may not have started."
+          fi

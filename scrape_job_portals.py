@@ -50,13 +50,11 @@ def get_active_scraperapi_key():
 
 SCRAPERAPI_KEY = get_active_scraperapi_key()
 
-# Global Playwright Browser Instances
-playwright_instance = None
-browser_instance = None
-browser_context = None
+# Global Playwright Browser Instances (Removed, as this is now Foundit only)
+# Playwright was used for Naukri. Foundit uses curl_cffi.
 
 # Progress Checkpointing Configuration
-PROGRESS_FILE = "job_portals_progress.json"
+PROGRESS_FILE = "foundit_progress.json"
 START_TIME = time.time()
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes
 
@@ -80,45 +78,6 @@ def save_progress(role_idx, loc_idx, finished_all=False):
         data = {"role_idx": role_idx, "loc_idx": loc_idx, "date": today, "finished": False}
     with open(PROGRESS_FILE, "w") as f:
         json.dump(data, f)
-
-def init_playwright():
-    """Initialize Playwright in HEADFUL mode with anti-detection for Naukri."""
-    global playwright_instance, browser_instance, browser_context
-    try:
-        from playwright.sync_api import sync_playwright
-        playwright_instance = sync_playwright().start()
-        browser_instance = playwright_instance.chromium.launch(
-            headless=False,  # HEADFUL mode is critical for Naukri
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-infobars",
-                "--window-size=1920,1080",
-            ]
-        )
-        browser_context = browser_instance.new_context(
-            viewport={"width": 1920, "height": 1080},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            locale="en-IN",
-            timezone_id="Asia/Kolkata",
-        )
-        print("Playwright Chromium browser initialized (HEADFUL mode for Naukri)!")
-    except Exception as e:
-        print(f"Playwright initialization error: {e}")
-
-def close_playwright():
-    global playwright_instance, browser_instance, browser_context
-    try:
-        if browser_context:
-            browser_context.close()
-        if browser_instance:
-            browser_instance.close()
-        if playwright_instance:
-            playwright_instance.stop()
-        print("Playwright Chromium browser closed.")
-    except Exception as e:
-        pass
 
 # Roles & Cities (Restricted to 12 tech roles and 4 locations for Premium to save credits)
 SEARCH_ROLES = [
@@ -233,99 +192,6 @@ def parse_date_posted(date_val):
         return (today - timedelta(days=days)).strftime("%Y-%m-%d")
         
     return today.strftime("%Y-%m-%d")
-
-# ---------------------------------------------------------------------------
-# NAUKRI SCRAPER - Playwright HEADFUL + API Interception (FREE, 0 credits)
-# ---------------------------------------------------------------------------
-def scrape_naukri(role, city):
-    """Scrape Naukri using Playwright headful mode + API interception.
-    This is completely FREE - no proxy, no ScraperAPI credits needed.
-    Playwright opens a real Chrome browser, navigates to the search page,
-    and intercepts the internal jobapi/v3/search JSON response."""
-    global browser_context
-    
-    if not browser_context:
-        print("    Naukri: Playwright not initialized, skipping.")
-        return []
-    
-    print("  - Scraping Naukri (Playwright headful - FREE, 0 credits)...")
-    role_clean = role.replace(" ", "-").lower()
-    city_clean = city.lower().split(",")[0].strip()
-    url = f"https://www.naukri.com/{role_clean}-jobs-in-{city_clean}?jobAge=1"
-    
-    jobs = []
-    api_jobs_data = []
-    
-    def handle_response(response):
-        """Intercept Naukri's internal jobapi/v3/search API call."""
-        try:
-            resp_url = response.url
-            if 'jobapi/v3/search' in resp_url:
-                ct = response.headers.get('content-type', '')
-                if 'json' in ct:
-                    body = response.json()
-                    api_jobs_data.append(body)
-        except:
-            pass
-    
-    try:
-        page = browser_context.new_page()
-        
-        # Anti-detection: remove navigator.webdriver flag
-        page.add_init_script("""
-            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-            window.chrome = {runtime: {}};
-        """)
-        
-        page.on("response", handle_response)
-        page.goto(url, wait_until="networkidle", timeout=60000)
-        
-        # Simulate human scrolling
-        page.mouse.move(500, 300)
-        time.sleep(1)
-        page.mouse.wheel(0, 500)
-        time.sleep(2)
-        
-        # Extract jobs from intercepted API data
-        for api_data in api_jobs_data:
-            if not isinstance(api_data, dict):
-                continue
-            job_details = api_data.get('jobDetails', [])
-            for job_obj in job_details:
-                if not isinstance(job_obj, dict):
-                    continue
-                title = job_obj.get('title', '')
-                company = job_obj.get('companyName', '')
-                loc = job_obj.get('placeholders', [{}])
-                location = ''
-                if isinstance(loc, list):
-                    for ph in loc:
-                        if isinstance(ph, dict) and ph.get('type') == 'location':
-                            location = ph.get('label', city)
-                            break
-                if not location:
-                    location = city
-                
-                job_url = job_obj.get('jdURL', '')
-                if job_url and not job_url.startswith('http'):
-                    job_url = f"https://www.naukri.com{job_url}"
-                
-                date_str = job_obj.get('footerPlaceholderLabel', '')
-                date_posted = parse_date_posted(date_str)
-                
-                if title and job_url:
-                    jobs.append({
-                        "title": title, "company": company, "location": location,
-                        "date_posted": date_posted, "url": job_url,
-                        "source": "naukri", "role_search": role
-                    })
-        
-        page.close()
-        
-    except Exception as e:
-        print(f"    Naukri Playwright error: {e}")
-    
-    return jobs
 
 # ---------------------------------------------------------------------------
 # FOUNDIT SCRAPER - curl_cffi + ScraperAPI (1 credit per request)
@@ -472,8 +338,7 @@ def scrape_foundit(role, city):
 # ---------------------------------------------------------------------------
 def main():
     print("=" * 70)
-    print("  JOB PORTALS SCRAPER (NAUKRI & FOUNDIT)")
-    print("  Naukri: Playwright headful + API interception (FREE)")
+    print("  JOB PORTALS SCRAPER (FOUNDIT ONLY)")
     print("  Foundit: curl_cffi + ScraperAPI proxy (1 credit each)")
     print("=" * 70)
     print(f"  Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -482,7 +347,6 @@ def main():
     print("=" * 70)
 
     cleanup_old_jobs()
-    init_playwright()
 
     progress = load_progress()
     start_role = progress.get("role_idx", 0)
@@ -493,8 +357,8 @@ def main():
     combo_num = start_role * len(LOCATIONS) + start_loc
     hit_time_limit = False
 
-    scraped_counts = {"naukri": 0, "foundit": 0}
-    stored_counts = {"naukri": 0, "foundit": 0}
+    scraped_counts = {"foundit": 0}
+    stored_counts = {"foundit": 0}
 
     for r_idx in range(start_role, len(SEARCH_ROLES)):
         role = SEARCH_ROLES[r_idx]
@@ -515,14 +379,7 @@ def main():
 
             print(f"\n[{combo_num}/{total_combos}] '{role}' in '{city}'...")
 
-            # -- 1. Naukri (FREE via Playwright) --
-            naukri_jobs = scrape_naukri(role, city)
-            n = len(naukri_jobs); ins = store_jobs_batch(naukri_jobs)
-            scraped_counts["naukri"] += n; stored_counts["naukri"] += ins
-            total_inserted += ins
-            print(f"      Naukri        : {n:>4} scraped  |  {ins:>4} new stored")
-
-            # -- 2. Foundit (1 credit via curl_cffi) --
+            # -- 1. Foundit (1 credit via curl_cffi) --
             foundit_jobs = scrape_foundit(role, city)
             n = len(foundit_jobs); ins = store_jobs_batch(foundit_jobs)
             scraped_counts["foundit"] += n; stored_counts["foundit"] += ins
@@ -534,8 +391,6 @@ def main():
 
         if hit_time_limit:
             break
-
-    close_playwright()
 
     if not hit_time_limit:
         save_progress(0, 0, finished_all=True)
