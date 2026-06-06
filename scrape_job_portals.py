@@ -40,12 +40,12 @@ def get_active_scraperapi_key():
                 remaining = request_limit - request_count
                 # If key has at least 100 credits, we can use it
                 if remaining >= 100:
-                    print(f"✅ Selected ScraperAPI Key starting with '{key[:4]}' ({remaining} credits remaining this month)")
+                    print(f"Selected ScraperAPI Key starting with '{key[:4]}' ({remaining} credits remaining this month)")
                     return key
         except Exception as e:
-            print(f"⚠️ Error checking key {key[:4]}...: {e}")
+            print(f"Error checking key {key[:4]}...: {e}")
             continue
-    print("❌ No ScraperAPI keys have enough credits left!")
+    print("No ScraperAPI keys have enough credits left!")
     return None
 
 SCRAPERAPI_KEY = get_active_scraperapi_key()
@@ -53,6 +53,7 @@ SCRAPERAPI_KEY = get_active_scraperapi_key()
 # Global Playwright Browser Instances
 playwright_instance = None
 browser_instance = None
+browser_context = None
 
 # Progress Checkpointing Configuration
 PROGRESS_FILE = "job_portals_progress.json"
@@ -65,7 +66,7 @@ def load_progress():
         with open(PROGRESS_FILE, "r") as f:
             data = json.load(f)
         if data.get("date") != today:
-            print(f"📅 New day detected (was {data.get('date')}, now {today}). Resetting progress to start.")
+            print(f"New day detected (was {data.get('date')}, now {today}). Resetting progress to start.")
             return {"role_idx": 0, "loc_idx": 0, "date": today}
         return data
     except (FileNotFoundError, json.JSONDecodeError):
@@ -81,26 +82,41 @@ def save_progress(role_idx, loc_idx, finished_all=False):
         json.dump(data, f)
 
 def init_playwright():
-    global playwright_instance, browser_instance
+    """Initialize Playwright in HEADFUL mode with anti-detection for Naukri."""
+    global playwright_instance, browser_instance, browser_context
     try:
         from playwright.sync_api import sync_playwright
         playwright_instance = sync_playwright().start()
         browser_instance = playwright_instance.chromium.launch(
-            headless=True,
-            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
+            headless=False,  # HEADFUL mode is critical for Naukri
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-infobars",
+                "--window-size=1920,1080",
+            ]
         )
-        print("🚀 Playwright Chromium browser initialized successfully!")
+        browser_context = browser_instance.new_context(
+            viewport={"width": 1920, "height": 1080},
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            locale="en-IN",
+            timezone_id="Asia/Kolkata",
+        )
+        print("Playwright Chromium browser initialized (HEADFUL mode for Naukri)!")
     except Exception as e:
-        print(f"⚠️ Playwright initialization error: {e}")
+        print(f"Playwright initialization error: {e}")
 
 def close_playwright():
-    global playwright_instance, browser_instance
+    global playwright_instance, browser_instance, browser_context
     try:
+        if browser_context:
+            browser_context.close()
         if browser_instance:
             browser_instance.close()
         if playwright_instance:
             playwright_instance.stop()
-        print("🛑 Playwright Chromium browser closed.")
+        print("Playwright Chromium browser closed.")
     except Exception as e:
         pass
 
@@ -118,7 +134,7 @@ LOCATIONS = [
 
 TEST_MODE = "--test" in sys.argv
 if TEST_MODE:
-    print("🧪 RUNNING IN TEST MODE: Only 1 role and 1 location will be scraped.")
+    print("RUNNING IN TEST MODE: Only 1 role and 1 location will be scraped.")
     SEARCH_ROLES = ["Software Engineer"]
     LOCATIONS = ["Bangalore"]
 
@@ -127,7 +143,7 @@ if TEST_MODE:
 # ---------------------------------------------------------------------------
 def d1_execute(sql, params=None):
     if not CLOUDFLARE_API_TOKEN:
-        print("⚠️ CLOUDFLARE_API_TOKEN not configured, skipping D1 database execution.")
+        print("CLOUDFLARE_API_TOKEN not configured, skipping D1 database execution.")
         return None
     url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/d1/database/{DATABASE_ID}/query"
     headers = {
@@ -139,9 +155,9 @@ def d1_execute(sql, params=None):
         resp = requests.post(url, headers=headers, json=payload, timeout=30, verify=False)
         if resp.status_code == 200:
             return resp.json()
-        print(f"❌ D1 Error {resp.status_code}: {resp.text[:200]}")
+        print(f"D1 Error {resp.status_code}: {resp.text[:200]}")
     except Exception as e:
-        print(f"❌ D1 Connection error: {e}")
+        print(f"D1 Connection error: {e}")
     return None
 
 def store_jobs_batch(jobs):
@@ -189,12 +205,12 @@ def cleanup_old_jobs():
     if not CLOUDFLARE_API_TOKEN:
         return
     cutoff = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    print(f"🧹 Cleaning jobs older than {cutoff} (30 days retention)...")
+    print(f"Cleaning jobs older than {cutoff} (30 days retention)...")
     result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
     if result and result.get("success"):
         for res in result.get("result", []):
             deleted = res.get("meta", {}).get("changes", 0)
-            print(f"🗑️ Removed {deleted} old jobs from D1 database.")
+            print(f"Removed {deleted} old jobs from D1 database.")
 
 def parse_date_posted(date_val):
     if not date_val:
@@ -219,111 +235,236 @@ def parse_date_posted(date_val):
     return today.strftime("%Y-%m-%d")
 
 # ---------------------------------------------------------------------------
-# PORTAL SCRAPERS (PREMIUM ONLY)
+# NAUKRI SCRAPER - Playwright HEADFUL + API Interception (FREE, 0 credits)
 # ---------------------------------------------------------------------------
-
 def scrape_naukri(role, city):
-    if not SCRAPERAPI_KEY:
+    """Scrape Naukri using Playwright headful mode + API interception.
+    This is completely FREE - no proxy, no ScraperAPI credits needed.
+    Playwright opens a real Chrome browser, navigates to the search page,
+    and intercepts the internal jobapi/v3/search JSON response."""
+    global browser_context
+    
+    if not browser_context:
+        print("    Naukri: Playwright not initialized, skipping.")
         return []
-    print("  - Scraping Naukri (via ScraperAPI Premium Proxy + Rendering)...")
+    
+    print("  - Scraping Naukri (Playwright headful - FREE, 0 credits)...")
     role_clean = role.replace(" ", "-").lower()
     city_clean = city.lower().split(",")[0].strip()
     url = f"https://www.naukri.com/{role_clean}-jobs-in-{city_clean}?jobAge=1"
-
+    
     jobs = []
+    api_jobs_data = []
+    
+    def handle_response(response):
+        """Intercept Naukri's internal jobapi/v3/search API call."""
+        try:
+            resp_url = response.url
+            if 'jobapi/v3/search' in resp_url:
+                ct = response.headers.get('content-type', '')
+                if 'json' in ct:
+                    body = response.json()
+                    api_jobs_data.append(body)
+        except:
+            pass
+    
     try:
-        scraperapi_url = "http://api.scraperapi.com"
-        payload = {
-            'api_key': SCRAPERAPI_KEY,
-            'url': url,
-            'premium': 'true',
-            'render': 'true'
-        }
+        page = browser_context.new_page()
         
-        resp = requests.get(scraperapi_url, params=payload, timeout=90)
+        # Anti-detection: remove navigator.webdriver flag
+        page.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            window.chrome = {runtime: {}};
+        """)
         
-        if resp.status_code == 200:
-            soup = BeautifulSoup(resp.text, "html.parser")
-            card_selector = ".srp-jobtuple-wrapper, .cust-job-tuple, article.jobTuple, [class*='jobTuple'], .job-tuple-container"
-            job_cards = soup.select(card_selector)
-
-            for card in job_cards:
-                title_el = card.select_one("a.title") or card.select_one("a[class*='title']")
-                company_el = card.select_one("a.comp-name") or card.select_one("a[class*='comp']")
-                location_el = card.select_one("span.locWdth") or card.select_one("[class*='loc']")
-                post_el = card.select_one("span.job-post-day") or card.select_one("[class*='posted']")
-
-                title = title_el.get_text(strip=True) if title_el else ""
-                company = company_el.get_text(strip=True) if company_el else ""
-                loc = location_el.get_text(strip=True) if location_el else city
-                job_url = title_el.get("href", "") if title_el else ""
-
-                date_str = datetime.now().strftime("%Y-%m-%d")
-                if post_el:
-                    date_str = parse_date_posted(post_el.get_text(strip=True))
-
+        page.on("response", handle_response)
+        page.goto(url, wait_until="networkidle", timeout=60000)
+        
+        # Simulate human scrolling
+        page.mouse.move(500, 300)
+        time.sleep(1)
+        page.mouse.wheel(0, 500)
+        time.sleep(2)
+        
+        # Extract jobs from intercepted API data
+        for api_data in api_jobs_data:
+            if not isinstance(api_data, dict):
+                continue
+            job_details = api_data.get('jobDetails', [])
+            for job_obj in job_details:
+                if not isinstance(job_obj, dict):
+                    continue
+                title = job_obj.get('title', '')
+                company = job_obj.get('companyName', '')
+                loc = job_obj.get('placeholders', [{}])
+                location = ''
+                if isinstance(loc, list):
+                    for ph in loc:
+                        if isinstance(ph, dict) and ph.get('type') == 'location':
+                            location = ph.get('label', city)
+                            break
+                if not location:
+                    location = city
+                
+                job_url = job_obj.get('jdURL', '')
+                if job_url and not job_url.startswith('http'):
+                    job_url = f"https://www.naukri.com{job_url}"
+                
+                date_str = job_obj.get('footerPlaceholderLabel', '')
+                date_posted = parse_date_posted(date_str)
+                
                 if title and job_url:
                     jobs.append({
-                        "title": title, "company": company, "location": loc,
-                        "date_posted": date_str, "url": job_url,
+                        "title": title, "company": company, "location": location,
+                        "date_posted": date_posted, "url": job_url,
                         "source": "naukri", "role_search": role
                     })
-        else:
-            print(f"    Naukri ScraperAPI returned {resp.status_code}")
+        
+        page.close()
+        
     except Exception as e:
-        print(f"    Naukri request error: {e}")
+        print(f"    Naukri Playwright error: {e}")
+    
     return jobs
 
+# ---------------------------------------------------------------------------
+# FOUNDIT SCRAPER - curl_cffi + ScraperAPI (1 credit per request)
+# ---------------------------------------------------------------------------
 def scrape_foundit(role, city):
+    """Scrape Foundit using curl_cffi TLS fingerprint + ScraperAPI proxy.
+    Uses only 1 credit per request (no premium, no render).
+    curl_cffi impersonates Chrome's TLS fingerprint to bypass Cloudflare."""
     if not SCRAPERAPI_KEY:
         return []
-    print("  - Scraping Foundit (via ScraperAPI Premium Proxy + Rendering)...")
-    role_enc = urllib.parse.quote(role)
-    city_enc = urllib.parse.quote(city)
-    url = f"https://www.foundit.in/srp/results?query={role_enc}&locations={city_enc}&searchId=123"
-
+    
+    print("  - Scraping Foundit (curl_cffi + ScraperAPI - 1 credit)...")
+    role_clean = role.replace(" ", "-").lower()
+    city_clean = city.lower().split(",")[0].strip()
+    url = f"https://www.foundit.in/search/{role_clean}-jobs-in-{city_clean}?jobFreshness=1"
+    
     jobs = []
     try:
-        scraperapi_url = "http://api.scraperapi.com"
-        payload = {
-            'api_key': SCRAPERAPI_KEY,
-            'url': url,
-            'premium': 'true',
-            'render': 'true'
+        from curl_cffi import requests as curl_requests
+        
+        proxy_url = f"http://scraperapi:{SCRAPERAPI_KEY}@proxy-server.scraperapi.com:8001"
+        
+        headers = {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+            "Accept-Language": "en-IN,en;q=0.9",
+            "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Platform": '"Windows"',
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "none",
+            "Sec-Fetch-User": "?1",
+            "Upgrade-Insecure-Requests": "1",
         }
         
-        resp = requests.get(scraperapi_url, params=payload, timeout=90)
+        resp = curl_requests.get(
+            url, headers=headers, impersonate="chrome124",
+            proxies={"http": proxy_url, "https": proxy_url},
+            timeout=60, verify=False
+        )
         
         if resp.status_code == 200:
-            soup = BeautifulSoup(resp.text, "html.parser")
-            cards = soup.select(".card-apply-content, .job-tuple")
-            for card in cards:
-                title_el = card.select_one(".jobTitle") or card.select_one("h3 a")
-                if not title_el:
+            html = resp.text
+            
+            # Parse Next.js RSC payload to extract job data
+            push_payloads = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html, re.DOTALL)
+            all_rsc = ""
+            for payload in push_payloads:
+                unescaped = payload.replace('\\n', '\n').replace('\\t', '\t')
+                unescaped = unescaped.replace('\\"', '"').replace('\\\\', '\\')
+                all_rsc += unescaped + "\n"
+            
+            # Extract job objects from RSC data
+            seen_ids = set()
+            for match in re.finditer(r'"jobId"\s*:\s*(\d+)', all_rsc):
+                job_id = match.group(1)
+                if job_id in seen_ids:
                     continue
-                title = title_el.get_text(strip=True)
-                job_url = title_el.get("href", "")
-                if job_url and job_url.startswith("/"):
-                    job_url = "https://www.foundit.in" + job_url
+                seen_ids.add(job_id)
                 
-                comp_el = card.select_one(".companyName a") or card.select_one(".companyName")
-                company = comp_el.get_text(strip=True) if comp_el else ""
+                # Find enclosing JSON object
+                pos = match.start()
+                brace_count = 0
+                start_pos = pos
+                while start_pos > 0:
+                    start_pos -= 1
+                    if all_rsc[start_pos] == '}':
+                        brace_count += 1
+                    elif all_rsc[start_pos] == '{':
+                        if brace_count == 0:
+                            break
+                        brace_count -= 1
                 
-                loc_el = card.select_one(".details .loc") or card.select_one("[class*='loc']")
-                loc = loc_el.get_text(strip=True) if loc_el else city
+                brace_count = 0
+                end_pos = start_pos
+                while end_pos < len(all_rsc):
+                    if all_rsc[end_pos] == '{':
+                        brace_count += 1
+                    elif all_rsc[end_pos] == '}':
+                        brace_count -= 1
+                        if brace_count == 0:
+                            end_pos += 1
+                            break
+                    end_pos += 1
                 
-                date_str = datetime.now().strftime("%Y-%m-%d")
+                json_str = all_rsc[start_pos:end_pos]
                 
-                if title and job_url:
-                    jobs.append({
-                        "title": title, "company": company, "location": loc,
-                        "date_posted": date_str, "url": job_url,
-                        "source": "foundit", "role_search": role
-                    })
+                try:
+                    job_obj = json.loads(json_str)
+                    
+                    title = job_obj.get("title", "")
+                    company = ""
+                    company_data = job_obj.get("company", {})
+                    if isinstance(company_data, dict):
+                        company = company_data.get("name", "")
+                    if not company:
+                        company = job_obj.get("recruiterName", "")
+                    
+                    # Location
+                    loc_list = job_obj.get("locations", [])
+                    loc_str = city
+                    if isinstance(loc_list, list) and loc_list:
+                        loc_names = []
+                        for loc in loc_list:
+                            if isinstance(loc, dict):
+                                loc_names.append(loc.get("label", loc.get("name", "")))
+                            elif isinstance(loc, str):
+                                loc_names.append(loc)
+                        if loc_names:
+                            loc_str = ", ".join(loc_names)
+                    
+                    # URL
+                    jd_url = job_obj.get("jdUrl", "")
+                    full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
+                    
+                    # Posted date
+                    date_posted = datetime.now().strftime("%Y-%m-%d")
+                    updated_at = job_obj.get("updatedAt", 0)
+                    if updated_at:
+                        try:
+                            date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
+                        except:
+                            pass
+                    
+                    if title and full_url:
+                        jobs.append({
+                            "title": title, "company": company, "location": loc_str,
+                            "date_posted": date_posted, "url": full_url,
+                            "source": "foundit", "role_search": role
+                        })
+                except json.JSONDecodeError:
+                    pass
         else:
-            print(f"    Foundit ScraperAPI returned {resp.status_code}")
+            print(f"    Foundit returned {resp.status_code}")
+    except ImportError:
+        print("    curl_cffi not installed! Run: pip install curl_cffi")
     except Exception as e:
-        print(f"    Foundit request error: {e}")
+        print(f"    Foundit error: {e}")
+    
     return jobs
 
 # ---------------------------------------------------------------------------
@@ -331,17 +472,14 @@ def scrape_foundit(role, city):
 # ---------------------------------------------------------------------------
 def main():
     print("=" * 70)
-    print("  PREMIUM JOB PORTALS SCRAPER (NAUKRI & FOUNDIT)")
+    print("  JOB PORTALS SCRAPER (NAUKRI & FOUNDIT)")
+    print("  Naukri: Playwright headful + API interception (FREE)")
+    print("  Foundit: curl_cffi + ScraperAPI proxy (1 credit each)")
     print("=" * 70)
-    print(f"  📅 Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"  🔍 Roles Count: {len(SEARCH_ROLES)}")
-    print(f"  📍 Cities Count: {len(LOCATIONS)}")
+    print(f"  Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"  Roles Count: {len(SEARCH_ROLES)}")
+    print(f"  Cities Count: {len(LOCATIONS)}")
     print("=" * 70)
-
-    if not SCRAPERAPI_KEY:
-        print("❌ CRITICAL ERROR: Could not find any valid ScraperAPI keys with credits remaining.")
-        print("Please check your SCRAPERAPI_KEYS_LIST variable.")
-        sys.exit(1)
 
     cleanup_old_jobs()
     init_playwright()
@@ -368,7 +506,7 @@ def main():
 
             elapsed = time.time() - START_TIME
             if elapsed >= MAX_RUN_SECONDS:
-                print(f"\n⏰ Time limit reached ({elapsed:.0f}s). Saving progress...")
+                print(f"\nTime limit reached ({elapsed:.0f}s). Saving progress...")
                 save_progress(r_idx, l_idx, finished_all=False)
                 hit_time_limit = True
                 break
@@ -377,21 +515,21 @@ def main():
 
             print(f"\n[{combo_num}/{total_combos}] '{role}' in '{city}'...")
 
-            # ── 1. Naukri ──
+            # -- 1. Naukri (FREE via Playwright) --
             naukri_jobs = scrape_naukri(role, city)
             n = len(naukri_jobs); ins = store_jobs_batch(naukri_jobs)
             scraped_counts["naukri"] += n; stored_counts["naukri"] += ins
             total_inserted += ins
             print(f"      Naukri        : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── 2. Foundit ──
+            # -- 2. Foundit (1 credit via curl_cffi) --
             foundit_jobs = scrape_foundit(role, city)
             n = len(foundit_jobs); ins = store_jobs_batch(foundit_jobs)
             scraped_counts["foundit"] += n; stored_counts["foundit"] += ins
             total_inserted += ins
             print(f"      Foundit       : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # Delay to avoid overloading the proxy immediately
+            # Delay between searches
             time.sleep(3)
 
         if hit_time_limit:
@@ -401,7 +539,7 @@ def main():
 
     if not hit_time_limit:
         save_progress(0, 0, finished_all=True)
-        print("\n✅ Scraper completed all roles. Progress reset.")
+        print("\nScraper completed all roles. Progress reset.")
 
     print("\n" + "=" * 70)
     print("                    JOB PORTAL STATISTICS SUMMARY")
