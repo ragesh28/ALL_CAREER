@@ -777,15 +777,15 @@
                     
                     for (const job of rows) {
                         fetchedJobs.push({
-                            title: job.title || "",
-                            company: job.company || "",
+                            title: job.role || job.title || "",
+                            company: job.company_name || job.company || "",
                             location: job.location || "",
-                            date: job.fetched_at || job.date || job.date_posted || "",
-                            url: job.url || job.linkedin_url || "",
+                            date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
+                            url: job.apply_link || job.url || job.linkedin_url || "",
                             linkedin_url: job.linkedin_url || "",
-                            source: job.source || "",
+                            source: job.platform || job.source || "",
                             role_search: job.search_keyword || job.role_search || "",
-                            fetchedAt: job.fetched_at || job.fetchedAt || ""
+                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || ""
                         });
                     }
                     chunkNum++;
