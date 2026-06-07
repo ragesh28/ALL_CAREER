@@ -69,6 +69,15 @@
         .filter-bar.collapsed > *:not(.mini-logo) {
             display: none !important;
         }
+        .filter-bar.collapsed {
+            width: auto;
+            max-width: fit-content;
+            padding: 12px 24px;
+            border-radius: 50px;
+        }
+        .filter-bar.collapsed .mini-logo {
+            margin-right: 0;
+        }
         .filter-group { flex: 1; min-width: 120px; }
         .filter-input {
             width: 100%; background: var(--bg-deep); border: 1px solid var(--border);

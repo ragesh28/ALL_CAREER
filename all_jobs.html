@@ -69,8 +69,29 @@
         .filter-bar.collapsed > *:not(.mini-logo) {
             display: none !important;
         }
+        .filter-bar.collapsed {
+            width: auto;
+            max-width: fit-content;
+            padding: 12px 24px;
+            border-radius: 50px;
+        }
+        .filter-bar.collapsed .mini-logo {
+            margin-right: 0;
+        }
         .portal-filter-strip.collapsed .portal-filter-inner > *:not(.portal-filter-label) {
             display: none !important;
+        }
+        .portal-filter-strip.collapsed .portal-filter-inner {
+            width: auto;
+            max-width: fit-content;
+            margin: 0 auto;
+            padding: 10px 24px;
+            border-radius: 50px;
+        }
+        .portal-filter-strip.collapsed .portal-filter-label {
+            padding-right: 0;
+            border-right: none;
+            margin-right: 0;
         }
         .filter-group { flex: 1; min-width: 120px; }
         .filter-input {
@@ -423,8 +444,8 @@
         </p>
     </header>
 
-    <div class="filter-bar-container">
-        <div class="filter-bar">
+    <div class="sticky-filter-wrapper" style="position: sticky; top: 20px; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; padding: 0 20px; pointer-events: none; margin-bottom: 20px;">
+        <div class="filter-bar" style="pointer-events: auto;">
             <span class="mini-logo" onclick="toggleFilterBar()">Filter</span>
             <div class="filter-group">
                 <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
@@ -456,11 +477,9 @@
                 🗺️ Roles <span class="arrow">▾</span>
             </button>
         </div>
-    </div>
 
-    <!-- PORTAL FILTER STRIP -->
-    <div class="filter-bar-container" style="margin-bottom:0;padding-bottom:0;">
-        <div class="portal-filter-strip" style="width:100%;max-width:none;">
+        <!-- PORTAL FILTER STRIP -->
+        <div class="portal-filter-strip" style="width:100%; max-width:1000px; pointer-events: auto;">
             <div class="portal-filter-inner" id="portalFilterInner">
                 <span class="portal-filter-label" onclick="toggleSourceStrip()" style="cursor:pointer; user-select:none;">Source</span>
                 <button class="portal-all-btn" id="portalAllBtn" onclick="clearPortals()">
