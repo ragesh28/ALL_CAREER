@@ -276,55 +276,117 @@ def scrape_shine(role, city):
     return jobs
 
 def scrape_timesjobs(role, city):
-    global browser_instance
-    if not browser_instance:
-        return []
-    print("  - Scraping TimesJobs (via Playwright)...")
-    role_enc = urllib.parse.quote(role)
-    city_enc = urllib.parse.quote(city)
-    url = f"https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords={role_enc}&txtLocation={city_enc}"
+    """Scrape TimesJobs via their internal JSON API (no Playwright needed).
+    API: POST https://tjapi.timesjobs.com/search/api/v1/search/jobs/list
+    Returns up to 20 jobs per page with rich structured data.
+    """
+    print("  - Scraping TimesJobs (via API)...")
     jobs = []
     try:
-        context = browser_instance.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-            viewport={"width": 1440, "height": 900}
+        payload = {
+            "keyword": role,
+            "location": city,
+            "experience": "",
+            "page": "1",
+            "size": "20",
+            "jobFunctions": [],
+            "company": "",
+            "industry": "",
+            "functionAreaId": "",
+            "jobFunction": ""
+        }
+        api_headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+            "Origin": "https://www.timesjobs.com",
+            "Referer": "https://www.timesjobs.com/",
+        }
+        resp = requests.post(
+            "https://tjapi.timesjobs.com/search/api/v1/search/jobs/list",
+            headers=api_headers,
+            json=payload,
+            timeout=20,
+            verify=False
         )
-        page = context.new_page()
-        page.goto(url, wait_until="load", timeout=45000)
-        page.wait_for_timeout(5000)
-        content = page.content()
-        soup = BeautifulSoup(content, "html.parser")
-        cards = soup.select("li.clearfix.job-bx, li.job-bx, .joblist-comp-info, [class*='job-bx']")
-        for card in cards:
-            title_el = card.select_one("h2.heading-trun a, header h2 a, .job-ttl a, h2 a")
-            if not title_el:
-                continue
-            title = title_el.get_text(strip=True)
-            job_url = title_el.get("href", "")
-            if not job_url:
-                continue
-            company = ""
-            comp_el = card.select_one("h3.joblist-comp-name, .joblist-comp-name, .company-name")
-            if comp_el:
-                company = comp_el.get_text(separator=" ", strip=True)
-                company = re.sub(r'\s*\d+(\.\d+)?\s*$', '', company).strip()
-            loc = city
-            loc_el = card.select_one(".srp-skills, ul.top-jd-dtl span, span[title], .location")
-            if loc_el:
-                loc = loc_el.get_text(strip=True)
-            date_str = datetime.now().strftime("%Y-%m-%d")
-            date_el = card.select_one("span.sim-posted, .sim-posted span, [class*='posted']")
-            if date_el:
-                date_str = parse_date_posted(date_el.get_text(strip=True))
-            if title and job_url:
-                jobs.append({
-                    "title": title, "company": company, "location": loc,
-                    "date_posted": date_str, "url": job_url,
-                    "source": "timesjobs", "role_search": role
-                })
-        context.close()
+        if resp.status_code == 200:
+            data = resp.json()
+            for item in data.get("jobs", []):
+                title = (item.get("title") or "").strip()
+                company = (item.get("company") or item.get("hfCompany") or "").strip()
+                loc = (item.get("location") or city).strip()
+                date_posted = parse_date_posted(item.get("postDate"))
+                job_url = item.get("jobDetailUrl", "")
+                if title and job_url:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": date_posted, "url": job_url,
+                        "source": "timesjobs", "role_search": role
+                    })
+        else:
+            print(f"    TimesJobs API returned {resp.status_code}")
     except Exception as e:
-        print(f"    TimesJobs Playwright error: {e}")
+        print(f"    TimesJobs API error: {e}")
+    return jobs
+
+# Hirist location IDs mapping
+HIRIST_LOC_IDS = {
+    "bangalore": 3, "chennai": 17, "hyderabad": 4, "mumbai": 5,
+    "pune": 6, "delhi": 1, "noida": 76, "gurgaon": 2,
+    "kolkata": 7, "ahmedabad": 8, "kochi": 59, "chandigarh": 82,
+    "indore": 73, "jaipur": 64, "coimbatore": 79,
+}
+
+def scrape_hirist(role, city):
+    """Scrape Hirist via their internal JSON API (no Playwright needed).
+    API: GET https://gladiator.hirist.tech/job/keyword/
+    Note: The query param has limited filtering — results are primarily
+    filtered by location ID. Each page returns ~20-40 jobs.
+    """
+    print("  - Scraping Hirist (via API)...")
+    jobs = []
+    city_lower = city.lower().split(",")[0].strip()
+    loc_id = HIRIST_LOC_IDS.get(city_lower, 3)  # Default to Bangalore
+    try:
+        role_enc = urllib.parse.quote(role)
+        url = f"https://gladiator.hirist.tech/job/keyword/?query={role_enc}&page=1&loc={loc_id}&industry=&concat=true&id=&size=20"
+        api_headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*",
+        }
+        resp = requests.get(url, headers=api_headers, timeout=20, verify=False)
+        if resp.status_code == 200:
+            data = resp.json()
+            for item in data.get("data", []):
+                title = (item.get("title") or "").strip()
+                company_data = item.get("companyData") or {}
+                company = (company_data.get("companyName") or "").strip()
+                # Skip "hirist.tech" placeholder company names
+                if company.lower() in ["hirist.tech", "hirist"]:
+                    company = "Confidential"
+                locs = item.get("locations") or item.get("location") or []
+                if isinstance(locs, list) and locs:
+                    loc = ", ".join(l.get("name", "") for l in locs[:3])
+                else:
+                    loc = city
+                # Hirist doesn't return a posted date, use createdTime epoch
+                created_ms = item.get("createdTime") or item.get("createdTimeMs")
+                if created_ms:
+                    date_posted = datetime.fromtimestamp(created_ms / 1000).strftime("%Y-%m-%d")
+                else:
+                    date_posted = datetime.now().strftime("%Y-%m-%d")
+                job_id = item.get("id", "")
+                job_url = f"https://www.hirist.tech/j/{job_id}" if job_id else ""
+                if title and job_url:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": date_posted, "url": job_url,
+                        "source": "hirist", "role_search": role
+                    })
+        else:
+            print(f"    Hirist API returned {resp.status_code}")
+    except Exception as e:
+        print(f"    Hirist API error: {e}")
     return jobs
 
 def scrape_apna(role, city):
@@ -405,11 +467,12 @@ def scrape_apna(role, city):
 # ---------------------------------------------------------------------------
 def main():
     print("=" * 70)
-    print("  NORMAL JOB PORTALS SCRAPER (SHINE, TIMESJOBS, APNA)")
+    print("  JOB PORTALS SCRAPER (SHINE, TIMESJOBS, HIRIST, APNA)")
     print("=" * 70)
     print(f"  📅 Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  🔍 Roles Count: {len(SEARCH_ROLES)}")
     print(f"  📍 Cities Count: {len(LOCATIONS)}")
+    print(f"  🌐 Portals: Shine (Playwright), TimesJobs (API), Hirist (API), Apna (Playwright)")
     print("=" * 70)
 
     cleanup_old_jobs()
@@ -424,8 +487,8 @@ def main():
     combo_num = start_role * len(LOCATIONS) + start_loc
     hit_time_limit = False
 
-    scraped_counts = {"shine": 0, "timesjobs": 0, "apna": 0}
-    stored_counts = {"shine": 0, "timesjobs": 0, "apna": 0}
+    scraped_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0}
+    stored_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0}
 
     for r_idx in range(start_role, len(SEARCH_ROLES)):
         role = SEARCH_ROLES[r_idx]
@@ -460,7 +523,14 @@ def main():
             total_inserted += ins
             print(f"      TimesJobs     : {n:>4} scraped  |  {ins:>4} new stored")
 
-            # ── 3. Apna ──
+            # ── 3. Hirist ──
+            hirist_jobs = scrape_hirist(role, city)
+            n = len(hirist_jobs); ins = store_jobs_batch(hirist_jobs)
+            scraped_counts["hirist"] += n; stored_counts["hirist"] += ins
+            total_inserted += ins
+            print(f"      Hirist        : {n:>4} scraped  |  {ins:>4} new stored")
+
+            # ── 4. Apna ──
             apna_jobs = scrape_apna(role, city)
             n = len(apna_jobs); ins = store_jobs_batch(apna_jobs)
             scraped_counts["apna"] += n; stored_counts["apna"] += ins

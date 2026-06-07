@@ -1,4 +1,4 @@
-name: Normal Job Portals Scraper (Shine, TimesJobs, Apna)
+name: Job Portals Scraper (Shine, TimesJobs, Hirist, Apna)
 
 on:
   workflow_dispatch:   # Manual trigger
