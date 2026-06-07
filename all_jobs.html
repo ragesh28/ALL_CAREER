@@ -399,37 +399,6 @@
         @media (min-width: 3001px) {
             .jobs-grid { grid-template-columns: repeat(10, 1fr); }
         }
-        .location-badge {
-            position: relative;
-            padding-left: 18px;
-        }
-        .pulse-pin {
-            position: absolute;
-            left: 6px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            box-shadow: 0 0 4px #ef4444;
-        }
-        .pulse-pin::after {
-            content: '';
-            position: absolute;
-            left: -4px;
-            top: -4px;
-            width: 14px;
-            height: 14px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: pulse-anim 1.5s infinite ease-out;
-        }
-        @keyframes pulse-anim {
-            0% { transform: scale(0.5); opacity: 0.8; }
-            100% { transform: scale(2.2); opacity: 0; }
-        }
     </style>
 </head>
 
@@ -1047,6 +1016,8 @@
                     'freshersworld': 'logos/portals/freshersworld.ico',
                 };
                 const portalLogoSrc = portalLogoMap[source] || '';
+                const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
+                const cityLoc = rawLoc.split(',')[0].trim();
                 return `
             <div class="job-card" style="animation-delay:${i * 0.03}s">
                 <div class="card-top">
@@ -1062,7 +1033,7 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge location-badge"><span class="pulse-pin"></span>${esc(job.location || 'India')}</div>
+                    <div class="meta-badge">📍 ${esc(cityLoc)}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
                     ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
                 </div>

@@ -841,6 +841,8 @@
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const applyUrl = job.url || '';
+                const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
+                const cityLoc = rawLoc.split(',')[0].trim();
                 return `
             <div class="job-card" style="animation-delay:${i * 0.03}s">
                 <div class="card-top">
@@ -856,7 +858,7 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge">📍 ${esc(job.location || 'India')}</div>
+                    <div class="meta-badge">📍 ${esc(cityLoc)}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(6,182,212,0.3);color:#06b6d4;">📅 ${date}</div>` : ''}
                 </div>
                 <div class="card-footer">
