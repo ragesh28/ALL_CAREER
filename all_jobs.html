@@ -62,10 +62,16 @@
         }
         .mini-logo {
             font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
-            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 0;
+            color: var(--primary); white-space: nowrap; max-width: 180px; opacity: 1;
+            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 15px;
+            cursor: pointer;
         }
-        body.scrolled .mini-logo { max-width: 180px; opacity: 1; margin-right: 15px; }
+        .filter-bar.collapsed > *:not(.mini-logo) {
+            display: none !important;
+        }
+        .portal-filter-strip.collapsed .portal-filter-inner > *:not(.portal-filter-label) {
+            display: none !important;
+        }
         .filter-group { flex: 1; min-width: 120px; }
         .filter-input {
             width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
@@ -419,7 +425,7 @@
 
     <div class="filter-bar-container">
         <div class="filter-bar">
-            <a href="index.html" class="mini-logo">ALL_CAREER</a>
+            <span class="mini-logo" onclick="toggleFilterBar()">Filter</span>
             <div class="filter-group">
                 <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
             </div>
@@ -456,7 +462,7 @@
     <div class="filter-bar-container" style="margin-bottom:0;padding-bottom:0;">
         <div class="portal-filter-strip" style="width:100%;max-width:none;">
             <div class="portal-filter-inner" id="portalFilterInner">
-                <span class="portal-filter-label">Source</span>
+                <span class="portal-filter-label" onclick="toggleSourceStrip()" style="cursor:pointer; user-select:none;">Source</span>
                 <button class="portal-all-btn" id="portalAllBtn" onclick="clearPortals()">
                     All <span class="portal-clear-count" id="portalClearCount" style="display:none;">0</span>
                 </button>
@@ -686,10 +692,17 @@
                 selectedPortals.delete(name);
                 document.getElementById('pill-' + name).classList.remove('active');
             } else {
+                selectedPortals.forEach(p => {
+                    const el = document.getElementById('pill-' + p);
+                    if (el) el.classList.remove('active');
+                });
+                selectedPortals.clear();
+
                 selectedPortals.add(name);
                 document.getElementById('pill-' + name).classList.add('active');
             }
             updatePortalClearCount();
+            updatePillsVisibility();
             applyFilters();
         }
 
@@ -700,6 +713,7 @@
             });
             selectedPortals.clear();
             updatePortalClearCount();
+            updatePillsVisibility();
             applyFilters();
         }
 
@@ -710,6 +724,37 @@
                 cnt.style.display = 'inline-flex';
             } else {
                 cnt.style.display = 'none';
+            }
+        }
+
+        function toggleFilterBar() {
+            const bar = document.querySelector('.filter-bar');
+            bar.classList.toggle('collapsed');
+        }
+
+        function toggleSourceStrip() {
+            const strip = document.querySelector('.portal-filter-strip');
+            strip.classList.toggle('collapsed');
+        }
+
+        function updatePillsVisibility() {
+            const pills = document.querySelectorAll('.portal-pill');
+            const allBtn = document.getElementById('portalAllBtn');
+            if (selectedPortals.size > 0) {
+                if (allBtn) allBtn.style.display = 'none';
+                pills.forEach(pill => {
+                    const id = pill.id.replace('pill-', '');
+                    if (selectedPortals.has(id)) {
+                        pill.style.display = 'flex';
+                    } else {
+                        pill.style.display = 'none';
+                    }
+                });
+            } else {
+                if (allBtn) allBtn.style.display = 'flex';
+                pills.forEach(pill => {
+                    pill.style.display = 'flex';
+                });
             }
         }
 

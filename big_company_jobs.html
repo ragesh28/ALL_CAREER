@@ -62,10 +62,13 @@
         }
         .mini-logo {
             font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: var(--primary); white-space: nowrap; max-width: 0; opacity: 0;
-            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 0;
+            color: var(--primary); white-space: nowrap; max-width: 180px; opacity: 1;
+            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 15px;
+            cursor: pointer;
         }
-        body.scrolled .mini-logo { max-width: 180px; opacity: 1; margin-right: 15px; }
+        .filter-bar.collapsed > *:not(.mini-logo) {
+            display: none !important;
+        }
         .filter-group { flex: 1; min-width: 120px; }
         .filter-input {
             width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
@@ -366,7 +369,7 @@
 
     <div class="filter-bar-container">
         <div class="filter-bar">
-            <a href="index.html" class="mini-logo">ALL_CAREER</a>
+            <span class="mini-logo" onclick="toggleFilterBar()">Filter</span>
             <div class="filter-group">
                 <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
             </div>
@@ -577,6 +580,11 @@
         function esc(s) {
             if (!s) return '';
             return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function toggleFilterBar() {
+            const bar = document.querySelector('.filter-bar');
+            bar.classList.toggle('collapsed');
         }
 
         function toggleMindmap() {
