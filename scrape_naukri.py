@@ -89,71 +89,14 @@ def save_progress(role_idx, loc_idx, finished=False):
 # CLOUDFLARE D1 DATABASE
 # ---------------------------------------------------------------------------
 def d1_execute(sql, params=None):
-    if not CLOUDFLARE_API_TOKEN:
-        return None
-    url = (f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}"
-           f"/d1/database/{DATABASE_ID}/query")
-    headers = {"Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
-                "Content-Type": "application/json"}
-    try:
-        resp = requests.post(url, headers=headers,
-                             json={"sql": sql, "params": params or []},
-                             timeout=30, verify=False)
-        if resp.status_code == 200:
-            return resp.json()
-    except Exception as e:
-        print(f"  D1 error: {e}")
-    return None
+    pass
 
+import storage
 def store_jobs_batch(jobs):
-    if not jobs:
-        return 0
-    cutoff = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    unique, seen = [], set()
-    for j in jobs:
-        url = j.get("url", "")
-        if j.get("date_posted", "") < cutoff:
-            continue
-        if url and url not in seen:
-            unique.append(j)
-            seen.add(url)
-    if not unique:
-        return 0
-    inserted = 0
-    for i in range(0, len(unique), 10):
-        chunk = unique[i:i+10]
-        placeholders = ",".join(["(?,?,?,?,?,?,?)"] * len(chunk))
-        params = []
-        for j in chunk:
-            params.extend([
-                str(j.get("company",   "")),
-                str(j.get("location",  "")),
-                str(j.get("title",     "")),
-                str(j.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
-                str(j.get("url",       "")),
-                str(j.get("source",    "naukri")),
-                str(j.get("role_search", "")),
-            ])
-        sql = (f"INSERT OR IGNORE INTO all_jobs "
-               f"(company_name, location, role, job_posted_date, "
-               f"apply_link, platform, search_keyword) VALUES {placeholders}")
-        result = d1_execute(sql, params)
-        if result and result.get("success"):
-            for r in result.get("result", []):
-                inserted += r.get("meta", {}).get("changes", 0)
-    return inserted
+    return storage.store_jobs_batch(jobs)
 
 def cleanup_old_jobs():
-    if not CLOUDFLARE_API_TOKEN:
-        return
-    cutoff = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    print(f"Cleaning jobs older than {cutoff}...")
-    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
-    if result and result.get("success"):
-        for r in result.get("result", []):
-            deleted = r.get("meta", {}).get("changes", 0)
-            if deleted:
-                print(f"  Removed {deleted} old jobs.")
+    pass
 
 def parse_date_posted(text):
     if not text:

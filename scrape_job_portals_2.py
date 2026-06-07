@@ -120,75 +120,14 @@ if TEST_MODE:
 # DATABASE HELPERS (Cloudflare D1 REST API)
 # ---------------------------------------------------------------------------
 def d1_execute(sql, params=None):
-    if not CLOUDFLARE_API_TOKEN:
-        print("⚠️ CLOUDFLARE_API_TOKEN not configured, skipping D1 database execution.")
-        return None
-    url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/d1/database/{DATABASE_ID}/query"
-    headers = {
-        "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    payload = {"sql": sql, "params": params or []}
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=30, verify=False)
-        if resp.status_code == 200:
-            return resp.json()
-        print(f"❌ D1 Error {resp.status_code}: {resp.text[:200]}")
-    except Exception as e:
-        print(f"❌ D1 Connection error: {e}")
-    return None
+    pass
 
+import storage
 def store_jobs_batch(jobs):
-    if not jobs:
-        return 0
-    cutoff_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    unique_jobs = []
-    seen_urls = set()
-    for j in jobs:
-        url = j.get("url")
-        date_str = j.get("date_posted", "")
-        if date_str and date_str < cutoff_date:
-            continue
-        if url and url not in seen_urls:
-            unique_jobs.append(j)
-            seen_urls.add(url)
-            
-    if not unique_jobs:
-        return 0
-        
-    inserted_count = 0
-    for i in range(0, len(unique_jobs), 10):
-        chunk = unique_jobs[i:i+10]
-        placeholders = []
-        params = []
-        for job in chunk:
-            placeholders.append("(?, ?, ?, ?, ?, ?, ?)")
-            params.extend([
-                str(job.get("company", "")),
-                str(job.get("location", "")),
-                str(job.get("title", "")),
-                str(job.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
-                str(job.get("url", "")),
-                str(job.get("source", "")),
-                str(job.get("role_search", ""))
-            ])
-        sql = f"INSERT OR IGNORE INTO all_jobs (company_name, location, role, job_posted_date, apply_link, platform, search_keyword) VALUES {','.join(placeholders)}"
-        result = d1_execute(sql, params)
-        if result and result.get("success"):
-            for res in result.get("result", []):
-                inserted_count += res.get("meta", {}).get("changes", 0)
-    return inserted_count
+    return storage.store_jobs_batch(jobs)
 
 def cleanup_old_jobs():
-    if not CLOUDFLARE_API_TOKEN:
-        return
-    cutoff = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-    print(f"🧹 Cleaning jobs older than {cutoff} (30 days retention)...")
-    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
-    if result and result.get("success"):
-        for res in result.get("result", []):
-            deleted = res.get("meta", {}).get("changes", 0)
-            print(f"🗑️ Removed {deleted} old jobs from D1 database.")
+    pass
 
 def parse_date_posted(date_val):
     if not date_val:

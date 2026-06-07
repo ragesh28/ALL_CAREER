@@ -95,124 +95,22 @@ TOP_COMPANIES = UNIQUE_COMPANIES
 # TURSO DB HELPERS
 # ---------------------------------------------------------------------------
 def turso_execute(statements):
-    """Execute SQL statements via Turso HTTP API."""
-    if not TURSO_URL or not TURSO_TOKEN:
-        print("❌ TURSO_URL and TURSO_TOKEN must be set!")
-        sys.exit(1)
-
-    url = f"{TURSO_URL}/v2/pipeline"
-    headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
-        "Content-Type": "application/json",
-    }
-
-    requests_body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            requests_body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            requests_body.append({"type": "execute", "stmt": stmt})
-    requests_body.append({"type": "close"})
-
-    try:
-        resp = requests.post(url, headers=headers, json={"requests": requests_body}, timeout=30)
-        if resp.status_code != 200:
-            print(f"❌ Turso API error {resp.status_code}: {resp.text[:200]}")
-            return None
-        return resp.json()
-    except Exception as e:
-        print(f"❌ Turso connection error: {e}")
-        return None
-
+    pass
 
 def setup_database():
-    """Create jobs table if not exists."""
-    print("📦 Setting up Turso database...")
-    sql = """
-    CREATE TABLE IF NOT EXISTS jobs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        company TEXT NOT NULL,
-        location TEXT,
-        date_posted TEXT,
-        linkedin_url TEXT,
-        direct_url TEXT NOT NULL,
-        job_type TEXT,
-        is_remote TEXT,
-        fetched_at TEXT NOT NULL,
-        UNIQUE(direct_url)
-    )
-    """
-    result = turso_execute([sql])
-    if result:
-        print("✅ Database ready!")
-    return result is not None
+    pass
 
-
+import storage
 def store_jobs_batch(jobs):
-    """Store a batch of jobs in Turso. Returns count of newly inserted."""
-    if not jobs:
-        return 0
-
-    statements = []
-    for job in jobs:
-        stmt = {
-            "sql": """INSERT OR IGNORE INTO jobs
-                      (title, company, location, date_posted, linkedin_url, direct_url, job_type, is_remote, fetched_at)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            "args": [
-                {"type": "text", "value": str(job.get("title", ""))},
-                {"type": "text", "value": str(job.get("company", ""))},
-                {"type": "text", "value": str(job.get("location", ""))},
-                {"type": "text", "value": str(job.get("date_posted", ""))},
-                {"type": "text", "value": str(job.get("linkedin_url", ""))},
-                {"type": "text", "value": str(job.get("direct_url", ""))},
-                {"type": "text", "value": str(job.get("job_type", ""))},
-                {"type": "text", "value": str(job.get("is_remote", ""))},
-                {"type": "text", "value": str(job.get("fetched_at", ""))},
-            ],
-        }
-        statements.append(stmt)
-
-    result = turso_execute(statements)
-    if not result:
-        return 0
-
-    inserted = 0
-    for r in result.get("results", []):
-        if r.get("type") == "ok":
-            inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
-    return inserted
-
+    for j in jobs:
+        if "url" not in j:
+            j["url"] = j.get("direct_url") or j.get("linkedin_url")
+    return storage.store_jobs_batch(jobs)
 
 def cleanup_old_jobs():
-    """Delete jobs older than KEEP_DAYS days."""
-    cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
-    print(f"\n🧹 Cleaning jobs fetched before {cutoff}...")
-
-    result = turso_execute([{
-        "sql": "DELETE FROM jobs WHERE fetched_at < ?",
-        "args": [{"type": "text", "value": cutoff}]
-    }])
-
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                deleted = r.get("response", {}).get("result", {}).get("affected_row_count", 0)
-                print(f"🗑️ Removed {deleted} old jobs")
-                return deleted
-    return 0
-
+    pass
 
 def get_total_jobs():
-    """Get total job count from Turso."""
-    result = turso_execute(["SELECT COUNT(*) FROM jobs"])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                rows = r.get("response", {}).get("result", {}).get("rows", [])
-                if rows:
-                    return int(rows[0][0].get("value", 0))
     return 0
 
 

@@ -114,129 +114,19 @@ LOCATIONS = [
 # CLOUDFLARE D1 HELPERS
 # ---------------------------------------------------------------------------
 def d1_execute(sql, params=None):
-    """Execute SQL via Cloudflare D1 REST API."""
-    if not CLOUDFLARE_API_TOKEN:
-        print("⚠️ CLOUDFLARE_API_TOKEN not configured, skipping DB storage")
-        return None
-
-    url = f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/d1/database/{DATABASE_ID}/query"
-    headers = {
-        "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    payload = {"sql": sql, "params": params or []}
-
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=30)
-        if resp.status_code == 200:
-            return resp.json()
-        print(f"❌ D1 Error {resp.status_code}: {resp.text[:200]}")
-    except Exception as e:
-        print(f"❌ D1 Connection error: {e}")
-    return None
-
+    pass
 
 def setup_database():
-    """Create all_jobs table if not exists."""
-    print("📦 Setting up Cloudflare D1 database (all_jobs table)...")
-    sql = """
-    CREATE TABLE IF NOT EXISTS all_jobs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        company_name TEXT, location TEXT, 
-        role TEXT, job_posted_date TEXT, 
-        apply_link TEXT, platform TEXT, search_keyword TEXT, UNIQUE(apply_link)
-    )
-    """
-    result = d1_execute(sql)
-    if result:
-        print("✅ Database ready!")
-    return result is not None
+    pass
 
-
+import storage
 def store_jobs_batch(jobs):
-    """Store a batch of jobs in D1. Returns count inserted."""
-    if not jobs or not CLOUDFLARE_API_TOKEN:
-        return 0
-
-    # 1. Fetch existing jobs natively from Cloudflare worker for pure python deduplication
-    existing_urls = set()
-    try:
-        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
-        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/all_jobs", timeout=20)
-        if resp.status_code == 200:
-            existing_jobs = resp.json()
-            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
-    except Exception as e:
-        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
-
-    # 2. Deduplicate strictly in Python memory
-    new_jobs = []
-    seen_local_urls = set()
-    for job in jobs:
-        u = str(job.get("url", ""))
-        if u and u not in existing_urls and u not in seen_local_urls:
-            new_jobs.append(job)
-            seen_local_urls.add(u)
-            
-    skipped = len(jobs) - len(new_jobs)
-    if skipped > 0:
-        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (already in D1).")
-
-    if not new_jobs:
-        return 0
-
-    # Send in chunks of 50 to avoid payload limits
-    total_inserted = 0
-    for i in range(0, len(new_jobs), 20):
-        chunk = new_jobs[i:i + 20]
-        params = []
-        placeholders = []
-        for job in chunk:
-            placeholders.append("(?, ?, ?, ?, ?, ?, ?)")
-            params.extend([
-                str(job.get("company", "")),
-                str(job.get("location", "")),
-                str(job.get("title", "")),       # Map title to role
-                str(job.get("date", datetime.now().strftime("%Y-%m-%d"))),
-                str(job.get("url", "")),
-                str(job.get("source", "")),      # Map source to platform
-                str(job.get("role_search", ""))  
-            ])
-
-        sql = f"INSERT OR IGNORE INTO all_jobs (company_name, location, role, job_posted_date, apply_link, platform, search_keyword) VALUES {','.join(placeholders)}"
-        result = d1_execute(sql, params)
-        if result and result.get("success"):
-            for res in result.get("result", []):
-                total_inserted += res.get("meta", {}).get("changes", 0)
-
-    return total_inserted
-
+    return storage.store_jobs_batch(jobs)
 
 def cleanup_old_jobs():
-    """Delete jobs older than KEEP_DAYS days."""
-    if not CLOUDFLARE_API_TOKEN:
-        return 0
-    cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
-    print(f"🧹 Cleaning jobs older than {cutoff}...")
-    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
-    if result and result.get("success"):
-        for res in result.get("result", []):
-            deleted = res.get("meta", {}).get("changes", 0)
-            print(f"🗑️ Removed {deleted} old jobs")
-            return deleted
-    return 0
-
+    pass
 
 def get_total_jobs():
-    """Get total job count from D1."""
-    if not CLOUDFLARE_API_TOKEN:
-        return 0
-    result = d1_execute("SELECT COUNT(*) as c FROM all_jobs")
-    if result and result.get("success"):
-        for res in result.get("result", []):
-            rows = res.get("results", [])
-            if rows:
-                return int(rows[0].get("c", 0))
     return 0
 
 

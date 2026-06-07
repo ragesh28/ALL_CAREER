@@ -56,90 +56,17 @@ if TEST_MODE:
 # TURSO HELPERS
 # ---------------------------------------------------------------------------
 def turso_execute(statements):
-    url = f"{TURSO_URL}/v2/pipeline"
-    headers = {
-        "Authorization": f"Bearer {TURSO_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    body = []
-    for stmt in statements:
-        if isinstance(stmt, str):
-            body.append({"type": "execute", "stmt": {"sql": stmt}})
-        elif isinstance(stmt, dict):
-            body.append({"type": "execute", "stmt": stmt})
-    body.append({"type": "close"})
-    try:
-        resp = requests.post(url, headers=headers, json={"requests": body}, timeout=30)
-        if resp.status_code != 200:
-            print(f"  ❌ Turso error {resp.status_code}")
-            return None
-        return resp.json()
-    except Exception as e:
-        print(f"  ❌ Turso error: {e}")
-        return None
-
+    pass
 
 def setup_database():
-    turso_execute(["""
-        CREATE TABLE IF NOT EXISTS all_jobs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL, company TEXT NOT NULL,
-            location TEXT, date_posted TEXT, url TEXT NOT NULL,
-            linkedin_url TEXT, source TEXT, role_search TEXT,
-            fetched_at TEXT NOT NULL, indeed_jk TEXT, permanent_url TEXT,
-            UNIQUE(url)
-        )
-    """])
-    # Add columns if they don't exist
-    turso_execute(["ALTER TABLE all_jobs ADD COLUMN indeed_jk TEXT"])
-    turso_execute(["ALTER TABLE all_jobs ADD COLUMN permanent_url TEXT"])
-
-
-def store_jobs_batch(jobs):
-    if not jobs:
-        return 0
-    total_inserted = 0
-    for i in range(0, len(jobs), 50):
-        chunk = jobs[i:i+50]
-        statements = []
-        for job in chunk:
-            stmt = {
-                "sql": """INSERT OR IGNORE INTO all_jobs
-                          (title, company, location, date_posted, url, linkedin_url,
-                           source, role_search, fetched_at, indeed_jk, permanent_url)
-                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                "args": [
-                    {"type": "text", "value": str(job.get("title", ""))},
-                    {"type": "text", "value": str(job.get("company", ""))},
-                    {"type": "text", "value": str(job.get("location", ""))},
-                    {"type": "text", "value": str(job.get("date", ""))},
-                    {"type": "text", "value": str(job.get("url", ""))},
-                    {"type": "text", "value": ""},
-                    {"type": "text", "value": str(job.get("source", "indeed"))},
-                    {"type": "text", "value": str(job.get("role_search", ""))},
-                    {"type": "text", "value": str(job.get("fetchedAt", ""))},
-                    {"type": "text", "value": str(job.get("indeed_jk", ""))},
-                    {"type": "text", "value": str(job.get("permanent_url", ""))},
-                ],
-            }
-            statements.append(stmt)
-        result = turso_execute(statements)
-        if result:
-            for r in result.get("results", []):
-                if r.get("type") == "ok":
-                    total_inserted += r.get("response", {}).get("result", {}).get("affected_row_count", 0)
-    return total_inserted
-
+    pass
 
 def get_total_jobs():
-    result = turso_execute(["SELECT COUNT(*) FROM all_jobs"])
-    if result:
-        for r in result.get("results", []):
-            if r.get("type") == "ok":
-                rows = r.get("response", {}).get("result", {}).get("rows", [])
-                if rows:
-                    return int(rows[0][0].get("value", 0))
     return 0
+
+import storage
+def store_jobs_batch(jobs):
+    return storage.store_jobs_batch(jobs)
 
 
 # ---------------------------------------------------------------------------

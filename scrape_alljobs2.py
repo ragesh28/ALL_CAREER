@@ -114,117 +114,19 @@ def save_progress(role_idx, loc_idx, finished_all=False):
 # TURSO HELPERS
 # ---------------------------------------------------------------------------
 def d1_execute(sql, params=None):
-    if not CLOUDFLARE_URL or not CLOUDFLARE_TOKEN:
-        print("❌ Cloudflare D1 not configured!")
-        return None
-    headers = {
-        "Authorization": f"Bearer {CLOUDFLARE_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    body = {"sql": sql}
-    if params:
-        body["params"] = params
-        
-    try:
-        resp = requests.post(CLOUDFLARE_URL, headers=headers, json=body, timeout=30)
-        if resp.status_code != 200:
-            print(f"❌ D1 error {resp.status_code}: {resp.text[:200]}")
-            return None
-        return resp.json()
-    except Exception as e:
-        print(f"❌ D1 connection error: {e}")
-        return None
-
+    pass
 
 def setup_database():
-    print("📦 Setting up D1 database (all_jobs table)...")
-    d1_execute("""
-        CREATE TABLE IF NOT EXISTS all_jobs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_name TEXT, location TEXT, 
-            role TEXT, job_posted_date TEXT, 
-            apply_link TEXT, platform TEXT, search_keyword TEXT, UNIQUE(apply_link)
-        )
-    """)
-    print("✅ Database ready!")
+    pass
 
-
+import storage
 def store_jobs_batch(jobs):
-    if not jobs:
-        return 0
-
-    # 1. Fetch existing jobs natively from Cloudflare worker for strictly pure python deduplication
-    existing_urls = set()
-    try:
-        import requests
-        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
-        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/all_jobs", timeout=20)
-        if resp.status_code == 200:
-            existing_jobs = resp.json()
-            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
-    except Exception as e:
-        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
-
-    # 2. Deduplicate strictly in Python memory (ignoring D1 matches and internal duplicates)
-    new_jobs = []
-    seen_local_urls = set()
-    for job in jobs:
-        u = str(job.get("url", ""))
-        # Ignore if it exists already in Cloudflare, OR if we already saw it in this exact batch repeatedly!
-        if u and u not in existing_urls and u not in seen_local_urls:
-            new_jobs.append(job)
-            seen_local_urls.add(u)
-            
-    skipped = len(jobs) - len(new_jobs)
-    if skipped > 0:
-        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (either already in D1 or duplicate across cities).")
-
-    if not new_jobs:
-        return 0
-
-    total_inserted = 0
-    from datetime import datetime
-    for i in range(0, len(new_jobs), 14):
-        chunk = new_jobs[i:i + 14]
-        params = []
-        placeholders = []
-        for job in chunk:
-            placeholders.append("(?, ?, ?, ?, ?, ?, ?)")
-            params.extend([
-                str(job.get("company", "")),
-                str(job.get("location", "")),
-                str(job.get("title", "")),       # Map title to role
-                str(job.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
-                str(job.get("url", "")),
-                str(job.get("source", "")),      # Map source to platform
-                str(job.get("role_search", ""))  
-            ])
-            
-        sql = f"INSERT OR IGNORE INTO all_jobs (company_name, location, role, job_posted_date, apply_link, platform, search_keyword) VALUES {','.join(placeholders)}"
-        result = d1_execute(sql, params)
-        if result and result.get("success"):
-            for res in result.get("result", []):
-                total_inserted += res.get("meta", {}).get("changes", 0)
-    return total_inserted
-
+    return storage.store_jobs_batch(jobs)
 
 def cleanup_old_jobs():
-    cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
-    print(f"🧹 Cleaning jobs older than {cutoff}...")
-    result = d1_execute("DELETE FROM all_jobs WHERE job_posted_date < ?", [cutoff])
-    if result and result.get("success"):
-        for res in result.get("result", []):
-            deleted = res.get("meta", {}).get("changes", 0)
-            print(f"🗑️ Removed {deleted} old jobs")
-
+    pass
 
 def get_total_jobs():
-    result = d1_execute("SELECT COUNT(*) as c FROM all_jobs")
-    if result and result.get("success"):
-        for res in result.get("result", []):
-            rows = res.get("results", [])
-            if rows:
-                return int(rows[0].get("c", 0))
     return 0
 
 
