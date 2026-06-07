@@ -7,6 +7,10 @@ import urllib.parse
 import requests
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
+try:
+    from jobspy import scrape_jobs
+except ImportError:
+    scrape_jobs = None
 
 # Configure stdout to handle UTF-8 printing cleanly on Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -389,6 +393,144 @@ def scrape_hirist(role, city):
         print(f"    Hirist API error: {e}")
     return jobs
 
+def scrape_workindia(role, city):
+    print("  - Scraping WorkIndia...")
+    jobs = []
+    try:
+        role_fmt = role.lower().replace(" ", "-")
+        city_fmt = "bengaluru" if city.lower() == "bangalore" else city.lower().replace(" ", "-")
+        url = f"https://www.workindia.in/{role_fmt}-jobs-in-{city_fmt}/"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        }
+        r = requests.get(url, headers=headers, timeout=20)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, 'html.parser')
+            cards = soup.select('div[class*="JobCard"], div.JobCard, a[href*="/company/"]')
+            for card in cards:
+                title_el = card.select_one('h2, [class*="JobTitle"]')
+                company_el = card.select_one('h3, [class*="Company"]')
+                
+                title = title_el.text.strip() if title_el else ""
+                company = company_el.text.strip() if company_el else ""
+                
+                if card.name == 'a':
+                    job_url = "https://www.workindia.in" + card.get('href', '')
+                else:
+                    link = card.select_one('a')
+                    job_url = "https://www.workindia.in" + link.get('href', '') if link else ""
+                
+                if title and company:
+                    jobs.append({
+                        "title": title, "company": company, "location": city,
+                        "date_posted": datetime.now().strftime("%Y-%m-%d"), 
+                        "url": job_url, "source": "workindia", "role_search": role
+                    })
+    except Exception as e:
+        print(f"    WorkIndia error: {e}")
+    return jobs
+
+def scrape_internshala(role, city):
+    print("  - Scraping Internshala...")
+    jobs = []
+    try:
+        role_fmt = role.lower().replace(" ", "-")
+        city_fmt = city.lower().replace(" ", "-")
+        url = f"https://internshala.com/jobs/{role_fmt}-jobs-in-{city_fmt}/"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        }
+        r = requests.get(url, headers=headers, timeout=20)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, 'html.parser')
+            cards = soup.select('div.internship_meta, div.job-card, div.individual_internship')
+            for card in cards:
+                title_el = card.select_one('h3.job-internship-name a, h3.heading_4_5 a')
+                company_el = card.select_one('p.company-name, div.company_name a')
+                loc_el = card.select_one('p#location_names, div#location_names span')
+                
+                title = title_el.text.strip() if title_el else ""
+                company = company_el.text.strip() if company_el else ""
+                loc = loc_el.text.strip() if loc_el else city
+                job_url = "https://internshala.com" + title_el.get('href', '') if title_el else ""
+                
+                if title and company:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": datetime.now().strftime("%Y-%m-%d"), 
+                        "url": job_url, "source": "internshala", "role_search": role
+                    })
+    except Exception as e:
+        print(f"    Internshala error: {e}")
+    return jobs
+
+def scrape_freshersworld(role, city):
+    print("  - Scraping Freshersworld...")
+    jobs = []
+    try:
+        role_fmt = role.lower().replace(" ", "-")
+        city_fmt = city.lower().replace(" ", "-")
+        url = f"https://www.freshersworld.com/jobs/jobsearch/{role_fmt}-jobs-in-{city_fmt}"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        }
+        r = requests.get(url, headers=headers, timeout=20)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, 'html.parser')
+            cards = soup.select('div.job-container, div.job-detail-block, div.job-desc-block, div.col-md-12.col-lg-12.col-xs-12.padding-none.job-container')
+            for card in cards:
+                title_el = card.select_one('div.job-desc-title, span.wrap-title')
+                company_el = card.select_one('h3.latest-jobs-title, div.job-desc-company')
+                loc_el = card.select_one('span.job-location')
+                
+                title = title_el.text.strip() if title_el else ""
+                company = company_el.text.strip() if company_el else ""
+                loc = loc_el.text.strip() if loc_el else city
+                
+                link = card.parent if card.parent and card.parent.name == 'a' else None
+                if not link:
+                    link = card.select_one('a')
+                job_url = link.get('href', '') if link else ""
+                
+                if title and company:
+                    jobs.append({
+                        "title": title, "company": company, "location": loc,
+                        "date_posted": datetime.now().strftime("%Y-%m-%d"), 
+                        "url": job_url, "source": "freshersworld", "role_search": role
+                    })
+    except Exception as e:
+        print(f"    Freshersworld error: {e}")
+    return jobs
+
+def scrape_glassdoor(role, city):
+    print("  - Scraping Glassdoor (via JobSpy)...")
+    jobs = []
+    if not scrape_jobs:
+        print("    jobspy module not found.")
+        return jobs
+    try:
+        df = scrape_jobs(
+            site_name=["glassdoor"],
+            search_term=role,
+            location=city,
+            results_wanted=15,
+            country_indeed="india"
+        )
+        if df is not None and not df.empty:
+            for _, row in df.iterrows():
+                jobs.append({
+                    "title": str(row.get("title", "")),
+                    "company": str(row.get("company", "")),
+                    "location": str(row.get("location", city)),
+                    "date_posted": str(row.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
+                    "url": str(row.get("job_url", "")),
+                    "source": "glassdoor",
+                    "role_search": role
+                })
+    except Exception as e:
+        print(f"    Glassdoor JobSpy error: {e}")
+    return jobs
+
 def scrape_apna(role, city):
     global browser_instance
     if not browser_instance:
@@ -467,12 +609,12 @@ def scrape_apna(role, city):
 # ---------------------------------------------------------------------------
 def main():
     print("=" * 70)
-    print("  JOB PORTALS SCRAPER (SHINE, TIMESJOBS, HIRIST, APNA)")
+    print("  JOB PORTALS SCRAPER (SHINE, TIMESJOBS, HIRIST, APNA, WORKINDIA, INTERNSHALA, FRESHERSWORLD, GLASSDOOR)")
     print("=" * 70)
     print(f"  📅 Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  🔍 Roles Count: {len(SEARCH_ROLES)}")
     print(f"  📍 Cities Count: {len(LOCATIONS)}")
-    print(f"  🌐 Portals: Shine (Playwright), TimesJobs (API), Hirist (API), Apna (Playwright)")
+    print(f"  🌐 Portals: Shine (Playwright), TimesJobs (API), Hirist (API), Apna (Playwright), WorkIndia (Requests), Internshala (API), Freshersworld (Requests), Glassdoor (JobSpy)")
     print("=" * 70)
 
     cleanup_old_jobs()
@@ -487,8 +629,8 @@ def main():
     combo_num = start_role * len(LOCATIONS) + start_loc
     hit_time_limit = False
 
-    scraped_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0}
-    stored_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0}
+    scraped_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0, "workindia": 0, "internshala": 0, "freshersworld": 0, "glassdoor": 0}
+    stored_counts = {"shine": 0, "timesjobs": 0, "hirist": 0, "apna": 0, "workindia": 0, "internshala": 0, "freshersworld": 0, "glassdoor": 0}
 
     for r_idx in range(start_role, len(SEARCH_ROLES)):
         role = SEARCH_ROLES[r_idx]
@@ -536,6 +678,34 @@ def main():
             scraped_counts["apna"] += n; stored_counts["apna"] += ins
             total_inserted += ins
             print(f"      Apna          : {n:>4} scraped  |  {ins:>4} new stored")
+
+            # ── 5. WorkIndia ──
+            wi_jobs = scrape_workindia(role, city)
+            n = len(wi_jobs); ins = store_jobs_batch(wi_jobs)
+            scraped_counts["workindia"] += n; stored_counts["workindia"] += ins
+            total_inserted += ins
+            print(f"      WorkIndia     : {n:>4} scraped  |  {ins:>4} new stored")
+
+            # ── 6. Internshala ──
+            int_jobs = scrape_internshala(role, city)
+            n = len(int_jobs); ins = store_jobs_batch(int_jobs)
+            scraped_counts["internshala"] += n; stored_counts["internshala"] += ins
+            total_inserted += ins
+            print(f"      Internshala   : {n:>4} scraped  |  {ins:>4} new stored")
+
+            # ── 7. Freshersworld ──
+            fw_jobs = scrape_freshersworld(role, city)
+            n = len(fw_jobs); ins = store_jobs_batch(fw_jobs)
+            scraped_counts["freshersworld"] += n; stored_counts["freshersworld"] += ins
+            total_inserted += ins
+            print(f"      Freshersworld : {n:>4} scraped  |  {ins:>4} new stored")
+
+            # ── 8. Glassdoor ──
+            gd_jobs = scrape_glassdoor(role, city)
+            n = len(gd_jobs); ins = store_jobs_batch(gd_jobs)
+            scraped_counts["glassdoor"] += n; stored_counts["glassdoor"] += ins
+            total_inserted += ins
+            print(f"      Glassdoor     : {n:>4} scraped  |  {ins:>4} new stored")
 
             # Delay to avoid getting blocked
             time.sleep(2)

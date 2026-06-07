@@ -1,4 +1,4 @@
-name: Job Portals Scraper (Shine, TimesJobs, Hirist, Apna)
+name: Job Portals Scraper (Shine, TimesJobs, Hirist, Apna, WorkIndia, Internshala, Freshersworld, Glassdoor)
 
 on:
   workflow_dispatch:   # Manual trigger
@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4 playwright pandas
+          pip install requests beautifulsoup4 playwright pandas python-jobspy
 
       - name: Install Playwright Chromium with dependencies
         run: |
