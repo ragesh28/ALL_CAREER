@@ -7,13 +7,15 @@ MAX_FILE_SIZE = 45 * 1024 * 1024  # 45 MB
 
 def get_all_chunk_files():
     files = glob.glob("all_jobs_*.json")
-    if not files:
-        return []
-    try:
-        files.sort(key=lambda x: int(x.split("_")[2].split(".")[0]))
-    except Exception:
-        pass
-    return files
+    valid_files = []
+    for f in files:
+        parts = f.split("_")
+        if len(parts) >= 3:
+            chunk_part = parts[2].split(".")[0]
+            if chunk_part.isdigit():
+                valid_files.append((f, int(chunk_part)))
+    valid_files.sort(key=lambda x: x[1])
+    return [x[0] for x in valid_files]
 
 def load_all_existing_urls():
     seen = set()
@@ -22,7 +24,7 @@ def load_all_existing_urls():
             with open(f, 'r', encoding='utf-8') as file:
                 data = json.load(file)
                 for j in data:
-                    url = j.get("url") or j.get("linkedin_url")
+                    url = j.get("url") or j.get("apply_link") or j.get("linkedin_url")
                     if url:
                         seen.add(url)
         except Exception as e:

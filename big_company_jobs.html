@@ -664,7 +664,7 @@
                         date: job.fetched_at || "",
                         url: job.apply_url || job.url || "",
                         linkedin_url: job.linkedin_url || "",
-                        fetchedAt: job.fetched_at || ""
+                        fetchedAt: job.fetched_at || job.fetchedAt || job.date || job.date_posted || ""
                     });
                 }
                 
@@ -720,7 +720,10 @@
             for (let i=0;i<startDow;i++) h += `<div class="cal-day empty"></div>`;
             for (let day=1;day<=daysInMonth;day++) {
                 const date = new Date(calViewYear, calViewMonth, day); date.setHours(0,0,0,0);
-                const ds = date.toISOString().slice(0,10);
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                const ds = `${y}-${m}-${d}`;
                 const isFuture = date > today, isTooOld = date < minDate;
                 const disabled = isFuture || isTooOld;
                 const isToday = date.getTime() === today.getTime();
