@@ -323,17 +323,8 @@ def main():
     print(f"     📊 Total in Turso: {get_total_jobs()}")
     print(f"{'='*60}")
 
-    # Check time remaining — if we have time, retry all roles
-    elapsed = time.time() - START_TIME
-    remaining = MAX_RUN_SECONDS - elapsed
-    if remaining > 600 and not TEST_MODE:  # More than 10 min left
-        print(f"\n⏳ {int(remaining // 60)} minutes remaining. Restarting from beginning to scrape more today's jobs...")
-        save_progress(0, 0, finished_all=False)
-        # Recursive call to scrape again
-        main()
-    else:
-        save_progress(0, 0, finished_all=True)
-        print("✅ Run complete. Progress reset for next run.")
+    save_progress(0, 0, finished_all=True)
+    print("✅ Run complete. Progress reset for next run.")
 
 
 if __name__ == "__main__":

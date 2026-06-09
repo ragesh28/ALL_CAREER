@@ -628,6 +628,14 @@
         let currentPage = 1;
         const JOBS_PER_PAGE = 100;
         let activeRole = '';
+        const roleCache = {};
+
+        function getCategoryFilename(category) {
+            let s = category.toLowerCase().replace(/\//g, '_').replace(/-/g, '_');
+            s = s.replace(/\s+/g, '_');
+            s = s.replace(/[^a-z0-9_]/g, '');
+            return `${s}.json`;
+        }
         let activeDate = 'All';
         let activeExp = '';
         let selectedPortals = new Set(); // multi-select portal filter
@@ -784,17 +792,50 @@
             btn.classList.toggle('active');
         }
 
-        function selectRole(el) {
+        async function selectRole(el) {
             const roleName = el.textContent.trim();
+            const badge = document.getElementById('activeRoleBadge');
+            
             if (el.classList.contains('active')) {
-                el.classList.remove('active'); activeRole = '';
-                document.getElementById('activeRoleBadge').style.display = 'none';
+                el.classList.remove('active'); 
+                activeRole = '';
+                badge.style.display = 'none';
             } else {
                 document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
-                el.classList.add('active'); activeRole = roleName;
-                const badge = document.getElementById('activeRoleBadge');
+                el.classList.add('active'); 
+                activeRole = roleName;
                 badge.innerHTML = `${roleName} <span class="clear-role" onclick="clearRole(event)">✕</span>`;
                 badge.style.display = 'inline-block';
+                
+                // If not in cache, fetch it
+                if (!roleCache[roleName]) {
+                    const loading = document.getElementById('loading');
+                    loading.style.display = 'block';
+                    loading.innerHTML = `Loading jobs for ${roleName}...`;
+                    
+                    try {
+                        const filename = getCategoryFilename(roleName);
+                        const response = await fetch(`jobs_by_role/${filename}`);
+                        if (!response.ok) throw new Error(`Status ${response.status}`);
+                        const rawJobs = await response.json();
+                        
+                        roleCache[roleName] = rawJobs.map(job => ({
+                            title: job.role || job.title || "",
+                            company: job.company_name || job.company || "",
+                            location: job.location || "",
+                            date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
+                            url: job.apply_link || job.url || job.linkedin_url || "",
+                            linkedin_url: job.linkedin_url || "",
+                            source: job.platform || job.source || "",
+                            role_search: job.search_keyword || job.role_search || "",
+                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""
+                        }));
+                    } catch (error) {
+                        console.error(`Failed to load role ${roleName}:`, error);
+                        roleCache[roleName] = [];
+                    }
+                    loading.style.display = 'none';
+                }
             }
             applyFilters();
         }
@@ -1005,7 +1046,10 @@
             const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
             const loc = document.getElementById('locationFilter').value;
 
-            filteredJobs = allJobs.filter(j => {
+            // Use role-specific dataset if available, otherwise fallback to master list
+            const jobsToFilter = (activeRole && roleCache[activeRole]) ? roleCache[activeRole] : allJobs;
+
+            filteredJobs = jobsToFilter.filter(j => {
                 const titleLow = (j.title || '').toLowerCase();
                 const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
 
@@ -1021,8 +1065,8 @@
                     if (!selectedPortals.has(src)) return false;
                 }
 
-                // Role filter — check title keywords OR role_search field
-                if (activeRole && ROLE_KEYWORDS[activeRole]) {
+                // Backup role filter if role cache is somehow not populated yet
+                if (activeRole && !roleCache[activeRole] && ROLE_KEYWORDS[activeRole]) {
                     const keywords = ROLE_KEYWORDS[activeRole];
                     const roleSearch = (j.role_search || '').toLowerCase();
                     const matchTitle = keywords.some(kw => titleLow.includes(kw));

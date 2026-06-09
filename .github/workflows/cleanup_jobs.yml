@@ -1,0 +1,39 @@
+name: Cleanup & Reorganize Jobs Database
+
+on:
+  workflow_dispatch:   # Manual trigger only
+
+jobs:
+  cleanup-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pandas
+
+      - name: Run Cleanup & Classification Pipeline
+        run: python cleanup_pipeline.py
+
+      - name: Commit and Push Clean Database
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Stage changes including deletes, updates, and new files
+          git add all_jobs_*.json role_index.json jobs_by_role/*.json || true
+          
+          git commit -m "chore(db): run database cleanup and role categorization [skip ci]" || echo "No changes to commit"
+          git pull --rebase -X theirs --autostash origin main
+          git push
