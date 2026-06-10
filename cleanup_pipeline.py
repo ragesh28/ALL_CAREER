@@ -40,7 +40,7 @@ def run_pipeline():
     clean_jobs = []
     
     from datetime import datetime, timedelta
-    cutoff_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    cutoff_date = (datetime.now() - timedelta(days=25)).strftime("%Y-%m-%d")
     
     stats = Counter()
     category_counts = Counter()
@@ -79,7 +79,7 @@ def run_pipeline():
         
     print("\nCleanup and Classification Statistics:")
     print(f"  Invalid/Garbage filtered: {stats['invalid_garbage']}")
-    print(f"  Older than 30 days: {stats['old_date']}")
+    print(f"  Older than 25 days: {stats['old_date']}")
     print(f"  URL duplicates filtered: {stats['duplicate_url']}")
     print(f"  Title+Company+Location duplicates filtered: {stats['duplicate_tc']}")
     print(f"  Clean unique jobs remaining: {stats['valid']}")

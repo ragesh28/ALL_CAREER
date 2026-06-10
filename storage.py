@@ -110,7 +110,7 @@ def store_jobs_batch(jobs):
     if not jobs:
         return 0
         
-    cutoff_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    cutoff_date = (datetime.now() - timedelta(days=25)).strftime("%Y-%m-%d")
     
     seen_urls, seen_tc_keys = load_existing_keys()
     new_jobs = []
