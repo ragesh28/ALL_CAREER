@@ -39,6 +39,21 @@ def get_job_url(job):
     )
     return normalize_url(raw_url)
 
+def get_job_date(job):
+    """Extract and normalize date from any possible date field."""
+    date_keys = ["date_posted", "job_posted_date", "date", "fetched_at", "fetchedAt"]
+    for key in date_keys:
+        val = job.get(key)
+        if val:
+            val_str = str(val).strip()
+            if val_str.lower() not in ("none", "nan", "null", "undefined", ""):
+                if len(val_str) >= 10:
+                    match = re.match(r'^(\d{4})[-/](\d{1,2})[-/](\d{1,2})', val_str)
+                    if match:
+                        return f"{match.group(1)}-{int(match.group(2)):02d}-{int(match.group(3)):02d}"
+                return val_str
+    return ""
+
 NON_ALPHANUM = re.compile(r'[^a-z0-9]')
 HAS_ALPHA = re.compile(r'[a-zA-Z]')
 
@@ -122,8 +137,14 @@ def store_jobs_batch(jobs):
         url = get_job_url(j)
         tc_key = get_job_title_company_key(j)
         
-        date_str = j.get("date_posted", "") or j.get("fetchedAt", "") or j.get("date", "")
-        # Filter older than 30 days
+        date_str = get_job_date(j)
+        if not date_str:
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            j["date_posted"] = date_str
+            if "job_posted_date" in j or "platform" in j:
+                j["job_posted_date"] = date_str
+                
+        # Filter older than 25 days
         if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
             continue
             

@@ -50,8 +50,12 @@ def run_pipeline():
             stats["invalid_garbage"] += 1
             continue
             
-        date_str = j.get("date_posted", "") or j.get("fetchedAt", "") or j.get("date", "")
-        if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
+        date_str = storage.get_job_date(j)
+        if not date_str:
+            stats["missing_date"] += 1
+            continue
+            
+        if len(date_str) >= 10 and date_str[:10] < cutoff_date:
             stats["old_date"] += 1
             continue
             
@@ -79,6 +83,7 @@ def run_pipeline():
         
     print("\nCleanup and Classification Statistics:")
     print(f"  Invalid/Garbage filtered: {stats['invalid_garbage']}")
+    print(f"  Missing/Invalid date filtered: {stats['missing_date']}")
     print(f"  Older than 25 days: {stats['old_date']}")
     print(f"  URL duplicates filtered: {stats['duplicate_url']}")
     print(f"  Title+Company+Location duplicates filtered: {stats['duplicate_tc']}")
