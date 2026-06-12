@@ -525,39 +525,9 @@ def scrape_freshersworld(role, city):
     return jobs
 
 def scrape_glassdoor(role, city):
-    print("  - Scraping Glassdoor (via JobSpy)...")
-    jobs = []
-    if not scrape_jobs:
-        print("    jobspy module not found.")
-        return jobs
-        
-    cutoff_date = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
-    
-    try:
-        df = scrape_jobs(
-            site_name=["glassdoor"],
-            search_term=role,
-            location=city,
-            results_wanted=60,
-            country_indeed="india"
-        )
-        if df is not None and not df.empty:
-            for _, row in df.iterrows():
-                date_posted = str(row.get("date_posted", datetime.now().strftime("%Y-%m-%d")))
-                if date_posted < cutoff_date:
-                    continue
-                jobs.append({
-                    "title": str(row.get("title", "")),
-                    "company": str(row.get("company", "")),
-                    "location": str(row.get("location", city)),
-                    "date_posted": date_posted,
-                    "url": str(row.get("job_url", "")),
-                    "source": "glassdoor",
-                    "role_search": role
-                })
-    except Exception as e:
-        print(f"    Glassdoor JobSpy error: {e}")
-    return jobs
+    print("  - Scraping Glassdoor (via JobSpy is unsupported in local version)...")
+    print("    Glassdoor is not supported by the local version of JobSpy. Skipping Glassdoor.")
+    return []
 
 def scrape_apna(role, city):
     print("  - Scraping Apna (via API)...")
@@ -592,6 +562,13 @@ def scrape_apna(role, city):
                     city_id = filter_obj.get("nb_location_city_id")
                     state_name = filter_obj.get("state_name")
                     
+                    # Resolve state_name from cityList if not present in filter
+                    if city_id and not state_name:
+                        for c_item in pageProps.get("cityList", []):
+                            if c_item.get("id") == city_id:
+                                state_name = c_item.get("state")
+                                break
+                                
                     if not city_id and "city" in pageProps.get("filters", {}):
                         city_list = pageProps.get("filters", {}).get("city", [])
                         if city_list:
