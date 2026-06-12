@@ -145,12 +145,10 @@ def scrape_foundit(role, city):
     print("  - Scraping Foundit (curl_cffi + ScraperAPI - 1 credit)...")
     role_clean = role.replace(" ", "-").lower()
     city_clean = city.lower().split(",")[0].strip()
-    url = f"https://www.foundit.in/search/{role_clean}-jobs-in-{city_clean}?jobFreshness=1"
     
     jobs = []
     try:
         from curl_cffi import requests as curl_requests
-        
         proxy_url = f"http://scraperapi:{SCRAPERAPI_KEY}@proxy-server.scraperapi.com:8001"
         
         headers = {
@@ -166,105 +164,112 @@ def scrape_foundit(role, city):
             "Upgrade-Insecure-Requests": "1",
         }
         
-        resp = curl_requests.get(
-            url, headers=headers, impersonate="chrome124",
-            proxies={"http": proxy_url, "https": proxy_url},
-            timeout=60, verify=False
-        )
-        
-        if resp.status_code == 200:
-            html = resp.text
-            
-            # Parse Next.js RSC payload to extract job data
-            push_payloads = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html, re.DOTALL)
-            all_rsc = ""
-            for payload in push_payloads:
-                unescaped = payload.replace('\\n', '\n').replace('\\t', '\t')
-                unescaped = unescaped.replace('\\"', '"').replace('\\\\', '\\')
-                all_rsc += unescaped + "\n"
-            
-            # Extract job objects from RSC data
-            seen_ids = set()
-            for match in re.finditer(r'"jobId"\s*:\s*(\d+)', all_rsc):
-                job_id = match.group(1)
-                if job_id in seen_ids:
-                    continue
-                seen_ids.add(job_id)
+        for page in range(1, 5):
+            url = f"https://www.foundit.in/search/{role_clean}-jobs-in-{city_clean}?start={page}&limit=20&jobFreshness=1"
+            print(f"    Page {page}: {url}")
+            try:
+                resp = curl_requests.get(
+                    url, headers=headers, impersonate="chrome124",
+                    proxies={"http": proxy_url, "https": proxy_url},
+                    timeout=60, verify=False
+                )
                 
-                # Find enclosing JSON object
-                pos = match.start()
-                brace_count = 0
-                start_pos = pos
-                while start_pos > 0:
-                    start_pos -= 1
-                    if all_rsc[start_pos] == '}':
-                        brace_count += 1
-                    elif all_rsc[start_pos] == '{':
-                        if brace_count == 0:
-                            break
-                        brace_count -= 1
-                
-                brace_count = 0
-                end_pos = start_pos
-                while end_pos < len(all_rsc):
-                    if all_rsc[end_pos] == '{':
-                        brace_count += 1
-                    elif all_rsc[end_pos] == '}':
-                        brace_count -= 1
-                        if brace_count == 0:
+                if resp.status_code == 200:
+                    html = resp.text
+                    
+                    # Parse Next.js RSC payload to extract job data
+                    push_payloads = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html, re.DOTALL)
+                    all_rsc = ""
+                    for payload in push_payloads:
+                        unescaped = payload.replace('\\n', '\n').replace('\\t', '\t')
+                        unescaped = unescaped.replace('\\"', '"').replace('\\\\', '\\')
+                        all_rsc += unescaped + "\n"
+                    
+                    # Extract job objects from RSC data
+                    seen_ids = set()
+                    for match in re.finditer(r'"jobId"\s*:\s*(\d+)', all_rsc):
+                        job_id = match.group(1)
+                        if job_id in seen_ids:
+                            continue
+                        seen_ids.add(job_id)
+                        
+                        # Find enclosing JSON object
+                        pos = match.start()
+                        brace_count = 0
+                        start_pos = pos
+                        while start_pos > 0:
+                            start_pos -= 1
+                            if all_rsc[start_pos] == '}':
+                                brace_count += 1
+                            elif all_rsc[start_pos] == '{':
+                                if brace_count == 0:
+                                    break
+                                brace_count -= 1
+                        
+                        brace_count = 0
+                        end_pos = start_pos
+                        while end_pos < len(all_rsc):
+                            if all_rsc[end_pos] == '{':
+                                brace_count += 1
+                            elif all_rsc[end_pos] == '}':
+                                brace_count -= 1
+                                if brace_count == 0:
+                                    end_pos += 1
+                                    break
                             end_pos += 1
-                            break
-                    end_pos += 1
-                
-                json_str = all_rsc[start_pos:end_pos]
-                
-                try:
-                    job_obj = json.loads(json_str)
-                    
-                    title = job_obj.get("title", "")
-                    company = ""
-                    company_data = job_obj.get("company", {})
-                    if isinstance(company_data, dict):
-                        company = company_data.get("name", "")
-                    if not company:
-                        company = job_obj.get("recruiterName", "")
-                    
-                    # Location
-                    loc_list = job_obj.get("locations", [])
-                    loc_str = city
-                    if isinstance(loc_list, list) and loc_list:
-                        loc_names = []
-                        for loc in loc_list:
-                            if isinstance(loc, dict):
-                                loc_names.append(loc.get("label", loc.get("name", "")))
-                            elif isinstance(loc, str):
-                                loc_names.append(loc)
-                        if loc_names:
-                            loc_str = ", ".join(loc_names)
-                    
-                    # URL
-                    jd_url = job_obj.get("jdUrl", "")
-                    full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
-                    
-                    # Posted date
-                    date_posted = datetime.now().strftime("%Y-%m-%d")
-                    updated_at = job_obj.get("updatedAt", 0)
-                    if updated_at:
+                        
+                        json_str = all_rsc[start_pos:end_pos]
+                        
                         try:
-                            date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
-                        except:
+                            job_obj = json.loads(json_str)
+                            
+                            title = job_obj.get("title", "")
+                            company = ""
+                            company_data = job_obj.get("company", {})
+                            if isinstance(company_data, dict):
+                                company = company_data.get("name", "")
+                            if not company:
+                                company = job_obj.get("recruiterName", "")
+                            
+                            # Location
+                            loc_list = job_obj.get("locations", [])
+                            loc_str = city
+                            if isinstance(loc_list, list) and loc_list:
+                                loc_names = []
+                                for loc in loc_list:
+                                    if isinstance(loc, dict):
+                                        loc_names.append(loc.get("label", loc.get("name", "")))
+                                    elif isinstance(loc, str):
+                                        loc_names.append(loc)
+                                if loc_names:
+                                    loc_str = ", ".join(loc_names)
+                            
+                            # URL
+                            jd_url = job_obj.get("jdUrl", "")
+                            full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
+                            
+                            # Posted date
+                            date_posted = datetime.now().strftime("%Y-%m-%d")
+                            updated_at = job_obj.get("updatedAt", 0)
+                            if updated_at:
+                                try:
+                                    date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
+                                except:
+                                    pass
+                            
+                            if title and full_url:
+                                jobs.append({
+                                    "title": title, "company": company, "location": loc_str,
+                                    "date_posted": date_posted, "url": full_url,
+                                    "source": "foundit", "role_search": role
+                                })
+                        except json.JSONDecodeError:
                             pass
-                    
-                    if title and full_url:
-                        jobs.append({
-                            "title": title, "company": company, "location": loc_str,
-                            "date_posted": date_posted, "url": full_url,
-                            "source": "foundit", "role_search": role
-                        })
-                except json.JSONDecodeError:
-                    pass
-        else:
-            print(f"    Foundit returned {resp.status_code}")
+                else:
+                    print(f"    Foundit returned {resp.status_code}")
+            except Exception as e:
+                print(f"    Foundit error: {e}")
+            time.sleep(1)
     except ImportError:
         print("    curl_cffi not installed! Run: pip install curl_cffi")
     except Exception as e:

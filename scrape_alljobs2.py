@@ -35,7 +35,7 @@ from datetime import datetime, timedelta
 CLOUDFLARE_URL = os.environ.get("CLOUDFLARE_D1_URL", "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query")
 CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 
-RESULTS_PER_SEARCH = 20
+RESULTS_PER_SEARCH = 80
 KEEP_DAYS = 30
 PROGRESS_FILE = "alljobs2_progress.json"
 

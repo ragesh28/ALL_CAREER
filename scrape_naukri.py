@@ -21,7 +21,7 @@ START_TIME      = time.time()
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60   # 5 h 50 m
 
 # Pages to scrape per (role, city) combination
-PAGES = [1, 2, 3]
+PAGES = [1, 2, 3, 4]
 
 # 50+ roles — tech + non-tech
 SEARCH_ROLES = [
