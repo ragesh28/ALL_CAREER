@@ -530,22 +530,27 @@ def scrape_glassdoor(role, city):
     if not scrape_jobs:
         print("    jobspy module not found.")
         return jobs
+        
+    cutoff_date = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
+    
     try:
         df = scrape_jobs(
             site_name=["glassdoor"],
             search_term=role,
             location=city,
             results_wanted=60,
-            hours_old=72,
             country_indeed="india"
         )
         if df is not None and not df.empty:
             for _, row in df.iterrows():
+                date_posted = str(row.get("date_posted", datetime.now().strftime("%Y-%m-%d")))
+                if date_posted < cutoff_date:
+                    continue
                 jobs.append({
                     "title": str(row.get("title", "")),
                     "company": str(row.get("company", "")),
                     "location": str(row.get("location", city)),
-                    "date_posted": str(row.get("date_posted", datetime.now().strftime("%Y-%m-%d"))),
+                    "date_posted": date_posted,
                     "url": str(row.get("job_url", "")),
                     "source": "glassdoor",
                     "role_search": role
@@ -557,8 +562,10 @@ def scrape_glassdoor(role, city):
 def scrape_apna(role, city):
     print("  - Scraping Apna (via API)...")
     role_enc = role.replace(" ", "-").lower()
-    city_enc = city.lower().split(",")[0].strip().replace(" ", "-")
-    url = f"https://apna.co/jobs/{role_enc}-jobs-in-{city_enc}"
+    
+    city_lower = city.lower().split(",")[0].strip()
+    city_slug = "bengaluru" if city_lower == "bangalore" else city_lower.replace(" ", "-")
+    url = f"https://apna.co/jobs/{role_enc}-jobs-in-{city_slug}"
     jobs = []
     
     headers = {
