@@ -54,6 +54,7 @@ jobs:
         run: |
           git config --local user.name  "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          python merge_scraped_jobs.py || true
           git add naukri_progress.json  all_jobs_*.json || true
           git diff --cached --quiet || git commit -m "chore: naukri progress checkpoint [skip ci]"
           git pull --rebase -X theirs --autostash origin main

@@ -152,6 +152,7 @@ def store_jobs_batch(jobs):
             
     new_jobs_added = 0
     db_changed = False
+    jobs_to_save_temp = []
     
     for j in jobs:
         if not is_valid_job(j):
@@ -203,6 +204,7 @@ def store_jobs_batch(jobs):
             
             if job_updated:
                 db_changed = True
+                jobs_to_save_temp.append(existing_job)
             continue
             
         # It's a brand new job!
@@ -219,6 +221,7 @@ def store_jobs_batch(jobs):
             
         new_jobs_added += 1
         db_changed = True
+        jobs_to_save_temp.append(j)
 
     if not db_changed:
         return 0
@@ -290,6 +293,24 @@ def store_jobs_batch(jobs):
     except Exception as e:
         print(f"Error writing to role_index.json: {e}")
         
+    # 4. Save newly added/updated jobs to temp_new_jobs.json if not in merging mode
+    if jobs_to_save_temp and not os.environ.get("IS_MERGING_TEMP"):
+        temp_file = "temp_new_jobs.json"
+        existing_temp = []
+        if os.path.exists(temp_file):
+            try:
+                with open(temp_file, "r", encoding="utf-8") as tf:
+                    existing_temp = json.load(tf)
+            except Exception:
+                existing_temp = []
+        existing_temp.extend(jobs_to_save_temp)
+        try:
+            with open(temp_file, "w", encoding="utf-8") as tf:
+                json.dump(existing_temp, tf, separators=(',', ':'))
+            print(f"      Saved {len(jobs_to_save_temp)} jobs to temporary buffer {temp_file}.")
+        except Exception as e:
+            print(f"Error writing to temp_new_jobs.json: {e}")
+            
     return new_jobs_added
 
 

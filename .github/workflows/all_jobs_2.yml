@@ -37,6 +37,7 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          python merge_scraped_jobs.py || true
           git add alljobs2_progress.json all_jobs_*.json role_index.json jobs_by_role/*.json || true
           git commit -m "chore: save alljobs2 scraper progress [skip ci]" || echo "No changes to commit"
           git pull --rebase -X theirs --autostash origin main

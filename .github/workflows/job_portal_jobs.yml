@@ -40,6 +40,7 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          python merge_scraped_jobs.py || true
           git add job_portals_progress.json  all_jobs_*.json || true
           git commit -m "chore: save job portals scraper progress [skip ci]" || echo "No progress changes to commit"
           git pull --rebase -X theirs --autostash origin main
