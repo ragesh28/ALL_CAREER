@@ -802,6 +802,9 @@
                 return;
             }
             
+            // Sort by fetchedAt descending (newest first)
+            allJobs.sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
+            
             buildCalCounts();
             applyFilters();
             loading.style.display = 'none';

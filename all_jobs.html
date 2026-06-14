@@ -833,7 +833,7 @@
                             role_search: String(job.search_keyword || job.role_search || ""),
                             fetchedAt: String(job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""),
                             walking_interview: job.walking_interview || false
-                        }));
+                        })).sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
                     } catch (error) {
                         console.error(`Failed to load role ${roleName}:`, error);
                         roleCache[roleName] = [];
@@ -1035,6 +1035,10 @@
             if (allJobs.error) {
                 loading.innerHTML = `<div style="color:#ef4444; text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p><p>Please try clearing your browser cache and doing a hard refresh (Ctrl+F5).</p></div>`;
                 return;
+            }
+            
+            if (Array.isArray(allJobs)) {
+                allJobs.sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
             }
             
             if (!Array.isArray(allJobs) || allJobs.length === 0) {
