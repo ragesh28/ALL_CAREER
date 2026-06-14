@@ -127,8 +127,31 @@ def store_jobs_batch(jobs):
         
     cutoff_date = (datetime.now() - timedelta(days=25)).strftime("%Y-%m-%d")
     
-    seen_urls, seen_tc_keys = load_existing_keys()
-    new_jobs = []
+    # Load all existing jobs from all chunks
+    all_existing_jobs = []
+    chunk_files = get_all_chunk_files()
+    for f in chunk_files:
+        try:
+            with open(f, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                if isinstance(data, list):
+                    all_existing_jobs.extend(data)
+        except Exception as e:
+            print(f"Error loading {f}: {e}")
+            
+    # Index them by tc_key and url for quick lookup
+    url_map = {}
+    tc_map = {}
+    for j in all_existing_jobs:
+        url = get_job_url(j)
+        if url:
+            url_map[url] = j
+        tc_key = get_job_title_company_key(j)
+        if tc_key:
+            tc_map[tc_key] = j
+            
+    new_jobs_added = 0
+    db_changed = False
     
     for j in jobs:
         if not is_valid_job(j):
@@ -148,105 +171,125 @@ def store_jobs_batch(jobs):
         if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
             continue
             
-        # Check URL duplicate
-        if url and url in seen_urls:
+        # Check if it already exists
+        existing_job = None
+        if url and url in url_map:
+            existing_job = url_map[url]
+        elif tc_key and tc_key in tc_map:
+            existing_job = tc_map[tc_key]
+            
+        if existing_job is not None:
+            # We found a duplicate! Let's check if we should enrich/update it.
+            job_updated = False
+            
+            # 1. Update walking_interview
+            # If the new job is walking_interview=True, and the existing is not, update it
+            new_walking = j.get("walking_interview")
+            old_walking = existing_job.get("walking_interview")
+            if new_walking is True and old_walking is not True:
+                existing_job["walking_interview"] = True
+                job_updated = True
+                print(f"      Enriched existing job with walking_interview=True: {existing_job.get('title')} @ {existing_job.get('company')}")
+                
+            # 2. Enrich other missing fields
+            enrich_fields = ["experience", "salary", "qualification", "last_date", "other_details"]
+            for field in enrich_fields:
+                new_val = j.get(field)
+                old_val = existing_job.get(field)
+                if new_val not in (None, "", "null") and old_val in (None, "", "null"):
+                    existing_job[field] = new_val
+                    job_updated = True
+                    print(f"      Enriched field '{field}' for existing job: {new_val}")
+            
+            if job_updated:
+                db_changed = True
             continue
             
-        # Check Title+Company+Location duplicate
-        if tc_key and tc_key in seen_tc_keys:
-            continue
-            
-        new_jobs.append(j)
-        if url:
-            seen_urls.add(url)
-        if tc_key:
-            seen_tc_keys.add(tc_key)
-            
-    if not new_jobs:
-        return 0
-        
-    # Classify new jobs and add role_category field
-    import role_classifier
-    for j in new_jobs:
+        # It's a brand new job!
+        # Classify role
+        import role_classifier
         category = role_classifier.classify_job(j)
         j['role_category'] = category
         
-    # Update role_index.json
-    role_index_file = "role_index.json"
-    role_counts = {}
-    if os.path.exists(role_index_file):
-        try:
-            with open(role_index_file, 'r', encoding='utf-8') as fh:
-                role_counts = json.load(fh)
-        except Exception:
-            role_counts = {}
+        all_existing_jobs.append(j)
+        if url:
+            url_map[url] = j
+        if tc_key:
+            tc_map[tc_key] = j
             
-    # Group new jobs by category for file writing
-    jobs_by_cat = {}
-    for j in new_jobs:
-        cat = j.get('role_category') or 'Other'
+        new_jobs_added += 1
+        db_changed = True
+
+    if not db_changed:
+        return 0
+        
+    import shutil
+    # Re-write all chunks, rebuild jobs_by_role, and update role_index.json
+    
+    # 1. Rewrite chunk files
+    for f in chunk_files:
+        try:
+            os.remove(f)
+        except Exception:
+            pass
+            
+    current_chunk = 1
+    current_data = []
+    current_bytes = 2  # for '[]'
+    
+    for j in all_existing_jobs:
+        j_str = json.dumps(j, separators=(',', ':'))
+        j_bytes = len(j_str.encode('utf-8'))
+        comma = 1 if current_data else 0
+        
+        if current_bytes + j_bytes + comma > MAX_FILE_SIZE:
+            with open(f"all_jobs_{current_chunk}.json", 'w', encoding='utf-8') as fh:
+                json.dump(current_data, fh, separators=(',', ':'))
+            current_chunk += 1
+            current_data = [j]
+            current_bytes = 2 + j_bytes
+        else:
+            current_data.append(j)
+            current_bytes += j_bytes + comma
+            
+    if current_data:
+        with open(f"all_jobs_{current_chunk}.json", 'w', encoding='utf-8') as fh:
+            json.dump(current_data, fh, separators=(',', ':'))
+            
+    # 2. Rebuild jobs_by_role/
+    role_dir = "jobs_by_role"
+    if os.path.exists(role_dir):
+        try:
+            shutil.rmtree(role_dir)
+        except Exception as e:
+            print(f"Error removing jobs_by_role: {e}")
+    os.makedirs(role_dir, exist_ok=True)
+    
+    grouped = {}
+    role_counts = {}
+    for j in all_existing_jobs:
+        cat = j.get('role_category', 'Other')
+        if cat not in grouped:
+            grouped[cat] = []
+        grouped[cat].append(j)
         role_counts[cat] = role_counts.get(cat, 0) + 1
         
-        if cat not in jobs_by_cat:
-            jobs_by_cat[cat] = []
-        jobs_by_cat[cat].append(j)
-        
-    # Save updated role_index.json
-    try:
-        with open(role_index_file, 'w', encoding='utf-8') as fh:
-            json.dump(role_counts, fh, indent=2)
-    except Exception as e:
-        print(f"Error updating role_index.json: {e}")
-        
-    # Save incremental jobs to jobs_by_role files
-    os.makedirs("jobs_by_role", exist_ok=True)
-    for cat, cat_jobs in jobs_by_cat.items():
+    for cat, cat_jobs in grouped.items():
         filename = get_category_filename(cat)
-        filepath = os.path.join("jobs_by_role", filename)
-        
-        existing_cat_jobs = []
-        if os.path.exists(filepath):
-            try:
-                with open(filepath, 'r', encoding='utf-8') as fh:
-                    existing_cat_jobs = json.load(fh)
-            except Exception:
-                existing_cat_jobs = []
-                
-        existing_cat_jobs.extend(cat_jobs)
-        
+        filepath = os.path.join(role_dir, filename)
         try:
             with open(filepath, 'w', encoding='utf-8') as fh:
-                json.dump(existing_cat_jobs, fh, separators=(',', ':'))
+                json.dump(cat_jobs, fh, separators=(',', ':'))
         except Exception as e:
             print(f"Error writing to {filepath}: {e}")
             
-    files = get_all_chunk_files()
-    if not files:
-        latest_file = "all_jobs_1.json"
-        latest_data = []
-    else:
-        latest_file = files[-1]
-        try:
-            with open(latest_file, 'r', encoding='utf-8') as f:
-                latest_data = json.load(f)
-        except Exception:
-            latest_data = []
-            
-    # Check size, if > 45MB, roll over to a new file
-    if os.path.exists(latest_file) and os.path.getsize(latest_file) > MAX_FILE_SIZE:
-        chunk_num = 1
-        try:
-            chunk_num = int(latest_file.split("_")[2].split(".")[0]) + 1
-        except Exception:
-            chunk_num = len(files) + 1
-        latest_file = f"all_jobs_{chunk_num}.json"
-        latest_data = []
+    # 3. Update role_index.json
+    try:
+        with open("role_index.json", 'w', encoding='utf-8') as fh:
+            json.dump(role_counts, fh, indent=2)
+    except Exception as e:
+        print(f"Error writing to role_index.json: {e}")
         
-    latest_data.extend(new_jobs)
-    
-    with open(latest_file, 'w', encoding='utf-8') as f:
-        json.dump(latest_data, f, separators=(',', ':'))
-        
-    return len(new_jobs)
+    return new_jobs_added
 
 
