@@ -258,11 +258,11 @@ def extract_job_with_ollama(text, max_retries=3):
     return None
 
 # ---------------------------------------------------------------------------
-# 20-DAY CLEANUP — remove stale jobs from all_jobs_*.json and jobs_by_role/
+# 20-DAY CLEANUP — remove stale TELEGRAM jobs only from all_jobs_*.json
 # ---------------------------------------------------------------------------
 def cleanup_old_jobs(max_age_days=20):
-    """Remove jobs older than max_age_days from the shared database."""
-    print(f"\n🧹 Running cleanup: removing jobs older than {max_age_days} days...")
+    """Remove ONLY Telegram-sourced jobs older than max_age_days. Portal jobs are untouched."""
+    print(f"\n🧹 Running cleanup: removing Telegram jobs older than {max_age_days} days...")
 
     cutoff_date = (datetime.now() - timedelta(days=max_age_days)).strftime("%Y-%m-%d")
     chunk_files = storage.get_all_chunk_files() if storage else []
@@ -272,7 +272,7 @@ def cleanup_old_jobs(max_age_days=20):
         return
 
     total_before = 0
-    total_after = 0
+    telegram_removed = 0
     all_clean_jobs = []
 
     for f in chunk_files:
@@ -281,18 +281,19 @@ def cleanup_old_jobs(max_age_days=20):
                 jobs = json.load(fh)
                 total_before += len(jobs)
                 for j in jobs:
-                    date_str = storage.get_job_date(j)
-                    # Keep jobs that have no date or are within cutoff
-                    if not date_str or len(date_str) < 10 or date_str[:10] >= cutoff_date:
-                        all_clean_jobs.append(j)
+                    source = (j.get("platform") or j.get("source") or "").lower()
+                    # Only clean up Telegram jobs — keep ALL other sources
+                    if source == "telegram":
+                        date_str = storage.get_job_date(j)
+                        if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
+                            telegram_removed += 1
+                            continue  # Skip this stale Telegram job
+                    all_clean_jobs.append(j)
         except Exception as e:
             print(f"  Error reading {f}: {e}")
 
-    total_after = len(all_clean_jobs)
-    removed = total_before - total_after
-
-    if removed == 0:
-        print(f"  No stale jobs found. All {total_before} jobs are within {max_age_days} days.")
+    if telegram_removed == 0:
+        print(f"  No stale Telegram jobs found. All {total_before} jobs retained.")
         return
 
     # Rewrite chunk files
@@ -351,7 +352,7 @@ def cleanup_old_jobs(max_age_days=20):
     with open(os.path.join(WORKSPACE_DIR, "role_index.json"), 'w', encoding='utf-8') as fh:
         json.dump(role_counts, fh, indent=2)
 
-    print(f"  ✅ Cleanup complete: removed {removed} stale jobs ({total_before} → {total_after})")
+    print(f"  ✅ Cleanup complete: removed {telegram_removed} stale Telegram jobs ({total_before} → {len(all_clean_jobs)})")
 
 # ---------------------------------------------------------------------------
 # PROGRESS TRACKING — for auto-restart
