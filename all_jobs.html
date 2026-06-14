@@ -823,15 +823,15 @@
                         const rawJobs = await response.json();
                         
                         roleCache[roleName] = rawJobs.map(job => ({
-                            title: job.role || job.title || "",
-                            company: job.company_name || job.company || "",
-                            location: job.location || "",
-                            date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
-                            url: job.apply_link || job.url || job.linkedin_url || "",
-                            linkedin_url: job.linkedin_url || "",
-                            source: job.platform || job.source || "",
-                            role_search: job.search_keyword || job.role_search || "",
-                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "",
+                            title: String(job.role || job.title || ""),
+                            company: String(job.company_name || job.company || ""),
+                            location: String(job.location || ""),
+                            date: String(job.job_posted_date || job.fetched_at || job.date || job.date_posted || ""),
+                            url: String(job.apply_link || job.url || job.linkedin_url || ""),
+                            linkedin_url: String(job.linkedin_url || ""),
+                            source: String(job.platform || job.source || ""),
+                            role_search: String(job.search_keyword || job.role_search || ""),
+                            fetchedAt: String(job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""),
                             walking_interview: job.walking_interview || false
                         }));
                     } catch (error) {
@@ -886,15 +886,15 @@
                     
                     for (const job of rows) {
                         fetchedJobs.push({
-                            title: job.role || job.title || "",
-                            company: job.company_name || job.company || "",
-                            location: job.location || "",
-                            date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
-                            url: job.apply_link || job.url || job.linkedin_url || "",
-                            linkedin_url: job.linkedin_url || "",
-                            source: job.platform || job.source || "",
-                            role_search: job.search_keyword || job.role_search || "",
-                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "",
+                            title: String(job.role || job.title || ""),
+                            company: String(job.company_name || job.company || ""),
+                            location: String(job.location || ""),
+                            date: String(job.job_posted_date || job.fetched_at || job.date || job.date_posted || ""),
+                            url: String(job.apply_link || job.url || job.linkedin_url || ""),
+                            linkedin_url: String(job.linkedin_url || ""),
+                            source: String(job.platform || job.source || ""),
+                            role_search: String(job.search_keyword || job.role_search || ""),
+                            fetchedAt: String(job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""),
                             walking_interview: job.walking_interview || false
                         });
                     }
