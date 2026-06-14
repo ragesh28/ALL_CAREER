@@ -125,7 +125,7 @@
         .cal-popup {
             position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
             background: #0d1526; border: 1px solid rgba(16,185,129,0.2);
-            border-radius: 18px; padding: 18px; width: 290px;
+            border-radius: 18px; padding: 8px; width: 200px;
             box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(16,185,129,0.08);
             display: none;
         }
@@ -134,49 +134,23 @@
             from { opacity:0; transform:scale(0.9) translateY(-6px); }
             to   { opacity:1; transform:scale(1) translateY(0); }
         }
-        .cal-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-        .cal-nav-btn {
-            background:none; border:none; color:var(--text-muted); font-size:1.1rem;
-            cursor:pointer; padding:4px 8px; border-radius:8px; transition:0.2s;
+        .date-menu-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 10px;
+            color: var(--text-main);
+            transition: all 0.2s;
+            font-size: 0.88rem;
+            font-weight: 600;
         }
-        .cal-nav-btn:hover { background:rgba(255,255,255,0.06); color:white; }
-        .cal-month-lbl { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.95rem; color:white; }
-        .cal-dow-row { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:6px; }
-        .cal-dow { text-align:center; font-size:0.65rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; padding:2px 0; }
-        .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-        .cal-day {
-            aspect-ratio:1; display:flex; flex-direction:column; align-items:center;
-            justify-content:center; border-radius:9px; cursor:pointer; transition:all 0.15s;
-            font-size:0.82rem; font-weight:600; user-select:none;
-            border:1px solid transparent; position:relative;
+        .date-menu-item:hover {
+            background: rgba(16,185,129,0.12);
+            color: #10b981;
         }
-        .cal-day.empty { cursor:default; }
-        .cal-day.disabled { color:rgba(255,255,255,0.14); cursor:not-allowed; }
-        .cal-day.in-range { color:var(--text-muted); }
-        .cal-day.in-range:hover { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.25); color:white; }
-        .cal-day.has-data { color:white; background:rgba(16,185,129,0.06); border-color:rgba(16,185,129,0.14); }
-        .cal-day.has-data:hover { background:rgba(16,185,129,0.18); border-color:rgba(16,185,129,0.45); transform:scale(1.07); }
-        .cal-day.selected { background:#10b981 !important; border-color:#10b981 !important; color:#020617 !important; font-weight:800; box-shadow:0 3px 12px rgba(16,185,129,0.4); transform:scale(1.09); }
-        .cal-day.is-today::after {
-            content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
-            width:4px; height:4px; border-radius:50%; background:#10b981;
+        .date-menu-item.active {
+            background: #10b981;
+            color: #020617;
         }
-        .cal-day.selected.is-today::after { background:#020617; }
-        .cal-day-num { line-height:1; }
-        .cal-day-cnt { font-size:0.55rem; font-weight:700; color:#10b981; margin-top:1px; line-height:1; }
-        .cal-day.selected .cal-day-cnt { color:rgba(2,6,23,0.65); }
-        .cal-ftr {
-            margin-top:14px; padding-top:12px; border-top:1px solid var(--border);
-            display:flex; align-items:center; justify-content:space-between;
-        }
-        .cal-ftr-info { font-size:0.76rem; color:var(--text-muted); }
-        .cal-ftr-info strong { color:#10b981; }
-        .cal-ftr-clear {
-            font-size:0.76rem; color:var(--text-muted); cursor:pointer;
-            background:none; border:none; font-family:inherit;
-            padding:3px 8px; border-radius:7px; transition:0.2s;
-        }
-        .cal-ftr-clear:hover { background:rgba(255,255,255,0.06); color:white; }
 
         /* Experience toggle */
         .exp-group { display: flex; gap: 6px; }
@@ -462,10 +436,9 @@
                 </select>
             </div>
             <div class="cal-wrap">
-                <button class="cal-btn" id="calBtn" onclick="toggleCal()">
-                    <span>📅</span>
-                    <span id="calBtnLabel">All Dates</span>
-                    <span class="cal-x" id="calBtnX" onclick="clearCalDate(event)">✕</span>
+                <button class="cal-btn" id="calBtn" onclick="toggleDateMenu()">
+                    <span id="calBtnLabel">Job Posting Date</span>
+                    <span class="cal-x" id="calBtnX" onclick="clearDateRange(event)">✕</span>
                 </button>
                 <div class="cal-popup" id="calPopup"></div>
             </div>
@@ -722,12 +695,6 @@
                 selectedPortals.delete(name);
                 document.getElementById('pill-' + name).classList.remove('active');
             } else {
-                selectedPortals.forEach(p => {
-                    const el = document.getElementById('pill-' + p);
-                    if (el) el.classList.remove('active');
-                });
-                selectedPortals.clear();
-
                 selectedPortals.add(name);
                 document.getElementById('pill-' + name).classList.add('active');
             }
@@ -770,22 +737,10 @@
         function updatePillsVisibility() {
             const pills = document.querySelectorAll('.portal-pill');
             const allBtn = document.getElementById('portalAllBtn');
-            if (selectedPortals.size > 0) {
-                if (allBtn) allBtn.style.display = 'none';
-                pills.forEach(pill => {
-                    const id = pill.id.replace('pill-', '');
-                    if (selectedPortals.has(id)) {
-                        pill.style.display = 'flex';
-                    } else {
-                        pill.style.display = 'none';
-                    }
-                });
-            } else {
-                if (allBtn) allBtn.style.display = 'flex';
-                pills.forEach(pill => {
-                    pill.style.display = 'flex';
-                });
-            }
+            pills.forEach(pill => {
+                pill.style.display = 'flex';
+            });
+            if (allBtn) allBtn.style.display = 'flex';
         }
 
         function toggleMindmap() {
@@ -911,111 +866,72 @@
             return fetchedJobs;
         }
 
-        // ── CALENDAR ──────────────────────────────────────────────
-        let calSelectedDate = null;
-        let calViewYear = null;
-        let calViewMonth = null;
-        let calDateCounts = {};
+        // ── DATE MENU ──────────────────────────────────────────────
+        let activeDateRange = 'all';
 
-        function buildCalCounts() {
-            calDateCounts = {};
-            allJobs.forEach(j => {
-                const d = (j.fetchedAt || '').slice(0,10);
-                if (d) calDateCounts[d] = (calDateCounts[d] || 0) + 1;
-            });
-        }
-
-        function toggleCal() {
+        function toggleDateMenu() {
             const popup = document.getElementById('calPopup');
-            if (popup.classList.contains('open')) { popup.classList.remove('open'); return; }
-            const now = new Date();
-            if (!calViewYear) { calViewYear = now.getFullYear(); calViewMonth = now.getMonth(); }
-            renderCal();
+            if (popup.classList.contains('open')) {
+                popup.classList.remove('open');
+                return;
+            }
+            renderDateMenu();
             popup.classList.add('open');
         }
 
-        function renderCal() {
+        function renderDateMenu() {
             const popup = document.getElementById('calPopup');
-            const today = new Date(); today.setHours(0,0,0,0);
-            const minDate = new Date(today); minDate.setDate(minDate.getDate() - 19);
-            const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-            const DOW = ['S','M','T','W','T','F','S'];
-            const firstDay = new Date(calViewYear, calViewMonth, 1);
-            const startDow = firstDay.getDay();
-            const daysInMonth = new Date(calViewYear, calViewMonth + 1, 0).getDate();
-            let totalJobs = calSelectedDate ? (calDateCounts[calSelectedDate] || 0) : allJobs.length;
-
-            let h = `<div class="cal-hdr">
-                <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
-                <div class="cal-month-lbl">${MONTHS[calViewMonth]} ${calViewYear}</div>
-                <button class="cal-nav-btn" onclick="calNav(1)">›</button>
-            </div>
-            <div class="cal-dow-row">${DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('')}</div>
-            <div class="cal-grid">`;
-            for (let i=0;i<startDow;i++) h += `<div class="cal-day empty"></div>`;
-            for (let day=1;day<=daysInMonth;day++) {
-                const date = new Date(calViewYear, calViewMonth, day); date.setHours(0,0,0,0);
-                const y = date.getFullYear();
-                const m = String(date.getMonth() + 1).padStart(2, '0');
-                const d = String(date.getDate()).padStart(2, '0');
-                const ds = `${y}-${m}-${d}`;
-                const isFuture = date > today, isTooOld = date < minDate;
-                const disabled = isFuture || isTooOld;
-                const isToday = date.getTime() === today.getTime();
-                const isSel = calSelectedDate === ds;
-                const cnt = calDateCounts[ds];
-                let cls = 'cal-day';
-                if (disabled) cls += ' disabled';
-                else if (cnt) cls += ' has-data';
-                else cls += ' in-range';
-                if (isToday && !disabled) cls += ' is-today';
-                if (isSel) cls += ' selected';
-                const click = disabled ? '' : `onclick="calSelectDay('${ds}')"`;
-                const badge = cnt && !disabled ? `<div class="cal-day-cnt">${cnt>999?'999+':cnt}</div>` : '';
-                h += `<div class="${cls}" ${click}><div class="cal-day-num">${day}</div>${badge}</div>`;
-            }
-            h += `</div><div class="cal-ftr">
-                <div class="cal-ftr-info">${calSelectedDate ? `<strong>${totalJobs.toLocaleString()}</strong> jobs` : `<strong>${totalJobs.toLocaleString()}</strong> total`}</div>
-                ${calSelectedDate ? `<button class="cal-ftr-clear" onclick="clearCalDate(event)">Clear ✕</button>` : ''}
-            </div>`;
-            popup.innerHTML = h;
+            const options = [
+                { value: '24h', label: 'Last 24 Hours' },
+                { value: '3d', label: '3 Days' },
+                { value: '7d', label: '7 Days' },
+                { value: '15d', label: '15 Days' },
+                { value: 'all', label: 'All Dates' }
+            ];
+            popup.innerHTML = options.map(opt => {
+                const isSel = activeDateRange === opt.value;
+                return `<div class="date-menu-item${isSel ? ' active' : ''}" onclick="setDateRange('${opt.value}')">${opt.label}</div>`;
+            }).join('');
         }
 
-        function calNav(dir) {
-            calViewMonth += dir;
-            if (calViewMonth > 11) { calViewMonth = 0; calViewYear++; }
-            if (calViewMonth < 0)  { calViewMonth = 11; calViewYear--; }
-            renderCal();
-        }
-
-        function calSelectDay(ds) {
-            if (calSelectedDate === ds) { calSelectedDate = null; } else { calSelectedDate = ds; }
-            updateCalBtn();
-            renderCal();
+        function setDateRange(range) {
+            activeDateRange = range;
+            updateDateBtn();
+            const popup = document.getElementById('calPopup');
+            if (popup) popup.classList.remove('open');
             applyFilters();
         }
 
-        function clearCalDate(e) {
+        function clearDateRange(e) {
             if (e) e.stopPropagation();
-            calSelectedDate = null;
-            updateCalBtn();
-            document.getElementById('calPopup').classList.remove('open');
+            activeDateRange = 'all';
+            updateDateBtn();
+            const popup = document.getElementById('calPopup');
+            if (popup) popup.classList.remove('open');
             applyFilters();
         }
 
-        function updateCalBtn() {
+        function updateDateBtn() {
             const btn = document.getElementById('calBtn');
             const lbl = document.getElementById('calBtnLabel');
             const x   = document.getElementById('calBtnX');
-            if (calSelectedDate) {
-                const d = new Date(calSelectedDate + 'T00:00:00');
-                const tod = new Date(); tod.setHours(0,0,0,0);
-                const yes = new Date(tod); yes.setDate(yes.getDate()-1);
-                let txt = d.getTime()===tod.getTime() ? 'Today' : d.getTime()===yes.getTime() ? 'Yesterday'
-                    : d.toLocaleDateString('en-IN',{month:'short',day:'numeric'});
-                lbl.textContent = txt; btn.classList.add('active'); x.style.display='flex';
+            
+            const labels = {
+                'all': 'Job Posting Date',
+                '24h': 'Last 24 Hours',
+                '3d': '3 Days',
+                '7d': '7 Days',
+                '15d': '15 Days'
+            };
+            
+            lbl.textContent = labels[activeDateRange] || 'Job Posting Date';
+            
+            if (activeDateRange !== 'all') {
+                btn.classList.add('active');
+                x.style.display = 'flex';
             } else {
-                lbl.textContent = 'All Dates'; btn.classList.remove('active'); x.style.display='none';
+                btn.classList.remove('active');
+                x.style.display = 'none';
             }
         }
 
@@ -1046,7 +962,6 @@
                 return;
             }
             
-            buildCalCounts();
             applyFilters();
             loading.style.display = 'none';
         }
@@ -1054,6 +969,8 @@
         function applyFilters() {
             const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
             const loc = document.getElementById('locationFilter').value;
+            const now = new Date();
+            now.setHours(0,0,0,0);
 
             // Use role-specific dataset if available, otherwise fallback to master list
             const jobsToFilter = (activeRole && roleCache[activeRole]) ? roleCache[activeRole] : allJobs;
@@ -1065,8 +982,16 @@
                 if (search && !hay.includes(search)) return false;
                 if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
 
-                // Calendar date filter (last 20 days)
-                if (calSelectedDate && (j.fetchedAt || '').slice(0,10) !== calSelectedDate) return false;
+                // Date Range Filter
+                if (activeDateRange !== 'all') {
+                    const jobDate = new Date((j.fetchedAt || '').slice(0, 10));
+                    if (isNaN(jobDate.getTime())) return false;
+                    const diffDays = Math.floor((now - jobDate) / 86400000);
+                    if (activeDateRange === '24h' && diffDays > 1) return false;
+                    if (activeDateRange === '3d' && diffDays > 3) return false;
+                    if (activeDateRange === '7d' && diffDays > 7) return false;
+                    if (activeDateRange === '15d' && diffDays > 15) return false;
+                }
 
                 // Portal filter — multi-select
                 if (selectedPortals.size > 0) {
@@ -1155,7 +1080,7 @@
                 </div>
                 <div class="job-meta">
                     <div class="meta-badge">📍 ${esc(cityLoc)}</div>
-                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
+                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">${date}</div>` : ''}
                     ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
                     ${job.walking_interview ? `<div class="meta-badge" style="border-color:rgba(234,179,8,0.4);color:#eab308;background:rgba(234,179,8,0.08);">🚶 Walk-in</div>` : ''}
                 </div>
