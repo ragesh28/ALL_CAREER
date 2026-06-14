@@ -61,7 +61,7 @@
 
         .grid-menu {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
             max-width: 1200px;
             width: 100%;
@@ -143,17 +143,6 @@
                 font-size: 2.5rem;
             }
         }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .grid-menu {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Center last row items when odd count */
-        .grid-menu > :last-child:nth-child(3n+1) {
-            grid-column: 2;
-        }
     </style>
 </head>
 
@@ -182,10 +171,6 @@
             </linearGradient>
             <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-            </linearGradient>
-            <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#0088cc;stop-opacity:1" />
                 <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
             </linearGradient>
         </defs>
@@ -233,8 +218,8 @@
             </div>
             <div class="card-title">All Jobs</div>
             <div class="card-desc">
-                All tech & non-tech roles from Google + LinkedIn aggregator.
-                <span class="salary-highlight" style="color:#10b981;">36 roles • 4 cities</span>
+                All tech & non-tech roles from Google, LinkedIn, Portals & Telegram.
+                <span class="salary-highlight" style="color:#10b981;">36 roles • 13 sources • AI-Powered</span>
             </div>
         </a>
 
@@ -248,20 +233,6 @@
             </div>
             <div class="card-title">Learn Coding</div>
             <div class="card-desc">Master DSA with the Top 150 LeetCode questions and company-specific sets.</div>
-        </a>
-
-        <!-- 5. Telegram Jobs -->
-        <a href="telegram_jobs.html" class="menu-card" style="border-color: rgba(0, 136, 204, 0.3);">
-            <div class="icon-box">
-                <svg viewBox="0 0 24 24" fill="url(#grad-purple)">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                </svg>
-            </div>
-            <div class="card-title">Telegram Jobs</div>
-            <div class="card-desc">
-                AI-powered jobs from 27+ Telegram channels with walk-in alerts.
-                <span class="salary-highlight" style="color:#0088cc;">AI-Powered • 2x Daily</span>
-            </div>
         </a>
     </div>
 
