@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All_Career - Telegram Jobs</title>
+    <meta name="description" content="AI-powered job listings scraped from 27+ Telegram channels. Walking interviews, freshers, and experienced roles across India.">
+    <link rel="icon" href="String_Theory.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --bg-surface: #0f172a;
+            --bg-glass: rgba(15, 23, 42, 0.95);
+            --primary: #0088cc;
+            --primary-glow: rgba(0, 136, 204, 0.15);
+            --accent: #8b5cf6;
+            --walk-in: #eab308;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --success: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(0, 136, 204, 0.08), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06), transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* --- HEADER --- */
+        #main-header {
+            text-align: center; padding-top: 60px; padding-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden; opacity: 1;
+        }
+        body.scrolled #main-header { opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0; }
+
+        h1 {
+            font-family: 'Outfit', sans-serif; font-size: 3.2rem; font-weight: 800;
+            background: linear-gradient(135deg, #0088cc, #8b5cf6);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer; transition: letter-spacing 0.5s ease;
+            letter-spacing: -1px; text-decoration: none; margin: 0;
+        }
+        h1:hover { letter-spacing: 5px; }
+
+        .header-subtitle {
+            color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .header-subtitle .tg-icon {
+            width: 20px; height: 20px; vertical-align: middle;
+        }
+        .live-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+            display: inline-block; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-bar-container {
+            position: sticky; top: 20px; z-index: 100;
+            padding: 0 20px; display: flex; flex-direction: column; align-items: center;
+            gap: 10px; margin-bottom: 20px; pointer-events: none;
+        }
+        .filter-bar {
+            width: 100%; max-width: 1100px;
+            display: flex; gap: 10px; background: var(--bg-glass);
+            backdrop-filter: blur(12px); padding: 12px 18px; border-radius: 50px;
+            border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            align-items: center; flex-wrap: wrap; pointer-events: auto;
+        }
+        .mini-logo {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem;
+            color: var(--primary); white-space: nowrap; cursor: pointer;
+            margin-right: 10px; text-decoration: none;
+        }
+        .filter-group { flex: 1; min-width: 110px; }
+        .filter-input {
+            width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
+            color: white; padding: 9px 14px; border-radius: 20px; outline: none;
+            font-family: inherit; font-size: 0.85rem; transition: 0.3s;
+        }
+        .filter-input:focus { border-color: var(--primary); }
+        select.filter-input option { background-color: var(--bg-deep); color: white; }
+
+        /* --- WALK-IN TOGGLE --- */
+        .walkin-toggle {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 20px;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            background: transparent; color: var(--walk-in);
+            cursor: pointer; font-weight: 700; font-size: 0.82rem;
+            font-family: inherit; white-space: nowrap; transition: 0.2s;
+            user-select: none;
+        }
+        .walkin-toggle:hover { background: rgba(234, 179, 8, 0.1); }
+        .walkin-toggle.active {
+            background: var(--walk-in); color: #020617;
+            border-color: var(--walk-in); box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+        }
+
+        /* --- EXPERIENCE PILLS --- */
+        .exp-group { display: flex; gap: 6px; }
+        .exp-btn {
+            padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted); cursor: pointer;
+            font-weight: 600; font-size: 0.8rem; transition: 0.2s;
+            font-family: inherit; white-space: nowrap;
+        }
+        .exp-btn:hover { border-color: var(--primary); color: white; }
+        .exp-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* --- SOURCE FILTER STRIP --- */
+        .source-strip {
+            width: 100%; max-width: 1100px; pointer-events: auto;
+        }
+        .source-strip-inner {
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            background: rgba(15,23,42,0.7); backdrop-filter: blur(10px);
+            border: 1px solid var(--border); border-radius: 20px;
+            padding: 10px 16px;
+        }
+        .source-label {
+            font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap;
+            padding-right: 6px; border-right: 1px solid var(--border); margin-right: 4px;
+        }
+        .source-pill {
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer; transition: all 0.18s;
+            font-size: 0.74rem; font-weight: 600; color: var(--text-muted);
+            user-select: none; white-space: nowrap;
+        }
+        .source-pill:hover { border-color: var(--primary); color: white; background: rgba(0,136,204,0.08); }
+        .source-pill.active {
+            background: rgba(0,136,204,0.15); border-color: var(--primary);
+            color: var(--primary); box-shadow: 0 0 10px rgba(0,136,204,0.2);
+        }
+        .source-pill img { width: 15px; height: 15px; object-fit: contain; border-radius: 3px; }
+        .source-all-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 5px 14px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            cursor: pointer; transition: 0.18s;
+            font-size: 0.74rem; font-weight: 700; color: white;
+            user-select: none; white-space: nowrap;
+        }
+        .source-all-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* --- DATE PILLS --- */
+        .date-pills { display: flex; gap: 6px; }
+        .date-pill {
+            padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-muted); cursor: pointer;
+            font-weight: 600; font-size: 0.78rem; transition: 0.2s;
+            font-family: inherit; white-space: nowrap;
+        }
+        .date-pill:hover { border-color: var(--primary); color: white; }
+        .date-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* --- JOB CARDS --- */
+        .container { max-width: 100%; margin: 0 auto; padding: 0 30px 100px; }
+        .stats {
+            color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.05rem;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
+        .stat-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+        }
+        .jobs-grid {
+            display: grid; gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            align-items: stretch;
+        }
+
+        .job-card {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            padding: 22px; border-radius: 20px;
+            display: flex; flex-direction: column; gap: 12px;
+            transition: all 0.2s ease;
+            opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
+            height: 100%; position: relative;
+        }
+        .job-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .job-card.walkin-card { border-left: 3px solid var(--walk-in); }
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+
+        .card-source-stripe {
+            position: absolute; top: 0; right: 20px;
+            padding: 4px 12px; border-radius: 0 0 10px 10px;
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;
+        }
+        .stripe-telegram { background: rgba(0,136,204,0.15); color: #0088cc; }
+        .stripe-linkedin { background: rgba(10,102,194,0.15); color: #0a66c2; }
+        .stripe-naukri { background: rgba(74,144,217,0.15); color: #4A90D9; }
+        .stripe-indeed { background: rgba(0,58,155,0.15); color: #6c8bc2; }
+        .stripe-other { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+        .card-top { display: flex; gap: 14px; align-items: flex-start; margin-top: 8px; }
+        .logo-box {
+            width: 48px; height: 48px; position: relative;
+            background: white; border-radius: 12px; padding: 4px; flex-shrink: 0;
+        }
+        .company-logo { width: 40px; height: 40px; object-fit: contain; position: absolute; top: 4px; left: 4px; }
+        .logo-fallback {
+            width: 100%; height: 100%; background: linear-gradient(135deg, #0088cc, #8b5cf6);
+            border-radius: 8px; display: none; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.3rem; color: white;
+        }
+        .company-name {
+            color: var(--text-muted); font-size: 0.78rem; font-weight: 600; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;
+        }
+        .job-title {
+            font-size: 0.95rem; line-height: 1.35; color: white; font-weight: 700;
+            display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; min-height: 2.5em;
+        }
+
+        .job-details { display: flex; flex-wrap: wrap; gap: 6px; }
+        .detail-badge {
+            font-size: 0.73rem; padding: 5px 10px; border-radius: 8px;
+            background: rgba(255,255,255,0.04); color: var(--text-muted);
+            border: 1px solid var(--border); display: flex; align-items: center; gap: 4px;
+        }
+        .walkin-badge {
+            border-color: rgba(234,179,8,0.4); color: var(--walk-in);
+            background: rgba(234,179,8,0.08); font-weight: 700;
+        }
+        .walkin-badge::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--walk-in); animation: pulse 2s infinite;
+        }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 12px; border-top: 1px solid var(--border); margin-top: auto;
+        }
+        .card-date { color: var(--text-muted); font-size: 0.78rem; }
+        .apply-btn {
+            padding: 9px 20px; background: transparent; color: var(--primary);
+            text-decoration: none; font-weight: 700; border-radius: 12px;
+            font-size: 0.83rem; border: 1px solid var(--primary); transition: 0.2s;
+        }
+        .apply-btn:hover { background: var(--primary); color: white; }
+
+        #loading { text-align: center; padding: 50px; color: var(--text-muted); }
+        #noResults { text-align: center; padding: 40px; color: var(--text-muted); display: none; font-style: italic; }
+
+        .pagination-container {
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            margin-top: 50px; padding: 20px 0; flex-wrap: wrap;
+        }
+        .page-btn {
+            width: 44px; height: 44px; border-radius: 12px; background: var(--bg-surface);
+            border: 1px solid var(--border); color: var(--text-muted);
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center;
+            justify-content: center; font-family: inherit;
+        }
+        .page-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
+        .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 15px rgba(0,136,204,0.4); }
+        .page-btn.nav-btn { width: auto; padding: 0 16px; font-size: 1.1rem; }
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .jobs-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 12px 80px; }
+            h1 { font-size: 2rem; }
+            .filter-bar { flex-direction: column; border-radius: 20px; padding: 14px; }
+            .filter-group { min-width: 100%; }
+        }
+        @media (min-width: 501px) and (max-width: 768px) {
+            .jobs-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1101px) and (max-width: 1500px) {
+            .jobs-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (min-width: 1501px) and (max-width: 1900px) {
+            .jobs-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+        @media (min-width: 1901px) {
+            .jobs-grid { grid-template-columns: repeat(6, 1fr); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Global Logo -->
+    <a href="index.html" style="position: absolute; top: 20px; left: 30px; display: flex; align-items: center; gap: 12px; text-decoration: none; z-index: 1000; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+        <img src="String_Theory.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
+    </a>
+
+    <header id="main-header">
+        <a href="index.html" style="text-decoration:none;"><h1>Telegram Jobs</h1></a>
+        <p class="header-subtitle">
+            <svg class="tg-icon" viewBox="0 0 24 24" fill="#0088cc"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            AI-powered jobs from 27+ channels
+            <span class="live-dot"></span>
+            <span style="color: var(--success); font-weight: 600;">2x Daily</span>
+        </p>
+    </header>
+
+    <div class="filter-bar-container">
+        <!-- Main Filter Bar -->
+        <div class="filter-bar">
+            <a href="index.html" class="mini-logo">← Home</a>
+            <div class="filter-group" style="flex: 1.5;">
+                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search company, role, location..." oninput="applyFilters()">
+            </div>
+            <div class="filter-group" style="flex:0.7;">
+                <select id="locationFilter" class="filter-input" onchange="applyFilters()">
+                    <option value="All">📍 All Locations</option>
+                </select>
+            </div>
+            <button class="walkin-toggle" id="walkinBtn" onclick="toggleWalkIn()">
+                🚶 Walk-in Only
+            </button>
+            <div class="exp-group">
+                <button class="exp-btn" onclick="setExperience('fresher')" id="expFresher">Fresher</button>
+                <button class="exp-btn" onclick="setExperience('experienced')" id="expExp">Exp</button>
+            </div>
+            <div class="date-pills">
+                <button class="date-pill active" onclick="setDateRange('all')" id="dateAll">All</button>
+                <button class="date-pill" onclick="setDateRange('today')" id="dateToday">Today</button>
+                <button class="date-pill" onclick="setDateRange('3days')" id="date3">3d</button>
+                <button class="date-pill" onclick="setDateRange('7days')" id="date7">7d</button>
+            </div>
+        </div>
+
+        <!-- Source Filter Strip -->
+        <div class="source-strip">
+            <div class="source-strip-inner">
+                <span class="source-label">Source</span>
+                <button class="source-all-btn" onclick="clearSources()">All</button>
+                <div class="source-pill active" onclick="toggleSource('telegram')" id="src-telegram" style="border-color: rgba(0,136,204,0.4);">
+                    <img src="logos/portals/telegram.svg" alt=""> Telegram
+                </div>
+                <div class="source-pill" onclick="toggleSource('linkedin')" id="src-linkedin">
+                    <img src="logos/portals/linkedin.png" alt="" onerror="this.style.display='none'"> LinkedIn
+                </div>
+                <div class="source-pill" onclick="toggleSource('indeed')" id="src-indeed">
+                    <img src="logos/portals/indeed.png" alt="" onerror="this.style.display='none'"> Indeed
+                </div>
+                <div class="source-pill" onclick="toggleSource('naukri')" id="src-naukri">
+                    <img src="logos/portals/naukri.png" alt="" onerror="this.style.display='none'"> Naukri
+                </div>
+                <div class="source-pill" onclick="toggleSource('foundit')" id="src-foundit">
+                    <img src="logos/portals/foundit.png" alt="" onerror="this.style.display='none'"> Foundit
+                </div>
+                <div class="source-pill" onclick="toggleSource('glassdoor')" id="src-glassdoor">
+                    <img src="logos/portals/glassdoor.ico" alt="" onerror="this.style.display='none'"> Glassdoor
+                </div>
+                <div class="source-pill" onclick="toggleSource('internshala')" id="src-internshala">
+                    <img src="logos/portals/internshala.png" alt="" onerror="this.style.display='none'"> Internshala
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <p class="stats">
+            Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> jobs
+            <span class="stat-chip" id="walkinCount" style="display:none; color: var(--walk-in); border-color: rgba(234,179,8,0.3);">🚶 <span id="walkinNum">0</span> walk-in</span>
+            <span class="stat-chip" id="telegramCount" style="color: var(--primary); border-color: rgba(0,136,204,0.3);">✈️ <span id="telegramNum">0</span> from Telegram</span>
+        </p>
+        <div id="loading">Loading jobs from all sources...</div>
+        <div class="jobs-grid" id="jobsGrid"></div>
+        <div id="noResults">No jobs found matching your filters.</div>
+        <div id="pagination" class="pagination-container"></div>
+    </div>
+
+    <script src="logos.js"></script>
+    <script src="logo3d.js"></script>
+    <script>
+        window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
+
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentPage = 1;
+        const JOBS_PER_PAGE = 80;
+
+        // Filter state
+        let activeExp = '';
+        let activeDate = 'all';
+        let walkinOnly = false;
+        let selectedSources = new Set();
+
+        const FRESHER_KEYWORDS = ['fresher', 'fresh', 'graduate', 'entry', 'junior', 'jr', 'intern', 'trainee', '0-1', '0-2'];
+        const EXP_KEYWORDS = ['senior', 'sr', 'lead', 'principal', 'staff', 'manager', 'director', 'head', 'architect', '3-5', '5-8', '5+', '8+', '10+'];
+
+        const SOURCE_LOGO_MAP = {
+            'telegram': 'logos/portals/telegram.svg',
+            'linkedin': 'logos/portals/linkedin.png',
+            'indeed': 'logos/portals/indeed.png',
+            'naukri': 'logos/portals/naukri.png',
+            'internshala': 'logos/portals/internshala.png',
+            'glassdoor': 'logos/portals/glassdoor.ico',
+            'shine': 'logos/portals/shine.ico',
+            'timesjobs': 'logos/portals/timesjobs.svg',
+            'hirist': 'logos/portals/hirist.ico',
+            'workindia': 'logos/portals/workindia.png',
+            'foundit': 'logos/portals/foundit.png',
+            'apna': 'logos/portals/apna.png',
+            'freshersworld': 'logos/portals/freshersworld.ico',
+        };
+
+        const SOURCE_STRIPE_MAP = {
+            'telegram': 'stripe-telegram',
+            'linkedin': 'stripe-linkedin',
+            'naukri': 'stripe-naukri',
+            'indeed': 'stripe-indeed',
+        };
+
+        function getLogoData(name) {
+            const clean = name.replace(/\(.*\)/, '').trim();
+            let domain = '';
+            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            return {
+                clearbit: `https://logo.clearbit.com/${domain}`,
+                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                initial: clean.charAt(0).toUpperCase()
+            };
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return null;
+                const diff = Math.floor((new Date() - d) / 86400000);
+                if (diff === 0) return 'Today';
+                if (diff === 1) return 'Yesterday';
+                if (diff < 7) return `${diff} days ago`;
+                return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+            } catch { return null; }
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // --- SOURCE FILTER ---
+        function toggleSource(name) {
+            const el = document.getElementById('src-' + name);
+            if (selectedSources.has(name)) {
+                selectedSources.delete(name);
+                if (el) el.classList.remove('active');
+            } else {
+                selectedSources.add(name);
+                if (el) el.classList.add('active');
+            }
+            applyFilters();
+        }
+
+        function clearSources() {
+            selectedSources.clear();
+            document.querySelectorAll('.source-pill').forEach(p => p.classList.remove('active'));
+            applyFilters();
+        }
+
+        // --- WALK-IN TOGGLE ---
+        function toggleWalkIn() {
+            walkinOnly = !walkinOnly;
+            document.getElementById('walkinBtn').classList.toggle('active', walkinOnly);
+            applyFilters();
+        }
+
+        // --- EXPERIENCE ---
+        function setExperience(level) {
+            if (activeExp === level) {
+                activeExp = '';
+                document.getElementById('expFresher').classList.remove('active');
+                document.getElementById('expExp').classList.remove('active');
+            } else {
+                activeExp = level;
+                document.getElementById('expFresher').classList.toggle('active', level === 'fresher');
+                document.getElementById('expExp').classList.toggle('active', level === 'experienced');
+            }
+            applyFilters();
+        }
+
+        // --- DATE RANGE ---
+        function setDateRange(range) {
+            activeDate = range;
+            ['dateAll', 'dateToday', 'date3', 'date7'].forEach(id => {
+                document.getElementById(id).classList.remove('active');
+            });
+            const map = { 'all': 'dateAll', 'today': 'dateToday', '3days': 'date3', '7days': 'date7' };
+            document.getElementById(map[range]).classList.add('active');
+            applyFilters();
+        }
+
+        // --- LOAD ALL JOBS ---
+        async function fetchAllJobs() {
+            let jobs = [];
+            let chunkNum = 1;
+            let keepFetching = true;
+
+            while (keepFetching) {
+                try {
+                    const response = await fetch(`all_jobs_${chunkNum}.json`);
+                    if (!response.ok) { keepFetching = false; break; }
+                    const rows = await response.json();
+                    for (const job of rows) {
+                        jobs.push({
+                            title: job.role || job.title || "",
+                            company: job.company_name || job.company || "",
+                            location: job.location || "",
+                            date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
+                            url: job.apply_link || job.url || job.linkedin_url || "",
+                            source: (job.platform || job.source || "").toLowerCase(),
+                            experience: job.experience || null,
+                            salary: job.salary || null,
+                            qualification: job.qualification || null,
+                            walking_interview: job.walking_interview || false,
+                            last_date: job.last_date || null,
+                            other_details: job.other_details || null,
+                            role_search: job.search_keyword || job.role_search || "",
+                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""
+                        });
+                    }
+                    chunkNum++;
+                } catch (error) {
+                    keepFetching = false;
+                }
+            }
+            return jobs;
+        }
+
+        async function init() {
+            const loading = document.getElementById('loading');
+            allJobs = await fetchAllJobs();
+
+            if (allJobs.length === 0) {
+                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p>Jobs database is empty. Wait for the next scraping run.</p></div>';
+                return;
+            }
+
+            // Sort: newest first
+            allJobs.sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
+
+            // Populate location dropdown dynamically
+            const locations = new Set();
+            allJobs.forEach(j => {
+                if (j.location && j.location !== 'nan' && j.location !== 'None') {
+                    const city = j.location.split(',')[0].trim();
+                    if (city.length > 1 && city.length < 30) locations.add(city);
+                }
+            });
+            const locSelect = document.getElementById('locationFilter');
+            [...locations].sort().forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc; opt.textContent = loc;
+                locSelect.appendChild(opt);
+            });
+
+            // Update Telegram counter
+            const tgCount = allJobs.filter(j => j.source === 'telegram').length;
+            document.getElementById('telegramNum').textContent = tgCount;
+
+            loading.style.display = 'none';
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const loc = document.getElementById('locationFilter').value;
+            const now = new Date(); now.setHours(0,0,0,0);
+
+            filteredJobs = allJobs.filter(j => {
+                const hay = [j.title, j.company, j.location, j.role_search, j.experience, j.salary].filter(Boolean).join(' ').toLowerCase();
+                const titleLow = (j.title || '').toLowerCase();
+
+                // Text search
+                if (search && !hay.includes(search)) return false;
+
+                // Location
+                if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
+
+                // Source filter
+                if (selectedSources.size > 0 && !selectedSources.has(j.source)) return false;
+
+                // Walk-in filter
+                if (walkinOnly && !j.walking_interview) return false;
+
+                // Experience
+                if (activeExp === 'fresher') {
+                    const combined = (titleLow + ' ' + (j.experience || '').toLowerCase());
+                    if (!FRESHER_KEYWORDS.some(kw => combined.includes(kw))) return false;
+                } else if (activeExp === 'experienced') {
+                    const combined = (titleLow + ' ' + (j.experience || '').toLowerCase());
+                    if (!EXP_KEYWORDS.some(kw => combined.includes(kw))) return false;
+                }
+
+                // Date range
+                if (activeDate !== 'all') {
+                    const jobDate = new Date((j.fetchedAt || '').slice(0, 10));
+                    if (isNaN(jobDate.getTime())) return false;
+                    const diffDays = Math.floor((now - jobDate) / 86400000);
+                    if (activeDate === 'today' && diffDays > 0) return false;
+                    if (activeDate === '3days' && diffDays > 3) return false;
+                    if (activeDate === '7days' && diffDays > 7) return false;
+                }
+
+                return true;
+            });
+
+            // Update stats
+            const walkinJobs = filteredJobs.filter(j => j.walking_interview).length;
+            document.getElementById('walkinCount').style.display = walkinJobs > 0 ? 'inline-flex' : 'none';
+            document.getElementById('walkinNum').textContent = walkinJobs;
+
+            currentPage = 1;
+            renderPage();
+        }
+
+        function renderPage() {
+            const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * JOBS_PER_PAGE;
+            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+            renderPagination(totalPages);
+            document.getElementById('jobCount').textContent = filteredJobs.length;
+        }
+
+        function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function renderJobs(jobs) {
+            const grid = document.getElementById('jobsGrid');
+            const noRes = document.getElementById('noResults');
+            if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+            noRes.style.display = 'none';
+
+            grid.innerHTML = jobs.map((job, i) => {
+                const logo = getLogoData(job.company || '');
+                const date = formatDate(job.date || job.fetchedAt);
+                const url = job.url || '';
+                const source = job.source || '';
+                const sourceName = source ? (source.charAt(0).toUpperCase() + source.slice(1)) : '';
+                const sourceLogoSrc = SOURCE_LOGO_MAP[source] || '';
+                const stripeClass = SOURCE_STRIPE_MAP[source] || 'stripe-other';
+                const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : '';
+                const cityLoc = rawLoc ? rawLoc.split(',')[0].trim() : 'India';
+                const isWalkin = job.walking_interview;
+
+                return `
+            <div class="job-card ${isWalkin ? 'walkin-card' : ''}" style="animation-delay:${i * 0.02}s">
+                <div class="card-source-stripe ${stripeClass}">
+                    ${sourceLogoSrc ? `<img src="${sourceLogoSrc}" style="width:12px;height:12px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">` : ''}
+                    ${esc(sourceName)}
+                </div>
+                <div class="card-top">
+                    <div class="logo-box">
+                        <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="${logo.google}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="logo-fallback">${logo.initial}</div>
+                    </div>
+                    <div>
+                        <div class="company-name">${esc(job.company)}</div>
+                        <div class="job-title">${esc(job.title || 'Position')}</div>
+                    </div>
+                </div>
+                <div class="job-details">
+                    ${cityLoc ? `<div class="detail-badge">📍 ${esc(cityLoc)}</div>` : ''}
+                    ${job.experience ? `<div class="detail-badge">📊 ${esc(job.experience)}</div>` : ''}
+                    ${job.salary ? `<div class="detail-badge">💰 ${esc(job.salary)}</div>` : ''}
+                    ${isWalkin ? `<div class="detail-badge walkin-badge">Walk-in Interview</div>` : ''}
+                    ${date ? `<div class="detail-badge" style="border-color:rgba(0,136,204,0.3);color:#0088cc;">📅 ${date}</div>` : ''}
+                </div>
+                <div class="card-footer">
+                    <span class="card-date">${esc(job.role_search || '')}</span>
+                    ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener" class="apply-btn">Apply →</a>` : ''}
+                </div>
+            </div>`;
+            }).join('');
+        }
+
+        function renderPagination(totalPages) {
+            const c = document.getElementById('pagination');
+            c.innerHTML = '';
+            if (totalPages <= 1) return;
+            const prev = document.createElement('button');
+            prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
+            prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
+            const pages = [];
+            if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
+            else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
+            }
+            pages.forEach(p => {
+                if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
+                else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
+            });
+            const next = document.createElement('button');
+            next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
+            next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

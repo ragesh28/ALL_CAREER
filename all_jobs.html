@@ -521,6 +521,9 @@
                 <div class="portal-pill" onclick="togglePortal('freshersworld')" id="pill-freshersworld">
                     <img src="logos/portals/freshersworld.ico" alt="" onerror="this.style.display='none'"> FreshersWorld
                 </div>
+                <div class="portal-pill" onclick="togglePortal('telegram')" id="pill-telegram" style="border-color: rgba(0,136,204,0.3);">
+                    <img src="logos/portals/telegram.svg" alt="" onerror="this.style.display='none'"> Telegram
+                </div>
             </div>
         </div>
     </div>
@@ -828,7 +831,8 @@
                             linkedin_url: job.linkedin_url || "",
                             source: job.platform || job.source || "",
                             role_search: job.search_keyword || job.role_search || "",
-                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""
+                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "",
+                            walking_interview: job.walking_interview || false
                         }));
                     } catch (error) {
                         console.error(`Failed to load role ${roleName}:`, error);
@@ -890,7 +894,8 @@
                             linkedin_url: job.linkedin_url || "",
                             source: job.platform || job.source || "",
                             role_search: job.search_keyword || job.role_search || "",
-                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || ""
+                            fetchedAt: job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "",
+                            walking_interview: job.walking_interview || false
                         });
                     }
                     chunkNum++;
@@ -1125,6 +1130,7 @@
                     'foundit': 'logos/portals/foundit.png',
                     'apna': 'logos/portals/apna.png',
                     'freshersworld': 'logos/portals/freshersworld.ico',
+                    'telegram': 'logos/portals/telegram.svg',
                 };
                 const portalLogoSrc = portalLogoMap[source] || '';
                 const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
@@ -1147,6 +1153,7 @@
                     <div class="meta-badge">📍 ${esc(cityLoc)}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">📅 ${date}</div>` : ''}
                     ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
+                    ${job.walking_interview ? `<div class="meta-badge" style="border-color:rgba(234,179,8,0.4);color:#eab308;background:rgba(234,179,8,0.08);">🚶 Walk-in</div>` : ''}
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${esc(job.role_search || '')}</span>

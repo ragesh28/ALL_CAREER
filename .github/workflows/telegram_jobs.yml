@@ -1,0 +1,83 @@
+name: Telegram Jobs Scraper (PaddleOCR + Ollama Qwen2.5)
+
+on:
+  workflow_dispatch:   # Manual trigger
+  schedule:
+    - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC previous day)
+    - cron: '30 8 * * *'   # 2:00 PM IST (8:30 AM UTC)
+
+jobs:
+  scrape-telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355  # 5h 55m — leave buffer before 6h hard limit
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # PaddleOCR relies on OpenCV, which requires libgl1 and libglib on Ubuntu Linux
+      - name: Install system dependencies (for PaddleOCR/OpenCV)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
+
+      - name: Install Python dependencies
+        run: |
+          pip install telethon pytz requests pillow paddlepaddle paddleocr
+
+      - name: Install and start Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve &
+          echo "Waiting for Ollama to boot up..."
+          sleep 10
+          ollama pull qwen2.5:1.5b
+          echo "Ollama model pulled successfully!"
+
+      - name: Run Telegram Scraper Pipeline
+        env:
+          PYTHONUNBUFFERED: "1"
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TELEGRAM_SESSION_BASE64: ${{ secrets.TELEGRAM_SESSION_BASE64 }}
+          TELEGRAM_CHANNELS: ${{ vars.TELEGRAM_CHANNELS }}
+        run: |
+          python scrape_telegram_jobs.py
+
+      # Always commit progress (even on timeout/failure)
+      - name: Commit and Push Scrape Progress
+        if: always()
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_seen_telegram.json telegram_progress.json all_jobs_*.json role_index.json jobs_by_role/*.json || true
+          git commit -m "chore: update telegram jobs and progress [skip ci]" || echo "No changes to commit"
+          git pull --rebase -X theirs --autostash origin main
+          git push
+
+      # Auto-restart if stopped mid-run (runtime guard or GitHub timeout)
+      - name: Auto-Restart if Not Finished
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f telegram_progress.json ]; then
+            FINISHED=$(python -c "import json; d=json.load(open('telegram_progress.json')); print(d.get('finished', False))")
+            if [ "$FINISHED" = "False" ]; then
+              echo "⚠️  Scraper stopped mid-run. Triggering restart..."
+              gh workflow run telegram_jobs.yml --repo ${{ github.repository }}
+              echo "✅ Restart triggered. New run will pick up from saved progress."
+            else
+              echo "✅ Scraper completed all channels. No restart needed."
+            fi
+          else
+            echo "✅ No progress file found. Scraper completed normally."
+          fi
