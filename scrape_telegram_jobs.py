@@ -400,7 +400,9 @@ async def run_pipeline():
     temp_media_dir = os.path.join(WORKSPACE_DIR, "temp_telegram_media")
     os.makedirs(temp_media_dir, exist_ok=True)
 
-    today_cutoff = datetime.now(timezone.utc) - timedelta(days=1)
+    now_ist = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+    start_of_day_ist = now_ist.replace(hour=0, minute=0, second=0, microsecond=0)
+    today_cutoff = start_of_day_ist - timedelta(hours=5, minutes=30)
     new_jobs_stored = 0
     messages_processed = 0
     messages_skipped_none = 0
