@@ -124,15 +124,15 @@
         }
         .cal-btn.active .cal-x { display: flex; }
         .cal-popup {
-            position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
+            position: absolute; bottom: calc(100% + 10px); right: 0; z-index: 9999;
             background: #0d1526; border: 1px solid rgba(16,185,129,0.2);
             border-radius: 18px; padding: 8px; width: 200px;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(16,185,129,0.08);
+            box-shadow: 0 -10px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(16,185,129,0.08);
             display: none;
         }
         .cal-popup.open { display: block; animation: calPop 0.2s cubic-bezier(0.34,1.56,0.64,1); }
         @keyframes calPop {
-            from { opacity:0; transform:scale(0.9) translateY(-6px); }
+            from { opacity:0; transform:scale(0.9) translateY(6px); }
             to   { opacity:1; transform:scale(1) translateY(0); }
         }
         .date-menu-item {
@@ -779,10 +779,12 @@
                         if (!response.ok) throw new Error(`Status ${response.status}`);
                         const rawJobs = await response.json();
                         
+                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
                         roleCache[roleName] = rawJobs.map(job => {
-                            const rawDate = job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "";
-                            const cleanDate = (!rawDate || rawDate === 'None' || rawDate === 'nan' || rawDate === 'null') ? "" : String(rawDate);
+                            const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
                             return {
+                                _id: job.id || 0,
                                 title: String(job.role || job.title || ""),
                                 company: String(job.company_name || job.company || ""),
                                 location: String(job.location || ""),
@@ -794,7 +796,12 @@
                                 fetchedAt: cleanDate,
                                 walking_interview: job.walking_interview || false
                             };
-                        }).sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
+                        }).sort((a, b) => {
+                            const da = a.fetchedAt || '';
+                            const db = b.fetchedAt || '';
+                            if (da !== db) return db.localeCompare(da);
+                            return (b._id || 0) - (a._id || 0);
+                        });
                     } catch (error) {
                         console.error(`Failed to load role ${roleName}:`, error);
                         roleCache[roleName] = [];
@@ -846,9 +853,11 @@
                     const rows = await response.json();
                     
                     for (const job of rows) {
-                        const rawDate = job.job_posted_date || job.fetched_at || job.fetchedAt || job.date_posted || job.date || "";
-                        const cleanDate = (!rawDate || rawDate === 'None' || rawDate === 'nan' || rawDate === 'null') ? "" : String(rawDate);
+                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
                         fetchedJobs.push({
+                            _id: job.id || 0,
                             title: String(job.role || job.title || ""),
                             company: String(job.company_name || job.company || ""),
                             location: String(job.location || ""),
@@ -962,7 +971,12 @@
             }
             
             if (Array.isArray(allJobs)) {
-                allJobs.sort((a, b) => (b.fetchedAt || '').localeCompare(a.fetchedAt || ''));
+                allJobs.sort((a, b) => {
+                    const da = a.fetchedAt || '';
+                    const db = b.fetchedAt || '';
+                    if (da !== db) return db.localeCompare(da);
+                    return (b._id || 0) - (a._id || 0);
+                });
             }
             
             if (!Array.isArray(allJobs) || allJobs.length === 0) {
