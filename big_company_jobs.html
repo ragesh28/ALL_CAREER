@@ -59,6 +59,7 @@
             backdrop-filter: blur(12px); padding: 12px 18px; border-radius: 50px;
             border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             align-items: center; flex-wrap: wrap;
+            position: relative; z-index: 10;
         }
         .mini-logo {
             font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
@@ -630,14 +631,16 @@
                 
                 const fetchedJobs = [];
                 for (const job of rows) {
+                    const rawDate = job.fetched_at || job.fetchedAt || job.date || job.date_posted || "";
+                    const cleanDate = (!rawDate || rawDate === 'None' || rawDate === 'nan' || rawDate === 'null') ? "" : String(rawDate);
                     fetchedJobs.push({
                         title: job.title || "",
                         company: job.company || "",
                         location: job.location || "",
-                        date: job.fetched_at || "",
+                        date: cleanDate,
                         url: job.apply_url || job.url || "",
                         linkedin_url: job.linkedin_url || "",
-                        fetchedAt: job.fetched_at || job.fetchedAt || job.date || job.date_posted || ""
+                        fetchedAt: cleanDate
                     });
                 }
                 
