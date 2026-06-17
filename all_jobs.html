@@ -284,6 +284,7 @@
             font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
             background: rgba(255,255,255,0.05); color: var(--text-muted);
             border: 1px solid var(--border); display: flex; align-items: center; gap: 5px;
+            max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .source-linkedin { color: #0a66c2; border-color: rgba(10,102,194,0.3); }
         .source-google { color: #4285f4; border-color: rgba(66,133,244,0.3); }
@@ -1088,7 +1089,7 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge">📍 ${esc(cityLoc)}</div>
+                    <div class="meta-badge" title="${esc(rawLoc)}">${esc(rawLoc)}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">${date}</div>` : ''}
                     ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
                     ${job.walking_interview ? `<div class="meta-badge" style="border-color:rgba(234,179,8,0.4);color:#eab308;background:rgba(234,179,8,0.08);">🚶 Walk-in</div>` : ''}
