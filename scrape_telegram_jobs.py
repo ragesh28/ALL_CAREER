@@ -407,6 +407,8 @@ async def run_pipeline():
     messages_processed = 0
     messages_skipped_none = 0
     messages_failed = 0
+    debug_messages = []  # Store up to 10 skipped/failed messages for debugging
+    DEBUG_MAX = 10
 
     # Resume from last checkpoint if the previous run was interrupted
     start_channel_idx = load_progress()
@@ -489,6 +491,14 @@ async def run_pipeline():
                     if job_result == "NONE":
                         messages_skipped_none += 1
                         print(f"    🚫 Not a job posting — skipped.")
+                        if len(debug_messages) < DEBUG_MAX:
+                            debug_messages.append({
+                                "type": "non_job_skipped",
+                                "channel": channel,
+                                "msg_id": msg.id,
+                                "text": raw_text[:500],
+                                "timestamp": msg.date.isoformat() if msg.date else None
+                            })
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -497,6 +507,14 @@ async def run_pipeline():
                     if job_result is None:
                         messages_failed += 1
                         print(f"    ❌ Failed to extract after retries — skipped.")
+                        if len(debug_messages) < DEBUG_MAX:
+                            debug_messages.append({
+                                "type": "failed_extraction",
+                                "channel": channel,
+                                "msg_id": msg.id,
+                                "text": raw_text[:500],
+                                "timestamp": msg.date.isoformat() if msg.date else None
+                            })
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -563,6 +581,12 @@ async def run_pipeline():
             except:
                 pass
 
+    # Save debug messages to file
+    debug_file = os.path.join(WORKSPACE_DIR, "telegram_debug_messages.json")
+    with open(debug_file, "w", encoding="utf-8") as f:
+        json.dump(debug_messages, f, indent=2, ensure_ascii=False)
+    print(f"\n📝 Saved {len(debug_messages)} debug messages to telegram_debug_messages.json")
+
     print(f"\n{'='*60}")
     print(f"✅ Telegram Jobs Pipeline Summary")
     print(f"{'='*60}")
@@ -570,6 +594,7 @@ async def run_pipeline():
     print(f"  Jobs stored (new):    {new_jobs_stored}")
     print(f"  Non-job skipped:      {messages_skipped_none}")
     print(f"  Failed extractions:   {messages_failed}")
+    print(f"  Debug samples saved:  {len(debug_messages)}")
     print(f"  Runtime:              {(time.time() - PIPELINE_START_TIME)/60:.1f} minutes")
     print(f"{'='*60}")
 
