@@ -3,7 +3,7 @@ name: Telegram Jobs Scraper (PaddleOCR + Ollama Qwen2.5)
 on:
   workflow_dispatch:   # Manual trigger
   schedule:
-    - cron: '30 15 * * *'  # 9:00 PM IST (15:30 UTC)
+    - cron: '17 15 * * *'  # ~9:00 PM IST (15:17 UTC) — off-peak minute to reduce delay
 
 jobs:
   scrape-telegram:
