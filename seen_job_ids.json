@@ -295,7 +295,11 @@
         "446717387146",
         "446717726244",
         "446719278709",
-        "446719379362"
+        "446719379362",
+        "446719393574",
+        "446719393575",
+        "446719393644",
+        "446719393645"
     ],
     "Ericsson": [
         "563121774752975",
@@ -668,7 +672,9 @@
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511056",
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511620",
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511916",
-        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511917"
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511917",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511574",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/511576"
     ],
     "Amadeus": [
         "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Service-Management-Lead_R35060",
@@ -3147,7 +3153,16 @@
         "185143",
         "184313",
         "180580",
-        "178093"
+        "178093",
+        "184102",
+        "184620",
+        "184112",
+        "184219",
+        "184580",
+        "184708",
+        "184539",
+        "127411",
+        "178855"
     ],
     "Arcesium": [
         "https://job-boards.greenhouse.io/arcesiumllc/jobs/5017849007",
@@ -4031,7 +4046,17 @@
         "https://www.linkedin.com/jobs/view/4428396102",
         "https://www.linkedin.com/jobs/view/4428604081",
         "https://www.linkedin.com/jobs/view/4427571976",
-        "https://www.linkedin.com/jobs/view/4410082591"
+        "https://www.linkedin.com/jobs/view/4410082591",
+        "https://www.linkedin.com/jobs/view/4432970314",
+        "https://www.linkedin.com/jobs/view/4432975560",
+        "https://www.linkedin.com/jobs/view/4433349764",
+        "https://www.linkedin.com/jobs/view/4432610761",
+        "https://www.linkedin.com/jobs/view/4432296856",
+        "https://www.linkedin.com/jobs/view/4432552739",
+        "https://www.linkedin.com/jobs/view/4432080605",
+        "https://www.linkedin.com/jobs/view/4430389433",
+        "https://www.linkedin.com/jobs/view/4430752455",
+        "https://www.linkedin.com/jobs/view/4427942859"
     ],
     "Mastercard": [
         "https://www.linkedin.com/jobs/view/4414355547",
@@ -4873,7 +4898,21 @@
         "https://www.linkedin.com/jobs/view/4427805174",
         "https://www.linkedin.com/jobs/view/4423120346",
         "https://www.linkedin.com/jobs/view/4421983053",
-        "https://www.linkedin.com/jobs/view/4430614905"
+        "https://www.linkedin.com/jobs/view/4430614905",
+        "https://www.linkedin.com/jobs/view/4434024503",
+        "https://www.linkedin.com/jobs/view/4430645126",
+        "https://www.linkedin.com/jobs/view/4430207785",
+        "https://www.linkedin.com/jobs/view/4432634096",
+        "https://www.linkedin.com/jobs/view/4430284628",
+        "https://www.linkedin.com/jobs/view/4430283712",
+        "https://www.linkedin.com/jobs/view/4429852517",
+        "https://www.linkedin.com/jobs/view/4432517819",
+        "https://www.linkedin.com/jobs/view/4291063814",
+        "https://www.linkedin.com/jobs/view/4291063803",
+        "https://www.linkedin.com/jobs/view/4429309774",
+        "https://www.linkedin.com/jobs/view/4430466823",
+        "https://www.linkedin.com/jobs/view/4427392528",
+        "https://www.linkedin.com/jobs/view/4423127296"
     ],
     "Barclays": [
         "https://search.jobs.barclays/"
@@ -6230,7 +6269,33 @@
         "https://www.linkedin.com/jobs/view/4431723784",
         "https://www.linkedin.com/jobs/view/4427914210",
         "https://www.linkedin.com/jobs/view/4425642657",
-        "https://www.linkedin.com/jobs/view/4434230745"
+        "https://www.linkedin.com/jobs/view/4434230745",
+        "https://www.linkedin.com/jobs/view/4432972819",
+        "https://www.linkedin.com/jobs/view/4433886466",
+        "https://www.linkedin.com/jobs/view/4431729109",
+        "https://www.linkedin.com/jobs/view/4433301139",
+        "https://www.linkedin.com/jobs/view/4432169650",
+        "https://www.linkedin.com/jobs/view/4229846172",
+        "https://www.linkedin.com/jobs/view/4404068480",
+        "https://www.linkedin.com/jobs/view/4432825076",
+        "https://www.linkedin.com/jobs/view/4432808972",
+        "https://www.linkedin.com/jobs/view/4431729103",
+        "https://www.linkedin.com/jobs/view/4431716898",
+        "https://www.linkedin.com/jobs/view/4404073482",
+        "https://www.linkedin.com/jobs/view/4431724745",
+        "https://www.linkedin.com/jobs/view/4431716964",
+        "https://www.linkedin.com/jobs/view/4431717945",
+        "https://www.linkedin.com/jobs/view/4431712869",
+        "https://www.linkedin.com/jobs/view/4431730061",
+        "https://www.linkedin.com/jobs/view/4431728240",
+        "https://www.linkedin.com/jobs/view/4431730149",
+        "https://www.linkedin.com/jobs/view/4431731107",
+        "https://www.linkedin.com/jobs/view/4431726704",
+        "https://www.linkedin.com/jobs/view/4431723778",
+        "https://www.linkedin.com/jobs/view/4418234489",
+        "https://www.linkedin.com/jobs/view/4418243426",
+        "https://www.linkedin.com/jobs/view/4431036230",
+        "https://www.linkedin.com/jobs/view/4406385712"
     ],
     "Publicis Sapient": [],
     "IBM": [
@@ -7573,7 +7638,48 @@
         "https://www.linkedin.com/jobs/view/4385445082",
         "https://www.linkedin.com/jobs/view/4413607567",
         "https://www.linkedin.com/jobs/view/4398691304",
-        "https://www.linkedin.com/jobs/view/4413325702"
+        "https://www.linkedin.com/jobs/view/4413325702",
+        "https://www.linkedin.com/jobs/view/4431001026",
+        "https://www.linkedin.com/jobs/view/4430299923",
+        "https://www.linkedin.com/jobs/view/4430615029",
+        "https://www.linkedin.com/jobs/view/4430603920",
+        "https://www.linkedin.com/jobs/view/4433817264",
+        "https://www.linkedin.com/jobs/view/4372494656",
+        "https://www.linkedin.com/jobs/view/4430614032",
+        "https://www.linkedin.com/jobs/view/4430233503",
+        "https://www.linkedin.com/jobs/view/4432187314",
+        "https://www.linkedin.com/jobs/view/4431873071",
+        "https://www.linkedin.com/jobs/view/4429844203",
+        "https://www.linkedin.com/jobs/view/4429841826",
+        "https://www.linkedin.com/jobs/view/4429849065",
+        "https://www.linkedin.com/jobs/view/4429851060",
+        "https://www.linkedin.com/jobs/view/4429853028",
+        "https://www.linkedin.com/jobs/view/4419693151",
+        "https://www.linkedin.com/jobs/view/4432274368",
+        "https://www.linkedin.com/jobs/view/4432283163",
+        "https://www.linkedin.com/jobs/view/4432278206",
+        "https://www.linkedin.com/jobs/view/4417952568",
+        "https://www.linkedin.com/jobs/view/4432283017",
+        "https://www.linkedin.com/jobs/view/4432225148",
+        "https://www.linkedin.com/jobs/view/4429409438",
+        "https://www.linkedin.com/jobs/view/4431781269",
+        "https://www.linkedin.com/jobs/view/4428909824",
+        "https://www.linkedin.com/jobs/view/4428926662",
+        "https://www.linkedin.com/jobs/view/4428521902",
+        "https://www.linkedin.com/jobs/view/4428223683",
+        "https://www.linkedin.com/jobs/view/4428233557",
+        "https://www.linkedin.com/jobs/view/4427329460",
+        "https://www.linkedin.com/jobs/view/4427353847",
+        "https://www.linkedin.com/jobs/view/4427347851",
+        "https://www.linkedin.com/jobs/view/4427350819",
+        "https://www.linkedin.com/jobs/view/4426484722",
+        "https://www.linkedin.com/jobs/view/4407747767",
+        "https://www.linkedin.com/jobs/view/4424802582",
+        "https://www.linkedin.com/jobs/view/4426084457",
+        "https://www.linkedin.com/jobs/view/4422256756",
+        "https://www.linkedin.com/jobs/view/4421926323",
+        "https://www.linkedin.com/jobs/view/4412253805",
+        "https://www.linkedin.com/jobs/view/4403773440"
     ],
     "ZS Associates": [
         "https://www.linkedin.com/jobs/view/4410617321",
@@ -7766,7 +7872,10 @@
         "https://www.linkedin.com/jobs/view/4432605092",
         "https://www.linkedin.com/jobs/view/4430294885",
         "https://www.linkedin.com/jobs/view/4431261544",
-        "https://www.linkedin.com/jobs/view/4430142029"
+        "https://www.linkedin.com/jobs/view/4430142029",
+        "https://www.linkedin.com/jobs/view/4432961230",
+        "https://www.linkedin.com/jobs/view/4433304346",
+        "https://www.linkedin.com/jobs/view/4430398316"
     ],
     "Continental": [
         "https://www.linkedin.com/jobs/view/4418087257",
@@ -8170,7 +8279,19 @@
         "https://www.linkedin.com/jobs/view/4431232584",
         "https://www.linkedin.com/jobs/view/4425487144",
         "https://www.linkedin.com/jobs/view/4431000884",
-        "https://www.linkedin.com/jobs/view/4434072826"
+        "https://www.linkedin.com/jobs/view/4434072826",
+        "https://www.linkedin.com/jobs/view/4432482342",
+        "https://www.linkedin.com/jobs/view/4432533056",
+        "https://www.linkedin.com/jobs/view/4433002192",
+        "https://www.linkedin.com/jobs/view/4413263679",
+        "https://www.linkedin.com/jobs/view/4430306661",
+        "https://www.linkedin.com/jobs/view/4430443382",
+        "https://www.linkedin.com/jobs/view/4426760220",
+        "https://www.linkedin.com/jobs/view/4426746461",
+        "https://www.linkedin.com/jobs/view/4427666736",
+        "https://www.linkedin.com/jobs/view/4426620117",
+        "https://www.linkedin.com/jobs/view/4403436160",
+        "https://www.linkedin.com/jobs/view/4209916264"
     ],
     "Nokia": [
         "27560",
@@ -9164,7 +9285,27 @@
         "https://www.linkedin.com/jobs/view/4430863951",
         "https://www.linkedin.com/jobs/view/4429646034",
         "https://www.linkedin.com/jobs/view/4429372303",
-        "https://www.linkedin.com/jobs/view/4394452382"
+        "https://www.linkedin.com/jobs/view/4394452382",
+        "https://www.linkedin.com/jobs/view/4433469894",
+        "https://www.linkedin.com/jobs/view/4433479601",
+        "https://www.linkedin.com/jobs/view/4433466928",
+        "https://www.linkedin.com/jobs/view/4433475793",
+        "https://www.linkedin.com/jobs/view/4433484295",
+        "https://www.linkedin.com/jobs/view/4433464940",
+        "https://www.linkedin.com/jobs/view/4433487048",
+        "https://www.linkedin.com/jobs/view/4433479600",
+        "https://www.linkedin.com/jobs/view/4433286382",
+        "https://www.linkedin.com/jobs/view/4432693430",
+        "https://www.linkedin.com/jobs/view/4432686645",
+        "https://www.linkedin.com/jobs/view/4432696478",
+        "https://www.linkedin.com/jobs/view/4431892793",
+        "https://www.linkedin.com/jobs/view/4431846774",
+        "https://www.linkedin.com/jobs/view/4430381539",
+        "https://www.linkedin.com/jobs/view/4430598808",
+        "https://www.linkedin.com/jobs/view/4430026073",
+        "https://www.linkedin.com/jobs/view/4429385243",
+        "https://www.linkedin.com/jobs/view/4429236436",
+        "https://www.linkedin.com/jobs/view/4368974320"
     ],
     "KPIT Technologies": [
         "https://www.kpit.com/"
@@ -9642,7 +9783,8 @@
         "https://www.linkedin.com/jobs/view/4423616408",
         "https://www.linkedin.com/jobs/view/4432959914",
         "https://www.linkedin.com/jobs/view/4359646259",
-        "https://www.linkedin.com/jobs/view/4359426686"
+        "https://www.linkedin.com/jobs/view/4359426686",
+        "https://www.linkedin.com/jobs/view/4428944031"
     ],
     "Eurofins IT": [],
     "Sabre": [
@@ -9670,7 +9812,8 @@
         "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Product-Support-Analyst-I_JR108140-1",
         "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Sales-Operations-Automation-Specialist_JR107688",
         "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Software-Engineer-IV_JR108186",
-        "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Lead-Software-Engineer---BRIM-CC_JR108205"
+        "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Lead-Software-Engineer---BRIM-CC_JR108205",
+        "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Team-Lead-Software-Systems-Engineering_JR108174"
     ],
     "Alstom": [
         "/job/Bangalore-ISC-MPI-Engineer/1387388233/",
@@ -10351,7 +10494,15 @@
         "https://www.linkedin.com/jobs/view/4432602785",
         "https://www.linkedin.com/jobs/view/4433860154",
         "https://www.linkedin.com/jobs/view/4433273954",
-        "https://www.linkedin.com/jobs/view/4432096825"
+        "https://www.linkedin.com/jobs/view/4432096825",
+        "https://www.linkedin.com/jobs/view/4424115554",
+        "https://www.linkedin.com/jobs/view/4424448843",
+        "https://www.linkedin.com/jobs/view/4424368284",
+        "https://www.linkedin.com/jobs/view/4424357378",
+        "https://www.linkedin.com/jobs/view/4403507944",
+        "https://www.linkedin.com/jobs/view/4429328162",
+        "https://www.linkedin.com/jobs/view/4427744900",
+        "https://www.linkedin.com/jobs/view/4427742943"
     ],
     "Nutanix": [
         "https://www.linkedin.com/jobs/view/4359558915",
@@ -10846,7 +10997,19 @@
         "https://www.linkedin.com/jobs/view/4433222993",
         "https://www.linkedin.com/jobs/view/4414197439",
         "https://www.linkedin.com/jobs/view/4432970548",
-        "https://www.linkedin.com/jobs/view/4433224214"
+        "https://www.linkedin.com/jobs/view/4433224214",
+        "https://www.linkedin.com/jobs/view/4433431039",
+        "https://www.linkedin.com/jobs/view/4433595538",
+        "https://www.linkedin.com/jobs/view/4422472835",
+        "https://www.linkedin.com/jobs/view/4407095483",
+        "https://www.linkedin.com/jobs/view/4430273122",
+        "https://www.linkedin.com/jobs/view/4410158887",
+        "https://www.linkedin.com/jobs/view/4420208391",
+        "https://www.linkedin.com/jobs/view/4430565641",
+        "https://www.linkedin.com/jobs/view/4428196728",
+        "https://www.linkedin.com/jobs/view/4427701299",
+        "https://www.linkedin.com/jobs/view/4427497302",
+        "https://www.linkedin.com/jobs/view/4425312496"
     ],
     "BrowserStack": [
         "https://browserstack.wd3.myworkdayjobs.com/job/India-Remote/Consultant---Content-Strategist_JR103350",
@@ -11590,7 +11753,12 @@
         "https://www.linkedin.com/jobs/view/4430795659",
         "https://www.linkedin.com/jobs/view/4433886196",
         "https://www.linkedin.com/jobs/view/4431665582",
-        "https://www.linkedin.com/jobs/view/4430802176"
+        "https://www.linkedin.com/jobs/view/4430802176",
+        "https://www.linkedin.com/jobs/view/4433445531",
+        "https://www.linkedin.com/jobs/view/4432914018",
+        "https://www.linkedin.com/jobs/view/4432403247",
+        "https://www.linkedin.com/jobs/view/4431745044",
+        "https://www.linkedin.com/jobs/view/4426056670"
     ],
     "NatWest Group": [
         "https://www.linkedin.com/jobs/view/4409128826",
@@ -12097,7 +12265,14 @@
         "https://www.linkedin.com/jobs/view/4429548261",
         "https://www.linkedin.com/jobs/view/4434246440",
         "https://www.linkedin.com/jobs/view/4434243517",
-        "https://www.linkedin.com/jobs/view/4434246439"
+        "https://www.linkedin.com/jobs/view/4434246439",
+        "https://www.linkedin.com/jobs/view/4434085733",
+        "https://www.linkedin.com/jobs/view/4433881207",
+        "https://www.linkedin.com/jobs/view/4433875425",
+        "https://www.linkedin.com/jobs/view/4433884112",
+        "https://www.linkedin.com/jobs/view/4433888021",
+        "https://www.linkedin.com/jobs/view/4433335466",
+        "https://www.linkedin.com/jobs/view/4432294638"
     ],
     "ITC Infotech": [
         "https://www.linkedin.com/jobs/view/4406765659",
@@ -12401,7 +12576,9 @@
         "https://www.linkedin.com/jobs/view/4314182297",
         "https://www.linkedin.com/jobs/view/4433236619",
         "https://www.linkedin.com/jobs/view/4393819016",
-        "https://www.linkedin.com/jobs/view/4432526295"
+        "https://www.linkedin.com/jobs/view/4432526295",
+        "https://www.linkedin.com/jobs/view/4429898581",
+        "https://www.linkedin.com/jobs/view/4431478571"
     ],
     "OpenAI": [
         "#main",
@@ -13784,6 +13961,15 @@
         "https://www.linkedin.com/jobs/view/4426789939",
         "https://www.linkedin.com/jobs/view/4423877630",
         "https://www.linkedin.com/jobs/view/4422816036",
-        "https://www.linkedin.com/jobs/view/4417944387"
+        "https://www.linkedin.com/jobs/view/4417944387",
+        "https://www.linkedin.com/jobs/view/4312441147",
+        "https://www.linkedin.com/jobs/view/4433094047",
+        "https://www.linkedin.com/jobs/view/4429831225",
+        "https://www.linkedin.com/jobs/view/4429851717",
+        "https://www.linkedin.com/jobs/view/4432575997",
+        "https://www.linkedin.com/jobs/view/4432823509",
+        "https://www.linkedin.com/jobs/view/4429253647",
+        "https://www.linkedin.com/jobs/view/4428833302",
+        "https://www.linkedin.com/jobs/view/4424207904"
     ]
 }
