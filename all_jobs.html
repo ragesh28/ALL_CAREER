@@ -1089,7 +1089,7 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge" title="${esc(rawLoc)}">${esc(rawLoc)}</div>
+                    <div class="meta-badge" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
                     ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">${date}</div>` : ''}
                     ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
                     ${job.walking_interview ? `<div class="meta-badge" style="border-color:rgba(234,179,8,0.4);color:#eab308;background:rgba(234,179,8,0.08);">🚶 Walk-in</div>` : ''}
