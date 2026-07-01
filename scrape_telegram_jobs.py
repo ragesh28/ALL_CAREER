@@ -184,12 +184,9 @@ SYSTEM_PROMPT = (
     "casual chat, motivational quotes, news), return exactly: {\"none\": true}\n\n"
     "If the text IS a job posting, return a JSON object with exactly these keys:\n"
     "\"company\", \"role\", \"qualification\", \"experience\", \"salary\", "
-    "\"location\", \"apply_link\", \"walking_interview\", \"last_date\", \"other_details\".\n\n"
+    "\"location\", \"apply_link\", \"last_date\", \"other_details\".\n\n"
     "Rules:\n"
     "- If a key is missing or not mentioned, set its value to null.\n"
-    "- \"walking_interview\" must be true if the text mentions walk-in, walkin, "
-    "walk in interview, direct interview, spot interview, open drive, or spot offer. "
-    "Otherwise set it to false.\n"
     "- Do not guess apply links. If none exists, set it to null.\n"
     "- Experience and salary should be short strings or null.\n"
     "- \"last_date\" is the application deadline if mentioned, otherwise null.\n"
@@ -525,10 +522,8 @@ async def run_pipeline():
                     company = job_json.get("company")
                     location = job_json.get("location") or "Remote"
                     apply_link = job_json.get("apply_link") or f"https://t.me/{channel}/{msg.id}"
-                    walking = job_json.get("walking_interview", False)
 
-                    walk_label = " 🚶 [Walking Interview]" if walking else ""
-                    print(f"    🎉 Extracted: '{role}' @ '{company}' ({location}){walk_label}")
+                    print(f"    🎉 Extracted: '{role}' @ '{company}' ({location})")
 
                     job_data = {
                         "title": role,
@@ -537,7 +532,6 @@ async def run_pipeline():
                         "date_posted": datetime.now().strftime("%Y-%m-%d"),
                         "url": apply_link,
                         "source": "telegram",
-                        "walking_interview": walking,
                         "experience": job_json.get("experience"),
                         "salary": job_json.get("salary"),
                         "qualification": job_json.get("qualification"),

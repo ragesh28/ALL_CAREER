@@ -6,1076 +6,1225 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All_Career - All Jobs</title>
     <link rel="icon" href="String_Theory.png" type="image/png">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #020617;
-            --bg-surface: #0f172a;
-            --bg-glass: rgba(15, 23, 42, 0.95);
-            --primary: #10b981;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
+            --bg-deep: #06080f;
+            --bg-sidebar: #0b1120;
+            --bg-surface: #0e1424;
+            --bg-card: rgba(16, 24, 48, 0.7);
+            --bg-glass: rgba(12, 18, 35, 0.9);
+            --bg-hover: rgba(52, 211, 153, 0.05);
+            --primary: #34d399;
+            --primary-dim: rgba(52, 211, 153, 0.15);
+            --accent-blue: #60a5fa;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+            --accent-rose: #fb7185;
+            --accent-amber: #fbbf24;
+            --text-main: #f1f5f9;
+            --text-muted: #7c8db5;
+            --text-dim: #475775;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-active: rgba(52, 211, 153, 0.3);
+            --sidebar-width: 280px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        *::selection { background: rgba(52, 211, 153, 0.25); color: #fff; }
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             min-height: 100vh;
-            background-image: radial-gradient(circle at top center, rgba(16, 185, 129, 0.08), transparent 50%);
-            background-attachment: fixed;
+            overflow-x: hidden;
         }
 
-        #main-header {
-            text-align: center; padding-top: 60px; padding-bottom: 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden; opacity: 1; height: auto; transform: scale(1);
+        /* ── Subtle animated background ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: -1;
+            background:
+                radial-gradient(ellipse 70% 50% at 15% 25%, rgba(52, 211, 153, 0.06), transparent),
+                radial-gradient(ellipse 50% 40% at 85% 10%, rgba(96, 165, 250, 0.05), transparent),
+                radial-gradient(ellipse 60% 50% at 60% 90%, rgba(167, 139, 250, 0.04), transparent);
         }
-        body.scrolled #main-header { opacity: 0; padding-top: 0; height: 0; transform: scale(0.8); margin-bottom: 0; }
 
-        h1 {
-            font-family: 'Outfit', sans-serif; font-size: 3.5rem; font-weight: 800;
-            background: linear-gradient(135deg, #10b981, #3b82f6);
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-            cursor: pointer; transition: letter-spacing 0.5s ease;
-            letter-spacing: -1px; text-decoration: none; margin: 0;
+        /* ══════════════════════════════════════
+           TOP NAVBAR
+        ══════════════════════════════════════ */
+        .topnav {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(6, 8, 15, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            display: flex; align-items: center; justify-content: space-between; height: 60px;
+            gap: 20px;
         }
-        h1:hover { letter-spacing: 5px; }
+        .topnav-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .topnav-center {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .topnav-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+        }
+        .topnav-logo {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+        }
+        .topnav-logo img { width: 32px; height: 32px; border-radius: 8px; }
+        .topnav-logo span {
+            font-family: 'Outfit', sans-serif; font-weight: 800;
+            font-size: 1.2rem; color: #fff; letter-spacing: 0.5px;
+        }
+        .topnav-search {
+            width: 100%; max-width: 380px;
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px; padding: 0 14px; height: 38px;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .topnav-search:focus-within {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.08);
+        }
+        .topnav-search svg { color: var(--text-muted); flex-shrink: 0; }
+        .topnav-search input {
+            flex: 1; background: none; border: none; outline: none;
+            color: #ffffff; font-family: 'Inter', sans-serif;
+            font-size: 0.88rem; font-weight: 500;
+        }
+        .topnav-search input::placeholder { color: var(--text-muted); }
+        .topnav-count {
+            font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;
+        }
+        .topnav-count span { color: var(--primary); font-weight: 800; }
+        .clear-all-btn {
+            padding: 7px 16px; border-radius: 8px;
+            border: 1px solid rgba(251, 113, 133, 0.3);
+            background: rgba(251, 113, 133, 0.06);
+            color: var(--accent-rose); font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap;
+            display: none; font-family: 'Inter', sans-serif;
+        }
+        .clear-all-btn.visible { display: block; }
+        .clear-all-btn:hover { background: rgba(251, 113, 133, 0.12); border-color: rgba(251, 113, 133, 0.5); }
 
-        /* --- FILTER BAR --- */
-        .filter-bar-container {
-            position: sticky; top: 20px; z-index: 100;
-            padding: 0 20px; display: flex; justify-content: center; margin-bottom: 10px;
+        /* ══════════════════════════════════════
+           LAYOUT — SIDEBAR + MAIN
+        ══════════════════════════════════════ */
+        .page-layout {
+            display: flex; min-height: calc(100vh - 60px);
         }
-        .filter-bar {
-            width: 100%; max-width: 1000px;
-            display: flex; gap: 12px; background: var(--bg-glass);
-            backdrop-filter: blur(12px); padding: 12px 18px; border-radius: 50px;
-            border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            align-items: center; flex-wrap: wrap;
-            position: relative; z-index: 10;
-        }
-        .mini-logo {
-            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: var(--primary); white-space: nowrap; max-width: 180px; opacity: 1;
-            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 15px;
-            cursor: pointer;
-        }
-        .filter-bar.collapsed > *:not(.mini-logo) {
-            display: none !important;
-        }
-        .filter-bar.collapsed {
-            width: auto;
-            max-width: fit-content;
-            padding: 12px 24px;
-            border-radius: 50px;
-        }
-        .filter-bar.collapsed .mini-logo {
-            margin-right: 0;
-        }
-        .portal-filter-strip.collapsed .portal-filter-inner > *:not(.portal-filter-label) {
-            display: none !important;
-        }
-        .portal-filter-strip.collapsed .portal-filter-inner {
-            width: auto;
-            max-width: fit-content;
-            margin: 0 auto;
-            padding: 10px 24px;
-            border-radius: 50px;
-        }
-        .portal-filter-strip.collapsed .portal-filter-label {
-            padding-right: 0;
-            border-right: none;
-            margin-right: 0;
-        }
-        .filter-group { flex: 1; min-width: 120px; }
-        .filter-input {
-            width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
-            color: white; padding: 10px 14px; border-radius: 20px; outline: none;
-            font-family: inherit; transition: 0.3s;
-        }
-        .filter-input:focus { border-color: var(--primary); }
-        select.filter-input option { background-color: var(--bg-deep); color: white; }
 
-        /* --- CALENDAR BUTTON & POPUP --- */
-        .cal-wrap { position: relative; }
-        .cal-btn {
-            display: flex; align-items: center; gap: 7px;
-            padding: 9px 16px; border-radius: 20px;
-            border: 1px solid rgba(16,185,129,0.4);
-            background: rgba(16,185,129,0.08); color: #10b981;
-            cursor: pointer; font-weight: 700; font-size: 0.85rem;
-            font-family: inherit; white-space: nowrap; transition: 0.2s; user-select: none;
+        /* ══════════════════════════════════════
+           LEFT SIDEBAR
+        ══════════════════════════════════════ */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            position: sticky; top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 0 0 40px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.06) transparent;
         }
-        .cal-btn:hover { background: rgba(16,185,129,0.16); }
-        .cal-btn.active {
-            background: #10b981; color: #020617; border-color: #10b981;
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 4px; }
+
+        /* Sidebar header */
+        .sidebar-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid var(--border);
         }
-        .cal-btn .cal-x {
-            display: none; width: 16px; height: 16px; border-radius: 50%;
-            background: rgba(0,0,0,0.2); align-items: center; justify-content: center;
-            font-size: 0.65rem; line-height: 1;
+        .sidebar-title {
+            font-size: 0.95rem; font-weight: 700; color: var(--text-main);
         }
-        .cal-btn.active .cal-x { display: flex; }
-        .cal-popup {
-            position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
-            background: #0d1526; border: 1px solid rgba(16,185,129,0.2);
-            border-radius: 18px; padding: 8px; width: 200px;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(16,185,129,0.08);
+        .applied-badge {
+            font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--primary); border-radius: 20px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
             display: none;
         }
-        .cal-popup.open { display: block; animation: calPop 0.2s cubic-bezier(0.34,1.56,0.64,1); }
-        @keyframes calPop {
-            from { opacity:0; transform:scale(0.9) translateY(-6px); }
-            to   { opacity:1; transform:scale(1) translateY(0); }
-        }
-        .date-menu-item {
-            padding: 10px 14px;
-            cursor: pointer;
-            border-radius: 10px;
-            color: var(--text-main);
-            transition: all 0.2s;
-            font-size: 0.88rem;
-            font-weight: 600;
-        }
-        .date-menu-item:hover {
-            background: rgba(16,185,129,0.12);
-            color: #10b981;
-        }
-        .date-menu-item.active {
-            background: #10b981;
-            color: #020617;
-        }
+        .applied-badge.visible { display: block; }
 
-        /* Experience toggle */
-        .exp-group { display: flex; gap: 6px; }
-        .exp-btn {
-            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
-            background: transparent; color: var(--text-muted); cursor: pointer;
-            font-weight: 600; font-size: 0.82rem; transition: 0.2s;
-            font-family: inherit; white-space: nowrap;
+        /* ── Filter Section ── */
+        .filter-section {
+            border-bottom: 1px solid var(--border);
         }
-        .exp-btn:hover { border-color: var(--primary); color: white; }
-        .exp-btn.active { background: var(--primary); color: #020617; border-color: var(--primary); }
-
-        /* Roles tree button */
-        .roles-toggle {
-            padding: 8px 18px; border-radius: 20px; border: 1px solid rgba(139,92,246,0.4);
-            background: rgba(139,92,246,0.1); color: #a78bfa; cursor: pointer;
-            font-weight: 700; font-size: 0.85rem; transition: 0.2s;
-            font-family: inherit; white-space: nowrap; display: flex; align-items: center; gap: 6px;
+        .filter-section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px; cursor: pointer; user-select: none;
+            transition: background 0.15s;
         }
-        .roles-toggle:hover { background: rgba(139,92,246,0.2); }
-        .roles-toggle.active { background: #8b5cf6; color: white; border-color: #8b5cf6; }
-        .roles-toggle .arrow { transition: transform 0.3s; display: inline-block; }
-        .roles-toggle.active .arrow { transform: rotate(180deg); }
-
-        /* --- MIND MAP PANEL --- */
-        .mindmap-panel {
-            max-width: 1000px; margin: 0 auto 20px;
-            padding: 0 20px; overflow: hidden;
-            max-height: 0; opacity: 0;
-            transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
-        }
-        .mindmap-panel.open { max-height: 2000px; opacity: 1; }
-        .mindmap-inner {
-            background: var(--bg-surface); border: 1px solid var(--border);
-            border-radius: 20px; padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-        .mindmap-title {
-            text-align: center; font-family: 'Outfit', sans-serif; font-weight: 700;
-            font-size: 1.2rem; color: #a78bfa; margin-bottom: 25px;
-        }
-        .active-role-badge {
-            display: inline-block; background: rgba(139,92,246,0.15); color: #a78bfa;
-            padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px;
-            border: 1px solid rgba(139,92,246,0.3);
-        }
-        .clear-role { cursor: pointer; margin-left: 6px; opacity: 0.7; }
-        .clear-role:hover { opacity: 1; }
-
-        .tree { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-        .tree-branch { flex: 1; min-width: 300px; max-width: 450px; }
-        .branch-header {
-            padding: 10px 20px; border-radius: 12px; font-weight: 700;
-            font-size: 0.95rem; margin-bottom: 12px; cursor: default;
+        .filter-section-header:hover { background: rgba(255,255,255,0.02); }
+        .filter-section-label {
+            font-size: 0.88rem; font-weight: 600; color: var(--text-main);
             display: flex; align-items: center; gap: 8px;
         }
-        .branch-tech { background: rgba(6,182,212,0.1); color: #06b6d4; border: 1px solid rgba(6,182,212,0.2); }
-        .branch-nontech { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.2); }
+        .filter-section-label .filter-count {
+            font-size: 0.68rem; font-weight: 700;
+            background: var(--primary); color: #020a0f;
+            padding: 1px 7px; border-radius: 20px;
+            display: none;
+        }
+        .filter-section-label .filter-count.show { display: inline-block; }
+        .chevron {
+            color: var(--text-dim);
+            width: 16px;
+            height: 16px;
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+        .filter-section.open .chevron { transform: rotate(180deg); }
 
-        .tier { margin-left: 20px; margin-bottom: 14px; position: relative; }
-        .tier::before {
-            content: ''; position: absolute; left: -12px; top: 0; bottom: 10px;
-            width: 2px; background: rgba(255,255,255,0.06);
+        /* Filter body */
+        .filter-body {
+            overflow: hidden; max-height: 0;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 16px;
         }
-        .tier-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 0; margin-bottom: 6px; }
-        .tier-high .tier-label { color: #f43f5e; }
-        .tier-mid .tier-label { color: #eab308; }
-        .tier-low .tier-label { color: #64748b; }
+        .filter-section.open .filter-body { max-height: 600px; }
+        .filter-body-inner { padding: 4px 0 14px; }
 
-        .role-nodes { display: flex; flex-wrap: wrap; gap: 6px; }
-        .role-node {
-            position: relative; padding: 6px 14px; border-radius: 20px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            color: var(--text-muted); font-size: 0.78rem; font-weight: 500;
-            cursor: pointer; transition: all 0.2s; user-select: none;
+        /* Search inside filter */
+        .filter-search {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;
+            transition: border-color 0.2s;
         }
-        .role-node::before {
-            content: ''; position: absolute; left: -14px; top: 50%;
-            width: 12px; height: 2px; background: rgba(255,255,255,0.06);
+        .filter-search:focus-within { border-color: var(--border-active); }
+        .filter-search svg { color: var(--text-dim); flex-shrink: 0; }
+        .filter-search input {
+            flex: 1; background: none; border: none; outline: none;
+            color: var(--text-main); font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
         }
-        .role-node:hover { border-color: #a78bfa; color: white; background: rgba(139,92,246,0.1); }
-        .role-node.active { background: #8b5cf6; color: white; border-color: #8b5cf6; }
-        .role-node .node-dot {
-            display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-            background: var(--text-muted); margin-right: 6px; transition: 0.2s;
-        }
-        .role-node:hover .node-dot { background: #a78bfa; }
-        .role-node.active .node-dot { background: white; }
+        .filter-search input::placeholder { color: var(--text-dim); }
 
-        /* --- JOBS --- */
-        .container { max-width: 100%; margin: 0 auto; padding: 0 30px 100px; overflow: hidden; }
-        .stats { color: var(--text-muted); margin-bottom: 20px; text-align: center; font-size: 1.1rem; }
+        /* Checkbox option */
+        .filter-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 4px; cursor: pointer; border-radius: 6px;
+            transition: background 0.15s; user-select: none;
+        }
+        .filter-option:hover { background: var(--bg-hover); }
+        .filter-option input[type="checkbox"] { display: none; }
+        .custom-checkbox {
+            width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+            border: 1.5px solid var(--text-dim);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .filter-option.checked .custom-checkbox {
+            background: var(--primary); border-color: var(--primary);
+        }
+        .custom-checkbox svg { display: none; }
+        .filter-option.checked .custom-checkbox svg { display: block; }
+        .option-label {
+            font-size: 0.82rem; color: var(--text-muted); flex: 1;
+            font-weight: 500; transition: color 0.15s;
+        }
+        .filter-option:hover .option-label,
+        .filter-option.checked .option-label { color: var(--text-main); }
+        .option-img {
+            width: 14px; height: 14px; object-fit: contain; border-radius: 2px; flex-shrink: 0;
+        }
+        .show-more-btn {
+            font-size: 0.78rem; color: var(--primary); font-weight: 600;
+            cursor: pointer; padding: 6px 4px; display: inline-block;
+            transition: opacity 0.2s;
+        }
+        .show-more-btn:hover { opacity: 0.8; }
+
+        /* Radio option (for date) */
+        .filter-radio {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 4px; cursor: pointer; border-radius: 6px;
+            transition: background 0.15s; user-select: none;
+        }
+        .filter-radio:hover { background: var(--bg-hover); }
+        .custom-radio {
+            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+            border: 1.5px solid var(--text-dim);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .filter-radio.selected .custom-radio {
+            border-color: var(--primary);
+        }
+        .radio-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--primary); display: none;
+        }
+        .filter-radio.selected .radio-dot { display: block; }
+        .filter-radio .option-label { color: var(--text-muted); }
+        .filter-radio:hover .option-label,
+        .filter-radio.selected .option-label { color: var(--text-main); }
+
+        /* ══════════════════════════════════════
+           MAIN CONTENT
+        ══════════════════════════════════════ */
+        .main-content {
+            flex: 1; min-width: 0;
+            padding: 20px 24px 80px;
+        }
+
+        /* Sort bar */
+        .sort-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .sort-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
+        .sort-select {
+            background: var(--bg-surface); border: 1px solid var(--border);
+            color: var(--text-main); padding: 7px 12px; border-radius: 8px;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; cursor: pointer;
+        }
+        .sort-select option { background: var(--bg-surface); }
+        .sort-select:focus { border-color: var(--border-active); }
+
+        /* Active filter chips */
+        .active-chips {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+        }
+        .chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            font-size: 0.75rem; font-weight: 600; color: var(--primary);
+        }
+        .chip-x {
+            cursor: pointer; opacity: 0.7; font-size: 0.85rem; line-height: 1;
+            transition: opacity 0.15s;
+        }
+        .chip-x:hover { opacity: 1; }
+
+        /* ── Job Cards Grid ── */
+        #loading {
+            text-align: center; padding: 60px 20px; color: var(--text-muted); font-weight: 500;
+        }
+        #loading::after {
+            content: '';
+            display: block; width: 28px; height: 28px; margin: 14px auto 0;
+            border: 3px solid rgba(52, 211, 153, 0.15);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: loadSpin 0.8s linear infinite;
+        }
+        @keyframes loadSpin { to { transform: rotate(360deg); } }
+
+        #noResults {
+            text-align: center; padding: 60px 20px; color: var(--text-muted);
+            display: none; font-style: italic; font-size: 0.95rem;
+        }
+
         .jobs-grid {
             display: grid; gap: 14px;
-            grid-template-columns: repeat(auto-fill, 340px);
-            justify-content: center;
+            grid-template-columns: repeat(auto-fill, 320px);
+            justify-content: start;
         }
 
+        /* ── Job Card ── */
         .job-card {
-            background: var(--bg-surface); border: 1px solid var(--border);
-            padding: 22px; border-radius: 20px;
-            display: flex; flex-direction: column; gap: 14px;
-            transition: all 0.2s ease;
-            opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
-            width: 340px; height: 210px; box-sizing: border-box;
-            overflow: hidden;
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            padding: 18px 20px;
+            border-radius: 14px;
+            display: flex; flex-direction: column; gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0; transform: translateY(12px);
+            animation: cardIn 0.45s forwards;
+            width: 320px; height: 210px; box-sizing: border-box;
+            overflow: hidden; position: relative;
         }
-        .job-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .job-card::before {
+            content: '';
+            position: absolute; top: 0; left: 16px; right: 16px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(52,211,153,0.25), rgba(96,165,250,0.2), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .job-card:hover::before { opacity: 1; }
+        .job-card:hover {
+            border-color: rgba(52, 211, 153, 0.18);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 50px rgba(52, 211, 153, 0.1), 0 6px 24px rgba(0,0,0,0.4);
+        }
         @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
 
-        .card-top { display: flex; gap: 14px; align-items: flex-start; height: 72px; overflow: hidden; }
-        .logo-box { width: 48px; height: 48px; position: relative; background: white; border-radius: 12px; padding: 4px; flex-shrink: 0; }
-        .company-logo { width: 40px; height: 40px; object-fit: contain; position: absolute; top: 4px; left: 4px; }
-        .logo-fallback {
-            width: 100%; height: 100%; background: linear-gradient(135deg, #10b981, #3b82f6);
-            border-radius: 8px; display: none; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 1.3rem; color: white;
+        .card-top { display: flex; gap: 12px; align-items: flex-start; }
+        .logo-box {
+            width: 44px; height: 44px; flex-shrink: 0;
+            background: rgba(255,255,255,0.95); border-radius: 10px;
+            padding: 3px; position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
         }
+        .job-card:hover .logo-box { transform: scale(1.06); }
+        .company-logo { width: 38px; height: 38px; object-fit: contain; position: absolute; top:3px; left:3px; }
+        .logo-fallback {
+            width: 100%; height: 100%; border-radius: 7px; display: none;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #059669, #0891b2);
+            font-weight: 800; font-size: 1.1rem; color: white;
+        }
+        .card-info { flex: 1; min-width: 0; }
         .company-name {
-            color: var(--text-muted); font-size: 0.78rem; font-weight: 600; margin-bottom: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;
+            color: var(--text-muted); font-size: 0.72rem; font-weight: 600; margin-bottom: 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            text-transform: uppercase; letter-spacing: 0.3px;
         }
         .job-title {
-            font-size: 0.95rem; line-height: 1.35; color: white; font-weight: 700;
-            display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; min-height: 2.7em;
+            font-size: 0.92rem; line-height: 1.35; color: var(--text-main); font-weight: 700;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
-        .job-meta { display: flex; flex-wrap: nowrap; gap: 6px; margin-top: auto; overflow: hidden; height: 32px; align-items: center; }
-        .meta-badge {
-            font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
-            background: rgba(255,255,255,0.05); color: var(--text-muted);
-            border: 1px solid var(--border); display: flex; align-items: center; gap: 5px;
-            max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .source-linkedin { color: #0a66c2; border-color: rgba(10,102,194,0.3); }
-        .source-google { color: #4285f4; border-color: rgba(66,133,244,0.3); }
-        .portal-badge {
-            display: flex; align-items: center; gap: 5px; padding: 4px 10px;
-            border-radius: 8px; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border); font-size: 0.72rem;
-            color: var(--text-muted); flex-shrink: 0;
-        }
-        .portal-logo { width: 16px; height: 16px; object-fit: contain; border-radius: 3px; flex-shrink: 0; display: block; }
 
-        /* --- PORTAL FILTER STRIP --- */
-        .portal-filter-strip {
-            max-width: 1000px; margin: 0 auto 8px; padding: 0 20px;
-            position: relative; z-index: 5;
+        .job-meta {
+            display: flex; flex-wrap: nowrap; gap: 5px; align-items: center; overflow: hidden;
         }
-        .portal-filter-inner {
-            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-            background: rgba(15,23,42,0.7); backdrop-filter: blur(10px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 10px 16px;
+        .meta-badge {
+            font-size: 0.7rem; padding: 4px 9px; border-radius: 7px;
+            background: rgba(255,255,255,0.04); color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: inline-flex; align-items: center; gap: 4px;
+            white-space: nowrap; font-weight: 500;
+            max-width: 120px; overflow: hidden; text-overflow: ellipsis;
         }
-        .portal-filter-label {
-            font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap;
-            padding-right: 6px; border-right: 1px solid var(--border); margin-right: 4px;
+        .meta-badge.loc { color: var(--accent-blue); border-color: rgba(96,165,250,0.15); }
+        .meta-badge.date { color: var(--primary); border-color: rgba(52,211,153,0.15); }
+        .portal-badge {
+            display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px;
+            border-radius: 7px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06); font-size: 0.68rem;
+            color: var(--text-muted); flex-shrink: 0; font-weight: 500;
         }
-        .portal-pill {
-            display: flex; align-items: center; gap: 6px;
-            padding: 5px 12px; border-radius: 20px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
-            cursor: pointer; transition: all 0.18s;
-            font-size: 0.74rem; font-weight: 600; color: var(--text-muted);
-            user-select: none; white-space: nowrap;
-        }
-        .portal-pill:hover { border-color: var(--primary); color: white; background: rgba(16,185,129,0.08); }
-        .portal-pill.active {
-            background: rgba(16,185,129,0.15); border-color: #10b981;
-            color: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.2);
-        }
-        .portal-pill img { width: 15px; height: 15px; object-fit: contain; border-radius: 3px; flex-shrink: 0; }
-        .portal-all-btn {
-            display: flex; align-items: center; gap: 5px;
-            padding: 5px 14px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            cursor: pointer; transition: all 0.18s;
-            font-size: 0.74rem; font-weight: 700; color: white;
-            user-select: none; white-space: nowrap;
-        }
-        .portal-all-btn:hover { background: rgba(255,255,255,0.1); }
-        .portal-clear-count {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 16px; height: 16px; border-radius: 50%;
-            background: #10b981; color: #020617; font-size: 0.6rem; font-weight: 800;
-        }
+        .portal-logo { width: 13px; height: 13px; object-fit: contain; border-radius: 2px; }
+
         .card-footer {
             display: flex; justify-content: space-between; align-items: center;
-            padding-top: 14px; border-top: 1px solid var(--border);
+            padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: auto;
         }
-        .card-date { color: var(--text-muted); font-size: 0.8rem; }
+        .card-role { color: var(--text-dim); font-size: 0.72rem; font-weight: 500; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .apply-btn {
-            padding: 10px 22px; background: transparent; color: var(--primary);
-            text-decoration: none; font-weight: 700; border-radius: 12px;
-            font-size: 0.85rem; border: 1px solid var(--primary); transition: 0.2s;
+            padding: 7px 18px; background: transparent; color: var(--primary);
+            text-decoration: none; font-weight: 700; border-radius: 9px;
+            font-size: 0.8rem; border: 1px solid rgba(52,211,153,0.3);
+            transition: all 0.25s; position: relative; overflow: hidden;
         }
-        .apply-btn:hover { background: var(--primary); color: #020617; }
+        .apply-btn:hover {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white; border-color: transparent;
+            box-shadow: 0 4px 18px rgba(52,211,153,0.3); transform: translateY(-1px);
+        }
 
-        #loading { text-align: center; padding: 50px; color: var(--text-muted); }
-        #noResults { text-align: center; padding: 40px; color: var(--text-muted); display: none; font-style: italic; }
-
+        /* ── Pagination ── */
         .pagination-container {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            margin-top: 50px; padding: 20px 0; flex-wrap: wrap;
+            display: flex; justify-content: center; align-items: center; gap: 6px;
+            margin-top: 44px; flex-wrap: wrap;
         }
         .page-btn {
-            width: 48px; height: 48px; border-radius: 12px; background: var(--bg-surface);
-            border: 1px solid var(--border); color: var(--text-muted);
-            font-weight: 700; font-size: 0.95rem; cursor: pointer;
-            transition: all 0.2s ease; display: flex; align-items: center;
-            justify-content: center; font-family: inherit;
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--bg-surface); border: 1px solid var(--border);
+            color: var(--text-muted); font-weight: 700; font-size: 0.88rem;
+            cursor: pointer; transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center; font-family: 'Inter', sans-serif;
         }
         .page-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
-        .page-btn.active { background: #10b981; color: #020617; border-color: #10b981; box-shadow: 0 4px 15px rgba(16,185,129,0.4); }
-        .page-btn.nav-btn { width: auto; padding: 0 16px; font-size: 1.2rem; }
-        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-        .page-ellipsis { color: var(--text-muted); font-size: 1.1rem; padding: 0 4px; }
+        .page-btn.active {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white; border-color: transparent;
+            box-shadow: 0 4px 16px rgba(52,211,153,0.3);
+        }
+        .page-btn.nav-btn { width: auto; padding: 0 14px; font-size: 1rem; }
+        .page-btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none; }
+        .page-ellipsis { color: var(--text-dim); padding: 0 4px; }
 
-        .date-pill.active .date-count { background: rgba(255,255,255,0.25); }
+        /* ── Scroll to top ── */
+        .scroll-top {
+            position: fixed; bottom: 28px; right: 28px; z-index: 999;
+            width: 44px; height: 44px; border-radius: 12px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border: none; color: white; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 20px rgba(52,211,153,0.3);
+            opacity: 0; transform: translateY(14px); pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(52,211,153,0.4); }
 
-        /* Responsive: only mobile needs special handling */
-        @media (max-width: 500px) {
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
             .jobs-grid { grid-template-columns: 1fr; }
             .job-card { width: 100%; height: auto; }
-            .container { padding: 0 12px 80px; }
-            h1 { font-size: 2rem; }
-            .tree { flex-direction: column; gap: 20px; }
-            .tree-branch { max-width: 100%; }
-        }
-        @media (min-width: 501px) and (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .tree { flex-direction: column; gap: 20px; }
-            .tree-branch { max-width: 100%; }
+            .topnav {
+                flex-direction: column;
+                height: auto;
+                padding: 14px 16px;
+                gap: 12px;
+            }
+            .topnav-left { order: 1; width: 100%; justify-content: center; }
+            .topnav-center { order: 2; width: 100%; justify-content: center; }
+            .topnav-right { order: 3; width: 100%; justify-content: center; }
+            .topnav-search { max-width: 100%; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Global Logo -->
-    <a href="index.html" style="position: absolute; top: 20px; left: 30px; display: flex; align-items: center; gap: 12px; text-decoration: none; z-index: 1000; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
-        <img src="String_Theory.png" alt="Logo" style="width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-        <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
-    </a>
 
+    <!-- ══ TOP NAVBAR ══ -->
+    <nav class="topnav">
+        <div class="topnav-left">
+            <a href="index.html" class="topnav-logo">
+                <img src="String_Theory.png" alt="Logo">
+                <span>ALL_CAREER</span>
+            </a>
+        </div>
 
-    <header id="main-header">
-        <a href="index.html" style="text-decoration:none;"><h1>All Jobs</h1></a>
-        <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;">
-            All roles • Google + LinkedIn aggregated • Tech & Non-Tech
-        </p>
-    </header>
-
-    <div class="sticky-filter-wrapper" style="position: sticky; top: 20px; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; padding: 0 20px; pointer-events: none; margin-bottom: 20px;">
-        <div class="filter-bar" style="pointer-events: auto;">
-            <span class="mini-logo" onclick="toggleFilterBar()">Filter</span>
-            <div class="filter-group">
-                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
+        <div class="topnav-center">
+            <div class="topnav-search">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" id="searchInput" placeholder="Search jobs, companies, skills..." oninput="applyFilters()">
             </div>
-            <div class="filter-group" style="flex:0.7;">
-                <select id="locationFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">Location: All</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Chennai">Chennai</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Pune">Pune</option>
+        </div>
+
+        <div class="topnav-right">
+            <div class="topnav-count">Showing <span id="jobCount">0</span> jobs</div>
+            <button class="clear-all-btn" id="clearAllBtn" onclick="clearAllFilters()">✕ Clear All</button>
+        </div>
+    </nav>
+
+    <!-- ══ PAGE LAYOUT ══ -->
+    <div class="page-layout">
+
+        <!-- ══ LEFT SIDEBAR FILTERS ══ -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-title">All Filters</span>
+                <span class="applied-badge" id="appliedBadge">Applied (0)</span>
+            </div>
+
+            <!-- ── Source ── -->
+            <div class="filter-section open" id="sec-source">
+                <div class="filter-section-header" onclick="toggleSection('source')">
+                    <span class="filter-section-label">
+                        Source
+                        <span class="filter-count" id="cnt-source">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner" id="source-options">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Posted Date ── -->
+            <div class="filter-section open" id="sec-date">
+                <div class="filter-section-header" onclick="toggleSection('date')">
+                    <span class="filter-section-label">
+                        Posted Date
+                        <span class="filter-count" id="cnt-date">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-radio selected" data-range="all" onclick="setDateRange(this, 'all')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">All Time</span>
+                        </div>
+                        <div class="filter-radio" data-range="24h" onclick="setDateRange(this, '24h')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Last 24 Hours</span>
+                        </div>
+                        <div class="filter-radio" data-range="3d" onclick="setDateRange(this, '3d')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Last 3 Days</span>
+                        </div>
+                        <div class="filter-radio" data-range="7d" onclick="setDateRange(this, '7d')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Last 7 Days</span>
+                        </div>
+                        <div class="filter-radio" data-range="15d" onclick="setDateRange(this, '15d')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Last 15 Days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Location ── -->
+            <div class="filter-section open" id="sec-location">
+                <div class="filter-section-header" onclick="toggleSection('location')">
+                    <span class="filter-section-label">
+                        Location
+                        <span class="filter-count" id="cnt-location">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-search">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input type="text" id="locSearch" placeholder="Search location..." oninput="filterOptions('location')">
+                        </div>
+                        <div id="location-options">
+                            <!-- Static top cities -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Roles ── -->
+            <div class="filter-section" id="sec-roles">
+                <div class="filter-section-header" onclick="toggleSection('roles')">
+                    <span class="filter-section-label">
+                        Role Category
+                        <span class="filter-count" id="cnt-roles">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-search">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input type="text" id="roleSearch" placeholder="Search roles..." oninput="filterOptions('roles')">
+                        </div>
+                        <div id="roles-options"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Experience ── -->
+            <div class="filter-section" id="sec-exp">
+                <div class="filter-section-header" onclick="toggleSection('exp')">
+                    <span class="filter-section-label">
+                        Experience
+                        <span class="filter-count" id="cnt-exp">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-radio selected" data-exp="all" onclick="setExp(this, 'all')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">All Levels</span>
+                        </div>
+                        <div class="filter-radio" data-exp="junior" onclick="setExp(this, 'junior')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Junior / Fresher</span>
+                        </div>
+                        <div class="filter-radio" data-exp="senior" onclick="setExp(this, 'senior')">
+                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <span class="option-label">Senior / Lead</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Company ── -->
+            <div class="filter-section" id="sec-company">
+                <div class="filter-section-header" onclick="toggleSection('company')">
+                    <span class="filter-section-label">
+                        Company
+                        <span class="filter-count" id="cnt-company">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-search">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input type="text" id="companySearch" placeholder="Search company..." oninput="filterOptions('company')">
+                        </div>
+                        <div id="company-options"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Walk-in ── -->
+            <div class="filter-section" id="sec-walkin">
+                <div class="filter-section-header" onclick="toggleSection('walkin')">
+                    <span class="filter-section-label">
+                        Walk-in Interview
+                        <span class="filter-count" id="cnt-walkin">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-option" id="walkinOpt" onclick="toggleWalkin()">
+                            <div class="custom-checkbox">
+                                <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                            </div>
+                            <span class="option-label">🚶 Walk-in Only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ══ MAIN CONTENT ══ -->
+        <main class="main-content">
+            <div class="sort-bar">
+                <div class="sort-label">Sort by:</div>
+                <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+                    <option value="date">Latest First</option>
+                    <option value="company">Company A–Z</option>
                 </select>
             </div>
-            <div class="cal-wrap">
-                <button class="cal-btn" id="calBtn" onclick="toggleDateMenu()">
-                    <span id="calBtnLabel">Job Posting Date</span>
-                    <span class="cal-x" id="calBtnX" onclick="clearDateRange(event)">✕</span>
-                </button>
-                <div class="cal-popup" id="calPopup"></div>
-            </div>
-            <div class="exp-group">
-                <button class="exp-btn" onclick="setExperience('junior')" id="expJr">Junior</button>
-                <button class="exp-btn" onclick="setExperience('senior')" id="expSr">Senior</button>
-            </div>
-            <button class="roles-toggle" id="rolesToggle" onclick="toggleMindmap()">
-                🗺️ Roles <span class="arrow">▾</span>
-            </button>
-        </div>
 
-        <!-- PORTAL FILTER STRIP -->
-        <div class="portal-filter-strip" style="width:100%; max-width:1000px; pointer-events: auto;">
-            <div class="portal-filter-inner" id="portalFilterInner">
-                <span class="portal-filter-label" onclick="toggleSourceStrip()" style="cursor:pointer; user-select:none;">Source</span>
-                <button class="portal-all-btn" id="portalAllBtn" onclick="clearPortals()">
-                    All <span class="portal-clear-count" id="portalClearCount" style="display:none;">0</span>
-                </button>
-                <div class="portal-pill" onclick="togglePortal('linkedin')" id="pill-linkedin">
-                    <img src="logos/portals/linkedin.png" alt="" onerror="this.style.display='none'"> LinkedIn
-                </div>
-                <div class="portal-pill" onclick="togglePortal('indeed')" id="pill-indeed">
-                    <img src="logos/portals/indeed.png" alt="" onerror="this.style.display='none'"> Indeed
-                </div>
-                <div class="portal-pill" onclick="togglePortal('naukri')" id="pill-naukri">
-                    <img src="logos/portals/naukri.png" alt="" onerror="this.style.display='none'"> Naukri
-                </div>
-                <div class="portal-pill" onclick="togglePortal('internshala')" id="pill-internshala">
-                    <img src="logos/portals/internshala.png" alt="" onerror="this.style.display='none'"> Internshala
-                </div>
-                <div class="portal-pill" onclick="togglePortal('glassdoor')" id="pill-glassdoor">
-                    <img src="logos/portals/glassdoor.ico" alt="" onerror="this.style.display='none'"> Glassdoor
-                </div>
-                <div class="portal-pill" onclick="togglePortal('shine')" id="pill-shine">
-                    <img src="logos/portals/shine.ico" alt="" onerror="this.style.display='none'"> Shine
-                </div>
-                <div class="portal-pill" onclick="togglePortal('timesjobs')" id="pill-timesjobs">
-                    <img src="logos/portals/timesjobs.svg" alt="" onerror="this.style.display='none'"> TimesJobs
-                </div>
-                <div class="portal-pill" onclick="togglePortal('hirist')" id="pill-hirist">
-                    <img src="logos/portals/hirist.ico" alt="" onerror="this.style.display='none'"> Hirist
-                </div>
-                <div class="portal-pill" onclick="togglePortal('workindia')" id="pill-workindia">
-                    <img src="logos/portals/workindia.png" alt="" onerror="this.style.display='none'"> WorkIndia
-                </div>
-                <div class="portal-pill" onclick="togglePortal('foundit')" id="pill-foundit">
-                    <img src="logos/portals/foundit.png" alt="" onerror="this.style.display='none'"> Foundit
-                </div>
-                <div class="portal-pill" onclick="togglePortal('apna')" id="pill-apna">
-                    <img src="logos/portals/apna.png" alt="" onerror="this.style.display='none'"> Apna
-                </div>
-                <div class="portal-pill" onclick="togglePortal('freshersworld')" id="pill-freshersworld">
-                    <img src="logos/portals/freshersworld.ico" alt="" onerror="this.style.display='none'"> FreshersWorld
-                </div>
-                <div class="portal-pill" onclick="togglePortal('telegram')" id="pill-telegram" style="border-color: rgba(0,136,204,0.3);">
-                    <img src="logos/portals/telegram.svg" alt="" onerror="this.style.display='none'"> Telegram
-                </div>
-            </div>
-        </div>
+            <!-- Active filter chips -->
+            <div class="active-chips" id="activeChips"></div>
+
+            <div id="loading">Loading jobs...</div>
+            <div class="jobs-grid" id="jobsGrid"></div>
+            <div id="noResults">No jobs found matching your filters.</div>
+            <div id="pagination" class="pagination-container"></div>
+        </main>
     </div>
 
-    <!-- MIND MAP PANEL -->
-    <div class="mindmap-panel" id="mindmapPanel">
-        <div class="mindmap-inner">
-            <div class="mindmap-title">
-                Role Explorer <span id="activeRoleBadge" class="active-role-badge" style="display:none;"></span>
-            </div>
-            <div class="tree">
-                <!-- TECHNICAL -->
-                <div class="tree-branch">
-                    <div class="branch-header branch-tech">⚡ Technical Roles</div>
-                    <div class="tier tier-high">
-                        <div class="tier-label">🔥 High Demand</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Engineer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Full Stack Developer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Scientist</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>AI Engineer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>ML Engineer</div>
-                        </div>
-                    </div>
-                    <div class="tier tier-mid">
-                        <div class="tier-label">⚡ In Demand</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Frontend Developer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Backend Developer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>DevOps Engineer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Cloud Architect</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Engineer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Data Analyst</div>
-                        </div>
-                    </div>
-                    <div class="tier tier-low">
-                        <div class="tier-label">💼 Specialized</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Mobile App Developer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Software Architect</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Security Analyst</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Network Engineer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>QA Analyst</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>SDET</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>DBA</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Penetration Tester</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Systems Administrator</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- NON-TECHNICAL -->
-                <div class="tree-branch">
-                    <div class="branch-header branch-nontech">🏢 Non-Technical Roles</div>
-                    <div class="tier tier-high">
-                        <div class="tier-label">🔥 High Demand</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Product Manager</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Project Manager</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>UI/UX Designer</div>
-                        </div>
-                    </div>
-                    <div class="tier tier-mid">
-                        <div class="tier-label">⚡ In Demand</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Scrum Master</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Technical Writer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Digital Marketer</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Technical Recruiter</div>
-                        </div>
-                    </div>
-                    <div class="tier tier-low">
-                        <div class="tier-label">💼 Specialized</div>
-                        <div class="role-nodes">
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>HR Business Partner</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Customer Success Manager</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Operations Manager</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Financial Analyst</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Sales Executive</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Pre-Sales Consultant</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>UX Researcher</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>IT Support</div>
-                            <div class="role-node" onclick="selectRole(this)"><span class="node-dot"></span>Legal Counsel</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <p class="stats">Showing <span id="jobCount" style="color:white; font-weight:700;">0</span> jobs</p>
-        <div id="loading">Loading jobs...</div>
-        <div class="jobs-grid" id="jobsGrid"></div>
-        <div id="noResults">No jobs found matching your filters.</div>
-        <div id="pagination" class="pagination-container"></div>
-    </div>
+    <!-- Scroll top -->
+    <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
     <script src="logos.js"></script>
     <script src="logo3d.js"></script>
     <script>
-        window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
+    // ══════════════════════════════════════════════
+    //  STATE
+    // ══════════════════════════════════════════════
+    let allJobs = [];
+    let filteredJobs = [];
+    let currentPage = 1;
+    const JOBS_PER_PAGE = 100;
 
-        let allJobs = [];
-        let filteredJobs = [];
-        let currentPage = 1;
-        const JOBS_PER_PAGE = 100;
-        let activeRole = '';
-        const roleCache = {};
+    // Filter state
+    let selectedPortals = new Set();
+    let activeDateRange = 'all';
+    let selectedLocations = new Set();
+    let selectedRoles = new Set();
+    let selectedCompanies = new Set();
+    let activeExp = 'all';
+    let walkinOnly = false;
 
-        function getCategoryFilename(category) {
-            let s = category.toLowerCase().replace(/\//g, '_').replace(/-/g, '_');
-            s = s.replace(/\s+/g, '_');
-            s = s.replace(/[^a-z0-9_]/g, '');
-            return `${s}.json`;
+    // Data for dynamic options
+    let allCompanies = [];
+    let allLocations = [];
+
+    const PORTALS = [
+        { id: 'linkedin',     label: 'LinkedIn',     logo: 'logos/portals/linkedin.png' },
+        { id: 'naukri',       label: 'Naukri',       logo: 'logos/portals/naukri.png' },
+        { id: 'indeed',       label: 'Indeed',       logo: 'logos/portals/indeed.png' },
+        { id: 'internshala',  label: 'Internshala',  logo: 'logos/portals/internshala.png' },
+        { id: 'glassdoor',    label: 'Glassdoor',    logo: 'logos/portals/glassdoor.ico' },
+        { id: 'shine',        label: 'Shine',        logo: 'logos/portals/shine.ico' },
+        { id: 'timesjobs',    label: 'TimesJobs',    logo: 'logos/portals/timesjobs.svg' },
+        { id: 'hirist',       label: 'Hirist',       logo: 'logos/portals/hirist.ico' },
+        { id: 'workindia',    label: 'WorkIndia',    logo: 'logos/portals/workindia.png' },
+        { id: 'foundit',      label: 'Foundit',      logo: 'logos/portals/foundit.png' },
+        { id: 'apna',         label: 'Apna',         logo: 'logos/portals/apna.png' },
+        { id: 'freshersworld',label: 'FreshersWorld',logo: 'logos/portals/freshersworld.ico' },
+        { id: 'telegram',     label: 'Telegram',     logo: 'logos/portals/telegram.svg' },
+    ];
+
+    const TOP_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Noida', 'Kolkata', 'Ahmedabad', 'Remote'];
+
+    const ALL_ROLES = [
+        'Software Engineer', 'Full Stack Developer', 'Frontend Developer', 'Backend Developer',
+        'Data Scientist', 'Data Analyst', 'Data Engineer', 'AI Engineer', 'ML Engineer',
+        'DevOps Engineer', 'Cloud Architect', 'Mobile App Developer', 'Software Architect',
+        'Security Analyst', 'Network Engineer', 'QA Analyst', 'SDET', 'DBA',
+        'Penetration Tester', 'Systems Administrator', 'Product Manager', 'Project Manager',
+        'UI/UX Designer', 'Scrum Master', 'Technical Writer', 'Digital Marketer',
+        'Technical Recruiter', 'HR Business Partner', 'Customer Success Manager',
+        'Operations Manager', 'Financial Analyst', 'Sales Executive', 'Pre-Sales Consultant',
+        'UX Researcher', 'IT Support', 'Legal Counsel'
+    ];
+
+    const ROLE_KEYWORDS = {
+        'Software Engineer': ['software engineer', 'software developer', 'swe', 'sde'],
+        'Full Stack Developer': ['full stack', 'fullstack', 'full-stack'],
+        'Data Scientist': ['data scientist', 'data science'],
+        'AI Engineer': ['ai engineer', 'artificial intelligence'],
+        'ML Engineer': ['machine learning', 'ml engineer', 'deep learning'],
+        'Frontend Developer': ['frontend', 'front-end', 'front end', 'react', 'angular', 'vue'],
+        'Backend Developer': ['backend', 'back-end', 'back end'],
+        'DevOps Engineer': ['devops', 'dev ops', 'site reliability', 'sre'],
+        'Cloud Architect': ['cloud architect', 'cloud engineer', 'aws', 'azure', 'gcp'],
+        'Data Engineer': ['data engineer', 'data pipeline', 'etl'],
+        'Data Analyst': ['data analyst', 'business analyst', 'analytics'],
+        'Mobile App Developer': ['mobile', 'ios', 'android', 'flutter', 'react native'],
+        'Software Architect': ['software architect', 'solution architect', 'technical architect'],
+        'Security Analyst': ['security analyst', 'cybersecurity', 'information security'],
+        'Network Engineer': ['network engineer', 'network admin'],
+        'QA Analyst': ['qa analyst', 'qa engineer', 'quality assurance', 'tester'],
+        'SDET': ['sdet', 'test automation', 'automation engineer'],
+        'DBA': ['database admin', 'dba', 'database engineer'],
+        'Penetration Tester': ['penetration', 'pentest', 'ethical hacker'],
+        'Systems Administrator': ['system admin', 'sysadmin', 'systems engineer'],
+        'Product Manager': ['product manager', 'product owner', 'product lead'],
+        'Project Manager': ['project manager', 'program manager', 'pmo'],
+        'UI/UX Designer': ['ui', 'ux', 'user experience', 'user interface', 'designer'],
+        'Scrum Master': ['scrum master', 'agile coach', 'agile'],
+        'Technical Writer': ['technical writer', 'content writer', 'documentation'],
+        'Digital Marketer': ['digital market', 'seo', 'social media', 'marketing'],
+        'Technical Recruiter': ['recruiter', 'talent acquisition', 'hiring'],
+        'HR Business Partner': ['hr', 'human resource', 'people ops'],
+        'Customer Success Manager': ['customer success', 'client success', 'csm'],
+        'Operations Manager': ['operations manager', 'ops manager'],
+        'Financial Analyst': ['financial analyst', 'finance', 'accounting'],
+        'Sales Executive': ['sales', 'account executive', 'business development'],
+        'Pre-Sales Consultant': ['pre-sales', 'presales', 'solutions consultant'],
+        'UX Researcher': ['ux research', 'user research'],
+        'IT Support': ['it support', 'helpdesk', 'help desk', 'tech support'],
+        'Legal Counsel': ['legal', 'counsel', 'compliance', 'attorney'],
+    };
+
+    const JUNIOR_KW = ['junior', 'jr', 'entry', 'associate', 'intern', 'fresher', 'graduate', 'trainee'];
+    const SENIOR_KW = ['senior', 'sr', 'lead', 'principal', 'staff', 'manager', 'director', 'head', 'chief', 'vp', 'architect'];
+
+    const PORTAL_LOGOS = {
+        'linkedin': 'logos/portals/linkedin.png', 'naukri': 'logos/portals/naukri.png',
+        'indeed': 'logos/portals/indeed.png', 'internshala': 'logos/portals/internshala.png',
+        'glassdoor': 'logos/portals/glassdoor.ico', 'shine': 'logos/portals/shine.ico',
+        'timesjobs': 'logos/portals/timesjobs.svg', 'hirist': 'logos/portals/hirist.ico',
+        'workindia': 'logos/portals/workindia.png', 'foundit': 'logos/portals/foundit.png',
+        'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
+        'telegram': 'logos/portals/telegram.svg',
+    };
+
+    // ══════════════════════════════════════════════
+    //  SIDEBAR TOGGLE
+    // ══════════════════════════════════════════════
+    function toggleSection(id) {
+        const sec = document.getElementById('sec-' + id);
+        sec.classList.toggle('open');
+    }
+
+    // ══════════════════════════════════════════════
+    //  BUILD SIDEBAR OPTIONS
+    // ══════════════════════════════════════════════
+    function buildSourceOptions() {
+        const container = document.getElementById('source-options');
+        container.innerHTML = PORTALS.map(p => `
+            <div class="filter-option" id="src-${p.id}" onclick="toggleSource('${p.id}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <img src="${p.logo}" class="option-img" onerror="this.style.display='none'">
+                <span class="option-label">${p.label}</span>
+            </div>
+        `).join('');
+    }
+
+    function buildLocationOptions(filter = '') {
+        const container = document.getElementById('location-options');
+        const cities = filter
+            ? TOP_CITIES.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
+            : TOP_CITIES;
+        container.innerHTML = cities.map(city => `
+            <div class="filter-option ${selectedLocations.has(city) ? 'checked' : ''}" onclick="toggleLocation('${city}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${city}</span>
+            </div>
+        `).join('');
+    }
+
+    function buildRolesOptions(filter = '') {
+        const container = document.getElementById('roles-options');
+        const roles = filter
+            ? ALL_ROLES.filter(r => r.toLowerCase().includes(filter.toLowerCase()))
+            : ALL_ROLES;
+        const visible = roles.slice(0, 8);
+        const more = roles.slice(8);
+        container.innerHTML = visible.map(r => `
+            <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${r}</span>
+            </div>
+        `).join('') +
+        (more.length > 0 && !filter ? `<div id="moreRolesWrap" style="display:none">${more.map(r => `
+            <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${r}</span>
+            </div>
+        `).join('')}</div>
+        <span class="show-more-btn" onclick="toggleMoreRoles(this)">+ ${more.length} more</span>` : '');
+    }
+
+    function buildCompanyOptions(filter = '') {
+        const container = document.getElementById('company-options');
+        const src = filter
+            ? allCompanies.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
+            : allCompanies.slice(0, 10);
+        if (src.length === 0) { container.innerHTML = '<p style="color:var(--text-dim);font-size:0.78rem;padding:6px 4px;">No companies loaded yet</p>'; return; }
+        const visible = src.slice(0, 8);
+        const more = src.slice(8);
+        container.innerHTML = visible.map(c => `
+            <div class="filter-option ${selectedCompanies.has(c) ? 'checked' : ''}" onclick="toggleCompany('${esc(c)}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${esc(c)}</span>
+            </div>
+        `).join('') +
+        (more.length > 0 && !filter ? `<div id="moreCompWrap" style="display:none">${more.map(c => `
+            <div class="filter-option ${selectedCompanies.has(c) ? 'checked' : ''}" onclick="toggleCompany('${esc(c)}', this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${esc(c)}</span>
+            </div>
+        `).join('')}</div>
+        <span class="show-more-btn" onclick="toggleMoreComp(this)">+ ${more.length} more</span>` : '');
+    }
+
+    function toggleMoreRoles(btn) {
+        const wrap = document.getElementById('moreRolesWrap');
+        if (!wrap) return;
+        const hidden = wrap.style.display === 'none';
+        wrap.style.display = hidden ? 'block' : 'none';
+        btn.textContent = hidden ? '− Show less' : `+ ${ALL_ROLES.slice(8).length} more`;
+    }
+
+    function toggleMoreComp(btn) {
+        const wrap = document.getElementById('moreCompWrap');
+        if (!wrap) return;
+        const hidden = wrap.style.display === 'none';
+        wrap.style.display = hidden ? 'block' : 'none';
+        const extra = allCompanies.slice(8).length;
+        btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
+    }
+
+    function filterOptions(type) {
+        if (type === 'location') buildLocationOptions(document.getElementById('locSearch').value);
+        if (type === 'roles') buildRolesOptions(document.getElementById('roleSearch').value);
+        if (type === 'company') buildCompanyOptions(document.getElementById('companySearch').value);
+    }
+
+    // ══════════════════════════════════════════════
+    //  FILTER TOGGLES
+    // ══════════════════════════════════════════════
+    function toggleSource(id, el) {
+        el.classList.toggle('checked');
+        if (selectedPortals.has(id)) selectedPortals.delete(id);
+        else selectedPortals.add(id);
+        updateCounts();
+        applyFilters();
+    }
+
+    function toggleLocation(city, el) {
+        el.classList.toggle('checked');
+        if (selectedLocations.has(city)) selectedLocations.delete(city);
+        else selectedLocations.add(city);
+        updateCounts();
+        applyFilters();
+    }
+
+    function toggleRole(role, el) {
+        el.classList.toggle('checked');
+        if (selectedRoles.has(role)) selectedRoles.delete(role);
+        else selectedRoles.add(role);
+        updateCounts();
+        applyFilters();
+    }
+
+    function toggleCompany(company, el) {
+        el.classList.toggle('checked');
+        if (selectedCompanies.has(company)) selectedCompanies.delete(company);
+        else selectedCompanies.add(company);
+        updateCounts();
+        applyFilters();
+    }
+
+    function toggleWalkin() {
+        walkinOnly = !walkinOnly;
+        document.getElementById('walkinOpt').classList.toggle('checked', walkinOnly);
+        updateCounts();
+        applyFilters();
+    }
+
+    function setDateRange(el, range) {
+        document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+        el.classList.add('selected');
+        activeDateRange = range;
+        updateCounts();
+        applyFilters();
+    }
+
+    function setExp(el, level) {
+        document.querySelectorAll('.filter-radio[data-exp]').forEach(r => r.classList.remove('selected'));
+        el.classList.add('selected');
+        activeExp = level;
+        updateCounts();
+        applyFilters();
+    }
+
+    // ══════════════════════════════════════════════
+    //  UPDATE COUNTS + BADGE
+    // ══════════════════════════════════════════════
+    function updateCounts() {
+        setCount('source', selectedPortals.size);
+        setCount('date', activeDateRange !== 'all' ? 1 : 0);
+        setCount('location', selectedLocations.size);
+        setCount('roles', selectedRoles.size);
+        setCount('exp', activeExp !== 'all' ? 1 : 0);
+        setCount('company', selectedCompanies.size);
+        setCount('walkin', walkinOnly ? 1 : 0);
+
+        const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
+            selectedLocations.size + selectedRoles.size + (activeExp !== 'all' ? 1 : 0) +
+            selectedCompanies.size + (walkinOnly ? 1 : 0);
+
+        const badge = document.getElementById('appliedBadge');
+        const clearBtn = document.getElementById('clearAllBtn');
+        if (total > 0) {
+            badge.textContent = `Applied (${total})`;
+            badge.classList.add('visible');
+            clearBtn.classList.add('visible');
+        } else {
+            badge.classList.remove('visible');
+            clearBtn.classList.remove('visible');
         }
-        let activeDate = 'All';
-        let activeExp = '';
-        let selectedPortals = new Set(); // multi-select portal filter
 
-        const JUNIOR_KEYWORDS = ['junior', 'jr', 'entry', 'associate', 'intern', 'fresher', 'graduate', 'trainee', 'entry level', 'entry-level'];
-        const SENIOR_KEYWORDS = ['senior', 'sr', 'lead', 'principal', 'staff', 'manager', 'director', 'head', 'chief', 'vp', 'architect', 'distinguished'];
+        renderChips();
+    }
 
-        const ROLE_KEYWORDS = {
-            'Software Engineer': ['software engineer', 'software developer', 'swe', 'sde'],
-            'Full Stack Developer': ['full stack', 'fullstack', 'full-stack'],
-            'Data Scientist': ['data scientist', 'data science'],
-            'AI Engineer': ['ai engineer', 'artificial intelligence'],
-            'ML Engineer': ['machine learning', 'ml engineer', 'deep learning'],
-            'Frontend Developer': ['frontend', 'front-end', 'front end', 'react', 'angular', 'vue'],
-            'Backend Developer': ['backend', 'back-end', 'back end'],
-            'DevOps Engineer': ['devops', 'dev ops', 'site reliability', 'sre'],
-            'Cloud Architect': ['cloud architect', 'cloud engineer', 'aws', 'azure', 'gcp'],
-            'Data Engineer': ['data engineer', 'data pipeline', 'etl'],
-            'Data Analyst': ['data analyst', 'business analyst', 'analytics'],
-            'Mobile App Developer': ['mobile', 'ios', 'android', 'flutter', 'react native'],
-            'Software Architect': ['software architect', 'solution architect', 'technical architect'],
-            'Security Analyst': ['security analyst', 'cybersecurity', 'information security', 'infosec'],
-            'Network Engineer': ['network engineer', 'network admin'],
-            'QA Analyst': ['qa analyst', 'qa engineer', 'quality assurance', 'tester'],
-            'SDET': ['sdet', 'test automation', 'automation engineer'],
-            'DBA': ['database admin', 'dba', 'database engineer'],
-            'Penetration Tester': ['penetration', 'pentest', 'ethical hacker', 'red team'],
-            'Systems Administrator': ['system admin', 'sysadmin', 'systems engineer'],
-            'Product Manager': ['product manager', 'product owner', 'product lead'],
-            'Project Manager': ['project manager', 'program manager', 'pmo'],
-            'UI/UX Designer': ['ui', 'ux', 'user experience', 'user interface', 'designer'],
-            'Scrum Master': ['scrum master', 'agile coach', 'agile'],
-            'Technical Writer': ['technical writer', 'content writer', 'documentation'],
-            'Digital Marketer': ['digital market', 'seo', 'social media', 'marketing'],
-            'Technical Recruiter': ['recruiter', 'talent acquisition', 'hiring'],
-            'HR Business Partner': ['hr', 'human resource', 'people ops'],
-            'Customer Success Manager': ['customer success', 'client success', 'csm'],
-            'Operations Manager': ['operations manager', 'ops manager'],
-            'Financial Analyst': ['financial analyst', 'finance', 'accounting'],
-            'Sales Executive': ['sales', 'account executive', 'business development'],
-            'Pre-Sales Consultant': ['pre-sales', 'presales', 'solutions consultant'],
-            'UX Researcher': ['ux research', 'user research'],
-            'IT Support': ['it support', 'helpdesk', 'help desk', 'tech support'],
-            'Legal Counsel': ['legal', 'counsel', 'compliance', 'attorney'],
-        };
+    function setCount(id, n) {
+        const el = document.getElementById('cnt-' + id);
+        if (!el) return;
+        el.textContent = n;
+        el.classList.toggle('show', n > 0);
+    }
 
-        function getLogoData(name) {
-            const clean = name.replace(/\(.*\)/, '').trim();
-            let domain = '';
-            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
-            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
-            return {
-                clearbit: `https://logo.clearbit.com/${domain}`,
-                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-                ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-                initial: clean.charAt(0).toUpperCase()
-            };
+    function renderChips() {
+        const container = document.getElementById('activeChips');
+        const chips = [];
+        selectedPortals.forEach(p => {
+            const info = PORTALS.find(x => x.id === p);
+            chips.push({ label: info ? info.label : p, remove: () => { selectedPortals.delete(p); document.getElementById('src-' + p)?.classList.remove('checked'); refreshChips(); } });
+        });
+        if (activeDateRange !== 'all') {
+            const labels = { '24h': 'Last 24h', '3d': 'Last 3 Days', '7d': 'Last 7 Days', '15d': 'Last 15 Days' };
+            chips.push({ label: labels[activeDateRange] || activeDateRange, remove: () => { const el = document.querySelector('.filter-radio[data-range="all"]'); if(el) setDateRange(el, 'all'); refreshChips(); } });
         }
+        selectedLocations.forEach(loc => {
+            chips.push({ label: loc, remove: () => { selectedLocations.delete(loc); buildLocationOptions(document.getElementById('locSearch').value); refreshChips(); } });
+        });
+        selectedRoles.forEach(role => {
+            chips.push({ label: role, remove: () => { selectedRoles.delete(role); buildRolesOptions(document.getElementById('roleSearch').value); refreshChips(); } });
+        });
+        if (activeExp !== 'all') {
+            chips.push({ label: activeExp === 'junior' ? 'Junior/Fresher' : 'Senior/Lead', remove: () => { const el = document.querySelector('.filter-radio[data-exp="all"]'); if(el) setExp(el, 'all'); refreshChips(); } });
+        }
+        selectedCompanies.forEach(co => {
+            chips.push({ label: co, remove: () => { selectedCompanies.delete(co); buildCompanyOptions(document.getElementById('companySearch').value); refreshChips(); } });
+        });
+        if (walkinOnly) chips.push({ label: '🚶 Walk-in Only', remove: () => { toggleWalkin(); refreshChips(); } });
 
-        function formatDate(dateStr) {
-            if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
+        container.innerHTML = chips.map((c, i) => `
+            <div class="chip">${esc(c.label)} <span class="chip-x" data-i="${i}">✕</span></div>
+        `).join('');
+
+        // bind chip removes
+        container.querySelectorAll('.chip-x').forEach((btn, i) => {
+            btn.addEventListener('click', () => { chips[i].remove(); });
+        });
+    }
+
+    function refreshChips() {
+        updateCounts();
+        applyFilters();
+    }
+
+    function clearAllFilters() {
+        selectedPortals.clear();
+        selectedLocations.clear();
+        selectedRoles.clear();
+        selectedCompanies.clear();
+        activeDateRange = 'all';
+        activeExp = 'all';
+        walkinOnly = false;
+        document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
+        document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+        document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
+        document.querySelectorAll('.filter-radio[data-exp]').forEach(r => r.classList.remove('selected'));
+        document.querySelector('.filter-radio[data-exp="all"]')?.classList.add('selected');
+        document.getElementById('searchInput').value = '';
+        buildLocationOptions();
+        buildRolesOptions();
+        buildCompanyOptions();
+        updateCounts();
+        applyFilters();
+    }
+
+    // ══════════════════════════════════════════════
+    //  DATA FETCH
+    // ══════════════════════════════════════════════
+    async function fetchJobsFromTurso() {
+        let fetchedJobs = [];
+        let chunkNum = 1;
+        while (true) {
             try {
-                const d = new Date(dateStr);
-                if (isNaN(d.getTime())) return null;
-                const diff = Math.floor((new Date() - d) / 86400000);
-                if (diff === 0) return 'Today';
-                if (diff === 1) return 'Yesterday';
-                if (diff < 7) return `${diff} days ago`;
-                return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
-            } catch { return null; }
-        }
-
-        function esc(s) {
-            if (!s) return '';
-            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        // --- PORTAL FILTER LOGIC ---
-        function togglePortal(name) {
-            if (selectedPortals.has(name)) {
-                selectedPortals.delete(name);
-                document.getElementById('pill-' + name).classList.remove('active');
-            } else {
-                selectedPortals.add(name);
-                document.getElementById('pill-' + name).classList.add('active');
+                const res = await fetch(`all_jobs_${chunkNum}.json`);
+                if (!res.ok) { if (res.status === 404) break; throw new Error(`Chunk ${chunkNum} failed`); }
+                const rows = await res.json();
+                for (const job of rows) {
+                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
+                    fetchedJobs.push({
+                        _id: job.id || 0,
+                        title: String(job.role || job.title || ''),
+                        company: String(job.company_name || job.company || ''),
+                        location: String(job.location || ''),
+                        date: cleanDate, url: String(job.apply_link || job.url || job.linkedin_url || ''),
+                        source: String(job.platform || job.source || ''),
+                        role_search: String(job.search_keyword || job.role_search || ''),
+                        fetchedAt: cleanDate
+                    });
+                }
+                chunkNum++;
+            } catch (e) {
+                console.error(e);
+                if (fetchedJobs.length === 0) return { error: String(e) };
+                break;
             }
-            updatePortalClearCount();
-            updatePillsVisibility();
-            applyFilters();
         }
+        return fetchedJobs;
+    }
 
-        function clearPortals() {
-            selectedPortals.forEach(name => {
-                const el = document.getElementById('pill-' + name);
-                if (el) el.classList.remove('active');
-            });
-            selectedPortals.clear();
-            updatePortalClearCount();
-            updatePillsVisibility();
-            applyFilters();
-        }
+    // ══════════════════════════════════════════════
+    //  FILTER + RENDER
+    // ══════════════════════════════════════════════
+    function applyFilters() {
+        const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+        const now = new Date(); now.setHours(0,0,0,0);
+        const sortBy = document.getElementById('sortSelect').value;
 
-        function updatePortalClearCount() {
-            const cnt = document.getElementById('portalClearCount');
+        filteredJobs = allJobs.filter(j => {
+            const titleLow = (j.title || '').toLowerCase();
+            const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
+            if (search && !hay.includes(search)) return false;
+
             if (selectedPortals.size > 0) {
-                cnt.textContent = selectedPortals.size;
-                cnt.style.display = 'inline-flex';
-            } else {
-                cnt.style.display = 'none';
+                const src = (j.source || '').toLowerCase();
+                if (!selectedPortals.has(src)) return false;
             }
-        }
 
-        function toggleFilterBar() {
-            const bar = document.querySelector('.filter-bar');
-            bar.classList.toggle('collapsed');
-        }
-
-        function toggleSourceStrip() {
-            const strip = document.querySelector('.portal-filter-strip');
-            strip.classList.toggle('collapsed');
-        }
-
-        function updatePillsVisibility() {
-            const pills = document.querySelectorAll('.portal-pill');
-            const allBtn = document.getElementById('portalAllBtn');
-            pills.forEach(pill => {
-                pill.style.display = 'flex';
-            });
-            if (allBtn) allBtn.style.display = 'flex';
-        }
-
-        function toggleMindmap() {
-            const panel = document.getElementById('mindmapPanel');
-            const btn = document.getElementById('rolesToggle');
-            panel.classList.toggle('open');
-            btn.classList.toggle('active');
-        }
-
-        async function selectRole(el) {
-            const roleName = el.textContent.trim();
-            const badge = document.getElementById('activeRoleBadge');
-            
-            if (el.classList.contains('active')) {
-                el.classList.remove('active'); 
-                activeRole = '';
-                badge.style.display = 'none';
-            } else {
-                document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
-                el.classList.add('active'); 
-                activeRole = roleName;
-                badge.innerHTML = `${roleName} <span class="clear-role" onclick="clearRole(event)">✕</span>`;
-                badge.style.display = 'inline-block';
-                
-                // If not in cache, fetch it
-                if (!roleCache[roleName]) {
-                    const loading = document.getElementById('loading');
-                    loading.style.display = 'block';
-                    loading.innerHTML = `Loading jobs for ${roleName}...`;
-                    
-                    try {
-                        const filename = getCategoryFilename(roleName);
-                        const response = await fetch(`jobs_by_role/${filename}`);
-                        if (!response.ok) throw new Error(`Status ${response.status}`);
-                        const rawJobs = await response.json();
-                        
-                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        roleCache[roleName] = rawJobs.map(job => {
-                            const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
-                            return {
-                                _id: job.id || 0,
-                                title: String(job.role || job.title || ""),
-                                company: String(job.company_name || job.company || ""),
-                                location: String(job.location || ""),
-                                date: cleanDate,
-                                url: String(job.apply_link || job.url || job.linkedin_url || ""),
-                                linkedin_url: String(job.linkedin_url || ""),
-                                source: String(job.platform || job.source || ""),
-                                role_search: String(job.search_keyword || job.role_search || ""),
-                                fetchedAt: cleanDate,
-                                walking_interview: job.walking_interview || false
-                            };
-                        }).sort((a, b) => {
-                            const da = a.fetchedAt || '';
-                            const db = b.fetchedAt || '';
-                            if (da !== db) return db.localeCompare(da);
-                            return (b._id || 0) - (a._id || 0);
-                        });
-                    } catch (error) {
-                        console.error(`Failed to load role ${roleName}:`, error);
-                        roleCache[roleName] = [];
-                    }
-                    loading.style.display = 'none';
-                }
-            }
-            applyFilters();
-        }
-
-        function clearRole(e) {
-            e.stopPropagation();
-            document.querySelectorAll('.role-node').forEach(n => n.classList.remove('active'));
-            activeRole = '';
-            document.getElementById('activeRoleBadge').style.display = 'none';
-            applyFilters();
-        }
-
-        function setExperience(level) {
-            const jrBtn = document.getElementById('expJr');
-            const srBtn = document.getElementById('expSr');
-            if (activeExp === level) {
-                activeExp = ''; jrBtn.classList.remove('active'); srBtn.classList.remove('active');
-            } else {
-                activeExp = level;
-                jrBtn.classList.toggle('active', level === 'junior');
-                srBtn.classList.toggle('active', level === 'senior');
-            }
-            applyFilters();
-        }
-
-        async function fetchJobsFromTurso() {
-            let fetchedJobs = [];
-            let chunkNum = 1;
-            let keepFetching = true;
-            
-            while (keepFetching) {
-                try {
-                    const response = await fetch(`all_jobs_${chunkNum}.json`);
-                    if (!response.ok) {
-                        if (response.status === 404) {
-                            keepFetching = false;
-                            break;
-                        } else {
-                            throw new Error(`Failed to fetch chunk ${chunkNum}`);
-                        }
-                    }
-                    
-                    const rows = await response.json();
-                    
-                    for (const job of rows) {
-                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
-                        fetchedJobs.push({
-                            _id: job.id || 0,
-                            title: String(job.role || job.title || ""),
-                            company: String(job.company_name || job.company || ""),
-                            location: String(job.location || ""),
-                            date: cleanDate,
-                            url: String(job.apply_link || job.url || job.linkedin_url || ""),
-                            linkedin_url: String(job.linkedin_url || ""),
-                            source: String(job.platform || job.source || ""),
-                            role_search: String(job.search_keyword || job.role_search || ""),
-                            fetchedAt: cleanDate,
-                            walking_interview: job.walking_interview || false
-                        });
-                    }
-                    chunkNum++;
-                } catch (error) {
-                    console.error("Error fetching chunk:", error);
-                    if (fetchedJobs.length === 0) {
-                        return { error: error.message || String(error) };
-                    }
-                    keepFetching = false;
-                }
-            }
-            
-            return fetchedJobs;
-        }
-
-        // ── DATE MENU ──────────────────────────────────────────────
-        let activeDateRange = 'all';
-
-        function toggleDateMenu() {
-            const popup = document.getElementById('calPopup');
-            if (popup.classList.contains('open')) {
-                popup.classList.remove('open');
-                return;
-            }
-            renderDateMenu();
-            popup.classList.add('open');
-        }
-
-        function renderDateMenu() {
-            const popup = document.getElementById('calPopup');
-            const options = [
-                { value: '24h', label: 'Last 24 Hours' },
-                { value: '3d', label: '3 Days' },
-                { value: '7d', label: '7 Days' },
-                { value: '15d', label: '15 Days' },
-                { value: 'all', label: 'All Dates' }
-            ];
-            popup.innerHTML = options.map(opt => {
-                const isSel = activeDateRange === opt.value;
-                return `<div class="date-menu-item${isSel ? ' active' : ''}" onclick="setDateRange('${opt.value}')">${opt.label}</div>`;
-            }).join('');
-        }
-
-        function setDateRange(range) {
-            activeDateRange = range;
-            updateDateBtn();
-            const popup = document.getElementById('calPopup');
-            if (popup) popup.classList.remove('open');
-            applyFilters();
-        }
-
-        function clearDateRange(e) {
-            if (e) e.stopPropagation();
-            activeDateRange = 'all';
-            updateDateBtn();
-            const popup = document.getElementById('calPopup');
-            if (popup) popup.classList.remove('open');
-            applyFilters();
-        }
-
-        function updateDateBtn() {
-            const btn = document.getElementById('calBtn');
-            const lbl = document.getElementById('calBtnLabel');
-            const x   = document.getElementById('calBtnX');
-            
-            const labels = {
-                'all': 'Job Posting Date',
-                '24h': 'Last 24 Hours',
-                '3d': '3 Days',
-                '7d': '7 Days',
-                '15d': '15 Days'
-            };
-            
-            lbl.textContent = labels[activeDateRange] || 'Job Posting Date';
-            
             if (activeDateRange !== 'all') {
-                btn.classList.add('active');
-                x.style.display = 'flex';
-            } else {
-                btn.classList.remove('active');
-                x.style.display = 'none';
+                const jd = new Date((j.fetchedAt || '').slice(0, 10));
+                if (isNaN(jd.getTime())) return false;
+                const diff = Math.floor((now - jd) / 86400000);
+                if (activeDateRange === '24h' && diff > 1) return false;
+                if (activeDateRange === '3d' && diff > 3) return false;
+                if (activeDateRange === '7d' && diff > 7) return false;
+                if (activeDateRange === '15d' && diff > 15) return false;
             }
-        }
 
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.cal-wrap')) {
-                const p = document.getElementById('calPopup');
-                if (p) p.classList.remove('open');
+            if (selectedLocations.size > 0) {
+                const loc = (j.location || '').toLowerCase();
+                const city = loc.split(',')[0].trim();
+                const match = [...selectedLocations].some(l => city.includes(l.toLowerCase()) || loc.includes(l.toLowerCase()));
+                if (!match) return false;
             }
+
+            if (selectedRoles.size > 0) {
+                const match = [...selectedRoles].some(role => {
+                    const kws = ROLE_KEYWORDS[role] || [role.toLowerCase()];
+                    return kws.some(kw => titleLow.includes(kw) || (j.role_search || '').toLowerCase().includes(kw));
+                });
+                if (!match) return false;
+            }
+
+            if (activeExp === 'junior' && !JUNIOR_KW.some(kw => titleLow.includes(kw))) return false;
+            if (activeExp === 'senior' && !SENIOR_KW.some(kw => titleLow.includes(kw))) return false;
+
+            if (selectedCompanies.size > 0) {
+                const co = (j.company || '').toLowerCase();
+                if (![...selectedCompanies].some(c => co.includes(c.toLowerCase()))) return false;
+            }
+
+            // Walk-in filter: check if job title contains walk-in keywords
+            if (walkinOnly) {
+                const walkKw = ['walk-in', 'walkin', 'walk in', 'walking'];
+                if (!walkKw.some(kw => titleLow.includes(kw))) return false;
+            }
+
+            return true;
         });
 
-        async function init() {
-            const loading = document.getElementById('loading');
-            loading.innerHTML = 'Connecting to database and loading jobs...';
-            
-            allJobs = await fetchJobsFromTurso();
-            
-            if (allJobs.error) {
-                loading.innerHTML = `<div style="color:#ef4444; text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p><p>Please try clearing your browser cache and doing a hard refresh (Ctrl+F5).</p></div>`;
-                return;
-            }
-            
-            if (Array.isArray(allJobs)) {
-                allJobs.sort((a, b) => {
-                    const da = a.fetchedAt || '';
-                    const db = b.fetchedAt || '';
-                    if (da !== db) return db.localeCompare(da);
-                    return (b._id || 0) - (a._id || 0);
-                });
-            }
-            
-            if (!Array.isArray(allJobs) || allJobs.length === 0) {
-                loading.innerHTML = '<div style="color:#94a3b8; text-align:center"><h3>No jobs found</h3><p style="margin-top:10px">Could not load jobs from database or none exist yet.</p></div>';
-                return;
-            }
-            
-            applyFilters();
-            loading.style.display = 'none';
+        if (sortBy === 'company') {
+            filteredJobs.sort((a, b) => (a.company || '').localeCompare(b.company || ''));
         }
 
-        function applyFilters() {
-            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-            const loc = document.getElementById('locationFilter').value;
-            const now = new Date();
-            now.setHours(0,0,0,0);
+        currentPage = 1;
+        renderPage();
+    }
 
-            // Use role-specific dataset if available, otherwise fallback to master list
-            const jobsToFilter = (activeRole && roleCache[activeRole]) ? roleCache[activeRole] : allJobs;
+    function renderPage() {
+        const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * JOBS_PER_PAGE;
+        renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+        renderPagination(totalPages);
+        document.getElementById('jobCount').textContent = filteredJobs.length.toLocaleString();
+    }
 
-            filteredJobs = jobsToFilter.filter(j => {
-                const titleLow = (j.title || '').toLowerCase();
-                const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
+    function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-                if (search && !hay.includes(search)) return false;
-                if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
-
-                // Date Range Filter
-                if (activeDateRange !== 'all') {
-                    const jobDate = new Date((j.fetchedAt || '').slice(0, 10));
-                    if (isNaN(jobDate.getTime())) return false;
-                    const diffDays = Math.floor((now - jobDate) / 86400000);
-                    if (activeDateRange === '24h' && diffDays > 1) return false;
-                    if (activeDateRange === '3d' && diffDays > 3) return false;
-                    if (activeDateRange === '7d' && diffDays > 7) return false;
-                    if (activeDateRange === '15d' && diffDays > 15) return false;
-                }
-
-                // Portal filter — multi-select
-                if (selectedPortals.size > 0) {
-                    const src = (j.source || '').toLowerCase();
-                    if (!selectedPortals.has(src)) return false;
-                }
-
-                // Backup role filter if role cache is somehow not populated yet
-                if (activeRole && !roleCache[activeRole] && ROLE_KEYWORDS[activeRole]) {
-                    const keywords = ROLE_KEYWORDS[activeRole];
-                    const roleSearch = (j.role_search || '').toLowerCase();
-                    const matchTitle = keywords.some(kw => titleLow.includes(kw));
-                    const matchRole = keywords.some(kw => roleSearch.includes(kw));
-                    if (!matchTitle && !matchRole) return false;
-                }
-
-                // Experience filter
-                if (activeExp === 'junior') {
-                    if (!JUNIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
-                } else if (activeExp === 'senior') {
-                    if (!SENIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
-                }
-
-                return true;
-            });
-            currentPage = 1;
-            renderPage();
-        }
-
-        function renderPage() {
-            const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
-            if (currentPage > totalPages) currentPage = totalPages;
-            const start = (currentPage - 1) * JOBS_PER_PAGE;
-            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
-            renderPagination(totalPages);
-            document.getElementById('jobCount').textContent = filteredJobs.length;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function goToPage(p) { currentPage = p; renderPage(); }
-
-        function renderJobs(jobs) {
-            const grid = document.getElementById('jobsGrid');
-            const noRes = document.getElementById('noResults');
-            if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
-            noRes.style.display = 'none';
-            grid.innerHTML = jobs.map((job, i) => {
-                const logo = getLogoData(job.company || '');
-                const date = formatDate(job.date || job.fetchedAt);
-                const url = job.url || '';
-                const source = (job.source || '').toLowerCase();
-                const sourceClass = source.includes('linkedin') ? 'source-linkedin' : source.includes('google') ? 'source-google' : '';
-                const sourceLabel = source.includes('linkedin') ? 'LinkedIn' : source.includes('google') ? 'Google' : source ? (source.charAt(0).toUpperCase() + source.slice(1)) : '';
-                // Determine portal logo path (prefer png, fallback to ico, then svg)
-                const portalLogoMap = {
-                    'linkedin': 'logos/portals/linkedin.png',
-                    'indeed': 'logos/portals/indeed.png',
-                    'naukri': 'logos/portals/naukri.png',
-                    'internshala': 'logos/portals/internshala.png',
-                    'glassdoor': 'logos/portals/glassdoor.ico',
-                    'shine': 'logos/portals/shine.ico',
-                    'timesjobs': 'logos/portals/timesjobs.svg',
-                    'hirist': 'logos/portals/hirist.ico',
-                    'workindia': 'logos/portals/workindia.png',
-                    'foundit': 'logos/portals/foundit.png',
-                    'apna': 'logos/portals/apna.png',
-                    'freshersworld': 'logos/portals/freshersworld.ico',
-                    'telegram': 'logos/portals/telegram.svg',
-                };
-                const portalLogoSrc = portalLogoMap[source] || '';
-                const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
-                const cityLoc = rawLoc.split(',')[0].trim();
-                return `
-            <div class="job-card" style="animation-delay:${i * 0.03}s">
+    function renderJobs(jobs) {
+        const grid = document.getElementById('jobsGrid');
+        const noRes = document.getElementById('noResults');
+        if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+        noRes.style.display = 'none';
+        grid.innerHTML = jobs.map((job, i) => {
+            const logo = getLogoData(job.company || '');
+            const date = formatDate(job.date || job.fetchedAt);
+            const url = job.url || '';
+            const source = (job.source || '').toLowerCase();
+            const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
+            const portalLogoSrc = PORTAL_LOGOS[source] || '';
+            const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
+            const cityLoc = rawLoc.split(',')[0].trim();
+            return `
+            <div class="job-card" style="animation-delay:${i * 0.025}s">
                 <div class="card-top">
                     <div class="logo-box">
                         <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1083,52 +1232,124 @@
                         <img src="${logo.ddg}" class="company-logo" style="display:none" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="logo-fallback">${logo.initial}</div>
                     </div>
-                    <div>
+                    <div class="card-info">
                         <div class="company-name">${esc(job.company)}</div>
                         <div class="job-title">${esc(job.title || 'Position')}</div>
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
-                    ${date ? `<div class="meta-badge" style="border-color:rgba(16,185,129,0.3);color:#10b981;">${date}</div>` : ''}
-                    ${sourceLabel ? `<div class="portal-badge ${sourceClass}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span style="display:none">${esc(sourceLabel)}</span>` : `<span>${esc(sourceLabel)}</span>`}<span style="font-size:0.68rem;color:var(--text-muted);">${esc(sourceLabel)}</span></div>` : ''}
-                    ${job.walking_interview ? `<div class="meta-badge" style="border-color:rgba(234,179,8,0.4);color:#eab308;background:rgba(234,179,8,0.08);">🚶 Walk-in</div>` : ''}
+                    <div class="meta-badge loc" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
+                    ${date ? `<div class="meta-badge date">${date}</div>` : ''}
+                    ${sourceLabel ? `<div class="portal-badge">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" onerror="this.style.display='none'">` : ''}<span style="font-size:0.68rem">${esc(sourceLabel)}</span></div>` : ''}
+
                 </div>
                 <div class="card-footer">
-                    <span class="card-date">${esc(job.role_search || '')}</span>
+                    <span class="card-role">${esc(job.role_search || '')}</span>
                     ${url ? `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
                 </div>
             </div>`;
-            }).join('');
+        }).join('');
+    }
+
+    function renderPagination(totalPages) {
+        const c = document.getElementById('pagination');
+        c.innerHTML = '';
+        if (totalPages <= 1) return;
+        const prev = document.createElement('button');
+        prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
+        prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
+        const pages = [];
+        if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
+        else {
+            pages.push(1);
+            if (currentPage > 3) pages.push('...');
+            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+            if (currentPage < totalPages - 2) pages.push('...');
+            pages.push(totalPages);
+        }
+        pages.forEach(p => {
+            if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
+            else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
+        });
+        const next = document.createElement('button');
+        next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
+        next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
+    }
+
+    // ══════════════════════════════════════════════
+    //  HELPERS
+    // ══════════════════════════════════════════════
+    function getLogoData(name) {
+        const clean = name.replace(/\(.*\)/, '').trim();
+        let domain = '';
+        if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+        else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+        return {
+            clearbit: `https://logo.clearbit.com/${domain}`,
+            google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+            ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+            initial: clean.charAt(0).toUpperCase()
+        };
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
+        try {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return null;
+            const diff = Math.floor((new Date() - d) / 86400000);
+            if (diff === 0) return 'Today';
+            if (diff === 1) return 'Yesterday';
+            if (diff < 7) return `${diff} days ago`;
+            return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+        } catch { return null; }
+    }
+
+    function esc(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // ══════════════════════════════════════════════
+    //  INIT
+    // ══════════════════════════════════════════════
+    window.addEventListener('scroll', () => {
+        document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
+    });
+
+    async function init() {
+        const loading = document.getElementById('loading');
+
+        // Build static sidebar options
+        buildSourceOptions();
+        buildLocationOptions();
+        buildRolesOptions();
+
+        loading.innerHTML = 'Loading jobs...';
+        allJobs = await fetchJobsFromTurso();
+
+        if (allJobs.error) {
+            loading.innerHTML = `<div style="color:#fb7185;text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p></div>`;
+            return;
         }
 
-        function renderPagination(totalPages) {
-            const c = document.getElementById('pagination');
-            c.innerHTML = '';
-            if (totalPages <= 1) return;
-            const prev = document.createElement('button');
-            prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
-            prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
-            const pages = [];
-            if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
-            else {
-                pages.push(1);
-                if (currentPage > 3) pages.push('...');
-                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
-                if (currentPage < totalPages - 2) pages.push('...');
-                pages.push(totalPages);
-            }
-            pages.forEach(p => {
-                if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
-                else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
-            });
-            const next = document.createElement('button');
-            next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
-            next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
-        }
+        allJobs.sort((a, b) => {
+            const da = a.fetchedAt || '', db = b.fetchedAt || '';
+            if (da !== db) return db.localeCompare(da);
+            return (b._id || 0) - (a._id || 0);
+        });
 
-        init();
+        // Build dynamic company list from loaded data
+        const coMap = {};
+        allJobs.forEach(j => { if (j.company) coMap[j.company] = (coMap[j.company] || 0) + 1; });
+        allCompanies = Object.entries(coMap).sort((a,b) => b[1]-a[1]).map(e => e[0]).slice(0, 100);
+        buildCompanyOptions();
+
+        loading.style.display = 'none';
+        applyFilters();
+    }
+
+    init();
     </script>
 </body>
-
 </html>

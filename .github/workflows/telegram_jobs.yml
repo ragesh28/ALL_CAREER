@@ -51,6 +51,10 @@ jobs:
         run: |
           python scrape_telegram_jobs.py
 
+      - name: Cleanup walking_interview fields from jobs
+        run: |
+          python cleanup_walking.py
+
       # Always commit progress (even on timeout/failure)
       - name: Commit and Push Scrape Progress
         if: always()
