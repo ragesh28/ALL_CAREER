@@ -228,12 +228,15 @@ def scrape_naukri_page(role, city, page):
             title   = job_obj.get("title", "").strip()
             company = job_obj.get("companyName", "").strip()
 
-            # location from placeholders array
+            # location and experience from placeholders array
             loc = city
+            experience = ""
             for ph in job_obj.get("placeholders", []):
-                if isinstance(ph, dict) and ph.get("type") == "location":
-                    loc = ph.get("label", city)
-                    break
+                if isinstance(ph, dict):
+                    if ph.get("type") == "location":
+                        loc = ph.get("label", city)
+                    elif ph.get("type") == "experience":
+                        experience = ph.get("label", "")
 
             jd_url = job_obj.get("jdURL", "")
             if jd_url and not jd_url.startswith("http"):
@@ -251,6 +254,7 @@ def scrape_naukri_page(role, city, page):
                     "url":         jd_url,
                     "source":      "naukri",
                     "role_search": role,
+                    "experience":  experience,
                 })
     return jobs
 
