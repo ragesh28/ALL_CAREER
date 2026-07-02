@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4 playwright pandas python-jobspy
+          pip install requests beautifulsoup4 playwright pandas python-jobspy curl_cffi
 
       - name: Install Playwright Chromium with dependencies
         run: |

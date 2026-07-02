@@ -11,6 +11,10 @@ try:
     from jobspy import scrape_jobs
 except ImportError:
     scrape_jobs = None
+try:
+    from curl_cffi import requests as curl_requests
+except ImportError:
+    curl_requests = None
 
 # Configure stdout to handle UTF-8 printing cleanly on Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -221,11 +225,14 @@ def scrape_shine(role, city):
                                 job_url = item.get("jRUrl") or item.get("url") or ""
                             if job_url and job_url.startswith("/"):
                                 job_url = "https://www.shine.com" + job_url
+                            # Experience
+                            experience = item.get("jExp", "")
                             if title and job_url:
                                 jobs.append({
                                     "title": title, "company": company,
                                     "location": loc, "date_posted": date_str,
-                                    "url": job_url, "source": "shine", "role_search": role
+                                    "url": job_url, "source": "shine", "role_search": role,
+                                    "experience": experience
                                 })
                     except Exception as e:
                         print(f"    Shine JSON parse error: {e}")
@@ -293,11 +300,16 @@ def scrape_timesjobs(role, city):
                     company = (item.get("company") or item.get("hfCompany") or "").strip()
                     loc = (item.get("location") or city).strip()
                     job_url = item.get("jobDetailUrl", "")
+                    # Experience
+                    exp_from = item.get("experienceFrom", "")
+                    exp_to = item.get("experienceTo", "")
+                    experience = f"{exp_from}-{exp_to} Yrs" if exp_from and exp_to else ""
                     if title and job_url:
                         jobs.append({
                             "title": title, "company": company, "location": loc,
                             "date_posted": date_posted, "url": job_url,
-                            "source": "timesjobs", "role_search": role
+                            "source": "timesjobs", "role_search": role,
+                            "experience": experience
                         })
             else:
                 print(f"    TimesJobs API returned {resp.status_code}")
@@ -368,11 +380,16 @@ def scrape_hirist(role, city):
                         
                     job_id = item.get("id", "")
                     job_url = f"https://www.hirist.tech/j/{job_id}" if job_id else ""
+                    # Experience
+                    min_exp = item.get("min", "")
+                    max_exp = item.get("max", "")
+                    experience = f"{min_exp}-{max_exp} Yrs" if min_exp is not None and max_exp is not None else ""
                     if title and job_url:
                         jobs.append({
                             "title": title, "company": company, "location": loc,
                             "date_posted": date_posted, "url": job_url,
-                            "source": "hirist", "role_search": role
+                            "source": "hirist", "role_search": role,
+                            "experience": experience
                         })
             else:
                 print(f"    Hirist API returned {resp.status_code}")
@@ -383,46 +400,55 @@ def scrape_hirist(role, city):
     return jobs
 
 def scrape_workindia(role, city):
-    print("  - Scraping WorkIndia...")
+    """Scrape WorkIndia using curl_cffi + window.__ROUTE_DATA__ JSON extraction.
+    Plain requests gets blocked; curl_cffi with TLS fingerprinting bypasses it."""
+    print("  - Scraping WorkIndia (curl_cffi + __ROUTE_DATA__)...")
     jobs = []
+    if not curl_requests:
+        print("    curl_cffi not installed! Run: pip install curl_cffi")
+        return []
+    
+    EXP_MAP = {"fresher": "Fresher", "lt_1_year": "0-1 Yrs", "1_to_2_years": "1-2 Yrs",
+               "gt_2_years": "2+ Yrs", "experience": "Experienced"}
     try:
         role_fmt = role.lower().replace(" ", "-")
         city_fmt = "bengaluru" if city.lower() == "bangalore" else city.lower().replace(" ", "-")
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-        }
-        for page in range(1, 5):
-            url = f"https://www.workindia.in/{role_fmt}-jobs-in-{city_fmt}/?pg={page}"
-            print(f"    Page {page}: {url}")
-            r = requests.get(url, headers=headers, timeout=20)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, 'html.parser')
-                cards = soup.select('div[class*="JobCard"], div.JobCard, a[href*="/company/"]')
-                if not cards:
-                    break
-                for card in cards:
-                    title_el = card.select_one('h2, [class*="JobTitle"]')
-                    company_el = card.select_one('h3, [class*="Company"]')
-                    
-                    title = title_el.text.strip() if title_el else ""
-                    company = company_el.text.strip() if company_el else ""
-                    
-                    if card.name == 'a':
-                        job_url = "https://www.workindia.in" + card.get('href', '')
-                    else:
-                        link = card.select_one('a')
-                        job_url = "https://www.workindia.in" + link.get('href', '') if link else ""
-                      
-                    if title and company:
-                        jobs.append({
-                            "title": title, "company": company, "location": city,
-                            "date_posted": datetime.now().strftime("%Y-%m-%d"), 
-                            "url": job_url, "source": "workindia", "role_search": role
-                        })
+        
+        url = f"https://www.workindia.in/{role_fmt}-jobs-in-{city_fmt}/"
+        print(f"    URL: {url}")
+        r = curl_requests.get(url, impersonate="chrome124", timeout=30, verify=False)
+        if r.status_code == 200:
+            match = re.search(r'__ROUTE_DATA__\s*=\s*(\{[^<]+)', r.text)
+            if match:
+                raw = match.group(1)
+                depth = 0; end = 0
+                for i, c in enumerate(raw):
+                    if c == '{': depth += 1
+                    elif c == '}': depth -= 1
+                    if depth == 0 and i > 0: end = i + 1; break
+                if end > 0:
+                    route_data = json.loads(raw[:end])
+                    data_list = route_data.get("data", [])
+                    for j in data_list:
+                        title = j.get("profile_job_title", "")
+                        company = j.get("branch_company_name", "")
+                        loc = j.get("branch_location_city_name", "").title() or city
+                        date_posted = str(j.get("created_at", ""))[:10] or datetime.now().strftime("%Y-%m-%d")
+                        job_id = j.get("id", "")
+                        job_url = f"https://www.workindia.in/jobs/{job_id}/" if job_id else ""
+                        exp_raw = j.get("job_experience", "")
+                        experience = EXP_MAP.get(exp_raw, exp_raw)
+                        if title and company:
+                            jobs.append({
+                                "title": title, "company": company, "location": loc,
+                                "date_posted": date_posted, "url": job_url,
+                                "source": "workindia", "role_search": role,
+                                "experience": experience
+                            })
             else:
-                print(f"    WorkIndia page {page} returned {r.status_code}")
-                break
-            time.sleep(1)
+                print("    No __ROUTE_DATA__ found in page")
+        else:
+            print(f"    WorkIndia returned {r.status_code}")
     except Exception as e:
         print(f"    WorkIndia error: {e}")
     return jobs
@@ -458,12 +484,20 @@ def scrape_internshala(role, city):
                     company = company_el.text.strip() if company_el else ""
                     loc = loc_el.text.strip() if loc_el else city
                     job_url = "https://internshala.com" + title_el.get('href', '') if title_el else ""
+                    # Experience: find text like "1 year(s)" but NOT salary
+                    experience = ""
+                    for el in card.find_all(['span', 'p', 'div']):
+                        txt = el.get_text(strip=True)
+                        if txt and re.match(r'^\d+\s*(?:[-–]\s*\d+\s*)?year', txt, re.I) and '₹' not in txt:
+                            experience = txt
+                            break
                     
                     if title and company:
                         jobs.append({
                             "title": title, "company": company, "location": loc,
                             "date_posted": datetime.now().strftime("%Y-%m-%d"), 
-                            "url": job_url, "source": "internshala", "role_search": role
+                            "url": job_url, "source": "internshala", "role_search": role,
+                            "experience": experience
                         })
             else:
                 print(f"    Internshala page {page} returned {r.status_code}")
@@ -510,11 +544,15 @@ def scrape_freshersworld(role, city):
                         link = card.select_one('a')
                     job_url = link.get('href', '') if link else ""
                     
+                    # Experience
+                    exp_el = card.select_one('span.experience, [class*="experience"]')
+                    experience = exp_el.get_text(strip=True) if exp_el else ""
                     if title and company:
                         jobs.append({
                             "title": title, "company": company, "location": loc,
                             "date_posted": datetime.now().strftime("%Y-%m-%d"), 
-                            "url": job_url, "source": "freshersworld", "role_search": role
+                            "url": job_url, "source": "freshersworld", "role_search": role,
+                            "experience": experience
                         })
             else:
                 print(f"    Freshersworld page {page} returned {r.status_code}")
@@ -589,11 +627,18 @@ def scrape_apna(role, city):
                             job_url = f"https://apna.co/job/{item.get('id')}"
                         if job_url and job_url.startswith("/"):
                             job_url = "https://apna.co" + job_url
+                        # Experience
+                        experience = item.get("experience_in_years", "")
+                        min_e = item.get("min_experience")
+                        max_e = item.get("max_experience")
+                        if not experience and min_e is not None:
+                            experience = f"{min_e}-{max_e} Yrs"
                         if title and job_url:
                             jobs.append({
                                 "title": title, "company": company, "location": loc,
                                 "date_posted": date_str, "url": job_url,
-                                "source": "apna", "role_search": role
+                                "source": "apna", "role_search": role,
+                                "experience": experience
                             })
                 except Exception as je:
                     print(f"    Apna page 1 JSON parse error: {je}")
@@ -630,11 +675,18 @@ def scrape_apna(role, city):
                             job_url = item.get("public_url_v2") or item.get("public_url")
                             if not job_url and item.get("id"):
                                 job_url = f"https://apna.co/job/{item.get('id')}"
+                            # Experience
+                            experience = item.get("experience_in_years", "")
+                            min_e = item.get("min_experience")
+                            max_e = item.get("max_experience")
+                            if not experience and min_e is not None:
+                                experience = f"{min_e}-{max_e} Yrs"
                             if title and job_url:
                                 jobs.append({
                                     "title": title, "company": company, "location": loc,
                                     "date_posted": date_str, "url": job_url,
-                                    "source": "apna", "role_search": role
+                                    "source": "apna", "role_search": role,
+                                    "experience": experience
                                 })
                     else:
                         print(f"    Apna API page {page} returned {resp.status_code}")

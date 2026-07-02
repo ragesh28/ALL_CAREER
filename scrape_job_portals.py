@@ -6,7 +6,10 @@ import time
 import urllib.parse
 import requests
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup
+try:
+    from curl_cffi import requests as curl_requests
+except ImportError:
+    curl_requests = None
 
 # Configure stdout to handle UTF-8 printing cleanly on Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -18,40 +21,6 @@ requests.packages.urllib3.disable_warnings()
 CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = "62eacb67a7ee0b199f58ccb540a3eff7"
 DATABASE_ID = "20b71b5c-c070-45b5-9542-27ed1cad89e5"
-
-def get_active_scraperapi_key():
-    keys_str = os.environ.get("SCRAPERAPI_KEYS_LIST", "")
-    if not keys_str:
-        # Fallback to older env var for local testing if needed
-        keys_str = os.environ.get("SCRAPERAPI_KEY_2", "")
-    
-    if not keys_str:
-        return None
-        
-    keys = [k.strip() for k in keys_str.split(",") if k.strip()]
-    for key in keys:
-        try:
-            url = f"http://api.scraperapi.com/account?api_key={key}"
-            resp = requests.get(url, timeout=10)
-            if resp.status_code == 200:
-                data = resp.json()
-                request_count = data.get("requestCount", 0)
-                request_limit = data.get("requestLimit", 0)
-                remaining = request_limit - request_count
-                # If key has at least 100 credits, we can use it
-                if remaining >= 100:
-                    print(f"Selected ScraperAPI Key starting with '{key[:4]}' ({remaining} credits remaining this month)")
-                    return key
-        except Exception as e:
-            print(f"Error checking key {key[:4]}...: {e}")
-            continue
-    print("No ScraperAPI keys have enough credits left!")
-    return None
-
-SCRAPERAPI_KEY = get_active_scraperapi_key()
-
-# Global Playwright Browser Instances (Removed, as this is now Foundit only)
-# Playwright was used for Naukri. Foundit uses curl_cffi.
 
 # Progress Checkpointing Configuration
 PROGRESS_FILE = "foundit_progress.json"
@@ -133,145 +102,87 @@ def parse_date_posted(date_val):
     return today.strftime("%Y-%m-%d")
 
 # ---------------------------------------------------------------------------
-# FOUNDIT SCRAPER - curl_cffi + ScraperAPI (1 credit per request)
+# FOUNDIT SCRAPER - Middleware API (NO PROXY NEEDED!)
 # ---------------------------------------------------------------------------
 def scrape_foundit(role, city):
-    """Scrape Foundit using curl_cffi TLS fingerprint + ScraperAPI proxy.
-    Uses only 1 credit per request (no premium, no render).
-    curl_cffi impersonates Chrome's TLS fingerprint to bypass Cloudflare."""
-    if not SCRAPERAPI_KEY:
-        return []
-    
-    print("  - Scraping Foundit (curl_cffi + ScraperAPI - 1 credit)...")
-    role_clean = role.replace(" ", "-").lower()
+    """Scrape Foundit using their internal middleware JSON API.
+    No proxy or ScraperAPI needed — direct API call returns structured JSON."""
+    print("  - Scraping Foundit (middleware API - no proxy)...")
+    jobs = []
+    keyword = urllib.parse.quote(role)
     city_clean = city.lower().split(",")[0].strip()
     
-    jobs = []
+    if not curl_requests:
+        print("    curl_cffi not installed! Run: pip install curl_cffi")
+        return []
+    
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Referer": "https://www.foundit.in/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+    }
+    
     try:
-        from curl_cffi import requests as curl_requests
-        proxy_url = f"http://scraperapi:{SCRAPERAPI_KEY}@proxy-server.scraperapi.com:8001"
-        
-        headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-            "Accept-Language": "en-IN,en;q=0.9",
-            "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-            "Sec-Ch-Ua-Mobile": "?0",
-            "Sec-Ch-Ua-Platform": '"Windows"',
-            "Sec-Fetch-Dest": "document",
-            "Sec-Fetch-Mode": "navigate",
-            "Sec-Fetch-Site": "none",
-            "Sec-Fetch-User": "?1",
-            "Upgrade-Insecure-Requests": "1",
-        }
-        
         for page in range(1, 5):
-            url = f"https://www.foundit.in/search/{role_clean}-jobs-in-{city_clean}?start={page}&limit=20&jobFreshness=1"
+            start = (page - 1) * 20 + 1
+            url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
             print(f"    Page {page}: {url}")
             try:
-                resp = curl_requests.get(
-                    url, headers=headers, impersonate="chrome124",
-                    proxies={"http": proxy_url, "https": proxy_url},
-                    timeout=60, verify=False
-                )
-                
+                resp = curl_requests.get(url, headers=headers, impersonate="chrome124",
+                                         timeout=30, verify=False)
                 if resp.status_code == 200:
-                    html = resp.text
-                    
-                    # Parse Next.js RSC payload to extract job data
-                    push_payloads = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html, re.DOTALL)
-                    all_rsc = ""
-                    for payload in push_payloads:
-                        unescaped = payload.replace('\\n', '\n').replace('\\t', '\t')
-                        unescaped = unescaped.replace('\\"', '"').replace('\\\\', '\\')
-                        all_rsc += unescaped + "\n"
-                    
-                    # Extract job objects from RSC data
-                    seen_ids = set()
-                    for match in re.finditer(r'"jobId"\s*:\s*(\d+)', all_rsc):
-                        job_id = match.group(1)
-                        if job_id in seen_ids:
-                            continue
-                        seen_ids.add(job_id)
+                    data = resp.json()
+                    items = data.get("jobSearchResponse", {}).get("data", [])
+                    if not items:
+                        break
+                    for item in items:
+                        title = item.get("title", "")
+                        # Company
+                        co = item.get("company", "")
+                        company = co.get("name", "") if isinstance(co, dict) else str(co)
+                        if not company:
+                            company = item.get("recruiterName", "")
+                        # Location
+                        loc_list = item.get("locations", [])
+                        loc_str = city
+                        if isinstance(loc_list, list) and loc_list:
+                            loc_names = []
+                            for loc in loc_list:
+                                if isinstance(loc, dict):
+                                    loc_names.append(loc.get("label", loc.get("name", "")))
+                                elif isinstance(loc, str):
+                                    loc_names.append(loc)
+                            if loc_names:
+                                loc_str = ", ".join(loc_names)
+                        # URL
+                        jd_url = item.get("jdUrl", "")
+                        full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
+                        # Date
+                        date_posted = datetime.now().strftime("%Y-%m-%d")
+                        updated_at = item.get("updatedAt", 0)
+                        if updated_at:
+                            try:
+                                date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
+                            except:
+                                pass
+                        # Experience
+                        experience = item.get("exp", "")
                         
-                        # Find enclosing JSON object
-                        pos = match.start()
-                        brace_count = 0
-                        start_pos = pos
-                        while start_pos > 0:
-                            start_pos -= 1
-                            if all_rsc[start_pos] == '}':
-                                brace_count += 1
-                            elif all_rsc[start_pos] == '{':
-                                if brace_count == 0:
-                                    break
-                                brace_count -= 1
-                        
-                        brace_count = 0
-                        end_pos = start_pos
-                        while end_pos < len(all_rsc):
-                            if all_rsc[end_pos] == '{':
-                                brace_count += 1
-                            elif all_rsc[end_pos] == '}':
-                                brace_count -= 1
-                                if brace_count == 0:
-                                    end_pos += 1
-                                    break
-                            end_pos += 1
-                        
-                        json_str = all_rsc[start_pos:end_pos]
-                        
-                        try:
-                            job_obj = json.loads(json_str)
-                            
-                            title = job_obj.get("title", "")
-                            company = ""
-                            company_data = job_obj.get("company", {})
-                            if isinstance(company_data, dict):
-                                company = company_data.get("name", "")
-                            if not company:
-                                company = job_obj.get("recruiterName", "")
-                            
-                            # Location
-                            loc_list = job_obj.get("locations", [])
-                            loc_str = city
-                            if isinstance(loc_list, list) and loc_list:
-                                loc_names = []
-                                for loc in loc_list:
-                                    if isinstance(loc, dict):
-                                        loc_names.append(loc.get("label", loc.get("name", "")))
-                                    elif isinstance(loc, str):
-                                        loc_names.append(loc)
-                                if loc_names:
-                                    loc_str = ", ".join(loc_names)
-                            
-                            # URL
-                            jd_url = job_obj.get("jdUrl", "")
-                            full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
-                            
-                            # Posted date
-                            date_posted = datetime.now().strftime("%Y-%m-%d")
-                            updated_at = job_obj.get("updatedAt", 0)
-                            if updated_at:
-                                try:
-                                    date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
-                                except:
-                                    pass
-                            
-                            if title and full_url:
-                                jobs.append({
-                                    "title": title, "company": company, "location": loc_str,
-                                    "date_posted": date_posted, "url": full_url,
-                                    "source": "foundit", "role_search": role
-                                })
-                        except json.JSONDecodeError:
-                            pass
+                        if title and full_url:
+                            jobs.append({
+                                "title": title, "company": company, "location": loc_str,
+                                "date_posted": date_posted, "url": full_url,
+                                "source": "foundit", "role_search": role,
+                                "experience": experience
+                            })
                 else:
                     print(f"    Foundit returned {resp.status_code}")
+                    break
             except Exception as e:
                 print(f"    Foundit error: {e}")
             time.sleep(1)
-    except ImportError:
-        print("    curl_cffi not installed! Run: pip install curl_cffi")
     except Exception as e:
         print(f"    Foundit error: {e}")
     
@@ -283,7 +194,7 @@ def scrape_foundit(role, city):
 def main():
     print("=" * 70)
     print("  JOB PORTALS SCRAPER (FOUNDIT ONLY)")
-    print("  Foundit: curl_cffi + ScraperAPI proxy (1 credit each)")
+    print("  Foundit: Middleware API (NO PROXY - FREE!)")
     print("=" * 70)
     print(f"  Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  Roles Count: {len(SEARCH_ROLES)}")
