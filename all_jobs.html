@@ -1222,8 +1222,9 @@
             const source = (job.source || '').toLowerCase();
             const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
             const portalLogoSrc = PORTAL_LOGOS[source] || '';
-            const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
-            const cityLoc = rawLoc.split(',')[0].trim();
+            const rawLocStr = (job.location || '').trim();
+            const rawLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' ? rawLocStr : 'India';
+            const cityLoc = rawLoc.split(',')[0].trim() || 'India';
             return `
             <div class="job-card" style="animation-delay:${i * 0.025}s">
                 <div class="card-top">
