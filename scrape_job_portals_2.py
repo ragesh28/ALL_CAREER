@@ -591,11 +591,15 @@ def scrape_freshersworld(role, city):
             
             if page_content:
                 soup = BeautifulSoup(page_content, 'html.parser')
-                cards = soup.select('div.job-container, div.job-detail-block, div.job-desc-block, div.col-md-12.col-lg-12.col-xs-12.padding-none.job-container')
+                # Only use div.job-container to avoid duplicate cards
+                # (div.job-desc-block is a child of job-container, matching both creates duplicates)
+                cards = soup.select('div.job-container')
                 if not cards:
                     break
                 for card in cards:
-                    title_el = card.select_one('div.job-desc-title, span.wrap-title')
+                    title_el = card.select_one('span.wrap-title')
+                    if not title_el:
+                        title_el = card.select_one('div.job-desc-title')
                     company_el = card.select_one('h3.latest-jobs-title, div.job-desc-company')
                     loc_el = card.select_one('span.job-location')
                     
@@ -603,15 +607,31 @@ def scrape_freshersworld(role, city):
                     company = company_el.text.strip() if company_el else ""
                     loc = loc_el.text.strip() if loc_el else city
                     
-                    link = card.parent if card.parent and card.parent.name == 'a' else None
-                    if not link:
-                        link = card.select_one('a')
-                    job_url = link.get('href', '') if link else ""
+                    # Clean title: remove trailing "Less" or "More" button text
+                    import re as _re
+                    title = _re.sub(r'\s*(Less|More|LessMore)\s*$', '', title).strip()
+                    # Remove " at CityName" suffix from title if present
+                    title = _re.sub(r'\s+at\s+\w+$', '', title).strip()
+                    
+                    # Get the CORRECT job URL: the "View & Apply" link (not the city link)
+                    # The city link is first, the actual job link contains '/jobs/' in href
+                    job_url = ""
+                    all_links = card.find_all('a', href=True)
+                    for a_tag in all_links:
+                        href = a_tag.get('href', '')
+                        if '/jobs/' in href and 'jobsearch' not in href and 'category' not in href:
+                            job_url = href
+                            break
+                    
+                    # Ensure full URL
+                    if job_url and not job_url.startswith('http'):
+                        job_url = f"https://www.freshersworld.com{job_url}"
                     
                     # Experience
                     exp_el = card.select_one('span.experience, [class*="experience"]')
                     experience = exp_el.get_text(strip=True) if exp_el else ""
-                    if title and company:
+                    
+                    if title and company and job_url:
                         jobs.append({
                             "title": title, "company": company, "location": loc,
                             "date_posted": datetime.now().strftime("%Y-%m-%d"), 
