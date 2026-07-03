@@ -182,12 +182,14 @@
         .filter-section-label {
             font-size: 0.88rem; font-weight: 600; color: var(--text-main);
             display: flex; align-items: center; gap: 8px;
+            pointer-events: none;
         }
         .filter-section-label .filter-count {
             font-size: 0.68rem; font-weight: 700;
             background: var(--primary); color: #020a0f;
             padding: 1px 7px; border-radius: 20px;
             display: none;
+            pointer-events: none;
         }
         .filter-section-label .filter-count.show { display: inline-block; }
         .chevron {
@@ -197,6 +199,7 @@
             transition: transform 0.25s ease;
             flex-shrink: 0;
             display: inline-block;
+            pointer-events: none;
         }
         .filter-section.open .chevron { transform: rotate(180deg); }
 
@@ -698,13 +701,15 @@
                     </span>
                     <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="filter-body" style="padding: 16px 20px 24px 20px;">
-                    <div class="slider-container">
-                        <div class="slider-value-pin" id="exp-pin">0</div>
-                        <input type="range" min="0" max="30" value="0" class="exp-slider" id="expSlider" oninput="updateExpSlider(this.value)" onchange="applyFilters()">
-                        <div class="slider-labels">
-                            <span>0 Yrs</span>
-                            <span>30 Yrs</span>
+                <div class="filter-body">
+                    <div class="filter-body-inner" style="padding: 16px 4px 24px 4px;">
+                        <div class="slider-container">
+                            <div class="slider-value-pin" id="exp-pin" style="display: none;">0</div>
+                            <input type="range" min="0" max="30" value="0" class="exp-slider" id="expSlider" oninput="updateExpSlider(this.value)" onchange="applyFilters()">
+                            <div class="slider-labels">
+                                <span>0 Yrs</span>
+                                <span>30 Yrs</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1050,6 +1055,12 @@
         const pin = document.getElementById('exp-pin');
         pin.textContent = val;
         activeExp = parseInt(val, 10);
+        
+        if (activeExp === 0) {
+            pin.style.display = 'none';
+        } else {
+            pin.style.display = 'block';
+        }
         
         const percent = (val - slider.min) / (slider.max - slider.min);
         const thumbWidth = 18;
