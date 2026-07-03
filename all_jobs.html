@@ -1258,10 +1258,10 @@
 
             if (activeExp > 0) {
                 const [minExp, maxExp] = parseExperience(j.experience);
-                if (minExp === null || maxExp === null) {
-                    return false; // If no exp info, it doesn't match the specific requirement
+                if (minExp === null) {
+                    return false; // If no exp info, it doesn't match
                 }
-                if (activeExp < minExp || activeExp > maxExp) {
+                if (minExp !== activeExp) {
                     return false;
                 }
             }
