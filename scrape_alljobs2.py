@@ -29,6 +29,9 @@ import requests
 import traceback
 from datetime import datetime, timedelta
 
+# Configure stdout to handle UTF-8 printing cleanly on Windows
+sys.stdout.reconfigure(encoding='utf-8')
+
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
@@ -224,24 +227,56 @@ def main():
             save_progress(r_idx, l_idx)
 
             try:
-                # Try with hours_old first, fallback without
+                jobs_list = []
+                
+                # Scrape LinkedIn
                 try:
-                    jobs_df = scrape_jobs(
-                        site_name=["indeed", "linkedin"],
-                        search_term=role,
-                        location=location,
-                        results_wanted=RESULTS_PER_SEARCH,
-                        hours_old=24,
-                        country_indeed="India",
+                    li_df = scrape_jobs(
+                        site_name=["linkedin"], search_term=role, location=location,
+                        results_wanted=RESULTS_PER_SEARCH, hours_old=24
                     )
+                    if li_df is not None and not li_df.empty:
+                        jobs_list.append(li_df)
                 except TypeError:
-                    jobs_df = scrape_jobs(
-                        site_name=["indeed", "linkedin"],
-                        search_term=role,
-                        location=location,
-                        results_wanted=RESULTS_PER_SEARCH,
-                        country_indeed="India",
+                    # Fallback without hours_old if library version is old
+                    try:
+                        li_df = scrape_jobs(
+                            site_name=["linkedin"], search_term=role, location=location,
+                            results_wanted=RESULTS_PER_SEARCH
+                        )
+                        if li_df is not None and not li_df.empty:
+                            jobs_list.append(li_df)
+                    except Exception as e:
+                        print(f" [LinkedIn Error: {e}]", end="")
+                except Exception as e:
+                    print(f" [LinkedIn Error: {e}]", end="")
+
+                # Scrape Indeed
+                try:
+                    ind_df = scrape_jobs(
+                        site_name=["indeed"], search_term=role, location=location,
+                        results_wanted=RESULTS_PER_SEARCH, hours_old=24, country_indeed="India"
                     )
+                    if ind_df is not None and not ind_df.empty:
+                        jobs_list.append(ind_df)
+                except TypeError:
+                    # Fallback without hours_old if library version is old
+                    try:
+                        ind_df = scrape_jobs(
+                            site_name=["indeed"], search_term=role, location=location,
+                            results_wanted=RESULTS_PER_SEARCH, country_indeed="India"
+                        )
+                        if ind_df is not None and not ind_df.empty:
+                            jobs_list.append(ind_df)
+                    except Exception as e:
+                        print(f" [Indeed Error: {e}]", end="")
+                except Exception as e:
+                    print(f" [Indeed Error: {e}]", end="")
+
+                if jobs_list:
+                    jobs_df = pd.concat(jobs_list, ignore_index=True)
+                else:
+                    jobs_df = pd.DataFrame()
 
                 if jobs_df is None or jobs_df.empty:
                     print("0 jobs found")
