@@ -443,16 +443,10 @@ def scrape_workindia(role, city):
             return []
         
         if page_content:
-            match = re.search(r'__ROUTE_DATA__\s*=\s*(\{[^<]+)', page_content)
+            match = re.search(r'__ROUTE_DATA__\s*=\s*(.*?)\s*</script>', page_content, re.DOTALL)
             if match:
-                raw = match.group(1)
-                depth = 0; end = 0
-                for i, c in enumerate(raw):
-                    if c == '{': depth += 1
-                    elif c == '}': depth -= 1
-                    if depth == 0 and i > 0: end = i + 1; break
-                if end > 0:
-                    route_data = json.loads(raw[:end])
+                try:
+                    route_data = json.loads(match.group(1))
                     data_list = route_data.get("data", [])
                     for j in data_list:
                         title = j.get("profile_job_title", "")
@@ -470,6 +464,8 @@ def scrape_workindia(role, city):
                                 "source": "workindia", "role_search": role,
                                 "experience": experience
                             })
+                except Exception as e:
+                    print(f"    WorkIndia JSON parse error: {e}")
             else:
                 print("    No __ROUTE_DATA__ found in page")
     except Exception as e:
@@ -523,9 +519,9 @@ def scrape_internshala(role, city):
                 if not cards:
                     break
                 for card in cards:
-                    title_el = card.select_one('h3.job-internship-name a, h3.heading_4_5 a')
+                    title_el = card.select_one('a.job-title-href, h3.job-internship-name a, h3.heading_4_5 a')
                     company_el = card.select_one('p.company-name, div.company_name a')
-                    loc_el = card.select_one('p#location_names, div#location_names span')
+                    loc_el = card.select_one('p#location_names, div#location_names span, p.locations a, span.locations a, .locations a')
                     
                     title = title_el.text.strip() if title_el else ""
                     company = company_el.text.strip() if company_el else ""
