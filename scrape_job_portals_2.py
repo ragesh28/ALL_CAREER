@@ -624,9 +624,111 @@ def scrape_freshersworld(role, city):
     return jobs
 
 def scrape_glassdoor(role, city):
-    print("  - Scraping Glassdoor (via JobSpy is unsupported in local version)...")
-    print("    Glassdoor is not supported by the local version of JobSpy. Skipping Glassdoor.")
-    return []
+    print("  - Scraping Glassdoor (via ScraperAPI)...")
+    
+    import os, random, urllib.parse, re, json, bs4
+    scraperapi_keys = [k.strip() for k in os.environ.get("SCRAPERAPI_KEYS_LIST", "").split(",") if k.strip()]
+    if not scraperapi_keys:
+        print("    No SCRAPERAPI_KEYS_LIST found in environment. Skipping Glassdoor.")
+        return []
+        
+    api_key = random.choice(scraperapi_keys)
+    target_url = f"https://www.glassdoor.co.in/Job/jobs.htm?sc.keyword={urllib.parse.quote(role)}%20{urllib.parse.quote(city)}"
+    proxy_url = f"https://api.scraperapi.com?api_key={api_key}&url={urllib.parse.quote(target_url)}&render=true"
+    
+    jobs = []
+    fetched_at = datetime.now().strftime("%Y-%m-%d")
+    
+    try:
+        r = requests.get(proxy_url, timeout=90)
+        if r.status_code == 200:
+            html_content = r.text
+            soup = bs4.BeautifulSoup(html_content, 'html.parser')
+            
+            apollo_match = re.search(r'window\.__APOLLO_STATE__\s*=\s*(\{.*?\});', html_content)
+            if apollo_match:
+                try:
+                    state = json.loads(apollo_match.group(1))
+                    for key, val in state.items():
+                        if isinstance(val, dict) and (val.get('__typename') == 'JobListingSearchResult' or 'jobview' in val):
+                            jobview = val.get('jobview', {})
+                            header = jobview.get('header', {})
+                            job_info = jobview.get('job', {})
+                            
+                            title = header.get('jobTitleText') or job_info.get('jobTitleText')
+                            company = header.get('employerNameFromSearch') or header.get('employer', {}).get('name')
+                            location = header.get('locationName', '')
+                            job_id = job_info.get('listingId')
+                            
+                            if title and company and job_id:
+                                direct_url = f"https://www.glassdoor.co.in/job-listing/j?jl={job_id}"
+                                jobs.append({
+                                    "title": title.strip(),
+                                    "company": company.strip(),
+                                    "location": location.strip(),
+                                    "url": direct_url,
+                                    "linkedin_url": "",
+                                    "date": "Recent",
+                                    "source": "glassdoor",
+                                    "role_search": role,
+                                    "fetchedAt": fetched_at
+                                })
+                except Exception as e:
+                    print(f"    Error parsing Glassdoor Apollo state: {e}")
+            
+            if not jobs:
+                cards = soup.find_all(attrs={"data-test": "jobListing"})
+                if not cards:
+                    cards = soup.find_all("li", class_=re.compile("jobListing|JobCard", re.I))
+                
+                for card in cards:
+                    try:
+                        title_elem = card.find(attrs={"data-test": "job-title"}) or card.find("a", class_=re.compile("JobCard_jobTitle"))
+                        title = title_elem.text.strip() if title_elem else ""
+                        
+                        comp_elem = card.find(attrs={"data-test": "employer-name"}) or card.find("span", class_=re.compile("EmployerProfile_employerName"))
+                        company = comp_elem.text.strip() if comp_elem else ""
+                        if company and "\n" in company: company = company.split("\n")[0]
+                        if company and "★" in company: company = company.split("★")[0]
+                        
+                        loc_elem = card.find(attrs={"data-test": "emp-location"}) or card.find(attrs={"data-test": "location"})
+                        location = loc_elem.text.strip() if loc_elem else ""
+                        
+                        a_tag = card.find("a", href=re.compile("/job-listing/"))
+                        url = a_tag["href"] if a_tag else ""
+                        if url and url.startswith("/"):
+                            url = "https://www.glassdoor.co.in" + url
+                            
+                        if title and company and url:
+                            jobs.append({
+                                "title": title,
+                                "company": company.strip(),
+                                "location": location,
+                                "url": url,
+                                "linkedin_url": "",
+                                "date": "Recent",
+                                "source": "glassdoor",
+                                "role_search": role,
+                                "fetchedAt": fetched_at
+                            })
+                    except:
+                        continue
+                        
+        else:
+            print(f"    Glassdoor ScraperAPI error: Status {r.status_code}")
+    except Exception as e:
+        print(f"    Glassdoor fetch error: {e}")
+        
+    # Deduplicate jobs by URL/title
+    unique_jobs = []
+    seen_urls = set()
+    for job in jobs:
+        if job["url"] not in seen_urls:
+            unique_jobs.append(job)
+            seen_urls.add(job["url"])
+            
+    print(f"    Found {len(unique_jobs)} Glassdoor jobs")
+    return unique_jobs
 
 def scrape_apna(role, city):
     print("  - Scraping Apna (via API)...")
