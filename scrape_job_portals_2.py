@@ -624,109 +624,195 @@ def scrape_freshersworld(role, city):
     return jobs
 
 def scrape_glassdoor(role, city):
-    print("  - Scraping Glassdoor (via ScraperAPI)...")
-    
-    import os, random, urllib.parse, re, json, bs4
-    scraperapi_keys = [k.strip() for k in os.environ.get("SCRAPERAPI_KEYS_LIST", "").split(",") if k.strip()]
-    if not scraperapi_keys:
-        print("    No SCRAPERAPI_KEYS_LIST found in environment. Skipping Glassdoor.")
-        return []
-        
-    api_key = random.choice(scraperapi_keys)
-    target_url = f"https://www.glassdoor.co.in/Job/jobs.htm?sc.keyword={urllib.parse.quote(role)}%20{urllib.parse.quote(city)}"
-    proxy_url = f"https://api.scraperapi.com?api_key={api_key}&url={urllib.parse.quote(target_url)}&render=true"
-    
+    print("  - Scraping Glassdoor (via GraphQL API)...")
+
+    # ── Pre-mapped Glassdoor location IDs for Indian cities ──
+    GLASSDOOR_LOCATIONS = {
+        "bangalore": {"id": 2940587, "type": "CITY"},
+        "bengaluru": {"id": 2940587, "type": "CITY"},
+        "chennai":   {"id": 2942583, "type": "CITY"},
+        "hyderabad": {"id": 2953005, "type": "CITY"},
+        "mumbai":    {"id": 2953279, "type": "CITY"},
+        "delhi":     {"id": 2948054, "type": "CITY"},
+        "pune":      {"id": 2951857, "type": "CITY"},
+        "noida":     {"id": 9517182, "type": "CITY"},
+        "gurgaon":   {"id": 2947189, "type": "CITY"},
+        "kolkata":   {"id": 2946861, "type": "CITY"},
+        "kochi":     {"id": 2955965, "type": "CITY"},
+        "indore":    {"id": 2943475, "type": "CITY"},
+        "coimbatore": {"id": 2942639, "type": "CITY"},
+        "jaipur":    {"id": 2951803, "type": "CITY"},
+        "ahmedabad": {"id": 2949584, "type": "CITY"},
+        "nagpur":    {"id": 2944295, "type": "CITY"},
+        "lucknow":   {"id": 2949582, "type": "CITY"},
+        "chandigarh":{"id": 2941565, "type": "CITY"},
+        "india":     {"id": 115, "type": "COUNTRY"},
+    }
+
+    GD_GRAPHQL_QUERY = """
+    query JobSearchResultsQuery(
+        $excludeJobListingIds: [Long!],
+        $keyword: String,
+        $locationId: Int,
+        $locationType: LocationTypeEnum,
+        $numJobsToShow: Int!,
+        $pageCursor: String,
+        $pageNumber: Int,
+        $filterParams: [FilterParams],
+        $originalPageUrl: String,
+        $seoFriendlyUrlInput: String,
+        $parameterUrlInput: String,
+        $seoUrl: Boolean
+    ) {
+        jobListings(
+            contextHolder: {
+                searchParams: {
+                    excludeJobListingIds: $excludeJobListingIds,
+                    keyword: $keyword,
+                    locationId: $locationId,
+                    locationType: $locationType,
+                    numPerPage: $numJobsToShow,
+                    pageCursor: $pageCursor,
+                    pageNumber: $pageNumber,
+                    filterParams: $filterParams,
+                    originalPageUrl: $originalPageUrl,
+                    seoFriendlyUrlInput: $seoFriendlyUrlInput,
+                    parameterUrlInput: $parameterUrlInput,
+                    seoUrl: $seoUrl,
+                    searchType: SR
+                }
+            }
+        ) {
+            jobListings {
+                jobview {
+                    header {
+                        ageInDays
+                        employer { id name shortName __typename }
+                        employerNameFromSearch
+                        jobLink
+                        jobTitleText
+                        locationName
+                        locationType
+                        payCurrency
+                        payPeriod
+                        payPeriodAdjustedPay { p10 p50 p90 __typename }
+                        rating
+                        __typename
+                    }
+                    job { jobTitleText listingId __typename }
+                    overview { shortName squareLogoUrl __typename }
+                    __typename
+                }
+                __typename
+            }
+            paginationCursors { cursor pageNumber __typename }
+            totalJobsCount
+            __typename
+        }
+    }
+    """
+
+    FALLBACK_TOKEN = "Ft6oHEWlRZrxDww95Cpazw:0pGUrkb2y3TyOpAIqF2vbPmUXoXVkD3oEGDVkvfeCerceQ5-n8mBg3BovySUIjmCPHCaW0H2nQVdqzbtsYqf4Q:wcqRqeegRUa9MVLJGyujVXB7vWFPjdaS1CtrrzJq-ok"
+
+    base_url = "https://www.glassdoor.co.in"
+    city_lower = city.lower().split(",")[0].strip()
+    loc = GLASSDOOR_LOCATIONS.get(city_lower, GLASSDOOR_LOCATIONS.get("india"))
+
+    gd_headers = {
+        "authority": "www.glassdoor.co.in",
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "apollographql-client-name": "job-search-next",
+        "apollographql-client-version": "4.65.5",
+        "content-type": "application/json",
+        "origin": "https://www.glassdoor.co.in",
+        "referer": "https://www.glassdoor.co.in/",
+        "gd-csrf-token": FALLBACK_TOKEN,
+        "sec-ch-ua": '"Chromium";v="126", "Google Chrome";v="126", "Not=A?Brand";v="99"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    }
+
+    payload = json.dumps([{
+        "operationName": "JobSearchResultsQuery",
+        "variables": {
+            "excludeJobListingIds": [],
+            "filterParams": [{"filterKey": "fromAge", "values": "3"}],
+            "keyword": role,
+            "numJobsToShow": 30,
+            "locationType": loc["type"],
+            "locationId": loc["id"],
+            "parameterUrlInput": f"IL.0,12_I{loc['type']}{loc['id']}",
+            "pageNumber": 1,
+            "pageCursor": None,
+            "fromage": 3,
+            "sort": "date",
+        },
+        "query": GD_GRAPHQL_QUERY,
+    }])
+
     jobs = []
     fetched_at = datetime.now().strftime("%Y-%m-%d")
-    
+
     try:
-        r = requests.get(proxy_url, timeout=90)
-        if r.status_code == 200:
-            html_content = r.text
-            soup = bs4.BeautifulSoup(html_content, 'html.parser')
-            
-            apollo_match = re.search(r'window\.__APOLLO_STATE__\s*=\s*(\{.*?\});', html_content)
-            if apollo_match:
+        resp = requests.post(f"{base_url}/graph", headers=gd_headers, data=payload, timeout=20)
+        if resp.status_code == 200:
+            res_json = resp.json()
+            data = res_json[0].get("data", {}).get("jobListings", {})
+            listings = data.get("jobListings", [])
+
+            for item in listings:
                 try:
-                    state = json.loads(apollo_match.group(1))
-                    for key, val in state.items():
-                        if isinstance(val, dict) and (val.get('__typename') == 'JobListingSearchResult' or 'jobview' in val):
-                            jobview = val.get('jobview', {})
-                            header = jobview.get('header', {})
-                            job_info = jobview.get('job', {})
-                            
-                            title = header.get('jobTitleText') or job_info.get('jobTitleText')
-                            company = header.get('employerNameFromSearch') or header.get('employer', {}).get('name')
-                            location = header.get('locationName', '')
-                            job_id = job_info.get('listingId')
-                            
-                            if title and company and job_id:
-                                direct_url = f"https://www.glassdoor.co.in/job-listing/j?jl={job_id}"
-                                jobs.append({
-                                    "title": title.strip(),
-                                    "company": company.strip(),
-                                    "location": location.strip(),
-                                    "url": direct_url,
-                                    "linkedin_url": "",
-                                    "date": "Recent",
-                                    "source": "glassdoor",
-                                    "role_search": role,
-                                    "fetchedAt": fetched_at
-                                })
-                except Exception as e:
-                    print(f"    Error parsing Glassdoor Apollo state: {e}")
-            
-            if not jobs:
-                cards = soup.find_all(attrs={"data-test": "jobListing"})
-                if not cards:
-                    cards = soup.find_all("li", class_=re.compile("jobListing|JobCard", re.I))
-                
-                for card in cards:
-                    try:
-                        title_elem = card.find(attrs={"data-test": "job-title"}) or card.find("a", class_=re.compile("JobCard_jobTitle"))
-                        title = title_elem.text.strip() if title_elem else ""
-                        
-                        comp_elem = card.find(attrs={"data-test": "employer-name"}) or card.find("span", class_=re.compile("EmployerProfile_employerName"))
-                        company = comp_elem.text.strip() if comp_elem else ""
-                        if company and "\n" in company: company = company.split("\n")[0]
-                        if company and "★" in company: company = company.split("★")[0]
-                        
-                        loc_elem = card.find(attrs={"data-test": "emp-location"}) or card.find(attrs={"data-test": "location"})
-                        location = loc_elem.text.strip() if loc_elem else ""
-                        
-                        a_tag = card.find("a", href=re.compile("/job-listing/"))
-                        url = a_tag["href"] if a_tag else ""
-                        if url and url.startswith("/"):
-                            url = "https://www.glassdoor.co.in" + url
-                            
-                        if title and company and url:
-                            jobs.append({
-                                "title": title,
-                                "company": company.strip(),
-                                "location": location,
-                                "url": url,
-                                "linkedin_url": "",
-                                "date": "Recent",
-                                "source": "glassdoor",
-                                "role_search": role,
-                                "fetchedAt": fetched_at
-                            })
-                    except:
+                    jv = item["jobview"]
+                    header = jv.get("header", {})
+                    job_info = jv.get("job", {})
+                    title = header.get("jobTitleText") or job_info.get("jobTitleText", "")
+                    company = header.get("employerNameFromSearch") or ""
+                    if not company:
+                        emp = header.get("employer", {})
+                        company = emp.get("name", "") or emp.get("shortName", "")
+                    location = header.get("locationName", "")
+                    job_id = job_info.get("listingId", "")
+                    age_days = header.get("ageInDays")
+
+                    if not title or not company:
                         continue
-                        
+
+                    direct_url = f"https://www.glassdoor.co.in/job-listing/j?jl={job_id}"
+                    date_str = "Recent"
+                    if age_days is not None:
+                        date_str = (datetime.now() - timedelta(days=age_days)).strftime("%Y-%m-%d")
+
+                    jobs.append({
+                        "title": title.strip(),
+                        "company": company.strip(),
+                        "location": location.strip(),
+                        "url": direct_url,
+                        "linkedin_url": "",
+                        "date": date_str,
+                        "source": "glassdoor",
+                        "role_search": role,
+                        "fetchedAt": fetched_at,
+                    })
+                except Exception:
+                    continue
         else:
-            print(f"    Glassdoor ScraperAPI error: Status {r.status_code}")
+            print(f"    Glassdoor GraphQL error: Status {resp.status_code}")
     except Exception as e:
         print(f"    Glassdoor fetch error: {e}")
-        
-    # Deduplicate jobs by URL/title
+
+    # Deduplicate by URL
     unique_jobs = []
     seen_urls = set()
     for job in jobs:
         if job["url"] not in seen_urls:
             unique_jobs.append(job)
             seen_urls.add(job["url"])
-            
+
     print(f"    Found {len(unique_jobs)} Glassdoor jobs")
     return unique_jobs
 
@@ -874,7 +960,7 @@ def main():
     print(f"  📅 Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  🔍 Roles Count: {len(SEARCH_ROLES)}")
     print(f"  📍 Cities Count: {len(LOCATIONS)}")
-    print(f"  🌐 Portals: Shine (Playwright), TimesJobs (API), Hirist (API), Apna (Playwright), WorkIndia (Requests), Internshala (API), Freshersworld (Requests), Glassdoor (JobSpy)")
+    print(f"  🌐 Portals: Shine (Playwright), TimesJobs (API), Hirist (API), Apna (Playwright), WorkIndia (Requests), Internshala (API), Freshersworld (Requests), Glassdoor (GraphQL API)")
     print("=" * 70)
 
     cleanup_old_jobs()
