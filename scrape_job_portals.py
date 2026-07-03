@@ -102,19 +102,72 @@ def parse_date_posted(date_val):
     return today.strftime("%Y-%m-%d")
 
 # ---------------------------------------------------------------------------
-# FOUNDIT SCRAPER - Middleware API (NO PROXY NEEDED!)
+# FOUNDIT SCRAPER - Middleware API with ScraperAPI fallback
 # ---------------------------------------------------------------------------
-def scrape_foundit(role, city):
-    """Scrape Foundit using their internal middleware JSON API.
-    No proxy or ScraperAPI needed — direct API call returns structured JSON."""
-    print("  - Scraping Foundit (middleware API - no proxy)...")
+SCRAPERAPI_KEYS = [k.strip() for k in os.environ.get("SCRAPERAPI_KEYS_LIST", "").split(",") if k.strip()]
+_scraper_key_idx = 0
+
+def _get_scraperapi_key():
+    global _scraper_key_idx
+    if not SCRAPERAPI_KEYS:
+        return None
+    key = SCRAPERAPI_KEYS[_scraper_key_idx % len(SCRAPERAPI_KEYS)]
+    _scraper_key_idx += 1
+    return key
+
+def _parse_foundit_items(items, city, role):
+    """Parse Foundit middleware API items into job dicts."""
+    jobs = []
+    for item in items:
+        title = item.get("title", "")
+        # Company
+        co = item.get("company", "")
+        company = co.get("name", "") if isinstance(co, dict) else str(co)
+        if not company:
+            company = item.get("recruiterName", "")
+        # Location
+        loc_list = item.get("locations", [])
+        loc_str = city
+        if isinstance(loc_list, list) and loc_list:
+            loc_names = []
+            for loc in loc_list:
+                if isinstance(loc, dict):
+                    loc_names.append(loc.get("label", loc.get("name", "")))
+                elif isinstance(loc, str):
+                    loc_names.append(loc)
+            if loc_names:
+                loc_str = ", ".join(loc_names)
+        # URL
+        jd_url = item.get("jdUrl", "")
+        full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
+        # Date
+        date_posted = datetime.now().strftime("%Y-%m-%d")
+        updated_at = item.get("updatedAt", 0)
+        if updated_at:
+            try:
+                date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
+            except:
+                pass
+        # Experience
+        experience = item.get("exp", "")
+        
+        if title and full_url:
+            jobs.append({
+                "title": title, "company": company, "location": loc_str,
+                "date_posted": date_posted, "url": full_url,
+                "source": "foundit", "role_search": role,
+                "experience": experience
+            })
+    return jobs
+
+def _scrape_foundit_middleware(role, city):
+    """Try middleware API directly (works locally, may be blocked on GitHub Actions)."""
     jobs = []
     keyword = urllib.parse.quote(role)
     city_clean = city.lower().split(",")[0].strip()
     
     if not curl_requests:
-        print("    curl_cffi not installed! Run: pip install curl_cffi")
-        return []
+        return None  # Signal to try fallback
     
     headers = {
         "Accept": "application/json, text/plain, */*",
@@ -124,69 +177,81 @@ def scrape_foundit(role, city):
         "Sec-Fetch-Site": "same-origin",
     }
     
-    try:
-        for page in range(1, 5):
-            start = (page - 1) * 20 + 1
-            url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
-            print(f"    Page {page}: {url}")
-            try:
-                resp = curl_requests.get(url, headers=headers, impersonate="chrome124",
-                                         timeout=30, verify=False)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    items = data.get("jobSearchResponse", {}).get("data", [])
-                    if not items:
-                        break
-                    for item in items:
-                        title = item.get("title", "")
-                        # Company
-                        co = item.get("company", "")
-                        company = co.get("name", "") if isinstance(co, dict) else str(co)
-                        if not company:
-                            company = item.get("recruiterName", "")
-                        # Location
-                        loc_list = item.get("locations", [])
-                        loc_str = city
-                        if isinstance(loc_list, list) and loc_list:
-                            loc_names = []
-                            for loc in loc_list:
-                                if isinstance(loc, dict):
-                                    loc_names.append(loc.get("label", loc.get("name", "")))
-                                elif isinstance(loc, str):
-                                    loc_names.append(loc)
-                            if loc_names:
-                                loc_str = ", ".join(loc_names)
-                        # URL
-                        jd_url = item.get("jdUrl", "")
-                        full_url = f"https://www.foundit.in{jd_url}" if jd_url else ""
-                        # Date
-                        date_posted = datetime.now().strftime("%Y-%m-%d")
-                        updated_at = item.get("updatedAt", 0)
-                        if updated_at:
-                            try:
-                                date_posted = datetime.fromtimestamp(updated_at / 1000).strftime("%Y-%m-%d")
-                            except:
-                                pass
-                        # Experience
-                        experience = item.get("exp", "")
-                        
-                        if title and full_url:
-                            jobs.append({
-                                "title": title, "company": company, "location": loc_str,
-                                "date_posted": date_posted, "url": full_url,
-                                "source": "foundit", "role_search": role,
-                                "experience": experience
-                            })
-                else:
-                    print(f"    Foundit returned {resp.status_code}")
+    for page in range(1, 5):
+        start = (page - 1) * 20 + 1
+        url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
+        try:
+            resp = curl_requests.get(url, headers=headers, impersonate="chrome124",
+                                     timeout=30, verify=False)
+            if resp.status_code == 200:
+                data = resp.json()
+                items = data.get("jobSearchResponse", {}).get("data", [])
+                if not items:
                     break
-            except Exception as e:
-                print(f"    Foundit error: {e}")
-            time.sleep(1)
-    except Exception as e:
-        print(f"    Foundit error: {e}")
+                jobs.extend(_parse_foundit_items(items, city, role))
+            else:
+                print(f"    Middleware returned {resp.status_code}")
+                return None  # Signal to try fallback
+        except Exception as e:
+            print(f"    Middleware error: {e}")
+            return None  # Signal to try fallback
+        time.sleep(1)
     
     return jobs
+
+def _scrape_foundit_scraperapi(role, city):
+    """Fallback: use ScraperAPI proxy to hit the middleware API."""
+    jobs = []
+    api_key = _get_scraperapi_key()
+    if not api_key:
+        print("    No ScraperAPI keys available!")
+        return []
+    
+    keyword = urllib.parse.quote(role)
+    city_clean = city.lower().split(",")[0].strip()
+    
+    for page in range(1, 5):
+        start = (page - 1) * 20 + 1
+        target_url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
+        proxy_url = f"https://api.scraperapi.com?api_key={api_key}&url={urllib.parse.quote(target_url)}&render=false"
+        try:
+            resp = requests.get(proxy_url, timeout=60)
+            if resp.status_code == 200:
+                data = resp.json()
+                items = data.get("jobSearchResponse", {}).get("data", [])
+                if not items:
+                    break
+                jobs.extend(_parse_foundit_items(items, city, role))
+            else:
+                print(f"    ScraperAPI returned {resp.status_code}")
+                break
+        except Exception as e:
+            print(f"    ScraperAPI error: {e}")
+            break
+        time.sleep(2)
+    
+    return jobs
+
+def scrape_foundit(role, city):
+    """Scrape Foundit: try middleware API first, fallback to ScraperAPI proxy."""
+    # Try middleware first (free, fast)
+    print("  - Scraping Foundit (trying middleware API first)...")
+    jobs = _scrape_foundit_middleware(role, city)
+    
+    if jobs is not None and len(jobs) > 0:
+        print(f"    Middleware API worked! Got {len(jobs)} jobs")
+        return jobs
+    
+    # Fallback to ScraperAPI
+    if SCRAPERAPI_KEYS:
+        print("    Middleware blocked/failed. Falling back to ScraperAPI proxy...")
+        jobs = _scrape_foundit_scraperapi(role, city)
+        if jobs:
+            print(f"    ScraperAPI got {len(jobs)} jobs")
+            return jobs
+    
+    print("    Both methods failed. No Foundit jobs scraped.")
+    return []
 
 # ---------------------------------------------------------------------------
 # MAIN LOOP

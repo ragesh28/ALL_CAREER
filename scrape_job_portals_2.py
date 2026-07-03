@@ -400,13 +400,10 @@ def scrape_hirist(role, city):
     return jobs
 
 def scrape_workindia(role, city):
-    """Scrape WorkIndia using curl_cffi + window.__ROUTE_DATA__ JSON extraction.
-    Plain requests gets blocked; curl_cffi with TLS fingerprinting bypasses it."""
-    print("  - Scraping WorkIndia (curl_cffi + __ROUTE_DATA__)...")
+    """Scrape WorkIndia using Playwright to bypass anti-bot, extract __ROUTE_DATA__."""
+    global browser_instance
+    print("  - Scraping WorkIndia (Playwright + __ROUTE_DATA__)...")
     jobs = []
-    if not curl_requests:
-        print("    curl_cffi not installed! Run: pip install curl_cffi")
-        return []
     
     EXP_MAP = {"fresher": "Fresher", "lt_1_year": "0-1 Yrs", "1_to_2_years": "1-2 Yrs",
                "gt_2_years": "2+ Yrs", "experience": "Experienced"}
@@ -416,9 +413,37 @@ def scrape_workindia(role, city):
         
         url = f"https://www.workindia.in/{role_fmt}-jobs-in-{city_fmt}/"
         print(f"    URL: {url}")
-        r = curl_requests.get(url, impersonate="chrome124", timeout=30, verify=False)
-        if r.status_code == 200:
-            match = re.search(r'__ROUTE_DATA__\s*=\s*(\{[^<]+)', r.text)
+        
+        page_content = ""
+        if browser_instance:
+            try:
+                context = browser_instance.new_context(
+                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    viewport={"width": 1440, "height": 900}
+                )
+                page_obj = context.new_page()
+                page_obj.goto(url, wait_until="load", timeout=30000)
+                page_obj.wait_for_timeout(3000)
+                page_content = page_obj.content()
+                page_obj.close()
+                context.close()
+            except Exception as e:
+                print(f"    Playwright error: {e}")
+        elif curl_requests:
+            try:
+                r = curl_requests.get(url, impersonate="chrome124", timeout=30, verify=False)
+                if r.status_code == 200:
+                    page_content = r.text
+                else:
+                    print(f"    WorkIndia returned {r.status_code}")
+            except Exception as e:
+                print(f"    curl_cffi error: {e}")
+        else:
+            print("    No Playwright or curl_cffi available!")
+            return []
+        
+        if page_content:
+            match = re.search(r'__ROUTE_DATA__\s*=\s*(\{[^<]+)', page_content)
             if match:
                 raw = match.group(1)
                 depth = 0; end = 0
@@ -447,14 +472,13 @@ def scrape_workindia(role, city):
                             })
             else:
                 print("    No __ROUTE_DATA__ found in page")
-        else:
-            print(f"    WorkIndia returned {r.status_code}")
     except Exception as e:
         print(f"    WorkIndia error: {e}")
     return jobs
 
 def scrape_internshala(role, city):
-    print("  - Scraping Internshala...")
+    print("  - Scraping Internshala (Playwright)...")
+    global browser_instance
     jobs = []
     try:
         role_fmt = role.lower().replace(" ", "-")
@@ -469,9 +493,32 @@ def scrape_internshala(role, city):
                 url = f"https://internshala.com/jobs/{role_fmt}-jobs-in-{city_fmt}/page-{page}/"
                 
             print(f"    Page {page}: {url}")
-            r = requests.get(url, headers=headers, timeout=20)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, 'html.parser')
+            
+            page_content = ""
+            if browser_instance:
+                try:
+                    context = browser_instance.new_context(
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                        viewport={"width": 1440, "height": 900}
+                    )
+                    page_obj = context.new_page()
+                    page_obj.goto(url, wait_until="load", timeout=30000)
+                    page_obj.wait_for_timeout(2000)
+                    page_content = page_obj.content()
+                    page_obj.close()
+                    context.close()
+                except Exception as e:
+                    print(f"    Playwright error: {e}")
+            else:
+                r = requests.get(url, headers=headers, timeout=20)
+                if r.status_code == 200:
+                    page_content = r.text
+                else:
+                    print(f"    Internshala page {page} returned {r.status_code}")
+                    break
+            
+            if page_content:
+                soup = BeautifulSoup(page_content, 'html.parser')
                 cards = soup.select('div.internship_meta, div.job-card, div.individual_internship')
                 if not cards:
                     break
@@ -499,16 +546,14 @@ def scrape_internshala(role, city):
                             "url": job_url, "source": "internshala", "role_search": role,
                             "experience": experience
                         })
-            else:
-                print(f"    Internshala page {page} returned {r.status_code}")
-                break
             time.sleep(1)
     except Exception as e:
         print(f"    Internshala error: {e}")
     return jobs
 
 def scrape_freshersworld(role, city):
-    print("  - Scraping Freshersworld...")
+    print("  - Scraping Freshersworld (Playwright)...")
+    global browser_instance
     jobs = []
     try:
         role_fmt = role.lower().replace(" ", "-")
@@ -524,9 +569,32 @@ def scrape_freshersworld(role, city):
                 url = f"https://www.freshersworld.com/jobs/jobsearch/{role_fmt}-jobs-in-{city_fmt}?limit=20&offset={offset}"
                 
             print(f"    Page {page}: {url}")
-            r = requests.get(url, headers=headers, timeout=20)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, 'html.parser')
+            
+            page_content = ""
+            if browser_instance:
+                try:
+                    context = browser_instance.new_context(
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+                        viewport={"width": 1440, "height": 900}
+                    )
+                    page_obj = context.new_page()
+                    page_obj.goto(url, wait_until="load", timeout=30000)
+                    page_obj.wait_for_timeout(2000)
+                    page_content = page_obj.content()
+                    page_obj.close()
+                    context.close()
+                except Exception as e:
+                    print(f"    Playwright error: {e}")
+            else:
+                r = requests.get(url, headers=headers, timeout=20)
+                if r.status_code == 200:
+                    page_content = r.text
+                else:
+                    print(f"    Freshersworld page {page} returned {r.status_code}")
+                    break
+            
+            if page_content:
+                soup = BeautifulSoup(page_content, 'html.parser')
                 cards = soup.select('div.job-container, div.job-detail-block, div.job-desc-block, div.col-md-12.col-lg-12.col-xs-12.padding-none.job-container')
                 if not cards:
                     break
@@ -554,9 +622,6 @@ def scrape_freshersworld(role, city):
                             "url": job_url, "source": "freshersworld", "role_search": role,
                             "experience": experience
                         })
-            else:
-                print(f"    Freshersworld page {page} returned {r.status_code}")
-                break
             time.sleep(1)
     except Exception as e:
         print(f"    Freshersworld error: {e}")
