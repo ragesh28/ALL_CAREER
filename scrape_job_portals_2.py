@@ -1053,6 +1053,20 @@ def main():
             total_inserted += ins
             print(f"      Glassdoor     : {n:>4} scraped  |  {ins:>4} new stored")
 
+            # ── Progress summary every 15 roles ──
+            if combo_num % (15 * len(LOCATIONS)) == 0 or combo_num == total_combos:
+                elapsed_mins = (time.time() - START_TIME) / 60
+                print(f"\n{'~'*70}")
+                print(f"  PROGRESS REPORT  [{combo_num}/{total_combos} combos | {elapsed_mins:.1f} min elapsed]")
+                print(f"{'~'*70}")
+                print(f"  {'Portal':<18} | {'Scraped':>10} | {'New Stored':>10}")
+                print(f"  {'-'*18}-+-{'-'*10}-+-{'-'*10}")
+                for portal in scraped_counts:
+                    print(f"  {portal.upper():<18} | {scraped_counts[portal]:>10} | {stored_counts[portal]:>10}")
+                print(f"  {'-'*18}-+-{'-'*10}-+-{'-'*10}")
+                print(f"  {'TOTAL':<18} | {sum(scraped_counts.values()):>10} | {total_inserted:>10}")
+                print(f"{'~'*70}\n")
+
             # Delay to avoid getting blocked
             time.sleep(2)
 
