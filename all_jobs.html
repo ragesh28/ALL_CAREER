@@ -495,7 +495,71 @@
             .topnav-right { order: 3; width: 100%; justify-content: center; }
             .topnav-search { max-width: 100%; }
         }
-    </style>
+    .slider-container {
+        position: relative;
+        width: 100%;
+        margin-top: 25px;
+    }
+    .exp-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 3px;
+        outline: none;
+        margin: 10px 0;
+    }
+    .exp-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #111827;
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .exp-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #111827;
+        cursor: pointer;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 5px;
+    }
+    .slider-value-pin {
+        position: absolute;
+        top: -32px;
+        left: 0;
+        transform: translateX(-50%);
+        background: #111827;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        transition: left 0.1s;
+    }
+    .slider-value-pin::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px 5px 0;
+        border-style: solid;
+        border-color: #111827 transparent transparent transparent;
+    }
+</style>
 </head>
 
 <body>
@@ -634,19 +698,13 @@
                     </span>
                     <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="filter-body">
-                    <div class="filter-body-inner">
-                        <div class="filter-radio selected" data-exp="all" onclick="setExp(this, 'all')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
-                            <span class="option-label">All Levels</span>
-                        </div>
-                        <div class="filter-radio" data-exp="junior" onclick="setExp(this, 'junior')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
-                            <span class="option-label">Junior / Fresher</span>
-                        </div>
-                        <div class="filter-radio" data-exp="senior" onclick="setExp(this, 'senior')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
-                            <span class="option-label">Senior / Lead</span>
+                <div class="filter-body" style="padding: 16px 20px 24px 20px;">
+                    <div class="slider-container">
+                        <div class="slider-value-pin" id="exp-pin">0</div>
+                        <input type="range" min="0" max="30" value="0" class="exp-slider" id="expSlider" oninput="updateExpSlider(this.value)" onchange="applyFilters()">
+                        <div class="slider-labels">
+                            <span>0 Yrs</span>
+                            <span>30 Yrs</span>
                         </div>
                     </div>
                 </div>
@@ -734,7 +792,7 @@
     let selectedLocations = new Set();
     let selectedRoles = new Set();
     let selectedCompanies = new Set();
-    let activeExp = 'all';
+    let activeExp = 0;
     let walkinOnly = false;
 
     // Data for dynamic options
@@ -810,8 +868,7 @@
         'Legal Counsel': ['legal', 'counsel', 'compliance', 'attorney'],
     };
 
-    const JUNIOR_KW = ['junior', 'jr', 'entry', 'associate', 'intern', 'fresher', 'graduate', 'trainee'];
-    const SENIOR_KW = ['senior', 'sr', 'lead', 'principal', 'staff', 'manager', 'director', 'head', 'chief', 'vp', 'architect'];
+    // Constants removed for new experience logic
 
     const PORTAL_LOGOS = {
         'linkedin': 'logos/portals/linkedin.png', 'naukri': 'logos/portals/naukri.png',
@@ -988,12 +1045,37 @@
         applyFilters();
     }
 
-    function setExp(el, level) {
-        document.querySelectorAll('.filter-radio[data-exp]').forEach(r => r.classList.remove('selected'));
-        el.classList.add('selected');
-        activeExp = level;
+    function updateExpSlider(val) {
+        const slider = document.getElementById('expSlider');
+        const pin = document.getElementById('exp-pin');
+        pin.textContent = val;
+        activeExp = parseInt(val, 10);
+        
+        const percent = (val - slider.min) / (slider.max - slider.min);
+        const thumbWidth = 18;
+        const offset = (percent - 0.5) * thumbWidth;
+        pin.style.left = `calc(${percent * 100}% - ${offset}px)`;
+        
         updateCounts();
-        applyFilters();
+    }
+
+    function parseExperience(expStr) {
+        if (!expStr) return [null, null];
+        let s = expStr.toLowerCase();
+        let nums = s.match(/\d+/g);
+        if (!nums) {
+            if (s.includes('fresher')) return [0, 0];
+            return [null, null];
+        }
+        nums = nums.map(Number);
+        if (nums.length >= 2) {
+            return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
+        } else if (nums.length === 1) {
+            if (s.includes('+') || s.includes('to ')) return [nums[0], 30];
+            if (s.includes('-')) return [0, nums[0]];
+            return [nums[0], nums[0]];
+        }
+        return [null, null];
     }
 
     // ══════════════════════════════════════════════
@@ -1004,12 +1086,12 @@
         setCount('date', activeDateRange !== 'all' ? 1 : 0);
         setCount('location', selectedLocations.size);
         setCount('roles', selectedRoles.size);
-        setCount('exp', activeExp !== 'all' ? 1 : 0);
+        setCount('exp', activeExp > 0 ? 1 : 0);
         setCount('company', selectedCompanies.size);
         setCount('walkin', walkinOnly ? 1 : 0);
 
         const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
-            selectedLocations.size + selectedRoles.size + (activeExp !== 'all' ? 1 : 0) +
+            selectedLocations.size + selectedRoles.size + (activeExp > 0 ? 1 : 0) +
             selectedCompanies.size + (walkinOnly ? 1 : 0);
 
         const badge = document.getElementById('appliedBadge');
@@ -1050,8 +1132,8 @@
         selectedRoles.forEach(role => {
             chips.push({ label: role, remove: () => { selectedRoles.delete(role); buildRolesOptions(document.getElementById('roleSearch').value); refreshChips(); } });
         });
-        if (activeExp !== 'all') {
-            chips.push({ label: activeExp === 'junior' ? 'Junior/Fresher' : 'Senior/Lead', remove: () => { const el = document.querySelector('.filter-radio[data-exp="all"]'); if(el) setExp(el, 'all'); refreshChips(); } });
+        if (activeExp > 0) {
+            chips.push({ label: activeExp + ' Yrs Exp', remove: () => { document.getElementById('expSlider').value = 0; updateExpSlider(0); applyFilters(); refreshChips(); } });
         }
         selectedCompanies.forEach(co => {
             chips.push({ label: co, remove: () => { selectedCompanies.delete(co); buildCompanyOptions(document.getElementById('companySearch').value); refreshChips(); } });
@@ -1079,13 +1161,13 @@
         selectedRoles.clear();
         selectedCompanies.clear();
         activeDateRange = 'all';
-        activeExp = 'all';
+        activeExp = 0;
         walkinOnly = false;
         document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
         document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
         document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
-        document.querySelectorAll('.filter-radio[data-exp]').forEach(r => r.classList.remove('selected'));
-        document.querySelector('.filter-radio[data-exp="all"]')?.classList.add('selected');
+        document.getElementById('expSlider').value = 0;
+        updateExpSlider(0);
         document.getElementById('searchInput').value = '';
         buildLocationOptions();
         buildRolesOptions();
@@ -1174,8 +1256,15 @@
                 if (!match) return false;
             }
 
-            if (activeExp === 'junior' && !JUNIOR_KW.some(kw => titleLow.includes(kw))) return false;
-            if (activeExp === 'senior' && !SENIOR_KW.some(kw => titleLow.includes(kw))) return false;
+            if (activeExp > 0) {
+                const [minExp, maxExp] = parseExperience(j.experience);
+                if (minExp === null || maxExp === null) {
+                    return false; // If no exp info, it doesn't match the specific requirement
+                }
+                if (activeExp < minExp || activeExp > maxExp) {
+                    return false;
+                }
+            }
 
             if (selectedCompanies.size > 0) {
                 const co = (j.company || '').toLowerCase();
