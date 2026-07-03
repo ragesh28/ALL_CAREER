@@ -161,41 +161,78 @@ def _parse_foundit_items(items, city, role):
     return jobs
 
 def _scrape_foundit_middleware(role, city):
-    """Try middleware API directly (works locally, may be blocked on GitHub Actions)."""
+    """Try middleware API: plain requests first, then curl_cffi fallback."""
     jobs = []
     keyword = urllib.parse.quote(role)
     city_clean = city.lower().split(",")[0].strip()
     
-    if not curl_requests:
-        return None  # Signal to try fallback
-    
     headers = {
         "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
         "Referer": "https://www.foundit.in/",
+        "Origin": "https://www.foundit.in",
+        "Sec-Ch-Ua": '"Chromium";v="126", "Google Chrome";v="126", "Not=A?Brand";v="99"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
         "Sec-Fetch-Dest": "empty",
         "Sec-Fetch-Mode": "cors",
         "Sec-Fetch-Site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
     }
     
+    # Try plain requests first (works from many IPs including GitHub Actions)
     for page in range(1, 5):
         start = (page - 1) * 20 + 1
         url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
         try:
-            resp = curl_requests.get(url, headers=headers, impersonate="chrome124",
-                                     timeout=30, verify=False)
+            resp = requests.get(url, headers=headers, timeout=30, verify=False)
             if resp.status_code == 200:
                 data = resp.json()
                 items = data.get("jobSearchResponse", {}).get("data", [])
                 if not items:
                     break
                 jobs.extend(_parse_foundit_items(items, city, role))
+                print(f"    Page {page}: {url}")
             else:
-                print(f"    Middleware returned {resp.status_code}")
-                return None  # Signal to try fallback
+                print(f"    Plain requests returned {resp.status_code} on page {page}")
+                if page == 1:
+                    # First page failed — try curl_cffi
+                    break
+                else:
+                    break  # We got some jobs already
         except Exception as e:
-            print(f"    Middleware error: {e}")
-            return None  # Signal to try fallback
+            print(f"    Plain requests error: {e}")
+            if page == 1:
+                break
+            else:
+                break
         time.sleep(1)
+    
+    # If plain requests got nothing on page 1, try curl_cffi
+    if not jobs and curl_requests:
+        print("    Trying curl_cffi fallback...")
+        for page in range(1, 5):
+            start = (page - 1) * 20 + 1
+            url = f"https://www.foundit.in/middleware/jobsearch?keyword={keyword}&location={city_clean}&limit=20&sort=1&start={start}&jobFreshness=1"
+            try:
+                resp = curl_requests.get(url, headers=headers, impersonate="chrome124",
+                                         timeout=30, verify=False)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    items = data.get("jobSearchResponse", {}).get("data", [])
+                    if not items:
+                        break
+                    jobs.extend(_parse_foundit_items(items, city, role))
+                else:
+                    print(f"    curl_cffi returned {resp.status_code}")
+                    return None  # Signal to try ScraperAPI fallback
+            except Exception as e:
+                print(f"    curl_cffi error: {e}")
+                return None
+            time.sleep(1)
+    
+    if not jobs:
+        return None  # Signal to try ScraperAPI fallback
     
     return jobs
 
@@ -235,7 +272,7 @@ def _scrape_foundit_scraperapi(role, city):
 def scrape_foundit(role, city):
     """Scrape Foundit: try middleware API first, fallback to ScraperAPI proxy."""
     # Try middleware first (free, fast)
-    print("  - Scraping Foundit (trying middleware API first)...")
+    print("  - Scraping Foundit (middleware API - requests + curl_cffi + ScraperAPI)...")
     jobs = _scrape_foundit_middleware(role, city)
     
     if jobs is not None and len(jobs) > 0:
