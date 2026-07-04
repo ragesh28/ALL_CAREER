@@ -188,24 +188,64 @@ def scrape_greenhouse(info):
                             "location": clean(j.get("location", {}).get("name", "")),
                             "apply_url": clean(j.get("absolute_url", ""))
                         })
-                        if len(jobs) >= 5:
-                            break
-                    if len(jobs) >= 5:
-                        break
-                return {"status": "OK", "total": total, "sample_jobs": jobs}
+                return {"status": "OK", "total": total, "sample_jobs": jobs[:5], "all_jobs": jobs}
             else:
                 all_jobs = data.get("jobs", [])
                 total = data.get("meta", {}).get("total", len(all_jobs))
-                jobs = [{
+                parsed_jobs = [{
                     "title": clean(j.get("title", "")), 
                     "location": clean(j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else ""),
                     "apply_url": clean(j.get("absolute_url", ""))
-                } for j in all_jobs[:5]]
-                return {"status": "OK", "total": total, "sample_jobs": jobs}
+                } for j in all_jobs]
+                return {"status": "OK", "total": total, "sample_jobs": parsed_jobs[:5], "all_jobs": parsed_jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
     return {"status": "FAILED", "total": 0}
 
+
+def build_oracle_url(base_url, limit=25, offset=0):
+    import urllib.parse
+    parsed = urllib.parse.urlparse(base_url)
+    query_params = urllib.parse.parse_qs(parsed.query)
+    
+    # Ensure expand parameter is always set to fetch requisition details
+    if "expand" not in query_params:
+        query_params["expand"] = ["requisitionList.workLocation,requisitionList.otherWorkLocations,requisitionList.secondaryLocations,flexFieldsFacet.values,requisitionList.requisitionFlexFields"]
+        
+    finder_val = query_params.get("finder", [""])[0]
+    if finder_val:
+        parts = finder_val.split(";")
+        finder_name = parts[0]
+        matrix_params = {}
+        if len(parts) > 1:
+            for pair in parts[1].split(","):
+                if "=" in pair:
+                    k, v = pair.split("=", 1)
+                    matrix_params[k.strip()] = v.strip()
+                    
+        matrix_params["limit"] = str(limit)
+        matrix_params["offset"] = str(offset)
+        if "sortBy" not in matrix_params:
+            matrix_params["sortBy"] = "POSTING_DATES_DESC"
+            
+        new_matrix = ",".join(f"{k}={v}" for k, v in matrix_params.items())
+        new_finder = f"{finder_name};{new_matrix}"
+        query_params["finder"] = [new_finder]
+    else:
+        query_params["offset"] = [str(offset)]
+        query_params["limit"] = [str(limit)]
+        
+    new_query = urllib.parse.urlencode(query_params, doseq=True)
+    new_query = new_query.replace("%3B", ";").replace("%2C", ",").replace("%3D", "=")
+    
+    return urllib.parse.urlunparse((
+        parsed.scheme,
+        parsed.netloc,
+        parsed.path,
+        parsed.params,
+        new_query,
+        parsed.fragment
+    ))
 
 def scrape_oracle(info):
     """Handle all Oracle HCM APIs - full pagination."""
@@ -215,10 +255,8 @@ def scrape_oracle(info):
         offset = 0
         limit = 25
         base_url = info["url"]
-        # Strip existing offset param
-        base_url = re.sub(r'&?offset=\d+', '', base_url)
         while True:
-            url = f"{base_url}&offset={offset}" if offset > 0 else base_url
+            url = build_oracle_url(base_url, limit=limit, offset=offset)
             r = requests.get(url, headers=HEADERS, timeout=20)
             if r.status_code != 200:
                 break
@@ -232,10 +270,18 @@ def scrape_oracle(info):
             if not reqs:
                 break
             for j in reqs:
+                apply_url = ""
+                j_id = j.get("Id") or j.get("RequisitionNumber", "")
+                if j_id:
+                    parsed_netloc = urlparse(base_url).netloc
+                    site_match = re.search(r'siteNumber=([^,&;]+)', base_url)
+                    site_num = site_match.group(1) if site_match else "CX_1"
+                    apply_url = f"https://{parsed_netloc}/hcmUI/CandidateExperience/en/sites/{site_num}/job/{j_id}"
                 all_jobs.append({
                     "title": clean(j.get("Title", "")), 
                     "location": clean(j.get("PrimaryLocation", "")),
-                    "job_id": str(j.get("Id", j.get("RequisitionNumber", "")))
+                    "apply_url": apply_url,
+                    "job_id": str(j_id)
                 })
             offset += limit
             if total and offset >= total:
@@ -656,8 +702,8 @@ def scrape_with_browser(info):
                     jobs_found = items
                     break
 
-            titles = []
-            for item in jobs_found[:5]:
+            parsed_jobs = []
+            for item in jobs_found:
                 t = item.select_one("h2, h3, h4, .job-title, a")
                 text = clean(t.get_text(strip=True) if t else item.get_text(strip=True)[:80])
                 link = item.find("a", href=True)
@@ -666,9 +712,10 @@ def scrape_with_browser(info):
                 apply_url = link.get("href", "") if link else ""
 
                 if text and len(text) > 3:
-                    titles.append({
+                    parsed_jobs.append({
                         "title": text,
-                        "apply_url": apply_url
+                        "apply_url": apply_url,
+                        "location": ""
                     })
 
             browser.close()
@@ -681,7 +728,7 @@ def scrape_with_browser(info):
                     fb["method"] = "Playwright+JobSpy fallback"
                     return fb
 
-            return {"status": "OK", "total": len(jobs_found), "sample_jobs": titles, "method": "Playwright"}
+            return {"status": "OK", "total": len(parsed_jobs), "sample_jobs": parsed_jobs[:5], "all_jobs": parsed_jobs, "method": "Playwright"}
     except Exception as e:
         # Network-level block (ITC HTTP2 error etc) — fallback to JobSpy
         if JOBSPY_AVAILABLE:
@@ -801,6 +848,196 @@ def scrape_amazon_ai(info):
         return {"status": "ERROR", "error": str(e)}
 
 
+def scrape_bofa(info):
+    """Bank of America API with mandatory headers."""
+    try:
+        url = "https://careers.bankofamerica.com/services/jobssearchservlet?start=0&rows=100&search=jobsByLocation&searchstring=India"
+        hdrs = {
+            **HEADERS,
+            "Referer": "https://careers.bankofamerica.com/en-us/job-search/india",
+            "x-requested-with": "XMLHttpRequest"
+        }
+        r = requests.get(url, headers=hdrs, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            jobs_list = data.get("jobsList", [])
+            jobs = []
+            for j in jobs_list:
+                apply_path = j.get("jcrURL", "")
+                apply_url = f"https://careers.bankofamerica.com{apply_path}" if apply_path else f"https://careers.bankofamerica.com/en-us/job-detail/{j.get('jobRequisitionId')}"
+                jobs.append({
+                    "title": clean(j.get("postingTitle", "")),
+                    "location": clean(j.get("location", "India")),
+                    "apply_url": apply_url,
+                    "job_id": str(j.get("jobRequisitionId", ""))
+                })
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+def scrape_comcast(info):
+    """Comcast HTML page scraper for India jobs."""
+    try:
+        url = "https://jobs.comcast.com/search-jobs/India/45483/2/1269750/22/79/25/2"
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            items = soup.select("#search-results-list li")
+            jobs = []
+            for item in items:
+                t = item.select_one("h2")
+                l = item.select_one(".job-location")
+                a = item.select_one("a")
+                apply_url = f"https://jobs.comcast.com{a['href']}" if a and a.get("href") else url
+                title_text = t.get_text(strip=True) if t else ""
+                loc_text = l.get_text(strip=True) if l else "India"
+                job_id = ""
+                if apply_url:
+                    match = re.search(r'/(\d+)(?:#|$|\?)', apply_url)
+                    if match:
+                        job_id = match.group(1)
+                
+                if title_text:
+                    jobs.append({
+                        "title": clean(title_text),
+                        "location": clean(loc_text),
+                        "apply_url": apply_url,
+                        "job_id": job_id or apply_url
+                    })
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+def scrape_subex(info):
+    """Subex Darwinbox API scraper."""
+    try:
+        url = "https://subex.darwinbox.in/ms/candidateapi/job/alljobs?companyId=main"
+        payload = {"companyId": "main", "page": 1, "limit": 100}
+        r = requests.post(url, headers={**HEADERS, "Content-Type": "application/json"}, json=payload, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            items = data.get("data", [])
+            jobs = []
+            for item in items:
+                title = item.get("title") or item.get("designation_name") or ""
+                loc = item.get("locations") or item.get("officelocation_show_arr_list", [""])[0] or "India"
+                apply_url = f"https://subex.darwinbox.in/ms/candidatev2/main/careers/allJobs#{item.get('id','')}"
+                jobs.append({
+                    "title": clean(title),
+                    "location": clean(loc),
+                    "apply_url": apply_url,
+                    "job_id": str(item.get("id"))
+                })
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+def scrape_eurofins(info):
+    """Eurofins IT ATS integration API scraper - filters globally for India."""
+    try:
+        url = "https://atsintegration.eurofins.com/ATSWebService.asmx/GetJobs?language=en"
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        if r.status_code == 200:
+            data = r.json()
+            jobs = []
+            for j in data:
+                country = str(j.get("countryName", "")).lower()
+                city = str(j.get("locationCity", "")).lower()
+                region = str(j.get("locationRegion", "")).lower()
+                if "india" in country or "india" in city or "india" in region or j.get("countryCode") == "in":
+                    title = j.get("title", "")
+                    loc = f"{j.get('locationCity')}, {j.get('locationRegion') or 'India'}"
+                    apply_url = j.get("applyUrl") or f"https://careers.eurofins.com/job/{j.get('id')}"
+                    jobs.append({
+                        "title": clean(title),
+                        "location": clean(loc),
+                        "apply_url": apply_url,
+                        "job_id": str(j.get("id") or j.get("refCode", ""))
+                    })
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+def scrape_sarvam_ai(info):
+    """Sarvam AI static site careers page parser."""
+    try:
+        url = "https://www.sarvam.ai/careers"
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            links = soup.find_all("a", href=True)
+            jobs = []
+            for link in links:
+                href = link.get("href", "")
+                if "/careers/jobs/" in href:
+                    text = link.get_text(strip=True)
+                    if not text:
+                        continue
+                    match = re.search(r'(Bengaluru|Delhi|Mumbai|Bangalore|Remote|Hybrid|Full Time|On-Site)', text)
+                    if match:
+                        title = text[:match.start()].strip()
+                        loc = text[match.start():].strip()
+                        loc = re.sub(r'([a-z])([A-Z])', r'\1, \2', loc)
+                    else:
+                        title = text
+                        loc = "Bengaluru, India"
+                    
+                    apply_url = f"https://www.sarvam.ai{href}"
+                    job_id = href.split("/")[-1]
+                    
+                    jobs.append({
+                        "title": clean(title),
+                        "location": clean(loc),
+                        "apply_url": apply_url,
+                        "job_id": job_id
+                    })
+            seen_jobs = {}
+            for j in jobs:
+                seen_jobs[j["job_id"]] = j
+            jobs = list(seen_jobs.values())
+            
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+        return {"status": "FAILED", "http_code": r.status_code}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
+def scrape_publicis(info):
+    """Publicis Sapient custom Playwright parser."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return {"status": "ERROR", "error": "Playwright not installed."}
+        
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
+            page = browser.new_page()
+            page.goto("https://careers.publicissapient.com/job-search", wait_until="networkidle", timeout=60000)
+            time.sleep(5)
+            
+            content = page.content()
+            soup = BeautifulSoup(content, "html.parser")
+            links = soup.find_all("a", href=True)
+            jobs = []
+            for l in links:
+                href = l.get("href", "")
+                text = l.get_text(strip=True)
+                if "/job-details/" in href and text:
+                    jobs.append({
+                        "title": clean(text),
+                        "location": "India",
+                        "apply_url": f"https://careers.publicissapient.com{href}",
+                        "job_id": href.split("/")[-1].split("?")[0]
+                    })
+            browser.close()
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
+    except Exception as e:
+        return {"status": "ERROR", "error": str(e)}
+
 # ---------------------------------------------------------------------------
 # 4. DISPATCHER: Route each company to the right engine
 # ---------------------------------------------------------------------------
@@ -815,6 +1052,18 @@ def dispatch_api(info):
         return {"status": "SKIPPED", "reason": "No URL extracted"}
 
     # ── Company-specific overrides (highest priority) ──
+    if "bank of america" in name_lower:
+        return scrape_bofa(info)
+    if "comcast" in name_lower:
+        return scrape_comcast(info)
+    if "subex" in name_lower:
+        return scrape_subex(info)
+    if "eurofins" in name_lower:
+        return scrape_eurofins(info)
+    if "sarvam" in name_lower:
+        return scrape_sarvam_ai(info)
+    if "publicis" in name_lower:
+        return scrape_publicis(info)
     if "qualcomm" in name_lower:
         return scrape_qualcomm_phenom(info)
     if "ericsson" in name_lower:
