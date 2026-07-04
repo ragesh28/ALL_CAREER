@@ -178,7 +178,7 @@ def clean_old_jobs(jobs):
 def save_jobs(all_jobs):
     """Save jobs directly to D1 big_company_jobs table."""
     if not all_jobs:
-        return
+        return 0
 
     all_jobs = clean_old_jobs(all_jobs)
 
@@ -210,7 +210,7 @@ def save_jobs(all_jobs):
 
     if not new_jobs:
         print(f"  -> Inserted 0 new jobs out of {len(all_jobs)} total.")
-        return
+        return 0
 
     # 3. Securely batch and insert the truly new UNIQUE jobs
     total_inserted = 0
@@ -235,6 +235,7 @@ def save_jobs(all_jobs):
                 total_inserted += r.get("meta", {}).get("changes", 0)
 
     print(f"  -> Inserted {total_inserted} strictly new jobs out of {len(all_jobs)} total parsed.")
+    return total_inserted
 
 
 def is_blocked(error):
@@ -372,6 +373,7 @@ def run(test_limit=None):
     print("  Turso UNIQUE(url) handles deduplication.")
 
     new_jobs_count = 0
+    global_scraped_count = 0
     blocked_count = 0
 
     for i in range(start_index, total):
@@ -403,8 +405,12 @@ def run(test_limit=None):
             )
 
             if company_jobs:
-                save_jobs(company_jobs)
-                new_jobs_count += len(company_jobs)
+                inserted = save_jobs(company_jobs)
+                total_parsed = len(company_jobs)
+                inserted_count = inserted if inserted else 0
+                new_jobs_count += inserted_count
+                global_scraped_count += total_parsed
+                print(f"  [{company}] Summary: Scraped {total_parsed} jobs | Added {inserted_count} new jobs")
 
             if was_blocked:
                 blocked_count += 1
@@ -434,9 +440,10 @@ def run(test_limit=None):
         pass
 
     print(f"\n{'=' * 60}")
-    print(f"  RESULTS:")
-    print(f"     New jobs processed: {new_jobs_count}")
-    print(f"     Times blocked: {blocked_count}")
+    print(f"  FINAL SUMMARY (All Companies):")
+    print(f"     Total jobs scraped  : {global_scraped_count}")
+    print(f"     Total new jobs added: {new_jobs_count}")
+    print(f"     Times blocked       : {blocked_count}")
     print("=" * 60)
     print(f"\n  DONE!")
 
