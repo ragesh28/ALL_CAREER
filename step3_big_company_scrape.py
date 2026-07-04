@@ -375,6 +375,7 @@ def run(test_limit=None):
     new_jobs_count = 0
     global_scraped_count = 0
     blocked_count = 0
+    company_stats = []
 
     for i in range(start_index, total):
         company = companies[i]
@@ -411,6 +412,9 @@ def run(test_limit=None):
                 new_jobs_count += inserted_count
                 global_scraped_count += total_parsed
                 print(f"  [{company}] Summary: Scraped {total_parsed} jobs | Added {inserted_count} new jobs")
+                company_stats.append((company, total_parsed, inserted_count))
+            else:
+                company_stats.append((company, 0, 0))
 
             if was_blocked:
                 blocked_count += 1
@@ -441,6 +445,10 @@ def run(test_limit=None):
 
     print(f"\n{'=' * 60}")
     print(f"  FINAL SUMMARY (All Companies):")
+    print(f"{'-' * 60}")
+    for idx, (comp, scr, new_cnt) in enumerate(company_stats, start_index + 1):
+        print(f"  {idx}. {comp}: {scr} Scraped | {new_cnt} New")
+    print(f"{'-' * 60}")
     print(f"     Total jobs scraped  : {global_scraped_count}")
     print(f"     Total new jobs added: {new_jobs_count}")
     print(f"     Times blocked       : {blocked_count}")
