@@ -979,6 +979,9 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
         f"{company_keyword} developer",
     ]
     
+    # Get first word of company name to check matching (e.g. "HCL Tech" -> "hcl")
+    company_first_word = company_keyword.lower().split()[0]
+    
     for city in cities:
         if len(jobs) >= limit:
             break
@@ -1001,6 +1004,12 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
                     job_url = str(row.get("job_url", ""))
                     if job_url in seen_urls:
                         continue
+                    
+                    # Verify company matches company_keyword
+                    job_company = str(row.get("company", "")).strip().lower()
+                    if company_first_word not in job_company:
+                        continue
+                        
                     seen_urls.add(job_url)
                     loc = str(row.get("location", ""))
                     if not loc or loc == "nan":

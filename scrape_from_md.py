@@ -559,6 +559,9 @@ def jobspy_fallback_result(company_name):
         clean_company = re.sub(r'\s*\(.*\)', '', company_name)
         clean_company = re.sub(r'^\d+\.\s+', '', clean_company).strip()
         
+        # Get first word of company name to check matching (e.g. "Google" -> "google")
+        company_first_word = clean_company.lower().split()[0]
+        
         print(f"  [JobSpy Fallback] Scraping LinkedIn for '{clean_company}' in India...")
         df = scrape_jobs(
             site_name=["linkedin"],
@@ -573,6 +576,12 @@ def jobspy_fallback_result(company_name):
             url = str(row.get("job_url", ""))
             if not url or url in seen:
                 continue
+            
+            # Verify company matches clean_company
+            job_company = str(row.get("company", "")).strip().lower()
+            if company_first_word not in job_company:
+                continue
+                
             seen.add(url)
             jobs.append({
                 "title": clean(str(row.get("title", ""))),

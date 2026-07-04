@@ -353,6 +353,10 @@ def run(test_limit=None):
         cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
         d1_execute("DELETE FROM big_company_jobs WHERE job_posted_date < ?", [cutoff])
         print(f"  Cleaned DB jobs older than {cutoff}")
+        
+        # Clean up incorrect OpenAI jobs (e.g. from LinkedIn search with general matches)
+        d1_execute("DELETE FROM big_company_jobs WHERE company_name = 'OpenAI' AND apply_link NOT LIKE '%openai.com%' AND apply_link NOT LIKE '%greenhouse.io/openai%'")
+        print("  Cleaned incorrect OpenAI jobs from D1 DB")
 
     # Check for resume from previous blocked run
     progress = load_progress()
