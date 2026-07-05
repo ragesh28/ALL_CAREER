@@ -24,8 +24,6 @@ jobs:
 
       # Scrape 150 top companies from Indeed with direct apply links
       - name: Run Big Company Scraper (Indeed Direct Links)
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: python step3_big_company_scrape.py
 
       # Save progress checkpoint so it can resume if rate limited/timeout
@@ -34,7 +32,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add -f scrape_progress.json 2>/dev/null  all_jobs_*.json || true
+          git add -f scrape_progress.json 2>/dev/null  workday_scraper/big_company_jobs.json || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save big company scraper progress" && git pull --rebase -X theirs --autostash origin main && git push)
 
       # If scrape_progress.json exists → scraper hit time limit → restart in 10 min

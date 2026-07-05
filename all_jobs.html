@@ -1371,32 +1371,7 @@
             }
         }
         
-        // Fetch corporate company jobs and merge them
-        try {
-            const resBig = await fetch(`workday_scraper/big_company_jobs.json`);
-            if (resBig.ok) {
-                const rowsBig = await resBig.json();
-                for (const job of rowsBig) {
-                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.posted);
-                    fetchedJobs.push({
-                        _id: job.id || 0,
-                        title: String(job.title || ''),
-                        company: String(job.company || ''),
-                        location: String(job.location || ''),
-                        date: cleanDate,
-                        url: String(job.apply_url || job.url || ''),
-                        source: 'other',
-                        role_search: String(job.role_search || ''),
-                        experience: pick(job.experience),
-                        fetchedAt: cleanDate
-                    });
-                }
-            }
-        } catch (e) {
-            console.error("Failed to load corporate jobs:", e);
-        }
+
         
         return fetchedJobs;
     }

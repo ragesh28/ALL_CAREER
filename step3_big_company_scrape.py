@@ -59,43 +59,11 @@ LOCATIONS = [
 
 PROGRESS_FILE = "scrape_progress.json"
 
-CLOUDFLARE_URL = os.environ.get("CLOUDFLARE_D1_URL", "https://api.cloudflare.com/client/v4/accounts/62eacb67a7ee0b199f58ccb540a3eff7/d1/database/20b71b5c-c070-45b5-9542-27ed1cad89e5/query")
-CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
-
 def d1_execute(sql, params=None):
-    if not CLOUDFLARE_URL or not CLOUDFLARE_TOKEN:
-        print("  [WARN] Cloudflare D1 not configured, skipping DB storage")
-        return None
-
-    import requests
-    headers = {
-        "Authorization": f"Bearer {CLOUDFLARE_TOKEN}",
-        "Content-Type": "application/json",
-    }
-    body = {"sql": sql}
-    if params:
-        body["params"] = params
-
-    try:
-        resp = requests.post(CLOUDFLARE_URL, headers=headers, json=body, timeout=30)
-        return resp.json() if resp.status_code == 200 else None
-    except Exception as e:
-        print(f"  [ERR] D1 connection error: {e}")
-        return None
+    pass
 
 def setup_database():
-    print("  Setting up D1 database (big_company_jobs table)...")
-    d1_execute("""
-        CREATE TABLE IF NOT EXISTS big_company_jobs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            company_name TEXT NOT NULL,
-            location TEXT,
-            role TEXT NOT NULL,
-            job_posted_date TEXT,
-            apply_link TEXT NOT NULL,
-            UNIQUE(apply_link)
-        )
-    """)
+    pass
 
 # ---------------------------------------------------------------------------
 # 150 TOP COMPANIES
@@ -168,7 +136,7 @@ def clean_old_jobs(jobs):
     """Remove jobs older than KEEP_DAYS days."""
     cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
     before = len(jobs)
-    jobs = [j for j in jobs if j.get("fetchedAt", "9999") >= cutoff]
+    jobs = [j for j in jobs if (j.get("fetched_at") or j.get("fetchedAt") or "9999") >= cutoff]
     removed = before - len(jobs)
     if removed > 0:
         print(f"  Cleaned {removed} jobs older than {cutoff}")
@@ -176,66 +144,56 @@ def clean_old_jobs(jobs):
 
 
 def save_jobs(all_jobs):
-    """Save jobs directly to D1 big_company_jobs table."""
+    """Save jobs directly to local workday_scraper/big_company_jobs.json file."""
     if not all_jobs:
         return 0
 
     all_jobs = clean_old_jobs(all_jobs)
-
-    # 1. Fetch existing jobs natively from Cloudflare worker for strictly pure python deduplication
-    existing_urls = set()
-    try:
-        import requests
-        print("  [Deduplication] Fetching existing records from Cloudflare D1 API...")
-        resp = requests.get("https://all-career-api.ragesh-jobs.workers.dev/api/big_company_jobs", timeout=20)
-        if resp.status_code == 200:
-            existing_jobs = resp.json()
-            existing_urls = {str(j.get("url", "")) for j in existing_jobs if j.get("url")}
-    except Exception as e:
-        print(f"  [WARN] Failed to quickly fetch D1 existing jobs: {e}")
-
-    # 2. Deduplicate strictly in Python memory (ignoring D1 matches and internal duplicates)
-    new_jobs = []
-    seen_local_urls = set()
+    
+    big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
+    existing_jobs = []
+    if os.path.exists(big_jobs_path):
+        try:
+            with open(big_jobs_path, "r", encoding="utf-8") as f:
+                existing_jobs = json.load(f)
+        except Exception as e:
+            print(f"Error loading existing big_company_jobs.json: {e}")
+            
+    existing_urls = {str(j.get("apply_url", "")) for j in existing_jobs if j.get("apply_url")}
+    
+    new_jobs_added = 0
     for job in all_jobs:
         u = str(job.get("url", ""))
-        # Ignore if it exists already in Cloudflare, OR if we already saw it in this exact batch repeatedly!
-        if u and u not in existing_urls and u not in seen_local_urls:
-            new_jobs.append(job)
-            seen_local_urls.add(u)
-            
-    skipped = len(all_jobs) - len(new_jobs)
-    if skipped > 0:
-        print(f"  [Deduplication] Skipped {skipped} duplicate job URLs (either already in D1 or duplicate across cities).")
+        if u and u not in existing_urls:
+            # Clean up incorrect OpenAI jobs (from LinkedIn search with general matches)
+            company_name = str(job.get("company", ""))
+            if company_name == 'OpenAI' and 'openai.com' not in u.lower() and 'greenhouse.io/openai' not in u.lower():
+                continue
+                
+            existing_jobs.append({
+                "title": str(job.get("title", "")),
+                "location": str(job.get("location", "")),
+                "posted": str(job.get("date", "")),
+                "apply_url": u,
+                "company": company_name,
+                "fetched_at": datetime.now().strftime("%Y-%m-%d")
+            })
+            existing_urls.add(u)
+            new_jobs_added += 1
 
-    if not new_jobs:
-        print(f"  -> Inserted 0 new jobs out of {len(all_jobs)} total.")
-        return 0
-
-    # 3. Securely batch and insert the truly new UNIQUE jobs
-    total_inserted = 0
-    for i in range(0, len(new_jobs), 16):
-        chunk = new_jobs[i:i+16]
-        params = []
-        placeholders = []
-        for job in chunk:
-            placeholders.append("(?, ?, ?, ?, ?)")
-            params.extend([
-                str(job.get("company", "")),
-                str(job.get("location", "")),
-                str(job.get("title", "")),
-                str(job.get("date", datetime.now().strftime("%Y-%m-%d"))),
-                str(job.get("url", ""))
-            ])
-            
-        sql = f"INSERT OR IGNORE INTO big_company_jobs (company_name, location, role, job_posted_date, apply_link) VALUES {','.join(placeholders)}"
-        res = d1_execute(sql, params)
-        if res and res.get("success"):
-            for r in res.get("result", []):
-                total_inserted += r.get("meta", {}).get("changes", 0)
-
-    print(f"  -> Inserted {total_inserted} strictly new jobs out of {len(all_jobs)} total parsed.")
-    return total_inserted
+    if new_jobs_added > 0:
+        print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
+        try:
+            os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)
+            with open(big_jobs_path, "w", encoding="utf-8") as f:
+                json.dump(existing_jobs, f, indent=4)
+            print("Successfully updated big_company_jobs.json!")
+        except Exception as e:
+            print(f"Error saving big_company_jobs.json: {e}")
+    else:
+        print("No new unique jobs found to add to big_company_jobs.json.")
+        
+    return new_jobs_added
 
 
 def is_blocked(error):
@@ -347,17 +305,19 @@ def run(test_limit=None):
     print(f"  Mode: Indeed -> Original Direct Apply Links")
     print("=" * 60)
 
-    setup_database()
-
     # Also clean old jobs from DB on startup
-    if CLOUDFLARE_URL and CLOUDFLARE_TOKEN:
-        cutoff = (datetime.now() - timedelta(days=KEEP_DAYS)).strftime("%Y-%m-%d")
-        d1_execute("DELETE FROM big_company_jobs WHERE job_posted_date < ?", [cutoff])
-        print(f"  Cleaned DB jobs older than {cutoff}")
-        
-        # Clean up incorrect OpenAI jobs (e.g. from LinkedIn search with general matches)
-        d1_execute("DELETE FROM big_company_jobs WHERE company_name = 'OpenAI' AND apply_link NOT LIKE '%openai.com%' AND apply_link NOT LIKE '%greenhouse.io/openai%'")
-        print("  Cleaned incorrect OpenAI jobs from D1 DB")
+    big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
+    if os.path.exists(big_jobs_path):
+        try:
+            with open(big_jobs_path, "r", encoding="utf-8") as f:
+                jobs_list = json.load(f)
+            # Remove old ones
+            jobs_list = clean_old_jobs(jobs_list)
+            # Save back
+            with open(big_jobs_path, "w", encoding="utf-8") as f:
+                json.dump(jobs_list, f, indent=4)
+        except Exception as e:
+            print(f"  [WARN] Failed to clean old local jobs: {e}")
 
     # Check for resume from previous blocked run
     progress = load_progress()
@@ -370,7 +330,7 @@ def run(test_limit=None):
             print(f"\n  All companies already scraped today!")
             return
 
-    print("  Turso UNIQUE(url) handles deduplication.")
+    print("  Local file workday_scraper/big_company_jobs.json handles deduplication.")
 
     new_jobs_count = 0
     global_scraped_count = 0

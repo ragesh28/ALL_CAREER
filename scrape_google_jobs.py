@@ -352,7 +352,7 @@ def scrape_all_jobs(test_limit=None):
                             
                     all_jobs.extend(batch)
 
-                    if batch and CLOUDFLARE_API_TOKEN:
+                    if batch:
                         inserted = store_jobs_batch(batch)
                         total_stored += inserted
 

@@ -1771,8 +1771,8 @@ def main():
         print("  Error: companies_links.json not found.")
         return
 
-    existing_jobs = load_existing_jobs()
-    print(f"  Loaded {len(existing_jobs)} existing jobs from {DB_FILE}.")
+    existing_jobs = []
+    print("  Initializing local storage chunk updates...")
 
     all_results = []
     working_companies = []
@@ -1795,18 +1795,41 @@ def main():
         jobs = detect_and_scrape(name, ats, url, limit=1000)
 
         if jobs:
-            newly_inserted = store_jobs_local(jobs, existing_jobs, name)
-            total_new_jobs += newly_inserted
-            working_companies.append(name)
-            all_results.extend(jobs)
-            print(f"    -> SUCCESS: Scraped {len(jobs)} jobs | Newly Inserted to DB: {newly_inserted}")
+            # Format jobs for storage.py
+            formatted_jobs = []
+            fetched_at = datetime.now().strftime("%Y-%m-%d")
+            for j in jobs:
+                if is_india(j.get("location", "")):
+                    formatted_jobs.append({
+                        "title": j.get("title", ""),
+                        "company": name,
+                        "location": j.get("location", ""),
+                        "url": j.get("apply_url", ""),
+                        "date": j.get("posted") or fetched_at,
+                        "source": "other",
+                        "experience": j.get("experience", ""),
+                        "fetchedAt": fetched_at
+                    })
+            
+            if formatted_jobs:
+                import sys
+                import os
+                sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+                import storage
+                newly_inserted = storage.store_jobs_batch(formatted_jobs)
+                total_new_jobs += newly_inserted
+                working_companies.append(name)
+                all_results.extend(jobs)
+                print(f"    -> SUCCESS: Scraped {len(jobs)} jobs | Newly Inserted to Chunks: {newly_inserted}")
+            else:
+                print(f"    -> SUCCESS: Scraped {len(jobs)} jobs | 0 in India")
+                working_companies.append(name)
         else:
             not_working_companies.append(name)
             print(f"    -> FAILED (No jobs found or error)")
 
     if total_new_jobs > 0:
-        save_jobs(existing_jobs)
-        print(f"\n  Successfully updated {DB_FILE} with new jobs.")
+        print(f"\n  Successfully updated chunk files with new jobs.")
 
     print("\n" + "=" * 70)
     print("  FINAL SCRAPE REPORT")
