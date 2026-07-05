@@ -30,8 +30,18 @@ jobs:
           SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: python scrape_google_jobs.py
 
+      # Commit and push scraped jobs to save state in GitHub repository
+      - name: Commit and Push Scraped Google Jobs
+        if: always()
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add all_jobs_*.json role_index.json jobs_by_role/*.json || true
+          git commit -m "chore: save google aggregator scraped jobs [skip ci]" || echo "No changes to commit"
+          git pull --rebase -X theirs --autostash origin main
+          git push
+
       - name: Cleanup
         if: always()
         run: |
           echo "✅ Google Jobs Aggregator completed."
-          echo "📊 Check Turso database for results."

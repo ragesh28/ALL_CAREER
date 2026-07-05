@@ -818,6 +818,7 @@
         { id: 'apna',         label: 'Apna',         logo: 'logos/portals/apna.png' },
         { id: 'freshersworld',label: 'FreshersWorld',logo: 'logos/portals/freshersworld.ico' },
         { id: 'telegram',     label: 'Telegram',     logo: 'logos/portals/telegram.svg' },
+        { id: 'other',        label: 'Other Sources', logo: '' },
     ];
 
     const TOP_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Noida', 'Kolkata', 'Ahmedabad', 'Remote'];
@@ -1022,7 +1023,7 @@
         'timesjobs': 'logos/portals/timesjobs.svg', 'hirist': 'logos/portals/hirist.ico',
         'workindia': 'logos/portals/workindia.png', 'foundit': 'logos/portals/foundit.png',
         'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
-        'telegram': 'logos/portals/telegram.svg',
+        'telegram': 'logos/portals/telegram.svg', 'other': '',
     };
 
     // ══════════════════════════════════════════════
@@ -1333,6 +1334,8 @@
     async function fetchJobsFromTurso() {
         let fetchedJobs = [];
         let chunkNum = 1;
+        const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram']);
+        
         while (true) {
             try {
                 const res = await fetch(`all_jobs_${chunkNum}.json`);
@@ -1342,13 +1345,19 @@
                     const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
                     const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
                     const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
+                    
+                    let sourceVal = String(job.platform || job.source || '').toLowerCase();
+                    if (!knownPortals.has(sourceVal)) {
+                        sourceVal = 'other';
+                    }
+                    
                     fetchedJobs.push({
                         _id: job.id || 0,
                         title: String(job.role || job.title || ''),
                         company: String(job.company_name || job.company || ''),
                         location: String(job.location || ''),
                         date: cleanDate, url: String(job.apply_link || job.url || job.linkedin_url || ''),
-                        source: String(job.platform || job.source || ''),
+                        source: sourceVal,
                         role_search: String(job.search_keyword || job.role_search || ''),
                         experience: pick(job.experience),
                         fetchedAt: cleanDate
@@ -1361,6 +1370,34 @@
                 break;
             }
         }
+        
+        // Fetch corporate company jobs and merge them
+        try {
+            const resBig = await fetch(`workday_scraper/big_company_jobs.json`);
+            if (resBig.ok) {
+                const rowsBig = await resBig.json();
+                for (const job of rowsBig) {
+                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.posted);
+                    fetchedJobs.push({
+                        _id: job.id || 0,
+                        title: String(job.title || ''),
+                        company: String(job.company || ''),
+                        location: String(job.location || ''),
+                        date: cleanDate,
+                        url: String(job.apply_url || job.url || ''),
+                        source: 'other',
+                        role_search: String(job.role_search || ''),
+                        experience: pick(job.experience),
+                        fetchedAt: cleanDate
+                    });
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load corporate jobs:", e);
+        }
+        
         return fetchedJobs;
     }
 
