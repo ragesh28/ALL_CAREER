@@ -59,6 +59,11 @@ def run_pipeline():
             stats["old_date"] += 1
             continue
             
+        platform = str(j.get("platform", "")).lower()
+        if any(p in platform for p in ["linkedin", "naukri", "shine", "indeed"]):
+            stats["removed_platform"] += 1
+            continue
+            
         url = storage.get_job_url(j)
         if url and url in seen_urls:
             stats["duplicate_url"] += 1
@@ -87,6 +92,7 @@ def run_pipeline():
     print(f"  Older than 25 days: {stats['old_date']}")
     print(f"  URL duplicates filtered: {stats['duplicate_url']}")
     print(f"  Title+Company+Location duplicates filtered: {stats['duplicate_tc']}")
+    print(f"  Removed specified platforms (LinkedIn, Naukri, etc.): {stats['removed_platform']}")
     print(f"  Clean unique jobs remaining: {stats['valid']}")
     sys.stdout.flush()
     
