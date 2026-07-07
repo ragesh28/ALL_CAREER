@@ -32,8 +32,18 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add scrape_progress.json workday_scraper/big_company_jobs.json 2>/dev/null || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: save big company scraper progress" && git pull --rebase -X ours --autostash origin main && git push)
+          # Add files individually to avoid git add failing if one doesn't exist
+          [ -f scrape_progress.json ] && git add scrape_progress.json || true
+          [ -f workday_scraper/big_company_jobs.json ] && git add workday_scraper/big_company_jobs.json || true
+          
+          # Only commit if there are STAGED changes
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: save big company scraper progress"
+            git pull --rebase -X ours --autostash origin main
+            git push
+          else
+            echo "No changes to commit"
+          fi
 
       # If scrape_progress.json exists → scraper hit time limit → restart in 10 min
       - name: Auto-Restart if Not Finished
