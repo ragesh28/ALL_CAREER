@@ -31,9 +31,20 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Stage ALL changes: new files, modified files, AND deleted files
-          git add -A all_jobs_*.json role_index.json jobs_by_role/ || true
+          # Explicitly remove old chunk files that no longer exist on disk
+          for f in $(git ls-files 'all_jobs_*.json'); do
+            if [ ! -f "$f" ]; then
+              echo "Removing deleted file from git: $f"
+              git rm "$f"
+            fi
+          done
+          
+          # Stage all job data changes
+          git add all_jobs_*.json role_index.json jobs_by_role/ || true
+          
+          # Show what will be committed
+          echo "=== Files staged for commit ==="
+          git diff --cached --stat
           
           git commit -m "chore(db): cleanup - remove LinkedIn/Naukri/Shine/Indeed jobs [skip ci]" || echo "No changes to commit"
-          git pull --rebase -X ours --autostash origin main
-          git push
+          git push --force
