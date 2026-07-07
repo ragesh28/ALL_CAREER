@@ -28,6 +28,12 @@ CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = "283008c384af43c0a9f25f7e501fdd53"
 DATABASE_ID = "019ce14b-1801-72d6-b42c-8b3a645a1f15"
 SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
+if not SCRAPERAPI_KEY:
+    keys_list = os.environ.get("SCRAPERAPI_KEYS_LIST", "")
+    if keys_list:
+        keys = [k.strip() for k in keys_list.split(",") if k.strip()]
+        if keys:
+            SCRAPERAPI_KEY = random.choice(keys)
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
