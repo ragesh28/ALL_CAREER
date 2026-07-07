@@ -1,4 +1,4 @@
-name: Cleanup & Remove Old Portals (LinkedIn, Naukri, Shine, Indeed)
+name: Cleanup & Deduplicate Jobs Database
 
 on:
   workflow_dispatch:   # Manual trigger only
@@ -46,5 +46,5 @@ jobs:
           echo "=== Files staged for commit ==="
           git diff --cached --stat
           
-          git commit -m "chore(db): cleanup - remove LinkedIn/Naukri/Shine/Indeed jobs [skip ci]" || echo "No changes to commit"
+          git commit -m "chore(db): cleanup and deduplicate jobs database [skip ci]" || echo "No changes to commit"
           git push --force

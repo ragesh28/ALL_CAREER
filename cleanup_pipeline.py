@@ -59,14 +59,15 @@ def run_pipeline():
             stats["old_date"] += 1
             continue
             
-        # Check source field (primary) AND URL domain (fallback)
-        source = str(j.get("source", "")).lower()
-        job_url = str(j.get("url", "") or j.get("apply_link", "") or j.get("linkedin_url", "") or "").lower()
-        portals_to_remove = ["linkedin", "naukri", "shine", "indeed"]
-        if any(p in source for p in portals_to_remove) or \
-           any(domain in job_url for domain in ["linkedin.com", "naukri.com", "shine.com", "indeed.com"]):
-            stats["removed_platform"] += 1
-            continue
+        # NOTE: Previously removed LinkedIn/Naukri/Shine/Indeed jobs here.
+        # These portals are now actively scraped, so we KEEP them.
+        # source = str(j.get("source", "")).lower()
+        # job_url = str(j.get("url", "") or j.get("apply_link", "") or j.get("linkedin_url", "") or "").lower()
+        # portals_to_remove = ["linkedin", "naukri", "shine", "indeed"]
+        # if any(p in source for p in portals_to_remove) or \
+        #    any(domain in job_url for domain in ["linkedin.com", "naukri.com", "shine.com", "indeed.com"]):
+        #     stats["removed_platform"] += 1
+        #     continue
             
         url = storage.get_job_url(j)
         if url and url in seen_urls:
@@ -96,7 +97,7 @@ def run_pipeline():
     print(f"  Older than 25 days: {stats['old_date']}")
     print(f"  URL duplicates filtered: {stats['duplicate_url']}")
     print(f"  Title+Company+Location duplicates filtered: {stats['duplicate_tc']}")
-    print(f"  Removed specified platforms (LinkedIn, Naukri, etc.): {stats['removed_platform']}")
+    print(f"  Removed specified platforms: 0 (disabled — all portals kept)")
     print(f"  Clean unique jobs remaining: {stats['valid']}")
     sys.stdout.flush()
     
