@@ -59,8 +59,12 @@ def run_pipeline():
             stats["old_date"] += 1
             continue
             
-        platform = str(j.get("platform", "")).lower()
-        if any(p in platform for p in ["linkedin", "naukri", "shine", "indeed"]):
+        # Check source field (primary) AND URL domain (fallback)
+        source = str(j.get("source", "")).lower()
+        job_url = str(j.get("url", "") or j.get("apply_link", "") or j.get("linkedin_url", "") or "").lower()
+        portals_to_remove = ["linkedin", "naukri", "shine", "indeed"]
+        if any(p in source for p in portals_to_remove) or \
+           any(domain in job_url for domain in ["linkedin.com", "naukri.com", "shine.com", "indeed.com"]):
             stats["removed_platform"] += 1
             continue
             
