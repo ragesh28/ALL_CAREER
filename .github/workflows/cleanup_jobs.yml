@@ -1,4 +1,4 @@
-name: Cleanup & Reorganize Jobs Database
+name: Cleanup & Remove Old Portals (LinkedIn, Naukri, Shine, Indeed)
 
 on:
   workflow_dispatch:   # Manual trigger only
