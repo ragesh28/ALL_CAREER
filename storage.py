@@ -193,14 +193,21 @@ def store_jobs_batch(jobs):
                 print(f"      Enriched existing job with walking_interview=True: {existing_job.get('title')} @ {existing_job.get('company')}")
                 
             # 2. Enrich other missing fields
-            enrich_fields = ["experience", "salary", "qualification", "last_date", "other_details"]
+            enrich_fields = ["experience", "skills", "salary", "qualification", "last_date", "other_details"]
             for field in enrich_fields:
                 new_val = j.get(field)
                 old_val = existing_job.get(field)
-                if new_val not in (None, "", "null") and old_val in (None, "", "null"):
-                    existing_job[field] = new_val
-                    job_updated = True
-                    print(f"      Enriched field '{field}' for existing job: {new_val}")
+                # Handle list/array enrichment for skills
+                if field == "skills":
+                    if isinstance(new_val, list) and new_val and not old_val:
+                        existing_job[field] = new_val
+                        job_updated = True
+                        print(f"      Enriched field 'skills' for existing job: {new_val}")
+                else:
+                    if new_val not in (None, "", "null") and old_val in (None, "", "null"):
+                        existing_job[field] = new_val
+                        job_updated = True
+                        print(f"      Enriched field '{field}' for existing job: {new_val}")
             
             if job_updated:
                 db_changed = True

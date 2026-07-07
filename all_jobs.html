@@ -715,6 +715,26 @@
                 </div>
             </div>
 
+            <!-- ── Skills ── -->
+            <div class="filter-section" id="sec-skills">
+                <div class="filter-section-header" onclick="toggleSection('skills')">
+                    <span class="filter-section-label">
+                        Skills
+                        <span class="filter-count" id="cnt-skills">0</span>
+                    </span>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-body-inner">
+                        <div class="filter-search">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <input type="text" id="skillSearch" placeholder="Search skills..." oninput="filterOptions('skills')">
+                        </div>
+                        <div id="skills-options"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- ── Company ── -->
             <div class="filter-section" id="sec-company">
                 <div class="filter-section-header" onclick="toggleSection('company')">
@@ -797,8 +817,10 @@
     let selectedLocations = new Set();
     let selectedRoles = new Set();
     let selectedCompanies = new Set();
+    let selectedSkills = new Set();
     let activeExp = 0;
     let walkinOnly = false;
+    let skillsMap = {};
 
     // Data for dynamic options
     let allCompanies = [];
@@ -1139,6 +1161,68 @@
         if (type === 'location') buildLocationOptions(document.getElementById('locSearch').value);
         if (type === 'roles') buildRolesOptions(document.getElementById('roleSearch').value);
         if (type === 'company') buildCompanyOptions(document.getElementById('companySearch').value);
+        if (type === 'skills') buildSkillsOptions(document.getElementById('skillSearch').value);
+    }
+
+    function buildSkillsOptions(filter = '') {
+        const container = document.getElementById('skills-options');
+        if (!container) return;
+        
+        const skillCounts = {};
+        allJobs.forEach(j => {
+            if (Array.isArray(j.skills)) {
+                j.skills.forEach(sid => {
+                    skillCounts[sid] = (skillCounts[sid] || 0) + 1;
+                });
+            }
+        });
+        
+        let skills = Object.entries(skillsMap).map(([sid, name]) => {
+            return { id: parseInt(sid), name: name, count: skillCounts[sid] || 0 };
+        });
+        
+        if (filter) {
+            skills = skills.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+        } else {
+            skills.sort((a, b) => b.count - a.count);
+        }
+        
+        // Remove skills with 0 jobs when no active filter is typed, to avoid clutter
+        if (!filter) {
+            skills = skills.filter(s => s.count > 0 || selectedSkills.has(s.id));
+        }
+        
+        const visible = skills.slice(0, 8);
+        const more = skills.slice(8);
+        
+        const makeOption = s => `
+            <div class="filter-option ${selectedSkills.has(s.id) ? 'checked' : ''}" onclick="toggleSkill(${s.id}, this)">
+                <div class="custom-checkbox">
+                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="option-label">${s.name} <span class="option-count">(${s.count})</span></span>
+            </div>
+        `;
+        
+        container.innerHTML = visible.map(makeOption).join('') +
+        (more.length > 0 && !filter ? `<div id="moreSkillsWrap" style="display:none">${more.map(makeOption).join('')}</div>
+        <span class="show-more-btn" onclick="toggleMoreSkills(this)">+ ${more.length} more</span>` : '');
+    }
+
+    function toggleSkill(id, el) {
+        el.classList.toggle('checked');
+        if (selectedSkills.has(id)) selectedSkills.delete(id);
+        else selectedSkills.add(id);
+        applyFilters();
+    }
+
+    function toggleMoreSkills(btn) {
+        const wrap = document.getElementById('moreSkillsWrap');
+        if (!wrap) return;
+        const hidden = wrap.style.display === 'none';
+        wrap.style.display = hidden ? 'block' : 'none';
+        const extra = wrap.querySelectorAll('.filter-option').length;
+        btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
     }
 
     // ══════════════════════════════════════════════
@@ -1233,18 +1317,22 @@
     // ══════════════════════════════════════════════
     //  UPDATE COUNTS + BADGE
     // ══════════════════════════════════════════════
+    // ══════════════════════════════════════════════
+    //  UPDATE COUNTS + BADGE
+    // ══════════════════════════════════════════════
     function updateCounts() {
         setCount('source', selectedPortals.size);
         setCount('date', activeDateRange !== 'all' ? 1 : 0);
         setCount('location', selectedLocations.size);
         setCount('roles', selectedRoles.size);
         setCount('exp', activeExp > 0 ? 1 : 0);
+        setCount('skills', selectedSkills.size);
         setCount('company', selectedCompanies.size);
         setCount('walkin', walkinOnly ? 1 : 0);
 
         const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
             selectedLocations.size + selectedRoles.size + (activeExp > 0 ? 1 : 0) +
-            selectedCompanies.size + (walkinOnly ? 1 : 0);
+            selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedSkills.size;
 
         const badge = document.getElementById('appliedBadge');
         const clearBtn = document.getElementById('clearAllBtn');
@@ -1287,6 +1375,10 @@
         if (activeExp > 0) {
             chips.push({ label: activeExp + ' Yrs Exp', remove: () => { document.getElementById('expSlider').value = 0; updateExpSlider(0); applyFilters(); refreshChips(); } });
         }
+        selectedSkills.forEach(sid => {
+            const name = skillsMap[sid] || `Skill ${sid}`;
+            chips.push({ label: name, remove: () => { selectedSkills.delete(sid); buildSkillsOptions(); refreshChips(); } });
+        });
         selectedCompanies.forEach(co => {
             chips.push({ label: co, remove: () => { selectedCompanies.delete(co); buildCompanyOptions(document.getElementById('companySearch').value); refreshChips(); } });
         });
@@ -1312,6 +1404,7 @@
         selectedLocations.clear();
         selectedRoles.clear();
         selectedCompanies.clear();
+        selectedSkills.clear();
         activeDateRange = 'all';
         activeExp = 0;
         walkinOnly = false;
@@ -1321,9 +1414,11 @@
         document.getElementById('expSlider').value = 0;
         updateExpSlider(0);
         document.getElementById('searchInput').value = '';
+        document.getElementById('skillSearch').value = '';
         buildLocationOptions();
         buildRolesOptions();
         buildCompanyOptions();
+        buildSkillsOptions();
         updateCounts();
         applyFilters();
     }
@@ -1360,6 +1455,7 @@
                         source: sourceVal,
                         role_search: String(job.search_keyword || job.role_search || ''),
                         experience: pick(job.experience),
+                        skills: Array.isArray(job.skills) ? job.skills : [],
                         fetchedAt: cleanDate
                     });
                 }
@@ -1424,9 +1520,14 @@
                 if (minExp === null) {
                     return false; // If no exp info, it doesn't match
                 }
-                if (minExp !== activeExp) {
+                if (activeExp < minExp || activeExp > maxExp) {
                     return false;
                 }
+            }
+
+            if (selectedSkills.size > 0) {
+                const hasSkill = Array.isArray(j.skills) && j.skills.some(sid => selectedSkills.has(sid));
+                if (!hasSkill) return false;
             }
 
             if (selectedCompanies.size > 0) {
@@ -1580,6 +1681,16 @@
         buildLocationOptions();
         buildRolesOptions();
 
+        // Load skills map
+        try {
+            const smRes = await fetch('skills_map.json');
+            if (smRes.ok) {
+                skillsMap = await smRes.json();
+            }
+        } catch (e) {
+            console.error("Failed to load skills_map.json", e);
+        }
+
         loading.innerHTML = 'Loading jobs...';
         allJobs = await fetchJobsFromTurso();
 
@@ -1599,6 +1710,7 @@
         allJobs.forEach(j => { if (j.company) coMap[j.company] = (coMap[j.company] || 0) + 1; });
         allCompanies = Object.entries(coMap).sort((a,b) => b[1]-a[1]).map(e => e[0]).slice(0, 100);
         buildCompanyOptions();
+        buildSkillsOptions();
 
         loading.style.display = 'none';
         applyFilters();

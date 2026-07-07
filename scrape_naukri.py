@@ -245,6 +245,13 @@ def scrape_naukri_page(role, city, page):
             posted_label = job_obj.get("footerPlaceholderLabel", "")
             date_posted  = parse_date_posted(posted_label)
 
+            from extractor_utils import extract_skills
+            
+            tags_skills = job_obj.get("tagsAndSkills", "")
+            jd = job_obj.get("jobDescription", "")
+            combined_text = f"{tags_skills} {jd}"
+            skills = extract_skills(combined_text)
+
             if title and jd_url:
                 jobs.append({
                     "title":       title,
@@ -255,6 +262,7 @@ def scrape_naukri_page(role, city, page):
                     "source":      "naukri",
                     "role_search": role,
                     "experience":  experience,
+                    "skills":      skills,
                 })
     return jobs
 

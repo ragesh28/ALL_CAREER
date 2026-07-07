@@ -282,6 +282,8 @@ def main():
                     print("0 jobs found")
                     continue
 
+                from extractor_utils import extract_experience, extract_skills
+                
                 batch = []
                 for _, row in jobs_df.iterrows():
                     title = str(row.get("title", "")).strip()
@@ -290,6 +292,7 @@ def main():
                     date_posted = str(row.get("date_posted", "")).strip()
                     job_url = str(row.get("job_url", "")).strip()
                     site = str(row.get("site", "")).strip().lower()
+                    desc = str(row.get("description", "")).strip()
 
                     if not title or not company or title == "nan":
                         continue
@@ -309,6 +312,10 @@ def main():
 
                     final_url = permanent_url if permanent_url else job_url
 
+                    # Extract experience and skills from description
+                    exp = extract_experience(desc)
+                    skills = extract_skills(desc)
+
                     batch.append({
                         "title": title,
                         "company": company,
@@ -321,6 +328,8 @@ def main():
                         "fetched_at": fetched_at,
                         "indeed_jk": indeed_jk,
                         "permanent_url": permanent_url,
+                        "experience": exp,
+                        "skills": skills,
                     })
 
                 stored = store_jobs_batch(batch)

@@ -227,12 +227,20 @@ def scrape_shine(role, city):
                                 job_url = "https://www.shine.com" + job_url
                             # Experience
                             experience = item.get("jExp", "")
+                            
+                            from extractor_utils import extract_skills
+                            jjd = item.get("jJD", "")
+                            jkwd = item.get("jKwd", "")
+                            combined_text = f"{jjd} {jkwd}"
+                            skills = extract_skills(combined_text)
+                            
                             if title and job_url:
                                 jobs.append({
                                     "title": title, "company": company,
                                     "location": loc, "date_posted": date_str,
                                     "url": job_url, "source": "shine", "role_search": role,
-                                    "experience": experience
+                                    "experience": experience,
+                                    "skills": skills
                                 })
                     except Exception as e:
                         print(f"    Shine JSON parse error: {e}")
