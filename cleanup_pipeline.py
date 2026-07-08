@@ -50,6 +50,9 @@ def run_pipeline():
             stats["invalid_garbage"] += 1
             continue
             
+        # Clean and normalize location
+        j["location"] = storage.normalize_location(j.get("location"))
+            
         date_str = storage.get_job_date(j)
         if not date_str:
             stats["missing_date"] += 1

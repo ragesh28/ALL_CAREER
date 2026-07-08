@@ -121,6 +121,100 @@ def get_category_filename(category):
     s = re.sub(r'[^a-z0-9_]', '', s)
     return f"{s}.json"
 
+def normalize_location(loc):
+    if not loc or not isinstance(loc, str):
+        return "India"
+    
+    loc_clean = loc.strip().lower()
+    loc_clean = re.sub(r'[^a-z0-9\s,]', '', loc_clean)
+    loc_clean = loc_clean.strip()
+    
+    exact_mappings = {
+        "ka": "Bangalore",
+        "karnataka": "Bangalore",
+        "bengaluru": "Bangalore",
+        "bengaluru, karnataka": "Bangalore",
+        "bangalore, karnataka": "Bangalore",
+        "bangalore, ka": "Bangalore",
+        "bengaluru, ka": "Bangalore",
+        
+        "tn": "Chennai",
+        "tamil nadu": "Chennai",
+        "chennai, tamil nadu": "Chennai",
+        "chennai, tn": "Chennai",
+        
+        "mh": "Mumbai",
+        "maharashtra": "Mumbai",
+        "mumbai, maharashtra": "Mumbai",
+        "mumbai, mh": "Mumbai",
+        
+        "ts": "Hyderabad",
+        "telangana": "Hyderabad",
+        "hyderabad, telangana": "Hyderabad",
+        "hyderabad, ts": "Hyderabad",
+        "ap": "Hyderabad",
+        "andhra pradesh": "Hyderabad",
+        
+        "dl": "Delhi",
+        "delhi": "Delhi",
+        "new delhi": "Delhi",
+        "delhi ncr": "Delhi",
+        
+        "up": "Noida",
+        "uttar pradesh": "Noida",
+        "noida, uttar pradesh": "Noida",
+        "noida, up": "Noida",
+        
+        "hr": "Delhi",
+        "haryana": "Delhi",
+        "gurugram": "Delhi",
+        "gurgaon": "Delhi",
+        "gurgaon, haryana": "Delhi",
+        "gurugram, haryana": "Delhi",
+    }
+    
+    if loc_clean in exact_mappings:
+        return exact_mappings[loc_clean]
+        
+    if "bangalore" in loc_clean or "bengaluru" in loc_clean:
+        return "Bangalore"
+    if "chennai" in loc_clean:
+        return "Chennai"
+    if "mumbai" in loc_clean:
+        return "Mumbai"
+    if "hyderabad" in loc_clean:
+        return "Hyderabad"
+    if "delhi" in loc_clean or "gurgaon" in loc_clean or "gurugram" in loc_clean:
+        return "Delhi"
+    if "noida" in loc_clean:
+        return "Noida"
+    if "pune" in loc_clean:
+        return "Pune"
+    if "kolkata" in loc_clean:
+        return "Kolkata"
+    if "ahmedabad" in loc_clean:
+        return "Ahmedabad"
+    if "kochi" in loc_clean:
+        return "Kochi"
+    if "coimbatore" in loc_clean:
+        return "Coimbatore"
+        
+    if loc_clean == "karnataka":
+        return "Bangalore"
+    if loc_clean == "tamil nadu":
+        return "Chennai"
+    if loc_clean == "maharashtra":
+        return "Mumbai"
+    if loc_clean == "telangana":
+        return "Hyderabad"
+        
+    parts = [p.strip() for p in loc.split(',')]
+    if parts:
+        city = parts[0]
+        if city:
+            return city.title()
+    return "India"
+
 def store_jobs_batch(jobs):
     if not jobs:
         return 0
@@ -158,6 +252,9 @@ def store_jobs_batch(jobs):
         if not is_valid_job(j):
             continue
             
+        # Clean/normalize location
+        j["location"] = normalize_location(j.get("location"))
+        
         url = get_job_url(j)
         tc_key = get_job_title_company_key(j)
         
