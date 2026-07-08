@@ -21,19 +21,32 @@ from datetime import datetime, timedelta
 import pandas as pd
 import random
 
+# Configure stdout to handle UTF-8 printing cleanly on Windows
+sys.stdout.reconfigure(encoding='utf-8')
+
 # ---------------------------------------------------------------------------
 # CONFIG
 # ---------------------------------------------------------------------------
 CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN", "")
 ACCOUNT_ID = "283008c384af43c0a9f25f7e501fdd53"
 DATABASE_ID = "019ce14b-1801-72d6-b42c-8b3a645a1f15"
-SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
-if not SCRAPERAPI_KEY:
-    keys_list = os.environ.get("SCRAPERAPI_KEYS_LIST", "")
-    if keys_list:
-        keys = [k.strip() for k in keys_list.split(",") if k.strip()]
-        if keys:
-            SCRAPERAPI_KEY = random.choice(keys)
+SCRAPERAPI_KEYS = []
+if os.environ.get("SCRAPERAPI_KEY"):
+    SCRAPERAPI_KEYS.append(os.environ.get("SCRAPERAPI_KEY"))
+keys_list = os.environ.get("SCRAPERAPI_KEYS_LIST", "")
+if keys_list:
+    for k in keys_list.split(","):
+        if k.strip() and k.strip() not in SCRAPERAPI_KEYS:
+            SCRAPERAPI_KEYS.append(k.strip())
+
+_scraper_key_idx = 0
+def _get_scraperapi_key():
+    global _scraper_key_idx
+    if not SCRAPERAPI_KEYS:
+        return None
+    key = SCRAPERAPI_KEYS[_scraper_key_idx % len(SCRAPERAPI_KEYS)]
+    _scraper_key_idx += 1
+    return key
 
 MAX_JOBS = 500000           # Per run cap
 RESULTS_PER_SEARCH = 20    # Per role+location combo
@@ -170,18 +183,14 @@ def save_progress(role_idx, loc_idx, finished_all=False):
 import re
 from playwright.sync_api import sync_playwright
 
+import requests
+
 def scrape_all_jobs(test_limit=None):
-    # Build ScraperAPI proxy config (single endpoint, ScraperAPI handles rotation)
-    proxy_config = None
-    if SCRAPERAPI_KEY:
-        proxy_config = {
-            "server": "http://proxy-server.scraperapi.com:8001",
-            "username": "scraperapi",
-            "password": SCRAPERAPI_KEY,
-        }
-        print(f"🌍 ScraperAPI proxy configured (proxy-server.scraperapi.com:8001)")
+    if not SCRAPERAPI_KEYS:
+        print(f"⚠️  No ScraperAPI keys set \u2014 ScraperAPI structured endpoint requires a key.")
+        return [], 0
     else:
-        print(f"⚠️  No SCRAPERAPI_KEY set — running without proxy (Google may block)")
+        print(f"🌍 Using ScraperAPI structured Google Jobs endpoint with {len(SCRAPERAPI_KEYS)} keys")
 
     roles = SEARCH_ROLES
     if test_limit:
@@ -202,125 +211,60 @@ def scrape_all_jobs(test_limit=None):
     combo_num = start_role_idx * len(LOCATIONS) + start_loc_idx
     hit_time_limit = False
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=["--disable-blink-features=AutomationControlled"]
-        )
+    for r_idx in range(start_role_idx, len(roles)):
+        role = roles[r_idx]
+        curr_start_loc_idx = start_loc_idx if r_idx == start_role_idx else 0
         
-        for r_idx in range(start_role_idx, len(roles)):
-            role = roles[r_idx]
-            curr_start_loc_idx = start_loc_idx if r_idx == start_role_idx else 0
+        for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
+            location = LOCATIONS[l_idx]
+            combo_num += 1
+
+            if time.time() - START_TIME >= MAX_RUN_SECONDS:
+                print(f"\n⏰ TIME LIMIT REACHED. Saving state and stopping.")
+                save_progress(r_idx, l_idx)
+                hit_time_limit = True
+                break
+                
+            print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
+
+            query = f"{role} in {location}"
+
+            max_retries = 3
+            success = False
+            batch = []
             
-            for l_idx in range(curr_start_loc_idx, len(LOCATIONS)):
-                location = LOCATIONS[l_idx]
-                combo_num += 1
-
-                if time.time() - START_TIME >= MAX_RUN_SECONDS:
-                    print(f"\n⏰ TIME LIMIT REACHED. Saving state and stopping.")
-                    save_progress(r_idx, l_idx)
-                    hit_time_limit = True
+            for attempt in range(max_retries):
+                current_api_key = _get_scraperapi_key()
+                if not current_api_key:
+                    print("⚠️ No ScraperAPI keys available.")
                     break
                     
-                print(f"[{combo_num}/{total_combos}] 🔍 '{role}' in {location.split(',')[0]}...", end=" ", flush=True)
+                payload = {
+                    'api_key': current_api_key,
+                    'query': query,
+                    'gl': 'in',
+                    'hl': 'en'
+                }
 
-                # --- RETRY ---
-                max_retries = 3 if proxy_config else 1
-                success = False
-                
-                for attempt in range(max_retries):
-
-                    try:
-                        context = browser.new_context(
-                            proxy=proxy_config,
-                            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                            viewport={'width': 1920, 'height': 1080}
-                        )
-                        def abort_resources(route):
-                            if route.request.resource_type in ["image", "stylesheet", "font", "media"]:
-                                route.abort()
-                            else:
-                                route.continue_()
-
-                        page = context.new_page()
-                        page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-                        page.route("**/*", abort_resources)
-
-                        encoded_query = urllib.parse.quote_plus(f"{role} jobs in {location}")
-                        job_url = f"https://www.google.com/search?q={encoded_query}&ibp=htl;jobs#htivrt=jobs&htichips=date_posted:today&fpstate=tldetail"
-
-                        try:
-                            page.goto(job_url, wait_until="commit", timeout=30000)
-                        except Exception:
-                            pass  # Will try to parse DOM anyway
-                            
-                        page.wait_for_timeout(5000)
-                        
-                        try:
-                            page.wait_for_selector('a.MQUd2b', timeout=15000)
-                            success = True
-                        except Exception:
-                            title_lower = page.title().lower()
-                            context.close()
-                            if "sorry" in title_lower or "captcha" in title_lower or "robot" in title_lower:
-                                if attempt < max_retries - 1:
-                                    print(f"🔄 Proxy blocked, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
-                                    continue
-                                else:
-                                    print("🚫 All proxies blocked by Google CAPTCHA")
-                            else:
-                                if attempt < max_retries - 1:
-                                    print(f"🔄 Retry ({attempt+2}/{max_retries})...", end=" ", flush=True)
-                                    continue
-                                else:
-                                    print("0 jobs found (all retries failed)")
-                            break
-                    except Exception as e:
-                        try:
-                            context.close()
-                        except Exception:
-                            pass
-                        if attempt < max_retries - 1:
-                            print(f"🔄 Error, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
-                            continue
-                        else:
-                            print(f"🚫 Error after {max_retries} retries: {e}")
-                        break
-                    
-                    # If we got here, success=True, break out of retry loop
-                    break
-                
-                if not success:
-                    continue
-
-                # --- Scrape job cards (we have a working page + context) ---
                 try:
-                    page.mouse.move(300, 500)
-                    for _ in range(3):
-                        page.mouse.wheel(0, 1500)
-                        page.wait_for_timeout(1000)
+                    r = requests.get('http://api.scraperapi.com/structured/google/jobs', params=payload, timeout=60)
+                    if r.status_code == 200:
+                        data = r.json()
+                        results = data.get("jobs_results", [])
                         
-                    list_items = page.locator('a.MQUd2b').all()
-                    
-                    batch = []
-                    count = 0
-                    
-                    for card in list_items:
-                        if count >= RESULTS_PER_SEARCH:
-                            break
+                        count = 0
+                        for job in results:
+                            if count >= RESULTS_PER_SEARCH:
+                                break
+                                
+                            title = job.get("title", "")
+                            company = job.get("company_name", "")
+                            loc_clean = job.get("location", "")
+                            via = job.get("via", "")
                             
-                        try:
-                            title_loc = card.locator('.tNxQIb')
-                            title = title_loc.inner_text().strip() if title_loc.count() > 0 else ""
-                            
-                            comp_locs = card.locator('.wHYlTd').all()
-                            company = comp_locs[0].inner_text().strip() if len(comp_locs) > 0 else ""
-                            
-                            loc_via = comp_locs[1].inner_text().strip() if len(comp_locs) > 1 else ""
-                            loc_clean = loc_via.split('•')[0].strip() if '•' in loc_via else loc_via
                             site = "google"
-                            if 'via' in loc_via:
-                                site = loc_via.split('via')[-1].strip().lower()
+                            if via:
+                                site = via.lower().replace("via ", "").strip()
                                 
                             if not title or not company:
                                 continue
@@ -330,15 +274,9 @@ def scrape_all_jobs(test_limit=None):
                                 continue
                             seen_keys.add(key)
                             
-                            card.click(force=True)
-                            page.wait_for_timeout(1000)
-                            
-                            direct_url = ""
-                            apply_links = page.locator('.yVRmze-s2gQvd a').all()
-                            if apply_links:
-                                direct_url = apply_links[0].get_attribute('href')
+                            direct_url = job.get("related_links", [{}])[0].get("link", "") if job.get("related_links") else ""
                             if not direct_url:
-                                direct_url = card.get_attribute('href')
+                                direct_url = job.get("share_link", "#")
                                 
                             batch.append({
                                 "title": title,
@@ -352,43 +290,48 @@ def scrape_all_jobs(test_limit=None):
                                 "fetchedAt": fetched_at,
                             })
                             count += 1
-                            
-                        except Exception:
-                            continue
-                            
-                    all_jobs.extend(batch)
-
-                    if batch:
-                        inserted = store_jobs_batch(batch)
-                        total_stored += inserted
-
-                    print(f"✅ {len(batch)} new (total: {len(all_jobs)}, stored: {total_stored})")
-                    context.close()
-
-                except Exception as e:
-                    print(f"🚫 Scrape error: {e}")
-                    try:
-                        context.close()
-                    except Exception:
-                        pass
-
-                if not hit_time_limit:
-                    next_loc_idx = l_idx + 1
-                    next_role_idx = r_idx
-                    if next_loc_idx >= len(LOCATIONS):
-                        next_loc_idx = 0
-                        next_role_idx += 1
                         
-                    if next_role_idx >= len(roles):
-                        save_progress(0, 0, finished_all=True)
+                        success = True
+                        break
                     else:
-                        save_progress(next_role_idx, next_loc_idx)
-                        
-                if len(all_jobs) >= MAX_JOBS or hit_time_limit:
-                    break
+                        if attempt < max_retries - 1:
+                            print(f"🔄 Error {r.status_code}, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
+                        else:
+                            print(f"🚫 Failed after {max_retries} retries: HTTP {r.status_code}")
+                except Exception as e:
+                    if attempt < max_retries - 1:
+                        print(f"🔄 Error, retrying ({attempt+2}/{max_retries})...", end=" ", flush=True)
+                    else:
+                        print(f"🚫 Error after {max_retries} retries: {e}")
+            
+            if not success:
+                continue
+
+            all_jobs.extend(batch)
+
+            if batch:
+                inserted = store_jobs_batch(batch)
+                total_stored += inserted
+
+            print(f"✅ {len(batch)} new (total: {len(all_jobs)}, stored: {total_stored})")
+
+            if not hit_time_limit:
+                next_loc_idx = l_idx + 1
+                next_role_idx = r_idx
+                if next_loc_idx >= len(LOCATIONS):
+                    next_loc_idx = 0
+                    next_role_idx += 1
+                    
+                if next_role_idx >= len(roles):
+                    save_progress(0, 0, finished_all=True)
+                else:
+                    save_progress(next_role_idx, next_loc_idx)
                     
             if len(all_jobs) >= MAX_JOBS or hit_time_limit:
                 break
+                
+        if len(all_jobs) >= MAX_JOBS or hit_time_limit:
+            break
 
     return all_jobs, total_stored
 

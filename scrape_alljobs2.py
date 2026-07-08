@@ -233,7 +233,8 @@ def main():
                 try:
                     li_df = scrape_jobs(
                         site_name=["linkedin"], search_term=role, location=location,
-                        results_wanted=RESULTS_PER_SEARCH, hours_old=24
+                        results_wanted=RESULTS_PER_SEARCH, hours_old=24,
+                        linkedin_fetch_description=True
                     )
                     if li_df is not None and not li_df.empty:
                         jobs_list.append(li_df)
@@ -242,7 +243,8 @@ def main():
                     try:
                         li_df = scrape_jobs(
                             site_name=["linkedin"], search_term=role, location=location,
-                            results_wanted=RESULTS_PER_SEARCH
+                            results_wanted=RESULTS_PER_SEARCH,
+                            linkedin_fetch_description=True
                         )
                         if li_df is not None and not li_df.empty:
                             jobs_list.append(li_df)
