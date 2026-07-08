@@ -315,7 +315,7 @@ def main():
                     final_url = permanent_url if permanent_url else job_url
 
                     # Extract experience and skills from description
-                    exp = extract_experience(desc)
+                    exp = extract_experience(desc, title=title)
                     skills = extract_skills(desc)
 
                     batch.append({

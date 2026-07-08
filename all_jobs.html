@@ -498,69 +498,37 @@
             .topnav-right { order: 3; width: 100%; justify-content: center; }
             .topnav-search { max-width: 100%; }
         }
-    .slider-container {
-        position: relative;
-        width: 100%;
-        margin-top: 25px;
-    }
-    .exp-slider {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 6px;
-        background: #e2e8f0;
-        border-radius: 3px;
-        outline: none;
-        margin: 10px 0;
-    }
-    .exp-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #111827;
-        cursor: pointer;
-        border: 2px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .exp-slider::-moz-range-thumb {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #111827;
-        cursor: pointer;
-        border: 2px solid #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .slider-labels {
+    .exp-input-container {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 0;
+    }
+    .exp-input-container label {
         font-size: 13px;
         color: #64748b;
-        margin-top: 5px;
+        white-space: nowrap;
     }
-    .slider-value-pin {
-        position: absolute;
-        top: -32px;
-        left: 0;
-        transform: translateX(-50%);
-        background: #111827;
-        color: #fff;
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 12px;
+    .exp-input {
+        width: 60px;
+        padding: 6px 10px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 14px;
         font-weight: 600;
-        transition: left 0.1s;
+        text-align: center;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #f8fafc;
+        color: #111827;
     }
-    .slider-value-pin::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 5px 5px 0;
-        border-style: solid;
-        border-color: #111827 transparent transparent transparent;
+    .exp-input:focus {
+        border-color: #111827;
+        background: #fff;
+    }
+    .exp-input-suffix {
+        font-size: 13px;
+        color: #64748b;
     }
 </style>
 </head>
@@ -692,7 +660,7 @@
                 </div>
             </div>
 
-            <!-- ── Experience ── -->
+            <!-- ── Experience (Min Year) ── -->
             <div class="filter-section" id="sec-exp">
                 <div class="filter-section-header" onclick="toggleSection('exp')">
                     <span class="filter-section-label">
@@ -703,13 +671,10 @@
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner" style="padding: 16px 4px 24px 4px;">
-                        <div class="slider-container">
-                            <div class="slider-value-pin" id="exp-pin" style="display: none;">0</div>
-                            <input type="range" min="0" max="30" value="0" class="exp-slider" id="expSlider" oninput="updateExpSlider(this.value)" onchange="applyFilters()">
-                            <div class="slider-labels">
-                                <span>0 Yrs</span>
-                                <span>30 Yrs</span>
-                            </div>
+                        <div class="exp-input-container">
+                            <label for="expMinInput">Min Year</label>
+                            <input type="number" min="0" max="30" value="" placeholder="0" class="exp-input" id="expMinInput" oninput="updateExpInput()" onchange="applyFilters()">
+                            <span class="exp-input-suffix">Yrs</span>
                         </div>
                     </div>
                 </div>
@@ -1275,42 +1240,38 @@
         applyFilters();
     }
 
-    function updateExpSlider(val) {
-        const slider = document.getElementById('expSlider');
-        const pin = document.getElementById('exp-pin');
-        pin.textContent = val;
-        activeExp = parseInt(val, 10);
-        
-        if (activeExp === 0) {
-            pin.style.display = 'none';
-        } else {
-            pin.style.display = 'block';
-        }
-        
-        const percent = (val - slider.min) / (slider.max - slider.min);
-        const thumbWidth = 18;
-        const offset = (percent - 0.5) * thumbWidth;
-        pin.style.left = `calc(${percent * 100}% - ${offset}px)`;
-        
+    function updateExpInput() {
+        const input = document.getElementById('expMinInput');
+        const val = parseInt(input.value, 10);
+        activeExp = isNaN(val) || val <= 0 ? 0 : val;
         updateCounts();
     }
 
     function parseExperience(expStr) {
         if (!expStr) return [null, null];
-        let s = expStr.toLowerCase();
+        let s = String(expStr).toLowerCase().trim();
+
+        // 1. Try to extract numbers first (HIGHEST PRIORITY)
         let nums = s.match(/\d+/g);
-        if (!nums) {
-            if (s.includes('fresher')) return [0, 0];
-            return [null, null];
+        if (nums) {
+            nums = nums.map(Number).filter(n => n <= 30);
+            if (nums.length >= 2) {
+                return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
+            } else if (nums.length === 1) {
+                if (s.includes('+') || s.includes('to ')) return [nums[0], 30];
+                if (s.includes('-')) return [0, nums[0]];
+                return [nums[0], nums[0]];
+            }
         }
-        nums = nums.map(Number);
-        if (nums.length >= 2) {
-            return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
-        } else if (nums.length === 1) {
-            if (s.includes('+') || s.includes('to ')) return [nums[0], 30];
-            if (s.includes('-')) return [0, nums[0]];
-            return [nums[0], nums[0]];
-        }
+
+        // 2. Keyword fallback (no numbers found)
+        if (s.includes('fresher') || s.includes('entry')) return [0, 0];
+        if (s.includes('intern') || s.includes('trainee')) return [0, 1];
+        if (s.includes('lead') || s.includes('tech lead')) return [7, 30];
+        if (s.includes('senior') || s === 'sr') return [5, 30];
+        if (s.includes('principal') || s.includes('staff')) return [10, 30];
+        if (s.includes('manager') || s.includes('director')) return [8, 30];
+
         return [null, null];
     }
 
@@ -1411,8 +1372,8 @@
         document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
         document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
         document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
-        document.getElementById('expSlider').value = 0;
-        updateExpSlider(0);
+        document.getElementById('expMinInput').value = '';
+        updateExpInput();
         document.getElementById('searchInput').value = '';
         document.getElementById('skillSearch').value = '';
         buildLocationOptions();
@@ -1549,7 +1510,8 @@
                 if (minExp === null) {
                     return false; // If no exp info, it doesn't match
                 }
-                if (activeExp < minExp || activeExp > maxExp) {
+                // Min Year filter: job's minimum experience must be >= user's input
+                if (minExp < activeExp) {
                     return false;
                 }
             }
