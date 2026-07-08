@@ -71,3 +71,6 @@ job_api_calls.md
 base64_session.txt
 config_telegram.json
 PROJECT DETAILS/
+
+# Local IDE Customizations
+.agents/
