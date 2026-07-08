@@ -1,11 +1,48 @@
 import re
 from skills_dictionary import SKILLS_DICT
 
+# Word-to-number mapping for 0–30 (used by extract_experience)
+_WORD_TO_NUM = {
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4,
+    "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9,
+    "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+    "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
+    "twenty": 20, "thirty": 30,
+}
+# Add compound numbers: twenty-one through twenty-nine (with hyphen and space forms)
+for _ones_word, _ones_val in [("one",1),("two",2),("three",3),("four",4),("five",5),
+                               ("six",6),("seven",7),("eight",8),("nine",9)]:
+    _WORD_TO_NUM[f"twenty {_ones_word}"] = 20 + _ones_val
+    _WORD_TO_NUM[f"twenty-{_ones_word}"] = 20 + _ones_val
+
+# Build regex pattern: match longest words first to avoid partial matches
+# e.g. "twenty five" before "twenty" and before "five"
+_WORD_NUM_PATTERN = re.compile(
+    r'\b(' + '|'.join(
+        re.escape(w) for w in sorted(_WORD_TO_NUM.keys(), key=len, reverse=True)
+    ) + r')\b',
+    re.IGNORECASE
+)
+
+def _replace_word_numbers(text):
+    """Replace English word-numbers (zero–thirty) with their digit equivalents.
+    Also converts the word 'plus' to '+' so '3 plus years' becomes '3+ years'."""
+    def _repl(m):
+        return str(_WORD_TO_NUM[m.group(0).lower()])
+    result = _WORD_NUM_PATTERN.sub(_repl, text)
+    # Convert "plus" to "+" so "3 plus years" → "3+ years"
+    result = re.sub(r'\bplus\b', '+', result, flags=re.IGNORECASE)
+    return result
+
+
 def extract_experience(description):
     """
     Extract experience requirements from job description text.
     Returns a clean string like '2-5 Yrs', '3+ Yrs', 'Fresher', or ''.
     Only extracts the experience part, omitting any surrounding context.
+    
+    Supports both digit numbers ("3-5 years") and English word numbers
+    ("seven years", "five to ten years") in the range 0–30.
     """
     if not description or not isinstance(description, str):
         return ""
@@ -18,11 +55,15 @@ def extract_experience(description):
         if not re.search(r'\b(not\s+(?:for|open\s+to)\s+freshers?|no\s+freshers?)\b', s):
             return "Fresher"
             
-    # 2. Look for experience ranges or years
+    # 2. Convert word-numbers to digits so the regex can match them
+    #    e.g. "seven years of experience" → "7 years of experience"
+    converted = _replace_word_numbers(description)
+    
+    # 3. Look for experience ranges or years
     # Matches:
     # "3-5 years", "2 to 5 Yrs", "1 - 3 year", "5+ years", "10+ Yrs", "2 years"
     pattern = r'\b(\d+)\s*(?:-|to|\+)?\s*(\d*)\s*(?:year|yr|Yr)s?\b'
-    matches = re.finditer(pattern, description, re.IGNORECASE)
+    matches = re.finditer(pattern, converted, re.IGNORECASE)
     
     # We want to find the first reasonable match in the text
     for match in matches:
@@ -31,7 +72,7 @@ def extract_experience(description):
         max_val_str = match.group(2)
         
         # Guard: limit max experience to 30 years to avoid matching phone numbers or zip codes
-        if min_val > 25:
+        if min_val > 30:
             continue
             
         # Determine format
@@ -48,7 +89,7 @@ def extract_experience(description):
             # Check if "+" is just outside the match (e.g. "3 + years")
             # Or if it's "3 years+"
             start, end = match.span()
-            context = description[start:end+2]
+            context = converted[start:end+2]
             if "+" in context:
                 return f"{min_val}+ Yrs"
             return f"{min_val} Yrs"
