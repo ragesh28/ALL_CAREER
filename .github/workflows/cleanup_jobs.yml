@@ -1,10 +1,10 @@
-name: Cleanup & Deduplicate Jobs Database
+name: Remove LinkedIn Jobs
 
 on:
   workflow_dispatch:   # Manual trigger only
 
 jobs:
-  cleanup-db:
+  remove-linkedin:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,15 +23,15 @@ jobs:
         run: |
           pip install requests pandas
 
-      - name: Run Cleanup & Classification Pipeline
-        run: python cleanup_pipeline.py
+      - name: Remove LinkedIn Jobs
+        run: python remove_linkedin_jobs.py
 
-      - name: Commit and Push Clean Database
+      - name: Commit and Push
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Explicitly remove old chunk files that no longer exist on disk
+          # Remove old chunk files that no longer exist on disk
           for f in $(git ls-files 'all_jobs_*.json'); do
             if [ ! -f "$f" ]; then
               echo "Removing deleted file from git: $f"
@@ -42,9 +42,9 @@ jobs:
           # Stage all job data changes
           git add all_jobs_*.json role_index.json jobs_by_role/ || true
           
-          # Show what will be committed
           echo "=== Files staged for commit ==="
           git diff --cached --stat
           
-          git commit -m "chore(db): cleanup and deduplicate jobs database [skip ci]" || echo "No changes to commit"
-          git push --force
+          git commit -m "chore: remove LinkedIn jobs from database [skip ci]" || echo "No changes to commit"
+          git pull --rebase -X ours --autostash origin main
+          git push
