@@ -1288,9 +1288,10 @@ def update_big_company_jobs(all_results, company_info_map):
             job_key = (comp_lower, title_lower, clean_url)
             
             if job_key not in existing_keys:
+                import storage
                 new_job = {
                     "title": title,
-                    "location": location or "India",
+                    "location": storage.normalize_location(location or "India"),
                     "posted": "",
                     "apply_url": apply_url,
                     "total_jobs": 0,

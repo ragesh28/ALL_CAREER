@@ -170,9 +170,10 @@ def save_jobs(all_jobs):
             if company_name == 'OpenAI' and 'openai.com' not in u.lower() and 'greenhouse.io/openai' not in u.lower():
                 continue
                 
+            import storage
             existing_jobs.append({
                 "title": str(job.get("title", "")),
-                "location": str(job.get("location", "")),
+                "location": storage.normalize_location(str(job.get("location", ""))),
                 "posted": str(job.get("date", "")),
                 "apply_url": u,
                 "company": company_name,
