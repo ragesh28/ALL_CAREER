@@ -47,6 +47,7 @@ SKILLS_DICT = {
     "VLSI": {"id": 42, "synonyms": ["vlsi", "verilog", "vhdl", "asic", "fpga"]},
     "SAP": {"id": 43, "synonyms": ["sap", "abap", "hana"]},
     "Salesforce": {"id": 44, "synonyms": ["salesforce", "apex", "visualforce", "lightning"]},
+    "Web Design": {"id": 45, "synonyms": ["web design", "web designer", "responsive design", "web designing", "website design", "frontend design"]},
 
     # --- Non-Technical Skills (100 - 199) ---
     "Project Management": {"id": 100, "synonyms": ["project management", "pmp", "prince2", "project coordinator", "jira", "trello", "gantt"]},
