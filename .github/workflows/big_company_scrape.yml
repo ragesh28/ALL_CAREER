@@ -32,9 +32,8 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          # Add files individually to avoid git add failing if one doesn't exist
-          [ -f scrape_progress.json ] && git add scrape_progress.json || true
-          [ -f workday_scraper/big_company_jobs.json ] && git add workday_scraper/big_company_jobs.json || true
+          
+          git add -A
           
           # Only commit if there are STAGED changes
           if ! git diff --staged --quiet; then

@@ -1467,8 +1467,37 @@
             }
         }
         
+        // Fetch Big Company / Other Source ATS jobs
+        try {
+            const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
+            const bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime());
+            if (bigJobsRes.ok) {
+                const bigJobsRows = await bigJobsRes.json();
+                for (const job of bigJobsRows) {
+                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.date_posted, job.date);
+                    
+                    fetchedJobs.push({
+                        _id: job.id || 0,
+                        title: String(job.title || job.role || ''),
+                        company: String(job.company || job.company_name || ''),
+                        location: String(job.location || ''),
+                        date: cleanDate, 
+                        url: String(job.apply_url || job.apply_link || job.url || ''),
+                        source: 'other',
+                        role_search: '',
+                        experience: '',
+                        skills: [],
+                        fetchedAt: cleanDate
+                    });
+                }
+                console.log(`Loaded ${bigJobsRows.length} jobs from big_company_jobs.json as 'other' source`);
+            }
+        } catch (e) {
+            console.error("Error fetching big company jobs:", e);
+        }
 
-        
         return fetchedJobs;
     }
 
