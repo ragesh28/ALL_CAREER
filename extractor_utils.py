@@ -101,9 +101,10 @@ def extract_experience(description, title=""):
         if not re.search(r'\b(not\s+(?:for|open\s+to)\s+freshers?|no\s+freshers?)\b', combined):
             return "Fresher"
 
-    # Check for intern keywords
+    # Check for intern keywords (but exclude "non-internship" which means NOT an intern)
     if re.search(r'\b(intern|internship|trainee|apprentice)\b', combined):
-        return "Intern"
+        if not re.search(r'\bnon[-\s]?internship\b', combined):
+            return "Intern"
 
     # Check for seniority keywords (only from title to avoid false positives in descriptions)
     title_lower = (title or "").lower()
