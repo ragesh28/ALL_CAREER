@@ -13,138 +13,36 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
         rel="stylesheet">
     <style>
-        :root {
-            --bg-deep: #020617;
-            --bg-surface: #0f172a;
-            --primary: #3b82f6;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --gold: #fbbf24;
-        }
+:root{--bg:#070b19;--panel:#0e1630;--line:rgba(177,194,255,.14);--text:#f5f7ff;--muted:#a8b1cc;--blue:#6fa4ff;--cyan:#62e5db;--violet:#ae8cff;--orange:#ffb266;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{min-height:100vh;display:block;overflow-x:hidden;color:var(--text);background:radial-gradient(900px 480px at 15% -12%,rgba(79,106,255,.45),transparent 70%),radial-gradient(750px 600px at 100% 60%,rgba(71,224,197,.55),transparent 70%),var(--bg);font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased}body:before{width:620px;height:620px;position:fixed;z-index:-1;top:24%;left:-230px;content:'';border:1px solid rgba(112,150,255,.45);border-radius:50%;box-shadow:0 0 0 72px rgba(112,150,255,.15),0 0 0 145px rgba(112,150,255,.08);animation:orbit 13s ease-in-out infinite alternate}body>svg{display:block!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important}
+/* The existing logo script is preserved; this only gives it a visible home. */
+#logo3d-wrapper,a[style*='position: absolute']{position:fixed!important;z-index:20!important;top:20px!important;left:26px!important;width:auto!important;height:auto!important;margin:0!important;padding:8px 13px!important;display:flex!important;align-items:center!important;gap:10px!important;background:rgba(14,22,48,.78);border:1px solid var(--line);border-radius:13px;box-shadow:0 10px 32px rgba(0,0,0,.24);backdrop-filter:blur(13px);text-decoration:none!important}#logo3d-wrapper img,a[style*='position: absolute'] img{width:31px!important;height:31px!important;border-radius:9px!important;box-shadow:none!important}#logo3d-wrapper span,a[style*='position: absolute'] span{color:#fff!important;font-family:'Outfit',sans-serif!important;font-size:.95rem!important;font-weight:800!important;letter-spacing:.02em!important;text-shadow:none!important}
+h1{width:min(1140px,calc(100% - 40px));margin:0 auto!important;padding:124px 0 34px;color:var(--text);background:none;-webkit-text-fill-color:var(--text);font-family:'Outfit',sans-serif;font-size:clamp(3.3rem,7vw,6.5rem);font-weight:800;letter-spacing:-.065em;line-height:.92;cursor:default;animation:rise .75s var(--ease) both}h1:hover{letter-spacing:-.065em}h1:before{display:block;margin-bottom:18px;color:var(--cyan);content:'CAREER COMMAND CENTER';font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.17em;-webkit-text-fill-color:var(--cyan)}h1:after{max-width:580px;display:block;margin-top:26px;color:var(--muted);content:'Find direct company careers, fresh openings, and the interview practice that moves you forward.';font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:500;letter-spacing:normal;line-height:1.75;-webkit-text-fill-color:var(--muted)}
+.grid-menu{width:min(1140px,calc(100% - 40px));max-width:none;margin:0 auto;padding:12px 0 72px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-menu:before{grid-column:1/-1;margin:4px 0 10px;color:#d5ddf7;content:'Explore by category';font-family:'Outfit',sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:-.04em}.grid-menu:after{grid-column:1/-1;margin:0;padding:22px 0 0;color:#7782a7;content:'150+ company careers | Daily job collection | 36 roles | Interview practice';border-top:1px solid var(--line);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.03em}
+.menu-card{min-height:294px;padding:28px;position:relative;isolation:isolate;align-items:flex-start;text-align:left;color:var(--text);background:linear-gradient(145deg,rgba(20,31,65,.96),rgba(10,16,37,.96));border:1px solid var(--line)!important;border-radius:22px;box-shadow:0 18px 42px rgba(0,0,0,.16);overflow:hidden;text-decoration:none;transition:transform .38s var(--ease),border-color .25s ease,box-shadow .38s var(--ease);animation:rise .72s var(--ease) both}.menu-card:after{position:absolute;z-index:-1;right:-72px;bottom:-89px;width:220px;height:220px;content:'';border:1px solid currentColor;border-radius:50%;opacity:.17;transition:transform .55s var(--ease),opacity .35s ease}.menu-card:nth-child(2){color:var(--blue);animation-delay:.08s}.menu-card:nth-child(3){color:var(--cyan);animation-delay:.15s}.menu-card:nth-child(4){color:var(--violet);animation-delay:.22s}.menu-card:nth-child(5){color:var(--orange);animation-delay:.29s}.menu-card:nth-child(2){background:linear-gradient(145deg,rgba(32,53,113,.82),rgba(10,16,37,.96))}.menu-card:nth-child(3){background:linear-gradient(145deg,rgba(13,81,91,.72),rgba(10,16,37,.96))}.menu-card:nth-child(4){background:linear-gradient(145deg,rgba(66,43,113,.72),rgba(10,16,37,.96))}.menu-card:nth-child(5){background:linear-gradient(145deg,rgba(104,55,19,.72),rgba(10,16,37,.96))}.menu-card:hover{transform:translateY(-7px);border-color:currentColor!important;box-shadow:0 0 35px color-mix(in srgb,currentColor 50%,transparent),0 28px 58px rgba(0,0,0,.42)}.menu-card:hover:after{opacity:.35;transform:scale(1.2)}.menu-card:focus-visible{outline:3px solid currentColor;outline-offset:4px}
+.icon-box{width:72px;height:72px;margin:0 0 34px;position:relative;display:grid;place-items:center;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.18);border-radius:21px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:transform .35s var(--ease),box-shadow .35s ease}.icon-box svg{width:36px;height:36px;filter:drop-shadow(0 6px 9px rgba(0,0,0,.2))}.icon-box:after{position:absolute;right:-11px;bottom:-10px;padding:4px 6px;color:#071021;background:currentColor;border:2px solid #101833;border-radius:7px;content:'150+';font-family:'Outfit',sans-serif;font-size:.62rem;font-weight:800;line-height:1}.menu-card:nth-child(3) .icon-box:after{content:'LIVE'}.menu-card:nth-child(4) .icon-box:after{content:'36+'}.menu-card:nth-child(5) .icon-box:after{content:'DSA'}.menu-card:hover .icon-box{transform:rotate(-5deg) scale(1.08);box-shadow:0 13px 26px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+.card-title{margin:0 0 10px;color:var(--text);font-family:'Outfit',sans-serif;font-size:1.58rem;font-weight:700;letter-spacing:-.045em}.card-desc{max-width:380px;color:var(--muted);font-size:.88rem;line-height:1.65}.salary-highlight{margin-top:16px;color:currentColor!important;font-family:'Plus Jakarta Sans',sans-serif;font-size:.71rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}.menu-card:nth-child(3) .salary-highlight{color:var(--cyan)!important}.menu-card:nth-child(4) .salary-highlight{color:var(--violet)!important}.menu-card:nth-child(5) .salary-highlight{color:var(--orange)!important}.card-title:after{display:inline-block;margin-left:11px;content:"\2192";color:currentColor;font-size:1.1rem;vertical-align:2px;transition:transform .25s var(--ease)}.menu-card:hover .card-title:after{transform:translate(3px,-3px)}
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}@keyframes orbit{from{transform:translate3d(0,0,0) rotate(-8deg)}to{transform:translate3d(45px,-30px,0) rotate(9deg)}}@media(max-width:680px){#logo3d-wrapper,a[style*='position: absolute']{top:12px!important;left:14px!important;padding:6px 9px!important}#logo3d-wrapper span,a[style*='position: absolute'] span{font-size:.78rem!important}#logo3d-wrapper img,a[style*='position: absolute'] img{width:26px!important;height:26px!important}h1,.grid-menu{width:min(100% - 28px,1140px)}h1{padding:98px 0 30px;font-size:3.25rem}h1:after{font-size:.92rem}.grid-menu{grid-template-columns:1fr;padding-bottom:52px;gap:14px}.menu-card{min-height:245px;padding:24px}.icon-box{width:62px;height:62px;margin-bottom:27px;border-radius:18px}.icon-box svg{width:31px;height:31px}.card-title{font-size:1.42rem}.grid-menu:after{line-height:1.8}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+/* Scroll-scrubbed landing scene */
+.career-stage{position:relative}.hero-panel{position:relative;z-index:2;opacity:1;pointer-events:auto;width:min(1140px,calc(100% - 40px));min-height:100svh;margin:0 auto;display:flex;flex-direction:column;justify-content:center}.hero-panel h1{width:100%;margin:0!important;padding:72px 0 34px}.scroll-cue{margin-top:28px;display:inline-flex;align-items:center;gap:10px;color:var(--muted);font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.scroll-cue::before{width:28px;height:1px;background:var(--cyan);content:''}.grid-panel{position:relative;z-index:1;opacity:0;pointer-events:none;padding:0 0 72px}.grid-panel .grid-menu{padding-top:12px}.glass-orb{position:absolute;z-index:-1;width:clamp(240px,34vw,430px);aspect-ratio:1;right:8%;bottom:5%;border:2px solid rgba(98,229,219,0.5);border-radius:50%;box-shadow:0 0 0 34px rgba(98,229,219,0.18),0 0 0 68px rgba(98,229,219,0.08),0 0 35px rgba(98,229,219,0.25);pointer-events:none}.grid-panel .menu-card{background:linear-gradient(145deg,color-mix(in srgb,var(--panel) 83%,transparent),color-mix(in srgb,var(--bg) 78%,transparent));backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.scroll-motion .career-stage{height:100svh;overflow:hidden}.scroll-motion .hero-panel{min-height:100svh}.scroll-motion .grid-panel{position:absolute;inset:0;z-index:1;padding:0;display:flex;align-items:center;pointer-events:none}.scroll-motion .grid-panel .grid-menu{width:min(940px,calc(100% - 40px));max-height:82svh;padding:0;gap:clamp(12px,1.6vw,18px)}.scroll-motion .grid-panel .grid-menu:before{margin:0 0 2px;font-size:clamp(1.2rem,2vw,1.55rem)}.scroll-motion .grid-panel .grid-menu:after{padding:14px 0 0}.scroll-motion .grid-panel .menu-card{min-height:clamp(150px,25svh,230px);padding:clamp(18px,2.2vw,28px);opacity:0;animation:none;will-change:transform,opacity}.scroll-motion .grid-panel .icon-box{width:clamp(50px,5vw,64px);height:clamp(50px,5vw,64px);margin-bottom:clamp(16px,2vw,26px)}.scroll-motion .scroll-cue{animation:cue-pulse 1.8s var(--ease) infinite alternate}@keyframes cue-pulse{from{transform:translateX(0);opacity:.6}to{transform:translateX(9px);opacity:1}}
+@media(max-width:639px){.grid-panel{opacity:1;pointer-events:auto;z-index:1}.hero-panel{width:min(100% - 28px,1140px);min-height:92svh}.hero-panel h1{padding:98px 0 30px}.grid-panel{padding-bottom:52px}.grid-panel .grid-menu{padding-top:0}.glass-orb{right:-26%;bottom:3%;width:74vw}}@media(prefers-reduced-motion:reduce){.scroll-cue{display:none}.hero-panel{opacity:1!important;pointer-events:auto!important}.grid-panel{opacity:1!important;z-index:1;pointer-events:auto!important}.grid-panel .menu-card{opacity:1!important;transform:none!important}}
+/* Reliable shared category-card details */
+.menu-card:nth-child(1){color:var(--blue)}.menu-card:nth-child(2){color:var(--cyan)}.menu-card:nth-child(3){color:var(--cyan)}.menu-card:nth-child(4){color:var(--orange)}.menu-card:nth-child(4) .salary-highlight{color:var(--orange)!important}
+.icon-box::after{display:none!important;content:none!important}
+.card-title::after{content:"\2192";font-family:inherit}
+.grid-menu::after{content:"150+ company careers | Daily job collection | 36 roles | Interview practice"}
+.menu-card::after{border:2px solid currentColor;opacity:.44;box-shadow:0 0 14px color-mix(in srgb,currentColor 24%,transparent);transition:transform 220ms var(--ease),opacity 220ms ease,filter 220ms ease,box-shadow 220ms ease}
+.menu-card:hover::after{opacity:.95;transform:scale(1.25);filter:drop-shadow(0 0 18px currentColor);box-shadow:0 0 40px color-mix(in srgb,currentColor 80%,transparent)}
+/* Mobile glass layer containment */
+html{overflow-x:clip}@media(max-width:639px){.grid-panel{overflow-x:clip}}
+</style>
+    <script>
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth >= 640) {
+            document.documentElement.classList.add('scroll-motion');
         }
-
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-image: radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 60%);
-        }
-
-        /* --- ANIMATED HEADER --- */
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 50px;
-            background: linear-gradient(135deg, #3b82f6, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
-            cursor: default;
-            transition: letter-spacing 0.5s ease;
-        }
-
-        h1:hover {
-            letter-spacing: 10px;
-        }
-
-        .grid-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
-            padding: 20px;
-        }
-
-        .menu-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
-        }
-
-        .icon-box {
-            width: 90px;
-            height: 90px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            transition: 0.3s;
-        }
-
-        .menu-card:hover .icon-box {
-            background: rgba(255, 255, 255, 0.08);
-            transform: scale(1.1);
-        }
-
-        /* SVG SIZE */
-        .icon-box svg {
-            width: 50px;
-            height: 50px;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-        }
-
-        .card-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .card-desc {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .salary-highlight {
-            color: var(--gold);
-            font-weight: 700;
-            display: block;
-            margin-top: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .grid-menu {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
-</head>
+    </script></head>
 
 <body>
     <!-- Global Logo -->
@@ -176,9 +74,14 @@
         </defs>
     </svg>
 
-    <h1>ALL_CAREER</h1>
-
-    <div class="grid-menu">
+    <main class="career-stage">
+        <section class="hero-panel" aria-label="All Career introduction">
+            <h1>ALL_CAREER</h1>
+            <p class="scroll-cue">Scroll to explore</p>
+        </section>
+        <section class="grid-panel" aria-label="Career categories">
+            <div class="glass-orb" aria-hidden="true"></div>
+            <div class="grid-menu">
         <!-- 1. Big Company (150 companies) -->
         <a href="career_explorer.html" class="menu-card">
             <div class="icon-box">
@@ -190,7 +93,7 @@
             <div class="card-title">Big Company</div>
             <div class="card-desc">
                 Browse 150+ top tech companies with career page links.
-                <span class="salary-highlight">₹5 LPA – ₹45 LPA+</span>
+                <span class="salary-highlight">Salary range: 5-45 LPA+</span>
             </div>
         </a>
 
@@ -219,7 +122,7 @@
             <div class="card-title">All Jobs</div>
             <div class="card-desc">
                 All tech & non-tech roles from Google, LinkedIn, Portals & Telegram.
-                <span class="salary-highlight" style="color:#10b981;">36 roles • 13 sources • AI-Powered</span>
+                <span class="salary-highlight" style="color:#10b981;"> 36 roles &bull; 13 sources &bull; AI-powered</span>
             </div>
         </a>
 
@@ -236,7 +139,62 @@
         </a>
     </div>
 
-    <script src="logo3d.js"></script>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        (() => {
+            const stage = document.querySelector('.career-stage');
+            const hero = document.querySelector('.hero-panel');
+            const grid = document.querySelector('.grid-panel');
+            const cards = Array.from(document.querySelectorAll('.grid-panel .menu-card'));
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!stage || !hero || !grid || !cards.length || reduceMotion || !window.gsap || !window.ScrollTrigger) {
+                document.documentElement.classList.remove('scroll-motion');
+                if (grid) {
+                    grid.style.opacity = '1';
+                    grid.style.pointerEvents = 'auto';
+                }
+                if (hero) hero.style.pointerEvents = 'auto';
+                cards.forEach(card => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'none';
+                });
+                return;
+            }
+            gsap.registerPlugin(ScrollTrigger);
+            if (window.innerWidth < 640) {
+                document.documentElement.classList.remove('scroll-motion');
+                gsap.set(cards, { opacity: 0, y: 28, scale: 0.96 });
+                ScrollTrigger.batch(cards, { start: 'top 88%', once: true, onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.1, ease: 'power2.out', overwrite: true }) });
+                return;
+            }
+            const cardStates = cards.map((card, index) => ({ card, rotation: index % 2 === 0 ? -4 : 4 }));
+            gsap.set(cardStates.map(item => item.card), { opacity: 0, y: 40, scale: 0.85 });
+            cardStates.forEach(item => gsap.set(item.card, { rotation: item.rotation }));
+            const syncLayerInteractivity = () => {
+                const gridOpacity = Number.parseFloat(getComputedStyle(grid).opacity) || 0;
+                const gridIsInteractive = gridOpacity >= 0.5;
+                grid.style.pointerEvents = gridIsInteractive ? 'auto' : 'none';
+                hero.style.pointerEvents = gridIsInteractive ? 'none' : 'auto';
+            };
+            syncLayerInteractivity();
+            const timeline = gsap.timeline({ scrollTrigger: { trigger: stage, start: 'top top', end: '+=900', pin: true, scrub: true, anticipatePin: 1, invalidateOnRefresh: true, onUpdate: syncLayerInteractivity } });
+            timeline.to(hero, { opacity: 0, scale: 0.85, y: -40, duration: 0.45, ease: 'none' }, 0);
+            timeline.to(grid, { opacity: 1, duration: 0.7, ease: 'none' }, 0.2);
+            cardStates.forEach((item, index) => timeline.to(item.card, { opacity: 1, scale: 1, y: 0, rotation: 0, duration: 0.4, ease: 'none' }, 0.2 + (index * 0.1)));
+            timeline.set(grid, { pointerEvents: 'auto' }, 0.85);
+            timeline.call(syncLayerInteractivity, [], 0.85);
+        })();
+    </script>    <script src="logo3d.js"></script>
 </body>
 
 </html>
+
+
+
+
+
+
