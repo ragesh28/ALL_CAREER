@@ -175,8 +175,25 @@ def extract_text_from_image(image_path):
         return ""
 
 # ---------------------------------------------------------------------------
-# OLLAMA EXTRACTION — with retry logic & walking interview detection
+# GEMINI 2.5 FLASH EXTRACTION — 6-key round-robin rotation
 # ---------------------------------------------------------------------------
+GEMINI_API_KEYS = [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",") if k.strip()]
+GEMINI_MODEL = "gemini-2.5-flash"
+_gemini_call_counter = 0
+
+# Fallback for local dev: load from config file
+if not GEMINI_API_KEYS:
+    _gemini_config = os.path.join(WORKSPACE_DIR, "config_gemini.json")
+    if os.path.exists(_gemini_config):
+        try:
+            with open(_gemini_config, "r") as f:
+                GEMINI_API_KEYS = json.load(f).get("api_keys", [])
+        except Exception:
+            pass
+
+if not GEMINI_API_KEYS:
+    print("⚠️ Warning: No Gemini API keys found. Set GEMINI_API_KEYS env or config_gemini.json.")
+
 SYSTEM_PROMPT = (
     "You are an AI assistant specialized in extracting job details from text. "
     "Analyze the provided text and return a valid JSON object.\n\n"
@@ -193,50 +210,71 @@ SYSTEM_PROMPT = (
     "- Do NOT add markdown formatting, backticks, explanation, or text outside the JSON."
 )
 
-def _call_ollama(text):
-    """Single Ollama API call. Returns parsed JSON dict or None."""
-    url = "http://localhost:11434/api/chat"
-    payload = {
-        "model": "qwen2.5:1.5b",
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": text}
-        ],
-        "format": "json",
-        "stream": False,
-        "options": {
-            "temperature": 0.1
-        }
-    }
+def _call_gemini(text):
+    """Single Gemini API call with round-robin key rotation. Returns parsed JSON dict or None."""
+    global _gemini_call_counter
 
-    try:
-        response = requests.post(url, json=payload, timeout=60)
-        if response.status_code == 200:
-            result = response.json()
-            content = result.get("message", {}).get("content", "").strip()
-            return json.loads(content)
-        else:
-            print(f"    Ollama status error {response.status_code}")
-    except json.JSONDecodeError:
-        print("    Ollama returned non-JSON response")
-    except Exception as e:
-        print(f"    Ollama extraction error: {e}")
+    if not GEMINI_API_KEYS:
+        print("    ❌ No Gemini API keys available!")
+        return None
+
+    key = GEMINI_API_KEYS[_gemini_call_counter % len(GEMINI_API_KEYS)]
+    key_idx = _gemini_call_counter % len(GEMINI_API_KEYS) + 1
+    _gemini_call_counter += 1
+
+    # Try primary model first, fall back to gemini-2.0-flash if 404
+    models_to_try = [GEMINI_MODEL, "gemini-2.0-flash"]
+
+    for model in models_to_try:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+        payload = {
+            "contents": [{"parts": [{"text": SYSTEM_PROMPT + "\n\nText to analyze:\n" + text}]}],
+            "generationConfig": {
+                "responseMimeType": "application/json",
+                "temperature": 0.1
+            }
+        }
+
+        try:
+            response = requests.post(url, json=payload, timeout=30)
+            if response.status_code == 200:
+                result = response.json()
+                content = (
+                    result.get("candidates", [{}])[0]
+                    .get("content", {})
+                    .get("parts", [{}])[0]
+                    .get("text", "")
+                    .strip()
+                )
+                return json.loads(content)
+            elif response.status_code == 404:
+                # Model not available for this key — try fallback model
+                continue
+            elif response.status_code == 429:
+                print(f"    ⚠️ Gemini key#{key_idx} rate-limited (429). Waiting 5s...")
+                time.sleep(5)
+            else:
+                print(f"    Gemini status error {response.status_code} (key#{key_idx})")
+        except json.JSONDecodeError:
+            print(f"    Gemini returned non-JSON response (key#{key_idx})")
+        except Exception as e:
+            print(f"    Gemini extraction error: {e}")
     return None
 
 
-def extract_job_with_ollama(text, max_retries=3):
+def extract_job_with_gemini(text, max_retries=3):
     """
-    Extract job data from text using Ollama with retry logic.
+    Extract job data from text using Gemini 2.5 Flash with retry logic.
     Returns:
         dict  — valid job data
         "NONE" — AI determined this is not a job posting (do not retry)
         None — extraction failed after all retries
     """
     for attempt in range(max_retries):
-        result = _call_ollama(text)
+        result = _call_gemini(text)
 
         if result is None:
-            print(f"    ⚠️ Attempt {attempt+1}/{max_retries}: Ollama call failed, retrying...")
+            print(f"    ⚠️ Attempt {attempt+1}/{max_retries}: Gemini call failed, retrying...")
             time.sleep(2)
             continue
 
@@ -280,7 +318,7 @@ def cleanup_old_jobs(max_age_days=20):
                 for j in jobs:
                     source = (j.get("platform") or j.get("source") or "").lower()
                     # Only clean up Telegram jobs — keep ALL other sources
-                    if source == "telegram":
+                    if source in ("telegram", "telegram_message", "telegram_post"):
                         date_str = storage.get_job_date(j)
                         if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
                             telegram_removed += 1
@@ -404,8 +442,8 @@ async def run_pipeline():
     messages_processed = 0
     messages_skipped_none = 0
     messages_failed = 0
-    debug_messages = []  # Store up to 10 skipped/failed messages for debugging
-    DEBUG_MAX = 10
+    debug_messages = []  # Store most recent skipped/failed messages for debugging (FIFO)
+    DEBUG_MAX = 20
 
     # Resume from last checkpoint if the previous run was interrupted
     start_channel_idx = load_progress()
@@ -456,6 +494,7 @@ async def run_pipeline():
                         break
 
                     raw_text = msg.text or ""
+                    has_image = False  # Track if this message has image content
 
                     # Check for image media to perform OCR
                     if msg.media:
@@ -464,6 +503,7 @@ async def run_pipeline():
                             if file_path:
                                 ext = os.path.splitext(file_path)[1].lower()
                                 if ext in (".jpg", ".jpeg", ".png", ".webp", ".bmp"):
+                                    has_image = True
                                     ocr_text = extract_text_from_image(file_path)
                                     if ocr_text:
                                         raw_text += "\n" + ocr_text
@@ -479,23 +519,27 @@ async def run_pipeline():
                         save_last_seen()
                         continue
 
-                    # Analyze text with local Ollama (with retry logic)
+                    # Determine message type: post (image) or message (text)
+                    telegram_type = "telegram_post" if has_image else "telegram_message"
+
+                    # Analyze text with Gemini 2.5 Flash (round-robin key rotation)
                     messages_processed += 1
-                    print(f"  Analyzing message {msg.id} with Qwen2.5 1.5B...")
-                    job_result = extract_job_with_ollama(raw_text)
+                    print(f"  Analyzing {telegram_type.replace('telegram_', '')} {msg.id} with Gemini 2.5 Flash...")
+                    job_result = extract_job_with_gemini(raw_text)
 
                     # Handle non-job messages
                     if job_result == "NONE":
                         messages_skipped_none += 1
                         print(f"    🚫 Not a job posting — skipped.")
-                        if len(debug_messages) < DEBUG_MAX:
-                            debug_messages.append({
-                                "type": "non_job_skipped",
-                                "channel": channel,
-                                "msg_id": msg.id,
-                                "text": raw_text[:500],
-                                "timestamp": msg.date.isoformat() if msg.date else None
-                            })
+                        debug_messages.append({
+                            "type": "non_job_skipped",
+                            "channel": channel,
+                            "msg_id": msg.id,
+                            "text": raw_text[:500],
+                            "timestamp": msg.date.isoformat() if msg.date else None
+                        })
+                        if len(debug_messages) > DEBUG_MAX:
+                            debug_messages.pop(0)
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -504,14 +548,15 @@ async def run_pipeline():
                     if job_result is None:
                         messages_failed += 1
                         print(f"    ❌ Failed to extract after retries — skipped.")
-                        if len(debug_messages) < DEBUG_MAX:
-                            debug_messages.append({
-                                "type": "failed_extraction",
-                                "channel": channel,
-                                "msg_id": msg.id,
-                                "text": raw_text[:500],
-                                "timestamp": msg.date.isoformat() if msg.date else None
-                            })
+                        debug_messages.append({
+                            "type": "failed_extraction",
+                            "channel": channel,
+                            "msg_id": msg.id,
+                            "text": raw_text[:500],
+                            "timestamp": msg.date.isoformat() if msg.date else None
+                        })
+                        if len(debug_messages) > DEBUG_MAX:
+                            debug_messages.pop(0)
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -531,7 +576,7 @@ async def run_pipeline():
                         "location": location,
                         "date_posted": datetime.now().strftime("%Y-%m-%d"),
                         "url": apply_link,
-                        "source": "telegram",
+                        "source": telegram_type,  # "telegram_message" or "telegram_post"
                         "experience": job_json.get("experience"),
                         "salary": job_json.get("salary"),
                         "qualification": job_json.get("qualification"),
@@ -553,7 +598,7 @@ async def run_pipeline():
 
                     last_seen_ids[channel] = msg.id
                     save_last_seen()
-                    time.sleep(0.5)
+                    time.sleep(1)  # Rate limit between Gemini API calls
 
                 # Save progress after each channel completes
                 save_progress(finished=False, current_channel_idx=ch_idx + 1)

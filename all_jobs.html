@@ -824,7 +824,8 @@
         { id: 'foundit',      label: 'Foundit',      logo: 'logos/portals/foundit.png' },
         { id: 'apna',         label: 'Apna',         logo: 'logos/portals/apna.png' },
         { id: 'freshersworld',label: 'FreshersWorld',logo: 'logos/portals/freshersworld.ico' },
-        { id: 'telegram',     label: 'Telegram',     logo: 'logos/portals/telegram.svg' },
+        { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
+        { id: 'telegram_post',    label: 'Telegram Post',    logo: 'logos/portals/telegram.svg' },
         { id: 'other',        label: 'Other Sources', logo: '' },
     ];
 
@@ -1030,7 +1031,9 @@
         'timesjobs': 'logos/portals/timesjobs.svg', 'hirist': 'logos/portals/hirist.ico',
         'workindia': 'logos/portals/workindia.png', 'foundit': 'logos/portals/foundit.png',
         'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
-        'telegram': 'logos/portals/telegram.svg', 'other': '',
+        'telegram': 'logos/portals/telegram.svg',
+        'telegram_message': 'logos/portals/telegram.svg',
+        'telegram_post': 'logos/portals/telegram.svg', 'other': '',
     };
 
     // ══════════════════════════════════════════════
@@ -1410,7 +1413,7 @@
     async function fetchJobsFromTurso() {
         let fetchedJobs = [];
         let chunkNum = 1;
-        const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram']);
+        const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post']);
         
         while (true) {
             try {

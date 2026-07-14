@@ -70,6 +70,7 @@ job_api_calls.md
 *.session
 base64_session.txt
 config_telegram.json
+config_gemini.json
 PROJECT DETAILS/
 
 # Local IDE Customizations

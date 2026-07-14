@@ -1,14 +1,14 @@
-name: Telegram Jobs Scraper (PaddleOCR + Ollama Qwen2.5)
+name: Telegram Jobs Scraper (PaddleOCR + Gemini 2.5 Flash)
 
 on:
   workflow_dispatch:   # Manual trigger
   schedule:
-    - cron: '17 15 * * *'  # ~9:00 PM IST (15:17 UTC) — off-peak minute to reduce delay
+    - cron: '17 * * * *'  # Every hour at :17 minutes
 
 jobs:
   scrape-telegram:
     runs-on: ubuntu-latest
-    timeout-minutes: 355  # 5h 55m — leave buffer before 6h hard limit
+    timeout-minutes: 50  # Hourly runs should finish quickly
 
     steps:
       - name: Checkout code
@@ -32,15 +32,6 @@ jobs:
         run: |
           pip install telethon pytz requests pillow paddlepaddle paddleocr
 
-      - name: Install and start Ollama
-        run: |
-          curl -fsSL https://ollama.com/install.sh | sh
-          ollama serve &
-          echo "Waiting for Ollama to boot up..."
-          sleep 10
-          ollama pull qwen2.5:1.5b
-          echo "Ollama model pulled successfully!"
-
       - name: Run Telegram Scraper Pipeline
         env:
           PYTHONUNBUFFERED: "1"
@@ -48,6 +39,7 @@ jobs:
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TELEGRAM_SESSION_BASE64: ${{ secrets.TELEGRAM_SESSION_BASE64 }}
           TELEGRAM_CHANNELS: ${{ vars.TELEGRAM_CHANNELS }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
         run: |
           python scrape_telegram_jobs.py
 
