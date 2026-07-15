@@ -3,6 +3,7 @@
  * The PNG remains visible until WebGL and the Three.js modules are ready.
  */
 (() => {
+    const ANIMATE = false; // Set to true to enable the 3D rotating star animation
     const DEBUG = new URLSearchParams(window.location.search).has('logoDebug');
     const SIZE = DEBUG ? 400 : 88;
     const THREE_CDN = 'https://esm.sh/three@0.161.0';
@@ -16,19 +17,37 @@
         wrapper.id = 'logo3d-wrapper';
         wrapper.href = 'index.html';
         wrapper.setAttribute('aria-label', 'ALL_CAREER home');
-        Object.assign(wrapper.style, {
-            position: 'fixed', top: '14px', left: '20px', zIndex: '9999',
-            display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none',
-            cursor: 'pointer', padding: '5px 10px 5px 5px', borderRadius: '14px',
-            background: 'rgba(7, 11, 25, 0.78)', border: '1px solid rgba(216,240,255,0.16)',
-            boxShadow: '0 12px 32px rgba(0,0,0,0.28)', backdropFilter: 'blur(12px)'
-        });
-        wrapper.innerHTML = `
-            <span class="logo3d-visual" aria-hidden="true" style="display:grid;place-items:center;width:${SIZE}px;height:${SIZE}px;overflow:hidden;flex:0 0 ${SIZE}px;background:#000000;border-radius:18px;box-shadow:0 0 22px rgba(216,240,255,0.14) inset,0 0 18px rgba(141,232,255,0.16);">
-                <img class="logo3d-fallback" src="String_Theory.png" alt="" style="width:48px;height:48px;border-radius:12px;display:block;">
-            </span>
-            <span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:#fff;letter-spacing:0.02em;white-space:nowrap;">ALL_CAREER</span>
-        `;
+
+        if (!ANIMATE) {
+            Object.assign(wrapper.style, {
+                position: 'fixed', top: '20px', left: '26px', zIndex: '9999',
+                display: 'flex', alignItems: 'center', gap: '12px',
+                textDecoration: 'none', cursor: 'pointer',
+            });
+            wrapper.innerHTML = `
+                <img src="String_Theory.png" alt="Logo"
+                    style="width:38px;height:38px;border-radius:10px;
+                           box-shadow:0 4px 15px rgba(0,0,0,0.3);display:block;">
+                <span style="font-family:'Outfit',sans-serif;font-weight:800;
+                             font-size:1.4rem;color:#ffffff;letter-spacing:1px;
+                             text-shadow:0 2px 10px rgba(0,0,0,0.5);">ALL_CAREER</span>
+            `;
+        } else {
+            Object.assign(wrapper.style, {
+                position: 'fixed', top: '14px', left: '20px', zIndex: '9999',
+                display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none',
+                cursor: 'pointer', padding: '5px 10px 5px 5px', borderRadius: '14px',
+                background: 'rgba(7, 11, 25, 0.78)', border: '1px solid rgba(216,240,255,0.16)',
+                boxShadow: '0 12px 32px rgba(0,0,0,0.28)', backdropFilter: 'blur(12px)'
+            });
+            wrapper.innerHTML = `
+                <span class="logo3d-visual" aria-hidden="true" style="display:grid;place-items:center;width:${SIZE}px;height:${SIZE}px;overflow:hidden;flex:0 0 ${SIZE}px;background:#000000;border-radius:18px;box-shadow:0 0 22px rgba(216,240,255,0.14) inset,0 0 18px rgba(141,232,255,0.16);">
+                    <img class="logo3d-fallback" src="String_Theory.png" alt="" style="width:48px;height:48px;border-radius:12px;display:block;">
+                </span>
+                <span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:#fff;letter-spacing:0.02em;white-space:nowrap;">ALL_CAREER</span>
+            `;
+        }
+
         if (legacyLogo) legacyLogo.replaceWith(wrapper);
         else document.body.prepend(wrapper);
         return wrapper;
@@ -101,7 +120,7 @@
     }
 
     async function mountWireframeLogo(wrapper) {
-        if (!hasWebGL()) return;
+        if (!ANIMATE || !hasWebGL()) return;
         const visual = wrapper.querySelector('.logo3d-visual');
         const fallback = wrapper.querySelector('.logo3d-fallback');
         let renderer;
