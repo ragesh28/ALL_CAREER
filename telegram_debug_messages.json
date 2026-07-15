@@ -1,23 +1,142 @@
 [
   {
-    "type": "non_job_skipped",
-    "channel": "kickcharm",
-    "msg_id": 41540,
-    "text": "🚨 𝗜 𝘀𝘁𝗼𝗽𝗽𝗲𝗱 𝘁𝗲𝗹𝗹𝗶𝗻𝗴 𝗽𝗲𝗼𝗽𝗹𝗲 𝗜 𝘄𝗮𝘀 𝗷𝗼𝗯 𝗵𝘂𝗻𝘁𝗶𝗻𝗴.\n\nThe “All the best!” comments felt like mockery 😔\nDeleted all my LinkedIn posts.\n8 months of confidence? Gone.\n\nWake up → Open Naukri → “500+ applicants” → Apply → Auto-rejected in 2 hours → Repeat 🔁\n\nThen someone said:\n“You’re not bad. You’re just too late. Every time.”\n\nBy the time I saw jobs on LinkedIn, they were 6–12 hours old.\nBy the time I applied, HR had shortlisted people who applied in hour 1.\n\n𝗜 𝘄𝗮𝘀𝗻’𝘁 𝗳𝗮𝗶𝗹𝗶𝗻𝗴. 𝗜 𝘄𝗮𝘀 𝗷𝘂𝘀𝘁 𝗮𝗹𝘄𝗮𝘆𝘀 𝗹𝗮𝘁𝗲.\n\nLas",
-    "timestamp": "2026-07-15T12:25:06+00:00"
+    "type": "failed_extraction",
+    "channel": "job4fresherss",
+    "msg_id": 19029,
+    "text": "Company Name:  Infosys \nPost Name:  Data (Non Voice)\nSalary:  Up to 4.3 LPA*\nExperience:  Freshers\nBatch:  2023-25\nJob Location:  Pune\nWalk-in Date:  16th July 2026\n\n✅Apply Link: https://job4freshers.co.in/infosys-walk-in-data-role/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nFor Daily Government Jobs Subscribe to👇🏻\nhttps://yt.openinapp.co/Job4Governmen\n\nTelegram\nhttps://telegram.me/j",
+    "timestamp": "2026-07-15T15:35:06+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255143,
+    "text": "🚀 We're Hiring | Walk-in Drive – Central Operations (Last Mile)\nLooking to build your career in Last Mile Operations? Join us for our Walk-in Hiring Drive for the following roles:\n📌 Open Positions\nSenior Manager – Central Operations Last mile \nManager – Central Operations last mile \nAssistant Manager – Central Operations\nLast mile \nLead- Central operation last mile \n\n📅 Walk-in Date: 17th July\n11:00 am -4 pm\n📍 Location: Shilpitha Tech Park, Bellandur Bangalore, 560103\n\nIf you have experience in L",
+    "timestamp": "2026-07-15T14:28:44+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255144,
+    "text": "Senior Test Engineer\nBangalore\nJob Description\n\nJob Description\nRole: Testing – Onshore Test Lead (QUBIQ Data Platform)\nLocation: Onshore\nWho are we looking for?\nWe are seeking an experienced Onshore Test Lead to own and drive end-to-end quality assurance for the QUBIQ enterprise data platform. The role requires strong data testing expertise, test governance leadership, and stakeholder management skills to ensure delivery of high-quality, audit-ready data solutions.\nJob Description\nOwn overall Q",
+    "timestamp": "2026-07-15T14:31:37+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255145,
+    "text": "🚀 We're Hiring | Multiple Embedded & Semiconductor Openings\nWe're looking for talented professionals to join exciting Embedded Software and Semiconductor projects.\n📍 Open Positions:\n1️⃣ Android BSP Engineer\n📍 Bangalore | 👨💻 4–8 Years\nSkills: Android Framework, Android HAL, Device Drivers, C/C++, Android Architecture\n2️⃣ Virtualization / Validation Engineer\n📍 Bangalore | 👨💻 4–8 Years\nSkills: Xen Hypervisor, Multi-VM, Android/Yocto/RTOS, Virtio, Python, CI/CD\n3️⃣ Senior Embedded Engineer\n📍 Bangalo",
+    "timestamp": "2026-07-15T14:36:03+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255146,
+    "text": "I'm hiring a Senior Android Engineer for a Bengaluru-based opportunity.\n\nWe're looking for someone who has:\n• 3–5 years of Android development experience\n• Strong expertise in Kotlin and modern Android development\n• Experience building and shipping production Android applications\n• Hands-on experience with Jetpack Compose, MVVM, Coroutines, and Android SDK\n• Strong understanding of app architecture, performance optimization, and testing\n• Experience collaborating with Product, Design, and Backen",
+    "timestamp": "2026-07-15T14:37:16+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255147,
+    "text": "Philips Hiring for Software Engineer II\n\nLocation: Bangalore, Karnataka, India \n\nJob Requirements: \n\n1.   2–4 years of professional software development experience using C++.\n\n2.  Strong understanding of object-oriented programming concepts, data structures, algorithms, and software design principles.\n\n3. Experience developing applications in Windows environments.\n\n4. Good understanding of Windows OS fundamentals including Registry, Processes, Services, Threads, File System, and User Account Con",
+    "timestamp": "2026-07-15T14:40:10+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255148,
+    "text": "Wipro is seeking experienced professionals for the following positions:\n\n- ASIC RTL Design Lead\n- Emulation Lead\n\nKey details include:\n- Experience: 8+ years\n- Notice Period: 30-60 days\n\nInterested candidates can send their resumes to swetha.janardhan@wipro.com.",
+    "timestamp": "2026-07-15T14:40:37+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255149,
+    "text": "\nWE'RE HIRING\nAutoCAD Draftsman - Electrical & ELV\nATS\nMDB\nUPS\nPDU\nRole details\nPosition:\nAutoCAD Draftsman - Electrical & ELV\nSTP CABLING\nCCTV\nFACP\nCONTROL\nACCESS\nBMS\nOpenings:\n5\nExperience:\n3-7 years\nDiscipline:\nElectrical & ELV\nCABLE TRAY\nLocation:\nMangaluru\nQualification:\nDiploma in Electrical /\nElectronics Engineering or equivalent\nRequired skills\nStrong proficiency in AutoCAD\nKnowledge of electrical SLDs, panel layouts, and cable routing\nExperience with Electrical and ELV systems\nAbility t",
+    "timestamp": "2026-07-15T14:43:10+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255150,
+    "text": "Persistent Systems Ltd Job Alert\n\nAre you looking for an exciting opportunity to grow your career? We are seeking a C++ Developer to join Us!\n\nLocation: Bangalore\nExperience: 8+ years\nKey Skills: C++, SNMP, OAM, Bash\n\nIf you're passionate about Developer and eager to make an impact, we'd love to hear from you! Apply now or tag someone who might be a great fit.\n\nPlease feel free to Contact Us -\nEmail Id - samruddhi_dange@persistent.com\nPPersistent\nC++ Developer\nBangalore\n8+ years\nSkills:\nC++, SNM",
+    "timestamp": "2026-07-15T14:44:50+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255151,
+    "text": "\nTATA\nSAMS\nii\nu  B\np  e\nPd\nconditions, and develop business cases (P&L /Cashflow)\nAnalyse global markets, customer needs, industry trends and competitor strategies using market intelligence and business\ninsights\nDevelop marketing and bid collaterals to effectively position products and solutions for international customers\nRepresent the company in interactions with domestic and international customers and stakeholders\n• Willingness to travel within India and internationally\nBusiness Development ",
+    "timestamp": "2026-07-15T14:49:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255152,
+    "text": "\nTATA\nSAS\nuu一\nu e\np场\nL\nESD control, IPC practices, NDT awareness, meet DGAQA & CEMILAC requirements\nConfiguration Management, document control & change management\nProven experience in aerospace, defence electronics, avionics, UAV's, radar systems, EO/IR systems, or engineering product development\norganisations\n• Extensive experience in avionics, UAVs, defence electronics or engineering product development environments\nProduction lead (Work Location: Bengaluru)\nQualification: B.Tech. - (Electroni",
+    "timestamp": "2026-07-15T14:49:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255153,
+    "text": "\nAPPASAMY\nASSOCIATES\nEmpowering Vision\nWE ARE\nHIRING!\nJoin us in Empowering Vision\nWE ARE LOOKING FOR A\nPRODUCT SPECIALIST-OSD\nDepartment: Sales & Clinical Applications\nWe are looking for a driven and clinically oriented Product Specialist-OSD to join our team.\nYou will be the face of the company in your assigned zone — generating demand, conducting\nproduct demonstrations and providing clinical application support for our advanced ophthalmic\ndiagnostic portfolio.\nKEY HIGHLIGHTS\nWHAT YOU WILL DO\n",
+    "timestamp": "2026-07-15T14:49:38+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "arunchauhanofficial",
-    "msg_id": 8046,
-    "text": "I'm having some discussion on the designed step by step content with 12+ experienced full stack developer at American Express and tech educator with 200k+ followers 🚀 🌟 \n\nBringing something awesome soon, stay tuned...I personally like the content I will share here with you all 🤗",
-    "timestamp": "2026-07-15T13:01:04+00:00"
+    "msg_id": 8047,
+    "text": "Most of you were asking which resource I followed during my last switch to PayPal 💙 \n\nSo here is one thing that genuinely helped me during interview preparation was learning from different YouTubers and tech creators. I used to watch a lot of YouTube videos and Instagram reels for quick revisions and to stay updated.\n\nOne creator I've followed for a long time is **Aman Sahni from Hungry Coders.** His content has always been insightful, but I often felt that consuming videos alone was a bit rando",
+    "timestamp": "2026-07-15T15:45:07+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "web3hiring",
-    "msg_id": 16239,
-    "text": "• Swell Network is hiring [FP A Manager Senior Manager](https://web3.career/fp-a-manager-senior-manager-layerzerolabs/151101)\n• Render Network is hiring [Creative Director](https://jobs.ashbyhq.com/Render/46584e6a-7116-4376-ad67-f9cad10c0c7d)\n• Decent.xyz is hiring [Events & Marketing Manager](https://jobs.lever.co/moonpay/5632b89c-554c-4423-8f29-7f1eae0937e5)\n• Shakepay is hiring [Senior Legal Counsel](https://job-boards.greenhouse.io/shakepay/jobs/4712824005)\n• Gemini is hiring [Lead, Liquidit",
-    "timestamp": "2026-07-15T12:09:17+00:00"
+    "channel": "dot_aware",
+    "msg_id": 14455,
+    "text": "**📌GE HealthCare is hiring for Software Intern\nSalary/Stipend: 4-5 LPA\nApply here: ****https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4041234EXTERNALENGLOBAL/Software-Intern****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**\nGE HealthCare",
+    "timestamp": "2026-07-15T15:47:35+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "dot_aware",
+    "msg_id": 14457,
+    "text": "**📌Clueso is hiring for Frontend-Heavy Full Stack Engineer\nExperience: 0-2 years\nSalary: 15-25 LPA\nApply here: ****https://www.clueso.io/careers/full-stack-enginee****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
+    "timestamp": "2026-07-15T15:47:45+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "dot_aware",
+    "msg_id": 14458,
+    "text": "**📌Hyland is hiring for Software Developer\nExperience: 0-2 years\nSalary: 15-25 LPA\nApply here: ****https://www.linkedin.com/jobs/view/4440571453****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
+    "timestamp": "2026-07-15T15:47:47+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "gocareers",
+    "msg_id": 11252,
+    "text": "DigitalxNode is hiring Junior UI Developer (Gurugram)\n\nFor 2023, 2024, 2025 gards\nLocation: Gurugram \n\nhttps://digitalxnode.com/jobs/junior-ui-developer-gurugram/\nDigitalXNode",
+    "timestamp": "2026-07-15T16:05:24+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "gocareers",
+    "msg_id": 11254,
+    "text": "adani is hiring Software Developer \n\nFor 2022, 2023, 2024, 2025 gards\nLocation: Ahemdabad \n\nhttps://www.adani.com/Opportunity/?source=jobfound.org#en/sites/CX_4001/job/47442",
+    "timestamp": "2026-07-15T16:08:43+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "gocareers",
+    "msg_id": 11255,
+    "text": "Clueso is hiring Full Stack Engineer \n\nFor 2024, 2025, 2026 gards\nLocation: Bangalore \n\nhttps://www.clueso.io/careers/full-stack-engineer?source=jobfound.org\nClueso\nProduct videos\nin minutes with AI",
+    "timestamp": "2026-07-15T16:10:01+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "gocareers",
+    "msg_id": 11256,
+    "text": "Hyland is hiring Software Developer \n\nFor 2023, 2024, 2025 gards\nLocation: Hyderabad \n\nhttps://www.linkedin.com/jobs/view/4440571453/",
+    "timestamp": "2026-07-15T16:12:14+00:00"
   }
 ]
