@@ -31,7 +31,175 @@
             background-attachment: fixed;
         }
 
-        #main-header {
+        
+
+.sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            position: sticky; top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 0 0 40px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.06) transparent;
+        }
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 4px; }
+
+.sidebar-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+.sidebar-title {
+            font-size: 0.95rem; font-weight: 700; color: var(--text-main);
+        }
+
+.applied-badge {
+            font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--primary); border-radius: 20px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            display: none;
+        }
+
+.filter-section {
+            border-bottom: 1px solid var(--border);
+        }
+
+.filter-body {
+            overflow: hidden; max-height: 0;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 16px;
+        }
+
+.filter-search {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+.filter-search input {
+            flex: 1; background: none; border: none; outline: none;
+            color: var(--text-main); font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+        }
+
+.filter-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 4px; cursor: pointer; border-radius: 6px;
+            transition: background 0.15s; user-select: none;
+        }
+
+.filter-option:hover { background: var(--bg-hover); }
+
+.filter-option input[type="checkbox"] { display: none; }
+
+.custom-checkbox {
+            width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+            border: 1.5px solid var(--text-dim);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+
+.filter-option.checked .custom-checkbox {
+            background: var(--primary); border-color: var(--primary);
+        }
+
+.custom-checkbox svg { display: none; }
+
+.filter-option.checked .custom-checkbox svg { display: block; }
+
+.option-label {
+            font-size: 0.82rem; color: var(--text-muted); flex: 1;
+            font-weight: 500; transition: color 0.15s;
+        }
+
+.filter-option:hover .option-label,
+        .filter-option.checked .option-label { color: var(--text-main); }
+
+.show-more-btn {
+            font-size: 0.78rem; color: var(--primary); font-weight: 600;
+            cursor: pointer; padding: 6px 4px; display: inline-block;
+            transition: opacity 0.2s;
+        }
+
+.show-more-btn:hover { opacity: 0.8; }
+
+.filter-radio {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 4px; cursor: pointer; border-radius: 6px;
+            transition: background 0.15s; user-select: none;
+        }
+
+.filter-radio:hover { background: var(--bg-hover); }
+
+.main-content {
+            flex: 1; min-width: 0;
+            padding: 20px 24px 80px;
+        }
+
+.job-card::before {
+            content: '';
+            position: absolute; top: 0; left: 16px; right: 16px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(52,211,153,0.25), rgba(96,165,250,0.2), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+.job-card:hover::before { opacity: 1; }
+
+.job-meta {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+
+.meta-row {
+            display: flex; gap: 5px; align-items: center; overflow: hidden;
+        }
+
+.meta-badge {
+            font-size: 0.7rem; padding: 4px 9px; border-radius: 7px;
+            background: rgba(255,255,255,0.04); color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: inline-flex; align-items: center; gap: 4px;
+            white-space: nowrap; font-weight: 500;
+            max-width: 120px; overflow: hidden; text-overflow: ellipsis;
+        }
+
+.meta-badge.loc { color: var(--accent-blue); border-color: rgba(96,165,250,0.15); }
+
+.meta-badge.exp { color: var(--accent-amber); border-color: rgba(251,191,36,0.15); }
+
+.meta-badge.date { color: var(--primary); border-color: rgba(52,211,153,0.15); }
+
+.card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: auto;
+        }
+
+.card-role { color: var(--text-dim); font-size: 0.72rem; font-weight: 500; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.apply-btn {
+            padding: 7px 18px; background: transparent; color: var(--primary);
+            text-decoration: none; font-weight: 700; border-radius: 9px;
+            font-size: 0.8rem; border: 1px solid rgba(52,211,153,0.3);
+            transition: all 0.25s; position: relative; overflow: hidden;
+        }
+
+.apply-btn:hover {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white; border-color: transparent;
+            box-shadow: 0 4px 18px rgba(52,211,153,0.3); transform: translateY(-1px);
+        }
+
+#main-header {
             text-align: center; padding-top: 60px; padding-bottom: 20px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden; opacity: 1; height: auto; transform: scale(1);
@@ -47,107 +215,6 @@
             letter-spacing: -1px; text-decoration: none; margin: 0;
         }
         h1:hover { letter-spacing: 5px; }
-
-        /* --- FILTER BAR --- */
-        .filter-bar-container {
-            position: sticky; top: 20px; z-index: 100;
-            padding: 0 20px; display: flex; justify-content: center; margin-bottom: 10px;
-        }
-        .filter-bar {
-            width: 100%; max-width: 1000px;
-            display: flex; gap: 12px; background: var(--bg-glass);
-            backdrop-filter: blur(12px); padding: 12px 18px; border-radius: 50px;
-            border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            align-items: center; flex-wrap: wrap;
-            position: relative; z-index: 10;
-        }
-        .mini-logo {
-            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem;
-            color: var(--primary); white-space: nowrap; max-width: 180px; opacity: 1;
-            overflow: hidden; transition: all 0.5s; text-decoration: none; margin-right: 15px;
-            cursor: pointer;
-        }
-        .filter-bar.collapsed > *:not(.mini-logo) {
-            display: none !important;
-        }
-        .filter-bar.collapsed {
-            width: auto;
-            max-width: fit-content;
-            padding: 12px 24px;
-            border-radius: 50px;
-        }
-        .filter-bar.collapsed .mini-logo {
-            margin-right: 0;
-        }
-        .filter-group { flex: 1; min-width: 120px; }
-        .filter-input {
-            width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
-            color: white; padding: 10px 14px; border-radius: 20px; outline: none;
-            font-family: inherit; transition: 0.3s;
-        }
-        .filter-input:focus { border-color: var(--primary); }
-        select.filter-input option { background-color: var(--bg-deep); color: white; }
-
-        /* --- CALENDAR BUTTON & POPUP --- */
-        .cal-wrap { position: relative; }
-        .cal-btn {
-            display: flex; align-items: center; gap: 7px;
-            padding: 9px 16px; border-radius: 20px;
-            border: 1px solid rgba(6,182,212,0.4);
-            background: rgba(6,182,212,0.08); color: #06b6d4;
-            cursor: pointer; font-weight: 700; font-size: 0.85rem;
-            font-family: inherit; white-space: nowrap; transition: 0.2s; user-select: none;
-        }
-        .cal-btn:hover { background: rgba(6,182,212,0.16); }
-        .cal-btn.active {
-            background: #06b6d4; color: #020617; border-color: #06b6d4;
-        }
-        .cal-btn .cal-x {
-            display: none; width: 16px; height: 16px; border-radius: 50%;
-            background: rgba(0,0,0,0.2); align-items: center; justify-content: center;
-            font-size: 0.65rem; line-height: 1;
-        }
-        .cal-btn.active .cal-x { display: flex; }
-        .cal-popup {
-            position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
-            background: #0d1526; border: 1px solid rgba(6,182,212,0.2);
-            border-radius: 18px; padding: 8px; width: 200px;
-            box-shadow: 0 24px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(6,182,212,0.08);
-            display: none;
-        }
-        .cal-popup.open { display: block; animation: calPop 0.2s cubic-bezier(0.34,1.56,0.64,1); }
-        @keyframes calPop {
-            from { opacity:0; transform:scale(0.9) translateY(-6px); }
-            to   { opacity:1; transform:scale(1) translateY(0); }
-        }
-        .date-menu-item {
-            padding: 10px 14px;
-            cursor: pointer;
-            border-radius: 10px;
-            color: var(--text-main);
-            transition: all 0.2s;
-            font-size: 0.88rem;
-            font-weight: 600;
-        }
-        .date-menu-item:hover {
-            background: rgba(6,182,212,0.12);
-            color: #06b6d4;
-        }
-        .date-menu-item.active {
-            background: #06b6d4;
-            color: #020617;
-        }
-
-        /* Experience toggle */
-        .exp-group { display: flex; gap: 6px; }
-        .exp-btn {
-            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
-            background: transparent; color: var(--text-muted); cursor: pointer;
-            font-weight: 600; font-size: 0.82rem; transition: 0.2s;
-            font-family: inherit; white-space: nowrap;
-        }
-        .exp-btn:hover { border-color: var(--primary); color: white; }
-        .exp-btn.active { background: var(--primary); color: #020617; border-color: var(--primary); }
 
         /* Roles tree button */
         .roles-toggle {
@@ -241,35 +308,6 @@
             justify-content: center;
         }
 
-        .job-card {
-            background: var(--bg-surface); border: 1px solid var(--border);
-            padding: 22px; border-radius: 20px;
-            display: flex; flex-direction: column; gap: 14px;
-            transition: all 0.2s ease;
-            opacity: 0; transform: translateY(12px); animation: cardIn 0.5s forwards;
-            width: 340px; height: 210px; box-sizing: border-box;
-            overflow: hidden;
-        }
-        .job-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-
-        .card-top { display: flex; gap: 14px; align-items: flex-start; height: 72px; overflow: hidden; }
-        .logo-box { width: 48px; height: 48px; position: relative; background: white; border-radius: 12px; padding: 4px; flex-shrink: 0; }
-        .company-logo { width: 40px; height: 40px; object-fit: contain; position: absolute; top: 4px; left: 4px; }
-        .logo-fallback {
-            width: 100%; height: 100%; background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-            border-radius: 8px; display: none; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 1.3rem; color: white;
-        }
-        .company-name {
-            color: var(--text-muted); font-size: 0.78rem; font-weight: 600; margin-bottom: 4px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;
-        }
-        .job-title {
-            font-size: 0.95rem; line-height: 1.35; color: white; font-weight: 700;
-            display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; min-height: 2.7em;
-        }
         .job-meta { display: flex; flex-wrap: nowrap; gap: 6px; margin-top: auto; overflow: hidden; height: 32px; align-items: center; }
         .meta-badge {
             font-size: 0.75rem; padding: 6px 12px; border-radius: 8px;
@@ -312,13 +350,7 @@
         /* Responsive: only mobile needs special handling */
         @media (max-width: 500px) {
             .jobs-grid { grid-template-columns: 1fr; }
-            .job-card { width: 100%; height: auto; }
-            .container { padding: 0 12px 80px; }
-            h1 { font-size: 2rem; }
-            .tree { flex-direction: column; gap: 20px; }
-            .tree-branch { max-width: 100%; }
-        }
-        @media (min-width: 501px) and (max-width: 768px) {
+            @media (min-width: 501px) and (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .tree { flex-direction: column; gap: 20px; }
             .tree-branch { max-width: 100%; }
@@ -339,30 +371,96 @@
         <p style="color: var(--text-muted); margin-top: 10px; font-size: 0.95rem;">150 top companies • Auto-scraped daily at 7 AM IST</p>
     </header>
 
-    <div class="filter-bar-container">
-        <div class="filter-bar">
-            <span class="mini-logo" onclick="toggleFilterBar()">Filter</span>
-            <div class="filter-group">
-                <input type="text" id="searchInput" class="filter-input" placeholder="🔍 Search jobs..." oninput="applyFilters()">
+    
+    <div class="layout">
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">All Filters</div>
+                <div class="applied-badge" id="appliedCount">0</div>
             </div>
-            <div class="filter-group" style="flex:0.7;">
-                <select id="locationFilter" class="filter-input" onchange="applyFilters()">
-                    <option value="All">Location: All</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Chennai">Chennai</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Pune">Pune</option>
-                </select>
+
+            <!-- LOCATION FILTER -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter('locFilter')">
+                    <span class="filter-title">Location</span>
+                    <span class="filter-arrow">?</span>
+                </div>
+                <div class="filter-body" id="locFilter">
+                    <div style="padding-top:10px;">
+                        <div class="filter-search">
+                            <svg width="14" height="14" fill="none" stroke="var(--text-muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            <input type="text" placeholder="Search cities..." oninput="buildLocationOptions(this.value)">
+                        </div>
+                        <div id="location-options"></div>
+                        <div class="show-more-btn" id="locMoreBtn" onclick="toggleShowMore('loc', this)">+ Show more</div>
+                    </div>
+                </div>
             </div>
-            <div class="cal-wrap">
-                <button class="cal-btn" id="calBtn" onclick="toggleDateMenu()">
-                    <span id="calBtnLabel">Job Posting Date</span>
-                    <span class="cal-x" id="calBtnX" onclick="clearDateRange(event)">✕</span>
+
+            <!-- ROLES FILTER -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter('rolesFilter')">
+                    <span class="filter-title">Roles</span>
+                    <span class="filter-arrow">?</span>
+                </div>
+                <div class="filter-body" id="rolesFilter">
+                    <div style="padding-top:10px;">
+                        <div class="filter-search">
+                            <svg width="14" height="14" fill="none" stroke="var(--text-muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            <input type="text" placeholder="Search roles..." oninput="buildRolesOptions(this.value)">
+                        </div>
+                        <div id="roles-options"></div>
+                        <div class="show-more-btn" id="rolesMoreBtn" onclick="toggleShowMore('roles', this)">+ Show more</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSTED DATE FILTER -->
+            <div class="filter-section">
+                <div class="filter-header" onclick="toggleFilter('dateFilter')">
+                    <span class="filter-title">Posted Date</span>
+                    <span class="filter-arrow">?</span>
+                </div>
+                <div class="filter-body" id="dateFilter">
+                    <div style="padding-top:10px; display:flex; flex-direction:column; gap:6px;">
+                        <label class="filter-radio selected" data-range="all" onclick="setDateRange(this, 'all')">
+                            <div class="radio-circle"><div class="radio-inner"></div></div>
+                            <span class="option-label">All Time</span>
+                        </label>
+                        <label class="filter-radio" data-range="24h" onclick="setDateRange(this, '24h')">
+                            <div class="radio-circle"><div class="radio-inner"></div></div>
+                            <span class="option-label">Last 24 Hours</span>
+                        </label>
+                        <label class="filter-radio" data-range="3d" onclick="setDateRange(this, '3d')">
+                            <div class="radio-circle"><div class="radio-inner"></div></div>
+                            <span class="option-label">Last 3 Days</span>
+                        </label>
+                        <label class="filter-radio" data-range="7d" onclick="setDateRange(this, '7d')">
+                            <div class="radio-circle"><div class="radio-inner"></div></div>
+                            <span class="option-label">Last 7 Days</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLEAR ALL -->
+            <div style="padding: 20px; text-align: center;">
+                <button onclick="clearAllFilters()" style="background:transparent; border:1px solid var(--border); color:var(--text-muted); padding:8px 16px; border-radius:20px; cursor:pointer; font-size:0.8rem; font-family:inherit; transition:0.2s;">
+                    Clear All Filters
                 </button>
-                <div class="cal-popup" id="calPopup"></div>
             </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div style="display:flex; gap:12px; margin-bottom:20px; align-items:center;">
+                <div class="filter-search" style="flex:1; margin-bottom:0; max-width:400px; background:var(--bg-surface); padding:10px 16px; border-radius:20px;">
+                    <svg width="16" height="16" fill="none" stroke="var(--text-muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" id="searchInput" placeholder="Search big companies..." oninput="applyFilters()" style="font-size:0.9rem;">
+                </div>
+            </div>
+
             <div class="exp-group">
                 <button class="exp-btn" onclick="setExperience('junior')" id="expJr">Junior</button>
                 <button class="exp-btn" onclick="setExperience('senior')" id="expSr">Senior</button>
@@ -468,9 +566,101 @@
     </div>
 
     <script src="logos.js"></script>
-    <script src="logo3d.js"></script>
+    <script src="logo3d.js?v=20260715-wireframe-debug"></script>
     <script>
         window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
+
+        
+        let selectedLocations = new Set();
+        let selectedRoles = new Set();
+        let activeDateRange = 'all';
+
+        function toggleFilter(id) {
+            const el = document.getElementById(id);
+            if(el.style.maxHeight && el.style.maxHeight !== '0px') {
+                el.style.maxHeight = '0px';
+                el.previousElementSibling.querySelector('.filter-arrow').style.transform = 'rotate(0deg)';
+            } else {
+                el.style.maxHeight = el.scrollHeight + 100 + 'px';
+                el.previousElementSibling.querySelector('.filter-arrow').style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function toggleLocation(city, el) {
+            el.classList.toggle('checked');
+            if (selectedLocations.has(city)) selectedLocations.delete(city);
+            else selectedLocations.add(city);
+            applyFilters();
+        }
+
+        function toggleRole(role, el) {
+            el.classList.toggle('checked');
+            if (selectedRoles.has(role)) selectedRoles.delete(role);
+            else selectedRoles.add(role);
+            applyFilters();
+        }
+
+        function toggleShowMore(type, btn) {
+            const wrap = document.getElementById(type + '-options');
+            const hidden = wrap.classList.toggle('expanded');
+            const extra = wrap.querySelectorAll('.filter-option').length;
+            btn.textContent = hidden ? '- Show less' : '+ ' + extra + ' more';
+        }
+
+        function setDateRange(el, range) {
+            document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+            el.classList.add('selected');
+            activeDateRange = range;
+            applyFilters();
+        }
+
+        function clearAllFilters() {
+            selectedLocations.clear();
+            selectedRoles.clear();
+            activeDateRange = 'all';
+            document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
+            document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+            document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
+            document.getElementById('searchInput').value = '';
+            applyFilters();
+        }
+
+        const TOP_CITIES = [
+            "Bangalore", "Hyderabad", "Pune", "Chennai", "Gurgaon", "Noida", "Delhi", "Mumbai",
+            "Kolkata", "Ahmedabad", "Remote", "Trivandrum", "Kochi"
+        ];
+        const ALL_ROLES = [
+            "Software Engineer", "Backend", "Frontend", "Full Stack", "Data", "Cloud",
+            "DevOps", "AI", "ML", "Manager", "Product", "QA", "Tester", "Security"
+        ];
+
+        function buildLocationOptions(filter = '') {
+            const container = document.getElementById('location-options');
+            if(!container) return;
+            const cities = filter ? TOP_CITIES.filter(c => c.toLowerCase().includes(filter.toLowerCase())) : TOP_CITIES;
+            container.innerHTML = cities.map(city => 
+                <div class="filter-option " onclick="toggleLocation('', this)">
+                    <div class="custom-checkbox">
+                        <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <span class="option-label"></span>
+                </div>
+            ).join('');
+        }
+
+        function buildRolesOptions(filter = '') {
+            const container = document.getElementById('roles-options');
+            if(!container) return;
+            const roles = filter ? ALL_ROLES.filter(r => r.toLowerCase().includes(filter.toLowerCase())) : ALL_ROLES;
+            container.innerHTML = roles.map(role => 
+                <div class="filter-option " onclick="toggleRole('', this)">
+                    <div class="custom-checkbox">
+                        <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <span class="option-label"></span>
+                </div>
+            ).join('');
+        }
 
         let allJobs = [];
         let filteredJobs = [];
@@ -718,8 +908,12 @@
             }
         });
 
+        
         async function init() {
+            buildLocationOptions();
+            buildRolesOptions();
             const loading = document.getElementById('loading');
+
             loading.innerHTML = 'Connecting to GitHub repository and loading jobs...';
             
             allJobs = await fetchJobsFromGitHub();
@@ -736,9 +930,9 @@
             loading.style.display = 'none';
         }
 
+        
         function applyFilters() {
             const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-            const loc = document.getElementById('locationFilter').value;
             const now = new Date();
             now.setHours(0,0,0,0);
 
@@ -747,34 +941,45 @@
                 const hay = [j.title, j.company, j.location].filter(Boolean).join(' ').toLowerCase();
 
                 if (search && !hay.includes(search)) return false;
-                if (loc !== 'All' && !(j.location || '').toLowerCase().includes(loc.toLowerCase())) return false;
+                
+                // Location filter
+                if (selectedLocations.size > 0) {
+                    let matchedLoc = false;
+                    const jLoc = (j.location || '').toLowerCase();
+                    for (let loc of selectedLocations) {
+                        if (jLoc.includes(loc.toLowerCase())) {
+                            matchedLoc = true;
+                            break;
+                        }
+                    }
+                    if (!matchedLoc) return false;
+                }
 
-                // Date Range Filter
+                // Roles filter
+                if (selectedRoles.size > 0) {
+                    let matchedRole = false;
+                    for (let role of selectedRoles) {
+                        if (titleLow.includes(role.toLowerCase())) {
+                            matchedRole = true;
+                            break;
+                        }
+                    }
+                    if (!matchedRole) return false;
+                }
+
+                // Date Filter
                 if (activeDateRange !== 'all') {
-                    const jobDate = new Date((j.fetchedAt || '').slice(0, 10));
-                    if (isNaN(jobDate.getTime())) return false;
-                    const diffDays = Math.floor((now - jobDate) / 86400000);
-                    if (activeDateRange === '24h' && diffDays > 1) return false;
-                    if (activeDateRange === '3d' && diffDays > 3) return false;
-                    if (activeDateRange === '7d' && diffDays > 7) return false;
-                    if (activeDateRange === '15d' && diffDays > 15) return false;
-                }
-
-                // Role filter
-                if (activeRole && ROLE_KEYWORDS[activeRole]) {
-                    const keywords = ROLE_KEYWORDS[activeRole];
-                    if (!keywords.some(kw => titleLow.includes(kw))) return false;
-                }
-
-                // Experience filter
-                if (activeExp === 'junior') {
-                    if (!JUNIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
-                } else if (activeExp === 'senior') {
-                    if (!SENIOR_KEYWORDS.some(kw => titleLow.includes(kw))) return false;
+                    const jd = new Date((j.fetchedAt || '').slice(0, 10));
+                    if (isNaN(jd.getTime())) return false;
+                    const diff = Math.floor((now - jd) / 86400000);
+                    if (activeDateRange === '24h' && diff > 1) return false;
+                    if (activeDateRange === '3d' && diff > 3) return false;
+                    if (activeDateRange === '7d' && diff > 7) return false;
                 }
 
                 return true;
             });
+
             currentPage = 1;
             renderPage();
         }
@@ -791,7 +996,8 @@
 
         function goToPage(p) { currentPage = p; renderPage(); }
 
-        function renderJobs(jobs) {
+        
+function renderJobs(jobs) {
             const grid = document.getElementById('jobsGrid');
             const noRes = document.getElementById('noResults');
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
@@ -817,16 +1023,21 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
-                    ${date ? `<div class="meta-badge" style="border-color:rgba(6,182,212,0.3);color:#06b6d4;">${date}</div>` : ''}
+                    <div class="meta-row">
+                        <div class="meta-badge loc">${esc(cityLoc)}</div>
+                    </div>
+                    <div class="meta-row">
+                        ${date ? `<div class="meta-badge date">${date}</div>` : ''}
+                    </div>
                 </div>
                 <div class="card-footer">
-                    <span class="card-date">Direct Apply</span>
+                    <span class="card-date" style="color:var(--text-muted); font-size:0.75rem;">Direct Apply</span>
                     ${applyUrl ? `<a href="${esc(applyUrl)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
                 </div>
             </div>`;
             }).join('');
         }
+
 
         function renderPagination(totalPages) {
             const c = document.getElementById('pagination');
@@ -855,6 +1066,8 @@
 
         init();
     </script>
+        </main>
+    </div>
 </body>
 
 </html>
