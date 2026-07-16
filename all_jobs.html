@@ -254,6 +254,9 @@
         }
         .filter-option:hover .option-label,
         .filter-option.checked .option-label { color: var(--text-main); }
+        .source-count {
+            font-size: 0.72rem; color: var(--text-dim); margin-left: 5px; font-weight: normal;
+        }
         .option-img {
             width: 14px; height: 14px; object-fit: contain; border-radius: 2px; flex-shrink: 0;
         }
@@ -428,7 +431,10 @@
         }
 
         .job-meta {
-            display: flex; flex-wrap: nowrap; gap: 5px; align-items: center; overflow: hidden;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .meta-row {
+            display: flex; gap: 5px; align-items: center; overflow: hidden;
         }
         .meta-badge {
             font-size: 0.7rem; padding: 4px 9px; border-radius: 7px;
@@ -1060,6 +1066,27 @@
         `).join('');
     }
 
+    function updateSourceCounts() {
+        let sourceCounts = {};
+        if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
+            allJobs.forEach(j => {
+                const src = (j.source || '').toLowerCase();
+                sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+            });
+        }
+        PORTALS.forEach(p => {
+            const count = sourceCounts[p.id.toLowerCase()] || 0;
+            const el = document.getElementById(`src-${p.id}`);
+            if (el) {
+                const labelEl = el.querySelector('.option-label');
+                if (labelEl) {
+                    const countHtml = count > 0 ? `<span class="source-count">(${count})</span>` : '';
+                    labelEl.innerHTML = `${p.label} ${countHtml}`;
+                }
+            }
+        });
+    }
+
     function buildLocationOptions(filter = '') {
         const container = document.getElementById('location-options');
         const cities = filter
@@ -1607,11 +1634,14 @@
                     </div>
                 </div>
                 <div class="job-meta">
-                    <div class="meta-badge loc" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
-                    ${job.experience ? `<div class="meta-badge exp" title="Experience">${esc(job.experience)}</div>` : ''}
-                    ${date ? `<div class="meta-badge date">${date}</div>` : ''}
-                    ${sourceLabel ? `<div class="portal-badge">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" onerror="this.style.display='none'">` : ''}<span style="font-size:0.68rem">${esc(sourceLabel)}</span></div>` : ''}
-
+                    <div class="meta-row">
+                        <div class="meta-badge loc" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
+                        ${job.experience ? `<div class="meta-badge exp" title="Experience">${esc(job.experience)}</div>` : ''}
+                    </div>
+                    <div class="meta-row">
+                        ${date ? `<div class="meta-badge date">${date}</div>` : ''}
+                        ${sourceLabel ? `<div class="portal-badge">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" onerror="this.style.display='none'">` : ''}<span style="font-size:0.68rem">${esc(sourceLabel)}</span></div>` : ''}
+                    </div>
                 </div>
                 <div class="card-footer">
                     <span class="card-role">${esc(job.role_search || '')}</span>
@@ -1725,6 +1755,7 @@
         allCompanies = Object.entries(coMap).sort((a,b) => b[1]-a[1]).map(e => e[0]).slice(0, 100);
         buildCompanyOptions();
         buildSkillsOptions();
+        updateSourceCounts();
 
         loading.style.display = 'none';
         applyFilters();
