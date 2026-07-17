@@ -893,6 +893,19 @@
         'IT Support Specialist': ['it support', 'helpdesk', 'help desk', 'tech support']
     };
 
+    function getLogoData(name) {
+        const clean = name.replace(/\(.*\)/, '').trim();
+        let domain = '';
+        if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+        else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+        return {
+            clearbit: `https://logo.clearbit.com/${domain}`,
+            google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+            ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+            initial: clean.charAt(0).toUpperCase()
+        };
+    }
+
     function esc(str) {
         if (!str) return '';
         return String(str)
