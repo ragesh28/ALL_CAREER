@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255334,
+    "text": "Hiring | Software Engineers (C/C++ | Embedded | Firmware)\n\nWe're looking for passionate engineers with strong expertise in C/C++, Embedded Systems, and Firmware Development to join a leading global technology company.\n\n💼 Experience: 4–8 Years\n📍 Locations: Bangalore / Chennai / Pune\n🏢 Hybrid Work Model\n⏳ Notice Period: Up to 60 Days Considered\n\n🔹 Strong experience in C/C++ programming\n🔹 Embedded Systems and Firmware Development\n🔹 Networking, Switching/Routing, Linux, or System Software experience",
+    "timestamp": "2026-07-18T02:11:31+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255339,
+    "text": "🚨 We're Hiring | Bhartiya Urban – Nikoo Homes 🚨\n\nWe are expanding our Sales team and are looking for passionate, energetic, and result-oriented professionals to join us.\n\nOpen Positions: Sales Executives, Senior Sales Executives, Assistant Managers, Deputy Managers & Managers.\n\n📍 Location: North Bengaluru\n\nIf you have a proven track record in residential real estate sales, strong customer relationship skills, and the drive to excel in a high-performance environment, we'd love to hear from you.\n\n",
+    "timestamp": "2026-07-18T02:22:37+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255341,
+    "text": "Qualcomm\nInterim Engineering Intern__2027__HW\nHyderabad, Bangalore\nBatch 2026/2027\nMasters, Bachelors: Electrical Engineering , VLSI , Embedded and VLSI , ECE\nStipend: 60K\nApply:\nhttps://careers.qualcomm.com/careers/job?pid=446719784824&hl=en-US",
+    "timestamp": "2026-07-18T02:25:07+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255342,
+    "text": "Hiring Alert | Cadila Pharmaceuticals Ltd.\n\nCadila Pharmaceuticals Ltd. is hiring B.Sc. (Life Sciences) and B.Pharm Freshers for the position of Field Officer (Medical Representative).\n\n📍 Location: Chennai, Madurai, Hyderabad, Calicut, Kannur, Rohtak, Jodhpur, Baroda, Bangalore, Bharuch, Trivandrum, Patiala, Chandigarh, Jalandhar, Mangalore, Nellore, Motihari, Hubli\n\n🎓 Eligibility: B.Sc. (Life Sciences) / B.Pharm Freshers\nCandidates aspiring to build a career in the pharmaceutical industry are e",
+    "timestamp": "2026-07-18T02:31:00+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255343,
+    "text": "Wells Fargo - Software Engineer (AI Agents)\n📍 Bengaluru | Full Time\n\n• 2+ years of software engineering experience\n• Python, Google ADK/Langchain, Agentic environments\n• MongoDB/NoSQL, Kafka, MCP experience\n• Exposure to Banking domain (KYC, Onboarding) is a plus\n\nApply here :-\nhttps://www.wellsfargojobs.com/en/jobs/r-542094/software-engineer",
+    "timestamp": "2026-07-18T02:42:36+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255344,
+    "text": "Product Developer\n \n📍 Location: Pune / Bangalore / Remote\n \n💼 Experience Required: 5+ Years\n \n🛠️ Skills Required:\n Java, Spring Boot, React.js/Angular, AWS, Azure, Docker, Kubernetes, SQL, CI/CD.\n \nIf you enjoy building innovative software products from concept to deployment, this opportunity is for you.\n \n📧 To share your resume at: Career@programming.com",
+    "timestamp": "2026-07-18T02:43:44+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255345,
+    "text": "We are Hiring at DevOn | Powered by emagine India!\n\nWe are looking for talented professionals to join our team in Bengaluru (Hybrid) across multiple technology roles, including:\n\n • Senior Test Automation Engineer\n • Senior Data & Azure Testing Engineer\n • React Developer\n • QA Analyst\n • Python Backend Developer\n • IT Software Quality Engineering\n • ETL / Big Data Testing\n • SQL Data Engineer\n\nIf you're looking for your next opportunity - or know someone who is - please send in your resume to T",
+    "timestamp": "2026-07-18T02:45:29+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255347,
+    "text": "📢 **We’re Hiring | Sai Life Sciences Ltd.**\n\n**Role:** Asst.Manager- HR __(Female Only)__\n\n**Location:** Bidar, Karnataka  \n**Experience:** 6-8 Years __(Pharma Preferred)__  \n**Education:** MHRM / MSW  \n\n**Key Responsibilities:**\n- Manage employee engagement activities  \n- Handle employee concerns, counselling & well-being  \n- Ensure compliance with labor laws  \n- Support recruitment: sourcing, screening, interviews & onboarding  \n- Maintain MIS reports  \n\n**Languages:** Kannada, English & Hindi",
+    "timestamp": "2026-07-18T02:48:18+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255350,
+    "text": "🚀 GKN Aerospace is Hiring | Engineering Trainee\n\n🏢 Company: GKN Aerospace\n 💼 Role: Engineering Trainee\n 📍 Location: Bangalore, India\n 👨💻 Experience: Freshers / Entry Level\n 💰 Estimated Salary: ₹6–10 LPA (Estimated)\n\n🔹 Key Skills\nMechanical Engineering Fundamentals\nAerospace Engineering\nCAD & CAE\nFEA\nGD&T\nStrength of Materials\nPython / MATLAB\nProduct Design & Analysis\n🎓 Eligibility\nPostgraduate degree in Mechanical, Aerospace, or Industrial Production Engineering.\nStrong engineering fundamentals ",
+    "timestamp": "2026-07-18T03:20:07+00:00"
+  }
+]
