@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255691,
+    "text": "Belagavi\nTECHNOLOGIES LIMITED\nWE ARE HIRING!\nVACANCY 1\nNPD EXECUTIVE\nQualification: BE / MBA\nExperience: 3+ Years in NPD\nExpert in end-to-end product\ndevelopment lifecycle, bridging R&D.\n• Expertise in Foundry and Machineshop\nrelated product development.\nVACANCY 2\nBUSINESS DEVELOPMENT\nEXECUTIVE\nQualification: BE / MBA\nExperience: 3+ Years of B2B Sales Experience\n• Strong Communication & Negotiation\nSkills Required\n• Lead Generation & Client Acquisition\n• Driving Revenue Growth\nLOCATION: Shinoli ",
+    "timestamp": "2026-07-23T00:09:01+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255692,
+    "text": "Tumkur\nWANTED\nRECEPTIONIST (Female)\nSALES EXECUTIVES (Male)\nQual: Any Degree\nGubbi Gate, Tumkur\n8073875266\n8951903885",
+    "timestamp": "2026-07-23T00:10:57+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255693,
+    "text": "Mysore\n  O3O\n  O ()\n ,    , a, -\n \nu\ne\nDęn\na zo\n\n3\n \n3\nB DeppR / \n\n()\n0\nB2   \nO      )\n.  .)\n3OE: 0EE20(8880929570)",
+    "timestamp": "2026-07-23T00:16:04+00:00"
+  }
+]
