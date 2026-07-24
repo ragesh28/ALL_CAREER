@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18311,
+    "text": "\nMORN\nIS AN\nOPPORTUNITY\nTO CREATE A\nmasterpiece\nCALLED\nLIFE",
+    "timestamp": "2026-07-24T01:45:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3028,
+    "text": "Blinkit Hiring For Freshers \n\n15 Days Training + Job \n\nQualification : 10th Pass Only \n\nSalary : 25,000\n\nApply link 👇👇👇\nhttps://english.freejobsrecruitment.com/blinkit-warehouse-partner-jobs-2026/\nblinkit",
+    "timestamp": "2026-07-24T02:42:21+00:00"
+  }
+]
