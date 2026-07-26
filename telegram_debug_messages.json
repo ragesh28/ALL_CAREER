@@ -1,9 +1,44 @@
 [
   {
     "type": "non_job_skipped",
+    "channel": "freshershunt",
+    "msg_id": 29279,
+    "text": "⚠️ 𝗬𝗢𝗨'𝗥𝗘 𝗠𝗜𝗦𝗦𝗜𝗡𝗚 𝗝𝗢𝗕 𝗔𝗟𝗘𝗥𝗧𝗦! ⚠️\n\n💔 𝗦𝗔𝗗 𝗧𝗥𝗨𝗧𝗛:\nWhile you manually search LinkedIn, Glassdoor, Naukri...\nOur members get 𝗔𝗟𝗟 𝗻𝗲𝘄 𝗷𝗼𝗯 𝗽𝗼𝘀𝘁𝗶𝗻𝗴𝘀 delivered instantly!\n\n📊 𝗧𝗛𝗜𝗦 𝗪𝗘𝗘𝗞 𝗔𝗟𝗢𝗡𝗘:\n\n450+ fresh job links shared\nFrom 15+ platforms (LinkedIn, Glassdoor, AngelList...)\n𝗙𝗿𝗲𝘀𝗵𝗲𝗿 𝗿𝗼𝗹𝗲𝘀 across IT, Finance, Marketing\n\n⚡ 𝗪𝗛𝗜𝗟𝗘 𝗬𝗢𝗨 𝗦𝗟𝗘𝗘𝗣:\nWe scan & share new openings\nYour competition applies first\nBest roles get filled\n\n💸 𝗢𝗻𝗹𝘆 ₹𝟰𝟵𝟵 𝗳𝗼𝗿 𝗹𝗶𝗳𝗲𝘁𝗶𝗺𝗲\n\n⏰ 𝗦𝗮𝘃𝗲 𝟱+ 𝗵𝗼𝘂𝗿𝘀 𝗱𝗮𝗶𝗹𝘆 𝗷𝗼𝗯 𝗵𝘂𝗻𝘁𝗶𝗻𝗴\n🔴 𝗣𝗿𝗶𝗰𝗲 𝗶𝗻𝗰𝗿𝗲𝗮𝘀𝗶𝗻𝗴 𝘀𝗼𝗼𝗻!\n\n👉",
+    "timestamp": "2026-07-26T10:31:33+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "freshershunt",
+    "msg_id": 29280,
+    "text": "🚨 5 FRESHER JOB ALERTS — Apply Now! 🚨\n\n📅 26 July 2026 | freshershunt.in\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n1. Wipro\n💼 Graduate Engineer Trainee\n📍 Noida | 💰 Not disclosed\n🎓 2024 / 2025 / 2026\n🔗 https://freshershunt.in/wipro-graduate-engineer-trainee-2026/\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n2. Honeywell\n💼 IT Engineer I\n📍 Bengaluru | 💰 Not disclosed\n🎓 Freshers (0 Yrs Exp)\n🔗 https://freshershunt.in/honeywell-it-engineer-2026/\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n3. Citi\n💼 Business Analytics Analyst (Officer)\n📍 Bengaluru | 💰 ",
+    "timestamp": "2026-07-26T11:35:38+00:00"
+  },
+  {
+    "type": "failed_extraction",
     "channel": "way2freshers",
-    "msg_id": 18331,
-    "text": "\nDon't just\npray for a job.\nPray for a\nworkplace\nthat respects\nand values\nyou too.\nUnknown | Shulin Lee",
-    "timestamp": "2026-07-26T08:33:18+00:00"
+    "msg_id": 18332,
+    "text": "\nxplor\nWe are providing\nSoftware Tester\nInternship\nFresher\nOnsite\nSend your CV to\nhr@xplormobility.com",
+    "timestamp": "2026-07-26T10:33:59+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255926,
+    "text": "Project Manager\nBangalore\nJob Description\n\nJob Title: Project Manager Designation: Project Manager\nLocation: Bangalore, WTC 3\nJob Summary: We are seeking a highly skilled Project Manager with a strong foundation in Project Management principles and practices. The ideal candidate will have a proven track record in leading and managing Java development teams and QA automation processes. This role requires a deep understanding of AI tools such as O365 and GitHub Copilot, along with expertise in dra",
+    "timestamp": "2026-07-26T10:45:47+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255928,
+    "text": "\nAvis Vascular Centre\nUnit of Avis Hospitals India Limited\nBILLING\nWe Are\nHIRING\nField Marketing Executive\nExperience:\n1 - 4 Years in Field Marketing\nQualification:\nBachelor Degree Preferred\nLocation: Bengaluru\nMail Us Your Resume at\nhr.recruitment@avishospitals.com\n720 794 8549",
+    "timestamp": "2026-07-26T10:48:21+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255929,
+    "text": "Adobe is Hiring | Computer Scientist I (Backend Heavy - Full Stack)\n\n📍 Bengaluru\n🏢 On-site\n\n💵 Expected CTC: ₹24–36 LPA (Based upon market standards, may vary.)\n\n🎓 Batch: 2022 / 2023 / 2024\n\n🧑💻 Tech Stack: Java, Spring Boot, React, Microservices, SQL, Distributed Systems, AWS\n\n🔗 Apply:\nhttps://careers.adobe.com/us/en/job/ADOBUSR169593EXTERN...Full-Stack?utm__source=linkedin&utm__medium=phenom-feeds&source=LinkedIn",
+    "timestamp": "2026-07-26T10:50:00+00:00"
   }
 ]
