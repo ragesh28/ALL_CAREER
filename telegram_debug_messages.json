@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3032,
+    "text": "TCS Hiring For Freshers \n\nJob role : Associate \n\nQualification : Any Graduate \n\nSalary : 3 - 4 LPA \n\nApply link 👇👇👇\nhttps://english.freejobsrecruitment.com/tcs-walk-in-recruitment-2026/\ntCS\nTATA\nCONSULTANC\nSERVICES\nTCS Mega Walk-In Drive\nAny Graduate\nNo Fee | No Exam | No Ex\nDirect Joining Jobs",
+    "timestamp": "2026-07-26T02:11:01+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3033,
+    "text": "RedHat Recruitment For Freshers \n\nInternship + Job Opportunity \n\nQualification : Any Graduate \n\nSalary : 4 - 5 LPA\n\nApply link 👇👇👇\nhttps://english.freejobsrecruitment.com/red-hat-software-engineering-internship-2026-freshers-can-apply-apply-online/\nRed Hat",
+    "timestamp": "2026-07-26T04:19:01+00:00"
+  }
+]
