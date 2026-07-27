@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "freshershunt",
+    "msg_id": 29289,
+    "text": "🚨 Weekly Fresher Job Update — 27 July 2026 🚨\n\nThis week's top openings & live walk-ins, updated on Freshershunt:\n\n1. Companies Hiring Freshers (20 Live Openings)\nTCS, Infosys BPM, 24/7 ai, Tech Mahindra, Wipro, Salesforce, Citi, HCLTech, Qualcomm, Deloitte & more\n🔗 https://freshershunt.in/companies-hiring-freshers/\n\n2. Walk-in Interview in Bangalore\nTCS (Yeshwanthpur) | 24/7 ai | Tech Mahindra — 9 locations\n🔗 https://freshershunt.in/walk-in-interview-in-bangalore/\n\n3. Walk-in Interview in Hydera",
+    "timestamp": "2026-07-27T03:33:21+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "careerwithasr",
+    "msg_id": 2715,
+    "text": "Company Name:  Eaton\nPost Name:  Apprentice\nExpected Salary:  ₹50-60k/ Month*\nJob Location:  Pune\nJobType:  Freshers\n\n✅Apply Link:  https://job4freshers.co.in/eaton-apprentice-hiring/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nTelegram\nhttps://telegram.me/job4fresherss\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nJOB4FRESHERS\nETON \nRECRUITMENT DRIVE\n@job4freshers.co",
+    "timestamp": "2026-07-27T03:40:49+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18335,
+    "text": "\nWork on the things people can't\ntake away from you:\n-Your body\n-Your skills\n-Your values\n-Your beliefs\n-Your mindset\n-Your character\nThat's how you become unstoppable.",
+    "timestamp": "2026-07-27T02:11:50+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255975,
+    "text": "\nSRAMAYEVA JAYATHE\nNARAYANA\nN\ne-TECHNO SCHOOL\nNARAYANA\nKORAMANGALA,BENGALURU\nWE ARE\nNARAYANA\nHIRING!\ne-TECHNO SCHOOL\nJoin our team and shape\nthe future of young minds.\nVACANCIES\nHINDI TEACHER\n3T\n(PRIMARY)\n3T\nHINDI TEACHER\n(MIDDLE SCHOOL)\nCHEMISTRY TEACHER\nB.Ed. COMPULSORY\nCONTACT:\nApply Now!\n9465555488",
+    "timestamp": "2026-07-27T01:21:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255976,
+    "text": "CA Intern (Industrial Training)\nGeneral information\nLocation: IN__Bangalore__Sattva Knowledge Court Bdg__HII\nJob Family: General & Administration\nWorker Type Reference: Intern (Fixed Term) (Trainee) - Intern\nPay Rate Type: Salary\nCareer Level: P0\nJob ID: R-53899-2026\nDescription & Requirements\nIntroduction: A Career at HARMAN Corporate\n\nWe’re a global, multi-disciplinary team that’s putting the innovative power of technology to work and transforming tomorrow. At HARMAN Corporate, you are integra",
+    "timestamp": "2026-07-27T02:39:23+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "Bangalore_jobs",
+    "msg_id": 255978,
+    "text": "Tumkur\nBeGonのed\n0\n\n(BE Civil)\naoad uegngd\nJOJ&ER\n7795865195\n9606209415",
+    "timestamp": "2026-07-27T03:23:34+00:00"
+  }
+]
