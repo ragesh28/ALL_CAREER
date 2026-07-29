@@ -1,9 +1,9 @@
 {
   "Sales Executive": 35086,
-  "Digital Marketer": 12361,
-  "Data Analyst": 9756,
+  "Digital Marketer": 12362,
+  "Data Analyst": 9757,
   "Operations Manager": 5000,
-  "Software Engineer": 22956,
+  "Software Engineer": 22958,
   "Frontend Developer": 3783,
   "ML Engineer": 5150,
   "Product Manager": 5146,
@@ -12,7 +12,7 @@
   "Technical Writer": 3183,
   "UI/UX Designer": 8912,
   "Backend Developer": 4213,
-  "Other": 24340,
+  "Other": 24356,
   "Financial Analyst": 16318,
   "AI Engineer": 4521,
   "HR Business Partner": 7120,
@@ -35,5 +35,5 @@
   "IT Support": 1154,
   "Customer Success Manager": 3997,
   "Penetration Tester": 734,
-  "UX Researcher": 11
+  "UX Researcher": 12
 }
