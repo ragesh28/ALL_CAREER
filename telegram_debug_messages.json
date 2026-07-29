@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "way2freshers",
+    "msg_id": 18352,
+    "text": "\n5\nTHE BEST WAY\nTO PREDICT\nYOUR FUTURE\nDISC\nS TO CREATE IT.\nT\nS\nT\nstart today. Take action.\nFOCUS\nour future self will\nPLAN\nhank you.\nEXECUTE\nSet your goals\nTo\nDO LIST\nStay consistent\nPLAN\nFocus\nWORK\nKeep growing\nSTAY POSITIVE\nACHIEVE GOALS\nProgressNotPerfection",
+    "timestamp": "2026-07-29T01:45:10+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "way2freshers",
+    "msg_id": 18353,
+    "text": "\nROBOT\nFANUC\nINTERNSHIP\nDON'T\nMISS OUT!\nLearn. Build. Automate the future.\n13\nHands-on robotics\nReal-world\nLearn from industry\nexperience\nprojects\nexperts\nDAYS\nTO GO\nInternship Details\nLocation:Bengaluru\nDuration:1st December 2026- 31st May 2027 (6 Months)\nQualification: B.E/B.Tech/Diploma inMechanical/\nMechatronics / Robotics & Automation / Robotics & Al /\nElectronics / Computer Science\nLE Mate 20010\nApplication Open:\n17th July 2026 - 9th August 2026\nOnline Test: 22ndAugust 2026\nFinal Results A",
+    "timestamp": "2026-07-29T03:01:15+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "arunchauhanofficial",
+    "msg_id": 8083,
+    "text": "15 Skills to learn in 2026\n\nhttps://www.instagram.com/p/DbWAmmWBN2z/\n\nDo share your thoughts and save!",
+    "timestamp": "2026-07-29T01:32:33+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3039,
+    "text": "Oracle jobs for freshers \n\nCompany name : Oracle \n\nJob Role : System Analyst \n\nLocation: Bangalore \n\nApply: 👇👇👇\nhttps://mohancareers.com/oracle-hiring-for-freshers-2026/\nDRACLE",
+    "timestamp": "2026-07-29T01:32:01+00:00"
+  }
+]
