@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "kickcharm",
+    "msg_id": 41894,
+    "text": "🚨**TCS iON Offers 15 Day Free Digital Certification Program**\n\nEducation: Any Degree\nLocation: Online\nBatch: Any\n\nApply: https://kickcharm.com/tcs-ion-offers-15-day-free-digital-certification-program/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+    "timestamp": "2026-08-01T03:02:38+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18378,
+    "text": "\nNever compare\nyourself with\nanyone in life, you\nare the best the\nway you are.\nGood morning",
+    "timestamp": "2026-08-01T01:45:12+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "way2freshers",
+    "msg_id": 18379,
+    "text": "\nrapido\nBetter Mobilit\nWE ARE\nPerformance Overview\nHIRING!\nKPIs\nAnalytics\nDATA ANALYTICS INTERN\nTurn data into decisions.\nQ\nDrive impact at Rapido.\nrapido\nLOCATION\nBANGALORE\n(Work from Office)\nQOÉ\n000\nrapido\nWHAT YOU'LL DO\nWHAT WE'RE LOOKING FOR\nWrite SQL queries to extract and\nPursuing or recently completed a degree in\nanalyze data from internal databases.\nEngineering, Statistics, Mathematics, Computer\nBuild and maintain recurring\nScience, or a related field.\ndashboards, reports, and trackers.\n",
+    "timestamp": "2026-08-01T03:02:23+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256262,
+    "text": "🚀We're Hiring | Recruitment Drive | UDM - Water Team | AtkinsRéalis\nAre you passionate about shaping sustainable water infrastructure and solving complex hydraulic engineering challenges?\nAt AtkinsRéalis, we're expanding our Urban Drainage Modelling (UDM) - Water Team and are looking for talented professionals who want to work on impactful projects that help build resilient communities worldwide.\n📅 Recruitment Drive: 08 August 2026\n📍 Location: Bengaluru\nOpen Positions\n✅ Lead Engineer - Principal",
+    "timestamp": "2026-08-01T02:14:46+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256263,
+    "text": "If you are looking for an exciting opportunity to grow your career, we’d love to connect with you.\n📩 Apply now by sending your resume to: devanshiparashar@hclhealthcare.in\n🔗 Application Link:\nhttps://forms.office.com/r/AKL32VGZma\nWork.\nHCL\nHCL HEALTHCARE\nCertified\nWE\nARE\nHIRING!\nBring your unique perspective, an open\nmind and a thirst for changing things for the\nbetter, and we will give you an environment\nwhere everyone is valued.\nAt HCL Healthcare we remove the barriers\nto exceptional careers a",
+    "timestamp": "2026-08-01T02:17:12+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256264,
+    "text": "Stripe IS HIRING!\n\nIf you are dreaming of starting your career at Stripe, here's your chance!\n\nRole: Software Engineer - I ( Intern) \n\nLocation: Bengaluru India \n\nBatch : 2028/2027\n\nApply link :\nhttps://stripe.com/careers/listing/software-engineer-intern/8031833?gh_src=KrishanKumarLinkedin",
+    "timestamp": "2026-08-01T02:19:40+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256265,
+    "text": "Company: NatWest Group\n\nRole: Software Engineer\n\nApply Link:\n\nhttps://jobs.natwestgroup.com/jobs/17895703-software-engineer?tm_job=R-00280718&tm_event=view&tm_company=861&bid=56\nNatWest\nGroup\nHIRING\nSOFTWARE\nENGINEER",
+    "timestamp": "2026-08-01T02:20:49+00:00"
+  }
+]
