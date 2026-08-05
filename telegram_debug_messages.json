@@ -1,93 +1,100 @@
 [
   {
-    "type": "failed_extraction",
+    "type": "non_job_skipped",
     "channel": "freshershunt",
-    "msg_id": 29433,
-    "text": "🚨 Intuit is Hiring Interns! 🚨\n\n🏢 Company: Intuit\n💼 Role: Software Engineering Intern (Summer 2027)\n📍 Location: Bangalore\n💰 Stipend: Competitive\n🎓 Batch: Students returning to degree after Summer 2027\n📋 Eligibility: BE/BTech or Integrated ME/MTech — CS or related\n\n🔗 Full Details & Apply:\nhttps://freshershunt.in/intuit-internship-2027/\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n▶️ 𝐇𝐨𝐰 𝐭𝐨 𝐀𝐩𝐩𝐥𝐲 → https://youtu.be/Q4afjdBqZio\n🔔 Telegram → https://t.me/freshershunt\n💬 WhatsApp → https://freshershunt.in/WhatsApp",
-    "timestamp": "2026-08-05T00:34:04+00:00"
+    "msg_id": 29437,
+    "text": "Still confused about how Docker, Kubernetes, and AWS are used in real-world projects? ☁️\n\nJoin *FREE DevOps Workshop*⚙️ \n\n📅 06 August 2026\n🕓7:00 PM\n\n💡 What you'll learn:\n✅ Cloud & AWS fundamentals\n✅ Launch your first AWS EC2 server\n✅ Deploy a live application on AWS\n✅ Docker & Kubernetes basics\n✅ DevOps tools like Jenkins & Terraform\n\n🎯 Perfect for:\n• Freshers & Working Professionals\n• Anyone planning to build a career in Cloud & DevOps\n\n🤳🏼Register Now: \nhttps://rebrand.ly/x2ifvvs\nMaster Docker ",
+    "timestamp": "2026-08-05T04:35:04+00:00"
   },
   {
     "type": "non_job_skipped",
+    "channel": "freshershunt",
+    "msg_id": 29439,
+    "text": "⚠️ 𝗬𝗢𝗨'𝗥𝗘 𝗠𝗜𝗦𝗦𝗜𝗡𝗚 𝗝𝗢𝗕 𝗔𝗟𝗘𝗥𝗧𝗦! ⚠️\n\n💔 𝗦𝗔𝗗 𝗧𝗥𝗨𝗧𝗛:\nWhile you manually search LinkedIn, Glassdoor, Naukri...\nOur members get 𝗔𝗟𝗟 𝗻𝗲𝘄 𝗷𝗼𝗯 𝗽𝗼𝘀𝘁𝗶𝗻𝗴𝘀 delivered instantly!\n\n📊 𝗧𝗛𝗜𝗦 𝗪𝗘𝗘𝗞 𝗔𝗟𝗢𝗡𝗘:\n\n450+ fresh job links shared\nFrom 15+ platforms (LinkedIn, Glassdoor, AngelList...)\n𝗙𝗿𝗲𝘀𝗵𝗲𝗿 𝗿𝗼𝗹𝗲𝘀 across IT, Finance, Marketing\n\n⚡ 𝗪𝗛𝗜𝗟𝗘 𝗬𝗢𝗨 𝗦𝗟𝗘𝗘𝗣:\nWe scan & share new openings\nYour competition applies first\nBest roles get filled\n\n💸 𝗢𝗻𝗹𝘆 ₹𝟰𝟵𝟵 𝗳𝗼𝗿 𝗹𝗶𝗳𝗲𝘁𝗶𝗺𝗲\n\n⏰ 𝗦𝗮𝘃𝗲 𝟱+ 𝗵𝗼𝘂𝗿𝘀 𝗱𝗮𝗶𝗹𝘆 𝗷𝗼𝗯 𝗵𝘂𝗻𝘁𝗶𝗻𝗴\n🔴 𝗣𝗿𝗶𝗰𝗲 𝗶𝗻𝗰𝗿𝗲𝗮𝘀𝗶𝗻𝗴 𝘀𝗼𝗼𝗻!\n\n👉",
+    "timestamp": "2026-08-05T06:32:50+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "kickcharm",
+    "msg_id": 41989,
+    "text": "Still confused about how Docker, Kubernetes, and AWS are used in real-world projects? ☁️\n\nJoin *FREE DevOps Workshop*⚙️ \n\n📅 06 August 2026\n🕓7:00 PM\n\n💡 What you'll learn:\n✅ Cloud & AWS fundamentals\n✅ Launch your first AWS EC2 server\n✅ Deploy a live application on AWS\n✅ Docker & Kubernetes basics\n✅ DevOps tools like Jenkins & Terraform\n\n🎯 Perfect for:\n• Freshers & Working Professionals\n• Anyone planning to build a career in Cloud & DevOps\n\n🤳🏼Register Now: \nhttps://rebrand.ly/x2ifvvs\nMaster Docker ",
+    "timestamp": "2026-08-05T05:25:27+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "kickcharm",
+    "msg_id": 41990,
+    "text": "🚀 **Permanent Remote Job Opportunity**!!\n\n**Jio Mass Hiring for Freshers for Associate**\n\nExperience: Freshers\nEducation: Any Graduate\nLocation: Remote (Multiple)\nSalary: Rs 3-5 LPA (Expected)\n\nApply: https://kickcharm.com/jio-work-from-home/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+    "timestamp": "2026-08-05T06:24:07+00:00"
+  },
+  {
+    "type": "failed_extraction",
     "channel": "way2freshers",
-    "msg_id": 18405,
-    "text": "\nGOOD MORNING\nEvery morning you\nwake up is proof that your story\nis not over yet. Be thankful for\ntoday, because even the smallest\nblessing can become the reason\nyour life changes for the better.",
-    "timestamp": "2026-08-05T01:45:11+00:00"
+    "msg_id": 18407,
+    "text": "https://www.tcs.com/careers/india/tcs-bps-fresher-hiring\nCSCareers\nT\nAspire. Evolve. Excel.\nLead them with TCS BPS Hiring 2027\nEligibility:\nThree-year full-time graduates from BCom, BA, BAF, BBI, BBA, BBE, BFM, BHRM,\nBIBF, BBM, BMS, BSc (Maths, Physics, Chemistry, Botany, Biology, Zoology, Life\nsciences, Biochemistry, Biotechnology. Microbiology, Environmental science,\nGeology, Hospitality. Tourism management) with 2027 as the year of completion.\nRegistration end date: Wednesday | Sep 2, 2026\nRe",
+    "timestamp": "2026-08-05T04:47:00+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "way2freshers",
+    "msg_id": 18408,
+    "text": "\nWe're Hiring!\nITI Engineer Needed\nRequirement: Electrical or\nElectronics & Communication\nbackground\nWork Location:\nSanand, Gujarat\nDeployment: Chip\nManufacturing Plant\nInterested candidates,\ninbox your resume at\nnchandra@globexdigital.ai\nand share within your network too. →\nShare with your network!",
+    "timestamp": "2026-08-05T06:33:30+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "fresheroffcampus",
-    "msg_id": 17727,
-    "text": "**👨‍💻 Calix Off Campus 2026 Hiring – Graduate Trainee **\n\n📍 Location: Bangalore (Hybrid)\n🏢 Work Mode: Only 20 Days Office / Quarter 😍 (Flexible Hybrid)\n🎓 Qualification: B.E / B.Tech\n📅 Batch: 2025 / 2026\n💼 Experience: Freshers\n💰 Salary: ₹4 – ₹10 LPA (Expected 💸)\n\n**🔗 Apply Now: ****https://www.fresheroffcampus.com/calix-off-campus-hiring-fresher/**\n\n📲 Stay Updated:\n👉 WhatsApp Channel : https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel : https://t.me/fresheroffcampus",
-    "timestamp": "2026-08-05T03:34:04+00:00"
+    "msg_id": 17728,
+    "text": "👨‍💻** Salesforce Off Campus 2026 Hiring Fresher - Summer 2027 Intern - Software Engineer**\n\n📍 Location: Bangalore / Hyderabad\n🎓 Eligibility: B.E / [B.Tech](http://b.tech/)\n💼 Experience: Fresher\n🥇 Batch : 2028\n💰 CTC: 15k - 60k per month\n\n🔗** Apply Now :** **https://www.fresheroffcampus.com/salesforce-recruitment/**\n                         \n📲 Stay Updated:\n👉 WhatsApp Channel : https://whatsapp.com/channel/0029Vb76pgp4yltI5kvHaJ30\n👉 Telegram Channel : https://t.me/internshipupdatesfreshers",
+    "timestamp": "2026-08-05T05:02:23+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "fresheroffcampus",
+    "msg_id": 17729,
+    "text": "**👨‍💻 Siemens Off Campus 2026 Hiring Freshers – Graduate Trainee Engineer**\n\n📍 Location: Bangalore\n🎓 Qualification: B.E / B.Tech\n🥇 **Batch:** 2025 / 2026\n💰 **CTC:** 4 - 10 LPA __(Expected)__\n\n🔗 **Apply Now: ****https://www.fresheroffcampus.com/siemens-recruitment/**\n\n📲 Stay Updated:\n👉 WhatsApp Channel : https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel : https://t.me/fresheroffcampus",
+    "timestamp": "2026-08-05T06:07:52+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "job4fresherss",
-    "msg_id": 19291,
-    "text": "Company Name:  NOVAC\nPost Name: Management Trainee\nSalary:  ₹2.98- 3.23 LPA*\nExperience:  0-2 Years\nJob Location:  Pune, Ahmednagar, Chhatrapati Sambhajinagar\nWalk-in Date:  6 August - 7 August 2026\n\n✅Apply Link: https://job4freshers.co.in/novac-walk-in-management-trainee/\n\nJoin our WhatsApp Group👇\nhttps://chat.whatsapp.com/LAigjiRgwirJ1d1GRnp1t3\n\nFor Direct Referral 👇🏻\nhttps://telegram.dog/careerwithasr\n\nHow. to Apply for Job👇🏻\nhttps://youtu.be/WgSpskMXq04\n\nIf you have any doubts, feel free to ",
-    "timestamp": "2026-08-05T01:50:23+00:00"
+    "msg_id": 19295,
+    "text": "Company Name:  United Airlines\nPost Name:  Associate Engineer\nSalary:  up to ₹10 LPA*\nExperience:  1-2 years\nJob Location:  Bengaluru\n\n✅Apply Link:  https://job4freshers.co.in/united-airlines-off-campus-associate-engineer/  \n\nJoin our WhatsApp Private Community for Experienced Jobs👇\nhttps://whatsapp.com/channel/0029Va8olDhKrWQwQhwxwI0R\n\nTelegram Link: https://t.me/job4experince\n\nJoin us on LinkedIn 👇🏻\nhttps://www.linkedin.com/company/108115637/\n\nFacebook \nhttps://www.facebook.com/job4freshers.co",
+    "timestamp": "2026-08-05T04:52:09+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256414,
-    "text": "BLINKIT Hiring Pickers and Packers \n\nQualification:Any\nLocation:All over Bangalore \nSalary:22k in hand+ESI+PF\n\nContact:6360581511",
-    "timestamp": "2026-08-05T00:15:30+00:00"
+    "channel": "job4fresherss",
+    "msg_id": 19296,
+    "text": "Company Name:  WNS\nPost Name:  Customer Support Executive (Voice process)\nSalary:  Up to ₹4.75 LPA*\nExperience:  Freshers\nJob Location:  Mumbai\nWalk-in Date:  6th August 2026\n\n✅Apply Link: https://job4freshers.co.in/wns-walk-in-customer-support-executive/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nFor Daily Government Jobs Subscribe to👇🏻\nhttps://yt.openinapp.co/Job4Governmen\n\nTelegra",
+    "timestamp": "2026-08-05T06:12:33+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256415,
-    "text": "Immediate Requirement – Physical Education Director (PED)\n\n RNS PU College, Channasandra, Bengaluru\n\nWe are looking for a Physical Education Director (PED) to join our team immediately.\n\n Attractive Salary\n Immediate Joining Preferred\n\nFreshers are also welcome to apply.\n\nInterested candidates are requested to send their resume/CV or contact us for further details.\n\nprincipal_rnspuc@rnsgi.com\nPhone: 9164595870",
-    "timestamp": "2026-08-05T01:42:29+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256416,
-    "text": "**Urgent Requirement** from \nRMS INSTITUTE OF MANAGEMENT AND SCIENCE, \nkanakapura road, Konankunte for the post of – **English Faculty** \n\nWe are looking for an MA  (with or without a Slet/ NET) Faculty to teach UG students for the course of B.com, BBA & BCA.\nSalary:- upto 25k\n\nInterested candidates are requested to share their resume to rmsims2021@gmail.com\n\nWhats app no: 9738110936/9980442475\n\nPRINCIPAL \nRMSIMS",
-    "timestamp": "2026-08-05T01:43:57+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256417,
-    "text": "Surana Evening College of commerce and management south end road Bangalore is inviting application for the following position \n1. .two Full time computer science faculty\n2. One Full time kannada faculty \nInterested candidates are requested to send their resume to the following mail id \neve.principal@suranacollege.edu.in\nNo phone calls are entertained",
-    "timestamp": "2026-08-05T01:43:58+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256418,
-    "text": "URGENT REQUIREMENT - AIPS , Kanakapura Main Road\n\nWe require the following teachers immediately:\n\n •  Location:Raghuvanahalli, Near Vajarahalli\n1. Accountent for school\n\n 2.  Art & Craft Teacher for Std 1 to 10\n3. Science teacher for 4 & 5 std\nThis is a very urgent requirement.\n\nInterested candidates please send your resume to: 9591961837",
-    "timestamp": "2026-08-05T01:43:58+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256420,
-    "text": "*Urgent Requirement* from \nJnana vikas institute of management studies and commerce \nB M Road Bidadi for the post of – *English part time faculty.\nInterested candidates are requested to share their resume to \nWhats app no: 9740575444/+917204352957\n\nPRINCIPAL \nJVIMS&C",
-    "timestamp": "2026-08-05T01:43:59+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 256421,
-    "text": "\nCARMEL\nCONVENT SCHOOL\nBANGALORE\nLIGHT & LOVE\nCARMELARAM, BENGALURU\nWE ARE\nHIRING\nMUSIC TEACHER\nQUALIFICATIONS\nBachelor's degree in Music (B.Music/BPA/B.A. Music)\nor an equivalent qualification from a recognized institution.\nDiploma or certification in Vocal Music or\nInstrumental Music (preferred, if applicable).\nGood interpersonal and communication skills.\nPOSITION\nMIDDLE SCHOOL MUSIC TEACHER\nAPPLY NOW\nSend your CV to:\nprincipal.carmel@gmail.com\n8951227870",
-    "timestamp": "2026-08-05T01:47:04+00:00"
+    "channel": "web3hiring",
+    "msg_id": 16321,
+    "text": "• Utila is hiring [Technical Support Engineer](https://www.comeet.com/jobs/utila/D9.00F/technical-support-engineer--latam/0E.E6E)\n• VALR is hiring [Money Laundering Reporting Officer](https://valr.careers.hibob.com/jobs/b1c6c3a6-209f-475e-8ce2-1a97938a2072)\n• Swell Network is hiring [Team Lead Trust Safety Ops Bangalore](https://web3.career/team-lead-trust-safety-ops-bangalore-moonpay/151343)\n• Notion is hiring [Commercial Outcomes Architect](https://jobs.ashbyhq.com/notion/b06005d2-e24b-467b-b7",
+    "timestamp": "2026-08-05T04:43:23+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "mohancareers",
-    "msg_id": 3064,
-    "text": "Tech Mahindra jobs for freshers 2026\n\nCompany name : Tech Mahindra \n\nJob role : Customer support \n\nQualification : Any Graduate \n\nSalary : 3.5 - 4.5 LPA\n\nApply link : \nhttps://mohancareers.com/tech-mahindra-hiring-for-freshers-2026/\nTECH\nmahindra",
-    "timestamp": "2026-08-05T01:32:01+00:00"
+    "msg_id": 3066,
+    "text": "Infosys jobs for freshers 2026\n\nCompany name : Infosys \n\nJob role : Product support \n\nQualification : Any Graduate \n\nSalary : 3 - 5 LPA\n\nApply link : \nhttps://mohancareers.com/infosys-jobs-for-freshers-2026-2/\nInfosys",
+    "timestamp": "2026-08-05T05:37:01+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "mohancareers",
-    "msg_id": 3065,
-    "text": "IBM Hiring for freshers 2026\n\nCompany name : IBM\n\nJob role : Technical support \n\nQualification : Any Graduate \n\nSalary : 3 - 5 LPA\n\nApply link : \nhttps://mohancareers.com/ibm-hiring-for-freshers-2026/",
-    "timestamp": "2026-08-05T03:35:26+00:00"
+    "channel": "gocareers",
+    "msg_id": 11334,
+    "text": "Texas Instruments is hiring Software Database Engineer\n\nFor 2025, 2026 grads\nLocation: Bangalore\n\nhttps://edbz.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/25010421",
+    "timestamp": "2026-08-05T05:23:03+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "gocareers",
+    "msg_id": 11336,
+    "text": "Peppermint Robotics is hiring SDE \n\nFor 2023, 2024, 2025, 2026 grads\nLocation: Pune\n\nhttps://www.linkedin.com/jobs/view/4447694234/",
+    "timestamp": "2026-08-05T05:24:16+00:00"
   }
 ]
