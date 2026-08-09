@@ -1,16 +1,9 @@
 [
   {
-    "type": "non_job_skipped",
-    "channel": "seekeras",
-    "msg_id": 17663,
-    "text": "⚠️Guys Don't Miss Tech Mahindra Online Interview for fresher .Comment yes to get the link in DM \n\nhttps://www.instagram.com/p/Db0XSQrCcOE/?igsh=MWszdHJjM3hjM3o5cA==",
-    "timestamp": "2026-08-09T11:49:51+00:00"
-  },
-  {
-    "type": "non_job_skipped",
-    "channel": "web3hiring",
-    "msg_id": 16335,
-    "text": "30 new jobs everyday - Engineering, Product, Design, Growth, etc.: https://t.me/techjobsdaily\nJobs\nFeed",
-    "timestamp": "2026-08-09T13:06:56+00:00"
+    "type": "failed_extraction",
+    "channel": "freshershunt",
+    "msg_id": 29516,
+    "text": "Forge the Future Hackathon 2026 | Hiring Challenge\n\nPresented by Elastic, powered by AWS, is inviting India's AI builders to develop autonomous, explainable, production-ready AI agents across Search, Observability, and Security.\n\n1. ₹6,00,000 Prize Pool\n2. Mentorship from Elastic & AWS experts\n3. Potential career opportunities with Elastic for eligible participants.\n\nApply now: https://hackculture.io/hackathons/forge-the-future-hackathon-2026?ref=Sct3\n\nApplication Deadline: 16th August 2026",
+    "timestamp": "2026-08-09T14:16:55+00:00"
   }
 ]
