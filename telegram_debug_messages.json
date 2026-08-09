@@ -1,1 +1,51 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18441,
+    "text": "\nLIFE HAS NO\nREMOTE. GET UP\nAND CHANGE IT\nYOURSELF.",
+    "timestamp": "2026-08-09T02:04:41+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256697,
+    "text": "#EY is hiring for the following positions. kindly share your CV to my email ID #arvind.mishra2@in.ey.com along with the requisition ID if it matches your requirement.\nervice line\nSkills\nReq. ID\nLevel\nOracle Fusion Financlals implementation with a strong focus on end-to-end finance\nOracle\ntransformation. Proficlent in configuring and supporting core modules including General Ledger.\n1724471\nAccounts Payable, Accounts Recelvable, and Cash Management.\nDigital\nExperience in Salestorce\n1714573\nSenior",
+    "timestamp": "2026-08-09T02:16:59+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256698,
+    "text": "\nUPCOMING\nHOWROOMS\n&\nJOB OPENINGS\nNEXON\nTATA\nwa\nHECTOR\nWORK LOCATION:\nBIA VENTURES\nKR PURAM,\n(ATHER EV DEALERSHIP)\nAVALAHALLI\nATHER\nCAUVERY MOTORS\nWORK LOCATION:\nMAGADI ROAD,\nTATA\n(TATA MOTORS)\nMOTORS\nBINNYPET\nCAUVERY MOTORS\nWORK LOCATION:\nTATA\nBANGARAPET\n(TATA MOTORS)\nMOTORS\nFITWELL CAPS LLP\nWORK LOCATION:\nKH ROAD,\nHONDA\n(HONDA TWO WHEELER)\nBANGALORE\nThe Power of Dreams\nSATTVA MOTORS LLP\nWORK LOCATION:\nKORAMANGALA\n(MG DEALERSHIP)\nMORRIS GARAGES\nSince 1924\nJOB OPENINGS\nSALES\nTEAM\nCUSTOMER\nEXECUT",
+    "timestamp": "2026-08-09T02:16:59+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256699,
+    "text": "\nENSIGN\nEquipments Pvt. Ltd.,\nISO 9001 : 2015 (QMS) CERTIFIED COMPANY\nJOB\nOPPORTUNITIES\nCOMMERCIAL KITCHEN EQUIPMENT MANUFACTURING\nA reputed Commercial Kitchen Equipment\nManufacturing Organization located at\nJ.C. Industrial Area, Yelechenahalli, Kanakapura Road,\nBengaluru - 560 062, is looking for experienced\nand skilled candidates for the following positions:\nVACANCIES\nWelders (Arc & TIG)\n5 Positions\na\nRefrigerator Technicians\nPositions\nFitters\nPositions\nHelpers\n10 Positions\nEXPERIENCE\nEMPLOYEE",
+    "timestamp": "2026-08-09T02:16:59+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256701,
+    "text": "🚀 L&T Technology services is hiring for below Testing roles 🚀 \n🏢  Final level will be the F2F discussion, Preferred-Immediate to 30days notice.\n📌 Role :Test Automation Lead\nLocation :Chennai\nExperience :6-9 Years\nSkills :Dspace HIL Testing, SIL, MATLAB SIMULINK, VANAPE, Python automation, CAN, J1939, I/O modelling and simulation\n📌 Role :HIL Test Engineer(3-Position)\nLocation :Chennai\nExperience :5-7 Years\nSkills: Dspace HIL testing, Python automation, MATLAB simulink, Powertrain, CAN, UDS, Manua",
+    "timestamp": "2026-08-09T02:17:57+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256702,
+    "text": "🚀 We're Hiring Data Scientists Bosch Global Software Technologies\n📍 Location: Bengaluru\n💼 Experience: 5 to 8 Years\n🕒 Employment Type: Full Time\n      No of positions : 03\n      Key Skills:\n#python #statistics #machinelearning #ml #genai #llm #deeplearning #DL #computervision #cv #agenticai\n\nHere is the job description. Kindly click and apply directly\n\nhttps://jobs.smartrecruiters.com/BoschGroup/744000138091659-data-scientist?trid=463ac537-35c8-4256-8fe4-47ea285de0a6&trk=feed__main-feed-card__fee",
+    "timestamp": "2026-08-09T02:25:27+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3080,
+    "text": "Oracle hiring for freshers 2026\n\n📢 Company: Oracle \n💼 Job Role: System Analyst Support \n💰 Salary: 4 - 12 LPA\n🎓 Qualification: Any Graduate\n👨‍💼 Experience: Freshers \n\n🔗 Apply Here:\nhttps://mohancareers.com/oracle-hiring-for-freshers-2026-2/\nORACLE",
+    "timestamp": "2026-08-09T01:32:01+00:00"
+  }
+]
