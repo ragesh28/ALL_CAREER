@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18448,
+    "text": "\nYou Need 3 Hobbies\nOne to keep\nOne to keep\nOne to make\nyou creative\nyou in shape\nyou money",
+    "timestamp": "2026-08-10T01:45:04+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "job4fresherss",
+    "msg_id": 19356,
+    "text": "Company Name:  Accenture \nPost Name:  Customer Contact Comms Associate – (Voice International Process)\nExpected Salary:  ₹3.25- ₹4.5 LPA*\nJob Location:  Mumbai, Mumbai Suburban, Navi Mumbai\nWalk-in Date:  11th August 2026\n\n✅Apply Link: https://job4freshers.co.in/accenture-walk-in-customer-support/\n\nJoin our WhatsApp Group👇\nhttps://chat.whatsapp.com/LAigjiRgwirJ1d1GRnp1t3\n\nFor Direct Referral 👇🏻\nhttps://telegram.dog/careerwithasr\n\nHow. to Apply for Job👇🏻\nhttps://youtu.be/WgSpskMXq04\n\nIf you have ",
+    "timestamp": "2026-08-10T01:50:35+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "mohancareers",
+    "msg_id": 3084,
+    "text": "NTT DATA  jobs for freshers 2026\n\n📢 Company: NTT DATA\n💼 Job Role: Graduate Trainee \n💰 Salary: 4 - 6 LPA\n🎓 Qualification: Any Graduate\n👨‍💼 Experience: 0\n\n🔗 Apply Here:\nhttps://mohancareers.com/ntt-data-hiring-freshers-2026/\nNTTDaTA",
+    "timestamp": "2026-08-10T02:31:01+00:00"
+  }
+]
