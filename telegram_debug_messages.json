@@ -1,86 +1,142 @@
 [
   {
-    "type": "non_job_skipped",
-    "channel": "freshershunt",
-    "msg_id": 29564,
-    "text": "⚠️ 𝗬𝗢𝗨'𝗥𝗘 𝗠𝗜𝗦𝗦𝗜𝗡𝗚 𝗝𝗢𝗕 𝗔𝗟𝗘𝗥𝗧𝗦! ⚠️\n\n💔 𝗦𝗔𝗗 𝗧𝗥𝗨𝗧𝗛:\nWhile you manually search LinkedIn, Glassdoor, Naukri...\nOur members get 𝗔𝗟𝗟 𝗻𝗲𝘄 𝗷𝗼𝗯 𝗽𝗼𝘀𝘁𝗶𝗻𝗴𝘀 delivered instantly!\n\n📊 𝗧𝗛𝗜𝗦 𝗪𝗘𝗘𝗞 𝗔𝗟𝗢𝗡𝗘:\n\n450+ fresh job links shared\nFrom 15+ platforms (LinkedIn, Glassdoor, AngelList...)\n𝗙𝗿𝗲𝘀𝗵𝗲𝗿 𝗿𝗼𝗹𝗲𝘀 across IT, Finance, Marketing\n\n⚡ 𝗪𝗛𝗜𝗟𝗘 𝗬𝗢𝗨 𝗦𝗟𝗘𝗘𝗣:\nWe scan & share new openings\nYour competition applies first\nBest roles get filled\n\n💸 𝗢𝗻𝗹𝘆 ₹𝟰𝟵𝟵 𝗳𝗼𝗿 𝗹𝗶𝗳𝗲𝘁𝗶𝗺𝗲\n\n⏰ 𝗦𝗮𝘃𝗲 𝟱+ 𝗵𝗼𝘂𝗿𝘀 𝗱𝗮𝗶𝗹𝘆 𝗷𝗼𝗯 𝗵𝘂𝗻𝘁𝗶𝗻𝗴\n🔴 𝗣𝗿𝗶𝗰𝗲 𝗶𝗻𝗰𝗿𝗲𝗮𝘀𝗶𝗻𝗴 𝘀𝗼𝗼𝗻!\n\n👉",
-    "timestamp": "2026-08-12T04:32:16+00:00"
+    "type": "failed_extraction",
+    "channel": "kickcharm",
+    "msg_id": 42151,
+    "text": "**Techgig (A Times Internet Company) is inviting applications for Technology Hackathon!**\n\nApplication Link: https://fhlinks.in/Itytbv\n\nEligibility: Open to all (Students, Freshers, Working Professionals)\n\nApplication Deadline: 17th August 2026\n\nWhat’s in it for the candidates?\n\n1.⁠ ⁠₹2,00,000* cash prize\n2.⁠ ⁠Chance to connect with industry leaders\n3.⁠ ⁠Mentorship + career opportunities\n4.⁠ ⁠Boost resume with a national-level hackathon experience",
+    "timestamp": "2026-08-12T05:32:06+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "kickcharm",
-    "msg_id": 42147,
-    "text": "**🚨Cognizant Hiring Freshers for Data Analyst\n**\nExperience: Freshers/Experienced\nEducation: Any Graduate\nSalary: Rs 4-6 LPA (Expected)\n\nApply: https://kickcharm.com/cognizant-recruitment-hiring-for-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-12T03:02:33+00:00"
+    "msg_id": 42152,
+    "text": "**🚨Apply Soon Before Link Expires**\n**\nWipro Mass Hiring Freshers for Intern** **Associate**\n\nExperience: Freshers \nEducation: Any Graduate\nSalary: Rs 3-4 LPA (Expected)\nLocation: PAN India\n\nApply: https://kickcharm.com/wipro-recruitment-hiring-graduates-for-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+    "timestamp": "2026-08-12T06:21:35+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "kickcharm",
-    "msg_id": 42148,
-    "text": "🚨**Deloitte Latest Hiring Freshers for Internship**\n\nExperience: Freshers\nEducation: Any Graduate\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/deloitte-recruitment-hiring-any-graduates-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-12T04:00:38+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "kickcharm",
-    "msg_id": 42149,
-    "text": "**🚀 Remote Job Opportunity!!!**\n\n**Startek Hiring Freshers for Support Associate**\n\nExperience: Freshers/Experienced\nEducation: Any Graduate\nSalary: Rs 3-4 LPA (Expected)\nLocation: Remote\n\nApply: https://kickcharm.com/startek-work-from-home-hiring-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-12T05:01:48+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "way2freshers",
-    "msg_id": 18463,
-    "text": "https://docs.google.com/forms/d/e/1FAIpQLSfTwnZRQb7fdmQzd5U7R3EjDFW4Z6G095jH7eldFJ8zuyDUFA/viewform\nFSM\nSUBMITYOUR CV\nFRONTIER SEMICONDUCTOR BANGLADESH LTD.\nAdvanced Metrology Products and Solution for Semiconductor Industry\nDeadline: 31 August, 2026\nWE'RE\nHIRING\nEMBEDDED SYSTEM ENGINEER\nOpen Positions (2)\nJob Description\nContribute to technical requirements, architecture, and interface design documents.\nDesign, implement, test and debug complex embedded systems software.\nDevelopment of algorith",
-    "timestamp": "2026-08-12T03:00:18+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "fresheroffcampus",
-    "msg_id": 17799,
-    "text": "🚀 **FRESHEROFFCAMPUS PREMIUM**\n\n🔥 **40+ Fresher Jobs Posted in the Last 3 Days!**\n\n🆓 **Free:** Jobs after website posting\n💎 **Premium:** Get new jobs **early + direct official apply links** ⚡\n\n💰 **₹499 ONE-TIME | ♾️ LIFETIME ACCESS**\n\n💳 UPI: **kvenkatesh3012@oksbi**\n📲 After payment, send the **payment screenshot to ****8122115798**.\n\n✅ Once verified, we'll add you to the **FresherOffCampus Premium WhatsApp Group**.\n\n🔥 **Apply early. Stay ahead!**",
-    "timestamp": "2026-08-12T04:20:22+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "fresheroffcampus",
-    "msg_id": 17800,
-    "text": "**👨‍💻 Amazon Off Campus 2026 Hiring Freshers – Associate, Quality Services**\n\n📍 Location: Bangalore\n🎓 Qualification: Bachelor's Degree\n💼 Experience: Freshers\n🥇 Batch: 2025 / 2026\n💰 CTC: ₹3.5 – ₹5.5 LPA (Expected)\n\n**🔗 Apply Now: ****https://www.fresheroffcampus.com/amazon-off-campus-fresher/**\n\n📲 Stay Updated:\n👉 WhatsApp Channel: https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel: https://t.me/fresheroffcampus",
-    "timestamp": "2026-08-12T04:49:44+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "job4fresherss",
-    "msg_id": 19386,
-    "text": "Company Name:  GE Vernova\nPost Name:  Software Engineer\nExpected Salary:  up to ₹6.8 LPA*\nJob Location:  Bangalore\nJobType:  Freshers/ Experienced\n\n✅Apply Link:  https://job4freshers.co.in/ge-vernova-recruitment-drive/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nFor Daily Government Jobs Subscribe to👇🏻\nhttps://yt.openinapp.co/Job4Governmen\n\nTelegram\nhttps://telegram.me/job4fresherss\n\n",
-    "timestamp": "2026-08-12T02:57:01+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "job4fresherss",
-    "msg_id": 19387,
-    "text": "Company Name:  Sagility India\nPost Name:  Customer Support Executive\nSalary:  ₹3-3.25 LPA\nJob Location:  Bangalore\nWalk-in Date:  13th August – 30 October 2026\n\n✅Apply Link: https://job4freshers.co.in/sagility-walk-in-support-executive/\n\nJoin our WhatsApp Group👇\nhttps://chat.whatsapp.com/LAigjiRgwirJ1d1GRnp1t3\n\nFor Direct Referral 👇🏻\nhttps://telegram.dog/careerwithasr\n\nHow. to Apply for Job👇🏻\nhttps://youtu.be/WgSpskMXq04\n\nIf you have any doubts, feel free to contact us\nhttps://x.com/ajsinghrawat",
-    "timestamp": "2026-08-12T04:49:34+00:00"
+    "channel": "fresher_offcampus_drives",
+    "msg_id": 5785,
+    "text": "🚀Remote Job Opportunity!!\n\nPeroptyx Hiring Freshers for Data Analyst\n\nExperience: Freshers\nEducation: Any Graduate\nSalary: Rs 4 LPA (Expected)\nLocation: Remote\n\nApply: https://kickcharm.com/peroptyx-work-from-home-hiring-freshers/",
+    "timestamp": "2026-08-12T05:39:50+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 256799,
-    "text": "💼 ** Senior Manager, Expert Services **\n\n🏢 **Company:** ServiceNow\n📍 **Location:** Bangalore, Karnataka, in\n💰 **Salary:** Not disclosed\n📝 **Type:** object Object\n\n**Description:**\nNo description provided\n\n🔗 **Apply:** https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000143023819\n\n━━━━━━━━━━━━━━━\n👥 Join our community for more opportunities!",
-    "timestamp": "2026-08-12T04:00:31+00:00"
+    "msg_id": 256804,
+    "text": "Adobe Hiring for Software Development Engineer\n\nLocation: Bangalore, Karnataka, India \n\nJob Requirements: \n\n1.  2–4 years of back-end software development experience\n\n2. Strong data structures, algorithms, and problem-solving skills\n\n3. Expertise in Java and related stack (Spring Boot, etc.)\n\n4. Proven experience designing, building, and evolving scalable cloud-based services on AWS/Azure\n\n5. Hands-on use of AI coding assistants (e.g., GitHub Copilot, Claude Code, Cursor) for development, code r",
+    "timestamp": "2026-08-12T05:37:19+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 256800,
-    "text": "💼 **Staff Software Engineer - Moveworks**\n\n🏢 **Company:** ServiceNow\n📍 **Location:** Bangalore, Karnataka, in\n💰 **Salary:** Not disclosed\n📝 **Type:** object Object\n\n**Description:**\nNo description provided\n\n🔗 **Apply:** https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000142793179\n\n━━━━━━━━━━━━━━━\n👥 Join our community for more opportunities!",
-    "timestamp": "2026-08-12T04:00:32+00:00"
+    "msg_id": 256805,
+    "text": "Hiring | Territory Business Manager – Field Crops\nAre you passionate about agriculture, sales and building strong farmer & channel relationships?\nRasi Seeds is looking for dynamic professionals to join our team and drive growth across key territories.\nLocations: Koppal- Karnataka | Surajpur- Chhattisgarh | Azamgarh- Uttar Pradesh | Nandid-Gujarat\nExperience: 2–7 years in Agri-inputs/Seeds Industry\nQualification: Bachelor’s/Master’s in Agri Business\nApply Now: rasihrforu@rasiseeds.com\nRASi\nSEEDS\n",
+    "timestamp": "2026-08-12T05:38:08+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "mohancareers",
-    "msg_id": 3096,
-    "text": "Cognizant jobs for freshers 2026\n\n📢 Company: Cognizant \n💼 Job Role: Systems Engineer \n💰 Salary: 4 - 6 LPA\n🎓 Qualification: Any Graduate \n👨‍💼 Experience: freshers \n\n🔗 Apply Here:\nhttps://mohancareers.com/cognizant-latest-jobs-for-freshers/\ncognizant",
-    "timestamp": "2026-08-12T04:38:01+00:00"
+    "channel": "Bangalore_jobs",
+    "msg_id": 256806,
+    "text": "🚀 Oracle Hiring Freshers, Apply Now!!\n\n💼 Role: System Support Analyst\n🎓 Education: BE/BTech, MCA, ME/MTech, MSc, BSc\n👨💻 Experience: Freshers (0 to 2 Years)\n\n🔗 Apply Here:\nhttps://careers.oracle.com/en/sites/jobsearch/job/319150/",
+    "timestamp": "2026-08-12T05:49:46+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256807,
+    "text": "Required: Female Accountant for a showroom in Mangalore , Hindi language must . Good Salary. \nContact 7760569688",
+    "timestamp": "2026-08-12T06:34:22+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256808,
+    "text": "Mangalore\nWe're\nNOV\nHiring!\nJob Title\nEXPERIENCED\nACCOUNTANT\nLocation: Balmatta, Mangalore\nJob Type: Full-Time\nExperience: 2-4 Years\nREQUIREMENTS\nAccounting experience\nGood communication & teamwork\nPositive attitude & willingness to learn\nIndependent & deadline-oriented\nCompetitive salary\nAPPLY NOW\n+91 91136 80243",
+    "timestamp": "2026-08-12T06:34:39+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256809,
+    "text": "🚨Birlasoft is Hiring – Functional UAT Tester\n\nLooking to build your career in Software Testing and Quality Assurance? Birlasoft is hiring for a Functional UAT Tester role in Bengaluru.\n\nRole: Subcontractor – Functional Testing / Functional UAT Tester\nExperience: 1 -7 years \nLocation: Bengaluru, Karnataka\nRequisition ID: 38392\n\nKey Responsibilities\n\n• Collaborate with business stakeholders to understand functional requirements and define UAT scope.\n• Prepare comprehensive UAT test cases and scena",
+    "timestamp": "2026-08-12T06:36:28+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256811,
+    "text": "𝐊𝐏𝐌𝐆 is hiring \nPosition: Consultant\nQualification: Bachelor’s/ Master’s Degree\nExperienc﻿e:  0-2 (Years)\nLocation: Bangalore/ Gurgaon\n\n📌Apply Now: https://ejgk.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX__3/jobs/preview/30047954/?keyword=Analyst&mode=location____\n\n👉WhatsApp Channel:  ____https://whatsapp.com/channel/0029VabLfaG2ZjCi5te0B63f____\n\n👉Telegram Link:\n____https://t.me/Bangalore__jobs",
+    "timestamp": "2026-08-12T06:42:34+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256812,
+    "text": "IBM is hiring \nPosition: Quality Engineer - Automation\nQualifications: Bachelor’s/ Master’s Degree\nExperience: Experienced\nLocation: Bangalore, India\n\n📌Apply Now: https://careers.ibm.com/en__US/careers/JobDetail?jobId=113584&source=WEB__Search__INDIA____\n\n👉WhatsApp Channel:  ____https://whatsapp.com/channel/0029VabLfaG2ZjCi5te0B63f____\n\n👉Telegram Link:\n____https://t.me/Bangalore__jobs",
+    "timestamp": "2026-08-12T06:42:35+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256813,
+    "text": "Zycus Internship \nPosition: AI Engineer - Intern\nQualifications: Bachelor’s Degree\nExperience: Freshers (0-1 Year)\nLocation: Bangalore, India (Hybrid)\n\n📌Apply Link: https://zycus.talismatic.com/jobs/JZP3EP7IW\n\n👉WhatsApp Channel:  https://whatsapp.com/channel/0029VabLfaG2ZjCi5te0B63f\n\n👉Telegram Link:\nhttps://t.me/Bangalore_jobs",
+    "timestamp": "2026-08-12T06:42:35+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256814,
+    "text": "Goldman Sachs is hiring \nPosition: Analyst - Data Analytics\nQualification: Bachelor’s Degree\nExperience: Freshers/ Experienced\nLocation: Bengaluru, India\n\n📌Apply Now: https://higher.gs.com/roles/174489\n\n👉WhatsApp Channel:  https://whatsapp.com/channel/0029VabLfaG2ZjCi5te0B63f\n\n👉Telegram Link:\nhttps://t.me/Bangalore_jobs",
+    "timestamp": "2026-08-12T06:42:36+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256815,
+    "text": "Cisco is hiring Business Analyst 🚀\n\nMin. Experience : 1 Year\nLocation : Bangalore \n\nApply link : https://careers.cisco.com/global/en/job/CISCISGLOBAL2019147EXTERNALENGLOBAL/Business-Analyst?utm_source=linkedin&utm_medium=phenom-feeds\n\n👉WhatsApp Channel:  https://whatsapp.com/channel/0029VabLfaG2ZjCi5te0B63f\n\n👉Telegram Link:\nhttps://t.me/Bangalore_jobs",
+    "timestamp": "2026-08-12T06:42:36+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 256816,
+    "text": "💻 Infosys Hiring Freshers — Apply Now!\n\nInfosys is hiring freshers for the Data – Process Executive role. If you’re eligible, don’t miss this opportunity!\n\n💼 Role: Data – Process Executive\n🎓 Qualification: BE/BTech Only\n👶 Experience: Freshers (0 Years)\n🎓 Eligible Batches: 2023, 2024 & 2025\n📍 Location: Bengaluru\n\n🔗 Apply Here:\nhttps://www.naukri.com/job-listings-hiring-for-freshers-be-computer-science-for-data-non-voice-bnglr-infosys-bpm-bengaluru-0-to-0-years-150626023323",
+    "timestamp": "2026-08-12T06:44:38+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "getjobss",
+    "msg_id": 8023,
+    "text": "**📌NTT Data is hiring for Technical Graduate Trainee\nBatch: 2025, 2026\nApply here: ****https://careers.services.global.ntt/global/en/job/P-100247/Technical-Graduate-Trainee****\n\n**👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
+    "timestamp": "2026-08-12T05:23:44+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "getjobss",
+    "msg_id": 8024,
+    "text": "**📌Cionlabs is hiring for Software Engineer\nBatch: 2024, 2025, 2026\nApply here: ****https://cionlabs.com/jobs/software-engineer/****\n\n**👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
+    "timestamp": "2026-08-12T05:23:45+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "web3hiring",
+    "msg_id": 16343,
+    "text": "• Notion is hiring [Campaign Manager](https://jobs.ashbyhq.com/notion/14879c7f-ded7-4e7f-932c-fb4a294afd68)\n• Quai Network is hiring [SVG- White Font](https://quainetworkcommunity.notion.site/SVG-White-Font-abab2886819f4bde94da1c74fa9cd865?pvs=25)\n• DV Trading is hiring [C++ Software Engineer](https://job-boards.greenhouse.io/dvtrading/jobs/4721259005)\n• Kraken is hiring [Talent Sourcer](https://jobs.ashbyhq.com/kraken.com/21b158e1-b96a-4ec9-b597-d7fa9c344267)\n• Binance is hiring [Senior Product",
+    "timestamp": "2026-08-12T05:22:43+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "internfreak",
+    "msg_id": 5295,
+    "text": "it-bench hires Junior Python developer\nSalary: up to 2000$ / Monthly\nBatch: 2026, 2025\n\nLink: https://tinyurl.com/3bxzhk3h\n\nNote: The opportunity is remote, but since the hiring team is based in Kazakhstan, the application process will be conducted via Telegram.",
+    "timestamp": "2026-08-12T05:23:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "internfreak",
+    "msg_id": 5296,
+    "text": "Software Engineer, Full Stack — India Hiring At Mercor\nSalary: $25 - $30 / hour\nLocation: Remote (Work From Home) \n\nLink: https://t.mercor.com/qwySj",
+    "timestamp": "2026-08-12T05:37:56+00:00"
   }
 ]
