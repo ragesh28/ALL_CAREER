@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "web3hiring",
+    "msg_id": 16354,
+    "text": "• Chainlink is hiring [Software Engineer](https://br.linkedin.com/jobs/view/software-engineer-data-feeds-at-chainlink-labs-4454311993)\n• Ledger is hiring [Total Rewards Specialist](https://jobs.ashbyhq.com/ledger/94828769-a1d5-49c2-b539-a3629d25f79f)\n• Helius is hiring [Sr. Product Marketing Manager](https://jobs.ashbyhq.com/Helius/61fcd2db-46c0-4537-81db-95d04689a124)\n• Numerai is hiring [Senior Quantitative Researcher](https://wellfound.com/company/numerai/jobs/4542765-principal-software-engin",
+    "timestamp": "2026-08-16T19:55:44+00:00"
+  }
+]
