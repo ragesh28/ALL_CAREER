@@ -1,9 +1,37 @@
 [
   {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257174,
+    "text": "🗂️ **LATEST JOB DIGEST**\nNew Bengaluru private openings + Karnataka government updates\n\n💼 **PRIVATE OPENINGS**\n**1) Senior Associate, Emerging Business**\n🏢 Razorpay\n📍 Bengaluru\n🗓️ Posted: 17 Aug 2026\n\n**2) Associate Manager, Startup Accounts**\n🏢 Razorpay\n📍 Bengaluru\n🗓️ Posted: 14 Aug 2026\n\n⚠️ Verify eligibility and deadline on the official listing.\nTap an **Apply** button below to open the official listing.\nAutomated digest • New listings only • Bengaluru/Karnataka filter",
+    "timestamp": "2026-08-17T12:01:43+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "web3hiring",
+    "msg_id": 16356,
+    "text": "• Flow Blockchain is hiring [Marketing & Community Lead](https://careers.kula.ai/flow-com/25657)\n• Apex is hiring [Business Development Manager](https://cn.linkedin.com/jobs/view/business-development-manager-kol-affiliate-manager%EF%BC%89-at-apex-protocol-4450200167)\n• TRM Labs is hiring [Account Director](https://jobs.ashbyhq.com/trm-labs/e8b0db37-e21e-463f-a572-ab2216dafb22)\n• Wave Mobile Money is hiring [People Partner- Support](https://boards.greenhouse.io/wavemm1/jobs/6134008004)\n• Matrixpo",
+    "timestamp": "2026-08-17T11:57:27+00:00"
+  },
+  {
     "type": "non_job_skipped",
-    "channel": "job4softwaree",
-    "msg_id": 13199,
-    "text": "🚀 𝗣𝗮𝘆 𝗔𝗳𝘁𝗲𝗿 𝗣𝗹𝗮𝗰𝗲𝗺𝗲𝗻𝘁 – Get Placed in Top MNCs 😍\n\n🎓 Learn from IIT Alumni & Leading Tech Experts\n\n📌 Eligibility: BE / BTech / BCA / BSc\n\n🌟 2000+ Students Placed\n🤝 500+ Hiring Partners\n💼 Avg. ₹7.4 LPA\n🚀 ₹41 LPA Highest Package\n\n👇 Apply Now\n\nhttps://tinyurl.com/y43f9ckn\n\n⏳ Hurry Up 🏃‍♂️ Limited Slots Available!",
-    "timestamp": "2026-08-17T11:26:44+00:00"
+    "channel": "goyalarsh",
+    "msg_id": 6313,
+    "text": "If you are trying to become an AI Engineer in 2026, you should do this!\n\nhttps://lnkd.in/p/dfBX5iGK",
+    "timestamp": "2026-08-17T12:41:32+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "goyalarsh",
+    "msg_id": 6314,
+    "text": "Company Name: NXP Semiconductors\nNXP Semiconductor Women in Tech Porgram\nBatch: 2029 passout females\n\nLink: https://www.nxp.com/company/about-nxp/events/women-in-tech:WOMEN-IN-TECH",
+    "timestamp": "2026-08-17T12:41:43+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "goyalarsh",
+    "msg_id": 6315,
+    "text": "Company Name: Akamai\n\nIf you want to learn about what they are buidling for developers and also how can you get internship and career opportunities, must join their discord server: [https://fandf.co/4z8EHRN](https://fandf.co/4z8EHRN)",
+    "timestamp": "2026-08-17T13:04:38+00:00"
   }
 ]
