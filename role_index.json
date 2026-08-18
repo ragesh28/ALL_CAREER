@@ -1,5 +1,5 @@
 {
-  "Sales Executive": 60987,
+  "Sales Executive": 60988,
   "Digital Marketer": 21644,
   "Data Analyst": 16362,
   "Operations Manager": 9224,
@@ -12,7 +12,7 @@
   "Technical Writer": 5618,
   "UI/UX Designer": 15461,
   "Backend Developer": 6852,
-  "Other": 41525,
+  "Other": 41527,
   "Financial Analyst": 29576,
   "AI Engineer": 7832,
   "HR Business Partner": 12113,
@@ -33,7 +33,7 @@
   "Software Architect": 5226,
   "SDET": 4656,
   "IT Support": 1928,
-  "Customer Success Manager": 6877,
+  "Customer Success Manager": 6878,
   "Penetration Tester": 1321,
   "UX Researcher": 19
 }
