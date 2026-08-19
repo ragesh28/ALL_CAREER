@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "type": "non_job_skipped",
+    "channel": "way2freshers",
+    "msg_id": 18520,
+    "text": "\nDIFFICULT\nDOESN'T\nMEAN\nIMPOSSIBLE.\nIT SIMPLY\nMEANS THAT\nYOU HAVE TO\nWORK HARD.",
+    "timestamp": "2026-08-19T01:45:09+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257249,
+    "text": "\nS.R.GOPAL RAO\nOPTICIANS & OPTOMETRISTS\nHIRING: #OPTOMETRIST\nLocation\nTimings\nN.R. Road, Bengaluru | Work Mode: In-Store\n10:30 AM - 7:00 PM | Joining: Immediate\nPreference: Local / Karnataka-\nQualification\nExperience\nbased candidates preferred\nBSc / Diploma in Optometry\n0\n3 to 8 years in Eye Hospitals or\nOptical Stores\nPreference: Local / Karnataka-\nKey Skills\nbased candidates preferred\nRole\nRefraction, retinoscopy, contact\nClinical optometry, customer\nlens fitting & slit lamp evaluation\nhandlin",
+    "timestamp": "2026-08-19T01:16:24+00:00"
+  }
+]
