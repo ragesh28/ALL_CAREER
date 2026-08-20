@@ -1,23 +1,9 @@
 [
   {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14671,
-    "text": "**📌Salesforce is hiring for Software Engineer AMTS\nBatch: 2026\nApply here: ****https://www.salesforce.com/company/careers/jobs/JR356580/software-engineering-amts/****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-20T16:02:56+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14674,
-    "text": "**📌KOSH is hiring for Software Developer\nBatch: 2025, 2026\nApply here: ****https://www.linkedin.com/jobs/view/4454991440/****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-20T16:03:09+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14676,
-    "text": "**📌Whatfix is hiring for Information Developer\nBatch: 2022, 2023, 2024, 2025\nApply here: ****https://whatfix101.hire.trakstar.com/jobs/fk0zizw/****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**\n3",
-    "timestamp": "2026-08-20T16:03:16+00:00"
+    "type": "non_job_skipped",
+    "channel": "arunchauhanofficial",
+    "msg_id": 8182,
+    "text": "https://www.linkedin.com/posts/renukamujumdar_apple-is-hiring-for-multiple-engineering-activity-7496249734110543872-UVPe\nin\nPosted on LinkedIn",
+    "timestamp": "2026-08-20T17:50:27+00:00"
   }
 ]
