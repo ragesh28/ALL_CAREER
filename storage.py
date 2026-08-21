@@ -255,6 +255,22 @@ def store_jobs_batch(jobs):
         # Clean/normalize location
         j["location"] = normalize_location(j.get("location"))
         
+        # Extract walk-in status & date
+        try:
+            from extractor_utils import extract_walkin_info
+            w_info = extract_walkin_info(
+                title=str(j.get("title") or j.get("role") or ""),
+                description=str(j.get("description") or j.get("other_details") or "")
+            )
+            if w_info.get("is_walkin") or j.get("is_walkin") or j.get("walking_interview"):
+                j["is_walkin"] = True
+                if w_info.get("walkin_date") and not j.get("walkin_date"):
+                    j["walkin_date"] = w_info["walkin_date"]
+                if w_info.get("walkin_time") and not j.get("walkin_time"):
+                    j["walkin_time"] = w_info["walkin_time"]
+        except Exception:
+            pass
+
         url = get_job_url(j)
         tc_key = get_job_title_company_key(j)
         
@@ -280,17 +296,27 @@ def store_jobs_batch(jobs):
             # We found a duplicate! Let's check if we should enrich/update it.
             job_updated = False
             
-            # 1. Update walking_interview
-            # If the new job is walking_interview=True, and the existing is not, update it
-            new_walking = j.get("walking_interview")
-            old_walking = existing_job.get("walking_interview")
-            if new_walking is True and old_walking is not True:
-                existing_job["walking_interview"] = True
+            # 1. Update walk-in details
+            new_is_walkin = j.get("is_walkin") or j.get("walking_interview")
+            old_is_walkin = existing_job.get("is_walkin") or existing_job.get("walking_interview")
+            if new_is_walkin is True and old_is_walkin is not True:
+                existing_job["is_walkin"] = True
                 job_updated = True
-                print(f"      Enriched existing job with walking_interview=True: {existing_job.get('title')} @ {existing_job.get('company')}")
+                
+            new_wdate = j.get("walkin_date")
+            old_wdate = existing_job.get("walkin_date")
+            if new_wdate and not old_wdate:
+                existing_job["walkin_date"] = new_wdate
+                job_updated = True
+                
+            new_wtime = j.get("walkin_time")
+            old_wtime = existing_job.get("walkin_time")
+            if new_wtime and not old_wtime:
+                existing_job["walkin_time"] = new_wtime
+                job_updated = True
                 
             # 2. Enrich other missing fields
-            enrich_fields = ["experience", "skills", "salary", "qualification", "last_date", "other_details"]
+            enrich_fields = ["experience", "skills", "salary", "qualification", "last_date", "other_details", "walkin_date", "walkin_time"]
             for field in enrich_fields:
                 new_val = j.get(field)
                 old_val = existing_job.get(field)
@@ -299,12 +325,10 @@ def store_jobs_batch(jobs):
                     if isinstance(new_val, list) and new_val and not old_val:
                         existing_job[field] = new_val
                         job_updated = True
-                        print(f"      Enriched field 'skills' for existing job: {new_val}")
                 else:
                     if new_val not in (None, "", "null") and old_val in (None, "", "null"):
                         existing_job[field] = new_val
                         job_updated = True
-                        print(f"      Enriched field '{field}' for existing job: {new_val}")
             
             if job_updated:
                 db_changed = True
@@ -365,12 +389,12 @@ def store_jobs_batch(jobs):
             
     # 2. Rebuild jobs_by_role/
     role_dir = "jobs_by_role"
-    if os.path.exists(role_dir):
-        try:
-            shutil.rmtree(role_dir)
-        except Exception as e:
-            print(f"Error removing jobs_by_role: {e}")
     os.makedirs(role_dir, exist_ok=True)
+    for old_file in glob.glob(os.path.join(role_dir, "*.json")):
+        try:
+            os.remove(old_file)
+        except Exception:
+            pass
     
     grouped = {}
     role_counts = {}

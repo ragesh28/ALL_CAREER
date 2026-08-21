@@ -201,12 +201,14 @@ SYSTEM_PROMPT = (
     "casual chat, motivational quotes, news), return exactly: {\"none\": true}\n\n"
     "If the text IS a job posting, return a JSON object with exactly these keys:\n"
     "\"company\", \"role\", \"qualification\", \"experience\", \"salary\", "
-    "\"location\", \"apply_link\", \"last_date\", \"other_details\".\n\n"
+    "\"location\", \"apply_link\", \"last_date\", \"other_details\", \"is_walkin\", \"walkin_date\".\n\n"
     "Rules:\n"
     "- If a key is missing or not mentioned, set its value to null.\n"
     "- Do not guess apply links. If none exists, set it to null.\n"
     "- Experience and salary should be short strings or null.\n"
     "- \"last_date\" is the application deadline if mentioned, otherwise null.\n"
+    "- \"is_walkin\" should be true if this is a walk-in interview / drive, otherwise false.\n"
+    "- \"walkin_date\" should be the walk-in date (e.g. '24th August' or '12th - 15th Aug') if mentioned, otherwise null.\n"
     "- Do NOT add markdown formatting, backticks, explanation, or text outside the JSON."
 )
 
@@ -570,6 +572,13 @@ async def run_pipeline():
 
                     print(f"    🎉 Extracted: '{role}' @ '{company}' ({location})")
 
+                    # Extract fallback walk-in info using regex
+                    from extractor_utils import extract_walkin_info
+                    w_info = extract_walkin_info(title=role, description=raw_text)
+                    is_walk = bool(job_json.get("is_walkin")) or w_info.get("is_walkin", False)
+                    w_date = job_json.get("walkin_date") or w_info.get("walkin_date")
+                    w_time = w_info.get("walkin_time")
+
                     job_data = {
                         "title": role,
                         "company": company,
@@ -582,7 +591,10 @@ async def run_pipeline():
                         "qualification": job_json.get("qualification"),
                         "last_date": job_json.get("last_date"),
                         "other_details": job_json.get("other_details"),
-                        "role_search": "Telegram Alert"
+                        "role_search": "Telegram Alert",
+                        "is_walkin": is_walk,
+                        "walkin_date": w_date,
+                        "walkin_time": w_time
                     }
 
                     # Store in unified database (runs classifier, deduplicates)

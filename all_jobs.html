@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All_Career - All Jobs</title>
     <link rel="icon" href="String_Theory.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-deep: #06080f;
@@ -30,9 +32,20 @@
             --sidebar-width: 240px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        *::selection { background: rgba(52, 211, 153, 0.25); color: #fff; }
-        html { scroll-behavior: smooth; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        *::selection {
+            background: rgba(52, 211, 153, 0.25);
+            color: #fff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             background-color: var(--bg-deep);
@@ -45,7 +58,9 @@
         /* ── Subtle animated background ── */
         body::before {
             content: '';
-            position: fixed; inset: 0; z-index: -1;
+            position: fixed;
+            inset: 0;
+            z-index: -1;
             background:
                 radial-gradient(ellipse 70% 50% at 15% 25%, rgba(52, 211, 153, 0.06), transparent),
                 radial-gradient(ellipse 50% 40% at 85% 10%, rgba(96, 165, 250, 0.05), transparent),
@@ -56,25 +71,33 @@
            TOP NAVBAR
         ══════════════════════════════════════ */
         .topnav {
-            position: sticky; top: 0; z-index: 200;
+            position: sticky;
+            top: 0;
+            z-index: 200;
             background: rgba(6, 8, 15, 0.92);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             padding: 0 24px;
-            display: flex; align-items: center; justify-content: space-between; height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
             gap: 20px;
         }
+
         .topnav-left {
             flex: 1;
             display: flex;
             justify-content: flex-start;
         }
+
         .topnav-center {
             flex: 0 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .topnav-right {
             flex: 1;
             display: flex;
@@ -82,55 +105,109 @@
             align-items: center;
             gap: 16px;
         }
+
         .topnav-logo {
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
         }
-        .topnav-logo img { width: 32px; height: 32px; border-radius: 8px; }
-        .topnav-logo span {
-            font-family: 'Outfit', sans-serif; font-weight: 800;
-            font-size: 1.2rem; color: #fff; letter-spacing: 0.5px;
+
+        .topnav-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
         }
+
+        .topnav-logo span {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
         .topnav-search {
-            width: 100%; max-width: 380px;
-            display: flex; align-items: center; gap: 10px;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px; padding: 0 14px; height: 38px;
+            border-radius: 10px;
+            padding: 0 14px;
+            height: 38px;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
+
         .topnav-search:focus-within {
             background: rgba(255, 255, 255, 0.12);
             border-color: var(--border-active);
             box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.08);
         }
-        .topnav-search svg { color: var(--text-muted); flex-shrink: 0; }
+
+        .topnav-search svg {
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
         .topnav-search input {
-            flex: 1; background: none; border: none; outline: none;
-            color: #ffffff; font-family: 'Inter', sans-serif;
-            font-size: 0.88rem; font-weight: 500;
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
         }
-        .topnav-search input::placeholder { color: var(--text-muted); }
+
+        .topnav-search input::placeholder {
+            color: var(--text-muted);
+        }
+
         .topnav-count {
-            font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
-        .topnav-count span { color: var(--primary); font-weight: 800; }
+
+        .topnav-count span {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
         .clear-all-btn {
-            padding: 7px 16px; border-radius: 8px;
+            padding: 7px 16px;
+            border-radius: 8px;
             border: 1px solid rgba(251, 113, 133, 0.3);
             background: rgba(251, 113, 133, 0.06);
-            color: var(--accent-rose); font-size: 0.78rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; white-space: nowrap;
-            display: none; font-family: 'Inter', sans-serif;
+            color: var(--accent-rose);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: none;
+            font-family: 'Inter', sans-serif;
         }
-        .clear-all-btn.visible { display: block; }
-        .clear-all-btn:hover { background: rgba(251, 113, 133, 0.12); border-color: rgba(251, 113, 133, 0.5); }
+
+        .clear-all-btn.visible {
+            display: block;
+        }
+
+        .clear-all-btn:hover {
+            background: rgba(251, 113, 133, 0.12);
+            border-color: rgba(251, 113, 133, 0.5);
+        }
 
         /* ══════════════════════════════════════
            LAYOUT — SIDEBAR + MAIN
         ══════════════════════════════════════ */
         .page-layout {
-            display: flex; min-height: calc(100vh - 60px);
+            display: flex;
+            min-height: calc(100vh - 60px);
         }
 
         /* ══════════════════════════════════════
@@ -141,57 +218,98 @@
             flex-shrink: 0;
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
-            position: sticky; top: 60px;
+            position: sticky;
+            top: 60px;
             height: calc(100vh - 60px);
             overflow-y: auto;
             padding: 0 0 40px;
             scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.06) transparent;
+            scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
         }
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 4px; }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+        }
 
         /* Sidebar header */
         .sidebar-header {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 18px 20px 14px;
             border-bottom: 1px solid var(--border);
         }
+
         .sidebar-title {
-            font-size: 0.95rem; font-weight: 700; color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
         }
+
         .applied-badge {
-            font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 10px;
             background: rgba(52, 211, 153, 0.12);
-            color: var(--primary); border-radius: 20px;
+            color: var(--primary);
+            border-radius: 20px;
             border: 1px solid rgba(52, 211, 153, 0.2);
             display: none;
         }
-        .applied-badge.visible { display: block; }
+
+        .applied-badge.visible {
+            display: block;
+        }
 
         /* ── Filter Section ── */
         .filter-section {
             border-bottom: 1px solid var(--border);
         }
+
         .filter-section-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 20px; cursor: pointer; user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            cursor: pointer;
+            user-select: none;
             transition: background 0.15s;
         }
-        .filter-section-header:hover { background: rgba(255,255,255,0.02); }
+
+        .filter-section-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         .filter-section-label {
-            font-size: 0.88rem; font-weight: 600; color: var(--text-main);
-            display: flex; align-items: center; gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
             pointer-events: none;
         }
+
         .filter-section-label .filter-count {
-            font-size: 0.68rem; font-weight: 700;
-            background: var(--primary); color: #020a0f;
-            padding: 1px 7px; border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            background: var(--primary);
+            color: #020a0f;
+            padding: 1px 7px;
+            border-radius: 20px;
             display: none;
             pointer-events: none;
         }
-        .filter-section-label .filter-count.show { display: inline-block; }
+
+        .filter-section-label .filter-count.show {
+            display: inline-block;
+        }
+
         .chevron {
             color: var(--text-dim);
             width: 16px;
@@ -201,84 +319,167 @@
             display: inline-block;
             pointer-events: none;
         }
-        .filter-section.open .chevron { transform: rotate(180deg); }
+
+        .filter-section.open .chevron {
+            transform: rotate(180deg);
+        }
 
         /* Filter body */
         .filter-body {
-            overflow: hidden; max-height: 0;
+            overflow: hidden;
+            max-height: 0;
             transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0 16px;
         }
-        .filter-section.open .filter-body { max-height: 2000px; }
-        .filter-body-inner { padding: 4px 0 14px; }
+
+        .filter-section.open .filter-body {
+            max-height: 2000px;
+        }
+
+        .filter-body-inner {
+            padding: 4px 0 14px;
+        }
 
         /* Search inside filter */
         .filter-search {
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border);
-            border-radius: 8px; padding: 8px 12px; margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
             transition: border-color 0.2s;
         }
-        .filter-search:focus-within { border-color: var(--border-active); }
-        .filter-search svg { color: var(--text-dim); flex-shrink: 0; }
+
+        .filter-search:focus-within {
+            border-color: var(--border-active);
+        }
+
+        .filter-search svg {
+            color: var(--text-dim);
+            flex-shrink: 0;
+        }
+
         .filter-search input {
-            flex: 1; background: none; border: none; outline: none;
-            color: var(--text-main); font-family: 'Inter', sans-serif;
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
         }
-        .filter-search input::placeholder { color: var(--text-dim); }
+
+        .filter-search input::placeholder {
+            color: var(--text-dim);
+        }
 
         /* Checkbox option */
         .filter-option {
-            display: flex; align-items: center; gap: 10px;
-            padding: 7px 4px; cursor: pointer; border-radius: 6px;
-            transition: background 0.15s; user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 4px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.15s;
+            user-select: none;
         }
-        .filter-option:hover { background: var(--bg-hover); }
-        .filter-option input[type="checkbox"] { display: none; }
+
+        .filter-option:hover {
+            background: var(--bg-hover);
+        }
+
+        .filter-option input[type="checkbox"] {
+            display: none;
+        }
+
         .custom-checkbox {
-            width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            flex-shrink: 0;
             border: 1.5px solid var(--text-dim);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s;
         }
+
         .filter-option.checked .custom-checkbox {
-            background: var(--primary); border-color: var(--primary);
+            background: var(--primary);
+            border-color: var(--primary);
         }
-        .custom-checkbox svg { display: none; }
-        .filter-option.checked .custom-checkbox svg { display: block; }
+
+        .custom-checkbox svg {
+            display: none;
+        }
+
+        .filter-option.checked .custom-checkbox svg {
+            display: block;
+        }
+
         .option-label {
-            font-size: 0.82rem; color: var(--text-muted); flex: 1;
-            font-weight: 500; transition: color 0.15s;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            flex: 1;
+            font-weight: 500;
+            transition: color 0.15s;
         }
+
         .filter-option:hover .option-label,
-        .filter-option.checked .option-label { color: var(--text-main); }
+        .filter-option.checked .option-label {
+            color: var(--text-main);
+        }
+
         .source-count {
-            font-size: 0.72rem; color: var(--text-dim); margin-left: 5px; font-weight: normal;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-left: 5px;
+            font-weight: normal;
         }
+
         .option-img {
-            width: 14px; height: 14px; object-fit: contain; border-radius: 2px; flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+            border-radius: 2px;
+            flex-shrink: 0;
         }
+
         .show-more-btn {
-            font-size: 0.78rem; color: var(--primary); font-weight: 600;
-            cursor: pointer; padding: 6px 4px; display: inline-block;
+            font-size: 0.78rem;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 4px;
+            display: inline-block;
             transition: opacity 0.2s;
         }
-        .show-more-btn:hover { opacity: 0.8; }
+
+        .show-more-btn:hover {
+            opacity: 0.8;
+        }
 
         /* Scrollable list options inside filters */
-        #skills-options, #company-options, #location-options, #roles-options {
+        #skills-options,
+        #company-options,
+        #location-options,
+        #roles-options {
             max-height: 260px;
             overflow-y: auto;
             padding-right: 4px;
         }
+
         #skills-options::-webkit-scrollbar,
         #company-options::-webkit-scrollbar,
         #location-options::-webkit-scrollbar,
         #roles-options::-webkit-scrollbar {
             width: 4px;
         }
+
         #skills-options::-webkit-scrollbar-thumb,
         #company-options::-webkit-scrollbar-thumb,
         #location-options::-webkit-scrollbar-thumb,
@@ -289,89 +490,171 @@
 
         /* Radio option (for date) */
         .filter-radio {
-            display: flex; align-items: center; gap: 10px;
-            padding: 7px 4px; cursor: pointer; border-radius: 6px;
-            transition: background 0.15s; user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 4px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.15s;
+            user-select: none;
         }
-        .filter-radio:hover { background: var(--bg-hover); }
+
+        .filter-radio:hover {
+            background: var(--bg-hover);
+        }
+
         .custom-radio {
-            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
             border: 1.5px solid var(--text-dim);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s;
         }
+
         .filter-radio.selected .custom-radio {
             border-color: var(--primary);
         }
+
         .radio-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: var(--primary); display: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: none;
         }
-        .filter-radio.selected .radio-dot { display: block; }
-        .filter-radio .option-label { color: var(--text-muted); }
+
+        .filter-radio.selected .radio-dot {
+            display: block;
+        }
+
+        .filter-radio .option-label {
+            color: var(--text-muted);
+        }
+
         .filter-radio:hover .option-label,
-        .filter-radio.selected .option-label { color: var(--text-main); }
+        .filter-radio.selected .option-label {
+            color: var(--text-main);
+        }
 
         /* ══════════════════════════════════════
            MAIN CONTENT
         ══════════════════════════════════════ */
         .main-content {
-            flex: 1; min-width: 0;
+            flex: 1;
+            min-width: 0;
             padding: 20px 24px 80px;
         }
 
         /* Sort bar */
         .sort-bar {
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 16px;
         }
-        .sort-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
-        .sort-select {
-            background: var(--bg-surface); border: 1px solid var(--border);
-            color: var(--text-main); padding: 7px 12px; border-radius: 8px;
-            font-family: 'Inter', sans-serif; font-size: 0.8rem; outline: none; cursor: pointer;
+
+        .sort-label {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
-        .sort-select option { background: var(--bg-surface); }
-        .sort-select:focus { border-color: var(--border-active); }
+
+        .sort-select {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .sort-select option {
+            background: var(--bg-surface);
+        }
+
+        .sort-select:focus {
+            border-color: var(--border-active);
+        }
 
         /* Active filter chips */
         .active-chips {
-            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
         }
+
         .chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 5px 12px; border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
             background: rgba(52, 211, 153, 0.1);
             border: 1px solid rgba(52, 211, 153, 0.25);
-            font-size: 0.75rem; font-weight: 600; color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
         }
+
         .chip-x {
-            cursor: pointer; opacity: 0.7; font-size: 0.85rem; line-height: 1;
+            cursor: pointer;
+            opacity: 0.7;
+            font-size: 0.85rem;
+            line-height: 1;
             transition: opacity 0.15s;
         }
-        .chip-x:hover { opacity: 1; }
+
+        .chip-x:hover {
+            opacity: 1;
+        }
 
         /* ── Job Cards Grid ── */
         #loading {
-            text-align: center; padding: 60px 20px; color: var(--text-muted); font-weight: 500;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-weight: 500;
         }
+
         #loading::after {
             content: '';
-            display: block; width: 28px; height: 28px; margin: 14px auto 0;
+            display: block;
+            width: 28px;
+            height: 28px;
+            margin: 14px auto 0;
             border: 3px solid rgba(52, 211, 153, 0.15);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: loadSpin 0.8s linear infinite;
         }
-        @keyframes loadSpin { to { transform: rotate(360deg); } }
+
+        @keyframes loadSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         #noResults {
-            text-align: center; padding: 60px 20px; color: var(--text-muted);
-            display: none; font-style: italic; font-size: 0.95rem;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            display: none;
+            font-style: italic;
+            font-size: 0.95rem;
         }
 
         .jobs-grid {
-            display: grid; gap: 14px;
+            display: grid;
+            gap: 14px;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
         }
 
@@ -382,181 +665,452 @@
             border: 1px solid var(--border);
             padding: 18px 20px;
             border-radius: 14px;
-            display: flex; flex-direction: column; gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0; transform: translateY(12px);
+            opacity: 0;
+            transform: translateY(12px);
             animation: cardIn 0.45s forwards;
-            width: 100%; height: 210px; box-sizing: border-box;
-            overflow: hidden; position: relative;
+            width: 100%;
+            height: 210px;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
         }
+
         .job-card::before {
             content: '';
-            position: absolute; top: 0; left: 16px; right: 16px; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(52,211,153,0.25), rgba(96,165,250,0.2), transparent);
-            opacity: 0; transition: opacity 0.3s;
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.25), rgba(96, 165, 250, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .job-card:hover::before { opacity: 1; }
+
+        .job-card:hover::before {
+            opacity: 1;
+        }
+
         .job-card:hover {
             border-color: rgba(52, 211, 153, 0.18);
             transform: translateY(-4px);
-            box-shadow: 0 16px 50px rgba(52, 211, 153, 0.1), 0 6px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 16px 50px rgba(52, 211, 153, 0.1), 0 6px 24px rgba(0, 0, 0, 0.4);
         }
-        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
 
-        .card-top { display: flex; gap: 12px; align-items: flex-start; }
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-top {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
         .logo-box {
-            width: 44px; height: 44px; flex-shrink: 0;
-            background: rgba(255,255,255,0.95); border-radius: 10px;
-            padding: 3px; position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 3px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s;
         }
-        .job-card:hover .logo-box { transform: scale(1.06); }
-        .company-logo { width: 38px; height: 38px; object-fit: contain; position: absolute; top:3px; left:3px; }
+
+        .job-card:hover .logo-box {
+            transform: scale(1.06);
+        }
+
+        .company-logo {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
+
         .logo-fallback {
-            width: 100%; height: 100%; border-radius: 7px; display: none;
-            align-items: center; justify-content: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 7px;
+            display: none;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(135deg, #059669, #0891b2);
-            font-weight: 800; font-size: 1.1rem; color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
         }
-        .card-info { flex: 1; min-width: 0; }
+
+        .card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
         .company-name {
-            color: var(--text-muted); font-size: 0.72rem; font-weight: 600; margin-bottom: 3px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-transform: uppercase; letter-spacing: 0.3px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
+
         .job-title {
-            font-size: 0.92rem; line-height: 1.35; color: var(--text-main); font-weight: 700;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: 0.92rem;
+            line-height: 1.35;
+            color: var(--text-main);
+            font-weight: 700;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .job-meta {
-            display: flex; flex-direction: column; gap: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
+
         .meta-row {
-            display: flex; gap: 5px; align-items: center; overflow: hidden;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            overflow: hidden;
         }
+
         .meta-badge {
-            font-size: 0.7rem; padding: 4px 9px; border-radius: 7px;
-            background: rgba(255,255,255,0.04); color: var(--text-muted);
-            border: 1px solid rgba(255,255,255,0.06);
-            display: inline-flex; align-items: center; gap: 4px;
-            white-space: nowrap; font-weight: 500;
-            max-width: 120px; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.7rem;
+            padding: 4px 9px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            font-weight: 500;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .meta-badge.loc { color: var(--accent-blue); border-color: rgba(96,165,250,0.15); }
-        .meta-badge.exp { color: var(--accent-amber); border-color: rgba(251,191,36,0.15); }
-        .meta-badge.date { color: var(--primary); border-color: rgba(52,211,153,0.15); }
+
+        .meta-badge.loc {
+            color: var(--accent-blue);
+            border-color: rgba(96, 165, 250, 0.15);
+        }
+
+        .meta-badge.exp {
+            color: var(--accent-amber);
+            border-color: rgba(251, 191, 36, 0.15);
+        }
+
+        .meta-badge.date {
+            color: var(--primary);
+            border-color: rgba(52, 211, 153, 0.15);
+        }
+
+        .walkin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.35);
+            color: #fbbf24;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-top: 6px;
+            width: fit-content;
+            letter-spacing: 0.2px;
+        }
+
+        .walkin-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fbbf24;
+            box-shadow: 0 0 8px #fbbf24;
+            animation: pulse-walkin 2s infinite;
+        }
+
+        @keyframes pulse-walkin {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
         .portal-badge {
-            display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px;
-            border-radius: 7px; background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06); font-size: 0.68rem;
-            color: var(--text-muted); flex-shrink: 0; font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 9px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-weight: 500;
         }
-        .portal-logo { width: 13px; height: 13px; object-fit: contain; border-radius: 2px; }
+
+        .portal-logo {
+            width: 13px;
+            height: 13px;
+            object-fit: contain;
+            border-radius: 2px;
+        }
 
         .card-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
             margin-top: auto;
         }
-        .card-role { color: var(--text-dim); font-size: 0.72rem; font-weight: 500; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .apply-btn {
-            padding: 7px 18px; background: transparent; color: var(--primary);
-            text-decoration: none; font-weight: 700; border-radius: 9px;
-            font-size: 0.8rem; border: 1px solid rgba(52,211,153,0.3);
-            transition: all 0.25s; position: relative; overflow: hidden;
+
+        .card-role {
+            color: var(--text-dim);
+            font-size: 0.72rem;
+            font-weight: 500;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+
+        .apply-btn {
+            padding: 7px 18px;
+            background: transparent;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 9px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
         .apply-btn:hover {
             background: linear-gradient(135deg, #059669, #10b981);
-            color: white; border-color: transparent;
-            box-shadow: 0 4px 18px rgba(52,211,153,0.3); transform: translateY(-1px);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 18px rgba(52, 211, 153, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .auto-apply-btn {
+            padding: 7px 14px;
+            background: linear-gradient(135deg, #4f46e5, #a855f7);
+            color: white;
+            font-weight: 700;
+            border-radius: 9px;
+            font-size: 0.78rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-left: 8px;
+            font-family: inherit;
+        }
+
+        .auto-apply-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 18px rgba(168, 85, 247, 0.35);
         }
 
         /* ── Pagination ── */
         .pagination-container {
-            display: flex; justify-content: center; align-items: center; gap: 6px;
-            margin-top: 44px; flex-wrap: wrap;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 44px;
+            flex-wrap: wrap;
         }
+
         .page-btn {
-            width: 40px; height: 40px; border-radius: 10px;
-            background: var(--bg-surface); border: 1px solid var(--border);
-            color: var(--text-muted); font-weight: 700; font-size: 0.88rem;
-            cursor: pointer; transition: all 0.2s; display: flex;
-            align-items: center; justify-content: center; font-family: 'Inter', sans-serif;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
         }
-        .page-btn:hover { border-color: var(--primary); color: white; transform: translateY(-2px); }
+
+        .page-btn:hover {
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         .page-btn.active {
             background: linear-gradient(135deg, #059669, #10b981);
-            color: white; border-color: transparent;
-            box-shadow: 0 4px 16px rgba(52,211,153,0.3);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
         }
-        .page-btn.nav-btn { width: auto; padding: 0 14px; font-size: 1rem; }
-        .page-btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none; }
-        .page-ellipsis { color: var(--text-dim); padding: 0 4px; }
+
+        .page-btn.nav-btn {
+            width: auto;
+            padding: 0 14px;
+            font-size: 1rem;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-ellipsis {
+            color: var(--text-dim);
+            padding: 0 4px;
+        }
 
         /* ── Scroll to top ── */
         .scroll-top {
-            position: fixed; bottom: 28px; right: 28px; z-index: 999;
-            width: 44px; height: 44px; border-radius: 12px;
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 999;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #059669, #10b981);
-            border: none; color: white; font-size: 1.2rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(52,211,153,0.3);
-            opacity: 0; transform: translateY(14px); pointer-events: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.3);
+            opacity: 0;
+            transform: translateY(14px);
+            pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-        .scroll-top:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(52,211,153,0.4); }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(52, 211, 153, 0.4);
+        }
 
         @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .jobs-grid { grid-template-columns: 1fr; }
-            .job-card { width: 100%; height: auto; }
+            .sidebar {
+                display: none;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .job-card {
+                width: 100%;
+                height: auto;
+            }
+
             .topnav {
                 flex-direction: column;
                 height: auto;
                 padding: 14px 16px;
                 gap: 12px;
             }
-            .topnav-left { order: 1; width: 100%; justify-content: center; }
-            .topnav-center { order: 2; width: 100%; justify-content: center; }
-            .topnav-right { order: 3; width: 100%; justify-content: center; }
-            .topnav-search { max-width: 100%; }
+
+            .topnav-left {
+                order: 1;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .topnav-center {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .topnav-right {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .topnav-search {
+                max-width: 100%;
+            }
         }
-    .exp-input-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 4px 0;
-    }
-    .exp-input-container label {
-        font-size: 13px;
-        color: #64748b;
-        white-space: nowrap;
-    }
-    .exp-input {
-        width: 60px;
-        padding: 6px 10px;
-        border: 1.5px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        text-align: center;
-        outline: none;
-        transition: border-color 0.2s;
-        background: #f8fafc;
-        color: #111827;
-    }
-    .exp-input:focus {
-        border-color: #111827;
-        background: #fff;
-    }
-    .exp-input-suffix {
-        font-size: 13px;
-        color: #64748b;
-    }
-</style>
+
+        .exp-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 0;
+        }
+
+        .exp-input-container label {
+            font-size: 13px;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .exp-input {
+            width: 60px;
+            padding: 6px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        .exp-input:focus {
+            border-color: #111827;
+            background: #fff;
+        }
+
+        .exp-input-suffix {
+            font-size: 13px;
+            color: #64748b;
+        }
+    </style>
 </head>
 
 <body>
@@ -572,8 +1126,12 @@
 
         <div class="topnav-center">
             <div class="topnav-search">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                <input type="text" id="searchInput" placeholder="Search jobs, companies, skills..." oninput="applyFilters()">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search jobs, companies, skills..."
+                    oninput="applyFilters()">
             </div>
         </div>
 
@@ -600,7 +1158,10 @@
                         Source
                         <span class="filter-count" id="cnt-source">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner" id="source-options">
@@ -616,28 +1177,41 @@
                         Posted Date
                         <span class="filter-count" id="cnt-date">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-radio selected" data-range="all" onclick="setDateRange(this, 'all')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <div class="custom-radio">
+                                <div class="radio-dot"></div>
+                            </div>
                             <span class="option-label">All Time</span>
                         </div>
                         <div class="filter-radio" data-range="24h" onclick="setDateRange(this, '24h')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <div class="custom-radio">
+                                <div class="radio-dot"></div>
+                            </div>
                             <span class="option-label">Last 24 Hours</span>
                         </div>
                         <div class="filter-radio" data-range="3d" onclick="setDateRange(this, '3d')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <div class="custom-radio">
+                                <div class="radio-dot"></div>
+                            </div>
                             <span class="option-label">Last 3 Days</span>
                         </div>
                         <div class="filter-radio" data-range="7d" onclick="setDateRange(this, '7d')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <div class="custom-radio">
+                                <div class="radio-dot"></div>
+                            </div>
                             <span class="option-label">Last 7 Days</span>
                         </div>
                         <div class="filter-radio" data-range="15d" onclick="setDateRange(this, '15d')">
-                            <div class="custom-radio"><div class="radio-dot"></div></div>
+                            <div class="custom-radio">
+                                <div class="radio-dot"></div>
+                            </div>
                             <span class="option-label">Last 15 Days</span>
                         </div>
                     </div>
@@ -651,13 +1225,21 @@
                         Location
                         <span class="filter-count" id="cnt-location">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-search">
-                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="locSearch" placeholder="Search location..." oninput="filterOptions('location')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <input type="text" id="locSearch" placeholder="Search location..."
+                                oninput="filterOptions('location')">
                         </div>
                         <div id="location-options">
                             <!-- Static top cities -->
@@ -673,13 +1255,21 @@
                         Role Category
                         <span class="filter-count" id="cnt-roles">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-search">
-                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="roleSearch" placeholder="Search roles..." oninput="filterOptions('roles')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <input type="text" id="roleSearch" placeholder="Search roles..."
+                                oninput="filterOptions('roles')">
                         </div>
                         <div id="roles-options"></div>
                     </div>
@@ -693,13 +1283,17 @@
                         Experience
                         <span class="filter-count" id="cnt-exp">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner" style="padding: 16px 4px 24px 4px;">
                         <div class="exp-input-container">
                             <label for="expMinInput">Min Year</label>
-                            <input type="number" min="0" max="30" value="" placeholder="0" class="exp-input" id="expMinInput" oninput="updateExpInput()" onchange="applyFilters()">
+                            <input type="number" min="0" max="30" value="" placeholder="0" class="exp-input"
+                                id="expMinInput" oninput="updateExpInput()" onchange="applyFilters()">
                             <span class="exp-input-suffix">Yrs</span>
                         </div>
                     </div>
@@ -713,13 +1307,21 @@
                         Skills
                         <span class="filter-count" id="cnt-skills">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-search">
-                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="skillSearch" placeholder="Search skills..." oninput="filterOptions('skills')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <input type="text" id="skillSearch" placeholder="Search skills..."
+                                oninput="filterOptions('skills')">
                         </div>
                         <div id="skills-options"></div>
                     </div>
@@ -733,13 +1335,21 @@
                         Company
                         <span class="filter-count" id="cnt-company">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-search">
-                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                            <input type="text" id="companySearch" placeholder="Search company..." oninput="filterOptions('company')">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <input type="text" id="companySearch" placeholder="Search company..."
+                                oninput="filterOptions('company')">
                         </div>
                         <div id="company-options"></div>
                     </div>
@@ -753,13 +1363,19 @@
                         Walk-in Interview
                         <span class="filter-count" id="cnt-walkin">0</span>
                     </span>
-                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </div>
                 <div class="filter-body">
                     <div class="filter-body-inner">
                         <div class="filter-option" id="walkinOpt" onclick="toggleWalkin()">
                             <div class="custom-checkbox">
-                                <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                                <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5"
+                                    viewBox="0 0 24 24">
+                                    <path d="M20 6 9 17l-5-5" />
+                                </svg>
                             </div>
                             <span class="option-label">🚶 Walk-in Only</span>
                         </div>
@@ -794,268 +1410,268 @@
     <script src="logos.js"></script>
     <script src="logo3d.js"></script>
     <script>
-    // ══════════════════════════════════════════════
-    //  STATE
-    // ══════════════════════════════════════════════
-    let allJobs = [];
-    let filteredJobs = [];
-    let currentPage = 1;
-    const JOBS_PER_PAGE = 100;
+        // ══════════════════════════════════════════════
+        //  STATE
+        // ══════════════════════════════════════════════
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentPage = 1;
+        const JOBS_PER_PAGE = 100;
 
-    // Filter state
-    let selectedPortals = new Set();
-    let activeDateRange = 'all';
-    let selectedLocations = new Set();
-    let selectedRoles = new Set();
-    let selectedCompanies = new Set();
-    let selectedSkills = new Set();
-    let activeExp = 0;
-    let walkinOnly = false;
-    let skillsMap = {};
+        // Filter state
+        let selectedPortals = new Set();
+        let activeDateRange = 'all';
+        let selectedLocations = new Set();
+        let selectedRoles = new Set();
+        let selectedCompanies = new Set();
+        let selectedSkills = new Set();
+        let activeExp = 0;
+        let walkinOnly = false;
+        let skillsMap = {};
 
-    // Data for dynamic options
-    let allCompanies = [];
-    let allLocations = [];
+        // Data for dynamic options
+        let allCompanies = [];
+        let allLocations = [];
 
-    const PORTALS = [
-        { id: 'linkedin',     label: 'LinkedIn',     logo: 'logos/portals/linkedin.png' },
-        { id: 'naukri',       label: 'Naukri',       logo: 'logos/portals/naukri.png' },
-        { id: 'indeed',       label: 'Indeed',       logo: 'logos/portals/indeed.png' },
-        { id: 'internshala',  label: 'Internshala',  logo: 'logos/portals/internshala.png' },
-        { id: 'glassdoor',    label: 'Glassdoor',    logo: 'logos/portals/glassdoor.ico' },
-        { id: 'shine',        label: 'Shine',        logo: 'logos/portals/shine.ico' },
-        { id: 'timesjobs',    label: 'TimesJobs',    logo: 'logos/portals/timesjobs.svg' },
-        { id: 'hirist',       label: 'Hirist',       logo: 'logos/portals/hirist.ico' },
-        { id: 'workindia',    label: 'WorkIndia',    logo: 'logos/portals/workindia.png' },
-        { id: 'foundit',      label: 'Foundit',      logo: 'logos/portals/foundit.png' },
-        { id: 'apna',         label: 'Apna',         logo: 'logos/portals/apna.png' },
-        { id: 'freshersworld',label: 'FreshersWorld',logo: 'logos/portals/freshersworld.ico' },
-        { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
-        { id: 'telegram_post',    label: 'Telegram Post',    logo: 'logos/portals/telegram.svg' },
-        { id: 'other',        label: 'Other Sources', logo: '' },
-    ];
+        const PORTALS = [
+            { id: 'linkedin', label: 'LinkedIn', logo: 'logos/portals/linkedin.png' },
+            { id: 'naukri', label: 'Naukri', logo: 'logos/portals/naukri.png' },
+            { id: 'indeed', label: 'Indeed', logo: 'logos/portals/indeed.png' },
+            { id: 'internshala', label: 'Internshala', logo: 'logos/portals/internshala.png' },
+            { id: 'glassdoor', label: 'Glassdoor', logo: 'logos/portals/glassdoor.ico' },
+            { id: 'shine', label: 'Shine', logo: 'logos/portals/shine.ico' },
+            { id: 'timesjobs', label: 'TimesJobs', logo: 'logos/portals/timesjobs.svg' },
+            { id: 'hirist', label: 'Hirist', logo: 'logos/portals/hirist.ico' },
+            { id: 'workindia', label: 'WorkIndia', logo: 'logos/portals/workindia.png' },
+            { id: 'foundit', label: 'Foundit', logo: 'logos/portals/foundit.png' },
+            { id: 'apna', label: 'Apna', logo: 'logos/portals/apna.png' },
+            { id: 'freshersworld', label: 'FreshersWorld', logo: 'logos/portals/freshersworld.ico' },
+            { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
+            { id: 'telegram_post', label: 'Telegram Post', logo: 'logos/portals/telegram.svg' },
+            { id: 'other', label: 'Other Sources', logo: '' },
+        ];
 
-    const TOP_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Noida', 'Kolkata', 'Ahmedabad', 'Remote'];
+        const TOP_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Noida', 'Kolkata', 'Ahmedabad', 'Remote'];
 
-    const ALL_ROLES = [
-        // --- Tech Roles (High Popularity) ---
-        'Software Engineer',
-        'Software Developer',
-        'Full Stack Developer',
-        'Frontend Developer',
-        'Backend Developer',
-        'React Developer',
-        'Java Developer',
-        'Python Developer',
-        'Node.js Developer',
-        'Android Developer',
-        'iOS Developer',
-        'Mobile App Developer',
-        'Data Analyst',
-        'Data Scientist',
-        'Data Engineer',
-        'DevOps Engineer',
-        'UI UX Designer',
-        'QA Engineer',
-        'QA Analyst',
-        'QA Automation Engineer',
-        'Test Automation Engineer',
-        'SDET',
-        'AI Engineer',
-        'Machine Learning Engineer',
+        const ALL_ROLES = [
+            // --- Tech Roles (High Popularity) ---
+            'Software Engineer',
+            'Software Developer',
+            'Full Stack Developer',
+            'Frontend Developer',
+            'Backend Developer',
+            'React Developer',
+            'Java Developer',
+            'Python Developer',
+            'Node.js Developer',
+            'Android Developer',
+            'iOS Developer',
+            'Mobile App Developer',
+            'Data Analyst',
+            'Data Scientist',
+            'Data Engineer',
+            'DevOps Engineer',
+            'UI UX Designer',
+            'QA Engineer',
+            'QA Analyst',
+            'QA Automation Engineer',
+            'Test Automation Engineer',
+            'SDET',
+            'AI Engineer',
+            'Machine Learning Engineer',
 
-        // --- Business & Management ---
-        'Product Manager',
-        'Project Manager',
-        'Technical Project Manager',
-        'Business Development Executive',
-        'Business Development Manager',
-        'Sales Executive',
-        'Sales Manager',
+            // --- Business & Management ---
+            'Product Manager',
+            'Project Manager',
+            'Technical Project Manager',
+            'Business Development Executive',
+            'Business Development Manager',
+            'Sales Executive',
+            'Sales Manager',
 
-        // --- Non-Tech, Marketing & Design ---
-        'HR Executive',
-        'HR Manager',
-        'Technical Recruiter',
-        'Talent Acquisition Specialist',
-        'HR Business Partner',
-        'Customer Support Executive',
-        'Customer Success Manager',
-        'Digital Marketer',
-        'Digital Marketing Manager',
-        'Product Marketing Manager',
-        'SEO Specialist',
-        'Content Writer',
-        'Graphic Designer',
+            // --- Non-Tech, Marketing & Design ---
+            'HR Executive',
+            'HR Manager',
+            'Technical Recruiter',
+            'Talent Acquisition Specialist',
+            'HR Business Partner',
+            'Customer Support Executive',
+            'Customer Success Manager',
+            'Digital Marketer',
+            'Digital Marketing Manager',
+            'Product Marketing Manager',
+            'SEO Specialist',
+            'Content Writer',
+            'Graphic Designer',
 
-        // --- Cloud, Network & Security ---
-        'Cloud Engineer',
-        'Cloud Architect',
-        'AWS Engineer',
-        'Azure Engineer',
-        'Systems Administrator',
-        'System Administrator',
-        'Network Engineer',
-        'Cybersecurity Analyst',
-        'Cybersecurity Engineer',
-        'Security Analyst',
-        'Penetration Tester',
-        'Database Administrator',
+            // --- Cloud, Network & Security ---
+            'Cloud Engineer',
+            'Cloud Architect',
+            'AWS Engineer',
+            'Azure Engineer',
+            'Systems Administrator',
+            'System Administrator',
+            'Network Engineer',
+            'Cybersecurity Analyst',
+            'Cybersecurity Engineer',
+            'Security Analyst',
+            'Penetration Tester',
+            'Database Administrator',
 
-        // --- Specialized Tech ---
-        'Flutter Developer',
-        'React Native Developer',
-        'Angular Developer',
-        'Salesforce Developer',
-        'SAP Consultant',
-        'Blockchain Developer',
-        'Game Developer',
-        'Embedded Systems Engineer',
-        'VLSI Engineer',
-        'Hardware Engineer',
-        'ETL Developer',
-        'Business Intelligence Analyst',
-        'Deep Learning Engineer',
-        'NLP Engineer',
-        'Site Reliability Engineer',
-        'Software Architect',
+            // --- Specialized Tech ---
+            'Flutter Developer',
+            'React Native Developer',
+            'Angular Developer',
+            'Salesforce Developer',
+            'SAP Consultant',
+            'Blockchain Developer',
+            'Game Developer',
+            'Embedded Systems Engineer',
+            'VLSI Engineer',
+            'Hardware Engineer',
+            'ETL Developer',
+            'Business Intelligence Analyst',
+            'Deep Learning Engineer',
+            'NLP Engineer',
+            'Site Reliability Engineer',
+            'Software Architect',
 
-        // --- Operations, Finance & Specialized Non-Tech ---
-        'Operations Manager',
-        'Financial Analyst',
-        'Accountant',
-        'Finance Executive',
-        'Supply Chain Analyst',
-        'Supply Chain Manager',
-        'Logistics Executive',
-        'Legal Counsel',
-        'Scrum Master',
-        'UX Researcher',
-        'Technical Writer',
-        'Video Editor',
-        'Social Media Manager',
-        'Pre-Sales Consultant',
-        'IT Support Specialist'
-    ];
+            // --- Operations, Finance & Specialized Non-Tech ---
+            'Operations Manager',
+            'Financial Analyst',
+            'Accountant',
+            'Finance Executive',
+            'Supply Chain Analyst',
+            'Supply Chain Manager',
+            'Logistics Executive',
+            'Legal Counsel',
+            'Scrum Master',
+            'UX Researcher',
+            'Technical Writer',
+            'Video Editor',
+            'Social Media Manager',
+            'Pre-Sales Consultant',
+            'IT Support Specialist'
+        ];
 
-    const ROLE_KEYWORDS = {
-        'Software Engineer': ['software engineer', 'swe', 'sde'],
-        'Software Developer': ['software developer', 'programmer', 'developer'],
-        'Full Stack Developer': ['full stack', 'fullstack', 'full-stack'],
-        'Frontend Developer': ['frontend', 'front-end', 'front end', 'react', 'angular', 'vue', 'html', 'css', 'ui developer'],
-        'Backend Developer': ['backend', 'back-end', 'back end', 'node', 'django', 'spring', 'flask'],
-        'React Developer': ['react js', 'reactjs', 'react developer', 'react.js'],
-        'Java Developer': ['java ', 'spring boot', 'springboot', 'j2ee'],
-        'Python Developer': ['python', 'django', 'flask'],
-        'Node.js Developer': ['node.js', 'nodejs', 'node js'],
-        'Android Developer': ['android developer', 'kotlin'],
-        'iOS Developer': ['ios developer', 'swift', 'objective-c'],
-        'Mobile App Developer': ['mobile', 'app developer', 'ios', 'android'],
-        'Data Analyst': ['data analyst', 'business analyst', 'analytics'],
-        'Data Scientist': ['data scientist', 'data science', 'ai/ml'],
-        'Data Engineer': ['data engineer', 'big data', 'etl', 'spark', 'hadoop'],
-        'DevOps Engineer': ['devops', 'dev ops', 'site reliability', 'sre', 'ci/cd'],
-        'UI UX Designer': ['ui', 'ux', 'user experience', 'user interface', 'figma', 'sketch'],
-        'QA Engineer': ['qa engineer', 'tester', 'qa', 'testing'],
-        'QA Analyst': ['qa analyst', 'quality assurance', 'testing'],
-        'QA Automation Engineer': ['qa automation', 'automation engineer', 'selenium'],
-        'Test Automation Engineer': ['test automation', 'automation tester'],
-        'SDET': ['sdet', 'software development engineer in test', 'automation test'],
-        'AI Engineer': ['ai engineer', 'artificial intelligence', 'generative ai', 'openai', 'llm'],
-        'Machine Learning Engineer': ['machine learning', 'ml engineer', 'deep learning'],
-        'Product Manager': ['product manager', 'product owner', 'product lead'],
-        'Project Manager': ['project manager', 'program manager', 'pmo'],
-        'Technical Project Manager': ['technical project manager', 'tpm'],
-        'Business Development Executive': ['business development', 'bde', 'sales development'],
-        'Business Development Manager': ['business development manager', 'bdm'],
-        'Sales Executive': ['sales executive', 'inside sales', 'telecaller'],
-        'Sales Manager': ['sales manager', 'account manager'],
-        'HR Executive': ['hr executive', 'human resources executive'],
-        'HR Manager': ['hr manager', 'human resource manager'],
-        'Technical Recruiter': ['technical recruiter', 'it recruiter', 'recruiter'],
-        'Talent Acquisition Specialist': ['talent acquisition', 'ta specialist', 'hiring'],
-        'HR Business Partner': ['hrbp', 'hr business partner'],
-        'Customer Support Executive': ['customer support', 'customer care', 'helpdesk', 'voice process'],
-        'Customer Success Manager': ['customer success', 'client success'],
-        'Digital Marketer': ['digital marketing', 'digital marketer', 'sem', 'ppc'],
-        'Digital Marketing Manager': ['digital marketing manager', 'marketing manager'],
-        'Product Marketing Manager': ['product marketing', 'marketing manager'],
-        'SEO Specialist': ['seo', 'search engine optimization'],
-        'Content Writer': ['content writer', 'copywriter', 'blog writer'],
-        'Graphic Designer': ['graphic designer', 'illustrator', 'photoshop'],
-        'Cloud Engineer': ['cloud engineer', 'aws', 'azure', 'gcp'],
-        'Cloud Architect': ['cloud architect', 'solutions architect'],
-        'AWS Engineer': ['aws engineer', 'amazon web services'],
-        'Azure Engineer': ['azure engineer', 'microsoft azure'],
-        'Systems Administrator': ['system admin', 'sysadmin', 'systems administrator'],
-        'System Administrator': ['system admin', 'sysadmin', 'system administrator'],
-        'Network Engineer': ['network engineer', 'network administrator'],
-        'Cybersecurity Analyst': ['cybersecurity analyst', 'security analyst'],
-        'Cybersecurity Engineer': ['cybersecurity engineer', 'information security'],
-        'Security Analyst': ['security analyst', 'soc analyst'],
-        'Penetration Tester': ['penetration', 'pentest', 'ethical hacker'],
-        'Database Administrator': ['dba', 'database administrator', 'sql admin'],
-        'Flutter Developer': ['flutter'],
-        'React Native Developer': ['react native'],
-        'Angular Developer': ['angular'],
-        'Salesforce Developer': ['salesforce', 'sfdc'],
-        'SAP Consultant': ['sap '],
-        'Blockchain Developer': ['blockchain', 'solidity', 'web3'],
-        'Game Developer': ['game developer', 'unity', 'unreal'],
-        'Embedded Systems Engineer': ['embedded', 'microcontroller', 'rtos'],
-        'VLSI Engineer': ['vlsi', 'asic', 'fpga'],
-        'Hardware Engineer': ['hardware engineer', 'pcb'],
-        'ETL Developer': ['etl', 'informatica', 'talend'],
-        'Business Intelligence Analyst': ['bi analyst', 'power bi', 'tableau'],
-        'Deep Learning Engineer': ['deep learning', 'neural network'],
-        'NLP Engineer': ['nlp ', 'natural language processing'],
-        'Site Reliability Engineer': ['sre', 'site reliability'],
-        'Software Architect': ['software architect', 'solution architect', 'technical architect'],
-        'Operations Manager': ['operations manager', 'ops manager'],
-        'Financial Analyst': ['financial analyst', 'finance analyst'],
-        'Accountant': ['accountant', 'tally', 'bookkeeper'],
-        'Finance Executive': ['finance executive', 'accounts executive'],
-        'Supply Chain Analyst': ['supply chain analyst', 'logistics analyst'],
-        'Supply Chain Manager': ['supply chain manager', 'scm'],
-        'Logistics Executive': ['logistics executive', 'dispatch'],
-        'Legal Counsel': ['legal counsel', 'corporate lawyer', 'compliance officer'],
-        'Scrum Master': ['scrum master'],
-        'UX Researcher': ['ux research', 'user research'],
-        'Technical Writer': ['technical writer', 'documentation specialist'],
-        'Video Editor': ['video editor', 'premiere pro', 'after effects'],
-        'Social Media Manager': ['social media manager', 'smm'],
-        'Pre-Sales Consultant': ['pre-sales', 'presales'],
-        'IT Support Specialist': ['it support', 'helpdesk', 'help desk', 'tech support']
-    };
+        const ROLE_KEYWORDS = {
+            'Software Engineer': ['software engineer', 'swe', 'sde'],
+            'Software Developer': ['software developer', 'programmer', 'developer'],
+            'Full Stack Developer': ['full stack', 'fullstack', 'full-stack'],
+            'Frontend Developer': ['frontend', 'front-end', 'front end', 'react', 'angular', 'vue', 'html', 'css', 'ui developer'],
+            'Backend Developer': ['backend', 'back-end', 'back end', 'node', 'django', 'spring', 'flask'],
+            'React Developer': ['react js', 'reactjs', 'react developer', 'react.js'],
+            'Java Developer': ['java ', 'spring boot', 'springboot', 'j2ee'],
+            'Python Developer': ['python', 'django', 'flask'],
+            'Node.js Developer': ['node.js', 'nodejs', 'node js'],
+            'Android Developer': ['android developer', 'kotlin'],
+            'iOS Developer': ['ios developer', 'swift', 'objective-c'],
+            'Mobile App Developer': ['mobile', 'app developer', 'ios', 'android'],
+            'Data Analyst': ['data analyst', 'business analyst', 'analytics'],
+            'Data Scientist': ['data scientist', 'data science', 'ai/ml'],
+            'Data Engineer': ['data engineer', 'big data', 'etl', 'spark', 'hadoop'],
+            'DevOps Engineer': ['devops', 'dev ops', 'site reliability', 'sre', 'ci/cd'],
+            'UI UX Designer': ['ui', 'ux', 'user experience', 'user interface', 'figma', 'sketch'],
+            'QA Engineer': ['qa engineer', 'tester', 'qa', 'testing'],
+            'QA Analyst': ['qa analyst', 'quality assurance', 'testing'],
+            'QA Automation Engineer': ['qa automation', 'automation engineer', 'selenium'],
+            'Test Automation Engineer': ['test automation', 'automation tester'],
+            'SDET': ['sdet', 'software development engineer in test', 'automation test'],
+            'AI Engineer': ['ai engineer', 'artificial intelligence', 'generative ai', 'openai', 'llm'],
+            'Machine Learning Engineer': ['machine learning', 'ml engineer', 'deep learning'],
+            'Product Manager': ['product manager', 'product owner', 'product lead'],
+            'Project Manager': ['project manager', 'program manager', 'pmo'],
+            'Technical Project Manager': ['technical project manager', 'tpm'],
+            'Business Development Executive': ['business development', 'bde', 'sales development'],
+            'Business Development Manager': ['business development manager', 'bdm'],
+            'Sales Executive': ['sales executive', 'inside sales', 'telecaller'],
+            'Sales Manager': ['sales manager', 'account manager'],
+            'HR Executive': ['hr executive', 'human resources executive'],
+            'HR Manager': ['hr manager', 'human resource manager'],
+            'Technical Recruiter': ['technical recruiter', 'it recruiter', 'recruiter'],
+            'Talent Acquisition Specialist': ['talent acquisition', 'ta specialist', 'hiring'],
+            'HR Business Partner': ['hrbp', 'hr business partner'],
+            'Customer Support Executive': ['customer support', 'customer care', 'helpdesk', 'voice process'],
+            'Customer Success Manager': ['customer success', 'client success'],
+            'Digital Marketer': ['digital marketing', 'digital marketer', 'sem', 'ppc'],
+            'Digital Marketing Manager': ['digital marketing manager', 'marketing manager'],
+            'Product Marketing Manager': ['product marketing', 'marketing manager'],
+            'SEO Specialist': ['seo', 'search engine optimization'],
+            'Content Writer': ['content writer', 'copywriter', 'blog writer'],
+            'Graphic Designer': ['graphic designer', 'illustrator', 'photoshop'],
+            'Cloud Engineer': ['cloud engineer', 'aws', 'azure', 'gcp'],
+            'Cloud Architect': ['cloud architect', 'solutions architect'],
+            'AWS Engineer': ['aws engineer', 'amazon web services'],
+            'Azure Engineer': ['azure engineer', 'microsoft azure'],
+            'Systems Administrator': ['system admin', 'sysadmin', 'systems administrator'],
+            'System Administrator': ['system admin', 'sysadmin', 'system administrator'],
+            'Network Engineer': ['network engineer', 'network administrator'],
+            'Cybersecurity Analyst': ['cybersecurity analyst', 'security analyst'],
+            'Cybersecurity Engineer': ['cybersecurity engineer', 'information security'],
+            'Security Analyst': ['security analyst', 'soc analyst'],
+            'Penetration Tester': ['penetration', 'pentest', 'ethical hacker'],
+            'Database Administrator': ['dba', 'database administrator', 'sql admin'],
+            'Flutter Developer': ['flutter'],
+            'React Native Developer': ['react native'],
+            'Angular Developer': ['angular'],
+            'Salesforce Developer': ['salesforce', 'sfdc'],
+            'SAP Consultant': ['sap '],
+            'Blockchain Developer': ['blockchain', 'solidity', 'web3'],
+            'Game Developer': ['game developer', 'unity', 'unreal'],
+            'Embedded Systems Engineer': ['embedded', 'microcontroller', 'rtos'],
+            'VLSI Engineer': ['vlsi', 'asic', 'fpga'],
+            'Hardware Engineer': ['hardware engineer', 'pcb'],
+            'ETL Developer': ['etl', 'informatica', 'talend'],
+            'Business Intelligence Analyst': ['bi analyst', 'power bi', 'tableau'],
+            'Deep Learning Engineer': ['deep learning', 'neural network'],
+            'NLP Engineer': ['nlp ', 'natural language processing'],
+            'Site Reliability Engineer': ['sre', 'site reliability'],
+            'Software Architect': ['software architect', 'solution architect', 'technical architect'],
+            'Operations Manager': ['operations manager', 'ops manager'],
+            'Financial Analyst': ['financial analyst', 'finance analyst'],
+            'Accountant': ['accountant', 'tally', 'bookkeeper'],
+            'Finance Executive': ['finance executive', 'accounts executive'],
+            'Supply Chain Analyst': ['supply chain analyst', 'logistics analyst'],
+            'Supply Chain Manager': ['supply chain manager', 'scm'],
+            'Logistics Executive': ['logistics executive', 'dispatch'],
+            'Legal Counsel': ['legal counsel', 'corporate lawyer', 'compliance officer'],
+            'Scrum Master': ['scrum master'],
+            'UX Researcher': ['ux research', 'user research'],
+            'Technical Writer': ['technical writer', 'documentation specialist'],
+            'Video Editor': ['video editor', 'premiere pro', 'after effects'],
+            'Social Media Manager': ['social media manager', 'smm'],
+            'Pre-Sales Consultant': ['pre-sales', 'presales'],
+            'IT Support Specialist': ['it support', 'helpdesk', 'help desk', 'tech support']
+        };
 
-    // Constants removed for new experience logic
+        // Constants removed for new experience logic
 
-    const PORTAL_LOGOS = {
-        'linkedin': 'logos/portals/linkedin.png', 'naukri': 'logos/portals/naukri.png',
-        'indeed': 'logos/portals/indeed.png', 'internshala': 'logos/portals/internshala.png',
-        'glassdoor': 'logos/portals/glassdoor.ico', 'shine': 'logos/portals/shine.ico',
-        'timesjobs': 'logos/portals/timesjobs.svg', 'hirist': 'logos/portals/hirist.ico',
-        'workindia': 'logos/portals/workindia.png', 'foundit': 'logos/portals/foundit.png',
-        'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
-        'telegram': 'logos/portals/telegram.svg',
-        'telegram_message': 'logos/portals/telegram.svg',
-        'telegram_post': 'logos/portals/telegram.svg', 'other': '',
-    };
+        const PORTAL_LOGOS = {
+            'linkedin': 'logos/portals/linkedin.png', 'naukri': 'logos/portals/naukri.png',
+            'indeed': 'logos/portals/indeed.png', 'internshala': 'logos/portals/internshala.png',
+            'glassdoor': 'logos/portals/glassdoor.ico', 'shine': 'logos/portals/shine.ico',
+            'timesjobs': 'logos/portals/timesjobs.svg', 'hirist': 'logos/portals/hirist.ico',
+            'workindia': 'logos/portals/workindia.png', 'foundit': 'logos/portals/foundit.png',
+            'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
+            'telegram': 'logos/portals/telegram.svg',
+            'telegram_message': 'logos/portals/telegram.svg',
+            'telegram_post': 'logos/portals/telegram.svg', 'other': '',
+        };
 
-    // ══════════════════════════════════════════════
-    //  SIDEBAR TOGGLE
-    // ══════════════════════════════════════════════
-    function toggleSection(id) {
-        const sec = document.getElementById('sec-' + id);
-        sec.classList.toggle('open');
-    }
+        // ══════════════════════════════════════════════
+        //  SIDEBAR TOGGLE
+        // ══════════════════════════════════════════════
+        function toggleSection(id) {
+            const sec = document.getElementById('sec-' + id);
+            sec.classList.toggle('open');
+        }
 
-    // ══════════════════════════════════════════════
-    //  BUILD SIDEBAR OPTIONS
-    // ══════════════════════════════════════════════
-    function buildSourceOptions() {
-        const container = document.getElementById('source-options');
-        container.innerHTML = PORTALS.map(p => `
+        // ══════════════════════════════════════════════
+        //  BUILD SIDEBAR OPTIONS
+        // ══════════════════════════════════════════════
+        function buildSourceOptions() {
+            const container = document.getElementById('source-options');
+            container.innerHTML = PORTALS.map(p => `
             <div class="filter-option" id="src-${p.id}" onclick="toggleSource('${p.id}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1064,35 +1680,35 @@
                 <span class="option-label">${p.label}</span>
             </div>
         `).join('');
-    }
+        }
 
-    function updateSourceCounts() {
-        let sourceCounts = {};
-        if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
-            allJobs.forEach(j => {
-                const src = (j.source || '').toLowerCase();
-                sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+        function updateSourceCounts() {
+            let sourceCounts = {};
+            if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
+                allJobs.forEach(j => {
+                    const src = (j.source || '').toLowerCase();
+                    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                });
+            }
+            PORTALS.forEach(p => {
+                const count = sourceCounts[p.id.toLowerCase()] || 0;
+                const el = document.getElementById(`src-${p.id}`);
+                if (el) {
+                    const labelEl = el.querySelector('.option-label');
+                    if (labelEl) {
+                        const countHtml = count > 0 ? `<span class="source-count">(${count})</span>` : '';
+                        labelEl.innerHTML = `${p.label} ${countHtml}`;
+                    }
+                }
             });
         }
-        PORTALS.forEach(p => {
-            const count = sourceCounts[p.id.toLowerCase()] || 0;
-            const el = document.getElementById(`src-${p.id}`);
-            if (el) {
-                const labelEl = el.querySelector('.option-label');
-                if (labelEl) {
-                    const countHtml = count > 0 ? `<span class="source-count">(${count})</span>` : '';
-                    labelEl.innerHTML = `${p.label} ${countHtml}`;
-                }
-            }
-        });
-    }
 
-    function buildLocationOptions(filter = '') {
-        const container = document.getElementById('location-options');
-        const cities = filter
-            ? TOP_CITIES.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
-            : TOP_CITIES;
-        container.innerHTML = cities.map(city => `
+        function buildLocationOptions(filter = '') {
+            const container = document.getElementById('location-options');
+            const cities = filter
+                ? TOP_CITIES.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
+                : TOP_CITIES;
+            container.innerHTML = cities.map(city => `
             <div class="filter-option ${selectedLocations.has(city) ? 'checked' : ''}" onclick="toggleLocation('${city}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1100,16 +1716,16 @@
                 <span class="option-label">${city}</span>
             </div>
         `).join('');
-    }
+        }
 
-    function buildRolesOptions(filter = '') {
-        const container = document.getElementById('roles-options');
-        const roles = filter
-            ? ALL_ROLES.filter(r => r.toLowerCase().includes(filter.toLowerCase()))
-            : ALL_ROLES;
-        const visible = roles.slice(0, 8);
-        const more = roles.slice(8);
-        container.innerHTML = visible.map(r => `
+        function buildRolesOptions(filter = '') {
+            const container = document.getElementById('roles-options');
+            const roles = filter
+                ? ALL_ROLES.filter(r => r.toLowerCase().includes(filter.toLowerCase()))
+                : ALL_ROLES;
+            const visible = roles.slice(0, 8);
+            const more = roles.slice(8);
+            container.innerHTML = visible.map(r => `
             <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1117,7 +1733,7 @@
                 <span class="option-label">${r}</span>
             </div>
         `).join('') +
-        (more.length > 0 && !filter ? `<div id="moreRolesWrap" style="display:none">${more.map(r => `
+                (more.length > 0 && !filter ? `<div id="moreRolesWrap" style="display:none">${more.map(r => `
             <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1126,17 +1742,17 @@
             </div>
         `).join('')}</div>
         <span class="show-more-btn" onclick="toggleMoreRoles(this)">+ ${more.length} more</span>` : '');
-    }
+        }
 
-    function buildCompanyOptions(filter = '') {
-        const container = document.getElementById('company-options');
-        const src = filter
-            ? allCompanies.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
-            : allCompanies.slice(0, 10);
-        if (src.length === 0) { container.innerHTML = '<p style="color:var(--text-dim);font-size:0.78rem;padding:6px 4px;">No companies loaded yet</p>'; return; }
-        const visible = src.slice(0, 8);
-        const more = src.slice(8);
-        container.innerHTML = visible.map(c => `
+        function buildCompanyOptions(filter = '') {
+            const container = document.getElementById('company-options');
+            const src = filter
+                ? allCompanies.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
+                : allCompanies.slice(0, 10);
+            if (src.length === 0) { container.innerHTML = '<p style="color:var(--text-dim);font-size:0.78rem;padding:6px 4px;">No companies loaded yet</p>'; return; }
+            const visible = src.slice(0, 8);
+            const more = src.slice(8);
+            container.innerHTML = visible.map(c => `
             <div class="filter-option ${selectedCompanies.has(c) ? 'checked' : ''}" onclick="toggleCompany('${esc(c)}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1144,7 +1760,7 @@
                 <span class="option-label">${esc(c)}</span>
             </div>
         `).join('') +
-        (more.length > 0 && !filter ? `<div id="moreCompWrap" style="display:none">${more.map(c => `
+                (more.length > 0 && !filter ? `<div id="moreCompWrap" style="display:none">${more.map(c => `
             <div class="filter-option ${selectedCompanies.has(c) ? 'checked' : ''}" onclick="toggleCompany('${esc(c)}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1153,64 +1769,64 @@
             </div>
         `).join('')}</div>
         <span class="show-more-btn" onclick="toggleMoreComp(this)">+ ${more.length} more</span>` : '');
-    }
+        }
 
-    function toggleMoreRoles(btn) {
-        const wrap = document.getElementById('moreRolesWrap');
-        if (!wrap) return;
-        const hidden = wrap.style.display === 'none';
-        wrap.style.display = hidden ? 'block' : 'none';
-        btn.textContent = hidden ? '− Show less' : `+ ${ALL_ROLES.slice(8).length} more`;
-    }
+        function toggleMoreRoles(btn) {
+            const wrap = document.getElementById('moreRolesWrap');
+            if (!wrap) return;
+            const hidden = wrap.style.display === 'none';
+            wrap.style.display = hidden ? 'block' : 'none';
+            btn.textContent = hidden ? '− Show less' : `+ ${ALL_ROLES.slice(8).length} more`;
+        }
 
-    function toggleMoreComp(btn) {
-        const wrap = document.getElementById('moreCompWrap');
-        if (!wrap) return;
-        const hidden = wrap.style.display === 'none';
-        wrap.style.display = hidden ? 'block' : 'none';
-        const extra = allCompanies.slice(8).length;
-        btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
-    }
+        function toggleMoreComp(btn) {
+            const wrap = document.getElementById('moreCompWrap');
+            if (!wrap) return;
+            const hidden = wrap.style.display === 'none';
+            wrap.style.display = hidden ? 'block' : 'none';
+            const extra = allCompanies.slice(8).length;
+            btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
+        }
 
-    function filterOptions(type) {
-        if (type === 'location') buildLocationOptions(document.getElementById('locSearch').value);
-        if (type === 'roles') buildRolesOptions(document.getElementById('roleSearch').value);
-        if (type === 'company') buildCompanyOptions(document.getElementById('companySearch').value);
-        if (type === 'skills') buildSkillsOptions(document.getElementById('skillSearch').value);
-    }
+        function filterOptions(type) {
+            if (type === 'location') buildLocationOptions(document.getElementById('locSearch').value);
+            if (type === 'roles') buildRolesOptions(document.getElementById('roleSearch').value);
+            if (type === 'company') buildCompanyOptions(document.getElementById('companySearch').value);
+            if (type === 'skills') buildSkillsOptions(document.getElementById('skillSearch').value);
+        }
 
-    function buildSkillsOptions(filter = '') {
-        const container = document.getElementById('skills-options');
-        if (!container) return;
-        
-        const skillCounts = {};
-        allJobs.forEach(j => {
-            if (Array.isArray(j.skills)) {
-                j.skills.forEach(sid => {
-                    skillCounts[sid] = (skillCounts[sid] || 0) + 1;
-                });
+        function buildSkillsOptions(filter = '') {
+            const container = document.getElementById('skills-options');
+            if (!container) return;
+
+            const skillCounts = {};
+            allJobs.forEach(j => {
+                if (Array.isArray(j.skills)) {
+                    j.skills.forEach(sid => {
+                        skillCounts[sid] = (skillCounts[sid] || 0) + 1;
+                    });
+                }
+            });
+
+            let skills = Object.entries(skillsMap).map(([sid, name]) => {
+                return { id: parseInt(sid), name: name, count: skillCounts[sid] || 0 };
+            });
+
+            if (filter) {
+                skills = skills.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+            } else {
+                skills.sort((a, b) => b.count - a.count);
             }
-        });
-        
-        let skills = Object.entries(skillsMap).map(([sid, name]) => {
-            return { id: parseInt(sid), name: name, count: skillCounts[sid] || 0 };
-        });
-        
-        if (filter) {
-            skills = skills.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
-        } else {
-            skills.sort((a, b) => b.count - a.count);
-        }
-        
-        // Remove skills with 0 jobs when no active filter is typed, to avoid clutter
-        if (!filter) {
-            skills = skills.filter(s => s.count > 0 || selectedSkills.has(s.id));
-        }
-        
-        const visible = skills.slice(0, 8);
-        const more = skills.slice(8);
-        
-        const makeOption = s => `
+
+            // Remove skills with 0 jobs when no active filter is typed, to avoid clutter
+            if (!filter) {
+                skills = skills.filter(s => s.count > 0 || selectedSkills.has(s.id));
+            }
+
+            const visible = skills.slice(0, 8);
+            const more = skills.slice(8);
+
+            const makeOption = s => `
             <div class="filter-option ${selectedSkills.has(s.id) ? 'checked' : ''}" onclick="toggleSkill(${s.id}, this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
@@ -1218,408 +1834,446 @@
                 <span class="option-label">${s.name} <span class="option-count">(${s.count})</span></span>
             </div>
         `;
-        
-        container.innerHTML = visible.map(makeOption).join('') +
-        (more.length > 0 && !filter ? `<div id="moreSkillsWrap" style="display:none">${more.map(makeOption).join('')}</div>
+
+            container.innerHTML = visible.map(makeOption).join('') +
+                (more.length > 0 && !filter ? `<div id="moreSkillsWrap" style="display:none">${more.map(makeOption).join('')}</div>
         <span class="show-more-btn" onclick="toggleMoreSkills(this)">+ ${more.length} more</span>` : '');
-    }
+        }
 
-    function toggleSkill(id, el) {
-        el.classList.toggle('checked');
-        if (selectedSkills.has(id)) selectedSkills.delete(id);
-        else selectedSkills.add(id);
-        applyFilters();
-    }
+        function toggleSkill(id, el) {
+            el.classList.toggle('checked');
+            if (selectedSkills.has(id)) selectedSkills.delete(id);
+            else selectedSkills.add(id);
+            applyFilters();
+        }
 
-    function toggleMoreSkills(btn) {
-        const wrap = document.getElementById('moreSkillsWrap');
-        if (!wrap) return;
-        const hidden = wrap.style.display === 'none';
-        wrap.style.display = hidden ? 'block' : 'none';
-        const extra = wrap.querySelectorAll('.filter-option').length;
-        btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
-    }
+        function toggleMoreSkills(btn) {
+            const wrap = document.getElementById('moreSkillsWrap');
+            if (!wrap) return;
+            const hidden = wrap.style.display === 'none';
+            wrap.style.display = hidden ? 'block' : 'none';
+            const extra = wrap.querySelectorAll('.filter-option').length;
+            btn.textContent = hidden ? '− Show less' : `+ ${extra} more`;
+        }
 
-    // ══════════════════════════════════════════════
-    //  FILTER TOGGLES
-    // ══════════════════════════════════════════════
-    function toggleSource(id, el) {
-        el.classList.toggle('checked');
-        if (selectedPortals.has(id)) selectedPortals.delete(id);
-        else selectedPortals.add(id);
-        updateCounts();
-        applyFilters();
-    }
+        // ══════════════════════════════════════════════
+        //  FILTER TOGGLES
+        // ══════════════════════════════════════════════
+        function toggleSource(id, el) {
+            el.classList.toggle('checked');
+            if (selectedPortals.has(id)) selectedPortals.delete(id);
+            else selectedPortals.add(id);
+            updateCounts();
+            applyFilters();
+        }
 
-    function toggleLocation(city, el) {
-        el.classList.toggle('checked');
-        if (selectedLocations.has(city)) selectedLocations.delete(city);
-        else selectedLocations.add(city);
-        updateCounts();
-        applyFilters();
-    }
+        function toggleLocation(city, el) {
+            el.classList.toggle('checked');
+            if (selectedLocations.has(city)) selectedLocations.delete(city);
+            else selectedLocations.add(city);
+            updateCounts();
+            applyFilters();
+        }
 
-    function toggleRole(role, el) {
-        el.classList.toggle('checked');
-        if (selectedRoles.has(role)) selectedRoles.delete(role);
-        else selectedRoles.add(role);
-        updateCounts();
-        applyFilters();
-    }
+        function toggleRole(role, el) {
+            el.classList.toggle('checked');
+            if (selectedRoles.has(role)) selectedRoles.delete(role);
+            else selectedRoles.add(role);
+            updateCounts();
+            applyFilters();
+        }
 
-    function toggleCompany(company, el) {
-        el.classList.toggle('checked');
-        if (selectedCompanies.has(company)) selectedCompanies.delete(company);
-        else selectedCompanies.add(company);
-        updateCounts();
-        applyFilters();
-    }
+        function toggleCompany(company, el) {
+            el.classList.toggle('checked');
+            if (selectedCompanies.has(company)) selectedCompanies.delete(company);
+            else selectedCompanies.add(company);
+            updateCounts();
+            applyFilters();
+        }
 
-    function toggleWalkin() {
-        walkinOnly = !walkinOnly;
-        document.getElementById('walkinOpt').classList.toggle('checked', walkinOnly);
-        updateCounts();
-        applyFilters();
-    }
+        function toggleWalkin() {
+            walkinOnly = !walkinOnly;
+            document.getElementById('walkinOpt').classList.toggle('checked', walkinOnly);
+            updateCounts();
+            applyFilters();
+        }
 
-    function setDateRange(el, range) {
-        document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
-        el.classList.add('selected');
-        activeDateRange = range;
-        updateCounts();
-        applyFilters();
-    }
+        function setDateRange(el, range) {
+            document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+            el.classList.add('selected');
+            activeDateRange = range;
+            updateCounts();
+            applyFilters();
+        }
 
-    function updateExpInput() {
-        const input = document.getElementById('expMinInput');
-        const val = parseInt(input.value, 10);
-        activeExp = isNaN(val) || val <= 0 ? 0 : val;
-        updateCounts();
-    }
+        function updateExpInput() {
+            const input = document.getElementById('expMinInput');
+            const val = parseInt(input.value, 10);
+            activeExp = isNaN(val) || val <= 0 ? 0 : val;
+            updateCounts();
+        }
 
-    function parseExperience(expStr) {
-        if (!expStr) return [null, null];
-        let s = String(expStr).toLowerCase().trim();
+        function parseExperience(expStr) {
+            if (!expStr) return [null, null];
+            let s = String(expStr).toLowerCase().trim();
 
-        // 1. Try to extract numbers first (HIGHEST PRIORITY)
-        let nums = s.match(/\d+/g);
-        if (nums) {
-            nums = nums.map(Number).filter(n => n <= 30);
-            if (nums.length >= 2) {
-                return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
-            } else if (nums.length === 1) {
-                if (s.includes('+') || s.includes('to ')) return [nums[0], 30];
-                if (s.includes('-')) return [0, nums[0]];
-                return [nums[0], nums[0]];
+            // 1. Try to extract numbers first (HIGHEST PRIORITY)
+            let nums = s.match(/\d+/g);
+            if (nums) {
+                nums = nums.map(Number).filter(n => n <= 30);
+                if (nums.length >= 2) {
+                    return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
+                } else if (nums.length === 1) {
+                    if (s.includes('+') || s.includes('to ')) return [nums[0], 30];
+                    if (s.includes('-')) return [0, nums[0]];
+                    return [nums[0], nums[0]];
+                }
             }
+
+            // 2. Keyword fallback (no numbers found)
+            if (s.includes('fresher') || s.includes('entry')) return [0, 0];
+            if (s.includes('intern') || s.includes('trainee')) return [0, 1];
+            if (s.includes('lead') || s.includes('tech lead')) return [7, 30];
+            if (s.includes('senior') || s === 'sr') return [5, 30];
+            if (s.includes('principal') || s.includes('staff')) return [10, 30];
+            if (s.includes('manager') || s.includes('director')) return [8, 30];
+
+            return [null, null];
         }
 
-        // 2. Keyword fallback (no numbers found)
-        if (s.includes('fresher') || s.includes('entry')) return [0, 0];
-        if (s.includes('intern') || s.includes('trainee')) return [0, 1];
-        if (s.includes('lead') || s.includes('tech lead')) return [7, 30];
-        if (s.includes('senior') || s === 'sr') return [5, 30];
-        if (s.includes('principal') || s.includes('staff')) return [10, 30];
-        if (s.includes('manager') || s.includes('director')) return [8, 30];
+        // ══════════════════════════════════════════════
+        //  UPDATE COUNTS + BADGE
+        // ══════════════════════════════════════════════
+        // ══════════════════════════════════════════════
+        //  UPDATE COUNTS + BADGE
+        // ══════════════════════════════════════════════
+        function updateCounts() {
+            setCount('source', selectedPortals.size);
+            setCount('date', activeDateRange !== 'all' ? 1 : 0);
+            setCount('location', selectedLocations.size);
+            setCount('roles', selectedRoles.size);
+            setCount('exp', activeExp > 0 ? 1 : 0);
+            setCount('skills', selectedSkills.size);
+            setCount('company', selectedCompanies.size);
+            setCount('walkin', walkinOnly ? 1 : 0);
 
-        return [null, null];
-    }
+            const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
+                selectedLocations.size + selectedRoles.size + (activeExp > 0 ? 1 : 0) +
+                selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedSkills.size;
 
-    // ══════════════════════════════════════════════
-    //  UPDATE COUNTS + BADGE
-    // ══════════════════════════════════════════════
-    // ══════════════════════════════════════════════
-    //  UPDATE COUNTS + BADGE
-    // ══════════════════════════════════════════════
-    function updateCounts() {
-        setCount('source', selectedPortals.size);
-        setCount('date', activeDateRange !== 'all' ? 1 : 0);
-        setCount('location', selectedLocations.size);
-        setCount('roles', selectedRoles.size);
-        setCount('exp', activeExp > 0 ? 1 : 0);
-        setCount('skills', selectedSkills.size);
-        setCount('company', selectedCompanies.size);
-        setCount('walkin', walkinOnly ? 1 : 0);
+            const badge = document.getElementById('appliedBadge');
+            const clearBtn = document.getElementById('clearAllBtn');
+            if (total > 0) {
+                badge.textContent = `Applied (${total})`;
+                badge.classList.add('visible');
+                clearBtn.classList.add('visible');
+            } else {
+                badge.classList.remove('visible');
+                clearBtn.classList.remove('visible');
+            }
 
-        const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
-            selectedLocations.size + selectedRoles.size + (activeExp > 0 ? 1 : 0) +
-            selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedSkills.size;
-
-        const badge = document.getElementById('appliedBadge');
-        const clearBtn = document.getElementById('clearAllBtn');
-        if (total > 0) {
-            badge.textContent = `Applied (${total})`;
-            badge.classList.add('visible');
-            clearBtn.classList.add('visible');
-        } else {
-            badge.classList.remove('visible');
-            clearBtn.classList.remove('visible');
+            renderChips();
         }
 
-        renderChips();
-    }
-
-    function setCount(id, n) {
-        const el = document.getElementById('cnt-' + id);
-        if (!el) return;
-        el.textContent = n;
-        el.classList.toggle('show', n > 0);
-    }
-
-    function renderChips() {
-        const container = document.getElementById('activeChips');
-        const chips = [];
-        selectedPortals.forEach(p => {
-            const info = PORTALS.find(x => x.id === p);
-            chips.push({ label: info ? info.label : p, remove: () => { selectedPortals.delete(p); document.getElementById('src-' + p)?.classList.remove('checked'); refreshChips(); } });
-        });
-        if (activeDateRange !== 'all') {
-            const labels = { '24h': 'Last 24h', '3d': 'Last 3 Days', '7d': 'Last 7 Days', '15d': 'Last 15 Days' };
-            chips.push({ label: labels[activeDateRange] || activeDateRange, remove: () => { const el = document.querySelector('.filter-radio[data-range="all"]'); if(el) setDateRange(el, 'all'); refreshChips(); } });
+        function setCount(id, n) {
+            const el = document.getElementById('cnt-' + id);
+            if (!el) return;
+            el.textContent = n;
+            el.classList.toggle('show', n > 0);
         }
-        selectedLocations.forEach(loc => {
-            chips.push({ label: loc, remove: () => { selectedLocations.delete(loc); buildLocationOptions(document.getElementById('locSearch').value); refreshChips(); } });
-        });
-        selectedRoles.forEach(role => {
-            chips.push({ label: role, remove: () => { selectedRoles.delete(role); buildRolesOptions(document.getElementById('roleSearch').value); refreshChips(); } });
-        });
-        if (activeExp > 0) {
-            chips.push({ label: activeExp + ' Yrs Exp', remove: () => { document.getElementById('expSlider').value = 0; updateExpSlider(0); applyFilters(); refreshChips(); } });
-        }
-        selectedSkills.forEach(sid => {
-            const name = skillsMap[sid] || `Skill ${sid}`;
-            chips.push({ label: name, remove: () => { selectedSkills.delete(sid); buildSkillsOptions(); refreshChips(); } });
-        });
-        selectedCompanies.forEach(co => {
-            chips.push({ label: co, remove: () => { selectedCompanies.delete(co); buildCompanyOptions(document.getElementById('companySearch').value); refreshChips(); } });
-        });
-        if (walkinOnly) chips.push({ label: '🚶 Walk-in Only', remove: () => { toggleWalkin(); refreshChips(); } });
 
-        container.innerHTML = chips.map((c, i) => `
+        function renderChips() {
+            const container = document.getElementById('activeChips');
+            const chips = [];
+            selectedPortals.forEach(p => {
+                const info = PORTALS.find(x => x.id === p);
+                chips.push({ label: info ? info.label : p, remove: () => { selectedPortals.delete(p); document.getElementById('src-' + p)?.classList.remove('checked'); refreshChips(); } });
+            });
+            if (activeDateRange !== 'all') {
+                const labels = { '24h': 'Last 24h', '3d': 'Last 3 Days', '7d': 'Last 7 Days', '15d': 'Last 15 Days' };
+                chips.push({ label: labels[activeDateRange] || activeDateRange, remove: () => { const el = document.querySelector('.filter-radio[data-range="all"]'); if (el) setDateRange(el, 'all'); refreshChips(); } });
+            }
+            selectedLocations.forEach(loc => {
+                chips.push({ label: loc, remove: () => { selectedLocations.delete(loc); buildLocationOptions(document.getElementById('locSearch').value); refreshChips(); } });
+            });
+            selectedRoles.forEach(role => {
+                chips.push({ label: role, remove: () => { selectedRoles.delete(role); buildRolesOptions(document.getElementById('roleSearch').value); refreshChips(); } });
+            });
+            if (activeExp > 0) {
+                chips.push({ label: activeExp + ' Yrs Exp', remove: () => { document.getElementById('expSlider').value = 0; updateExpSlider(0); applyFilters(); refreshChips(); } });
+            }
+            selectedSkills.forEach(sid => {
+                const name = skillsMap[sid] || `Skill ${sid}`;
+                chips.push({ label: name, remove: () => { selectedSkills.delete(sid); buildSkillsOptions(); refreshChips(); } });
+            });
+            selectedCompanies.forEach(co => {
+                chips.push({ label: co, remove: () => { selectedCompanies.delete(co); buildCompanyOptions(document.getElementById('companySearch').value); refreshChips(); } });
+            });
+            if (walkinOnly) chips.push({ label: '🚶 Walk-in Only', remove: () => { toggleWalkin(); refreshChips(); } });
+
+            container.innerHTML = chips.map((c, i) => `
             <div class="chip">${esc(c.label)} <span class="chip-x" data-i="${i}">✕</span></div>
         `).join('');
 
-        // bind chip removes
-        container.querySelectorAll('.chip-x').forEach((btn, i) => {
-            btn.addEventListener('click', () => { chips[i].remove(); });
-        });
-    }
+            // bind chip removes
+            container.querySelectorAll('.chip-x').forEach((btn, i) => {
+                btn.addEventListener('click', () => { chips[i].remove(); });
+            });
+        }
 
-    function refreshChips() {
-        updateCounts();
-        applyFilters();
-    }
+        function refreshChips() {
+            updateCounts();
+            applyFilters();
+        }
 
-    function clearAllFilters() {
-        selectedPortals.clear();
-        selectedLocations.clear();
-        selectedRoles.clear();
-        selectedCompanies.clear();
-        selectedSkills.clear();
-        activeDateRange = 'all';
-        activeExp = 0;
-        walkinOnly = false;
-        document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
-        document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
-        document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
-        document.getElementById('expMinInput').value = '';
-        updateExpInput();
-        document.getElementById('searchInput').value = '';
-        document.getElementById('skillSearch').value = '';
-        buildLocationOptions();
-        buildRolesOptions();
-        buildCompanyOptions();
-        buildSkillsOptions();
-        updateCounts();
-        applyFilters();
-    }
+        function clearAllFilters() {
+            selectedPortals.clear();
+            selectedLocations.clear();
+            selectedRoles.clear();
+            selectedCompanies.clear();
+            selectedSkills.clear();
+            activeDateRange = 'all';
+            activeExp = 0;
+            walkinOnly = false;
+            document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('checked'));
+            document.querySelectorAll('.filter-radio[data-range]').forEach(r => r.classList.remove('selected'));
+            document.querySelector('.filter-radio[data-range="all"]')?.classList.add('selected');
+            document.getElementById('expMinInput').value = '';
+            updateExpInput();
+            document.getElementById('searchInput').value = '';
+            document.getElementById('skillSearch').value = '';
+            buildLocationOptions();
+            buildRolesOptions();
+            buildCompanyOptions();
+            buildSkillsOptions();
+            updateCounts();
+            applyFilters();
+        }
 
-    // ══════════════════════════════════════════════
-    //  DATA FETCH
-    // ══════════════════════════════════════════════
-    async function fetchJobsFromTurso() {
-        let fetchedJobs = [];
-        let chunkNum = 1;
-        const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post']);
-        
-        while (true) {
-            try {
-                const res = await fetch(`all_jobs_${chunkNum}.json`);
-                if (!res.ok) { if (res.status === 404) break; throw new Error(`Chunk ${chunkNum} failed`); }
-                const rows = await res.json();
-                for (const job of rows) {
-                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
-                    
-                    let sourceVal = String(job.platform || job.source || '').toLowerCase();
-                    if (!knownPortals.has(sourceVal)) {
-                        sourceVal = 'other';
+        function extractWalkinDateFromText(text) {
+            if (!text) return null;
+            const isWalk = /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(text);
+            if (!isWalk) return null;
+            
+            // 1. Date Ranges with Month Names
+            const rangeMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?(?:\s*,\s*\d{1,2}(?:st|nd|rd|th)?)*(?:\s+[A-Za-z]{3,9})?\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?)\b/i);
+            if (rangeMatch) return rangeMatch[1].trim();
+
+            // 2. Single Date with Month Name
+            const singleMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?|\d{1,2}-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*-\d{2,4})\b/i);
+            if (singleMatch) return singleMatch[1].trim();
+
+            // 3. Numeric Date
+            const numMatch = text.match(/\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b/);
+            if (numMatch) return numMatch[1].trim();
+
+            return null;
+        }
+
+        // ══════════════════════════════════════════════
+        //  DATA FETCH
+        // ══════════════════════════════════════════════
+        async function fetchJobsFromTurso() {
+            let fetchedJobs = [];
+            let chunkNum = 1;
+            const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post']);
+
+            while (true) {
+                try {
+                    const res = await fetch(`all_jobs_${chunkNum}.json`);
+                    if (!res.ok) { if (res.status === 404) break; throw new Error(`Chunk ${chunkNum} failed`); }
+                    const rows = await res.json();
+                    for (const job of rows) {
+                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
+
+                        let sourceVal = String(job.platform || job.source || '').toLowerCase();
+                        if (!knownPortals.has(sourceVal)) {
+                            sourceVal = 'other';
+                        }
+
+                        const rawTitle = String(job.role || job.title || '');
+                        const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(rawTitle));
+                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+
+                        fetchedJobs.push({
+                            _id: job.id || 0,
+                            title: rawTitle,
+                            company: String(job.company_name || job.company || ''),
+                            location: String(job.location || ''),
+                            date: cleanDate, url: String(job.apply_link || job.url || job.linkedin_url || ''),
+                            source: sourceVal,
+                            role_search: String(job.search_keyword || job.role_search || ''),
+                            experience: pick(job.experience),
+                            skills: Array.isArray(job.skills) ? job.skills : [],
+                            is_walkin: isWalk,
+                            walkin_date: walkDate,
+                            walkin_time: job.walkin_time || '',
+                            fetchedAt: cleanDate
+                        });
                     }
-                    
-                    fetchedJobs.push({
-                        _id: job.id || 0,
-                        title: String(job.role || job.title || ''),
-                        company: String(job.company_name || job.company || ''),
-                        location: String(job.location || ''),
-                        date: cleanDate, url: String(job.apply_link || job.url || job.linkedin_url || ''),
-                        source: sourceVal,
-                        role_search: String(job.search_keyword || job.role_search || ''),
-                        experience: pick(job.experience),
-                        skills: Array.isArray(job.skills) ? job.skills : [],
-                        fetchedAt: cleanDate
-                    });
+                    chunkNum++;
+                } catch (e) {
+                    console.error(e);
+                    if (fetchedJobs.length === 0) return { error: String(e) };
+                    break;
                 }
-                chunkNum++;
+            }
+
+            // Fetch Big Company / Other Source ATS jobs
+            try {
+                const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
+                const bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime());
+                if (bigJobsRes.ok) {
+                    const bigJobsRows = await bigJobsRes.json();
+                    for (const job of bigJobsRows) {
+                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.date_posted, job.date);
+                        const rawTitle = String(job.title || job.role || '');
+                        const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(rawTitle));
+                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+
+                        fetchedJobs.push({
+                            _id: job.id || 0,
+                            title: rawTitle,
+                            company: String(job.company || job.company_name || ''),
+                            location: String(job.location || ''),
+                            date: cleanDate,
+                            url: String(job.apply_url || job.apply_link || job.url || ''),
+                            source: 'other',
+                            role_search: '',
+                            experience: '',
+                            skills: [],
+                            is_walkin: isWalk,
+                            walkin_date: walkDate,
+                            walkin_time: '',
+                            fetchedAt: cleanDate
+                        });
+                    }
+                    console.log(`Loaded ${bigJobsRows.length} jobs from big_company_jobs.json as 'other' source`);
+                }
             } catch (e) {
-                console.error(e);
-                if (fetchedJobs.length === 0) return { error: String(e) };
-                break;
+                console.error("Error fetching big company jobs:", e);
             }
+
+            return fetchedJobs;
         }
-        
-        // Fetch Big Company / Other Source ATS jobs
-        try {
-            const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
-            const bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime());
-            if (bigJobsRes.ok) {
-                const bigJobsRows = await bigJobsRes.json();
-                for (const job of bigJobsRows) {
-                    const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                    const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                    const cleanDate = pick(job.fetched_at, job.fetchedAt, job.date_posted, job.date);
-                    
-                    fetchedJobs.push({
-                        _id: job.id || 0,
-                        title: String(job.title || job.role || ''),
-                        company: String(job.company || job.company_name || ''),
-                        location: String(job.location || ''),
-                        date: cleanDate, 
-                        url: String(job.apply_url || job.apply_link || job.url || ''),
-                        source: 'other',
-                        role_search: '',
-                        experience: '',
-                        skills: [],
-                        fetchedAt: cleanDate
+
+        // ══════════════════════════════════════════════
+        //  FILTER + RENDER
+        // ══════════════════════════════════════════════
+        function applyFilters() {
+            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const now = new Date(); now.setHours(0, 0, 0, 0);
+            const sortBy = document.getElementById('sortSelect').value;
+
+            filteredJobs = allJobs.filter(j => {
+                const titleLow = (j.title || '').toLowerCase();
+                const hay = [j.title, j.company, j.location, j.role_search, j.walkin_date].filter(Boolean).join(' ').toLowerCase();
+                if (search && !hay.includes(search)) return false;
+
+                if (selectedPortals.size > 0) {
+                    const src = (j.source || '').toLowerCase();
+                    if (!selectedPortals.has(src)) return false;
+                }
+
+                if (activeDateRange !== 'all') {
+                    const jd = new Date((j.fetchedAt || '').slice(0, 10));
+                    if (isNaN(jd.getTime())) return false;
+                    const diff = Math.floor((now - jd) / 86400000);
+                    if (activeDateRange === '24h' && diff > 1) return false;
+                    if (activeDateRange === '3d' && diff > 3) return false;
+                    if (activeDateRange === '7d' && diff > 7) return false;
+                    if (activeDateRange === '15d' && diff > 15) return false;
+                }
+
+                if (selectedLocations.size > 0) {
+                    const loc = (j.location || '').toLowerCase();
+                    const city = loc.split(',')[0].trim();
+                    const match = [...selectedLocations].some(l => city.includes(l.toLowerCase()) || loc.includes(l.toLowerCase()));
+                    if (!match) return false;
+                }
+
+                if (selectedRoles.size > 0) {
+                    const match = [...selectedRoles].some(role => {
+                        const kws = ROLE_KEYWORDS[role] || [role.toLowerCase()];
+                        return kws.some(kw => titleLow.includes(kw) || (j.role_search || '').toLowerCase().includes(kw));
                     });
+                    if (!match) return false;
                 }
-                console.log(`Loaded ${bigJobsRows.length} jobs from big_company_jobs.json as 'other' source`);
+
+                if (activeExp > 0) {
+                    const [minExp, maxExp] = parseExperience(j.experience);
+                    if (minExp === null) {
+                        return false; // If no exp info, it doesn't match
+                    }
+                    // Min Year filter: job's minimum experience must be >= user's input
+                    if (minExp < activeExp) {
+                        return false;
+                    }
+                }
+
+                if (selectedSkills.size > 0) {
+                    const hasSkill = Array.isArray(j.skills) && j.skills.some(sid => selectedSkills.has(sid));
+                    if (!hasSkill) return false;
+                }
+
+                if (selectedCompanies.size > 0) {
+                    const co = (j.company || '').toLowerCase();
+                    if (![...selectedCompanies].some(c => co.includes(c.toLowerCase()))) return false;
+                }
+
+                // Walk-in filter: check is_walkin flag, walkin_date, or title keywords
+                if (walkinOnly) {
+                    const walkKw = ['walk-in', 'walkin', 'walk in', 'walking'];
+                    const isW = j.is_walkin || Boolean(j.walkin_date) || walkKw.some(kw => titleLow.includes(kw));
+                    if (!isW) return false;
+                }
+
+                return true;
+            });
+
+            if (sortBy === 'company') {
+                filteredJobs.sort((a, b) => (a.company || '').localeCompare(b.company || ''));
             }
-        } catch (e) {
-            console.error("Error fetching big company jobs:", e);
+
+            currentPage = 1;
+            renderPage();
         }
 
-        return fetchedJobs;
-    }
-
-    // ══════════════════════════════════════════════
-    //  FILTER + RENDER
-    // ══════════════════════════════════════════════
-    function applyFilters() {
-        const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-        const now = new Date(); now.setHours(0,0,0,0);
-        const sortBy = document.getElementById('sortSelect').value;
-
-        filteredJobs = allJobs.filter(j => {
-            const titleLow = (j.title || '').toLowerCase();
-            const hay = [j.title, j.company, j.location, j.role_search].filter(Boolean).join(' ').toLowerCase();
-            if (search && !hay.includes(search)) return false;
-
-            if (selectedPortals.size > 0) {
-                const src = (j.source || '').toLowerCase();
-                if (!selectedPortals.has(src)) return false;
-            }
-
-            if (activeDateRange !== 'all') {
-                const jd = new Date((j.fetchedAt || '').slice(0, 10));
-                if (isNaN(jd.getTime())) return false;
-                const diff = Math.floor((now - jd) / 86400000);
-                if (activeDateRange === '24h' && diff > 1) return false;
-                if (activeDateRange === '3d' && diff > 3) return false;
-                if (activeDateRange === '7d' && diff > 7) return false;
-                if (activeDateRange === '15d' && diff > 15) return false;
-            }
-
-            if (selectedLocations.size > 0) {
-                const loc = (j.location || '').toLowerCase();
-                const city = loc.split(',')[0].trim();
-                const match = [...selectedLocations].some(l => city.includes(l.toLowerCase()) || loc.includes(l.toLowerCase()));
-                if (!match) return false;
-            }
-
-            if (selectedRoles.size > 0) {
-                const match = [...selectedRoles].some(role => {
-                    const kws = ROLE_KEYWORDS[role] || [role.toLowerCase()];
-                    return kws.some(kw => titleLow.includes(kw) || (j.role_search || '').toLowerCase().includes(kw));
-                });
-                if (!match) return false;
-            }
-
-            if (activeExp > 0) {
-                const [minExp, maxExp] = parseExperience(j.experience);
-                if (minExp === null) {
-                    return false; // If no exp info, it doesn't match
-                }
-                // Min Year filter: job's minimum experience must be >= user's input
-                if (minExp < activeExp) {
-                    return false;
-                }
-            }
-
-            if (selectedSkills.size > 0) {
-                const hasSkill = Array.isArray(j.skills) && j.skills.some(sid => selectedSkills.has(sid));
-                if (!hasSkill) return false;
-            }
-
-            if (selectedCompanies.size > 0) {
-                const co = (j.company || '').toLowerCase();
-                if (![...selectedCompanies].some(c => co.includes(c.toLowerCase()))) return false;
-            }
-
-            // Walk-in filter: check if job title contains walk-in keywords
-            if (walkinOnly) {
-                const walkKw = ['walk-in', 'walkin', 'walk in', 'walking'];
-                if (!walkKw.some(kw => titleLow.includes(kw))) return false;
-            }
-
-            return true;
-        });
-
-        if (sortBy === 'company') {
-            filteredJobs.sort((a, b) => (a.company || '').localeCompare(b.company || ''));
+        function renderPage() {
+            const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            const start = (currentPage - 1) * JOBS_PER_PAGE;
+            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+            renderPagination(totalPages);
+            document.getElementById('jobCount').textContent = filteredJobs.length.toLocaleString();
         }
 
-        currentPage = 1;
-        renderPage();
-    }
+        function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    function renderPage() {
-        const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
-        if (currentPage > totalPages) currentPage = totalPages;
-        const start = (currentPage - 1) * JOBS_PER_PAGE;
-        renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
-        renderPagination(totalPages);
-        document.getElementById('jobCount').textContent = filteredJobs.length.toLocaleString();
-    }
+        function renderJobs(jobs) {
+            const grid = document.getElementById('jobsGrid');
+            const noRes = document.getElementById('noResults');
+            if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+            noRes.style.display = 'none';
+            grid.innerHTML = jobs.map((job, i) => {
+                const logo = getLogoData(job.company || '');
+                const date = formatDate(job.date || job.fetchedAt);
+                const url = job.url || '';
+                const source = (job.source || '').toLowerCase();
+                const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
+                const portalLogoSrc = PORTAL_LOGOS[source] || '';
+                const rawLocStr = (job.location || '').trim();
+                const rawLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' ? rawLocStr : 'India';
+                const cityLoc = rawLoc.split(',')[0].trim() || 'India';
+                
+                const isWalkin = job.is_walkin || Boolean(job.walkin_date) || ['walk-in', 'walkin', 'walk in', 'walking'].some(kw => (job.title || '').toLowerCase().includes(kw));
+                const walkinDate = job.walkin_date || extractWalkinDateFromText(job.title || '');
 
-    function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-    function renderJobs(jobs) {
-        const grid = document.getElementById('jobsGrid');
-        const noRes = document.getElementById('noResults');
-        if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
-        noRes.style.display = 'none';
-        grid.innerHTML = jobs.map((job, i) => {
-            const logo = getLogoData(job.company || '');
-            const date = formatDate(job.date || job.fetchedAt);
-            const url = job.url || '';
-            const source = (job.source || '').toLowerCase();
-            const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
-            const portalLogoSrc = PORTAL_LOGOS[source] || '';
-            const rawLocStr = (job.location || '').trim();
-            const rawLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' ? rawLocStr : 'India';
-            const cityLoc = rawLoc.split(',')[0].trim() || 'India';
-            return `
+                return `
             <div class="job-card" style="animation-delay:${i * 0.025}s">
                 <div class="card-top">
                     <div class="logo-box">
@@ -1631,6 +2285,7 @@
                     <div class="card-info">
                         <div class="company-name">${esc(job.company)}</div>
                         <div class="job-title">${esc(job.title || 'Position')}</div>
+                        ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDate || 'Active')}</div>` : ''}
                     </div>
                 </div>
                 <div class="job-meta">
@@ -1645,123 +2300,139 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-role">${esc(job.role_search || '')}</span>
-                    ${url ? `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>` : ''}
+                    ${url ? `<span style="display:flex;align-items:center;"><a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a><button class="auto-apply-btn" data-apply-url="${esc(url)}" data-title="${esc(job.title || '')}" data-company="${esc(job.company || '')}">⚡ Apply</button></span>` : ''}
                 </div>
             </div>`;
-        }).join('');
-    }
-
-    function renderPagination(totalPages) {
-        const c = document.getElementById('pagination');
-        c.innerHTML = '';
-        if (totalPages <= 1) return;
-        const prev = document.createElement('button');
-        prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
-        prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
-        const pages = [];
-        if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
-        else {
-            pages.push(1);
-            if (currentPage > 3) pages.push('...');
-            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
-            if (currentPage < totalPages - 2) pages.push('...');
-            pages.push(totalPages);
+            }).join('');
         }
-        pages.forEach(p => {
-            if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
-            else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
+
+        // ⚡ Auto Apply bridge — relays to the AI Auto Fill V4 extension (if installed)
+        document.getElementById('jobsGrid').addEventListener('click', (e) => {
+            const btn = e.target.closest('.auto-apply-btn');
+            if (!btn) return;
+            e.preventDefault();
+            window.postMessage({
+                type: 'ALL_CAREER_APPLY',
+                applyUrl: btn.dataset.applyUrl,
+                jobTitle: btn.dataset.title,
+                company: btn.dataset.company
+            }, window.location.origin);
+            btn.textContent = '⏳ Opening...';
+            setTimeout(() => { btn.textContent = '⚡ Apply'; }, 2500);
         });
-        const next = document.createElement('button');
-        next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
-        next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
-    }
 
-    // ══════════════════════════════════════════════
-    //  HELPERS
-    // ══════════════════════════════════════════════
-    function getLogoData(name) {
-        const clean = name.replace(/\(.*\)/, '').trim();
-        let domain = '';
-        if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
-        else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
-        return {
-            clearbit: `https://logo.clearbit.com/${domain}`,
-            google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-            ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-            initial: clean.charAt(0).toUpperCase()
-        };
-    }
-
-    function formatDate(dateStr) {
-        if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
-        try {
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return null;
-            const diff = Math.floor((new Date() - d) / 86400000);
-            if (diff === 0) return 'Today';
-            if (diff === 1) return 'Yesterday';
-            if (diff < 7) return `${diff} days ago`;
-            return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
-        } catch { return null; }
-    }
-
-    function esc(s) {
-        if (!s) return '';
-        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    // ══════════════════════════════════════════════
-    //  INIT
-    // ══════════════════════════════════════════════
-    window.addEventListener('scroll', () => {
-        document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
-    });
-
-    async function init() {
-        const loading = document.getElementById('loading');
-
-        // Build static sidebar options
-        buildSourceOptions();
-        buildLocationOptions();
-        buildRolesOptions();
-
-        // Load skills map
-        try {
-            const smRes = await fetch('skills_map.json');
-            if (smRes.ok) {
-                skillsMap = await smRes.json();
+        function renderPagination(totalPages) {
+            const c = document.getElementById('pagination');
+            c.innerHTML = '';
+            if (totalPages <= 1) return;
+            const prev = document.createElement('button');
+            prev.className = 'page-btn nav-btn'; prev.innerHTML = '←'; prev.disabled = currentPage === 1;
+            prev.onclick = () => goToPage(currentPage - 1); c.appendChild(prev);
+            const pages = [];
+            if (totalPages <= 7) { for (let i = 1; i <= totalPages; i++) pages.push(i); }
+            else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
             }
-        } catch (e) {
-            console.error("Failed to load skills_map.json", e);
+            pages.forEach(p => {
+                if (p === '...') { const s = document.createElement('span'); s.className = 'page-ellipsis'; s.textContent = '...'; c.appendChild(s); }
+                else { const b = document.createElement('button'); b.className = 'page-btn' + (p === currentPage ? ' active' : ''); b.textContent = p; b.onclick = () => goToPage(p); c.appendChild(b); }
+            });
+            const next = document.createElement('button');
+            next.className = 'page-btn nav-btn'; next.innerHTML = '→'; next.disabled = currentPage === totalPages;
+            next.onclick = () => goToPage(currentPage + 1); c.appendChild(next);
         }
 
-        loading.innerHTML = 'Loading jobs...';
-        allJobs = await fetchJobsFromTurso();
-
-        if (allJobs.error) {
-            loading.innerHTML = `<div style="color:#fb7185;text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p></div>`;
-            return;
+        // ══════════════════════════════════════════════
+        //  HELPERS
+        // ══════════════════════════════════════════════
+        function getLogoData(name) {
+            const clean = name.replace(/\(.*\)/, '').trim();
+            let domain = '';
+            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
+            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            return {
+                clearbit: `https://logo.clearbit.com/${domain}`,
+                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+                initial: clean.charAt(0).toUpperCase()
+            };
         }
 
-        allJobs.sort((a, b) => {
-            const da = a.fetchedAt || '', db = b.fetchedAt || '';
-            if (da !== db) return db.localeCompare(da);
-            return (b._id || 0) - (a._id || 0);
+        function formatDate(dateStr) {
+            if (!dateStr || dateStr === 'nan' || dateStr === 'None') return null;
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return null;
+                const diff = Math.floor((new Date() - d) / 86400000);
+                if (diff === 0) return 'Today';
+                if (diff === 1) return 'Yesterday';
+                if (diff < 7) return `${diff} days ago`;
+                return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+            } catch { return null; }
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // ══════════════════════════════════════════════
+        //  INIT
+        // ══════════════════════════════════════════════
+        window.addEventListener('scroll', () => {
+            document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 400);
         });
 
-        // Build dynamic company list from loaded data
-        const coMap = {};
-        allJobs.forEach(j => { if (j.company) coMap[j.company] = (coMap[j.company] || 0) + 1; });
-        allCompanies = Object.entries(coMap).sort((a,b) => b[1]-a[1]).map(e => e[0]).slice(0, 100);
-        buildCompanyOptions();
-        buildSkillsOptions();
-        updateSourceCounts();
+        async function init() {
+            const loading = document.getElementById('loading');
 
-        loading.style.display = 'none';
-        applyFilters();
-    }
+            // Build static sidebar options
+            buildSourceOptions();
+            buildLocationOptions();
+            buildRolesOptions();
 
-    init();
+            // Load skills map
+            try {
+                const smRes = await fetch('skills_map.json');
+                if (smRes.ok) {
+                    skillsMap = await smRes.json();
+                }
+            } catch (e) {
+                console.error("Failed to load skills_map.json", e);
+            }
+
+            loading.innerHTML = 'Loading jobs...';
+            allJobs = await fetchJobsFromTurso();
+
+            if (allJobs.error) {
+                loading.innerHTML = `<div style="color:#fb7185;text-align:center"><h3>Connection Error</h3><p>${allJobs.error}</p></div>`;
+                return;
+            }
+
+            allJobs.sort((a, b) => {
+                const da = a.fetchedAt || '', db = b.fetchedAt || '';
+                if (da !== db) return db.localeCompare(da);
+                return (b._id || 0) - (a._id || 0);
+            });
+
+            // Build dynamic company list from loaded data
+            const coMap = {};
+            allJobs.forEach(j => { if (j.company) coMap[j.company] = (coMap[j.company] || 0) + 1; });
+            allCompanies = Object.entries(coMap).sort((a, b) => b[1] - a[1]).map(e => e[0]).slice(0, 100);
+            buildCompanyOptions();
+            buildSkillsOptions();
+            updateSourceCounts();
+
+            loading.style.display = 'none';
+            applyFilters();
+        }
+
+        init();
     </script>
 </body>
+
 </html>

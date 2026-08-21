@@ -23,8 +23,10 @@ MAX_RUN_SECONDS = 5 * 3600 + 50 * 60   # 5 h 50 m
 # Pages to scrape per (role, city) combination
 PAGES = [1, 2, 3, 4]
 
-# 50+ roles — tech + non-tech
+# 50+ roles — tech + non-tech + walk-ins
 SEARCH_ROLES = [
+    # 🚶 Walk-in Interview Keywords
+    "Walkin Interview", "Walk-in Drive", "Walk In",
     # Tech roles
     "Software Engineer", "Software Developer", "Frontend Developer",
     "Backend Developer", "Full Stack Developer", "Mobile App Developer",
@@ -245,12 +247,30 @@ def scrape_naukri_page(role, city, page):
             posted_label = job_obj.get("footerPlaceholderLabel", "")
             date_posted  = parse_date_posted(posted_label)
 
-            from extractor_utils import extract_skills
+            from extractor_utils import extract_skills, extract_walkin_info
             
             tags_skills = job_obj.get("tagsAndSkills", "")
             jd = job_obj.get("jobDescription", "")
             combined_text = f"{tags_skills} {jd}"
             skills = extract_skills(combined_text)
+
+            # Check walk-in details from API payload or description
+            walkin_details = job_obj.get("walkinDetails") or {}
+            w_date = None
+            w_time = None
+            if isinstance(walkin_details, dict) and walkin_details:
+                start_d = walkin_details.get("startDate")
+                end_d = walkin_details.get("endDate")
+                if start_d and end_d and start_d != end_d:
+                    w_date = f"{start_d} - {end_d}"
+                else:
+                    w_date = start_d or end_d
+                w_time = walkin_details.get("time")
+
+            w_info = extract_walkin_info(title=title, description=combined_text)
+            is_walk = bool(walkin_details) or w_info.get("is_walkin", False)
+            final_w_date = w_date or w_info.get("walkin_date")
+            final_w_time = w_time or w_info.get("walkin_time")
 
             if title and jd_url:
                 jobs.append({
@@ -263,6 +283,9 @@ def scrape_naukri_page(role, city, page):
                     "role_search": role,
                     "experience":  experience,
                     "skills":      skills,
+                    "is_walkin":   is_walk,
+                    "walkin_date": final_w_date,
+                    "walkin_time": final_w_time,
                 })
     return jobs
 

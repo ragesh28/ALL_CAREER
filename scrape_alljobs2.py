@@ -60,6 +60,9 @@ if TEST_MODE:
 # ROLES & LOCATIONS
 # ---------------------------------------------------------------------------
 SEARCH_ROLES = [
+    # 🚶 Walk-in Interview Keywords
+    "Walkin Interview", "Walk-in Drive", "Walk In",
+    # Tech & Business Roles
     "Frontend Developer", "Backend Developer", "Full Stack Developer",
     "Mobile App Developer", "Software Architect", "Software Engineer",
     "AI Engineer", "Machine Learning Engineer", "Data Scientist",
@@ -82,6 +85,14 @@ LOCATIONS = [
     "Chennai, India",
     "Hyderabad, India",
     "Mumbai, India",
+    "Pune, India",
+    "Delhi, India",
+    "Noida, India",
+    "Gurgaon, India",
+    "Kolkata, India",
+    "Ahmedabad, India",
+    "Coimbatore, India",
+    "Kochi, India",
 ]
 
 
@@ -446,7 +457,7 @@ def main():
                     print("0 jobs found")
                     continue
 
-                from extractor_utils import extract_experience, extract_skills
+                from extractor_utils import extract_experience, extract_skills, extract_walkin_info
                 
                 batch = []
                 for _, row in jobs_df.iterrows():
@@ -479,7 +490,6 @@ def main():
                     final_url = permanent_url if permanent_url else job_url
 
                     # Only extract experience from FULL descriptions (>=100 chars)
-                    # Short/empty descriptions mean LinkedIn blocked us — don't guess
                     desc_is_full = len(desc) >= 100
                     if desc_is_full:
                         exp = extract_experience(desc, title=title)
@@ -487,6 +497,9 @@ def main():
                     else:
                         exp = ""
                         skills = []
+
+                    # Extract Walk-in Interview status & Date
+                    w_info = extract_walkin_info(title=title, description=desc)
 
                     batch.append({
                         "title": title,
@@ -502,6 +515,9 @@ def main():
                         "permanent_url": permanent_url,
                         "experience": exp,
                         "skills": skills,
+                        "is_walkin": w_info.get("is_walkin", False),
+                        "walkin_date": w_info.get("walkin_date"),
+                        "walkin_time": w_info.get("walkin_time"),
                         "_description": desc,  # Keep for re-fetch check (not saved to DB)
                     })
 

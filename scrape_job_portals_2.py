@@ -81,8 +81,10 @@ def close_playwright():
     except Exception as e:
         pass
 
-# MASSIVE ROLES LIST (50+ Tech and Non-Tech)
+# MASSIVE ROLES LIST (50+ Tech and Non-Tech + Walk-ins)
 SEARCH_ROLES = [
+    # 🚶 Walk-in Interview Keywords
+    "Walkin Interview", "Walk-in Drive", "Walk In",
     # General Tech
     "Software Developer", "Software Engineer", "Frontend Developer", "Backend Developer", 
     "Full Stack Developer", "Java Developer", "Python Developer", "Node.js Developer", 
@@ -228,11 +230,12 @@ def scrape_shine(role, city):
                             # Experience
                             experience = item.get("jExp", "")
                             
-                            from extractor_utils import extract_skills
+                            from extractor_utils import extract_skills, extract_walkin_info
                             jjd = item.get("jJD", "")
                             jkwd = item.get("jKwd", "")
                             combined_text = f"{jjd} {jkwd}"
                             skills = extract_skills(combined_text)
+                            w_info = extract_walkin_info(title=title, description=combined_text)
                             
                             if title and job_url:
                                 jobs.append({
@@ -240,7 +243,10 @@ def scrape_shine(role, city):
                                     "location": loc, "date_posted": date_str,
                                     "url": job_url, "source": "shine", "role_search": role,
                                     "experience": experience,
-                                    "skills": skills
+                                    "skills": skills,
+                                    "is_walkin": w_info.get("is_walkin", False),
+                                    "walkin_date": w_info.get("walkin_date"),
+                                    "walkin_time": w_info.get("walkin_time")
                                 })
                     except Exception as e:
                         print(f"    Shine JSON parse error: {e}")

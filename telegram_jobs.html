@@ -395,7 +395,7 @@
     </div>
 
     <script src="logos.js"></script>
-    <script src="logo3d.js"></script>
+    <script src="logo3d.js?v=20260715-wireframe-debug"></script>
     <script>
         window.addEventListener('scroll', () => { document.body.classList.toggle('scrolled', window.scrollY > 50); });
 
@@ -517,6 +517,26 @@
             applyFilters();
         }
 
+        function extractWalkinDateFromText(text) {
+            if (!text) return null;
+            const isWalk = /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(text);
+            if (!isWalk) return null;
+            
+            // 1. Date Ranges with Month Names
+            const rangeMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?(?:\s*,\s*\d{1,2}(?:st|nd|rd|th)?)*(?:\s+[A-Za-z]{3,9})?\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?)\b/i);
+            if (rangeMatch) return rangeMatch[1].trim();
+
+            // 2. Single Date with Month Name
+            const singleMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?|\d{1,2}-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*-\d{2,4})\b/i);
+            if (singleMatch) return singleMatch[1].trim();
+
+            // 3. Numeric Date
+            const numMatch = text.match(/\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b/);
+            if (numMatch) return numMatch[1].trim();
+
+            return null;
+        }
+
         // --- LOAD ALL JOBS ---
         async function fetchAllJobs() {
             let jobs = [];
@@ -529,8 +549,12 @@
                     if (!response.ok) { keepFetching = false; break; }
                     const rows = await response.json();
                     for (const job of rows) {
+                        const rawTitle = job.role || job.title || "";
+                        const isWalk = Boolean(job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(rawTitle));
+                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+
                         jobs.push({
-                            title: job.role || job.title || "",
+                            title: rawTitle,
                             company: job.company_name || job.company || "",
                             location: job.location || "",
                             date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
@@ -539,7 +563,9 @@
                             experience: job.experience || null,
                             salary: job.salary || null,
                             qualification: job.qualification || null,
-                            walking_interview: job.walking_interview || false,
+                            walking_interview: isWalk,
+                            is_walkin: isWalk,
+                            walkin_date: walkDate,
                             last_date: job.last_date || null,
                             other_details: job.other_details || null,
                             role_search: job.search_keyword || job.role_search || "",
@@ -668,7 +694,8 @@
                 const stripeClass = SOURCE_STRIPE_MAP[source] || 'stripe-other';
                 const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : '';
                 const cityLoc = rawLoc ? rawLoc.split(',')[0].trim() : 'India';
-                const isWalkin = job.walking_interview;
+                const isWalkin = job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(job.title || '');
+                const walkDate = job.walkin_date || extractWalkinDateFromText(job.title || '');
 
                 return `
             <div class="job-card ${isWalkin ? 'walkin-card' : ''}" style="animation-delay:${i * 0.02}s">
@@ -691,7 +718,7 @@
                     ${cityLoc ? `<div class="detail-badge">📍 ${esc(cityLoc)}</div>` : ''}
                     ${job.experience ? `<div class="detail-badge">📊 ${esc(job.experience)}</div>` : ''}
                     ${job.salary ? `<div class="detail-badge">💰 ${esc(job.salary)}</div>` : ''}
-                    ${isWalkin ? `<div class="detail-badge walkin-badge">Walk-in Interview</div>` : ''}
+                    ${isWalkin ? `<div class="detail-badge walkin-badge">🚶 Walk-in: ${esc(walkDate || 'Interview')}</div>` : ''}
                     ${date ? `<div class="detail-badge" style="border-color:rgba(0,136,204,0.3);color:#0088cc;">📅 ${date}</div>` : ''}
                 </div>
                 <div class="card-footer">

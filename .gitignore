@@ -75,3 +75,23 @@ PROJECT DETAILS/
 
 # Local IDE Customizations
 .agents/
+AGENTS.md
+
+# Extension files (DO NOT UPLOAD)
+Auto Fill/
+Auto Fill - Copy/
+autofill/
+autofill-v4/
+claude extesnhion/
+claude extension/
+
+# Local backup & scratch files
+backup_jobs_before_cleanup/
+clean_old_walkins.py
+scratch/
+test_walkin_extractor.py
+add_d1_column.py
+check_d1.py
+check_data_retention.py
+dump_d1_jobs.py
+test_fetch.js

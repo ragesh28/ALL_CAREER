@@ -152,3 +152,155 @@ def extract_skills(text):
                 break  # Matched this skill, no need to check other synonyms for it
                 
     return sorted(list(matched_ids))
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  WALK-IN INTERVIEW & DATE EXTRACTION
+# ══════════════════════════════════════════════════════════════════════════════
+
+WALKIN_REGEX = re.compile(
+    r'\b(walk[\s-]?in|walking[\s-]?interview|walk[\s-]?in[\s-]?drive|direct[\s-]?walkin|walkin)\b',
+    re.IGNORECASE
+)
+
+MONTHS = (
+    r'(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+    r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)'
+)
+
+# 1. Date Ranges with Month Names (e.g. "21st August - 30 September", "12th Aug - 15th Aug", "25th July")
+DATE_RANGE_REGEX = re.compile(
+    rf'\b(\d{{1,2}}(?:st|nd|rd|th)?(?:\s*,\s*\d{{1,2}}(?:st|nd|rd|th)?)*(?:\s+{MONTHS})?'
+    rf'\s*(?:-|–|—|to|&)\s*'
+    rf'\d{{1,2}}(?:st|nd|rd|th)?\s+{MONTHS}(?:\s*,?\s*(?:20\d{{2}}|19\d{{2}}|\b\d{{2}}\b(?!\s*[:.])))?)\b',
+    re.IGNORECASE
+)
+
+# 2. Single Date with Month Name (e.g. "25th July", "24th August 2026", "9th July", "13-May-26")
+SINGLE_DATE_REGEX = re.compile(
+    rf'\b(\d{{1,2}}(?:st|nd|rd|th)?\s+{MONTHS}(?:\s*,?\s*(?:20\d{{2}}|19\d{{2}}|\b\d{{2}}\b(?!\s*[:.])))?|'
+    rf'\d{{1,2}}-{MONTHS}-\d{{2,4}})\b',
+    re.IGNORECASE
+)
+
+# 3. Numeric Date Ranges or Single Dates (e.g. "15/08/2026 to 18/08/2026", "24-08-2026")
+NUMERIC_DATE_REGEX = re.compile(
+    r'\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b',
+    re.IGNORECASE
+)
+
+# 4. Weekday Ranges (e.g. "Monday to Friday")
+WEEKDAY_REGEX = re.compile(
+    r'\b((?:Every\s+)?(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun)'
+    r'(?:\s*(?:-|–|to|&)\s*(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|Mon|Tue|Wed|Thu|Fri|Sat|Sun))?)\b',
+    re.IGNORECASE
+)
+
+# 5. Time Patterns (e.g. "11.00 AM - 5.30 PM", "9:30 AM to 4:00 PM")
+TIME_REGEX = re.compile(
+    r'\b(\d{1,2}(?:[:.]\d{2})?\s*(?:AM|PM|am|pm)\s*(?:-|–|to)\s*\d{1,2}(?:[:.]\d{2})?\s*(?:AM|PM|am|pm)|\d{1,2}(?:[:.]\d{2})?\s*(?:AM|PM|am|pm)(?:\s+onwards)?)\b'
+)
+
+
+def _clean_walkin_text(text):
+    if not text or not isinstance(text, str):
+        return ""
+    text = text.replace('\xa0', ' ').replace('\u00a0', ' ').replace('\u2013', '-').replace('\u2014', '-')
+    text = re.sub(r'[ \t]+', ' ', text)
+    return text.strip()
+
+
+def extract_walkin_info(title="", description="", full_text=""):
+    """
+    Extract walk-in status, interview dates, and timings from job data.
+    Returns:
+        dict: {
+            "is_walkin": bool,
+            "walkin_date": str or None,
+            "walkin_time": str or None,
+            "matched_snippet": str
+        }
+    """
+    title_clean = _clean_walkin_text(title)
+    desc_clean = _clean_walkin_text(description)
+    full_clean = _clean_walkin_text(full_text)
+    combined = f"{title_clean}\n{desc_clean}\n{full_clean}".strip()
+
+    if not combined:
+        return {"is_walkin": False, "walkin_date": None, "walkin_time": None, "matched_snippet": ""}
+
+    is_walkin = False
+    walkin_date = None
+    walkin_time = None
+    matched_snippet = ""
+
+    # 1. Detect if Walk-in
+    if WALKIN_REGEX.search(title_clean) or WALKIN_REGEX.search(combined):
+        is_walkin = True
+
+    # 2. Contextual search around headers like "Time and Venue", "Walk-in Date:", "Drive on"
+    context_patterns = [
+        r'(?:Time and Venue|Time & Venue|Walk-in Date|Interview Date|Drive Date|Date & Time|Date\s*:|Venue & Date|Walkin on|Drive on)[^\n\r]+',
+        r'(?:Time and Venue[\s\S]{1,250}?(?:AM|PM|\d{4}))',
+        r'(?:Date\s*:\s*[^\n\r]+)',
+    ]
+
+    for cp in context_patterns:
+        m = re.search(cp, combined, re.IGNORECASE)
+        if m:
+            matched_snippet = _clean_walkin_text(m.group(0))
+            d_range = DATE_RANGE_REGEX.search(matched_snippet)
+            if d_range:
+                walkin_date = d_range.group(1).strip()
+                break
+            d_single = SINGLE_DATE_REGEX.search(matched_snippet)
+            if d_single:
+                walkin_date = d_single.group(1).strip()
+                break
+            d_num = NUMERIC_DATE_REGEX.search(matched_snippet)
+            if d_num:
+                walkin_date = d_num.group(1).strip()
+                break
+
+    # 3. If not in header, search in title then entire combined text
+    if not walkin_date:
+        for target_text in [title_clean, combined]:
+            d_range = DATE_RANGE_REGEX.search(target_text)
+            if d_range:
+                walkin_date = d_range.group(1).strip()
+                if not matched_snippet:
+                    matched_snippet = d_range.group(0)
+                break
+
+            d_single = SINGLE_DATE_REGEX.search(target_text)
+            if d_single:
+                walkin_date = d_single.group(1).strip()
+                if not matched_snippet:
+                    matched_snippet = d_single.group(0)
+                break
+
+            d_num = NUMERIC_DATE_REGEX.search(target_text)
+            if d_num:
+                walkin_date = d_num.group(1).strip()
+                if not matched_snippet:
+                    matched_snippet = d_num.group(0)
+                break
+
+    # 4. Check for Weekday ranges (e.g. "Monday to Friday")
+    if not walkin_date and is_walkin:
+        wk = WEEKDAY_REGEX.search(combined)
+        if wk:
+            walkin_date = wk.group(1).strip()
+
+    # 5. Extract time
+    t_match = TIME_REGEX.search(matched_snippet or combined)
+    if t_match:
+        walkin_time = t_match.group(1).strip()
+
+    return {
+        "is_walkin": is_walkin,
+        "walkin_date": walkin_date,
+        "walkin_time": walkin_time,
+        "matched_snippet": matched_snippet
+    }
+
