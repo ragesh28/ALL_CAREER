@@ -1,30 +1,37 @@
 [
   {
-    "type": "non_job_skipped",
-    "channel": "freshershunt",
-    "msg_id": 29726,
-    "text": "Google AI Essentials 🤖 by Google\n\n📚 Learn AI from Google itself\n⚡ No coding, no experience needed\n🎯 Official Google certificate for your resume\n⏱️ Just 2-3 hrs/week\n\n✅ Free trial available\n💰 100% financial aid option\n\n👉 https://imp.i384100.net/X4K0Ky",
-    "timestamp": "2026-08-21T04:31:39+00:00"
+    "type": "failed_extraction",
+    "channel": "seekeras",
+    "msg_id": 17835,
+    "text": "Company CGI\nRoles Apprentice & Other Multiple Roles\nQualification Bachelors Degree\nLocation Bangalore/ Chennai / Hyderabad / Pune / Mumbai\nWork Experience Fresher / Experience\n\nLink- https://foundthejob.com/cgi-apprentice-job-vacancy-2026/",
+    "timestamp": "2026-08-21T05:43:29+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "kickcharm",
-    "msg_id": 42357,
-    "text": "🚀 **Remote Job Opportunity**!!!\n\n**Telus Digital Hiring Freshers for Data Analyst**\n\nLocation: Remote\nQualification: Any Graduate\nSalary: Rs 30K Per Month (Expected)\n\nApply: https://kickcharm.com/telus-digital-work-from-home-hiring/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-21T04:03:07+00:00"
+    "msg_id": 42358,
+    "text": "🚨**Capgemini Hiring Software Engineer/Finance/Multiple Roles**\n\nExperience: Freshers/Experienced\nEducation: Bachelor's/Master's Degree\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/capgemini-recruitment-hiring-graduates-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+    "timestamp": "2026-08-21T05:04:56+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "web3hiring",
-    "msg_id": 16372,
-    "text": "• Jane Street is hiring [Network Engineer](https://www.janestreet.com/join-jane-street/apply/8693539002?gh_jid=8693539002)\n• Chainlink is hiring [Senior Security Engineer](https://ca.linkedin.com/jobs/view/senior-security-engineer-insider-trust-at-chainlink-labs-4444230142)\n• Stripe is hiring [Commercial Counsel](https://stripe.com/jobs/search?gh_jid=8112801)\n• Crypto is hiring [Compliance Senior Data Analyst](https://jobs.lever.co/crypto/ad15d681-71b3-4e60-8eb3-79de77c11aeb)\n• Bybit is hiring [",
-    "timestamp": "2026-08-21T04:17:46+00:00"
+    "channel": "kickcharm",
+    "msg_id": 42359,
+    "text": "**India's most Trusted placement-focused tech program for freshers.**\n\nBefore investing in any course, you should know what you're actually signing up for.\n\n- What will you learn?\n- How will you prepare for interviews?\n- What placement support will you receive?\n- And most importantly — what have previous students achieved?\n\nWith AccioJob, you can look at the outcomes:\n\n✅ Gen AI integrated Curriculum\n✅ 1:1 Mentor Support\n✅ 100% Placement Support\n✅ 500+ hiring partners\n✅ 7.4 LPA Avg & 41 LPA Highe",
+    "timestamp": "2026-08-21T05:28:43+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "mohancareers",
-    "msg_id": 3130,
-    "text": "FreshPrints work from home jobs for freshers 2026\n\n📢 Company: FreshPrints \n💼 Job Role: Customer Service Associate \n💰 Salary: 5 -  7 LPA + 7000 Night shift allowance per month \n🎓 Qualification: Any Graduate\n\n🔗 Apply Here:\nhttps://mohancareers.com/freshprints-work-from-home-jobs-for-freshers-2026/\nFP\nFRESH\nPRINTS",
-    "timestamp": "2026-08-21T04:38:01+00:00"
+    "channel": "careerwithasr",
+    "msg_id": 2876,
+    "text": "Indian Overseas Bank Recruitment 2026 🔥 | 85,920 Salary \n\nhttps://youtu.be/ikenSZHKOYk0230.30\n\nHYPE🚀Like ❤️ Share 🔁 Subscribe 🔔\n3\nIndian Overseas Bank\nfsaa ia \n3\nGood people to grow with\nIndian Overseas Bank\nINDIAN OVERSEAS BANK\nRECRUITMENT 2026\n250\n85,920/-\n天\nVACANCIES\nSALARY PER MONTH",
+    "timestamp": "2026-08-21T05:51:02+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "fresher_offcampus_drives",
+    "msg_id": 5818,
+    "text": "🚨Deloitte Latest Hiring Freshers for Internship\n\nExperience: Freshers\nEducation: Any Graduate\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/deloitte-recruitment-hiring-any-graduates-fresher/",
+    "timestamp": "2026-08-21T05:52:38+00:00"
   }
 ]
