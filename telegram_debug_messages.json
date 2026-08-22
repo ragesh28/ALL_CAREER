@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "type": "failed_extraction",
+    "channel": "seekeras",
+    "msg_id": 17857,
+    "text": "HCL is Hiring for Trainee Role in India Comment Yes the Link in DM \n\nhttps://www.instagram.com/p/DcVroTryM3_/?igsi=MWJyOGVlNDhveDNpZg==",
+    "timestamp": "2026-08-22T10:23:00+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "freshershunt",
+    "msg_id": 29751,
+    "text": "🚨 Sasken Technologies Off Campus Hiring Software Engineer Test\n\nExperience: Freshers (0-2 Years)\nEducation: Bachelor's/Master's Degree\nSalary: Rs 4-6 LPA (Expected)\n\nApply: https://kickcharm.com/sasken-technologies-hiring-graduates-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+    "timestamp": "2026-08-22T10:31:28+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "way2freshers",
+    "msg_id": 18553,
+    "text": "\nSU\nWe ble\nE IG\nrne\nsoware\neser\nExperience: 0 - 1 Year\nSkills Required:\nSTLC, OOPs, Testing: Functional,\nNon-functional, UI, Compatibility,\nIntegration, SQL Queries\nPlease send your resume to:\nresumes@cisin.com",
+    "timestamp": "2026-08-22T10:02:05+00:00"
+  },
+  {
+    "type": "non_job_skipped",
+    "channel": "offcampus_phodenge",
+    "msg_id": 4234,
+    "text": "🍿 Craving authentic roasted Indian snacks? Join our WhatsApp channel **Desi Munchies** for daily updates, offers & new flavors! Currently delivering in Hyderabad.\n\nFollow the Desi Munchies 🥨✨ channel on WhatsApp: https://whatsapp.com/channel/0029Vb8sHwtGZNCsxObdj915",
+    "timestamp": "2026-08-22T10:27:09+00:00"
+  }
+]
