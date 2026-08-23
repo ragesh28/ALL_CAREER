@@ -1,58 +1,114 @@
 [
   {
-    "type": "failed_extraction",
-    "channel": "kickcharm",
-    "msg_id": 42413,
-    "text": "🚀 **Remote Job Opportunity**\n\n**Ditto Hiring Freshers for Advisory**\n\nLocation: Remote\nExperience: Freshers\nSalary: Rs 4.5 LPA (Expected)\nEducation: Any Graduate\n\nApply: https://kickcharm.com/ditto-hiring-any-graduates/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-23T11:05:07+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "fresheroffcampus",
-    "msg_id": 17879,
-    "text": "**👨‍💻 Itron Off Campus 2026 Hiring Freshers – Apprentice**\n\n📍 Location: Bangalore\n🎓 Qualification: Bachelor's / Master's Degree\n💼 Experience: Freshers\n💰 Salary : Approximately ₹24,000 to ₹27,000 per month\n\n**🔗 Apply Now: ****https://www.fresheroffcampus.com/itron-off-campus/**\n\n📲 Stay Updated:\n👉 WhatsApp Channel : https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel : https://t.me/fresheroffcampus",
-    "timestamp": "2026-08-23T11:34:47+00:00"
+    "type": "non_job_skipped",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257503,
+    "text": "Hassan Chikkamagaluru\nWeanwo\na9uueagIns\ngosqya\nsosau ual uu\nG\nweangd.\n2O\n81970 15252",
+    "timestamp": "2026-08-23T11:44:48+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257496,
-    "text": "🚀 Meesho Hiring Freshers, Apply Now!!\n\n💼 Profile: Trainee - Recruitment Coordinator\n🎓 Education: Graduate / Post-Graduation\n👶 Experience: Freshers (0 Years)\n\n🔗 Apply Here:\nhttps://www.meesho.io/jobs/trainee---recruitment-coordinator?id=1de2fc88-e203-4f1a-8046-55df700de4be",
-    "timestamp": "2026-08-23T11:27:11+00:00"
+    "msg_id": 257507,
+    "text": "Tata Consultancy Services  Ion NQT IS HIRING!\n\nIf you are dreaming of starting your career at TCS, here's your chance!\n\nExpected Salary :Up to 19LPA\nExam Date : 14th September \n\nApply link :\nhttps://www.tcsion.com/hub/national-qualifier-test/",
+    "timestamp": "2026-08-23T11:51:33+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257497,
-    "text": "*Job Title: BUSINESS DEVELOPMENT ASSOCIATE ROLE  ( Freshers Most Welcome )*\n\nExperience: 0 to 1 year\n\nCTC – 3.5 LPA - 5.5 LPA (Performance Based)\n\nProbation Period – 2 months\n\nStipend During Probation – 17,000/-  + 13,000/- Variable.\n\nLanguage Preference:English Tamil, Telugu, Kannada, Hindi\n\nLocation: Bengaluru\n\nImmediate Joiners preferred\n\n*Register link*:https://forms.gle/Q6YS1C3UVgTFUHXB8\nJobTitIe: INSIDE SALES SPECIALIST\nWe're Hiring!\nAre you looking for an exciting opportunity in B2c sales",
-    "timestamp": "2026-08-23T11:27:45+00:00"
+    "msg_id": 257510,
+    "text": "🚨 WE’RE HIRING! | OPERATION MANAGER / RESORT MANAGER 🌿🏨\n\nSILA Leisure is looking for an experienced hospitality professional to lead our resort operations in Chikkamagaluru, Karnataka.\n\n📍 Location: Chikkamagaluru, Karnataka\n💰 Salary: Up to ₹80,000/month\n🏨 Hotel/Resort Industry Experience Preferred\n\n✨ Lead. Inspire. Deliver Exceptional Guest Experiences.\n\n📞 Interested? Call / WhatsApp: 9036054080\nSILA LEISURE\nHospitality. Nature. You.\nWE'RE\nHIRING!\noin our team and\ngrow with us.\nOPERATION MANAGER",
+    "timestamp": "2026-08-23T11:56:42+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257498,
-    "text": "Myntra is hiring - Lead Associate - Business Analyst (Strategy & CEO’s Office)\n\nWork Location: Bangalore, India\n\nExperience: 1–3 Years (Business Analytics, Strategy, Market Research, or Data Analytics)\n\nKey Skills: SQL, Advanced Excel, R, Quantitative & Qualitative Analysis, Market & Competitive Intelligence, Program Management, and Strategic Insights.\n\n𝐀𝐩𝐩𝐥𝐲 𝐡𝐞𝐫𝐞:\nhttps://jobs.myntra.com/jobs/8763054482?tenantId=MYNTRA-93as3&channel=Q29weSBMaW5r&sourceName&title=Lead__Associate__-__Business__An",
-    "timestamp": "2026-08-23T11:31:22+00:00"
+    "msg_id": 257513,
+    "text": "Dear All,\n\nWe have # 1 Job opening \"SENIOR OFFICER - ER & ADMIN\" in our Narasapura plant,Kolar (Female Only)\n\n\nCompany: - Advik Hi-Tech Pvt Ltd.,\n\n\nADVIK is one of the India's leading & global automotive component manufacturer. We have been catering to the growing needs of a number of domestic and overseas customers across four continents in the Two Wheeler, Stationary Engine and Transmission system segments for the past 26 years, Narasapura plant 13+ Years.\n\nWe are the preferred global supplier",
+    "timestamp": "2026-08-23T12:08:10+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257499,
-    "text": "Apple  is hiring for Software Development Engineer Role ✨\n\n💼 Role: Software Development Engineer\n🎯 Experience: 3+ Years\n📌 Location: Bengaluru, India\n🏢 Company: Apple\n🔗 Apply link: https://jobs.apple.com/en-in/details/200675619-0321/software-development-engineer?team=SFTWR\n\nIdeal candidate:\n-3+ years of software engineering experience with a focus on backend or distributed systems\n-Strong programming skills in Java, Python, Golang, or Scala\n-Hands-on experience with React, Next.js, TypeScript, an",
-    "timestamp": "2026-08-23T11:32:13+00:00"
+    "msg_id": 257517,
+    "text": "\nWE ARE\nRangsons\nHIRING!\nAerospace\nHebbal Industrial Area\nHIRING NOW: CNC MACHINE OPERATORS\nN-C0916000\nH-O:051 0-201\nN-O0016\n4-D3C-00\n4-00006-009\n14-C03 6-D81\nLOCATION\nHebbal\nIndustrial Area,\nMysore\nRangsons Aerospace High-Tech CNC Facility\nQUALIFICATIONS & SALARY\nRANGSONS:\nQualifications: ITI or Diploma (any technical trade)\nAEROSPACE\n$\nExperience: (Mandatory) Aerospace Manufacturing Experience\nGender: (Open) Both Male & Female Are Welcomed\nCNC LEADER\nAttractive Package: 30% hike on previous co",
+    "timestamp": "2026-08-23T12:08:53+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257500,
-    "text": "🔥 WALK-IN INTERVIEW | FINANCE & ACCOUNTS | BENGALURU\nAre you an experienced Finance & Accounts professional looking for your next opportunity?\nWe’re hiring for AP | P2P | GL | RTR roles at Conduent in Bengaluru.\n📅 Date: 26th August 2026\n⏰ Time: 11:00 AM – 2:00 PM\n💼 Experience: 1–7 Years\n🌙 Night Shift: Candidates must be willing to work night shifts\n⚡ Immediate Joiners Only\n🔹 We’re looking for experience in:\n• Accounts Payable (AP)\n• Procure-to-Pay (P2P)\n• General Ledger (GL)\n• Record-to-Report (",
-    "timestamp": "2026-08-23T11:35:24+00:00"
+    "msg_id": 257518,
+    "text": "\nWE ARE\nRangsons\nHIRING!\nAerospace\nHebbal Industrial Area\nHIRING NOW: SKILLED WELDERS\nLOCATION\nHebbal\nIndustrial Area,\nMysore\nRANGSONS:\nRangsons Aerospace Workshop\nAEROSPACE\nQUALIFICATIONS & SALARY\nINNOVATORS\nAs per company norms & previous company experience\n$\n|SSLC or ITI in relevant field | (Attractive Package)\nINTERVIEW PLACE\nRangsons Aerospace (P) Ltd.,\nHebbal Industrial Area,\nMysore - 5700XX\nCONTACT NOW: 9606272094",
+    "timestamp": "2026-08-23T12:08:53+00:00"
   },
   {
     "type": "failed_extraction",
     "channel": "Bangalore_jobs",
-    "msg_id": 257501,
-    "text": "Infineon Technologies  is hiring for its Young Graduate Trainee role in Bangalore.\n\n💼 Position Details\n\n🔹 Company: Infineon Technologies\n🔹 Role: Young Graduate Trainee\n🔹 Location: Bangalore\n🔹 Qualification: Bachelor’s / Master’s Degree\n🔹 Experience: 0–3 Years\n🔹 CTC: Not disclosed\n🔹 Job Type / Shift: Not specified\n🔹 Work Days: Not specified\n\n🎯 Who can apply?\nCandidates with 0–3 years of experience who meet the educational requirements can apply for this opportunity.\n\n📌 Apply Now:\nhttps://jobs.inf",
-    "timestamp": "2026-08-23T11:39:44+00:00"
+    "msg_id": 257524,
+    "text": "🚀 Hiring Alert | HIL Testing Engineer (Testing Expert) | Bangalore | Immediate Joiners Only\n📧 Interested candidates can share their updated resumes at:\nShraddha.Patil@kpit.com\n\nKPIT Technologies is looking for passionate HIL Testing Engineers to join our automotive validation team and contribute to the future of mobility.\n📍 Location: Bangalore\n💼 Experience: 4 to 6 Years\n⚡ Immediate Joiners Preferred\nKey Skills Required:\n✅ HIL Tools: dSPACE (ControlDesk), ETAS\n✅ CAN, LIN & Ethernet Communication ",
+    "timestamp": "2026-08-23T12:29:44+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257525,
+    "text": "L&T Technology Services Hiring  Stress Engineer – Product Support Engineering | \nJoin a global leader in aerospace innovation and contribute to the support and development of advanced nacelle systems for next-generation aircraft programs.\n \n📍 Role: Stress Engineer – Product Support Engineering\n 🎓 Experience: 6 to 10 Years\n 🎯 Domain: Aerospace Structures / Nacelle Systems\n \nKey Skills:✅ Structural & Stress Analysis (Metallic & Composite Structures)\n ✅ Patran/Nastran, HyperMesh (Static, Fatigue, N",
+    "timestamp": "2026-08-23T12:31:07+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257526,
+    "text": "📢 TEACHERS VACANCY – NEW VISION SCHOOL, MALLESHWARAM\n\nWe are looking for dedicated and passionate teachers to join our team.\n\n🔹 Primary Maths Teacher\n🔹 NTT Trained Teachers\n\n✨ Freshers are welcome to apply!\n\n📩 Interested candidates can share their resume via WhatsApp:\n📱 +91 7975266484\n\n🌟 Join our team and be a part of our growing educational community!",
+    "timestamp": "2026-08-23T12:38:48+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257527,
+    "text": "VIJAYA BHARATHI PUBLIC SCHOOL\n\nRT Nagar, Bangalore\n\n📢 VACANCY FOR FEMALE TEACHERS\n\nWe are looking for dedicated and passionate female teachers residing in and around RT Nagar.\n\n1. KANNADA TEACHER\n\n** Grade 4 to 6\n** Grade 6 to 8\n\n2. SOCIAL SCIENCE TEACHER\n\n** Grade 8 to 10\n\nEligibility\n\n** Female candidates only\n** Candidates residing in and around RT Nagar\n** Experienced and freshers can apply\n** Good communication skills\n** Passion for teaching and working with students\n\n📱 Interested candidate",
+    "timestamp": "2026-08-23T12:39:43+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257528,
+    "text": "🚀 ClickHouse is Hiring | Core Software Engineer (C++)\n\n📍 India\n🏢 Remote\n\n💵 Expected CTC: ₹30–50 LPA (May vary)\n\n🎓 Batch: 2020 / 2021 / 2022 / 2023\n🧑💻 Experience: 2+ Years\n\n⚡ Skills: C++, Distributed Systems, Databases, Linux, Multithreading, Performance Optimization\n\n🔗 Apply:\nhttps://job-boards.greenhouse.io/clickhouse/jobs/5767816004?trk=feed__main-feed-card__feed-article-content",
+    "timestamp": "2026-08-23T12:41:10+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257529,
+    "text": "🚀 SolarWinds is Hiring | Software Engineer (SDE II)\n\n📍 Bengaluru | 🏢 Hybrid\n\n💵 Expected CTC: ₹18–30 LPA (May vary)\n\n🎓 Batch: 2020 / 2021 / 2022 / 2023\n🧑💻 Experience: 3+ Years\n\n⚡ Skills: Java, Go, Python, APIs, Databases, Distributed Systems, DSA, OOP\n\n🔗 Apply:\nhttps://jobs.solarwinds.com/job-detail/?gh__jid=4704919005&gh__src=gj0be51a5us",
+    "timestamp": "2026-08-23T12:42:49+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257530,
+    "text": "🚀 We’re Hiring | Business Analyst – AI Enabled\n📍 Location: Chennai / Bengaluru\n 💼 Experience: Fresher–2 Years\n 🏢 Industry: FMCG/CPG preferred\n\nAre you passionate about AI, GenAI, LLMs, Prompt Engineering & Data Analytics? This could be a great opportunity to kick-start your career in AI-enabled business solutions!\n\nWhat you’ll work on:\n • Business requirements & BRDs/FRDs\n • AI/GenAI & LLM use cases\n • Prompt Engineering\n • Data Analytics & Insights\n • SQL, Power BI/Tableau\n • AI projects from P",
+    "timestamp": "2026-08-23T12:43:52+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257531,
+    "text": "🚀 Infosys is Hiring | Python + AI\n\n📍 Bengaluru | 🏢 Full-time\n\n💵 Expected CTC: ₹8–18 LPA (May vary)\n\n🎓 Batch: 2022 / 2023 / 2024\n🧑💻 Experience: 1–3 Years\n\n⚡ Skills: Python, AI/ML, GenAI, LLMs, APIs, SQL, Cloud\n\n🔗 Apply:\nhttps://career.infosys.com/jobdesc?jobReferenceCode=INFSYS-EXTERNAL-250424&sourceId=4003",
+    "timestamp": "2026-08-23T12:45:07+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257532,
+    "text": "Hiring : Associate Product Manager (APM)\n\nAbout this role\nProduct Management at Pexcera is about deep customer empathy, clear problem definition, and disciplined execution. As an APM, you will work side-by-side with senior product leaders, designers, and engineers to turn user insights into shipping software. You will talk to students and creators, write crisp Product Requirement Documents (PRDs), prioritize feature backlogs, analyze usage funnels in Mixpanel/PostHog, and run product release spr",
+    "timestamp": "2026-08-23T12:49:05+00:00"
+  },
+  {
+    "type": "failed_extraction",
+    "channel": "Bangalore_jobs",
+    "msg_id": 257533,
+    "text": "🚀We’re Hiring | Sales and Business Development Role| Bangalore\n Are you an experienced Enterprise IT Sales professional who thrives on building relationships, hunting new logos, and growing strategic accounts?\nWe’re looking for a Sales Executive with 5–8 years of experience in Enterprise IT Sales, Account Management, Client Success, Digital IT Services, Engineering & Embedded, I4.0, Consulting, or SaaS.\n💡 What we’re looking for:\n✔️ 5–8 years of direct Enterprise IT Sales / Account Management exp",
+    "timestamp": "2026-08-23T13:00:28+00:00"
   }
 ]
