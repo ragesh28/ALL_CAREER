@@ -1,16 +1,9 @@
 [
   {
-    "type": "failed_extraction",
-    "channel": "job4fresherss",
-    "msg_id": 19532,
-    "text": "🚨🚨Today's Job Updates\n\nCompany Name:  Infosys\nPost Name:  Senior Process Executive\n✅Apply Link:  https://job4freshers.co.in/infosys-walk-in-drive-freshers-mba/\n\n=============================\n\nCompany Name:  Adani\nPost Name:  Software Developer\n✅Apply Link:  https://job4freshers.co.in/adani-hiring-software-developer/\n\n=============================\n\nCompany Name:  HCLTech\nPost Name:  Service Desk Analyst\n✅Apply Link:  https://job4freshers.co.in/hcltech-service-desk-analyst/\n\n======================",
-    "timestamp": "2026-08-23T19:26:01+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "getjobss",
-    "msg_id": 8097,
-    "text": "Loginext is hiring Junior Software Engineer (QA)\n\nFor 2025, 2026 grads\nLocation: Mumbai\n\nhttps://loginext.hire.trakstar.com/jobs/fk02lbs/\n\n👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
-    "timestamp": "2026-08-23T18:59:46+00:00"
+    "type": "non_job_skipped",
+    "channel": "web3hiring",
+    "msg_id": 16382,
+    "text": "• Anchorage Digital is hiring [Member of Legal](https://jobs.lever.co/anchorage/fc156cf0-cd5d-4085-acb4-8a7f69e3f4f0)\n• Greenhouse is hiring [Director, People Systems and Operations](https://boards.greenhouse.io/greenhouse/jobs/8141795)\n• Zuba is hiring [Member of Specialist Staff](https://getzuba.notion.site/Member-of-Specialist-Staff-Legal-Regulatory-Analyst-Zuba-30cfffbb5f2a80ffa238c6fbe912caa3?pvs=25)\n• Zeta is hiring [Specialist Total Rewards](https://jobs.lever.co/zeta/b099e4fe-87cf-44ad-8",
+    "timestamp": "2026-08-23T19:55:47+00:00"
   }
 ]
