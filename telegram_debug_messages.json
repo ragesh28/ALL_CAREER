@@ -1,107 +1,16 @@
 [
   {
-    "type": "failed_extraction",
-    "channel": "freshershunt",
-    "msg_id": 29804,
-    "text": "🔵 LinkedIn — Software Engineering Intern\n\n📍 Bengaluru (On-site)\n🎓 2028 Batch | B.E / B.Tech / IDD / M.Tech / MSc\n🛠 DSA, Software Design, Java\n⚡ 100+ applicants in 5 hours — apply early\n\n🔗 https://freshershunt.in/linkedin-internship-2026/\n\n▶️ 𝐇𝐨𝐰 𝐭𝐨 𝐀𝐩𝐩𝐥𝐲 → https://youtu.be/Q4afjdBqZio\n🔔 Telegram → https://t.me/freshershunt\n💬 WhatsApp → https://freshershunt.in/WhatsApp\nINTERNSHIP OPEN\nLinkedln\nSoftware Engineering Intern\nBengaluru (On-site) | Internship | 2028 Batch\nershunt.in\nBATCH\nQUALIFICATION",
-    "timestamp": "2026-08-25T16:33:34+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "kickcharm",
-    "msg_id": 42468,
-    "text": "🚨**Cognizant Off Campus Hiring Freshers Across India**\n\nRole: Digital Workplace Practice — Service Desk\nExperience: Freshers\nEducation: Any 3-year UG degree \nSalary: Rs 3-4 LPA (Expected)\nLocation: PAN India \n\nApply: https://kickcharm.com/cognizant-recruitment-hiring-graduates-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
-    "timestamp": "2026-08-25T16:45:05+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 257681,
-    "text": "\nWe're Hiring\nOperations Executive, Field Sales\nFlipkart Minutes Food | Bangalore\nQuick commerce is changing how India eats, and Flipkart Minutes Food is right in the middle of it. We're\nbringing great restaurants and local food brands onto the platform, fast, and we need people on the ground\nto make it happen.\nThis is a role for someone who doesn't want to sit at a desk. You'll be out in the city every day, meeting\nrestaurant owners, pitching Minutes Food, and turning cold leads into live vendo",
-    "timestamp": "2026-08-25T16:17:40+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 257683,
-    "text": "\nSMET\nSM ELECTRONIC\nLOCATION\nNo. 2, 8th Block, Service Road,\nTECHNOLOGIES PVT. LTD.\nMalagala, 2nd Stage, Nagarbhavi,\nA Leading Distributor of Electronic Components\nBengaluru, Karnataka – 560072\nServing India & ASEAN Since 1990\nWE ARE\nHIRING!\nRECEPTIONIST\nSALARY\n₹30,000 -₹45,000\n(Based on interview performance)\nRECEPTION\nEXPERIENCE\n3 – 5 YEARS\nQUALIFICATION\nGRADUATION MANDATORY\nINTERESTED CANDIDATES\nCAN CALL / WHATSAPP\nLANGUAGE\n8217673085\nKANNADA & ENGLISH MANDATORY\nKEY RESPONSIBILITIES\nREQUIRED ",
-    "timestamp": "2026-08-25T16:21:13+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 257684,
-    "text": "🚀 We’re Hiring | Rust Developer – Automotive\nAkkodis is hiring Rust Developers with 3+ years of experience for our Bangalore / Chennai locations.\nKey Skills:\nRust Programming\nC++\nADAS\nEmbedded Software Development\nAutomotive domain experience\n📍 Location: Bangalore / Chennai\n💼 Experience: 3+ Years\nInterested candidates can share their updated CV at prachi.verma@akkodisgroup.com",
-    "timestamp": "2026-08-25T16:23:03+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 257685,
-    "text": "We are hiring\n\nDesignation- MIS Executive \nJob Location- Brigade Road, Bangalore, Karnataka \nSalary- 15k -18k per month\nExperience- Fresher or Experienced \n\nResponsibilities- \n** Have good knowledge of MS-Office applications like Excel, Word, VBA, Power point, Outlook\n** Downloading Data from Systems and mapping the same as per the requirement, coordinating with different teams for the data and checking its accuracy\n** Preparing Daily, Weekly, Monthly, Quarterly and Annual MIS Reports\n** Prepari",
-    "timestamp": "2026-08-25T16:25:23+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "Bangalore_jobs",
-    "msg_id": 257686,
-    "text": "We at L&T Technology Services are hiring for #CPU__RTLDesign____ and ____#CPU__Verification Engineers with 4+ Years of expereince. \n\nJob Location : Bangalore, India. \n\nInterested ones please share your updated resume at mona.dubey@LTTS.com",
-    "timestamp": "2026-08-25T16:25:24+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "arunchauhanofficial",
-    "msg_id": 8200,
-    "text": "Hey everyone 🤗 \n\nHave created a new Telegram channel for AI stuff! 🚀\n\nJoin me here 👇 \n\nhttps://t.me/AInotesbyRenuka\n\nI’ll be sharing ♥️ \n\n* Data & AI notes from Silicon Valley\n* Hiring and referral updates\n* Career resources and learning opportunities\n* Practical insights to help you grow in Data & AI\n\nSee you there. Let's get started 🚀",
-    "timestamp": "2026-08-25T16:53:04+00:00"
-  },
-  {
     "type": "non_job_skipped",
-    "channel": "arunchauhanofficial",
-    "msg_id": 8201,
-    "text": "Sharing something a little personal today. ❤️\n\nThis post is for every mother returning to her career after maternity leave, a career break, or years spent raising her children.\n\nIf you’re a mother in this phase, or know someone who is, please share this with her. Feel free to follow me and save the post for future reference. I’ll be sharing more about motherhood, career restarts, AI, and building confidence again.\n\n🔗 https://lnkd.in/p/g-VyzR89\nin\nPosted on LinkedIn",
-    "timestamp": "2026-08-25T17:02:01+00:00"
+    "channel": "seekeras",
+    "msg_id": 17913,
+    "text": "🟡  Teleperformance (Bengaluru,Kolkata,Chennai,Kochi)- https://foundthejob.com/teleperformance-walk-in-jobs-apply-now/\n\n🟡  FirstSource (Hyderabad/Bengaluru)- https://foundthejob.com/firstsource-walk-in-interview-2026/\n\n🟡  Med-Metrix (Chennai)- https://foundthejob.com/med-metrix-job-vacancy-walkin-drive-in-chennai/\n\n🟡  Tech Mahindra (Ahmedabad/Hyderabad )- https://foundthejob.com/tech-mahindra-walk-in-jobs-apply-now/\n\n🟡  Info Edge (noida)- https://foundthejob.com/info-edge-walk-in-interview-in-noi",
+    "timestamp": "2026-08-25T17:06:42+00:00"
   },
   {
     "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14710,
-    "text": "**📌Minfy is hiring for Associate Intern\nBatch: 2027, 2028\nApply here: ****https://minfy.keka.com/careers/jobdetails/157984****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:50:43+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14711,
-    "text": "**📌Growww Tech is hiring for Software Engineer I\nBatch: 2022, 2023, 2024, 2025\nApply here: ****https://growwwtech.com/careers/software-engineer-i****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:50:50+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14713,
-    "text": "**📌Qualcomm is hiring for Interim Intern\nBatch: 2027, 2028\nApply here: ****https://careers.qualcomm.com/careers/job/446720205847****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:51:03+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14714,
-    "text": "**📌Osto is hiring for Go Backend Intern\nBatch: 2026, 2027\nApply here: ****https://www.linkedin.com/jobs/view/4456885486/****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:51:09+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14716,
-    "text": "**📌Thita AI is hiring for Forward Deployed Engineer Intern\nBatch: 2026, 2027\nApply here: ****https://www.linkedin.com/jobs/view/4456880347/****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:51:23+00:00"
-  },
-  {
-    "type": "failed_extraction",
-    "channel": "dot_aware",
-    "msg_id": 14717,
-    "text": "**📌Yokogawa is hiring for Software Engineer\nBatch: 2024, 2025\nApply here: ****https://wd3.myworkdaysite.com/en-US/recruiting/yokogawa/yokogawa-career-site/job/Baroda/DCS-Software-Engineer_R-11698****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
-    "timestamp": "2026-08-25T16:51:26+00:00"
+    "channel": "gocareers",
+    "msg_id": 11481,
+    "text": "**YC Back Startup | Software Engineer 2 | 3+ YOE | 30-50 LPA**\n\n[https://jobs.clanx.ai/o/software-engineer-ii-nodejs-python-go-bengaluru?source=mlp](https://jobs.clanx.ai/o/software-engineer-ii-nodejs-python-go-bengaluru?source=mlp)\nclanx\nYour Job Search Ends Here :)",
+    "timestamp": "2026-08-25T17:19:41+00:00"
   }
 ]
