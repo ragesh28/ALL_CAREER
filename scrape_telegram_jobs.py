@@ -301,12 +301,6 @@ def extract_job_with_gemini(text, image_paths=None, max_retries=3):
         print(f"    AI extraction error: {e}")
     return None
 
-        # AI returned JSON but missing required fields — retry
-        print(f"    ⚠️ Attempt {attempt+1}/{max_retries}: AI returned incomplete JSON, retrying...")
-        time.sleep(1)
-
-    return None
-
 # ---------------------------------------------------------------------------
 # 20-DAY CLEANUP — remove stale TELEGRAM jobs only from all_jobs_*.json
 # ---------------------------------------------------------------------------
