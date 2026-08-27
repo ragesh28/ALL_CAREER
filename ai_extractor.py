@@ -21,10 +21,28 @@ import requests
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-# API Keys from Environment
-MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY", "")
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+def load_keys_from_env(multi_env, single_env=None, config_key=None):
+    val = os.environ.get(multi_env, "") or (os.environ.get(single_env, "") if single_env else "")
+    if val:
+        return [k.strip() for k in val.split(",") if k.strip()]
+    
+    if config_key:
+        possible_paths = [
+            os.path.join(os.getcwd(), "config_keys.json"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "config_keys.json"),
+            os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config_keys.json")
+        ]
+        for p in possible_paths:
+            if os.path.exists(p):
+                try:
+                    with open(p, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        keys = data.get(config_key, [])
+                        if keys:
+                            return keys
+                except Exception:
+                    pass
+    return []
 
 def get_mime_type(image_path):
     ext = os.path.splitext(image_path)[1].lower()
@@ -37,7 +55,7 @@ def get_mime_type(image_path):
     return 'image/jpeg'
 
 def load_gemini_keys():
-    env_keys = os.environ.get("GEMINI_API_KEYS")
+    env_keys = os.environ.get("GEMINI_API_KEYS") or os.environ.get("GEMINI_API_KEY")
     if env_keys:
         return [k.strip() for k in env_keys.split(",") if k.strip()]
     
@@ -116,11 +134,12 @@ def extract_job_data(text_input="", image_paths=None):
     valid_images = [p for p in image_paths if os.path.exists(p)]
 
     # ── 1. TRY MISTRAL API (PRIMARY - FAST & HIGH CAPACITY) ──
-    if MISTRAL_API_KEY:
+    mistral_keys = load_keys_from_env("MISTRAL_API_KEYS", "MISTRAL_API_KEY", "mistral_keys")
+    for m_key in mistral_keys:
         try:
             url_m = "https://api.mistral.ai/v1/chat/completions"
             headers_m = {
-                "Authorization": f"Bearer {MISTRAL_API_KEY}",
+                "Authorization": f"Bearer {m_key}",
                 "Content-Type": "application/json"
             }
             
@@ -154,8 +173,10 @@ def extract_job_data(text_input="", image_paths=None):
                 parsed = repair_json(resp_text)
                 if parsed:
                     return parsed
+            elif res_m.status_code == 429:
+                continue
         except Exception:
-            pass
+            continue
 
     # ── 2. TRY GEMINI NATIVE API (SECONDARY - KEY ROTATION) ──
     gemini_keys = load_gemini_keys()
@@ -202,34 +223,39 @@ def extract_job_data(text_input="", image_paths=None):
                 continue
 
     # ── 3. TRY GROQ API (FOR FAST TEXT MESSAGES) ──
-    if GROQ_API_KEY and text_input and not valid_images:
-        try:
-            url_gr = "https://api.groq.com/openai/v1/chat/completions"
-            headers_gr = {
-                "Authorization": f"Bearer {GROQ_API_KEY}",
-                "Content-Type": "application/json"
-            }
-            payload_gr = {
-                "model": "qwen/qwen3.6-27b",
-                "max_tokens": 1500,
-                "messages": [{"role": "user", "content": SYSTEM_PROMPT + "\n\nINPUT TEXT TO PROCESS:\n" + text_input}],
-                "response_format": {"type": "json_object"}
-            }
-            res_gr = requests.post(url_gr, headers=headers_gr, json=payload_gr, timeout=30)
-            if res_gr.status_code == 200:
-                resp_text = res_gr.json()["choices"][0]["message"]["content"].strip()
-                parsed = repair_json(resp_text)
-                if parsed:
-                    return parsed
-        except Exception:
-            pass
+    groq_keys = load_keys_from_env("GROQ_API_KEYS", "GROQ_API_KEY", "groq_keys")
+    if text_input and not valid_images:
+        for gr_key in groq_keys:
+            try:
+                url_gr = "https://api.groq.com/openai/v1/chat/completions"
+                headers_gr = {
+                    "Authorization": f"Bearer {gr_key}",
+                    "Content-Type": "application/json"
+                }
+                payload_gr = {
+                    "model": "qwen/qwen3.6-27b",
+                    "max_tokens": 1500,
+                    "messages": [{"role": "user", "content": SYSTEM_PROMPT + "\n\nINPUT TEXT TO PROCESS:\n" + text_input}],
+                    "response_format": {"type": "json_object"}
+                }
+                res_gr = requests.post(url_gr, headers=headers_gr, json=payload_gr, timeout=30)
+                if res_gr.status_code == 200:
+                    resp_text = res_gr.json()["choices"][0]["message"]["content"].strip()
+                    parsed = repair_json(resp_text)
+                    if parsed:
+                        return parsed
+                elif res_gr.status_code == 429:
+                    continue
+            except Exception:
+                continue
 
     # ── 4. TRY OPENROUTER API (TERTIARY FALLBACK) ──
-    if OPENROUTER_API_KEY:
+    openrouter_keys = load_keys_from_env("OPENROUTER_API_KEYS", "OPENROUTER_API_KEY", "openrouter_keys")
+    for or_key in openrouter_keys:
         try:
             url_or = "https://openrouter.ai/api/v1/chat/completions"
             headers_or = {
-                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Authorization": f"Bearer {or_key}",
                 "Content-Type": "application/json"
             }
             content_or = []
@@ -252,7 +278,9 @@ def extract_job_data(text_input="", image_paths=None):
                 parsed = repair_json(resp_text)
                 if parsed:
                     return parsed
+            elif res_or.status_code in [402, 429]:
+                continue
         except Exception:
-            pass
+            continue
 
     return {"none": True}
