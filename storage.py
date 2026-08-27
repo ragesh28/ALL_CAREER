@@ -122,8 +122,8 @@ def get_category_filename(category):
     return f"{s}.json"
 
 def normalize_location(loc):
-    if not loc or not isinstance(loc, str):
-        return "India"
+    if not loc or not isinstance(loc, str) or loc.strip().lower() in ("null", "none", "unknown", "nan", ""):
+        return ""
     
     loc_clean = loc.strip().lower()
     loc_clean = re.sub(r'[^a-z0-9\s,]', '', loc_clean)
@@ -213,7 +213,7 @@ def normalize_location(loc):
         city = parts[0]
         if city:
             return city.title()
-    return "India"
+    return ""
 
 def store_jobs_batch(jobs):
     if not jobs:

@@ -195,20 +195,34 @@ if not GEMINI_API_KEYS:
     print("⚠️ Warning: No Gemini API keys found. Set GEMINI_API_KEYS env or config_gemini.json.")
 
 SYSTEM_PROMPT = (
-    "You are an AI assistant specialized in extracting job details from text. "
-    "Analyze the provided text and return a valid JSON object.\n\n"
+    "You are an AI assistant specialized in extracting job details from text or image flyers. "
+    "Analyze the provided text. A single message MAY CONTAIN MULTIPLE JOB OPENINGS.\n\n"
     "If the text is NOT a job posting (e.g., greetings, ads, memes, promotions, "
     "casual chat, motivational quotes, news), return exactly: {\"none\": true}\n\n"
-    "If the text IS a job posting, return a JSON object with exactly these keys:\n"
-    "\"company\", \"role\", \"qualification\", \"experience\", \"salary\", "
-    "\"location\", \"apply_link\", \"last_date\", \"other_details\", \"is_walkin\", \"walkin_date\".\n\n"
+    "If the text IS or CONTAINS job postings, return a JSON object with a 'jobs' array:\n"
+    "{\n"
+    "  \"jobs\": [\n"
+    "    {\n"
+    "      \"company\": \"Company Name or null\",\n"
+    "      \"role\": \"Job Role or null\",\n"
+    "      \"qualification\": \"Qualification or null\",\n"
+    "      \"experience\": \"Experience requirement or null\",\n"
+    "      \"salary\": \"Salary or null\",\n"
+    "      \"location\": \"City Name ONLY or null if not mentioned\",\n"
+    "      \"apply_link\": \"Web URL (https://...) or null\",\n"
+    "      \"contact_email\": \"HR Email address (e.g. hr@company.com) or null\",\n"
+    "      \"contact_phone\": \"Mobile or WhatsApp number (e.g. +91 9876543210) or null\",\n"
+    "      \"last_date\": \"Deadline or null\",\n"
+    "      \"is_walkin\": true/false,\n"
+    "      \"walkin_date\": \"Walk-in Date or null\"\n"
+    "    }\n"
+    "  ]\n"
+    "}\n\n"
     "Rules:\n"
-    "- If a key is missing or not mentioned, set its value to null.\n"
-    "- Do not guess apply links. If none exists, set it to null.\n"
-    "- Experience and salary should be short strings or null.\n"
-    "- \"last_date\" is the application deadline if mentioned, otherwise null.\n"
-    "- \"is_walkin\" should be true if this is a walk-in interview / drive, otherwise false.\n"
-    "- \"walkin_date\" should be the walk-in date (e.g. '24th August' or '12th - 15th Aug') if mentioned, otherwise null.\n"
+    "- If a key is missing, set its value to null.\n"
+    "- 'apply_link', 'contact_email', and 'contact_phone': If multiple channels exist (Web Apply Link + Email + Mobile Phone), YOU MUST EXTRACT ALL OF THEM! Never omit any contact channel.\n"
+    "- Experience should be short strings like 'Fresher', '1-5 Yrs', '2+ Yrs' or null.\n"
+    "- 'is_walkin' should be true if this is a physical walk-in interview / drive, otherwise false.\n"
     "- Do NOT add markdown formatting, backticks, explanation, or text outside the JSON."
 )
 
@@ -264,29 +278,28 @@ def _call_gemini(text):
     return None
 
 
-def extract_job_with_gemini(text, max_retries=3):
+def extract_job_with_gemini(text, image_paths=None, max_retries=3):
     """
-    Extract job data from text using Gemini 2.5 Flash with retry logic.
+    Extract job data using Unified AI Extractor (Mistral -> Gemini -> Groq -> OpenRouter).
     Returns:
-        dict  — valid job data
-        "NONE" — AI determined this is not a job posting (do not retry)
-        None — extraction failed after all retries
+        dict  — valid job data dict with 'jobs' array
+        "NONE" — AI determined this is not a job posting
+        None — extraction failed
     """
-    for attempt in range(max_retries):
-        result = _call_gemini(text)
-
-        if result is None:
-            print(f"    ⚠️ Attempt {attempt+1}/{max_retries}: Gemini call failed, retrying...")
-            time.sleep(2)
-            continue
-
-        # Non-job message detected — do NOT retry
+    try:
+        from ai_extractor import extract_job_data
+        result = extract_job_data(text_input=text, image_paths=image_paths)
         if isinstance(result, dict) and result.get("none") is True:
             return "NONE"
-
-        # Valid job extracted — must have role AND company
-        if isinstance(result, dict) and result.get("role") and result.get("company"):
-            return result
+        if isinstance(result, dict) and "jobs" in result and isinstance(result["jobs"], list):
+            valid_jobs = [j for j in result["jobs"] if isinstance(j, dict) and (j.get("role") or j.get("company"))]
+            if valid_jobs:
+                return {"jobs": valid_jobs}
+        if isinstance(result, dict) and (result.get("role") or result.get("company")):
+            return {"jobs": [result]}
+    except Exception as e:
+        print(f"    AI extraction error: {e}")
+    return None
 
         # AI returned JSON but missing required fields — retry
         print(f"    ⚠️ Attempt {attempt+1}/{max_retries}: AI returned incomplete JSON, retrying...")
@@ -498,7 +511,8 @@ async def run_pipeline():
                     raw_text = msg.text or ""
                     has_image = False  # Track if this message has image content
 
-                    # Check for image media to perform OCR
+                    # Check for image media to perform OCR and QR Code extraction
+                    qr_result = None
                     if msg.media:
                         try:
                             file_path = await client.download_media(msg, file=temp_media_dir)
@@ -506,9 +520,24 @@ async def run_pipeline():
                                 ext = os.path.splitext(file_path)[1].lower()
                                 if ext in (".jpg", ".jpeg", ".png", ".webp", ".bmp"):
                                     has_image = True
+                                    
+                                    # 1. Extract text from image via PaddleOCR
                                     ocr_text = extract_text_from_image(file_path)
                                     if ocr_text:
                                         raw_text += "\n" + ocr_text
+
+                                    # 2. Extract QR code payload via cv2/pyzbar
+                                    try:
+                                        from qr_detector import detect_and_decode_qr
+                                        qr_result = detect_and_decode_qr(file_path)
+                                        if qr_result.get("qr_codes"):
+                                            qr_text_payloads = [c["raw_data"] for c in qr_result["qr_codes"] if c.get("raw_data")]
+                                            if qr_text_payloads:
+                                                raw_text += "\n[Decoded QR Code Link/Payload]: " + " | ".join(qr_text_payloads)
+                                                print(f"  📱 Decoded {len(qr_text_payloads)} QR Code payload(s) from flyer image.")
+                                    except Exception as qr_err:
+                                        print(f"  ⚠️ QR decoding error: {qr_err}")
+
                                 try:
                                     os.remove(file_path)
                                 except:
@@ -523,6 +552,7 @@ async def run_pipeline():
 
                     # Determine message type: post (image) or message (text)
                     telegram_type = "telegram_post" if has_image else "telegram_message"
+                    telegram_post_url = f"https://t.me/{channel}/{msg.id}"
 
                     # Analyze text with Gemini 2.5 Flash (round-robin key rotation)
                     messages_processed += 1
@@ -563,50 +593,75 @@ async def run_pipeline():
                         save_last_seen()
                         continue
 
-                    # Successfully extracted job
-                    job_json = job_result
-                    role = job_json.get("role")
-                    company = job_json.get("company")
-                    location = job_json.get("location") or "Remote"
-                    apply_link = job_json.get("apply_link") or f"https://t.me/{channel}/{msg.id}"
+                    # Successfully extracted job(s)
+                    jobs_list = job_result.get("jobs", [])
+                    if not jobs_list and isinstance(job_result, dict) and job_result.get("role"):
+                        jobs_list = [job_result]
 
-                    print(f"    🎉 Extracted: '{role}' @ '{company}' ({location})")
+                    for single_job in jobs_list:
+                        role = single_job.get("role")
+                        company = single_job.get("company")
+                        location = single_job.get("location") or ""
+                        raw_apply_link = single_job.get("apply_link")
+                        contact_email = single_job.get("contact_email")
+                        contact_phone = single_job.get("contact_phone")
 
-                    # Extract fallback walk-in info using regex
-                    from extractor_utils import extract_walkin_info
-                    w_info = extract_walkin_info(title=role, description=raw_text)
-                    is_walk = bool(job_json.get("is_walkin")) or w_info.get("is_walkin", False)
-                    w_date = job_json.get("walkin_date") or w_info.get("walkin_date")
-                    w_time = w_info.get("walkin_time")
+                        # Fallback phone extraction if missing
+                        if not contact_phone:
+                            from extractor_utils import extract_phone_number
+                            contact_phone = extract_phone_number(raw_text)
 
-                    job_data = {
-                        "title": role,
-                        "company": company,
-                        "location": location,
-                        "date_posted": datetime.now().strftime("%Y-%m-%d"),
-                        "url": apply_link,
-                        "source": telegram_type,  # "telegram_message" or "telegram_post"
-                        "experience": job_json.get("experience"),
-                        "salary": job_json.get("salary"),
-                        "qualification": job_json.get("qualification"),
-                        "last_date": job_json.get("last_date"),
-                        "other_details": job_json.get("other_details"),
-                        "role_search": "Telegram Alert",
-                        "is_walkin": is_walk,
-                        "walkin_date": w_date,
-                        "walkin_time": w_time
-                    }
-
-                    # Store in unified database (runs classifier, deduplicates)
-                    if storage:
-                        stored_count = storage.store_jobs_batch([job_data])
-                        if stored_count > 0:
-                            new_jobs_stored += 1
-                            print("      ✅ Stored in database.")
+                        # Primary URL logic: web apply link > mailto:email > tel:phone > telegram post link
+                        if raw_apply_link and raw_apply_link.startswith("http"):
+                            apply_link = raw_apply_link
+                        elif contact_email:
+                            apply_link = f"mailto:{contact_email}"
+                        elif contact_phone:
+                            apply_link = f"tel:{contact_phone.replace(' ', '')}"
                         else:
-                            print("      ⚠️ Duplicate — already exists.")
-                    else:
-                        print("      ❌ Storage module not available.")
+                            apply_link = telegram_post_url
+
+                        print(f"    🎉 Extracted Job: '{role}' @ '{company}' ({location or 'Not Specified'})")
+
+                        # Extract fallback walk-in info using regex
+                        from extractor_utils import extract_walkin_info
+                        w_info = extract_walkin_info(title=role, description=raw_text)
+                        is_walk = bool(single_job.get("is_walkin")) or w_info.get("is_walkin", False)
+                        w_date = single_job.get("walkin_date") or w_info.get("walkin_date")
+                        w_time = w_info.get("walkin_time")
+
+                        job_data = {
+                            "title": role,
+                            "company": company,
+                            "location": location,
+                            "date_posted": datetime.now().strftime("%Y-%m-%d"),
+                            "url": apply_link,
+                            "telegram_url": telegram_post_url,
+                            "contact_email": contact_email,
+                            "contact_phone": contact_phone,
+                            "source": telegram_type,  # "telegram_message" or "telegram_post"
+                            "experience": single_job.get("experience"),
+                            "salary": single_job.get("salary"),
+                            "qualification": single_job.get("qualification"),
+                            "last_date": single_job.get("last_date"),
+                            "other_details": single_job.get("other_details"),
+                            "role_search": "Telegram Alert",
+                            "is_walkin": is_walk,
+                            "walkin_date": w_date,
+                            "walkin_time": w_time,
+                            "qr_data": qr_result
+                        }
+
+                        # Store in unified database (runs classifier, deduplicates)
+                        if storage:
+                            stored_count = storage.store_jobs_batch([job_data])
+                            if stored_count > 0:
+                                new_jobs_stored += 1
+                                print("      ✅ Stored in database.")
+                            else:
+                                print("      ⚠️ Duplicate — already exists.")
+                        else:
+                            print("      ❌ Storage module not available.")
 
                     last_seen_ids[channel] = msg.id
                     save_last_seen()

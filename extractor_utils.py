@@ -35,6 +35,30 @@ def _replace_word_numbers(text):
     return result
 
 
+PHONE_REGEX = re.compile(
+    r'(?:\+?91[\-\s]?)?(?:[6-9]\d{9}|[6-9]\d{4}[\-\s]\d{5}|[6-9]\d{2}[\-\s]\d{3}[\-\s]\d{4})\b'
+)
+
+def extract_phone_number(text):
+    """
+    Extract 10-digit Indian mobile/phone numbers (+91 XXXXX XXXXX).
+    """
+    if not text or not isinstance(text, str):
+        return ""
+    match = PHONE_REGEX.search(text)
+    if match:
+        raw_phone = match.group(0).strip()
+        clean = re.sub(r'[^\d+]', '', raw_phone)
+        if len(clean) == 10:
+            return f"+91 {clean[:5]} {clean[5:]}"
+        elif len(clean) == 12 and clean.startswith("91"):
+            return f"+91 {clean[2:7]} {clean[7:]}"
+        elif clean.startswith("+91") and len(clean) == 13:
+            return f"+91 {clean[3:8]} {clean[8:]}"
+        return raw_phone
+    return ""
+
+
 def extract_experience(description, title=""):
     """
     Extract experience requirements from job description (and optionally title).

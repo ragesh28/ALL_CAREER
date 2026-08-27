@@ -2395,15 +2395,43 @@
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const url = job.url || '';
+                const contactEmail = job.contact_email || (url.startsWith('mailto:') ? url.replace('mailto:', '') : '');
+                const isMailto = url.startsWith('mailto:') || Boolean(contactEmail && !url.startsWith('http'));
+                const phone = job.contact_phone || (url.startsWith('tel:') ? url.replace('tel:', '') : '');
+                const telegramUrl = job.telegram_url || (url.includes('t.me') ? url : '');
+                
                 const source = (job.source || '').toLowerCase();
                 const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
                 const portalLogoSrc = PORTAL_LOGOS[source] || '';
                 const rawLocStr = (job.location || '').trim();
-                const rawLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' ? rawLocStr : 'India';
-                const cityLoc = rawLoc.split(',')[0].trim() || 'India';
+                const hasLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' && rawLocStr.toLowerCase() !== 'null';
+                const cityLoc = hasLoc ? rawLocStr.split(',')[0].trim() : '';
                 
                 const isWalkin = job.is_walkin || Boolean(job.walkin_date) || ['walk-in', 'walkin', 'walk in', 'walking'].some(kw => (job.title || '').toLowerCase().includes(kw));
                 const walkinDate = job.walkin_date || extractWalkinDateFromText(job.title || '');
+
+                let applyButtonsHtml = '';
+                if (url && url.startsWith('http')) {
+                    applyButtonsHtml += `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>`;
+                    applyButtonsHtml += `<button class="auto-apply-btn" data-apply-url="${esc(url)}" data-title="${esc(job.title || '')}" data-company="${esc(job.company || '')}">⚡ Apply</button>`;
+                }
+                
+                if (contactEmail || isMailto) {
+                    const mailAddr = contactEmail || url.replace('mailto:', '');
+                    applyButtonsHtml += `<a href="mailto:${esc(mailAddr)}" class="apply-btn" style="background:linear-gradient(135deg, #0ea5e9, #0284c7)">✉️ Email</a>`;
+                }
+
+                if (phone) {
+                    const cleanTel = phone.replace(/[^\d+]/g, '');
+                    applyButtonsHtml += `<a href="tel:${esc(cleanTel)}" class="apply-btn" style="background:linear-gradient(135deg, #10b981, #059669)">📞 Call / WA</a>`;
+                }
+
+                if (telegramUrl || source.includes('telegram')) {
+                    const tgLink = telegramUrl || (url.includes('t.me') ? url : '');
+                    if (tgLink) {
+                        applyButtonsHtml += `<a href="${esc(tgLink)}" target="_blank" class="apply-btn" style="background:linear-gradient(135deg, #229ED9, #1b84b8)" title="View Original Telegram Post">📲 Post</a>`;
+                    }
+                }
 
                 return `
             <div class="job-card" style="animation-delay:${i * 0.025}s">
@@ -2422,7 +2450,7 @@
                 </div>
                 <div class="job-meta">
                     <div class="meta-row">
-                        <div class="meta-badge loc" title="${esc(rawLoc)}">${esc(cityLoc)}</div>
+                        ${cityLoc ? `<div class="meta-badge loc" title="${esc(rawLocStr)}">${esc(cityLoc)}</div>` : ''}
                         ${job.experience ? `<div class="meta-badge exp" title="Experience">${esc(job.experience)}</div>` : ''}
                     </div>
                     <div class="meta-row">
@@ -2432,7 +2460,7 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-role">${esc(job.role_search || '')}</span>
-                    ${url ? `<span style="display:flex;align-items:center;"><a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a><button class="auto-apply-btn" data-apply-url="${esc(url)}" data-title="${esc(job.title || '')}" data-company="${esc(job.company || '')}">⚡ Apply</button></span>` : ''}
+                    <span style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">${applyButtonsHtml}</span>
                 </div>
             </div>`;
             }).join('');

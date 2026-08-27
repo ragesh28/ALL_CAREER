@@ -1,0 +1,8 @@
+pyzbar>=0.1.9
+opencv-python-headless>=4.8.0
+pillow>=10.0.0
+requests>=2.31.0
+telethon>=1.34.0
+paddlepaddle>=2.6.0
+paddleocr>=2.7.0
+python-dotenv>=1.0.0
