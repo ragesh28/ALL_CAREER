@@ -451,8 +451,8 @@ async def run_pipeline():
     messages_processed = 0
     messages_skipped_none = 0
     messages_failed = 0
-    debug_messages = []  # Store most recent skipped/failed messages for debugging (FIFO)
-    DEBUG_MAX = 20
+    non_job_skipped_list = []
+    failed_extraction_list = []
 
     # Resume from last checkpoint if the previous run was interrupted
     start_channel_idx = load_progress()
@@ -518,14 +518,16 @@ async def run_pipeline():
                                     # 1. Extract text from image via PaddleOCR
                                     ocr_text = extract_text_from_image(file_path)
                                     if ocr_text:
-                                        raw_text += "\n" + ocr_text
+                                        raw_text = (raw_text + "\n" + ocr_text).strip()
 
-                                    # 2. Extract QR code payload via cv2/pyzbar
+                                    # 2. Extract and decode QR codes
                                     try:
                                         from qr_detector import detect_and_decode_qr
-                                        qr_result = detect_and_decode_qr(file_path)
-                                        if qr_result.get("qr_codes"):
-                                            qr_text_payloads = [c["raw_data"] for c in qr_result["qr_codes"] if c.get("raw_data")]
+                                        qr_info = detect_and_decode_qr(file_path)
+                                        if qr_info and qr_info.get("has_qr"):
+                                            qr_result = qr_info
+                                            qr_payloads = qr_info.get("payloads", [])
+                                            qr_text_payloads = [p.get("data") for p in qr_payloads if p.get("data")]
                                             if qr_text_payloads:
                                                 raw_text += "\n[Decoded QR Code Link/Payload]: " + " | ".join(qr_text_payloads)
                                                 print(f"  📱 Decoded {len(qr_text_payloads)} QR Code payload(s) from flyer image.")
@@ -557,15 +559,13 @@ async def run_pipeline():
                     if job_result == "NONE":
                         messages_skipped_none += 1
                         print(f"    🚫 Not a job posting — skipped.")
-                        debug_messages.append({
+                        non_job_skipped_list.append({
                             "type": "non_job_skipped",
                             "channel": channel,
                             "msg_id": msg.id,
-                            "text": raw_text[:500],
+                            "text": raw_text,
                             "timestamp": msg.date.isoformat() if msg.date else None
                         })
-                        if len(debug_messages) > DEBUG_MAX:
-                            debug_messages.pop(0)
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -574,15 +574,13 @@ async def run_pipeline():
                     if job_result is None:
                         messages_failed += 1
                         print(f"    ❌ Failed to extract after retries — skipped.")
-                        debug_messages.append({
+                        failed_extraction_list.append({
                             "type": "failed_extraction",
                             "channel": channel,
                             "msg_id": msg.id,
-                            "text": raw_text[:500],
+                            "text": raw_text,
                             "timestamp": msg.date.isoformat() if msg.date else None
                         })
-                        if len(debug_messages) > DEBUG_MAX:
-                            debug_messages.pop(0)
                         last_seen_ids[channel] = msg.id
                         save_last_seen()
                         continue
@@ -681,22 +679,104 @@ async def run_pipeline():
             except:
                 pass
 
-    # Save debug messages to file
+    # Save per-workflow run files under not_extracted_messages/ with 24-run retention policy
+    run_number = os.environ.get("GITHUB_RUN_NUMBER", "local")
+    run_id = os.environ.get("GITHUB_RUN_ID", "")
+    stats = {
+        "runtime_seconds": time.time() - PIPELINE_START_TIME,
+        "messages_processed": messages_processed,
+        "new_jobs_stored": new_jobs_stored,
+        "messages_skipped_none": messages_skipped_none,
+        "messages_failed": messages_failed,
+    }
+    save_not_extracted_messages(run_number, run_id, stats, non_job_skipped_list, failed_extraction_list)
+
+    # Legacy debug messages file
     debug_file = os.path.join(WORKSPACE_DIR, "telegram_debug_messages.json")
     with open(debug_file, "w", encoding="utf-8") as f:
-        json.dump(debug_messages, f, indent=2, ensure_ascii=False)
-    print(f"\n📝 Saved {len(debug_messages)} debug messages to telegram_debug_messages.json")
+        json.dump(non_job_skipped_list + failed_extraction_list, f, indent=2, ensure_ascii=False)
 
     print(f"\n{'='*60}")
     print(f"✅ Telegram Jobs Pipeline Summary")
     print(f"{'='*60}")
+    print(f"  Workflow Run:         #{run_number}")
     print(f"  Messages processed:   {messages_processed}")
     print(f"  Jobs stored (new):    {new_jobs_stored}")
     print(f"  Non-job skipped:      {messages_skipped_none}")
     print(f"  Failed extractions:   {messages_failed}")
-    print(f"  Debug samples saved:  {len(debug_messages)}")
     print(f"  Runtime:              {(time.time() - PIPELINE_START_TIME)/60:.1f} minutes")
     print(f"{'='*60}")
+
+
+def save_not_extracted_messages(run_number, run_id, stats, non_job_skipped_list, failed_extraction_list):
+    """
+    Saves non_job_skipped and debug_messages into separate per-workflow JSON files
+    under not_extracted_messages/ and enforces a 24-workflow run retention policy.
+    """
+    base_dir = os.path.join(WORKSPACE_DIR, "not_extracted_messages")
+    skipped_dir = os.path.join(base_dir, "non_job_skipped")
+    debug_dir = os.path.join(base_dir, "debug_messages")
+
+    os.makedirs(skipped_dir, exist_ok=True)
+    os.makedirs(debug_dir, exist_ok=True)
+
+    timestamp = datetime.now().isoformat()
+    if run_number and str(run_number).lower() != "local":
+        file_tag = f"run_{run_number}"
+    else:
+        file_tag = f"run_local_{int(time.time())}"
+
+    metadata = {
+        "workflow_run_number": run_number,
+        "workflow_run_id": run_id,
+        "timestamp": timestamp,
+        "runtime_minutes": round(stats.get("runtime_seconds", 0) / 60.0, 2),
+        "messages_processed": stats.get("messages_processed", 0),
+        "new_jobs_stored": stats.get("new_jobs_stored", 0),
+        "skipped_jobs_count": stats.get("messages_skipped_none", 0),
+        "failed_extractions_count": stats.get("messages_failed", 0),
+    }
+
+    # 1. Save non_job_skipped file (e.g. run_690_non_job_skipped.json)
+    skipped_payload = dict(metadata)
+    skipped_payload["non_job_skipped_messages"] = non_job_skipped_list
+    skipped_file = os.path.join(skipped_dir, f"{file_tag}_non_job_skipped.json")
+    with open(skipped_file, "w", encoding="utf-8") as f:
+        json.dump(skipped_payload, f, indent=2, ensure_ascii=False)
+    print(f"📝 Saved {len(non_job_skipped_list)} non-job skipped messages to {skipped_file}")
+
+    # 2. Save debug_messages file (e.g. run_690_debug_messages.json)
+    debug_payload = dict(metadata)
+    debug_payload["debug_failed_messages"] = failed_extraction_list
+    debug_file = os.path.join(debug_dir, f"{file_tag}_debug_messages.json")
+    with open(debug_file, "w", encoding="utf-8") as f:
+        json.dump(debug_payload, f, indent=2, ensure_ascii=False)
+    print(f"📝 Saved {len(failed_extraction_list)} debug messages to {debug_file}")
+
+    # 3. Enforce 24-workflow run retention limit
+    enforce_24_run_retention(skipped_dir, max_runs=24)
+    enforce_24_run_retention(debug_dir, max_runs=24)
+
+
+def enforce_24_run_retention(target_dir, max_runs=24):
+    """Keep only the last max_runs JSON files in target_dir, removing older run files."""
+    try:
+        files = [os.path.join(target_dir, f) for f in os.listdir(target_dir) if f.endswith(".json")]
+        if len(files) <= max_runs:
+            return
+
+        # Sort files by modification time (oldest first)
+        files.sort(key=lambda x: os.path.getmtime(x))
+
+        files_to_delete = files[:-max_runs]
+        for old_file in files_to_delete:
+            try:
+                os.remove(old_file)
+                print(f"🧹 Removed old workflow debug file ({os.path.basename(old_file)}) [24-run retention policy]")
+            except Exception as e:
+                print(f"  ⚠️ Could not remove old file {old_file}: {e}")
+    except Exception as e:
+        print(f"  ⚠️ Retention cleanup error in {target_dir}: {e}")
 
 def save_last_seen():
     with open(LAST_SEEN_FILE, "w") as f:

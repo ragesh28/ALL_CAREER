@@ -60,7 +60,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           python merge_scraped_jobs.py || true
-          git add last_seen_telegram.json telegram_progress.json telegram_debug_messages.json all_jobs_*.json role_index.json jobs_by_role/*.json || true
+          git add last_seen_telegram.json telegram_progress.json telegram_debug_messages.json not_extracted_messages/ all_jobs_*.json role_index.json jobs_by_role/*.json || true
           git commit -m "chore: update telegram jobs and progress [skip ci]" || echo "No changes to commit"
           git pull --rebase -X theirs --autostash origin main
           git push
