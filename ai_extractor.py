@@ -85,7 +85,7 @@ SYSTEM_PROMPT = (
     '      "company": "Company Name or null",\n'
     '      "role": "Job Role or null",\n'
     '      "experience": "Experience (e.g. Fresher, 1-5 Yrs) or null",\n'
-    '      "location": "City Name ONLY (e.g. Bangalore, Hyderabad) or null",\n'
+    '      "location": "Location (City, Remote, India) or null",\n'
     '      "apply_link": "Web URL (https://...) or null",\n'
     '      "contact_email": "HR Email or null",\n'
     '      "contact_phone": "Mobile or WhatsApp number or null",\n'
@@ -97,7 +97,10 @@ SYSTEM_PROMPT = (
     '    }\n'
     '  ]\n'
     "}\n"
-    "If not a job posting, return: {\"none\": true}\n"
+    "CRITICAL CLASSIFICATION RULE:\n"
+    "If the text/image mentions ANY job role, vacancy, hiring, recruitment, walk-in, batch (e.g. 2024/2025/2026), work from home, or career opportunity, it IS A VALID JOB POSTING!\n"
+    "Extract ALL job roles found into the 'jobs' array.\n"
+    "ONLY return {\"none\": true} if the message is 100% unrelated to jobs (e.g. course promotion, general news, meme, casual chat).\n"
     "RULES:\n"
     "1. Extract EACH job role as a separate item in 'jobs' array.\n"
     "2. If multiple contact channels exist (Web Apply Link + Email + Mobile Phone), EXTRACT ALL OF THEM!\n"
