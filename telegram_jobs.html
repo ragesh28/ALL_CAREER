@@ -517,6 +517,148 @@
             applyFilters();
         }
 
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        function parseWalkinDates(rawDateStr, fallbackDateStr) {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window (2 months)
+            maxFuture.setHours(23, 59, 59, 999);
+
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth(); // 0 to 11
+
+            const resultDates = [];
+
+            if (rawDateStr && typeof rawDateStr === 'string') {
+                const text = rawDateStr.trim();
+                let monthIdx = -1;
+                let monthFullName = "";
+                for (let i = 0; i < MONTH_NAMES.length; i++) {
+                    const pattern = new RegExp('\\b(' + MONTH_NAMES[i] + '|' + MONTH_SHORT[i] + ')\\b', 'i');
+                    if (pattern.test(text)) {
+                        monthIdx = i;
+                        monthFullName = MONTH_NAMES[i];
+                        break;
+                    }
+                }
+
+                let year = currentYear;
+                if (monthIdx !== -1) {
+                    if (monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
+                        year = currentYear + 1;
+                    }
+                }
+
+                const yearMatch = text.match(/\b(20\d{2})\b/);
+                if (yearMatch) {
+                    year = parseInt(yearMatch[1]);
+                }
+
+                if (monthIdx !== -1) {
+                    const dayMatches = [...text.matchAll(/\b([0-2]?\d|3[01])(?:st|nd|rd|th)?\b/gi)]
+                        .map(m => parseInt(m[1]))
+                        .filter(d => d >= 1 && d <= 31);
+
+                    if (dayMatches.length >= 2 && /\b(to|-|–|—|&)\b/i.test(text)) {
+                        const minDay = Math.min(dayMatches[0], dayMatches[dayMatches.length - 1]);
+                        const maxDay = Math.max(dayMatches[0], dayMatches[dayMatches.length - 1]);
+                        if (maxDay - minDay <= 14) {
+                            for (let d = minDay; d <= maxDay; d++) {
+                                const dObj = new Date(year, monthIdx, d);
+                                dObj.setHours(0, 0, 0, 0);
+                                if (dObj >= now && dObj <= maxFuture) {
+                                    resultDates.push({
+                                        label: `${monthFullName} ${d}`,
+                                        dateObj: dObj
+                                    });
+                                }
+                            }
+                        } else {
+                            dayMatches.forEach(d => {
+                                const dObj = new Date(year, monthIdx, d);
+                                dObj.setHours(0, 0, 0, 0);
+                                if (dObj >= now && dObj <= maxFuture) {
+                                    resultDates.push({
+                                        label: `${monthFullName} ${d}`,
+                                        dateObj: dObj
+                                    });
+                                }
+                            });
+                        }
+                    } else if (dayMatches.length > 0) {
+                        dayMatches.forEach(d => {
+                            const dObj = new Date(year, monthIdx, d);
+                            dObj.setHours(0, 0, 0, 0);
+                            if (dObj >= now && dObj <= maxFuture) {
+                                resultDates.push({
+                                    label: `${monthFullName} ${d}`,
+                                    dateObj: dObj
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+                    if (numMatch) {
+                        let d = parseInt(numMatch[1]);
+                        let m = parseInt(numMatch[2]) - 1;
+                        let y = parseInt(numMatch[3]);
+                        if (y < 100) y += 2000;
+                        if (m > 11 && d <= 12) {
+                            const tmp = d; d = m + 1; m = tmp - 1;
+                        }
+                        if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
+                            const dObj = new Date(y, m, d);
+                            dObj.setHours(0, 0, 0, 0);
+                            if (dObj >= now && dObj <= maxFuture) {
+                                resultDates.push({
+                                    label: `${MONTH_NAMES[m]} ${d}`,
+                                    dateObj: dObj
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (resultDates.length === 0 && fallbackDateStr) {
+                const dObj = new Date(fallbackDateStr);
+                if (!isNaN(dObj.getTime())) {
+                    dObj.setHours(0, 0, 0, 0);
+                    if (dObj >= now && dObj <= maxFuture) {
+                        const m = dObj.getMonth();
+                        const d = dObj.getDate();
+                        resultDates.push({
+                            label: `${MONTH_NAMES[m]} ${d}`,
+                            dateObj: dObj
+                        });
+                    }
+                }
+            }
+
+            const seen = new Set();
+            return resultDates.filter(item => {
+                if (seen.has(item.label)) return false;
+                seen.add(item.label);
+                return true;
+            });
+        }
+
+        function getNormalizedWalkinDates(job) {
+            if (!job) return [];
+            const rawTitle = String(job.title || '');
+            const titleLow = rawTitle.toLowerCase();
+            const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(titleLow));
+            if (!isWalk) return [];
+
+            const rawDateStr = String(job.walkin_date || extractWalkinDateFromText(rawTitle) || '');
+            const fallbackStr = job.date || job.fetchedAt || '';
+            const parsed = parseWalkinDates(rawDateStr, fallbackStr);
+            return parsed.map(p => p.label);
+        }
+
         function extractWalkinDateFromText(text) {
             if (!text) return null;
             const isWalk = /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(text);
@@ -634,7 +776,12 @@
                 if (selectedSources.size > 0 && !selectedSources.has(j.source)) return false;
 
                 // Walk-in filter
-                if (walkinOnly && !j.walking_interview) return false;
+                if (walkinOnly) {
+                    const isW = job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(job.title || '');
+                    if (!isW) return false;
+                    const upcomingDates = getNormalizedWalkinDates(job);
+                    if (upcomingDates.length === 0) return false;
+                }
 
                 // Experience
                 if (activeExp === 'fresher') {
@@ -659,7 +806,10 @@
             });
 
             // Update stats
-            const walkinJobs = filteredJobs.filter(j => j.walking_interview).length;
+            const walkinJobs = filteredJobs.filter(j => {
+                const isW = j.walking_interview || j.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(j.title || '');
+                return isW && getNormalizedWalkinDates(j).length > 0;
+            }).length;
             document.getElementById('walkinCount').style.display = walkinJobs > 0 ? 'inline-flex' : 'none';
             document.getElementById('walkinNum').textContent = walkinJobs;
 
@@ -694,8 +844,9 @@
                 const stripeClass = SOURCE_STRIPE_MAP[source] || 'stripe-other';
                 const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : '';
                 const cityLoc = rawLoc ? rawLoc.split(',')[0].trim() : 'India';
-                const isWalkin = job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(job.title || '');
-                const walkDate = job.walkin_date || extractWalkinDateFromText(job.title || '');
+                const upcomingWalkin = getNormalizedWalkinDates(job);
+                const isWalkin = upcomingWalkin.length > 0 || job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(job.title || '');
+                const walkDate = upcomingWalkin.length > 0 ? upcomingWalkin[0] : (job.walkin_date || 'Upcoming');
 
                 return `
             <div class="job-card ${isWalkin ? 'walkin-card' : ''}" style="animation-delay:${i * 0.02}s">
@@ -718,7 +869,7 @@
                     ${cityLoc ? `<div class="detail-badge">📍 ${esc(cityLoc)}</div>` : ''}
                     ${job.experience ? `<div class="detail-badge">📊 ${esc(job.experience)}</div>` : ''}
                     ${job.salary ? `<div class="detail-badge">💰 ${esc(job.salary)}</div>` : ''}
-                    ${isWalkin ? `<div class="detail-badge walkin-badge">🚶 Walk-in: ${esc(walkDate || 'Interview')}</div>` : ''}
+                    ${isWalkin ? `<div class="detail-badge walkin-badge">🚶 Walk-in: ${esc(walkDate)}</div>` : ''}
                     ${date ? `<div class="detail-badge" style="border-color:rgba(0,136,204,0.3);color:#0088cc;">📅 ${date}</div>` : ''}
                 </div>
                 <div class="card-footer">

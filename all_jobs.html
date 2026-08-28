@@ -2063,90 +2063,185 @@
         }
 
         const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const MONTH_MAP = {
-            jan: "January", feb: "February", mar: "March", apr: "April", may: "May", jun: "June",
-            jul: "July", aug: "August", sep: "September", oct: "October", nov: "November", dec: "December"
-        };
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        function getNormalizedWalkinDates(job) {
+        function parseWalkinDates(rawDateStr, fallbackDateStr) {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window (2 months)
+            maxFuture.setHours(23, 59, 59, 999);
+
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth(); // 0 to 11
+
+            const resultDates = []; // Array of { label: "August 29", dateObj: Date }
+
+            if (rawDateStr && typeof rawDateStr === 'string') {
+                const text = rawDateStr.trim();
+                
+                // 1. Check for Month names in text (e.g., "August", "Aug", etc.)
+                let monthIdx = -1;
+                let monthFullName = "";
+                for (let i = 0; i < MONTH_NAMES.length; i++) {
+                    const pattern = new RegExp('\\b(' + MONTH_NAMES[i] + '|' + MONTH_SHORT[i] + ')\\b', 'i');
+                    if (pattern.test(text)) {
+                        monthIdx = i;
+                        monthFullName = MONTH_NAMES[i];
+                        break;
+                    }
+                }
+
+                // Determine year: if month is earlier in the year than current month (e.g. current is Nov/Dec, month is Jan/Feb), use next year
+                let year = currentYear;
+                if (monthIdx !== -1) {
+                    if (monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
+                        year = currentYear + 1;
+                    }
+                }
+
+                // Check if explicit 4-digit year is in text (e.g., 2026)
+                const yearMatch = text.match(/\b(20\d{2})\b/);
+                if (yearMatch) {
+                    year = parseInt(yearMatch[1]);
+                }
+
+                if (monthIdx !== -1) {
+                    // Find all numbers (days of month)
+                    const dayMatches = [...text.matchAll(/\b([0-2]?\d|3[01])(?:st|nd|rd|th)?\b/gi)]
+                        .map(m => parseInt(m[1]))
+                        .filter(d => d >= 1 && d <= 31);
+
+                    if (dayMatches.length >= 2 && /\b(to|-|–|—|&)\b/i.test(text)) {
+                        const minDay = Math.min(dayMatches[0], dayMatches[dayMatches.length - 1]);
+                        const maxDay = Math.max(dayMatches[0], dayMatches[dayMatches.length - 1]);
+                        if (maxDay - minDay <= 14) {
+                            for (let d = minDay; d <= maxDay; d++) {
+                                const dObj = new Date(year, monthIdx, d);
+                                dObj.setHours(0, 0, 0, 0);
+                                if (dObj >= now && dObj <= maxFuture) {
+                                    resultDates.push({
+                                        label: `${monthFullName} ${d}`,
+                                        dateObj: dObj
+                                    });
+                                }
+                            }
+                        } else {
+                            dayMatches.forEach(d => {
+                                const dObj = new Date(year, monthIdx, d);
+                                dObj.setHours(0, 0, 0, 0);
+                                if (dObj >= now && dObj <= maxFuture) {
+                                    resultDates.push({
+                                        label: `${monthFullName} ${d}`,
+                                        dateObj: dObj
+                                    });
+                                }
+                            });
+                        }
+                    } else if (dayMatches.length > 0) {
+                        dayMatches.forEach(d => {
+                            const dObj = new Date(year, monthIdx, d);
+                            dObj.setHours(0, 0, 0, 0);
+                            if (dObj >= now && dObj <= maxFuture) {
+                                resultDates.push({
+                                    label: `${monthFullName} ${d}`,
+                                    dateObj: dObj
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    // Check numeric patterns: DD/MM/YYYY or DD-MM-YYYY
+                    const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+                    if (numMatch) {
+                        let d = parseInt(numMatch[1]);
+                        let m = parseInt(numMatch[2]) - 1;
+                        let y = parseInt(numMatch[3]);
+                        if (y < 100) y += 2000;
+                        if (m > 11 && d <= 12) {
+                            const tmp = d; d = m + 1; m = tmp - 1;
+                        }
+                        if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
+                            const dObj = new Date(y, m, d);
+                            dObj.setHours(0, 0, 0, 0);
+                            if (dObj >= now && dObj <= maxFuture) {
+                                resultDates.push({
+                                    label: `${MONTH_NAMES[m]} ${d}`,
+                                    dateObj: dObj
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Fallback: If no explicit date extracted from text, check fallbackDateStr
+            if (resultDates.length === 0 && fallbackDateStr) {
+                const dObj = new Date(fallbackDateStr);
+                if (!isNaN(dObj.getTime())) {
+                    dObj.setHours(0, 0, 0, 0);
+                    if (dObj >= now && dObj <= maxFuture) {
+                        const m = dObj.getMonth();
+                        const d = dObj.getDate();
+                        resultDates.push({
+                            label: `${MONTH_NAMES[m]} ${d}`,
+                            dateObj: dObj
+                        });
+                    }
+                }
+            }
+
+            // Deduplicate
+            const seen = new Set();
+            return resultDates.filter(item => {
+                if (seen.has(item.label)) return false;
+                seen.add(item.label);
+                return true;
+            });
+        }
+
+        function getWalkinDateObjects(job) {
             if (!job) return [];
             const rawTitle = String(job.title || '');
             const titleLow = rawTitle.toLowerCase();
             const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(titleLow));
             if (!isWalk) return [];
 
-            const dates = new Set();
-            const rawDateStr = String(job.walkin_date || extractWalkinDateFromText(rawTitle) || job.date || job.fetchedAt || '');
+            const rawDateStr = String(job.walkin_date || extractWalkinDateFromText(rawTitle) || '');
+            const fallbackStr = job.date || job.fetchedAt || '';
+            return parseWalkinDates(rawDateStr, fallbackStr);
+        }
 
-            if (rawDateStr) {
-                let monthName = "";
-                for (const [mKey, mFull] of Object.entries(MONTH_MAP)) {
-                    if (new RegExp('\\b' + mKey, 'i').test(rawDateStr)) {
-                        monthName = mFull;
-                        break;
-                    }
-                }
-
-                if (!monthName && (job.fetchedAt || job.date)) {
-                    const dObj = new Date(job.fetchedAt || job.date);
-                    if (!isNaN(dObj.getTime())) {
-                        monthName = MONTH_NAMES[dObj.getMonth()];
-                    }
-                }
-                if (!monthName) {
-                    monthName = MONTH_NAMES[new Date().getMonth()];
-                }
-
-                const numMatches = [...rawDateStr.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\b/gi)].map(m => parseInt(m[1]));
-                if (numMatches.length >= 2 && /\b(to|-|–|—|&)\b/i.test(rawDateStr)) {
-                    const minDay = Math.min(numMatches[0], numMatches[numMatches.length - 1]);
-                    const maxDay = Math.max(numMatches[0], numMatches[numMatches.length - 1]);
-                    if (maxDay - minDay <= 7 && minDay >= 1 && maxDay <= 31) {
-                        for (let d = minDay; d <= maxDay; d++) {
-                            dates.add(`${monthName} ${d}`);
-                        }
-                    } else {
-                        numMatches.forEach(d => { if (d >= 1 && d <= 31) dates.add(`${monthName} ${d}`); });
-                    }
-                } else if (numMatches.length > 0) {
-                    numMatches.forEach(d => { if (d >= 1 && d <= 31) dates.add(`${monthName} ${d}`); });
-                }
-            }
-
-            if (dates.size === 0) {
-                const dObj = new Date(job.fetchedAt || job.date || Date.now());
-                if (!isNaN(dObj.getTime())) {
-                    const monthName = MONTH_NAMES[dObj.getMonth()];
-                    dates.add(`${monthName} ${dObj.getDate()}`);
-                }
-            }
-
-            return Array.from(dates);
+        function getNormalizedWalkinDates(job) {
+            return getWalkinDateObjects(job).map(item => item.label);
         }
 
         function buildWalkinDateOptions() {
             const container = document.getElementById('walkin-dates-options');
             if (!container) return;
             const counts = {};
+            const dateMap = {}; // label -> Date object for accurate chronological sorting
+
             allJobs.forEach(job => {
-                const dates = getNormalizedWalkinDates(job);
-                dates.forEach(d => {
-                    counts[d] = (counts[d] || 0) + 1;
+                const dateObjs = getWalkinDateObjects(job);
+                dateObjs.forEach(item => {
+                    counts[item.label] = (counts[item.label] || 0) + 1;
+                    dateMap[item.label] = item.dateObj;
                 });
             });
 
-            const currentYear = new Date().getFullYear();
+            // Only dates with at least 1 upcoming walk-in interview are in counts
+            // Sort strictly chronologically from nearest upcoming date to furthest within 60 days
             const sortedDates = Object.keys(counts).sort((a, b) => {
-                const da = new Date(a + " " + currentYear);
-                const db = new Date(b + " " + currentYear);
-                if (!isNaN(da.getTime()) && !isNaN(db.getTime())) {
-                    return da - db;
+                const da = dateMap[a];
+                const db = dateMap[b];
+                if (da && db) {
+                    return da.getTime() - db.getTime();
                 }
                 return a.localeCompare(b);
             });
 
             if (sortedDates.length === 0) {
-                container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-dim); padding:6px 4px;">No upcoming interview dates</div>`;
+                container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-dim); padding:6px 4px;">No upcoming walk-in interview dates (next 60 days)</div>`;
                 return;
             }
 
@@ -2357,8 +2452,11 @@
                     const isW = j.is_walkin || Boolean(j.walkin_date) || walkKw.some(kw => titleLow.includes(kw));
                     if (!isW) return false;
 
+                    const jDates = getNormalizedWalkinDates(j);
+                    // Strictly exclude expired or out-of-60-day-window walkin jobs
+                    if (jDates.length === 0) return false;
+
                     if (selectedWalkinDates.size > 0) {
-                        const jDates = getNormalizedWalkinDates(j);
                         const matchesDate = jDates.some(d => selectedWalkinDates.has(d));
                         if (!matchesDate) return false;
                     }
@@ -2407,8 +2505,9 @@
                 const hasLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' && rawLocStr.toLowerCase() !== 'null';
                 const cityLoc = hasLoc ? rawLocStr.split(',')[0].trim() : '';
                 
-                const isWalkin = job.is_walkin || Boolean(job.walkin_date) || ['walk-in', 'walkin', 'walk in', 'walking'].some(kw => (job.title || '').toLowerCase().includes(kw));
-                const walkinDate = job.walkin_date || extractWalkinDateFromText(job.title || '');
+                const upcomingWalkinDates = getNormalizedWalkinDates(job);
+                const isWalkin = upcomingWalkinDates.length > 0 || job.is_walkin || Boolean(job.walkin_date) || ['walk-in', 'walkin', 'walk in', 'walking'].some(kw => (job.title || '').toLowerCase().includes(kw));
+                const walkinDisplayDate = upcomingWalkinDates.length > 0 ? upcomingWalkinDates[0] : (job.walkin_date || 'Upcoming');
 
                 let applyButtonsHtml = '';
                 if (url && url.startsWith('http')) {
@@ -2445,7 +2544,7 @@
                     <div class="card-info">
                         <div class="company-name">${esc(job.company)}</div>
                         <div class="job-title">${esc(job.title || 'Position')}</div>
-                        ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDate || 'Active')}</div>` : ''}
+                        ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDisplayDate)}</div>` : ''}
                     </div>
                 </div>
                 <div class="job-meta">
