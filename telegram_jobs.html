@@ -436,16 +436,64 @@
             'indeed': 'stripe-indeed',
         };
 
+        // Known company → domain mapping for accurate logos
+        const COMPANY_DOMAIN_MAP = {
+            'tcs': 'tcs.com', 'tata consultancy services': 'tcs.com', 'infosys': 'infosys.com',
+            'wipro': 'wipro.com', 'hcl': 'hcltech.com', 'hcl technologies': 'hcltech.com',
+            'cognizant': 'cognizant.com', 'accenture': 'accenture.com', 'capgemini': 'capgemini.com',
+            'tech mahindra': 'techmahindra.com', 'mindtree': 'mindtree.com', 'ltimindtree': 'ltimindtree.com',
+            'mphasis': 'mphasis.com', 'hexaware': 'hexaware.com', 'persistent': 'persistent.com',
+            'coforge': 'coforge.com', 'amazon': 'amazon.com', 'google': 'google.com',
+            'microsoft': 'microsoft.com', 'apple': 'apple.com', 'meta': 'meta.com',
+            'flipkart': 'flipkart.com', 'swiggy': 'swiggy.com', 'zomato': 'zomato.com',
+            'uber': 'uber.com', 'paytm': 'paytm.com', 'phonepe': 'phonepe.com',
+            'razorpay': 'razorpay.com', 'zoho': 'zoho.com', 'freshworks': 'freshworks.com',
+            'ibm': 'ibm.com', 'oracle': 'oracle.com', 'sap': 'sap.com', 'dell': 'dell.com',
+            'deloitte': 'deloitte.com', 'ey': 'ey.com', 'kpmg': 'kpmg.com', 'pwc': 'pwc.com',
+            'hdfc': 'hdfcbank.com', 'icici': 'icicibank.com', 'sbi': 'sbi.co.in',
+            'conduent': 'conduent.com', 'genpact': 'genpact.com', 'concentrix': 'concentrix.com',
+            'randstad': 'randstad.com', 'naukri': 'naukri.com', 'foundit': 'foundit.in',
+            'indeed': 'indeed.com', 'linkedin': 'linkedin.com', 'adobe': 'adobe.com',
+            'cisco': 'cisco.com', 'intel': 'intel.com', 'nvidia': 'nvidia.com',
+            'bosch': 'bosch.com', 'siemens': 'siemens.com', 'honeywell': 'honeywell.com',
+            'reliance': 'relianceindustries.com', 'jio': 'jio.com', 'airtel': 'airtel.in',
+            'samsung': 'samsung.com', 'nokia': 'nokia.com', 'salesforce': 'salesforce.com',
+            'walmart': 'walmart.com', 'github': 'github.com', 'slack': 'slack.com'
+        };
+
+        function isLikelyPersonName(name) {
+            const s = name.toLowerCase().trim();
+            const words = s.split(/\s+/).filter(w => w.length > 0);
+            if (words.length === 1 && /^[a-z]+$/.test(words[0]) && words[0].length <= 15) {
+                const companySuffixes = ['tech', 'soft', 'sys', 'corp', 'labs', 'works', 'ware', 'net', 'hub', 'cloud', 'data', 'ai'];
+                if (!companySuffixes.some(suf => words[0].endsWith(suf)) && !COMPANY_DOMAIN_MAP[words[0]]) return true;
+            }
+            if (words.length === 2 && words.every(w => /^[a-z]+$/.test(w))) {
+                const companyKeywords = ['technologies', 'solutions', 'services', 'systems', 'software',
+                    'consulting', 'group', 'global', 'digital', 'infotech', 'pvt', 'ltd', 'llp', 'inc',
+                    'corp', 'limited', 'private', 'industries', 'enterprise', 'ventures', 'finance', 'bank'];
+                if (!companyKeywords.some(kw => words.some(w => w.includes(kw))) && !COMPANY_DOMAIN_MAP[s]) return true;
+            }
+            return false;
+        }
+
         function getLogoData(name) {
             const clean = name.replace(/\(.*\)/, '').trim();
-            let domain = '';
-            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
-            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
-            return {
-                clearbit: `https://logo.clearbit.com/${domain}`,
-                google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-                initial: clean.charAt(0).toUpperCase()
-            };
+            const key = clean.toLowerCase();
+            const initial = clean.charAt(0).toUpperCase();
+
+            if (COMPANY_DOMAIN_MAP[key]) {
+                const domain = COMPANY_DOMAIN_MAP[key];
+                return { clearbit: `https://logo.clearbit.com/${domain}`, google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`, initial };
+            }
+
+            if (isLikelyPersonName(clean)) {
+                return { clearbit: '', google: '', initial };
+            }
+
+            const domain = key.replace(/\s+(pvt|private|ltd|limited|llp|inc|corp|technologies|solutions|services|infotech|india)\s*/gi, '')
+                .replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            return { clearbit: `https://logo.clearbit.com/${domain}`, google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`, initial };
         }
 
         function formatDate(dateStr) {

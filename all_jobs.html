@@ -1113,6 +1113,49 @@
             font-size: 13px;
             color: #64748b;
         }
+
+        .exp-zero-checkbox {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.06);
+            border: 1.5px solid rgba(99, 102, 241, 0.15);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exp-zero-checkbox:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .exp-zero-checkbox.active {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: #6366f1;
+        }
+
+        .exp-zero-checkbox input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: #6366f1;
+            cursor: pointer;
+        }
+
+        .exp-zero-checkbox label {
+            font-size: 12px;
+            color: #4b5563;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 500;
+        }
+
+        .exp-zero-checkbox.active label {
+            color: #6366f1;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -1295,9 +1338,13 @@
                     <div class="filter-body-inner" style="padding: 16px 4px 24px 4px;">
                         <div class="exp-input-container">
                             <label for="expMinInput">Min Year</label>
-                            <input type="number" min="0" max="30" value="" placeholder="0" class="exp-input"
+                            <input type="number" min="0" max="30" value="" placeholder="None" class="exp-input"
                                 id="expMinInput" oninput="updateExpInput()" onchange="applyFilters()">
                             <span class="exp-input-suffix">Yrs</span>
+                        </div>
+                        <div class="exp-zero-checkbox" id="expZeroCheckboxWrap">
+                            <input type="checkbox" id="expExactlyZero" onchange="toggleExactlyZero()">
+                            <label for="expExactlyZero">Exactly 0 years only</label>
                         </div>
                     </div>
                 </div>
@@ -1432,7 +1479,8 @@
         let selectedRoles = new Set();
         let selectedCompanies = new Set();
         let selectedSkills = new Set();
-        let activeExp = 0;
+        let activeExp = -1; // -1 means "no filter", 0 means "0 years", >0 means min years
+        let exactlyZeroExp = false;
         let walkinOnly = false;
         let selectedWalkinDates = new Set();
         let skillsMap = {};
@@ -1916,9 +1964,36 @@
 
         function updateExpInput() {
             const input = document.getElementById('expMinInput');
-            const val = parseInt(input.value, 10);
-            activeExp = isNaN(val) || val <= 0 ? 0 : val;
+            const raw = input.value.trim();
+            const zeroWrap = document.getElementById('expZeroCheckboxWrap');
+            if (raw === '') {
+                activeExp = -1; // no filter
+                exactlyZeroExp = false;
+                document.getElementById('expExactlyZero').checked = false;
+                if (zeroWrap) zeroWrap.style.display = 'none';
+                if (zeroWrap) zeroWrap.classList.remove('active');
+            } else {
+                const val = parseInt(raw, 10);
+                activeExp = isNaN(val) ? -1 : Math.max(0, val);
+                // Show/hide "exactly 0" checkbox
+                if (activeExp === 0 && zeroWrap) {
+                    zeroWrap.style.display = 'flex';
+                } else if (zeroWrap) {
+                    zeroWrap.style.display = 'none';
+                    exactlyZeroExp = false;
+                    document.getElementById('expExactlyZero').checked = false;
+                    zeroWrap.classList.remove('active');
+                }
+            }
             updateCounts();
+        }
+
+        function toggleExactlyZero() {
+            const cb = document.getElementById('expExactlyZero');
+            const wrap = document.getElementById('expZeroCheckboxWrap');
+            exactlyZeroExp = cb.checked;
+            if (wrap) wrap.classList.toggle('active', exactlyZeroExp);
+            applyFilters();
         }
 
         function parseExperience(expStr) {
@@ -1957,13 +2032,13 @@
             setCount('date', activeDateRange !== 'all' ? 1 : 0);
             setCount('location', selectedLocations.size);
             setCount('roles', selectedRoles.size);
-            setCount('exp', activeExp > 0 ? 1 : 0);
+            setCount('exp', activeExp >= 0 ? 1 : 0);
             setCount('skills', selectedSkills.size);
             setCount('company', selectedCompanies.size);
             setCount('walkin', (walkinOnly ? 1 : 0) + selectedWalkinDates.size);
 
             const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
-                selectedLocations.size + selectedRoles.size + (activeExp > 0 ? 1 : 0) +
+                selectedLocations.size + selectedRoles.size + (activeExp >= 0 ? 1 : 0) +
                 selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedWalkinDates.size + selectedSkills.size;
 
             const badge = document.getElementById('appliedBadge');
@@ -2004,8 +2079,9 @@
             selectedRoles.forEach(role => {
                 chips.push({ label: role, remove: () => { selectedRoles.delete(role); buildRolesOptions(document.getElementById('roleSearch').value); refreshChips(); } });
             });
-            if (activeExp > 0) {
-                chips.push({ label: activeExp + ' Yrs Exp', remove: () => { document.getElementById('expSlider').value = 0; updateExpSlider(0); applyFilters(); refreshChips(); } });
+            if (activeExp >= 0) {
+                const expLabel = exactlyZeroExp ? 'Exactly 0 Yrs' : activeExp + ' Yrs Exp';
+                chips.push({ label: expLabel, remove: () => { document.getElementById('expMinInput').value = ''; exactlyZeroExp = false; document.getElementById('expExactlyZero').checked = false; const zw = document.getElementById('expZeroCheckboxWrap'); if(zw){zw.style.display='none';zw.classList.remove('active');} updateExpInput(); applyFilters(); refreshChips(); } });
             }
             selectedSkills.forEach(sid => {
                 const name = skillsMap[sid] || `Skill ${sid}`;
@@ -2042,7 +2118,12 @@
             selectedSkills.clear();
             selectedWalkinDates.clear();
             activeDateRange = 'all';
-            activeExp = 0;
+            activeExp = -1;
+            exactlyZeroExp = false;
+            const expZeroCb = document.getElementById('expExactlyZero');
+            if (expZeroCb) expZeroCb.checked = false;
+            const expZeroWrap = document.getElementById('expZeroCheckboxWrap');
+            if (expZeroWrap) { expZeroWrap.style.display = 'none'; expZeroWrap.classList.remove('active'); }
             walkinOnly = false;
             const wOpt = document.getElementById('walkinOpt');
             if (wOpt) wOpt.classList.remove('checked');
@@ -2425,14 +2506,19 @@
                     if (!match) return false;
                 }
 
-                if (activeExp > 0) {
+                if (activeExp >= 0) {
                     const [minExp, maxExp] = parseExperience(j.experience);
                     if (minExp === null) {
                         return false; // If no exp info, it doesn't match
                     }
-                    // Min Year filter: job's minimum experience must be >= user's input
-                    if (minExp < activeExp) {
-                        return false;
+                    if (activeExp === 0) {
+                        // User typed 0: show jobs where min experience is 0
+                        if (minExp !== 0) return false;
+                        // If "Exactly 0" checkbox is checked, also require maxExp == 0
+                        if (exactlyZeroExp && maxExp !== 0) return false;
+                    } else {
+                        // Min Year filter: job's minimum experience must be >= user's input
+                        if (minExp < activeExp) return false;
                     }
                 }
 
@@ -2608,16 +2694,132 @@
         // ══════════════════════════════════════════════
         //  HELPERS
         // ══════════════════════════════════════════════
+        // Known company → domain mapping for accurate logos
+        const COMPANY_DOMAIN_MAP = {
+            'tcs': 'tcs.com', 'tata consultancy services': 'tcs.com', 'infosys': 'infosys.com',
+            'wipro': 'wipro.com', 'hcl': 'hcltech.com', 'hcl technologies': 'hcltech.com',
+            'cognizant': 'cognizant.com', 'accenture': 'accenture.com', 'capgemini': 'capgemini.com',
+            'tech mahindra': 'techmahindra.com', 'mindtree': 'mindtree.com', 'ltimindtree': 'ltimindtree.com',
+            'mphasis': 'mphasis.com', 'l&t infotech': 'lntinfotech.com', 'lti': 'lntinfotech.com',
+            'hexaware': 'hexaware.com', 'birlasoft': 'birlasoft.com', 'persistent': 'persistent.com',
+            'zensar': 'zensar.com', 'cyient': 'cyient.com', 'coforge': 'coforge.com',
+            'sonata software': 'sonata-software.com', 'muthoot': 'muthootfinance.com',
+            'amazon': 'amazon.com', 'google': 'google.com', 'microsoft': 'microsoft.com',
+            'apple': 'apple.com', 'meta': 'meta.com', 'facebook': 'facebook.com',
+            'netflix': 'netflix.com', 'flipkart': 'flipkart.com', 'myntra': 'myntra.com',
+            'swiggy': 'swiggy.com', 'zomato': 'zomato.com', 'ola': 'olacabs.com',
+            'uber': 'uber.com', 'paytm': 'paytm.com', 'phonepe': 'phonepe.com',
+            'razorpay': 'razorpay.com', 'cred': 'cred.club', 'meesho': 'meesho.com',
+            'byju': 'byjus.com', "byju's": 'byjus.com', 'unacademy': 'unacademy.com',
+            'zerodha': 'zerodha.com', 'groww': 'groww.in', 'jio': 'jio.com',
+            'reliance': 'relianceindustries.com', 'hdfc': 'hdfcbank.com', 'hdfc bank': 'hdfcbank.com',
+            'icici': 'icicibank.com', 'icici bank': 'icicibank.com', 'sbi': 'sbi.co.in',
+            'kotak': 'kotak.com', 'axis bank': 'axisbank.com', 'bajaj': 'bajajfinserv.in',
+            'ibm': 'ibm.com', 'oracle': 'oracle.com', 'sap': 'sap.com', 'dell': 'dell.com',
+            'hp': 'hp.com', 'lenovo': 'lenovo.com', 'samsung': 'samsung.com', 'lg': 'lg.com',
+            'deloitte': 'deloitte.com', 'ey': 'ey.com', 'ernst & young': 'ey.com',
+            'kpmg': 'kpmg.com', 'pwc': 'pwc.com', 'pricewaterhousecoopers': 'pwc.com',
+            'mckinsey': 'mckinsey.com', 'boston consulting': 'bcg.com', 'bcg': 'bcg.com',
+            'jpmorgan': 'jpmorgan.com', 'jp morgan': 'jpmorgan.com', 'goldman sachs': 'goldmansachs.com',
+            'morgan stanley': 'morganstanley.com', 'citibank': 'citigroup.com', 'citi': 'citigroup.com',
+            'barclays': 'barclays.com', 'hsbc': 'hsbc.com', 'wells fargo': 'wellsfargo.com',
+            'zoho': 'zoho.com', 'freshworks': 'freshworks.com', 'freshdesk': 'freshworks.com',
+            'atlassian': 'atlassian.com', 'salesforce': 'salesforce.com',
+            'adobe': 'adobe.com', 'vmware': 'vmware.com', 'cisco': 'cisco.com', 'intel': 'intel.com',
+            'qualcomm': 'qualcomm.com', 'nvidia': 'nvidia.com', 'amd': 'amd.com',
+            'walmart': 'walmart.com', 'target': 'target.com', 'ikea': 'ikea.com',
+            'bosch': 'bosch.com', 'siemens': 'siemens.com', 'schneider electric': 'se.com',
+            'honeywell': 'honeywell.com', 'ge': 'ge.com', 'general electric': 'ge.com',
+            'conduent': 'conduent.com', 'genpact': 'genpact.com', 'sutherland': 'sutherlandglobal.com',
+            'concentrix': 'concentrix.com', 'teleperformance': 'teleperformance.com',
+            'quess': 'quesscorp.com', 'randstad': 'randstad.com', 'adecco': 'adecco.com',
+            'manpower': 'manpowergroup.com', 'naukri': 'naukri.com', 'foundit': 'foundit.in',
+            'monster': 'monsterindia.com', 'indeed': 'indeed.com', 'linkedin': 'linkedin.com',
+            'shine': 'shine.com', 'glassdoor': 'glassdoor.com',
+            'mahindra': 'mahindra.com', 'tata': 'tata.com', 'tata motors': 'tatamotors.com',
+            'maruti': 'marutisuzuki.com', 'hyundai': 'hyundai.co.in', 'honda': 'honda.com',
+            'toyota': 'toyota.com', 'tesla': 'tesla.com', 'bmw': 'bmw.com',
+            'airtel': 'airtel.in', 'vodafone': 'vodafone.com', 'vi': 'myvi.in',
+            'bsnl': 'bsnl.co.in', 'ericsson': 'ericsson.com', 'nokia': 'nokia.com',
+            'twitter': 'x.com', 'x': 'x.com', 'snapchat': 'snap.com', 'snap': 'snap.com',
+            'pinterest': 'pinterest.com', 'spotify': 'spotify.com', 'airbnb': 'airbnb.com',
+            'paypal': 'paypal.com', 'stripe': 'stripe.com', 'shopify': 'shopify.com',
+            'databricks': 'databricks.com', 'snowflake': 'snowflake.com',
+            'cloudera': 'cloudera.com', 'palantir': 'palantir.com',
+            'datadog': 'datadoghq.com', 'splunk': 'splunk.com', 'elastic': 'elastic.co',
+            'github': 'github.com', 'gitlab': 'gitlab.com', 'bitbucket': 'bitbucket.org',
+            'slack': 'slack.com', 'zoom': 'zoom.us', 'teams': 'microsoft.com',
+            'notion': 'notion.so', 'figma': 'figma.com', 'canva': 'canva.com',
+            'postman': 'postman.com', 'twilio': 'twilio.com', 'sendgrid': 'sendgrid.com',
+            'lenskart': 'lenskart.com', 'nykaa': 'nykaa.com', 'bigbasket': 'bigbasket.com',
+            'dunzo': 'dunzo.com', 'urban company': 'urbancompany.com',
+            'cure.fit': 'cure.fit', 'curefit': 'cure.fit', 'practo': 'practo.com',
+            'pharmeasy': 'pharmeasy.in', '1mg': '1mg.com',
+            'dream11': 'dream11.com', 'mpl': 'mpl.live',
+            'mu sigma': 'mu-sigma.com', 'fractal': 'fractal.ai',
+            'tiger analytics': 'tigeranalytics.com', 'latentview': 'latentview.com'
+        };
+
+        // Detect personal/recruiter names that should NOT get a logo lookup
+        function isLikelyPersonName(name) {
+            const s = name.toLowerCase().trim();
+            // Very short single words (like "Naseer", "Rahul", "Priya") are likely person names
+            const words = s.split(/\s+/).filter(w => w.length > 0);
+            // Single word, all alpha, no common company suffixes → likely a person name
+            if (words.length === 1 && /^[a-z]+$/.test(words[0]) && words[0].length <= 15) {
+                const companySuffixes = ['tech', 'soft', 'sys', 'corp', 'labs', 'works', 'ware', 'net', 'hub', 'cloud', 'data', 'ai'];
+                if (!companySuffixes.some(suf => words[0].endsWith(suf)) && !COMPANY_DOMAIN_MAP[words[0]]) {
+                    return true;
+                }
+            }
+            // Two words that look like "First Last" (both capitalized, no company keywords)
+            if (words.length === 2 && words.every(w => /^[a-z]+$/.test(w))) {
+                const companyKeywords = ['technologies', 'solutions', 'services', 'systems', 'software',
+                    'consulting', 'group', 'global', 'digital', 'infotech', 'techno', 'india',
+                    'pvt', 'ltd', 'llp', 'inc', 'corp', 'limited', 'private', 'industries',
+                    'enterprise', 'ventures', 'capital', 'finance', 'bank', 'insurance',
+                    'pharma', 'healthcare', 'motors', 'auto', 'electric', 'energy'];
+                if (!companyKeywords.some(kw => words.some(w => w.includes(kw))) && !COMPANY_DOMAIN_MAP[s]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         function getLogoData(name) {
             const clean = name.replace(/\(.*\)/, '').trim();
-            let domain = '';
-            if (typeof domainMap !== 'undefined' && domainMap[clean]) domain = domainMap[clean];
-            else domain = clean.toLowerCase().replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
+            const key = clean.toLowerCase();
+            const initial = clean.charAt(0).toUpperCase();
+
+            // 1. Check known domain map first
+            if (COMPANY_DOMAIN_MAP[key]) {
+                const domain = COMPANY_DOMAIN_MAP[key];
+                return {
+                    clearbit: `https://logo.clearbit.com/${domain}`,
+                    google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+                    ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+                    initial: initial
+                };
+            }
+
+            // 2. Skip logo lookup for personal/recruiter names → use initial fallback
+            if (isLikelyPersonName(clean)) {
+                return {
+                    clearbit: '',
+                    google: '',
+                    ddg: '',
+                    initial: initial
+                };
+            }
+
+            // 3. Try to guess domain for real company names
+            const domain = key.replace(/\s+(pvt|private|ltd|limited|llp|inc|corp|technologies|solutions|services|infotech|india)\s*/gi, '')
+                .replace(/ /g, '').replace(/[^\w]/g, '') + '.com';
             return {
                 clearbit: `https://logo.clearbit.com/${domain}`,
                 google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
                 ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-                initial: clean.charAt(0).toUpperCase()
+                initial: initial
             };
         }
 

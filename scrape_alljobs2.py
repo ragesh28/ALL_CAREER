@@ -166,6 +166,70 @@ def extract_indeed_jk(url):
     return None, url
 
 
+def fetch_indeed_description(job_url, max_retries=2):
+    """
+    Fetch full job description from Indeed's viewjob page.
+    Retries up to max_retries times. Returns description text or ''.
+    """
+    if not job_url:
+        return ""
+
+    # Try to build the Indeed viewjob URL from jk
+    urls_to_try = [job_url]
+    jk_match = re.search(r'jk=([a-f0-9]{16})', str(job_url))
+    if jk_match:
+        jk_url = f"https://www.indeed.com/viewjob?jk={jk_match.group(1)}&from=serp&vjs=3"
+        if jk_url != job_url:
+            urls_to_try.insert(0, jk_url)
+    # Also try in.indeed.com for India jobs
+    for url in list(urls_to_try):
+        if 'www.indeed.com' in url:
+            urls_to_try.append(url.replace('www.indeed.com', 'in.indeed.com'))
+
+    for attempt_url in urls_to_try:
+        for attempt in range(max_retries):
+            try:
+                resp = requests.get(
+                    attempt_url,
+                    timeout=12,
+                    headers={
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                                       "Chrome/120.0.0.0 Safari/537.36",
+                        "Accept": "text/html,application/xhtml+xml",
+                        "Accept-Language": "en-US,en;q=0.9",
+                    }
+                )
+                if resp.status_code == 429:
+                    delay = 5 * (2 ** attempt)  # 5s, 10s
+                    print(f" [Indeed 429, waiting {delay}s]", end="", flush=True)
+                    time.sleep(delay)
+                    continue
+                if resp.status_code != 200:
+                    break  # Try next URL
+
+                soup = BeautifulSoup(resp.text, "html.parser")
+
+                # Indeed uses #jobDescriptionText for the description
+                desc_div = soup.find("div", id="jobDescriptionText")
+                if not desc_div:
+                    # Fallback: try class-based selectors
+                    desc_div = soup.find("div", class_=lambda x: x and "jobsearch-jobDescriptionText" in x)
+                if not desc_div:
+                    desc_div = soup.find("div", class_=lambda x: x and "job-description" in str(x).lower())
+
+                if desc_div:
+                    desc = " ".join(desc_div.get_text().split()).strip()
+                    if len(desc) >= 80:
+                        return desc
+                break  # Got a 200 but no description — try next URL
+            except Exception:
+                time.sleep(3)
+                continue
+
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # LINKEDIN FULL DESCRIPTION FETCHER
 # ---------------------------------------------------------------------------
@@ -232,50 +296,78 @@ def fetch_linkedin_description(job_url, max_retries=2):
 
 def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
     """
-    For LinkedIn jobs in the batch that have empty/short descriptions,
-    try to re-fetch the full description using the alternative API.
+    For LinkedIn AND Indeed jobs in the batch that have empty/short descriptions,
+    try to re-fetch the full description (max 2 retries per job).
 
     Returns:
         (updated_batch, linkedin_blocked)
         - updated_batch: the batch with descriptions filled in where possible
         - linkedin_blocked: True if LinkedIn has fully blocked this IP
     """
-    blocked_jobs_in_batch = [
+    from extractor_utils import extract_experience, extract_skills
+
+    # ── LinkedIn retry ──
+    linkedin_blocked_jobs = [
         (i, job) for i, job in enumerate(batch)
         if "linkedin" in job.get("source", "") and len(job.get("_description", "")) < 100
     ]
 
-    if not blocked_jobs_in_batch:
-        return batch, False
+    linkedin_blocked = False
+    if linkedin_blocked_jobs:
+        print(f"\n    🔄 Re-fetching {len(linkedin_blocked_jobs)} blocked LinkedIn descriptions...", flush=True)
+        consecutive_failures = 0
+        refetched = 0
+        still_blocked = 0
 
-    print(f"\n    🔄 Re-fetching {len(blocked_jobs_in_batch)} blocked LinkedIn descriptions...", flush=True)
+        for idx, job in linkedin_blocked_jobs:
+            desc = fetch_linkedin_description(job.get("url", ""))
+            if len(desc) >= 100:
+                batch[idx]["_description"] = desc
+                batch[idx]["experience"] = extract_experience(desc, title=job.get("title", ""))
+                batch[idx]["skills"] = extract_skills(desc)
+                refetched += 1
+                consecutive_failures = 0
+                print(f"    ✅ Got description for: {job.get('title', '')[:50]}", flush=True)
+            else:
+                still_blocked += 1
+                consecutive_failures += 1
+                if consecutive_failures >= max_consecutive_failures:
+                    print(f"    🛑 LinkedIn blocked this IP ({consecutive_failures} consecutive failures)", flush=True)
+                    linkedin_blocked = True
+                    break
 
-    consecutive_failures = 0
-    refetched = 0
-    still_blocked = 0
+            time.sleep(1)
 
-    for idx, job in blocked_jobs_in_batch:
-        desc = fetch_linkedin_description(job.get("url", ""))
-        if len(desc) >= 100:
-            batch[idx]["_description"] = desc
-            # Re-extract experience from the full description
-            from extractor_utils import extract_experience, extract_skills
-            batch[idx]["experience"] = extract_experience(desc, title=job.get("title", ""))
-            batch[idx]["skills"] = extract_skills(desc)
-            refetched += 1
-            consecutive_failures = 0
-            print(f"    ✅ Got description for: {job.get('title', '')[:50]}", flush=True)
-        else:
-            still_blocked += 1
-            consecutive_failures += 1
-            if consecutive_failures >= max_consecutive_failures:
-                print(f"    🛑 LinkedIn blocked this IP ({consecutive_failures} consecutive failures)", flush=True)
-                return batch, True  # Signal: LinkedIn has blocked us
+        print(f"    📊 LinkedIn re-fetched: {refetched}, Still blocked: {still_blocked}", flush=True)
 
-        time.sleep(1)  # Be polite between requests
+    # ── Indeed retry (2 attempts max per job) ──
+    indeed_no_desc_jobs = [
+        (i, job) for i, job in enumerate(batch)
+        if "indeed" in job.get("source", "") and len(job.get("_description", "")) < 80
+    ]
 
-    print(f"    📊 Re-fetched: {refetched}, Still blocked: {still_blocked}", flush=True)
-    return batch, False
+    if indeed_no_desc_jobs:
+        print(f"    🔄 Re-fetching {len(indeed_no_desc_jobs)} Indeed jobs with missing descriptions...", flush=True)
+        indeed_refetched = 0
+        indeed_still_missing = 0
+
+        for idx, job in indeed_no_desc_jobs:
+            desc = fetch_indeed_description(job.get("url", ""), max_retries=2)
+            if len(desc) >= 80:
+                batch[idx]["_description"] = desc
+                batch[idx]["experience"] = extract_experience(desc, title=job.get("title", ""))
+                batch[idx]["skills"] = extract_skills(desc)
+                indeed_refetched += 1
+                print(f"    ✅ Indeed desc: {job.get('title', '')[:50]}", flush=True)
+            else:
+                indeed_still_missing += 1
+                # Job is still saved — just without experience/description
+
+            time.sleep(1)
+
+        print(f"    📊 Indeed re-fetched: {indeed_refetched}, Still missing: {indeed_still_missing}", flush=True)
+
+    return batch, linkedin_blocked
 
 
 # ---------------------------------------------------------------------------
@@ -521,7 +613,7 @@ def main():
                         "_description": desc,  # Keep for re-fetch check (not saved to DB)
                     })
 
-                # ── Re-fetch blocked LinkedIn descriptions ──
+                # ── Re-fetch blocked LinkedIn + Indeed descriptions ──
                 batch, linkedin_blocked = refetch_blocked_descriptions(batch)
 
                 # Remove internal _description field before storing
@@ -535,10 +627,16 @@ def main():
                 li_count = sum(1 for j in batch if "linkedin" in j["source"])
                 in_count = sum(1 for j in batch if "indeed" in j["source"])
                 perm_count = sum(1 for j in batch if j["indeed_jk"])
-                blocked_in_batch = sum(1 for j in batch if "linkedin" in j["source"] and not j.get("experience"))
+                li_no_desc = sum(1 for j in batch if "linkedin" in j["source"] and not j.get("experience"))
+                in_no_desc = sum(1 for j in batch if "indeed" in j["source"] and not j.get("experience"))
 
-                blocked_info = f", blocked:{blocked_in_batch}" if blocked_in_batch else ""
-                print(f"✅ {len(batch)} found (LI:{li_count}, Indeed:{in_count}, perm:{perm_count}{blocked_info}), {stored} new (total: {total_new})")
+                no_desc_info = ""
+                if li_no_desc or in_no_desc:
+                    parts = []
+                    if li_no_desc: parts.append(f"LI_noDesc:{li_no_desc}")
+                    if in_no_desc: parts.append(f"IN_noDesc:{in_no_desc}")
+                    no_desc_info = f", {', '.join(parts)}"
+                print(f"✅ {len(batch)} found (LI:{li_count}, Indeed:{in_count}, perm:{perm_count}{no_desc_info}), {stored} new (total: {total_new})")
 
                 # If LinkedIn blocked us, save checkpoint with blocked jobs and exit
                 if linkedin_blocked:
