@@ -115,16 +115,34 @@ class CompanyDetector:
     ) -> CompanyResult:
         """
         Detect company name using multi-signal hierarchy:
-        1. Known company dictionary match
-        2. Legal/corporate suffix pattern match
-        3. Top 30% header bounding box evaluation
+        1. Official MCA Company Database & Brand Aliases (3.67M+ records + FTS5 + RapidFuzz)
+        2. Known company dictionary match
+        3. Legal/corporate suffix pattern match
+        4. Top 30% header bounding box evaluation
         """
         if not text:
             return CompanyResult()
 
+        # ── 1. Check Official MCA Company Database (3.67M+ Records) & Curated Brand Aliases ──
+        try:
+            from company_db.resolver import CompanyResolver
+            from company_db.config import DEFAULT_DB_PATH
+            if DEFAULT_DB_PATH.exists():
+                resolver = CompanyResolver()
+                mca_res = resolver.find_company(text)
+                if mca_res.get("matched") and mca_res.get("confidence", 0) >= 0.85:
+                    return CompanyResult(
+                        name=mca_res["company_name"],
+                        canonical=mca_res["company_name"],
+                        confidence=mca_res["confidence"],
+                        detection_method=f"mca_{mca_res.get('match_type', 'match')}"
+                    )
+        except Exception:
+            pass
+
         low_text = " " + text.lower() + " "
 
-        # 1. Check Known Company Dictionary (Highest Precision)
+        # ── 2. Check Known Company Dictionary ──
         for key, canonical in KNOWN_COMPANIES.items():
             if f" {key} " in low_text or f"\n{key}\n" in low_text or f"\n{key} " in low_text or f" {key}\n" in low_text or f"at {key}" in low_text or f"for {key}" in low_text:
                 return CompanyResult(
@@ -134,7 +152,7 @@ class CompanyDetector:
                     detection_method="dictionary"
                 )
 
-        # 2. Check Legal Suffix Pattern (High Precision for new/unlisted registered companies)
+        # ── 3. Check Legal Suffix Pattern (High Precision for new/unlisted registered companies) ──
         suffix_matches = COMPANY_SUFFIX_REGEX.findall(text)
         for match in suffix_matches:
             cleaned = match.strip(" ,.-:\n")
@@ -146,7 +164,7 @@ class CompanyDetector:
                     detection_method="legal_suffix"
                 )
 
-        # 3. Check OCR Bounding Box Positioning (Top 30% header region)
+        # ── 4. Check OCR Bounding Box Positioning (Top 30% header region) ──
         if boxes:
             top_boxes = [b for b in boxes if b.relative_top <= 0.30 and b.confidence >= 0.65]
             for b in top_boxes:

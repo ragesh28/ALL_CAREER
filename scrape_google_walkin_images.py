@@ -115,14 +115,22 @@ async def scrape_google_images_for_query(
 
 
 async def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Google Images Walk-in Extraction Workflow")
+    parser.add_argument("--query", type=str, default="chennai walk in interview", help="Search query")
+    parser.add_argument("--last24h", action="store_true", default=True, help="Filter last 24 hours")
+    parser.add_argument("--max-images", type=int, default=6, help="Max images to download")
+    args = parser.parse_args()
+
     save_folder = "downloaded_walkin_images"
     os.makedirs(save_folder, exist_ok=True)
 
-    print("=" * 70)
-    print("🚀 ALL_CAREER — Google Images Walk-in Extraction Pipeline")
+    print("=" * 75)
+    print("🚀 ALL_CAREER — GOOGLE IMAGES WALK-IN EXTRACTION & MCA VALIDATION")
     print(f"📅 Run Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"🔍 Target Query: '{args.query}' (Last 24h Filter: {args.last24h})")
     print(f"📂 Image Cache: {os.path.abspath(save_folder)}")
-    print("=" * 70)
+    print("=" * 75)
 
     # 1. Download fresh images via Playwright
     all_downloaded = []
@@ -133,61 +141,70 @@ async def main():
         )
         context = await browser.new_context(
             viewport={"width": 1280, "height": 800},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
         )
         page = await context.new_page()
 
-        for q in SEARCH_QUERIES[:2]:  # Default top queries (Chennai, Bangalore)
-            downloaded = await scrape_google_images_for_query(page, q, save_folder, max_images=8)
-            all_downloaded.extend(downloaded)
+        downloaded = await scrape_google_images_for_query(page, args.query, save_folder, max_images=args.max_images)
+        all_downloaded.extend(downloaded)
 
         await browser.close()
 
-    # 2. Run Image-to-Job Pipeline
-    print("\n" + "=" * 70)
-    print("🧠 RUNNING IMAGE-TO-JOB EXTRACTION PIPELINE")
-    print("=" * 70)
+    # 2. Run Image-to-Job Pipeline with MCA Master Data & OCR
+    print("\n" + "=" * 75)
+    print("🧠 RUNNING OCR, ROLE, LOCATION, & MCA COMPANY RESOLVER PIPELINE")
+    print("=" * 75)
 
     pipeline = ImageToJobPipeline(enable_ai_verification=True)
     extracted_jobs = []
 
     for idx, img_path in enumerate(all_downloaded, 1):
-        print(f"\n[{idx}/{len(all_downloaded)}] 📷 Processing {os.path.basename(img_path)}...")
+        print(f"\n{'='*30} [Image {idx}/{len(all_downloaded)}] {'='*30}")
+        print(f"📷 File: {os.path.basename(img_path)}")
         res = pipeline.process_image(img_path)
         
+        # Display extracted OCR preview
+        ocr_snippet = res.raw_ocr_text.strip().replace("\n", " ") if res.raw_ocr_text else "No text detected"
+        if len(ocr_snippet) > 160:
+            ocr_snippet = ocr_snippet[:160] + "..."
+        print(f"  📝 OCR Text: \"{ocr_snippet}\"")
+
         if res.is_job:
-            co = res.company.name or "Company Not Stated"
-            roles_str = ", ".join([r.name for r in res.roles[:3]]) if res.roles else "Recruitment"
-            loc_str = f"{res.location.city}, {res.location.state}" if res.location.city else "India"
+            co = res.company.name or "Unknown / Unnamed Company"
+            co_method = res.company.detection_method or "N/A"
+            co_conf = res.company.confidence
+            roles_str = ", ".join([r.name for r in res.roles[:3]]) if res.roles else "General Vacancy"
+            loc_str = f"{res.location.city or ''}{', ' + res.location.state if res.location.state else ''}".strip(", ") or "India"
             dt_str = f"{res.date} ({res.time.start or ''} - {res.time.end or ''})" if res.date else "Upcoming"
 
-            print(f"  🎉 VALID JOB DETECTED (Score: {res.signal_score}, Conf: {res.confidence:.2f})")
-            print(f"     🏢 Company:  {co}")
-            print(f"     💼 Roles:    {roles_str}")
-            print(f"     📍 Location: {loc_str}")
-            print(f"     📅 Date/Time:{dt_str}")
+            print(f"  🎉 VALID JOB POSTER (Signal Score: {res.signal_score}, Conf: {res.confidence:.2f})")
+            print(f"     🏢 Company (MCA Verified): {co}")
+            print(f"        └─ Resolution Source:   {co_method} (Conf: {co_conf:.2f})")
+            print(f"     💼 Role/Designation:       {roles_str}")
+            print(f"     📍 Location / City:        {loc_str}")
+            print(f"     📅 Walk-in Date & Time:    {dt_str}")
             if res.qr.found:
-                print(f"     📱 QR Code:  {res.qr.payload_type} -> {res.qr.raw_data}")
+                print(f"     📱 QR Code Decoded:        [{res.qr.payload_type}] {res.qr.raw_data}")
             if res.contact_phone:
-                print(f"     📞 Phone:    {res.contact_phone}")
+                print(f"     📞 Phone Number:           {res.contact_phone}")
             if res.contact_email:
-                print(f"     ✉️ Email:    {res.contact_email}")
+                print(f"     ✉️ Email Address:          {res.contact_email}")
 
             extracted_jobs.append(res.to_dict())
         else:
-            print(f"  ⏩ Non-job image filtered out (Score: {res.signal_score})")
+            print(f"  ⏩ Non-job image / noise filtered out (Signal Score: {res.signal_score})")
 
     # 3. Save Structured Extraction Output
     output_file = "scraped_image_walkin_jobs.json"
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(extracted_jobs, f, indent=2, ensure_ascii=False)
 
-    print("\n" + "=" * 70)
+    print("\n" + "=" * 75)
     print("📊 EXTRACTION SUMMARY")
     print(f"   🖼️ Images Analyzed: {len(all_downloaded)}")
     print(f"   ✅ Valid Jobs Extracted: {len(extracted_jobs)}")
     print(f"   💾 Saved to: {os.path.abspath(output_file)}")
-    print("=" * 70)
+    print("=" * 75)
 
 
 if __name__ == "__main__":
