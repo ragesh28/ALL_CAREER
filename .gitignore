@@ -37,14 +37,14 @@ scrape_progress.json
 big_company_jobs.csv
 jobs.csv
 
-# Test and temp files (local only)
-test_*.html
-test_*.json
-test_*.py
-temp*.py
-temp*.json
-debug_*.py
-debug_*.html
+# Test and temp files (local root only)
+/test_*.html
+/test_*.json
+/test_*.py
+/temp*.py
+/temp*.json
+/debug_*.py
+/debug_*.html
 verify_turso.py
 store_to_turso.py
 
@@ -96,3 +96,8 @@ check_d1.py
 check_data_retention.py
 dump_d1_jobs.py
 test_fetch.js
+
+# Company DB binary files
+data/*.db
+data/mca_download_progress.json
+downloaded_walkin_images/

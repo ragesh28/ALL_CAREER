@@ -1,0 +1,79 @@
+name: Update MCA Company Database
+
+on:
+  workflow_dispatch:
+    inputs:
+      state_code:
+        description: 'Optional State Code (e.g. TN, KA, MH, DL, TS) or leave blank for all'
+        required: false
+        default: ''
+      max_records:
+        description: 'Maximum records to download in this run (e.g. 50000) or leave blank for full'
+        required: false
+        default: '50000'
+  schedule:
+    - cron: '0 3 * * 0'  # Weekly on Sunday at 3:00 AM UTC (8:30 AM IST)
+
+jobs:
+  update-mca-db:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests rapidfuzz pydantic
+
+      - name: Cache Company SQLite Database
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/company_master.db
+            data/mca_download_progress.json
+          key: mca-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            mca-db-${{ runner.os }}-
+
+      - name: Test API Key Connectivity
+        env:
+          DATA_GOV_API_KEY: ${{ secrets.DATA_GOV_API_KEY }}
+        run: |
+          python -m scripts.test_mca_api
+
+      - name: Run MCA Company Downloader / Updater
+        env:
+          DATA_GOV_API_KEY: ${{ secrets.DATA_GOV_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.state_code }}" ]; then
+            ARGS="$ARGS --state ${{ github.event.inputs.state_code }}"
+          fi
+          if [ -n "${{ github.event.inputs.max_records }}" ]; then
+            ARGS="$ARGS --max-records ${{ github.event.inputs.max_records }}"
+          fi
+          python -m scripts.download_mca_companies $ARGS
+
+      - name: Run Validation Tests on Local DB
+        run: |
+          python -m unittest discover -s tests
+
+      - name: Upload Database Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mca-company-master-db
+          path: |
+            data/company_master.db
+            data/mca_download_progress.json
+          retention-days: 30

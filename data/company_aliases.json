@@ -1,0 +1,121 @@
+[
+  {
+    "canonical": "Tata Consultancy Services Limited",
+    "aliases": ["tcs", "tata consultancy services", "tata consultancy", "tcs limited", "tcs ltd"],
+    "brand_name": "TCS",
+    "cin": "L22210MH1995PLC084781",
+    "source": "curated"
+  },
+  {
+    "canonical": "Infosys Limited",
+    "aliases": ["infosys", "infy", "infosys limited", "infosys ltd", "infosys technologies"],
+    "brand_name": "Infosys",
+    "cin": "L85110KA1981PLC013115",
+    "source": "curated"
+  },
+  {
+    "canonical": "Wipro Limited",
+    "aliases": ["wipro", "wipro limited", "wipro ltd", "wipro technologies"],
+    "brand_name": "Wipro",
+    "cin": "L32102KA1945PLC020800",
+    "source": "curated"
+  },
+  {
+    "canonical": "HCL Technologies Limited",
+    "aliases": ["hcl", "hcltech", "hcl technologies", "hcl tech", "hcl limited"],
+    "brand_name": "HCLTech",
+    "cin": "L74140DL1991PLC046369",
+    "source": "curated"
+  },
+  {
+    "canonical": "Cognizant Technology Solutions India Private Limited",
+    "aliases": ["cognizant", "cts", "cognizant technology solutions", "cognizant india"],
+    "brand_name": "Cognizant",
+    "cin": "U72300TN1994PTC026590",
+    "source": "curated"
+  },
+  {
+    "canonical": "Accenture Solutions Private Limited",
+    "aliases": ["accenture", "accenture solutions", "accenture india", "accenture plc"],
+    "brand_name": "Accenture",
+    "cin": "U72900MH2001PTC132450",
+    "source": "curated"
+  },
+  {
+    "canonical": "Capgemini Technology Services India Limited",
+    "aliases": ["capgemini", "capgemini india", "igate", "capgemini technology services"],
+    "brand_name": "Capgemini",
+    "cin": "U85110PN1993PLC145950",
+    "source": "curated"
+  },
+  {
+    "canonical": "Tech Mahindra Limited",
+    "aliases": ["tech mahindra", "techm", "tech mahindra limited", "mahindra satyam"],
+    "brand_name": "Tech Mahindra",
+    "cin": "L64200MH1986PLC041370",
+    "source": "curated"
+  },
+  {
+    "canonical": "LTIMindtree Limited",
+    "aliases": ["ltimindtree", "mindtree", "l&t infotech", "lti", "larsentoubro infotech"],
+    "brand_name": "LTIMindtree",
+    "cin": "L72900MH1996PLC104693",
+    "source": "curated"
+  },
+  {
+    "canonical": "Lamprell Energy India Private Limited",
+    "aliases": ["lamprell", "lamprell energy", "lamprell india", "lamprell engineering"],
+    "brand_name": "Lamprell",
+    "cin": "U74200TN2008PTC068132",
+    "source": "curated"
+  },
+  {
+    "canonical": "Zoho Corporation Private Limited",
+    "aliases": ["zoho", "zoho corp", "zoho corporation", "adventnet"],
+    "brand_name": "Zoho",
+    "cin": "U72900TN2010PTC075964",
+    "source": "curated"
+  },
+  {
+    "canonical": "Freshworks Technologies Private Limited",
+    "aliases": ["freshworks", "freshdesk", "freshworks technologies"],
+    "brand_name": "Freshworks",
+    "cin": "U72200TN2010PTC078458",
+    "source": "curated"
+  },
+  {
+    "canonical": "Conduent Business Services India Private Limited",
+    "aliases": ["conduent", "conduent india", "conduent business services"],
+    "brand_name": "Conduent",
+    "cin": "U72900KA2016PTC095908",
+    "source": "curated"
+  },
+  {
+    "canonical": "Genpact India Private Limited",
+    "aliases": ["genpact", "genpact india"],
+    "brand_name": "Genpact",
+    "cin": "U73100DL2005PTC139744",
+    "source": "curated"
+  },
+  {
+    "canonical": "Sutherland Global Services Private Limited",
+    "aliases": ["sutherland", "sutherland global", "sutherland global services"],
+    "brand_name": "Sutherland",
+    "cin": "U72200TN2000PTC045431",
+    "source": "curated"
+  },
+  {
+    "canonical": "Concentrix Daksh Services India Private Limited",
+    "aliases": ["concentrix", "concentrix daksh", "concentrix india", "daksh"],
+    "brand_name": "Concentrix",
+    "cin": "U72900DL1999PTC102878",
+    "source": "curated"
+  },
+  {
+    "canonical": "Modenik Lifestyle Private Limited",
+    "aliases": ["modenik", "modenik lifestyle", "dixon lifestyle", "enamor"],
+    "brand_name": "Modenik",
+    "cin": "U17120KA1998PTC024108",
+    "source": "curated"
+  }
+]
