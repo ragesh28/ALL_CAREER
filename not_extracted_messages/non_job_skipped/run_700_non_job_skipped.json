@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "700",
+  "workflow_run_id": "33312879541",
+  "timestamp": "2026-08-30T13:17:15.189055",
+  "runtime_minutes": 17.77,
+  "messages_processed": 38,
+  "new_jobs_stored": 34,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 2925,
+      "text": "https://job4freshers.co.in/accenture-hiring-process/\naccenture\nAccenture Hiring Process\nand Interview Questions",
+      "timestamp": "2026-08-30T07:40:09+00:00"
+    }
+  ]
+}
