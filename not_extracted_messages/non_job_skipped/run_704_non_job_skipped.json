@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "704",
+  "workflow_run_id": "33361591495",
+  "timestamp": "2026-08-31T06:10:05.170221",
+  "runtime_minutes": 24.23,
+  "messages_processed": 50,
+  "new_jobs_stored": 23,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 29890,
+      "text": "Free Gen AI Claude Workshop – FREE! 🚀\n\n💸 ₹10,000 → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\nFor Freelancers, Working Professionals, Self Employed Personals\n \nRegister Free: https://link.outskill.com/A-11\n\n⚡ Limited Seats!",
+      "timestamp": "2026-08-31T04:32:08+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 29891,
+      "text": "🛠️ 𝟳 𝗙𝗥𝗘𝗘 𝗧𝗢𝗢𝗟𝗦 𝗙𝗢𝗥 𝗙𝗥𝗘𝗦𝗛𝗘𝗥𝗦 — 𝗡𝗢 𝗦𝗜𝗚𝗡-𝗨𝗣, 𝗡𝗢 𝗣𝗔𝗬𝗠𝗘𝗡𝗧\n\nWe built these so you stop paying ₹300–₹500 for things that should be free 👇\n\n📄 𝗥𝗲𝘀𝘂𝗺𝗲 𝗕𝘂𝗶𝗹𝗱𝗲𝗿\nATS-friendly resume in 10 minutes. Live preview, PDF download.\nhttps://freshershunt.in/resume-builder/\n\n✅ 𝗔𝗧𝗦 𝗥𝗲𝘀𝘂𝗺𝗲 𝗖𝗵𝗲𝗰𝗸𝗲𝗿\nScore your resume against real ATS rules and see exactly what's failing.\nhttps://freshershunt.in/free-resume-ats-checker/\n\n💰 𝗜𝗻-𝗛𝗮𝗻𝗱 𝗦𝗮𝗹𝗮𝗿𝘆 𝗖𝗮𝗹𝗰𝘂𝗹𝗮𝘁𝗼𝗿\nCompany offering 4.5 LPA? Find out what actually hits your bank account. FY 2026-27 slabs, old vs new regime.\nhttps://freshershunt.in/in-hand-salary-calculator/\n\n✉️ 𝗖𝗼𝘃𝗲𝗿 𝗟𝗲𝘁𝘁𝗲𝗿 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗼𝗿\nFill 3 fields, get a proper cover letter. Copy, download or print.\nhttps://freshershunt.in/cover-letter-generator/\n\n🎤 𝗜𝗻𝘁𝗲𝗿𝘃𝗶𝗲𝘄 𝗤𝘂𝗲𝘀𝘁𝗶𝗼𝗻 𝗕𝗮𝗻𝗸\n2,000+ real questions freshers were actually asked — sorted by company and round.\nhttps://freshershunt.in/interview-question-bank/\n\n🎲 𝗔𝗽𝘁𝗶𝘁𝘂𝗱𝗲 𝗣𝗿𝗮𝗰𝘁𝗶𝗰𝗲 𝗧𝗲𝘀𝘁\nTimed sets matching TCS NQT, Cognizant GenC and Tech Mahindra NTH patterns. With solutions.\nhttps://freshershunt.in/aptitude-practice-test/\n\n📧 𝗛𝗥 𝗘𝗺𝗮𝗶𝗹 𝗧𝗲𝗺𝗽𝗹𝗮𝘁𝗲𝘀\n12 copy-ready emails — follow-ups, thank-you notes, offer acceptance, joining date extension, referral asks.\nhttps://freshershunt.in/hr-email-templates/\n\n👉 All of them in one place: https://freshershunt.in/tools/\n\nSave this message. You'll need every one of these before your first offer letter. 💚",
+      "timestamp": "2026-08-31T05:33:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 42593,
+      "text": "**🚨Free Gen AI Claude Workshop - FREE (Today Only) 🚀**\n\n💸 Cost: ~~₹10,000~~ ₹0 (FREE!)\n\nDeadline: 7 PM, 31st August 2026\n\nWhat You Will Learn:\n✅ Learn 25+ AI tools\n✅ Master practical AI workflows and automate tasks\n✅ Automate assignments, content & research\n✅ Stand out in internships & placements\n\n⏰ Limited to 100 seats — Fill before they're gone!\n\n**Enroll Now (Free)**: https://link.outskill.com/A-13",
+      "timestamp": "2026-08-31T05:25:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18611,
+      "text": "THE POWER OF\nCONSISTENCY\n1 drop, consistently\nA bucket of water,\nover time\n1 time\nSmall efforts, Big results.",
+      "timestamp": "2026-08-31T02:12:29+00:00"
+    }
+  ]
+}
