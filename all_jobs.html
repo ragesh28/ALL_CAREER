@@ -1533,7 +1533,7 @@
             { id: 'freshersworld', label: 'FreshersWorld', logo: 'logos/portals/freshersworld.ico' },
             { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
             { id: 'telegram_post', label: 'Telegram Post', logo: 'logos/portals/telegram.svg' },
-            { id: 'google images', label: 'Google Images', logo: 'https://www.google.com/favicon.ico' },
+            { id: 'google_images', label: 'Google Images', logo: 'https://www.google.com/favicon.ico' },
             { id: 'other', label: 'Other Sources', logo: '' },
         ];
 
@@ -1775,7 +1775,8 @@
             let sourceCounts = {};
             if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
                 allJobs.forEach(j => {
-                    const src = (j.source || '').toLowerCase();
+                    let src = (j.source || '').toLowerCase();
+                    if (src.includes('google')) src = 'google_images';
                     sourceCounts[src] = (sourceCounts[src] || 0) + 1;
                 });
             }
@@ -2411,7 +2412,7 @@
         async function fetchJobsFromTurso() {
             let fetchedJobs = [];
             let chunkNum = 1;
-            const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post']);
+            const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post', 'google_images', 'google images', 'google']);
 
             while (true) {
                 try {
@@ -2424,7 +2425,9 @@
                         const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
 
                         let sourceVal = String(job.platform || job.source || '').toLowerCase();
-                        if (!knownPortals.has(sourceVal)) {
+                        if (sourceVal.includes('google')) {
+                            sourceVal = 'google_images';
+                        } else if (!knownPortals.has(sourceVal)) {
                             sourceVal = 'other';
                         }
 
@@ -2454,6 +2457,64 @@
                     if (fetchedJobs.length === 0) return { error: String(e) };
                     break;
                 }
+            }
+
+            // Fetch Google Images Walk-in Jobs
+            try {
+                const walkinUrl = "scraped_image_walkin_jobs.json";
+                const walkinRes = await fetch(walkinUrl + "?t=" + new Date().getTime());
+                if (walkinRes.ok) {
+                    const walkinRows = await walkinRes.json();
+                    for (const job of walkinRows) {
+                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+                        const cleanDate = pick(job.date_posted, job.fetched_at, job.fetchedAt, job.date);
+                        const rawTitle = String(job.title || job.role || 'Walk-in Interview');
+                        const walkDate = job.walkin_date || job.date || extractWalkinDateFromText(rawTitle);
+
+                        let coName = '';
+                        if (typeof job.company === 'object' && job.company !== null) {
+                            coName = job.company.name || job.company.canonical || '';
+                        } else {
+                            coName = String(job.company || job.company_canonical || '');
+                        }
+
+                        let locName = '';
+                        if (typeof job.location === 'object' && job.location !== null) {
+                            locName = job.location.city ? `${job.location.city}${job.location.state ? ', ' + job.location.state : ''}` : '';
+                        } else {
+                            locName = String(job.location || '');
+                        }
+
+                        const rolesArr = Array.isArray(job.roles) 
+                            ? job.roles.map(r => (typeof r === 'object' ? r.name : r)) 
+                            : [];
+
+                        fetchedJobs.push({
+                            _id: job.id || ('walkin_' + Math.random().toString(36).substr(2, 9)),
+                            title: rawTitle,
+                            company: coName,
+                            location: locName,
+                            date: cleanDate,
+                            url: String(job.apply_url || job.url || job.source_url || ''),
+                            source: 'google_images',
+                            role_search: rolesArr.join(', '),
+                            experience: (typeof job.experience === 'object' && job.experience !== null) ? (job.experience.raw_text || '') : pick(job.experience),
+                            salary: (typeof job.salary === 'object' && job.salary !== null) ? (job.salary.raw_text || '') : pick(job.salary),
+                            skills: Array.isArray(job.skills) ? job.skills : [],
+                            is_walkin: true,
+                            walkin_date: walkDate,
+                            walkin_time: (typeof job.time === 'object' && job.time !== null) ? `${job.time.start || ''} - ${job.time.end || ''}`.trim(' -') : (job.walkin_time || ''),
+                            flyer_image_url: job.flyer_image_url || job.raw_flyer_src || job.image_path || '',
+                            contact_email: job.contact_email || '',
+                            contact_phone: job.contact_phone || '',
+                            fetchedAt: cleanDate
+                        });
+                    }
+                    console.log(`Loaded ${walkinRows.length} jobs from scraped_image_walkin_jobs.json as 'google_images' source`);
+                }
+            } catch (e) {
+                console.warn("Note on loading walkin jobs:", e);
             }
 
             // Fetch Big Company / Other Source ATS jobs
@@ -2511,7 +2572,12 @@
 
                 if (selectedPortals.size > 0) {
                     const src = (j.source || '').toLowerCase();
-                    if (!selectedPortals.has(src)) return false;
+                    const match = [...selectedPortals].some(p => (
+                        src === p ||
+                        (p === 'google_images' && src.includes('google')) ||
+                        (p.includes('telegram') && src.includes('telegram'))
+                    ));
+                    if (!match) return false;
                 }
 
                 if (activeDateRange !== 'all') {

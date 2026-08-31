@@ -1,0 +1,468 @@
+[
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "SONA COMSTAR EDRIVE PRIVATE LIMITED",
+      "confidence": 0.95,
+      "canonical": "SONA COMSTAR EDRIVE PRIVATE LIMITED",
+      "detection_method": "mca_header_fuzzy_high"
+    },
+    "roles": [],
+    "location": {
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "locality": null,
+      "venue": null,
+      "pincode": "603204",
+      "confidence": 0.95
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "+916383358739",
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 14,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "interview:interview (+3)",
+      "hiring:hiring (+2)",
+      "entity:location (+2)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_01.jpg",
+    "image_hash": "cd5873b14466395e",
+    "source_url": null,
+    "raw_ocr_text": "SONA COMSTAR\nSONACOMSTAR\nWE ARE\nHIRING!\nIMMEDIATE\nWALK-IN INTERVIEW\nJOINING\nGREATCAREEROPPORTUNITYI\nTAKE-HOMESALARY\nWORKLOCATION\n18500-25000\nMARAIMALAINAGAR,CHENNAI\nQUALIFICATION\n10%/+2/m/Diploma/\nDegree/B.E.\nFREE\nUNIFORM\nINSURANCE\nMALECANDIDATESONLY\nTRANSPORT\nPROVIDED\nAVAILABLE\nAGE:18-27YEARS\nSHIFTDETAILS\nDEPARTMENTS\n3SHIFTROTATION\nPROOUCTIDNQUALITY·ASSEMBLY\n8HOURSDUTY\nWALK-ININTERVIEW\n6DAYSWORKING\n31/08/2026to03/09/2026\nSUNDAY HOLIDAY\nMONDAYTOTHURSDAY\nINTERVIEWTIME:08:00AM\nVENUE\nKeelakarani Village,\nIMMEDIATEJOINING\nMalrosapuram Post,\nTRANSPORTAVAILABLEFROM\nMaraimalai Nagar,\nTENBARAN\nHARASHELAINAGAR\nTamilNadu=603204\nGUDUNANCHERE\nCHENGALPATTU\nTHRUCALUKUNDRAN\nHAHINTRAWOREDCITY\nCONTACTFORREGISTRATION\nPERONCALATHUE\nSINCAPERUMALKDE\n+916383358739\n9791574803\nCREATOPPORTUNITY\nBRIGHTFUTURE\nGROWWITHSONACOMSTAR"
+  },
+  {
+    "is_job": true,
+    "job_type": "direct_hiring",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "WEARE INDIA PRIVATE LIMITED",
+      "confidence": 1.0,
+      "canonical": "WEARE INDIA PRIVATE LIMITED",
+      "detection_method": "mca_header_exact"
+    },
+    "roles": [],
+    "location": {
+      "city": null,
+      "state": null,
+      "district": null,
+      "locality": null,
+      "venue": null,
+      "pincode": null,
+      "confidence": 0.0
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "9092291528",
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 7,
+    "signal_details": [
+      "hiring:hiring (+2)",
+      "vacancy:vacancy (+2)",
+      "application:apply (+1)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_02.jpg",
+    "image_hash": "b57a6a95454a1fc8",
+    "source_url": null,
+    "raw_ocr_text": "WEARE\nHIRING!\nJOBVACANCY\nJOINOURTEAM&\nBUILDYOURCAREERWITHUS!\nPOSITION\nOFFICESTAFF\nWHYJOINUS?\nLOCATION\nTraining Provided\nCHENNAITAMBARAM\nFastCareerGrowth\nSALARY\n25.000-35000\nWeeklyOff\nPERMONTH\nPermanentRole\nELIGIBILITY\nMALE/FEMALE\nFriendlyWork\nEnvironment\nSHIFT\nGENERALSHIFT\n100+\nVACANCIES\nAVAILABLE\nAPPLYTODAY!\nCALL/WHATSAPP\n9092291528\nSHAREYOURRESUME\nSENDYOURRESUMEONWHATSAPP"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "DIRECT-IN-DIRECT POWERTECH LLP",
+      "confidence": 1.0,
+      "canonical": "DIRECT-IN-DIRECT POWERTECH LLP",
+      "detection_method": "mca_header_fuzzy_high"
+    },
+    "roles": [],
+    "location": {
+      "city": null,
+      "state": null,
+      "district": null,
+      "locality": null,
+      "venue": null,
+      "pincode": null,
+      "confidence": 0.0
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": null,
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 13,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "interview:interview (+3)",
+      "hiring:hiring (+2)",
+      "application:apply (+1)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_03.jpg",
+    "image_hash": "c51a1bef3d316264",
+    "source_url": null,
+    "raw_ocr_text": "DIRECT\nWALK-INDRIVE\nNOAPPLYLINK\nACCESS\nHEALTHCARE\nHiring\nCHENNAILOCATION\nEVERYSATURDAY\n9:00AMT0\nWALK-ININTERVIEW\n2:00PM\nEVERYSATURDAY\nWeareHiring\nWe are conducting\nWalk-inInterviews\nMEDICALCODING\neverySaturdayfrom\n9:00.AMto2:00PM\nNONCERTIFIED/FRESHERS\nELIGIBILITY:\nLife Science graduetes\nSaveyour\nModical Coding\nBringacopyof\nInterviewwillbe\nyourupdated\nUmeB\nNonCertified/Fresher\nconducted\nWakn\nresume.\non the spot.\ndrecty\nFRESHERSWELCOME!\nlWelockfowadte-mertorgyoa!\nGREAT CPPORTUNITY\nDIRECTWALK-INDRIVE\nJOINACCESS\nTOKICKSTARTYOUR\nHEALTHCARE\nCAREERWTHUS\nNOAPPLYLINK\nTODAYE★\nINTERESTEDCANDIDATESCANCOMMENTDOWN\nBELOWTHERLOCATION.IWILLSHAREYOUTHEDEYALS"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Executive",
+    "company": {
+      "name": "ZUPPA HOSPITALITY PRIVATE LIMITED",
+      "confidence": 0.99,
+      "canonical": "ZUPPA HOSPITALITY PRIVATE LIMITED",
+      "detection_method": "email_domain_mca"
+    },
+    "roles": [
+      {
+        "name": "Executive",
+        "canonical": "Production Operator / Executive",
+        "category": "Production & Operations",
+        "sector": "Manufacturing & Pharma",
+        "confidence": 0.92
+      }
+    ],
+    "location": {
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "locality": null,
+      "venue": null,
+      "pincode": "600032",
+      "confidence": 0.95
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": null,
+    "contact_email": "career@zuppa.lo",
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 17,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "interview:interview (+3)",
+      "hiring:hiring (+2)",
+      "application:apply (+1)",
+      "entity:role (+2)",
+      "entity:location (+2)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_04.jpg",
+    "image_hash": "ce5a00aa9bd4de55",
+    "source_url": null,
+    "raw_ocr_text": "pddnz\nSTEPIN\nTODAY\nOEO NAVIGATION\nSHAPEYOUR\nTOMORROW\nWALK-IN\nINTERVIEW\nWEAREHIRING!\nACCOUNT\nEXECUTIVE\nCHENNAI\nCAREERRE-ENTRY\nExperiencec0-2years\nOPPORTUNITY\nWonen returning to work\nafter.aCarerbreak are\nfidde cs pafieincou\nJoinZuppaGeoNavigationandbepartofs\ngrewingteamthatveluesyourtalent\nWHATWE'RELOOKINGFOR\nWALK-INDETAILS\nBasicknowledge of Tally\nDATE\nandaccounting\n31AUGUSTTO\n5SEPTEMBER2026\nUnderstandingofbookkeeping\nand day-te-day accounting\nTIME\n2:00PMT05:00PM\nGoodeomimunication and\nattention to detail\nBasic MS Excel knowledge\nVENUE\n4th Floor, Polyhose Towers,\nFresberswithrelevant\nAnna Salal, Guindy.\nknowledge can apply\nChennat-600032\nWALKINWITHYOUR\nUPDATEDRESUME\nGournexd oppenioily ie wiaitirng\nFORAPPLICATIONS\nTAKETHEFIRSTSTEP\nTOWARDSABRIGHTERFUTUREI\ncareer@zuppa.lo\nFOLLOWUSFORMOREJOBOPPORTUNITIES!"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "AIRTEL LIMITED",
+      "confidence": 0.99,
+      "canonical": "AIRTEL LIMITED",
+      "detection_method": "email_domain_mca"
+    },
+    "roles": [],
+    "location": {
+      "city": null,
+      "state": null,
+      "district": null,
+      "locality": null,
+      "venue": null,
+      "pincode": "147844",
+      "confidence": 0.6
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "7092236434",
+    "contact_email": "a_vijaykumar.r1@airtel.com",
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 10,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "vacancy:vacancies (+2)",
+      "application:apply (+1)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_05.jpg",
+    "image_hash": "cfd810af74551732",
+    "source_url": null,
+    "raw_ocr_text": "DIRECT\nTrueHirelndia\nWALK-INDRIVE\nCanicfogTeetwsCae\nNOAPPLYLINK\nairtel\nPairtel\nWALKIN\nDRIVE\nairtel\nFOR\nACCOUNTMANAGERROLE\nB2BFIELDSALES\nSALARY PACKAGE:\nEDUCATION:\nEXPERIENCE\n225-6.5\nGRADUATE\n1-6YEARS\nVACANCIES\nLACS P.A\nTIME&DATE\nCONTACT\n04THSEP\nVIJAYKUMAR\n9.30AM-5.30PM\n7092236434\nVENUE\nInterestedcandidates can\nBharti Airtel Ltd,\nsharetheirupdated resumeat\n42/147844/146SanthonHighRoad\n&RararyChurchBood\na_vijaykumar.R1@airtel.com\noo.ta Santhone.Churth,\norcan contact\nMylpore,Chemai\nHRVijaykumar-7092236434\nTaminsdi600004\nDIRECTWALK-INDRIVE-NOAPPLYLINK\nBEPARTOF\nWALK-IN\nON\nGREATCAREER\nREGISTRATION\nAWINNING\nDIRECTLY\nREQUIRED\nOPPORTUNITY\nTEAM\nCOMEPREPARED,WALKIN&KICKSTARTYOURCAREERWITHAIRTEL!"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "MEGA (INDIA) LTD",
+      "confidence": 1.0,
+      "canonical": "MEGA (INDIA) LTD",
+      "detection_method": "mca_header_exact"
+    },
+    "roles": [],
+    "location": {
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "locality": null,
+      "venue": null,
+      "pincode": "600063",
+      "confidence": 0.95
+    },
+    "date": "2026-08-31",
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": null,
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 14,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "interview:interview (+3)",
+      "entity:location (+2)",
+      "entity:company (+2)",
+      "entity:datetime (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_06.jpg",
+    "image_hash": "bb9c6cc56cc14b62",
+    "source_url": null,
+    "raw_ocr_text": "ITJOBCONNECT\nNEWWALK-INALERT!\nCOSNECTINSTALENT, CREATIRG FUTUBLS\nMEGA\nWALK-IN DRIVE\nSUTHERLAND\nSUTHERLAND\nFRESHERS\nGRADUATEOR12THPASS\nINTERNATIONALVOICE&NON-VOICEPROCESSES\nComfortablewith\nNightRotational Shifts\nWALK-INDATES\nVENUE\n683\nINTERVIEWPROCESS\nAlGreundt floer\n31stAugust-\nSuthertand Global Services,\nHRRound\n3rdSeptember\nSeiram Gateway Office Parks\nAssessmont\nPerungalathu,\n11.30AM3.30PM\nChennai-600063\nManager Round\nELIGIBILITY\nROLE\nEMPLOYMENTTYPE\nCustomer Success Astociste\nCustomer\nFull Tima,Permanent\nAnyGraduationer12thPass\nNOUSTRYTYPE\nEDUCATION\nFresherserewelcome\nBFM/BPO\nGradustion Not Reqired\nComfortable with night rotational\nDEPARTMENT\nshifts&rotationalweek-offs\nKEYSKILLS\n818\nComfortablewiththerequiredshift\nCustomer Success,\nSkilis highightod with\nService&Operations\nand joining timeline\nere preferred keyskills.\nINTERESTED?\nWe will DM you the\nCOMMENT\"CONNECT\"\ncomplete role information\nBELOWTHISPOST!\nand walk-in details.\nDAIRLY JOB\nVERIFIEDJ0B\nEXCLUSIVEJOBS\nGROWYOUR\nUPDATES\nOPPORTUNITIES\nFORYOU\nCAREER"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "SAINI GROUP OF COMPANIES PRIVATE LIMITED",
+      "confidence": 0.867,
+      "canonical": "SAINI GROUP OF COMPANIES PRIVATE LIMITED",
+      "detection_method": "mca_header_fuzzy_medium"
+    },
+    "roles": [],
+    "location": {
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "district": "Chennai",
+      "locality": null,
+      "venue": null,
+      "pincode": "600006",
+      "confidence": 0.95
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "9566191691",
+    "contact_email": "talentacquisition@snjdpl.com",
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 12,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "hiring:hiring (+2)",
+      "application:apply (+1)",
+      "entity:location (+2)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_08.jpg",
+    "image_hash": "b15b6d1550ad12ed",
+    "source_url": null,
+    "raw_ocr_text": "SNJ Group of Companies Hiring\nCUSTOMER CARE EXECUTIVES\nEXECUTIVES\nJob Locations: SNJ Head Office, No.72, Greams Road, Thousand\nLights, Chennai- 600006\nEligibility:Any Degree/Diploma with or without experience in\nCustomer care/Tele calling/Voiceprocessingexperience\nMandatorySkills:TeluguSpeakingSkills\nApplyto:talentacquisition@snjdpl.com\nWhatsapp your Resume to: 95661 91691\nWalk-in-lnterview:01.09.2026 (Tuesday)at SNJHead Office\nbetween11.00amand5.00pm"
+  },
+  {
+    "is_job": true,
+    "job_type": "walk_in_interview",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "WEARE INDIA PRIVATE LIMITED",
+      "confidence": 1.0,
+      "canonical": "WEARE INDIA PRIVATE LIMITED",
+      "detection_method": "mca_header_exact"
+    },
+    "roles": [],
+    "location": {
+      "city": null,
+      "state": null,
+      "district": null,
+      "locality": null,
+      "venue": null,
+      "pincode": null,
+      "confidence": 0.0
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "8015371164",
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 12,
+    "signal_details": [
+      "walk_in:walk-in (+5)",
+      "hiring:hiring (+2)",
+      "vacancy:vacancy (+2)",
+      "application:apply (+1)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_09.jpg",
+    "image_hash": "aa4204bc17bf7b68",
+    "source_url": null,
+    "raw_ocr_text": "WEARE\nHIRING!\nJOINOURTEAM-GROWYOURCAREER\nIMMEDIATE\nJOINERS\nPREFERRED!\nPOSITIONSOPEN\nHUBASSISTANT\nSORTER\nTL(TEAMLEADER)\n(Fresheralsocanapply)\n(Fresher also can apply)\n(Must have experience\n(Musthave experience\n(Musthaveexperience\nin Hub)\nn Hub)\nMALE\nFRESHER\nVACANCY\nNOTA\nCANDIDATES\nALSO CAN\nACROSS\nTARGET\nONLY\nAPPLY\nCHENNAL\naor\n1600018000\nSALARY\n(TAKEHOME)\nSHIETTIMNGS\nAGELIMIT\nREQUIREMENTS\nMORNING SHIFT\n18-35\nMusthave:experienceinHub\n5.00AMTO2.00PM\n(forallpositions)\nEVENINGSHIFT\nYEARS\nOFresheralso canapply\n(For Hub Assistant&Sortar)\n3.00PMT011.00P.M\nIMMEDIATEJOINERSPREFERRED!\nINTERESTED?\n8015371164\nCONTACTHR\nOVERALLCHENNAIVACANCYWALK-IN/DIRECTJOINING"
+  },
+  {
+    "is_job": true,
+    "job_type": "direct_hiring",
+    "title": "Job Opportunity",
+    "company": {
+      "name": "Jobvacancy",
+      "confidence": 0.75,
+      "canonical": null,
+      "detection_method": "bounding_box_header"
+    },
+    "roles": [],
+    "location": {
+      "city": null,
+      "state": null,
+      "district": null,
+      "locality": null,
+      "venue": null,
+      "pincode": null,
+      "confidence": 0.0
+    },
+    "date": null,
+    "end_date": null,
+    "time": {
+      "start": null,
+      "end": null
+    },
+    "contact_phone": "9092291528",
+    "contact_email": null,
+    "apply_url": null,
+    "qr": {
+      "found": false,
+      "payload_type": null,
+      "raw_data": null,
+      "url": null,
+      "phone": null,
+      "email": null
+    },
+    "confidence": 0.85,
+    "signal_score": 7,
+    "signal_details": [
+      "hiring:hiring (+2)",
+      "vacancy:vacancy (+2)",
+      "application:apply (+1)",
+      "entity:company (+2)"
+    ],
+    "image_path": "downloaded_walkin_images\\chennai_walk_in_interview_20260831_10.jpg",
+    "image_hash": "bff67085043a5707",
+    "source_url": null,
+    "raw_ocr_text": "WE ARE\nHIRING!\nJOBVACANCY\nJoinourteamand\nWHYJOINUS?\nbuildyourcareerwithus!\n>>>\nPOSITION\nOFFICESTAFF\nTrainingProvided\nLOCATION\nFastCareerGrowth\nCHENNAITAMBARAM\nWeeklyOff\nSALARY\n买25.000买35000\nPermanentRole\n/MONTH\nELIGIBILITY\nFriendly Work\nMALE/FEMALE\nEnvironment\nSHIFT\nGENERALSHIFT\n100+\nATTRACTIVESALARY\n25000-35.000\nVACANCIES\nAVAILABLE\nPERMONTH\nAPPLY\nTODAY!\nCALLWHATSAPP\n9092291528\nLIMITEDSEATS!\nSHAREYOURRESUME\nSENDYOURRESUMEONWHATSAPP"
+  }
+]
