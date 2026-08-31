@@ -19,13 +19,13 @@ class DateTimeDetector:
 
     # Date range patterns (e.g. "28th to 30th August 2026", "28 - 30 Aug", "28th & 29th Aug")
     DATE_RANGE_REGEX = re.compile(
-        r'\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:to|-|&|and)\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s+(\d{4}))?\b',
+        r'\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:to|-|&|and)\s*(\d{1,2})(?:st|nd|rd|th)?\s*([A-Za-z]{3,9})(?:\s*(\d{4}))?\b',
         re.IGNORECASE
     )
 
-    # Single date patterns (e.g. "29th August 2026", "29 Aug", "29-08-2026", "29/08/2026")
+    # Single date patterns (e.g. "29th August 2026", "29 Aug", "29Aug2026", "29-08-2026", "29/08/2026")
     SINGLE_DATE_WORD_REGEX = re.compile(
-        r'\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s+(\d{4}))?\b',
+        r'\b(\d{1,2})(?:st|nd|rd|th)?\s*([A-Za-z]{3,9})(?:\s*(\d{4}))?\b',
         re.IGNORECASE
     )
     SINGLE_DATE_NUMERIC_REGEX = re.compile(

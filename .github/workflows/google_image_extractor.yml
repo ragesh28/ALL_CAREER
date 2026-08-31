@@ -1,0 +1,55 @@
+name: Google image Extractor
+
+on:
+  workflow_dispatch:     # Manual trigger anytime
+  schedule:
+    - cron: '30 22 * * *'  # 4:00 AM IST (10:30 PM UTC)
+
+jobs:
+  extract-google-walkins:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360   # 6-hour GitHub Actions execution limit
+
+    steps:
+      # ── 1. Checkout Repository ──────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      # ── 2. Setup Python ────────────────────────────────────────────────
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ── 3. Install OCR, Computer Vision & Playwright Dependencies ──────
+      - name: Install Python Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install playwright rapidocr-onnxruntime opencv-python-headless aiohttp aiofiles rapidfuzz pyzbar requests
+          playwright install --with-deps chromium
+
+      # ── 4. Reassemble MCA Company Master Database from 44MB Chunks ─────
+      - name: Reassemble Company Master Database
+        run: |
+          python scripts/split_company_db.py reassemble
+
+      # ── 5. Run 50-City Google Image Walk-in Scraper & OCR Pipeline ─────
+      - name: Run Google Image Extractor Pipeline
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python -u scrape_google_walkin_images.py
+
+      # ── 6. Commit & Push Scraped Walk-in Jobs & Checkpoint ─────────────
+      - name: Commit Scraped Walk-in Jobs & Progress Checkpoint
+        if: always()
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add scraped_image_walkin_jobs.json data/walkin_scrape_progress.json || true
+          git diff --cached --quiet || git commit -m "feat(walkin): update google image walk-in jobs & progress [skip ci]"
+          git pull --rebase -X theirs --autostash origin main || true
+          git push origin main || echo "Push skipped or already up-to-date"

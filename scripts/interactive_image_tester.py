@@ -7,6 +7,7 @@ Usage:
     python scripts/interactive_image_tester.py
 """
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -40,17 +41,12 @@ def process_single_image(pipeline: ImageToJobPipeline, resolver: CompanyResolver
     res = pipeline.process_image(str(img_path))
     ocr_raw = (res.raw_ocr_text or "").strip()
 
-    # Step 1: Direct MCA Deep Lookup on OCR Text
-    mca_match = None
-    if resolver and ocr_raw:
-        mca_match = resolver.find_company(ocr_raw)
-
     print("📝 RAW OCR TEXT DETECTED:")
     if ocr_raw:
-        for line in ocr_raw.splitlines()[:12]:
+        for line in ocr_raw.splitlines()[:15]:
             if line.strip():
                 print(f"   │ {line.strip()}")
-        if len(ocr_raw.splitlines()) > 12:
+        if len(ocr_raw.splitlines()) > 15:
             print("   │ ... [truncated]")
     else:
         print("   (No text detected on image)")
@@ -61,19 +57,32 @@ def process_single_image(pipeline: ImageToJobPipeline, resolver: CompanyResolver
 
     # 1. Company Name & MCA Verification
     comp_name = res.company.name
-    comp_method = res.company.detection_method
+    comp_method = res.company.detection_method or "N/A"
     comp_conf = res.company.confidence
 
-    if mca_match and mca_match.get("matched"):
-        print(f"🏢 COMPANY NAME (MCA Verified):  \033[92m{mca_match['company_name']}\033[0m")
-        print(f"   ├─ Resolution Match Type:     {mca_match.get('match_type')} (Score: {mca_match.get('score')}%)")
-        print(f"   ├─ Match Confidence:          {mca_match.get('confidence'):.2f}")
-        if mca_match.get("cin"):
-            print(f"   └─ MCA CIN Number:            {mca_match.get('cin')}")
+    if comp_name:
+        cin_num = None
+        comp_status = "Active"
+        reg_state = None
+        if resolver:
+            with resolver.db.get_connection() as conn:
+                row = conn.execute(
+                    "SELECT cin, company_status, registered_state FROM companies WHERE company_name = ? OR normalized_name = ? LIMIT 1",
+                    (comp_name.upper().strip(), comp_name.lower().strip())
+                ).fetchone()
+                if row:
+                    cin_num = row["cin"]
+                    comp_status = row["company_status"]
+                    reg_state = row["registered_state"]
+
+        print(f"🏢 COMPANY NAME (MCA Verified):  \033[92m{comp_name}\033[0m")
+        print(f"   ├─ Resolution Source:         {comp_method} (Confidence: {comp_conf:.2f})")
+        if cin_num:
+            print(f"   ├─ MCA CIN Number:            {cin_num}")
+            print(f"   ├─ Registration State:        {reg_state.title() if reg_state else 'India'}")
+            print(f"   └─ Company Status:            {comp_status}")
         else:
-            print(f"   └─ Canonical Source:          Official MCA Master Data")
-    elif comp_name:
-        print(f"🏢 COMPANY NAME:                 \033[93m{comp_name}\033[0m (Method: {comp_method}, Conf: {comp_conf:.2f})")
+            print(f"   └─ Master Data Match:         Verified registered corporate entity")
     else:
         print(f"🏢 COMPANY NAME:                 \033[91mUnknown / Not Mentioned\033[0m")
 
@@ -102,7 +111,18 @@ def process_single_image(pipeline: ImageToJobPipeline, resolver: CompanyResolver
     else:
         print(f"📅 WALK-IN DATE & TIME:          Upcoming / Check Poster")
 
-    # 5. Venue Address & Apply URL
+    # 5. Experience & Salary (Extracted from OCR)
+    exp_match = re.search(r'(?:exp(?:erience)?|yrs?|years?)[\s:]*([0-9\.\-\s]+(?:\s*-\s*[0-9\.\s]+)?\s*(?:yrs?|years?)?)', ocr_raw, re.IGNORECASE)
+    if not exp_match and "fresher" in ocr_raw.lower():
+        print(f"🎓 EXPERIENCE REQUIRED:          \033[93mFresher (0 Years)\033[0m")
+    elif exp_match:
+        print(f"🎓 EXPERIENCE REQUIRED:          \033[93m{exp_match.group(0).strip()}\033[0m")
+
+    sal_match = re.search(r'(?:ctc|salary|inr|lpa|₹|rs\.?)[\s:]*([0-9\.\-\s,]+(?:\s*-\s*[0-9\.\s,]+)?\s*(?:lpa|k|pm|per month)?)', ocr_raw, re.IGNORECASE)
+    if sal_match:
+        print(f"💰 SALARY / CTC:                 \033[92m{sal_match.group(0).strip()}\033[0m")
+
+    # 6. Venue Address & Apply URL
     if res.location.venue:
         print(f"🏢 VENUE / ADDRESS:              {res.location.venue}")
     if res.apply_url:

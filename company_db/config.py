@@ -10,7 +10,10 @@ except ImportError:
 # ── Paths ──
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
-DEFAULT_DB_PATH = Path(os.environ.get("COMPANY_DB_PATH", str(DATA_DIR / "company_master.db")))
+NAMES_DB_PATH = DATA_DIR / "company_names.db"
+MASTER_DB_PATH = DATA_DIR / "company_master.db"
+# Use company_master.db for full MCA resolution (or fallback to company_names.db)
+DEFAULT_DB_PATH = Path(os.environ.get("COMPANY_DB_PATH", str(MASTER_DB_PATH if MASTER_DB_PATH.exists() else NAMES_DB_PATH)))
 DEFAULT_ALIASES_PATH = DATA_DIR / "company_aliases.json"
 DEFAULT_PROGRESS_PATH = DATA_DIR / "mca_download_progress.json"
 

@@ -699,6 +699,33 @@
             opacity: 1;
         }
 
+        .flyer-source-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            z-index: 2;
+        }
+
+        .flyer-source-btn:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+        }
+
         .job-card:hover {
             border-color: rgba(52, 211, 153, 0.18);
             transform: translateY(-4px);
@@ -1506,6 +1533,7 @@
             { id: 'freshersworld', label: 'FreshersWorld', logo: 'logos/portals/freshersworld.ico' },
             { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
             { id: 'telegram_post', label: 'Telegram Post', logo: 'logos/portals/telegram.svg' },
+            { id: 'google images', label: 'Google Images', logo: 'https://www.google.com/favicon.ico' },
             { id: 'other', label: 'Other Sources', logo: '' },
         ];
 
@@ -1713,7 +1741,10 @@
             'apna': 'logos/portals/apna.png', 'freshersworld': 'logos/portals/freshersworld.ico',
             'telegram': 'logos/portals/telegram.svg',
             'telegram_message': 'logos/portals/telegram.svg',
-            'telegram_post': 'logos/portals/telegram.svg', 'other': '',
+            'telegram_post': 'logos/portals/telegram.svg',
+            'google images': 'https://www.google.com/favicon.ico',
+            'google_images': 'https://www.google.com/favicon.ico',
+            'other': '',
         };
 
         // ══════════════════════════════════════════════
@@ -2585,6 +2616,8 @@
                 const isMailto = url.startsWith('mailto:') || Boolean(contactEmail && !url.startsWith('http'));
                 const phone = job.contact_phone || (url.startsWith('tel:') ? url.replace('tel:', '') : '');
                 const telegramUrl = job.telegram_url || (url.includes('t.me') ? url : '');
+                const flyerUrl = job.flyer_image_url || job.raw_flyer_src || (source.includes('google') ? url : '');
+                const flyerBadgeHtml = flyerUrl ? `<a href="${esc(flyerUrl)}" target="_blank" class="flyer-source-btn" title="View original walk-in flyer image">🖼️ Source</a>` : '';
                 
                 const source = (job.source || '').toLowerCase();
                 const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
@@ -2620,8 +2653,13 @@
                     }
                 }
 
+                if (flyerUrl) {
+                    applyButtonsHtml += `<a href="${esc(flyerUrl)}" target="_blank" class="apply-btn" style="background:linear-gradient(135deg, #0284c7, #0369a1)" title="View Original Image Flyer">🖼️ Flyer</a>`;
+                }
+
                 return `
             <div class="job-card" style="animation-delay:${i * 0.025}s">
+                ${flyerBadgeHtml}
                 <div class="card-top">
                     <div class="logo-box">
                         <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">

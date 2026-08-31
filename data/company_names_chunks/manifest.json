@@ -1,0 +1,16 @@
+{
+  "source_filename": "company_names.db",
+  "total_size_bytes": 317685760,
+  "sha256": "bb0a0e2f62b067f4acbc4fdd8f78645807564a23d663caa994dc47286058e8d2",
+  "chunk_count": 7,
+  "chunk_size_bytes": 46137344,
+  "chunks": [
+    "company_names.part00",
+    "company_names.part01",
+    "company_names.part02",
+    "company_names.part03",
+    "company_names.part04",
+    "company_names.part05",
+    "company_names.part06"
+  ]
+}

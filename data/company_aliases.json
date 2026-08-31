@@ -1,5 +1,26 @@
 [
   {
+    "canonical": "TATA AIG GENERAL INSURANCE COMPANY LIMITED",
+    "aliases": ["tata aig", "tata aig insurance", "tata aig general insurance", "tataaig", "tata-aig"],
+    "brand_name": "TATA AIG",
+    "cin": "U85110MH2000PLC128425",
+    "source": "curated"
+  },
+  {
+    "canonical": "WHITEBLUE CLOUD SERVICES PRIVATE LIMITED",
+    "aliases": ["whiteblue", "whiteblue cloud", "white blue", "whiteblue.com"],
+    "brand_name": "WhiteBlue",
+    "cin": "U62013TG2020PTC140865",
+    "source": "curated"
+  },
+  {
+    "canonical": "JAYVIK FORESIGHT INNOVATIONS AND SOLUTIONS PRIVATE LIMITED",
+    "aliases": ["jayvik labs", "jayviklabs", "jayvik", "jayvik labs online"],
+    "brand_name": "Jayvik Labs",
+    "cin": "U51501MH2010PTC203037",
+    "source": "curated"
+  },
+  {
     "canonical": "Tata Consultancy Services Limited",
     "aliases": ["tcs", "tata consultancy services", "tata consultancy", "tcs limited", "tcs ltd"],
     "brand_name": "TCS",

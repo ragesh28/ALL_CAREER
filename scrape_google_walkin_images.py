@@ -1,46 +1,114 @@
 """
 ALL_CAREER — Google Images Walk-in Extraction Workflow.
 Combines:
-1. Google Images (glimcrawl / Playwright) with 24-hour filter (tbs=qdr:d)
-2. Production Image-to-Job Pipeline (Multi-pass OCR, Taxonomy, Signal Scoring, Multi-signal Company Detection, QR Decoding)
-3. Structured Output & Database Ingestion
+1. 50-City Multi-Tier Scraping (Top 10 Metros @ 100 images, Next 40 Cities @ 10 images)
+2. 5-Hour 50-Minute Watchdog Timer with Checkpoint Resuming
+3. Memory-Streamed RapidOCR + MCA Company Resolution + QR Decoding
+4. Zero-Storage Image URL Linking for UI Flyer Viewers
 """
 import os
 import sys
 import json
+import time
 import asyncio
-from datetime import datetime
-from image_pipeline.pipeline import ImageToJobPipeline
-from playwright.async_api import async_playwright
+import hashlib
+import aiohttp
+from pathlib import Path
+from datetime import datetime, timezone
 from urllib.parse import quote_plus
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-SEARCH_QUERIES = [
-    "walkin interview chennai",
-    "walkin interview bangalore",
-    "walkin interview hyderabad",
-    "walkin drive pune",
-    "walk in interview mumbai",
-    "we are hiring drive fresher experience india"
+# Ensure root is in path
+ROOT_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT_DIR))
+
+from image_pipeline.pipeline import ImageToJobPipeline
+from playwright.async_api import async_playwright
+
+# ── 50 Indian Cities Target Matrix ──
+TOP_10_CITIES = [
+    "chennai", "bengaluru", "hyderabad", "pune", "mumbai",
+    "delhi", "noida", "gurgaon", "kolkata", "ahmedabad"
 ]
 
+NEXT_40_CITIES = [
+    "coimbatore", "madurai", "trichy", "salem", "kochi",
+    "trivandrum", "kozhikode", "visakhapatnam", "vijayawada", "guntur",
+    "tirupati", "mysuru", "hubli", "mangalore", "jaipur",
+    "indore", "bhopal", "chandigarh", "mohali", "lucknow",
+    "kanpur", "varanasi", "agra", "patna", "bhubaneswar",
+    "cuttack", "nagpur", "nashik", "aurangabad", "surat",
+    "vadodara", "rajkot", "ranchi", "jamshedpur", "raipur",
+    "dehradun", "guwahati", "gwalior", "ludhiana", "vellore"
+]
 
-async def scrape_google_images_for_query(
+PROGRESS_FILE = ROOT_DIR / "data" / "walkin_scrape_progress.json"
+OUTPUT_JOBS_FILE = ROOT_DIR / "scraped_image_walkin_jobs.json"
+MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes watchdog limit
+
+
+def load_progress() -> dict:
+    """Load persistent scraper progress checkpoint."""
+    if PROGRESS_FILE.exists():
+        try:
+            with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {
+        "last_run_timestamp": None,
+        "completed_cities": [],
+        "city_cursor": 0,
+        "total_jobs_scraped": 0
+    }
+
+
+def save_progress(progress_data: dict):
+    """Save persistent scraper progress checkpoint."""
+    PROGRESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
+        json.dump(progress_data, f, indent=2, ensure_ascii=False)
+
+
+def load_existing_jobs() -> list:
+    """Load existing scraped jobs for deduplication."""
+    if OUTPUT_JOBS_FILE.exists():
+        try:
+            with open(OUTPUT_JOBS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return []
+
+
+def save_jobs(jobs: list):
+    """Save accumulated extracted jobs."""
+    OUTPUT_JOBS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_JOBS_FILE, "w", encoding="utf-8") as f:
+        json.dump(jobs, f, indent=2, ensure_ascii=False)
+
+
+async def scrape_google_images_for_city(
     page,
-    query: str,
-    save_dir: str,
-    max_images: int = 15
+    city: str,
+    max_images: int = 100,
+    last24h: bool = True
 ) -> list:
-    """Scrape and download high-resolution flyer images for a given query (last 24 hours)."""
-    search_url = f"https://www.google.com/search?q={quote_plus(query)}&udm=2&tbs=qdr:d"
-    os.makedirs(save_dir, exist_ok=True)
-    
-    print(f"\n🔍 Searching Google Images for: '{query}' (Last 24 Hours)...")
-    await page.goto(search_url, wait_until="domcontentloaded")
+    """Scrape flyer image URLs and byte buffers for a given city query."""
+    query = f"{city} walk in interview"
+    tbs_param = "&tbs=qdr:d" if last24h else ""
+    search_url = f"https://www.google.com/search?q={quote_plus(query)}&udm=2{tbs_param}"
+
+    print(f"\n🔍 Searching Google Images: '{query}' (Max: {max_images}, 24h Filter: {last24h})...")
+    try:
+        await page.goto(search_url, wait_until="domcontentloaded", timeout=25000)
+    except Exception as e:
+        print(f"⚠️ Page load warning for {city}: {e}")
+
     await asyncio.sleep(2)
 
-    # Handle consent button if present
+    # Dismiss Google cookie/consent overlays
     try:
         btn = await page.query_selector('button:has-text("Accept all"), button:has-text("I agree"), button:has-text("Stay signed out")')
         if btn:
@@ -49,162 +117,212 @@ async def scrape_google_images_for_query(
     except Exception:
         pass
 
-    # Scroll down to load images
-    for _ in range(4):
-        await page.mouse.wheel(0, 1000)
+    # Scroll down dynamically based on max_images
+    scroll_loops = min(15, max(4, max_images // 8))
+    for _ in range(scroll_loops):
+        await page.mouse.wheel(0, 1500)
         await asyncio.sleep(1)
 
     image_urls = await page.evaluate('''() => {
         const results = [];
         const seen = new Set();
-        const imgs = document.querySelectorAll('div#rso img, div[data-ved] img, img.YQ4gaf, div.H80Q8c img');
+        const imgs = document.querySelectorAll('img');
         for (const img of imgs) {
-            const src = img.src || img.getAttribute('data-src') || img.currentSrc;
+            const src = img.src || img.getAttribute('data-src') || img.getAttribute('src') || img.currentSrc;
             if (!src) continue;
-            if (src.includes('google.com/logos') || src.includes('favicon.ico') || src.includes('cleardot.gif')) continue;
-            if (!seen.has(src)) {
-                seen.add(src);
-                results.push(src);
+            if (src.includes('google.com/logos') || src.includes('favicon.ico') || src.includes('cleardot.gif') || src.includes('google_logo')) continue;
+            if (src.startsWith('data:image/') || src.startsWith('http')) {
+                if (!seen.has(src)) {
+                    seen.add(src);
+                    results.push(src);
+                }
             }
         }
         return results;
     }''')
 
-    print(f"📷 Found {len(image_urls)} flyer images on Google Images")
+    print(f"📷 Found {len(image_urls)} candidates on Google Images for '{city}'")
 
-    import aiohttp
-    import aiofiles
-
-    saved_paths = []
+    downloaded_images = []
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    
     async with aiohttp.ClientSession(headers=headers) as session:
-        count = 1
         for url in image_urls:
-            ext = "png" if ".png" in url.lower() else "webp" if ".webp" in url.lower() else "jpg"
-            clean_q = query.replace(" ", "_").replace("-", "_")
-            file_name = f"{clean_q}_{datetime.now().strftime('%Y%m%d')}_{count:02d}.{ext}"
-            file_path = os.path.join(save_dir, file_name)
-
             try:
                 if url.startswith("data:image/"):
                     import base64
                     header, data = url.split(",", 1)
-                    img_data = base64.b64decode(data)
-                    if len(img_data) > 1200:
-                        async with aiofiles.open(file_path, "wb") as f:
-                            await f.write(img_data)
-                        saved_paths.append(file_path)
-                        count += 1
+                    img_bytes = base64.b64decode(data)
+                    if len(img_bytes) >= 12000:
+                        downloaded_images.append({
+                            "url": url[:120] + "...[base64]",
+                            "raw_url": url,
+                            "bytes": img_bytes,
+                            "city": city
+                        })
                 else:
-                    async with session.get(url, timeout=aiohttp.ClientTimeout(total=12)) as resp:
+                    async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
                         if resp.status == 200:
                             content = await resp.read()
-                            if len(content) > 2000:
-                                async with aiofiles.open(file_path, "wb") as f:
-                                    await f.write(content)
-                                saved_paths.append(file_path)
-                                count += 1
+                            if len(content) >= 12000:
+                                downloaded_images.append({
+                                    "url": url,
+                                    "raw_url": url,
+                                    "bytes": content,
+                                    "city": city
+                                })
             except Exception:
-                pass
+                continue
 
-            if count > max_images:
+            if len(downloaded_images) >= max_images:
                 break
 
-    print(f"📥 Successfully downloaded {len(saved_paths)} images")
-    return saved_paths
+    print(f"📥 Successfully captured {len(downloaded_images)} high-res flyer buffers for '{city}'")
+    return downloaded_images
 
 
 async def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Google Images Walk-in Extraction Workflow")
-    parser.add_argument("--query", type=str, default="chennai walk in interview", help="Search query")
-    parser.add_argument("--last24h", action="store_true", default=True, help="Filter last 24 hours")
-    parser.add_argument("--max-images", type=int, default=6, help="Max images to download")
-    args = parser.parse_args()
+    start_time = time.time()
+    progress = load_progress()
+    existing_jobs = load_existing_jobs()
+    existing_hashes = {j.get("dedup_hash") for j in existing_jobs if j.get("dedup_hash")}
 
-    save_folder = "downloaded_walkin_images"
-    os.makedirs(save_folder, exist_ok=True)
+    print("=" * 80)
+    print(f"🚀 ALL_CAREER — 50-CITY GOOGLE IMAGE EXTRACTOR WORKFLOW")
+    print(f"📅 Start Time (UTC): {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"⏱️ Maximum Run Budget: 5 Hours 50 Minutes ({MAX_RUN_SECONDS}s)")
+    print(f"📊 Previously Scraped Jobs: {len(existing_jobs):,}")
+    print("=" * 80)
 
-    print("=" * 75)
-    print("🚀 ALL_CAREER — GOOGLE IMAGES WALK-IN EXTRACTION & MCA VALIDATION")
-    print(f"📅 Run Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"🔍 Target Query: '{args.query}' (Last 24h Filter: {args.last24h})")
-    print(f"📂 Image Cache: {os.path.abspath(save_folder)}")
-    print("=" * 75)
+    # Initialize OCR Pipeline
+    pipeline = ImageToJobPipeline(enable_ai_verification=True)
 
-    # 1. Download fresh images via Playwright
-    all_downloaded = []
+    # Build queue: Top 10 Metros (100 images) + Next 40 Cities (10 images)
+    city_queue = []
+    for c in TOP_10_CITIES:
+        city_queue.append({"city": c, "max_images": 100, "tier": "Tier-1"})
+    for c in NEXT_40_CITIES:
+        city_queue.append({"city": c, "max_images": 10, "tier": "Tier-2/3"})
+
+    # Checkpoint rotation cursor
+    start_cursor = progress.get("city_cursor", 0) % len(city_queue)
+    reordered_queue = city_queue[start_cursor:] + city_queue[:start_cursor]
+
+    new_jobs_count = 0
+    temp_dir = ROOT_DIR / "data" / "temp_ocr_buffers"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+
     async with async_playwright() as p:
         browser = await p.chromium.launch(
             headless=True,
-            args=["--disable-blink-features=AutomationControlled"]
+            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
         )
         context = await browser.new_context(
-            viewport={"width": 1280, "height": 800},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+            viewport={"width": 1440, "height": 900},
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
         )
         page = await context.new_page()
 
-        downloaded = await scrape_google_images_for_query(page, args.query, save_folder, max_images=args.max_images)
-        all_downloaded.extend(downloaded)
+        for idx, city_item in enumerate(reordered_queue):
+            elapsed = time.time() - start_time
+            if elapsed >= MAX_RUN_SECONDS:
+                print(f"\n⏳ Graceful Watchdog Triggered: 5h 50m reached ({elapsed:.1f}s). Checkpointing...")
+                progress["city_cursor"] = (start_cursor + idx) % len(city_queue)
+                break
+
+            city_name = city_item["city"]
+            max_imgs = city_item["max_images"]
+            tier = city_item["tier"]
+
+            print(f"\n{'='*25} [{idx+1}/{len(reordered_queue)}] {city_name.upper()} ({tier}) {'='*25}")
+
+            flyers = await scrape_google_images_for_city(page, city_name, max_images=max_imgs, last24h=True)
+
+            for f_idx, flyer in enumerate(flyers, 1):
+                # Write temp file for OCR
+                temp_img_path = temp_dir / f"temp_{idx}_{f_idx}.jpg"
+                try:
+                    with open(temp_img_path, "wb") as f:
+                        f.write(flyer["bytes"])
+
+                    # Process via RapidOCR + Taxonomy + MCA Resolver
+                    res = pipeline.process_image(str(temp_img_path))
+
+                    if res.is_job:
+                        # Generate unique dedup hash
+                        co_name = res.company.name or "Unknown"
+                        role_name = res.roles[0].name if res.roles else "Walk-in"
+                        hash_src = f"{co_name}_{role_name}_{res.date}_{res.contact_email}_{res.contact_phone}_{city_name}"
+                        dedup_hash = hashlib.sha256(hash_src.encode("utf-8")).hexdigest()[:16]
+
+                        if dedup_hash not in existing_hashes:
+                            existing_hashes.add(dedup_hash)
+
+                            # Format clean job record with direct web flyer image URL
+                            job_record = {
+                                "id": f"walkin_{dedup_hash}",
+                                "dedup_hash": dedup_hash,
+                                "source": "Google Images",
+                                "source_type": "Walk-in Interview Flyer",
+                                "company": co_name,
+                                "company_canonical": res.company.canonical or co_name,
+                                "company_confidence": res.company.confidence,
+                                "company_method": res.company.detection_method,
+                                "title": role_name if role_name != "Walk-in" else f"{co_name} Walk-in Drive",
+                                "roles": [r.name for r in res.roles],
+                                "location": res.location.city or city_name.title(),
+                                "state": res.location.state or "India",
+                                "venue": res.location.venue,
+                                "pincode": res.location.pincode,
+                                "date_posted": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                                "walkin_date": res.date,
+                                "walkin_time": f"{res.time.start or ''} - {res.time.end or ''}".strip(" -"),
+                                "experience": res.experience.raw_text if res.experience else "Fresher / Experienced",
+                                "salary": res.salary.raw_text if res.salary else "Competitive / Best in Industry",
+                                "contact_email": res.contact_email,
+                                "contact_phone": res.contact_phone,
+                                "apply_url": res.apply_url,
+                                "flyer_image_url": flyer["url"] if not flyer["url"].endswith("...[base64]") else None,
+                                "raw_flyer_src": flyer["raw_url"] if len(flyer["raw_url"]) < 500 else None,
+                                "qr_decoded": res.qr.raw_data if res.qr.found else None,
+                                "signal_score": res.signal_score,
+                                "confidence": res.confidence
+                            }
+
+                            existing_jobs.append(job_record)
+                            new_jobs_count += 1
+                            print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_name.title()}")
+
+                except Exception as e:
+                    print(f"  ⚠️ Extraction error on flyer {f_idx}: {e}")
+                finally:
+                    temp_img_path.unlink(missing_ok=True)
+
+            # Update checkpoint after each city
+            progress["city_cursor"] = (start_cursor + idx + 1) % len(city_queue)
+            progress["total_jobs_scraped"] = len(existing_jobs)
+            progress["last_run_timestamp"] = datetime.now(timezone.utc).isoformat()
+            save_progress(progress)
+            save_jobs(existing_jobs)
 
         await browser.close()
 
-    # 2. Run Image-to-Job Pipeline with MCA Master Data & OCR
-    print("\n" + "=" * 75)
-    print("🧠 RUNNING OCR, ROLE, LOCATION, & MCA COMPANY RESOLVER PIPELINE")
-    print("=" * 75)
+    # Clean temp dir
+    try:
+        for p in temp_dir.glob("*.jpg"):
+            p.unlink(missing_ok=True)
+        temp_dir.rmdir()
+    except Exception:
+        pass
 
-    pipeline = ImageToJobPipeline(enable_ai_verification=True)
-    extracted_jobs = []
-
-    for idx, img_path in enumerate(all_downloaded, 1):
-        print(f"\n{'='*30} [Image {idx}/{len(all_downloaded)}] {'='*30}")
-        print(f"📷 File: {os.path.basename(img_path)}")
-        res = pipeline.process_image(img_path)
-        
-        # Display extracted OCR preview
-        ocr_snippet = res.raw_ocr_text.strip().replace("\n", " ") if res.raw_ocr_text else "No text detected"
-        if len(ocr_snippet) > 160:
-            ocr_snippet = ocr_snippet[:160] + "..."
-        print(f"  📝 OCR Text: \"{ocr_snippet}\"")
-
-        if res.is_job:
-            co = res.company.name or "Unknown / Unnamed Company"
-            co_method = res.company.detection_method or "N/A"
-            co_conf = res.company.confidence
-            roles_str = ", ".join([r.name for r in res.roles[:3]]) if res.roles else "General Vacancy"
-            loc_str = f"{res.location.city or ''}{', ' + res.location.state if res.location.state else ''}".strip(", ") or "India"
-            dt_str = f"{res.date} ({res.time.start or ''} - {res.time.end or ''})" if res.date else "Upcoming"
-
-            print(f"  🎉 VALID JOB POSTER (Signal Score: {res.signal_score}, Conf: {res.confidence:.2f})")
-            print(f"     🏢 Company (MCA Verified): {co}")
-            print(f"        └─ Resolution Source:   {co_method} (Conf: {co_conf:.2f})")
-            print(f"     💼 Role/Designation:       {roles_str}")
-            print(f"     📍 Location / City:        {loc_str}")
-            print(f"     📅 Walk-in Date & Time:    {dt_str}")
-            if res.qr.found:
-                print(f"     📱 QR Code Decoded:        [{res.qr.payload_type}] {res.qr.raw_data}")
-            if res.contact_phone:
-                print(f"     📞 Phone Number:           {res.contact_phone}")
-            if res.contact_email:
-                print(f"     ✉️ Email Address:          {res.contact_email}")
-
-            extracted_jobs.append(res.to_dict())
-        else:
-            print(f"  ⏩ Non-job image / noise filtered out (Signal Score: {res.signal_score})")
-
-    # 3. Save Structured Extraction Output
-    output_file = "scraped_image_walkin_jobs.json"
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(extracted_jobs, f, indent=2, ensure_ascii=False)
-
-    print("\n" + "=" * 75)
-    print("📊 EXTRACTION SUMMARY")
-    print(f"   🖼️ Images Analyzed: {len(all_downloaded)}")
-    print(f"   ✅ Valid Jobs Extracted: {len(extracted_jobs)}")
-    print(f"   💾 Saved to: {os.path.abspath(output_file)}")
-    print("=" * 75)
+    total_time = time.time() - start_time
+    print("\n" + "=" * 80)
+    print(f"🏆 GOOGLE IMAGE EXTRACTOR RUN COMPLETE")
+    print(f"⏱️ Total Execution Time: {total_time / 60:.1f} minutes")
+    print(f"✨ New Walk-ins Added: {new_jobs_count}")
+    print(f"💾 Total Database Walk-ins: {len(existing_jobs):,}")
+    print(f"📁 Output Saved: {OUTPUT_JOBS_FILE}")
+    print("=" * 80)
 
 
 if __name__ == "__main__":

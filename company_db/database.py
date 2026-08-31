@@ -20,6 +20,17 @@ class CompanyDatabase:
     def __init__(self, db_path: Optional[str] = None):
         self.db_path = Path(db_path) if db_path else DEFAULT_DB_PATH
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Only auto-reassemble for the main company_names.db file if missing
+        if not self.db_path.exists() and self.db_path.name == "company_names.db":
+            chunks_dir = self.db_path.parent / "company_names_chunks"
+            if chunks_dir.exists() and list(chunks_dir.glob("company_names.part*")):
+                try:
+                    from scripts.split_company_db import reassemble_database
+                    reassemble_database(chunks_dir, self.db_path)
+                except Exception as e:
+                    print(f"⚠️ Auto-reassemble note: {e}")
+
         self.init_db()
 
     @contextmanager
@@ -41,8 +52,24 @@ class CompanyDatabase:
     def init_db(self):
         """Initialize tables, indexes, triggers, and seed metadata."""
         with self.get_connection() as conn:
-            conn.executescript(SCHEMA_SQL)
-            conn.executescript(TRIGGERS_SQL)
+            # Check existing tables and schema
+            tables = [t[0] for t in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+            if "companies" in tables:
+                cols = [c[1] for c in conn.execute("PRAGMA table_info(companies)").fetchall()]
+                if "company_name" in cols and "normalized_name" in cols:
+                    conn.executescript(TRIGGERS_SQL)
+            else:
+                conn.executescript(SCHEMA_SQL)
+                conn.executescript(TRIGGERS_SQL)
+            
+            # Ensure metadata table exists
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS metadata (
+                    key TEXT PRIMARY KEY,
+                    value TEXT NOT NULL,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
             
             # Set default metadata if not set
             conn.execute(
@@ -56,7 +83,10 @@ class CompanyDatabase:
             conn.commit()
 
         # Seed aliases if table is empty
-        self.seed_aliases_if_empty()
+        try:
+            self.seed_aliases_if_empty()
+        except Exception:
+            pass
 
     def seed_aliases_if_empty(self, aliases_path: Optional[Path] = None):
         """Seed brand aliases and canonical companies from JSON file if company_aliases table is empty."""
