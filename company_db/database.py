@@ -52,15 +52,12 @@ class CompanyDatabase:
     def init_db(self):
         """Initialize tables, indexes, triggers, and seed metadata."""
         with self.get_connection() as conn:
-            # Check existing tables and schema
-            tables = [t[0] for t in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
-            if "companies" in tables:
-                cols = [c[1] for c in conn.execute("PRAGMA table_info(companies)").fetchall()]
-                if "company_name" in cols and "normalized_name" in cols:
-                    conn.executescript(TRIGGERS_SQL)
-            else:
-                conn.executescript(SCHEMA_SQL)
+            # Ensure all core tables (companies, company_aliases, metadata) and indexes exist
+            conn.executescript(SCHEMA_SQL)
+            try:
                 conn.executescript(TRIGGERS_SQL)
+            except Exception:
+                pass
             
             # Ensure metadata table exists
             conn.execute("""
@@ -231,10 +228,13 @@ class CompanyDatabase:
         LIMIT 1;
         """
         with self.get_connection() as conn:
-            cursor = conn.execute(sql, (norm_q,))
-            row = cursor.fetchone()
-            if row:
-                return dict(row)
+            try:
+                cursor = conn.execute(sql, (norm_q,))
+                row = cursor.fetchone()
+                if row:
+                    return dict(row)
+            except sqlite3.OperationalError:
+                pass
         return None
 
     def search_fts5(self, query_tokens: List[str], limit: int = FTS5_CANDIDATE_LIMIT) -> List[Dict[str, Any]]:
