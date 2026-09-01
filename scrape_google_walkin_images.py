@@ -96,12 +96,12 @@ def save_jobs(jobs: list):
 def fetch_bing_image_candidates_sync(city: str, max_count: int = 50) -> list:
     """Fetch high-res direct flyer image URLs from Bing search."""
     queries = [
-        f'"{city}" ("walk in interview" OR "walkin drive") flyer',
-        f'"{city}" "walk in interview" "hiring" poster',
-        f'"{city}" "walk-in interview" "experience" "salary"',
-        f'site:blogspot.com "{city}" "walk in interview"',
-        f'"{city}" "walk in interview" 2026',
-        f'"{city}" "walking interview" hiring'
+        f"walk in interview in {city} flyer poster",
+        f"urgent walk in interview {city} hiring poster",
+        f"walk in drive {city} recruitment poster",
+        f"{city} walking interview job vacancy flyer",
+        f"{city} walk in interview 2026 poster",
+        f"{city} walkin drive IT pharma engineering hiring"
     ]
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',

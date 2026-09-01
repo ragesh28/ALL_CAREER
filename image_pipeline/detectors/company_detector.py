@@ -110,6 +110,9 @@ class CompanyDetector:
             return True
         if any(low.startswith(g) for g in cls.GENERIC_START_BLACKLIST):
             return True
+        # Filter out non-Latin / non-ASCII CJK characters or unreadable OCR symbols
+        if re.search(r'[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af\u0400-\u04ff]', name):
+            return True
         # If phrase contains only numbers or generic symbols
         if not re.search(r'[a-zA-Z]', low):
             return True

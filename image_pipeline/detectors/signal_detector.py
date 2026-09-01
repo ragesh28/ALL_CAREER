@@ -14,15 +14,16 @@ JOB_SIGNALS = {
             "walk-in", "walk in", "walkin", "walk-in interview", "walk in interview",
             "walkin interview", "walk-in drive", "walk in drive", "walkin drive",
             "walking interview", "walking drive", "direct walkin", "walk-in-interview",
-            "spot offer", "spot offers", "selection drive", "recruitment drive"
+            "spot offer", "spot offers", "spot selection", "selection drive", "recruitment drive",
+            "mega walk-in", "mega walk in", "mega job fair", "job fair", "open drive"
         ]
     },
     "interview": {
         "score": 3,
         "keywords": [
-            "interview", "interviews", "face to face interview", "f2f interview",
+            "interview", "interviews", "face to face", "f2f interview",
             "virtual interview", "drive on", "interview scheduled", "interview venue",
-            "placement drive", "job fair", "mega job fair", "campus drive"
+            "placement drive", "written test", "technical round", "hr round", "venue", "timing"
         ]
     },
     "hiring": {
@@ -32,14 +33,22 @@ JOB_SIGNALS = {
             "urgent hiring", "join our team", "join the team", "career opportunity",
             "career opportunities", "job opportunity", "job openings", "job opening",
             "open positions", "immediate openings", "immediate opening", "hiring alert",
-            "wanted", "looking for", "invites applications", "now hiring"
+            "wanted", "looking for", "invites applications", "now hiring", "immediate joining"
         ]
     },
     "vacancy": {
         "score": 2,
         "keywords": [
             "vacancy", "vacancies", "multiple vacancies", "openings for", "positions open",
-            "requirements", "requirement", "job role", "job description"
+            "requirements", "requirement", "job role", "job description", "roles"
+        ]
+    },
+    "qualifications": {
+        "score": 2,
+        "keywords": [
+            "qualification", "qualifications", "eligibility", "experience", "fresher",
+            "freshers", "graduates", "diploma", "b.tech", "b.e", "salary", "ctc",
+            "take-home salary", "take home salary", "shift details"
         ]
     },
     "application": {
@@ -47,7 +56,7 @@ JOB_SIGNALS = {
         "keywords": [
             "apply now", "apply", "register now", "send resume", "share your resume",
             "share cv", "submit resume", "forward resume", "contact hr", "send your cv",
-            "mail resume", "whatsapp resume", "hr email", "contact us"
+            "mail resume", "whatsapp resume", "hr email", "contact us", "contact for registration"
         ]
     }
 }
@@ -72,14 +81,16 @@ class JobSignalDetector:
             return False, 0, []
 
         low_text = " " + text.lower() + " "
+        compact_text = low_text.replace(" ", "").replace("-", "").replace("\n", "").replace("_", "")
         total_score = 0
         matched_signals = []
 
-        # 1. Evaluate keyword groups
+        # 1. Evaluate keyword groups (standard & glued/compact)
         for signal_category, data in JOB_SIGNALS.items():
             category_score = data["score"]
             for kw in data["keywords"]:
-                if f" {kw} " in low_text or f"\n{kw}\n" in low_text or f"\n{kw} " in low_text or f" {kw}\n" in low_text or kw in low_text:
+                kw_compact = kw.replace(" ", "").replace("-", "")
+                if kw in low_text or (len(kw_compact) >= 5 and kw_compact in compact_text):
                     total_score += category_score
                     matched_signals.append(f"{signal_category}:{kw} (+{category_score})")
                     break  # Count each category once
