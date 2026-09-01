@@ -70,6 +70,10 @@ class JobExtractionResult(BaseModel):
     contact_email: Optional[str] = None
     apply_url: Optional[str] = None
     
+    # Qualifications, Experience & Salary
+    experience: Optional[str] = "Fresher / Experienced"
+    salary: Optional[str] = "Competitive / Best in Industry"
+    
     # QR & Verification Details
     qr: QRCodeResult = Field(default_factory=QRCodeResult)
     confidence: float = 0.0              # Overall extraction confidence (0.0 to 1.0)

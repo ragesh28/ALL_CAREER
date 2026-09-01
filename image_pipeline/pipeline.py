@@ -140,6 +140,14 @@ class ImageToJobPipeline:
         job_type = "walk_in_interview" if any("walk_in" in s for s in signal_details) else "direct_hiring"
         title = roles[0].name if roles else "Job Opportunity"
 
+        # Extract Experience
+        exp_match = re.search(r'\b(\d+\s*[-–to]+\s*\d+\s*(?:years?|yrs?)|(?:fresher|freshers)|\d+\+?\s*(?:years?|yrs?))\b', raw_ocr_text, re.IGNORECASE)
+        exp_text = exp_match.group(0) if exp_match else "Fresher / Experienced"
+
+        # Extract Salary
+        sal_match = re.search(r'\b((?:rs\.?|inr|₹)\s*[\d,.]+\s*(?:lpa|k|pm|per month|lakhs?|[-–to]+\s*[\d,.]+\s*(?:lpa|k|lakhs?))|[\d,.]+\s*[-–to]+\s*[\d,.]+\s*lpa)\b', raw_ocr_text, re.IGNORECASE)
+        sal_text = sal_match.group(0) if sal_match else "Competitive / Best in Industry"
+
         result = JobExtractionResult(
             is_job=is_candidate_job,
             job_type=job_type,
@@ -153,6 +161,8 @@ class ImageToJobPipeline:
             contact_phone=phone,
             contact_email=email,
             apply_url=apply_url,
+            experience=exp_text,
+            salary=sal_text,
             qr=qr_result,
             confidence=0.85 if is_candidate_job else 0.20,
             signal_score=signal_score,
