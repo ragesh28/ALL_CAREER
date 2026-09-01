@@ -18,6 +18,7 @@ import requests
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import quote_plus
+from typing import Optional, List, Dict, Set, Tuple, Any
 
 sys.stdout.reconfigure(encoding='utf-8')
 
