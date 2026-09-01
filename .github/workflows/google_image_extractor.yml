@@ -30,7 +30,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y libzbar0
           pip install --upgrade pip
-          pip install playwright rapidocr-onnxruntime opencv-python-headless aiohttp aiofiles rapidfuzz pyzbar requests pydantic pillow numpy
+          pip install playwright rapidocr-onnxruntime opencv-python-headless aiohttp aiofiles rapidfuzz pyzbar requests pydantic pillow numpy imagehash
           playwright install --with-deps chromium
 
       # ── 4. Reassemble MCA Company Master Database from 44MB Chunks ─────

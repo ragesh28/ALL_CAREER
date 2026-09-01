@@ -97,10 +97,18 @@ GENERIC_WORDS_BLACKLIST: Set[str] = {
 
 
 class CompanyDetector:
+    GENERIC_START_BLACKLIST = (
+        "immediate openings", "immediate opening", "openings for", "urgent openings",
+        "walk in", "walk-in", "walkin", "we are hiring", "we're hiring", "join us",
+        "join our", "recruitment drive", "selection drive", "career opportunity"
+    )
+
     @classmethod
     def is_blacklisted(cls, name: str) -> bool:
         low = name.lower().strip(" ,.-:")
         if low in GENERIC_WORDS_BLACKLIST or len(low) < 3:
+            return True
+        if any(low.startswith(g) for g in cls.GENERIC_START_BLACKLIST):
             return True
         # If phrase contains only numbers or generic symbols
         if not re.search(r'[a-zA-Z]', low):

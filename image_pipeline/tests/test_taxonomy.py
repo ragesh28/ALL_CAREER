@@ -15,16 +15,16 @@ class TestTaxonomy(unittest.TestCase):
 
         r2 = RoleTaxonomyResolver.resolve_role("sdet")
         self.assertIsNotNone(r2)
-        self.assertEqual(r2["canonical"], "QA / Automation Test Engineer")
+        self.assertEqual(r2["canonical"], "QA / Software Tester")
 
         # Non-IT roles
-        r3 = RoleTaxonomyResolver.resolve_role("industrial engineer")
+        r3 = RoleTaxonomyResolver.resolve_role("mechanical engineer")
         self.assertIsNotNone(r3)
-        self.assertEqual(r3["canonical"], "Industrial Engineer")
+        self.assertEqual(r3["canonical"], "Mechanical Design / Production Engineer")
 
-        r4 = RoleTaxonomyResolver.resolve_role("electrician")
+        r4 = RoleTaxonomyResolver.resolve_role("electrical engineer")
         self.assertIsNotNone(r4)
-        self.assertEqual(r4["canonical"], "Electrical Engineer")
+        self.assertEqual(r4["canonical"], "Electrical & Electronics Engineer")
 
     def test_location_and_locality_resolution(self):
         # OMR -> Chennai

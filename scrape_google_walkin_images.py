@@ -24,6 +24,7 @@ ROOT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT_DIR))
 
 from image_pipeline.pipeline import ImageToJobPipeline
+from image_pipeline.ingestion.deduplicator import JobDeduplicator
 from playwright.async_api import async_playwright
 
 # ── 50 Indian Cities Target Matrix ──
@@ -185,7 +186,7 @@ async def main():
     start_time = time.time()
     progress = load_progress()
     existing_jobs = load_existing_jobs()
-    existing_hashes = {j.get("dedup_hash") for j in existing_jobs if j.get("dedup_hash")}
+    deduplicator = JobDeduplicator(existing_jobs)
 
     print("=" * 80)
     print(f"🚀 ALL_CAREER — 50-CITY GOOGLE IMAGE EXTRACTOR WORKFLOW")
@@ -239,6 +240,12 @@ async def main():
             flyers = await scrape_google_images_for_city(page, city_name, max_images=max_imgs, last24h=True)
 
             for f_idx, flyer in enumerate(flyers, 1):
+                # ── Deduplication Pre-Check 1: Fast Image Byte / URL Duplicate Check ──
+                is_dup_img, dup_img_reason = deduplicator.is_image_duplicate(flyer["bytes"], flyer.get("url"))
+                if is_dup_img:
+                    print(f"  ⏭️ [Skip Existing Flyer #{f_idx}] {dup_img_reason}")
+                    continue
+
                 # Write temp file for OCR
                 temp_img_path = temp_dir / f"temp_{idx}_{f_idx}.jpg"
                 try:
@@ -249,49 +256,67 @@ async def main():
                     res = pipeline.process_image(str(temp_img_path))
 
                     if res.is_job:
-                        # Generate unique dedup hash
                         co_name = res.company.name or "Unknown"
+                        co_canonical = res.company.canonical or co_name
                         role_name = res.roles[0].name if res.roles else "Walk-in"
-                        hash_src = f"{co_name}_{role_name}_{res.date}_{res.contact_email}_{res.contact_phone}_{city_name}"
+                        city_detected = res.location.city or city_name.title()
+                        roles_list = [r.name for r in res.roles]
+
+                        # ── Deduplication Post-Check 2: Job Content & Signatures Check ──
+                        is_dup_job, dup_job_reason = deduplicator.is_job_duplicate(
+                            company=co_canonical,
+                            title=role_name,
+                            roles=roles_list,
+                            location=city_detected,
+                            walkin_date=res.date,
+                            contact_email=res.contact_email,
+                            contact_phone=res.contact_phone
+                        )
+
+                        if is_dup_job:
+                            print(f"  ⏭️ [Skip Duplicate Job] {co_name}: {dup_job_reason}")
+                            continue
+
+                        # Generate unique dedup hash
+                        hash_src = f"{co_canonical}_{role_name}_{res.date}_{res.contact_email}_{res.contact_phone}_{city_name}"
                         dedup_hash = hashlib.sha256(hash_src.encode("utf-8")).hexdigest()[:16]
 
-                        if dedup_hash not in existing_hashes:
-                            existing_hashes.add(dedup_hash)
+                        # Format clean job record with direct web flyer image URL
+                        job_record = {
+                            "id": f"walkin_{dedup_hash}",
+                            "dedup_hash": dedup_hash,
+                            "source": "Google Images",
+                            "source_type": "Walk-in Interview Flyer",
+                            "company": co_name,
+                            "company_canonical": co_canonical,
+                            "company_confidence": res.company.confidence,
+                            "company_method": res.company.detection_method,
+                            "title": role_name if role_name != "Walk-in" else f"{co_name} Walk-in Drive",
+                            "roles": roles_list,
+                            "location": city_detected,
+                            "state": res.location.state or "India",
+                            "venue": res.location.venue,
+                            "pincode": res.location.pincode,
+                            "date_posted": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                            "walkin_date": res.date,
+                            "walkin_time": f"{res.time.start or ''} - {res.time.end or ''}".strip(" -"),
+                            "experience": res.experience.raw_text if res.experience else "Fresher / Experienced",
+                            "salary": res.salary.raw_text if res.salary else "Competitive / Best in Industry",
+                            "contact_email": res.contact_email,
+                            "contact_phone": res.contact_phone,
+                            "apply_url": res.apply_url,
+                            "flyer_image_url": flyer["url"] if not flyer["url"].endswith("...[base64]") else None,
+                            "raw_flyer_src": flyer["raw_url"] if len(flyer["raw_url"]) < 500 else None,
+                            "qr_decoded": res.qr.raw_data if res.qr.found else None,
+                            "signal_score": res.signal_score,
+                            "confidence": res.confidence
+                        }
 
-                            # Format clean job record with direct web flyer image URL
-                            job_record = {
-                                "id": f"walkin_{dedup_hash}",
-                                "dedup_hash": dedup_hash,
-                                "source": "Google Images",
-                                "source_type": "Walk-in Interview Flyer",
-                                "company": co_name,
-                                "company_canonical": res.company.canonical or co_name,
-                                "company_confidence": res.company.confidence,
-                                "company_method": res.company.detection_method,
-                                "title": role_name if role_name != "Walk-in" else f"{co_name} Walk-in Drive",
-                                "roles": [r.name for r in res.roles],
-                                "location": res.location.city or city_name.title(),
-                                "state": res.location.state or "India",
-                                "venue": res.location.venue,
-                                "pincode": res.location.pincode,
-                                "date_posted": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-                                "walkin_date": res.date,
-                                "walkin_time": f"{res.time.start or ''} - {res.time.end or ''}".strip(" -"),
-                                "experience": res.experience.raw_text if res.experience else "Fresher / Experienced",
-                                "salary": res.salary.raw_text if res.salary else "Competitive / Best in Industry",
-                                "contact_email": res.contact_email,
-                                "contact_phone": res.contact_phone,
-                                "apply_url": res.apply_url,
-                                "flyer_image_url": flyer["url"] if not flyer["url"].endswith("...[base64]") else None,
-                                "raw_flyer_src": flyer["raw_url"] if len(flyer["raw_url"]) < 500 else None,
-                                "qr_decoded": res.qr.raw_data if res.qr.found else None,
-                                "signal_score": res.signal_score,
-                                "confidence": res.confidence
-                            }
-
-                            existing_jobs.append(job_record)
-                            new_jobs_count += 1
-                            print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_name.title()}")
+                        # Register new job into deduplicator
+                        deduplicator.register_new_job(job_record, flyer["bytes"], flyer.get("url"))
+                        existing_jobs.append(job_record)
+                        new_jobs_count += 1
+                        print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_detected}")
 
                 except Exception as e:
                     print(f"  ⚠️ Extraction error on flyer {f_idx}: {e}")

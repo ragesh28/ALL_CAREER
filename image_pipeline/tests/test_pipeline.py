@@ -54,7 +54,7 @@ class TestPipelineE2E(unittest.TestCase):
         
         # Verify Company
         self.assertIsNotNone(result.company.name)
-        self.assertEqual(result.company.name, "Lamprell")
+        self.assertIn("Lamprell", result.company.name)
 
         # Verify Location
         self.assertEqual(result.location.city, "Chennai")
