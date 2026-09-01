@@ -22,7 +22,10 @@ jobs:
 
       - name: Check ScraperAPI Credits + Oxylabs Proxy
         env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
           SCRAPERAPI_KEY_2: ${{ secrets.SCRAPERAPI_KEY_2 }}
+          SCRAPERAPI_KEYS_LIST: ${{ secrets.SCRAPERAPI_KEYS_LIST }}
+          SCRAPERAPI_KEYS: ${{ secrets.SCRAPERAPI_KEYS }}
           OXYLABS_USERNAME: ${{ secrets.OXYLABS_USERNAME }}
           OXYLABS_PASSWORD: ${{ secrets.OXYLABS_PASSWORD }}
           OXYLABS_ENTRYPOINT: ${{ vars.OXYLABS_ENTRYPOINT }}
@@ -31,44 +34,58 @@ jobs:
           import os, requests
           from urllib.parse import quote
 
-          SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY_2", "")
+          all_keys = []
+          for env_name in ["SCRAPERAPI_KEY", "SCRAPERAPI_KEY_2", "SCRAPERAPI_KEYS", "SCRAPERAPI_KEYS_LIST"]:
+              val = os.environ.get(env_name, "")
+              if val:
+                  for k in val.split(","):
+                      k = k.strip()
+                      if k and k not in all_keys:
+                          all_keys.append(k)
+
           OXYLABS_USER   = os.environ.get("OXYLABS_USERNAME", "")
           OXYLABS_PASS   = os.environ.get("OXYLABS_PASSWORD", "")
           OXYLABS_HOST   = os.environ.get("OXYLABS_ENTRYPOINT", "").strip() or "dc.oxylabs.io"
 
           requests.packages.urllib3.disable_warnings()
 
-          print("=" * 55)
-          print("ScraperAPI Account Status")
-          print("=" * 55)
-          if not SCRAPERAPI_KEY:
-              print("  SCRAPERAPI_KEY_2 secret NOT SET")
+          print("=" * 60)
+          print(f"ScraperAPI Proxy Status ({len(all_keys)} Keys Configured)")
+          print("=" * 60)
+          if not all_keys:
+              print("  ⚠️ No ScraperAPI keys found in GitHub Secrets!")
           else:
-              try:
-                  r = requests.get(
-                      f"https://api.scraperapi.com/account?api_key={SCRAPERAPI_KEY}",
-                      timeout=10
-                  )
-                  if r.status_code == 200:
-                      data = r.json()
-                      used      = data.get("requestCount", 0)
-                      limit     = data.get("requestLimit", 0)
-                      remaining = limit - used
-                      pct_used  = (used / limit * 100) if limit > 0 else 0
-                      print(f"  Email         : {data.get('email', 'N/A')}")
-                      print(f"  Credits used  : {used:,}")
-                      print(f"  Credits limit : {limit:,}")
-                      print(f"  Credits LEFT  : {remaining:,}  ({100-pct_used:.1f}% remaining)")
-                      if remaining == 0:
-                          print("  STATUS: LIMIT REACHED")
-                      elif remaining < 200:
-                          print("  STATUS: ALMOST EMPTY")
+              total_used = 0
+              total_limit = 0
+              for idx, k in enumerate(all_keys, 1):
+                  masked = k[:6] + "..." + k[-4:] if len(k) > 10 else "***"
+                  print(f"\n🔑 Key #{idx} [{masked}]:")
+                  try:
+                      r = requests.get(f"https://api.scraperapi.com/account?api_key={k}", timeout=10)
+                      if r.status_code == 200:
+                          data = r.json()
+                          used      = data.get("requestCount", 0)
+                          limit     = data.get("requestLimit", 0)
+                          remaining = limit - used
+                          pct_used  = (used / limit * 100) if limit > 0 else 0
+                          total_used += used
+                          total_limit += limit
+                          print(f"  📧 Account Email : {data.get('email', 'N/A')}")
+                          print(f"  📊 Credits Used  : {used:,}")
+                          print(f"  🎯 Monthly Limit : {limit:,}")
+                          print(f"  ⚡ Credits LEFT  : {remaining:,} ({100-pct_used:.1f}% remaining)")
+                          print(f"  ⏳ Plan / Status : {data.get('subscriptionPlanName', 'Free')} | {'ACTIVE' if remaining > 0 else 'EXHAUSTED'}")
                       else:
-                          print("  STATUS: OK")
-                  else:
-                      print(f"  Status {r.status_code}: {r.text[:100]}")
-              except Exception as e:
-                  print(f"  Error: {e}")
+                          print(f"  ❌ Status {r.status_code}: {r.text[:100]}")
+                  except Exception as e:
+                      print(f"  ❌ Error checking key: {e}")
+
+              if total_limit > 0:
+                  print("\n" + "-" * 60)
+                  print(f"📈 TOTAL POOL SUMMARY:")
+                  print(f"   Total Credits Used : {total_used:,} / {total_limit:,}")
+                  print(f"   Total Credits LEFT : {total_limit - total_used:,}")
+                  print("-" * 60)
 
           print()
           print("=" * 55)
