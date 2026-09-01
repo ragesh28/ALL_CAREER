@@ -8,11 +8,13 @@ Combines:
 """
 import os
 import sys
+import re
 import json
 import time
 import asyncio
 import hashlib
 import aiohttp
+import requests
 from pathlib import Path
 from datetime import datetime, timezone
 from urllib.parse import quote_plus
@@ -90,93 +92,156 @@ def save_jobs(jobs: list):
         json.dump(jobs, f, indent=2, ensure_ascii=False)
 
 
+def fetch_bing_image_candidates_sync(city: str, max_count: int = 50) -> list:
+    """Fetch high-res direct flyer image URLs from Bing search."""
+    queries = [
+        f'"{city}" ("walk in interview" OR "walkin drive") flyer',
+        f'"{city}" "walk in interview" "hiring" poster',
+        f'"{city}" "walk-in interview" "experience" "salary"',
+        f'site:blogspot.com "{city}" "walk in interview"',
+        f'"{city}" "walk in interview" 2026',
+        f'"{city}" "walking interview" hiring'
+    ]
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    }
+    found_urls = []
+    seen = set()
+
+    for q in queries:
+        for first in range(1, 100, 35):
+            url = f"https://www.bing.com/images/search?q={quote_plus(q)}&first={first}&count=35"
+            try:
+                resp = requests.get(url, headers=headers, timeout=8)
+                if resp.status_code == 200:
+                    murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
+                    for u in murls:
+                        clean_u = u.replace(r'\/', '/').replace('&amp;', '&')
+                        if clean_u not in seen:
+                            seen.add(clean_u)
+                            found_urls.append(clean_u)
+            except Exception as e:
+                print(f"  [Bing Error] {e}")
+            if len(found_urls) >= max_count:
+                break
+        if len(found_urls) >= max_count:
+            break
+
+    return found_urls[:max_count]
+
+
+async def fetch_bing_image_candidates(city: str, max_count: int = 50) -> list:
+    return await asyncio.to_thread(fetch_bing_image_candidates_sync, city, max_count)
+
+
+async def download_image_buffer(session: aiohttp.ClientSession, url: str, city: str) -> Optional[dict]:
+    """Concurrently download single flyer image buffer."""
+    try:
+        if url.startswith("data:image/"):
+            import base64
+            header, data = url.split(",", 1)
+            img_bytes = base64.b64decode(data)
+            if len(img_bytes) >= 6000:
+                return {
+                    "url": url[:120] + "...[base64]",
+                    "raw_url": url,
+                    "bytes": img_bytes,
+                    "city": city
+                }
+        else:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=6)) as resp:
+                if resp.status == 200:
+                    content = await resp.read()
+                    if len(content) >= 6000:
+                        return {
+                            "url": url,
+                            "raw_url": url,
+                            "bytes": content,
+                            "city": city
+                        }
+    except Exception:
+        pass
+    return None
+
+
 async def scrape_google_images_for_city(
     page,
     city: str,
     max_images: int = 100,
-    last24h: bool = True
+    last24h: bool = False
 ) -> list:
-    """Scrape flyer image URLs and byte buffers for a given city query."""
-    query = f"{city} walk in interview"
-    tbs_param = "&tbs=qdr:d" if last24h else ""
+    """Scrape flyer image URLs and byte buffers for a given city query with multi-engine resilience."""
+    query = f"{city} walk in interview flyer poster"
+    tbs_param = "&tbs=qdr:w" if last24h else ""
     search_url = f"https://www.google.com/search?q={quote_plus(query)}&udm=2{tbs_param}"
 
-    print(f"\n🔍 Searching Google Images: '{query}' (Max: {max_images}, 24h Filter: {last24h})...")
+    print(f"\n🔍 Searching Image Flyers for '{city}': '{query}' (Max: {max_images})...")
+    image_urls = []
+
     try:
-        await page.goto(search_url, wait_until="domcontentloaded", timeout=25000)
-    except Exception as e:
-        print(f"⚠️ Page load warning for {city}: {e}")
+        await page.goto(search_url, wait_until="domcontentloaded", timeout=20000)
+        await asyncio.sleep(1.5)
 
-    await asyncio.sleep(2)
+        # Check if blocked by Google Sorry/Captcha
+        current_url = page.url
+        if "sorry/index" not in current_url:
+            # Dismiss overlays
+            for btn_txt in ["Accept all", "I agree", "Stay signed out"]:
+                try:
+                    btn = await page.query_selector(f'button:has-text("{btn_txt}")')
+                    if btn:
+                        await btn.click()
+                        await asyncio.sleep(0.5)
+                except Exception:
+                    pass
 
-    # Dismiss Google cookie/consent overlays
-    try:
-        btn = await page.query_selector('button:has-text("Accept all"), button:has-text("I agree"), button:has-text("Stay signed out")')
-        if btn:
-            await btn.click()
-            await asyncio.sleep(1)
-    except Exception:
-        pass
+            # Scroll
+            scroll_loops = min(8, max(3, max_images // 15))
+            for _ in range(scroll_loops):
+                await page.mouse.wheel(0, 1500)
+                await asyncio.sleep(0.8)
 
-    # Scroll down dynamically based on max_images
-    scroll_loops = min(15, max(4, max_images // 8))
-    for _ in range(scroll_loops):
-        await page.mouse.wheel(0, 1500)
-        await asyncio.sleep(1)
-
-    image_urls = await page.evaluate('''() => {
-        const results = [];
-        const seen = new Set();
-        const imgs = document.querySelectorAll('img');
-        for (const img of imgs) {
-            const src = img.src || img.getAttribute('data-src') || img.getAttribute('src') || img.currentSrc;
-            if (!src) continue;
-            if (src.includes('google.com/logos') || src.includes('favicon.ico') || src.includes('cleardot.gif') || src.includes('google_logo')) continue;
-            if (src.startsWith('data:image/') || src.startsWith('http')) {
-                if (!seen.has(src)) {
-                    seen.add(src);
-                    results.push(src);
+            image_urls = await page.evaluate('''() => {
+                const results = [];
+                const seen = new Set();
+                const imgs = document.querySelectorAll('img');
+                for (const img of imgs) {
+                    const src = img.src || img.getAttribute('data-src') || img.getAttribute('src') || img.getAttribute('data-iurl') || img.currentSrc;
+                    if (!src) continue;
+                    if (src.includes('google.com/logos') || src.includes('favicon.ico') || src.includes('cleardot.gif') || src.includes('google_logo')) continue;
+                    if (src.startsWith('data:image/') || src.startsWith('http')) {
+                        if (!seen.has(src) && src.length > 60) {
+                            seen.add(src);
+                            results.push(src);
+                        }
+                    }
                 }
-            }
-        }
-        return results;
-    }''')
+                return results;
+            }''')
+    except Exception as e:
+        print(f"  ⚠️ Google Images note: {e}")
 
-    print(f"📷 Found {len(image_urls)} candidates on Google Images for '{city}'")
+    # Fallback to Bing direct high-res stream if Google returned few images
+    if len(image_urls) < 10:
+        print(f"  ⚡ Activating high-res multi-engine stream for '{city}'...")
+        bing_urls = await fetch_bing_image_candidates(city, max_count=max_images)
+        for u in bing_urls:
+            if u not in image_urls:
+                image_urls.append(u)
+
+    print(f"📷 Found {len(image_urls)} candidate image streams for '{city}'")
 
     downloaded_images = []
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-    
-    async with aiohttp.ClientSession(headers=headers) as session:
-        for url in image_urls:
-            try:
-                if url.startswith("data:image/"):
-                    import base64
-                    header, data = url.split(",", 1)
-                    img_bytes = base64.b64decode(data)
-                    if len(img_bytes) >= 12000:
-                        downloaded_images.append({
-                            "url": url[:120] + "...[base64]",
-                            "raw_url": url,
-                            "bytes": img_bytes,
-                            "city": city
-                        })
-                else:
-                    async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
-                        if resp.status == 200:
-                            content = await resp.read()
-                            if len(content) >= 12000:
-                                downloaded_images.append({
-                                    "url": url,
-                                    "raw_url": url,
-                                    "bytes": content,
-                                    "city": city
-                                })
-            except Exception:
-                continue
+    conn = aiohttp.TCPConnector(ssl=False)
 
-            if len(downloaded_images) >= max_images:
-                break
+    async with aiohttp.ClientSession(headers=headers, connector=conn) as session:
+        tasks = [download_image_buffer(session, u, city) for u in image_urls[:max_images]]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        for res in results:
+            if isinstance(res, dict) and res:
+                downloaded_images.append(res)
 
     print(f"📥 Successfully captured {len(downloaded_images)} high-res flyer buffers for '{city}'")
     return downloaded_images
@@ -196,7 +261,7 @@ async def main():
     print("=" * 80)
 
     # Initialize OCR Pipeline
-    pipeline = ImageToJobPipeline(enable_ai_verification=True)
+    pipeline = ImageToJobPipeline(enable_ai_verification=False)
 
     # Build queue: Top 10 Metros (100 images) + Next 40 Cities (10 images)
     city_queue = []
@@ -216,13 +281,20 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(
             headless=True,
-            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--window-size=1920,1080"
+            ]
         )
         context = await browser.new_context(
-            viewport={"width": 1440, "height": 900},
+            viewport={"width": 1920, "height": 1080},
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
         )
         page = await context.new_page()
+        await page.add_init_script("Object.defineProperty(navigator, 'webdriver', { get: () => undefined });")
 
         for idx, city_item in enumerate(reordered_queue):
             elapsed = time.time() - start_time
@@ -237,7 +309,7 @@ async def main():
 
             print(f"\n{'='*25} [{idx+1}/{len(reordered_queue)}] {city_name.upper()} ({tier}) {'='*25}")
 
-            flyers = await scrape_google_images_for_city(page, city_name, max_images=max_imgs, last24h=True)
+            flyers = await scrape_google_images_for_city(page, city_name, max_images=max_imgs, last24h=False)
 
             for f_idx, flyer in enumerate(flyers, 1):
                 # ── Deduplication Pre-Check 1: Fast Image Byte / URL Duplicate Check ──
