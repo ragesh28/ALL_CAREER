@@ -307,6 +307,7 @@ async def main():
             city_name = city_item["city"]
             max_imgs = city_item["max_images"]
             tier = city_item["tier"]
+            city_extracted_count = 0
 
             print(f"\n{'='*25} [{idx+1}/{len(reordered_queue)}] {city_name.upper()} ({tier}) {'='*25}")
 
@@ -389,12 +390,20 @@ async def main():
                         deduplicator.register_new_job(job_record, flyer["bytes"], flyer.get("url"))
                         existing_jobs.append(job_record)
                         new_jobs_count += 1
+                        city_extracted_count += 1
                         print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_detected}")
 
                 except Exception as e:
                     print(f"  ⚠️ Extraction error on flyer {f_idx}: {e}")
                 finally:
                     temp_img_path.unlink(missing_ok=True)
+
+            # ── Per-City Extraction Summary ──
+            print(f"\n📊 [{city_name.upper()} SUMMARY]")
+            print(f"   📥 Total Flyers Processed: {len(flyers)}")
+            print(f"   ✨ Walk-in Jobs Extracted: {city_extracted_count}")
+            print(f"   💾 Cumulative Database Jobs: {len(existing_jobs)} (+{new_jobs_count} this run)")
+            print("-" * 65)
 
             # Update checkpoint after each city
             progress["city_cursor"] = (start_cursor + idx + 1) % len(city_queue)
