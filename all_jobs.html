@@ -2675,6 +2675,7 @@
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
             grid.innerHTML = jobs.map((job, i) => {
+                const source = (job.source || '').toLowerCase();
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const url = job.url || '';
@@ -2685,7 +2686,6 @@
                 const flyerUrl = job.flyer_image_url || job.raw_flyer_src || (source.includes('google') ? url : '');
                 const flyerBadgeHtml = flyerUrl ? `<a href="${esc(flyerUrl)}" target="_blank" class="flyer-source-btn" title="View original walk-in flyer image">🖼️ Source</a>` : '';
                 
-                const source = (job.source || '').toLowerCase();
                 const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
                 const portalLogoSrc = PORTAL_LOGOS[source] || '';
                 const rawLocStr = (job.location || '').trim();
