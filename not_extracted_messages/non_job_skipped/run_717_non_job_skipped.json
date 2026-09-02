@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "717",
+  "workflow_run_id": "33661557579",
+  "timestamp": "2026-09-02T17:35:25.370160",
+  "runtime_minutes": 2.43,
+  "messages_processed": 4,
+  "new_jobs_stored": 2,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14783,
+      "text": "🚀 FREE GenAI Claude Workshop\n\nLearn 25+ AI tools to work smarter, automate tasks, create content faster & boost productivity.\n\n🔥 You’ll learn:\n• AI tools & workflows\n• Prompting strategies\n• AI for content, docs & presentations\n• Real-world GenAI use cases\n\n🎯 For freelancers, professionals & self-employed individuals.\n\n👉 Register FREE : https://link.outskill.com/A-12",
+      "timestamp": "2026-09-02T17:06:23+00:00"
+    }
+  ]
+}
