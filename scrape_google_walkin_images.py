@@ -1,11 +1,11 @@
 """
-ALL_CAREER — Google Images Walk-in Extraction Workflow (v2: ScrapingAnt Proxy + Deep Search).
+ALL_CAREER — Google & High-Res Walk-in Flyer Extractor Workflow (v2.1: ScrapingAnt Proxy Mode).
 Combines:
 1. 50-City Deep Search Mode: "walk in interview" + "we are hiring" role-based queries
-2. ScrapingAnt Proxy with 5-Key Dynamic Daily Rotation (anti-detection)
-3. Top 20 Metros @ 100 images, Next 30 Cities @ 20 images
-4. 30-Day Rolling Credit Usage Tracker
-5. 5-Hour 50-Minute Watchdog Timer with Checkpoint Resuming
+2. ScrapingAnt Rotating Proxy Port (1 Credit/query, masks GitHub Actions datacenter IP)
+3. 5-Key Dynamic Daily Rotation (anti-detection across accounts)
+4. Top 20 Metros @ 100 images, Next 30 Cities @ 20 images
+5. 30-Day Rolling Credit Usage Tracker
 6. Memory-Streamed RapidOCR + MCA Company Resolution + QR Decoding
 """
 import os
@@ -17,11 +17,14 @@ import asyncio
 import hashlib
 import aiohttp
 import requests
+import urllib.parse
+import urllib3
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
-from urllib.parse import quote_plus
 from typing import Optional, List, Dict, Set, Tuple, Any
 
+# Disable SSL verification warnings for proxy mode
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 sys.stdout.reconfigure(encoding='utf-8')
 
 # Ensure root is in path
@@ -30,7 +33,6 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from image_pipeline.pipeline import ImageToJobPipeline
 from image_pipeline.ingestion.deduplicator import JobDeduplicator
-from playwright.async_api import async_playwright
 
 # ═════════════════════════════════════════════════════════════════════════════
 # CITY TIERS: Top 20 Metros (100 images) + Next 30 Small Cities (20 images)
@@ -69,30 +71,46 @@ CREDIT_TRACKER_FILE = ROOT_DIR / "data" / "scrapingant_credit_tracker.json"
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes watchdog limit
 
 # ═════════════════════════════════════════════════════════════════════════════
-# SCRAPINGANT PROXY — DYNAMIC 5-KEY ROTATION
+# SCRAPINGANT PROXY CONFIGURATION (Proxy Port 8080, 1 Credit per Request)
 # ═════════════════════════════════════════════════════════════════════════════
-SCRAPINGANT_ENDPOINT = "https://api.scrapingant.com/v2/general"
+SCRAPINGANT_PROXY_HOST = "proxy.scrapingant.com:8080"
 
 
 def get_scrapingant_keys() -> List[str]:
-    """Load all ScrapingAnt API keys from a single comma-separated env var."""
+    """Load all ScrapingAnt API keys from environment variable (comma-separated)."""
     raw = os.environ.get("SCRAPINGANT_API_KEYS", "").strip()
     if not raw:
-        return []
+        # Check individual keys as fallback
+        keys = []
+        for i in range(1, 10):
+            k = os.environ.get(f"SCRAPINGANT_KEY_{i}", "").strip()
+            if k:
+                keys.append(k)
+        return keys
     return [k.strip() for k in raw.split(",") if k.strip()]
 
 
 def get_todays_api_key(keys: List[str]) -> Tuple[str, int]:
     """
-    Select today's API key using day-of-year rotation.
-    Day 1 → Key 1, Day 2 → Key 2, ..., Day 5 → Key 5, Day 6 → Key 1 (repeats).
-    This prevents ScrapingAnt from detecting multi-account usage patterns.
+    Select today's API key using day-of-year rotation: (day - 1) % len(keys).
+    Day 1 -> Key 1, Day 2 -> Key 2, ..., Day 5 -> Key 5, Day 6 -> Key 1 (repeats).
     """
     if not keys:
         return "", -1
     day_of_year = datetime.now(timezone.utc).timetuple().tm_yday
     key_index = (day_of_year - 1) % len(keys)
     return keys[key_index], key_index
+
+
+def get_proxy_dict(api_key: str) -> Optional[dict]:
+    """Build proxy dict for requests using ScrapingAnt proxy port (1 credit mode)."""
+    if not api_key:
+        return None
+    proxy_url = f"http://scrapingant&browser=false:{api_key}@{SCRAPINGANT_PROXY_HOST}"
+    return {
+        "http": proxy_url,
+        "https": proxy_url
+    }
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -113,7 +131,7 @@ def save_credit_tracker(tracker: dict):
     """Save the credit tracker, pruning entries older than 30 days."""
     cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
     tracker["daily_log"] = [
-        entry for entry in tracker["daily_log"]
+        entry for entry in tracker.get("daily_log", [])
         if entry.get("date", "") >= cutoff
     ]
     CREDIT_TRACKER_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -127,7 +145,7 @@ def get_30day_used_credits(tracker: dict) -> int:
 
 
 def print_credit_dashboard(tracker: dict, today_credits: int, key_index: int):
-    """Print a beautiful credit usage dashboard at the end of the workflow."""
+    """Print a credit usage dashboard at the end of the workflow."""
     total_pool = tracker.get("total_pool", 50000)
     used_30d = get_30day_used_credits(tracker)
     remaining = total_pool - used_30d
@@ -139,12 +157,6 @@ def print_credit_dashboard(tracker: dict, today_credits: int, key_index: int):
     print(f"  📊 Today's Credits   : {today_credits} credits consumed")
     print(f"  📅 30-Day Usage      : {used_30d:,} / {total_pool:,} credits")
     print(f"  ⚡ Remaining Balance : {remaining:,} credits ({remaining/total_pool*100:.1f}% left)")
-    if remaining < 5000:
-        print(f"  ⚠️ WARNING: Low credit balance! Consider reducing queries.")
-    elif remaining < 10000:
-        print(f"  📌 Note: Credits running moderately low.")
-    else:
-        print(f"  ✅ Status: Healthy credit pool")
     print("=" * 70)
 
 
@@ -193,131 +205,75 @@ def save_jobs(jobs: list):
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# SCRAPINGANT PROXY — GOOGLE IMAGE SEARCH (1 Credit per Query)
+# HIGH-RES FLYER IMAGE SCRAPING VIA SCRAPINGANT PROXY PORT (1 Credit/Query)
 # ═════════════════════════════════════════════════════════════════════════════
-def fetch_google_images_via_proxy(api_key: str, query: str, max_retries: int = 1) -> List[str]:
+def fetch_flyer_urls_via_proxy_sync(
+    query: str,
+    api_key: str,
+    max_count: int = 50
+) -> Tuple[List[str], int]:
     """
-    Fetch Google Images HTML via ScrapingAnt proxy (1 credit per request).
-    If ScrapingAnt returns 423 (Google bot block) or 409 (concurrency limit),
-    gracefully fails so the pipeline can use the direct high-res stream fallback.
+    Scrape high-res flyer image URLs using ScrapingAnt Rotating Proxy Port.
+    1. Routes through ScrapingAnt proxy port (1 credit, masks GitHub IP).
+    2. Extracts direct high-resolution flyer image URLs from search responses.
     """
-    if not api_key:
-        return []
-
-    target_url = f"https://www.google.com/search?q={quote_plus(query)}&udm=2&gl=in&hl=en"
-    params = {
-        "url": target_url,
-        "x-api-key": api_key,
-        "browser": "false"
-    }
-
-    try:
-        resp = requests.get(SCRAPINGANT_ENDPOINT, params=params, timeout=20)
-        if resp.status_code == 200:
-            html = resp.text
-            image_urls = _extract_image_urls_from_html(html)
-            if image_urls:
-                print(f"    ✅ ScrapingAnt OK: {len(image_urls)} image URLs extracted (1 credit used)")
-                return image_urls
-        elif resp.status_code == 423:
-            print(f"    ⚠️ ScrapingAnt 423: Google bot protection triggered. Seamlessly routing to direct high-res stream...")
-        elif resp.status_code == 409:
-            print(f"    ⚠️ ScrapingAnt 409: Concurrency limit. Routing to direct high-res stream...")
-        else:
-            print(f"    ⚠️ ScrapingAnt {resp.status_code}: Falling back to direct high-res stream...")
-    except requests.exceptions.Timeout:
-        print(f"    ⏱️ ScrapingAnt timeout. Routing to direct high-res stream...")
-    except Exception as e:
-        print(f"    ❌ ScrapingAnt error ({e}). Routing to direct high-res stream...")
-
-    return []
-
-
-def _extract_image_urls_from_html(html: str) -> List[str]:
-    """Extract original high-res image URLs from Google Images HTML response."""
-    seen = set()
-    urls = []
-
-    # Strategy 1: JSON array pattern ["https://...jpg", width, height]
-    for m in re.findall(r'\["(https?://[^"\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\s\\]*)?)",\s*\d+,\s*\d+\]', html, re.I):
-        _add_url(m, seen, urls)
-
-    # Strategy 2: All 3rd-party image URLs in scripts
-    for m in re.findall(r'(https?://[^"\'\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\'\s\\]*)?)', html, re.I):
-        _add_url(m, seen, urls)
-
-    return urls
-
-
-def _add_url(u: str, seen: set, urls: list):
-    """Filter and add a URL to the results list."""
-    try:
-        clean = u.encode().decode('unicode-escape').strip()
-    except Exception:
-        clean = u.strip()
-    clean = clean.replace('\\/', '/').replace('&amp;', '&')
-    if (
-        clean.startswith("http")
-        and "encrypted-tbn" not in clean
-        and "gstatic.com" not in clean
-        and "google.com" not in clean
-        and "schema.org" not in clean
-        and "w3.org" not in clean
-        and len(clean) > 20
-        and clean not in seen
-    ):
-        seen.add(clean)
-        urls.append(clean)
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# BING DIRECT STREAM FALLBACK (0 Credits — 100% Free)
-# ═════════════════════════════════════════════════════════════════════════════
-def fetch_bing_image_candidates_sync(city: str, max_count: int = 50) -> list:
-    """Fetch high-res direct flyer image URLs from Bing search (free fallback)."""
-    queries = [
-        f"walk in interview in {city} flyer poster",
-        f"urgent walk in interview {city} hiring poster",
-        f"walk in drive {city} recruitment poster",
-        f"{city} walking interview job vacancy flyer",
-        f"{city} walk in interview 2026 poster",
-        f"{city} walkin drive IT pharma engineering hiring"
-    ]
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
     }
+
+    proxies = get_proxy_dict(api_key)
     found_urls = []
     seen = set()
+    credits_used = 0
 
-    for q in queries:
-        for first in range(1, 100, 35):
-            url = f"https://www.bing.com/images/search?q={quote_plus(q)}&first={first}&count=35"
+    # Search with page offset (first=1, 36, 71)
+    for first in [1, 36]:
+        url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&first={first}&count=35"
+        try:
+            resp = requests.get(
+                url,
+                headers=headers,
+                proxies=proxies,
+                verify=False,
+                timeout=25
+            )
+            if resp.status_code == 200:
+                if proxies:
+                    credits_used += 1
+                # Parse high-res direct image links (murl parameter)
+                murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
+                for u in murls:
+                    clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+                    if clean.startswith("http") and clean not in seen:
+                        seen.add(clean)
+                        found_urls.append(clean)
+            elif resp.status_code == 403 or resp.status_code == 429:
+                print(f"    ⚠️ Proxy rate-limited ({resp.status_code}), continuing...")
+                break
+        except Exception as e:
+            # If proxy fails, attempt direct request as fallback
             try:
-                resp = requests.get(url, headers=headers, timeout=8)
+                resp = requests.get(url, headers=headers, timeout=10)
                 if resp.status_code == 200:
                     murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
                     for u in murls:
-                        clean_u = u.replace(r'\/', '/').replace('&amp;', '&')
-                        if clean_u not in seen:
-                            seen.add(clean_u)
-                            found_urls.append(clean_u)
-            except Exception as e:
-                print(f"  [Bing Error] {e}")
-            if len(found_urls) >= max_count:
-                break
+                        clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+                        if clean.startswith("http") and clean not in seen:
+                            seen.add(clean)
+                            found_urls.append(clean)
+            except Exception:
+                pass
+
         if len(found_urls) >= max_count:
             break
 
-    return found_urls[:max_count]
-
-
-async def fetch_bing_image_candidates(city: str, max_count: int = 50) -> list:
-    return await asyncio.to_thread(fetch_bing_image_candidates_sync, city, max_count)
+    return found_urls[:max_count], credits_used
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# IMAGE DOWNLOAD (Async, In-Memory)
+# IMAGE BUFFER DOWNLOAD (Async, In-Memory)
 # ═════════════════════════════════════════════════════════════════════════════
 async def download_image_buffer(session: aiohttp.ClientSession, url: str, city: str) -> Optional[dict]:
     """Concurrently download single flyer image buffer."""
@@ -334,7 +290,7 @@ async def download_image_buffer(session: aiohttp.ClientSession, url: str, city: 
                     "city": city
                 }
         else:
-            async with session.get(url, timeout=aiohttp.ClientTimeout(total=6)) as resp:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=8)) as resp:
                 if resp.status == 200:
                     content = await resp.read()
                     if len(content) >= 6000:
@@ -350,7 +306,7 @@ async def download_image_buffer(session: aiohttp.ClientSession, url: str, city: 
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# DEEP SEARCH MODE: ScrapingAnt Proxy + Bing Fallback per City
+# DEEP SEARCH MODE: Multi-Query Proxy Extraction per City
 # ═════════════════════════════════════════════════════════════════════════════
 async def scrape_images_for_city_deep(
     api_key: str,
@@ -359,58 +315,46 @@ async def scrape_images_for_city_deep(
     credit_counter: dict = None
 ) -> list:
     """
-    Deep Search Mode: 2 proxy-backed Google Image queries per city.
+    Deep Search Mode: 2 proxy-backed high-res queries per city.
     Query 1: "walk in interview" {city} hiring poster
-    Query 2: "we are hiring" {city} {rotating_role}
+    Query 2: "we are hiring" {city} {todays_role}
 
-    Uses ScrapingAnt proxy (1 credit per query = 2 credits per city).
-    Falls back to Bing free stream if proxy fails.
+    Uses ScrapingAnt proxy port (1 credit per query = 2 credits per city).
     """
     all_image_urls = []
     seen = set()
-    credits_used = 0
+    city_credits = 0
 
     # ── Query 1: Walk-in Interview Flyers ──
     query1 = f'"walk in interview" {city} hiring poster'
-    print(f"\n  🔍 Query 1: {query1}")
-    if api_key:
-        proxy_urls = await asyncio.to_thread(fetch_google_images_via_proxy, api_key, query1)
-        if proxy_urls:
-            credits_used += 1
-            for u in proxy_urls:
-                if u not in seen:
-                    seen.add(u)
-                    all_image_urls.append(u)
+    print(f"\n  🔍 Query 1 (Proxy): {query1}")
+    urls1, creds1 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query1, api_key, max_count=max_images // 2 + 10)
+    city_credits += creds1
+    for u in urls1:
+        if u not in seen:
+            seen.add(u)
+            all_image_urls.append(u)
+    print(f"     Found {len(urls1)} image streams (Credits: {creds1})")
 
-    # ── Query 2: "We Are Hiring" + Role-Based ──
+    # ── Query 2: "We Are Hiring" + Rotating Role ──
     day_of_year = datetime.now(timezone.utc).timetuple().tm_yday
     role_index = (day_of_year - 1) % len(HIRING_ROLES)
     todays_role = HIRING_ROLES[role_index]
     query2 = f'"we are hiring" {city} {todays_role}'
-    print(f"  🔍 Query 2: {query2}")
-    if api_key:
-        proxy_urls2 = await asyncio.to_thread(fetch_google_images_via_proxy, api_key, query2)
-        if proxy_urls2:
-            credits_used += 1
-            for u in proxy_urls2:
-                if u not in seen:
-                    seen.add(u)
-                    all_image_urls.append(u)
+    print(f"  🔍 Query 2 (Proxy): {query2}")
+    urls2, creds2 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query2, api_key, max_count=max_images // 2 + 10)
+    city_credits += creds2
+    for u in urls2:
+        if u not in seen:
+            seen.add(u)
+            all_image_urls.append(u)
+    print(f"     Found {len(urls2)} image streams (Credits: {creds2})")
 
-    # ── Bing Free Fallback (if proxy returned few images) ──
-    if len(all_image_urls) < 15:
-        print(f"  ⚡ Bing free fallback for '{city}'...")
-        bing_urls = await fetch_bing_image_candidates(city, max_count=max_images)
-        for u in bing_urls:
-            if u not in seen:
-                seen.add(u)
-                all_image_urls.append(u)
-
-    # Track credit usage
+    # Track total credit usage
     if credit_counter is not None:
-        credit_counter["total"] += credits_used
+        credit_counter["total"] += city_credits
 
-    print(f"  📷 Found {len(all_image_urls)} candidate images for '{city}' (proxy credits: {credits_used})")
+    print(f"  📷 Total Candidate Images for '{city}': {len(all_image_urls)} (City Credits: {city_credits})")
 
     # ── Download all image buffers concurrently ──
     downloaded_images = []
@@ -424,7 +368,7 @@ async def scrape_images_for_city_deep(
             if isinstance(res, dict) and res:
                 downloaded_images.append(res)
 
-    print(f"  📥 Downloaded {len(downloaded_images)} high-res flyer buffers for '{city}'")
+    print(f"  📥 Successfully downloaded {len(downloaded_images)} flyer buffers for '{city}'")
     return downloaded_images
 
 
@@ -441,7 +385,7 @@ async def main():
     # ── Dynamic API Key Selection ──
     scrapingant_keys = get_scrapingant_keys()
     today_api_key, key_index = get_todays_api_key(scrapingant_keys)
-    key_masked = today_api_key[:6] + "..." + today_api_key[-4:] if len(today_api_key) > 10 else "NOT SET"
+    key_masked = today_api_key[:6] + "..." + today_api_key[-4:] if len(today_api_key) > 10 else "DIRECT/UNSET"
 
     # ── Credit Counter for This Run ──
     credit_counter = {"total": 0}
@@ -452,7 +396,7 @@ async def main():
     todays_role = HIRING_ROLES[role_index]
 
     print("=" * 80)
-    print(f"  🚀 ALL_CAREER — DEEP SEARCH GOOGLE IMAGE EXTRACTOR (v2)")
+    print(f"  🚀 ALL_CAREER — SCRAPINGANT PROXY WALK-IN FLYER EXTRACTOR (v2.1)")
     print(f"  📅 Start Time (UTC): {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  ⏱️ Maximum Run Budget: 5 Hours 50 Minutes ({MAX_RUN_SECONDS}s)")
     print(f"  📊 Previously Scraped Jobs: {len(existing_jobs):,}")
@@ -460,9 +404,6 @@ async def main():
     print(f"  👔 Today's Hiring Role: \"{todays_role}\"")
     print(f"  💳 30-Day Credits Used: {get_30day_used_credits(credit_tracker):,} / {credit_tracker.get('total_pool', 50000):,}")
     print("=" * 80)
-
-    if not today_api_key:
-        print("⚠️ WARNING: No ScrapingAnt API keys found! Using Bing-only free mode.")
 
     # Initialize OCR Pipeline
     pipeline = ImageToJobPipeline(enable_ai_verification=False)
@@ -549,7 +490,7 @@ async def main():
                     job_record = {
                         "id": f"walkin_{dedup_hash}",
                         "dedup_hash": dedup_hash,
-                        "source": "Google Images",
+                        "source": "Image Flyer (Proxy Scrape)",
                         "source_type": "Walk-in Interview Flyer",
                         "company": co_name,
                         "company_canonical": co_canonical,
@@ -593,7 +534,7 @@ async def main():
         print(f"     📥 Total Flyers Processed: {len(flyers)}")
         print(f"     ✨ Walk-in Jobs Extracted: {city_extracted_count}")
         print(f"     💾 Cumulative Database Jobs: {len(existing_jobs)} (+{new_jobs_count} this run)")
-        print(f"     💳 Proxy Credits Used So Far: {credit_counter['total']}")
+        print(f"     💳 Total Proxy Credits Used: {credit_counter['total']}")
         print("-" * 65)
 
         # Update checkpoint after each city
@@ -613,7 +554,7 @@ async def main():
 
     # ── Update Credit Tracker ──
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    credit_tracker["daily_log"].append({
+    credit_tracker.setdefault("daily_log", []).append({
         "date": today_str,
         "key_index": key_index + 1,
         "credits_used": credit_counter["total"],
@@ -624,7 +565,7 @@ async def main():
 
     total_time = time.time() - start_time
     print("\n" + "=" * 80)
-    print(f"  🏆 GOOGLE IMAGE EXTRACTOR RUN COMPLETE")
+    print(f"  🏆 FLYER IMAGE EXTRACTOR RUN COMPLETE")
     print(f"  ⏱️ Total Execution Time: {total_time / 60:.1f} minutes")
     print(f"  ✨ New Walk-ins Added: {new_jobs_count}")
     print(f"  💾 Total Database Walk-ins: {len(existing_jobs):,}")
