@@ -495,5 +495,38 @@
     "confidence": 0.85,
     "image_hash": "1ccd3ca587d6cc03a08548dcd515237b",
     "phash": "bd1d94c49f3161c3"
+  },
+  {
+    "id": "walkin_f7d9f0bbc336b7ea",
+    "dedup_hash": "f7d9f0bbc336b7ea",
+    "source": "Google Images",
+    "source_type": "Walk-in Interview Flyer",
+    "company": "Trump: Can I Get Past",
+    "company_canonical": "Trump: Can I Get Past",
+    "company_confidence": 0.75,
+    "company_method": "bounding_box_header",
+    "title": "Get",
+    "roles": [
+      "Get"
+    ],
+    "location": "Noida",
+    "state": "India",
+    "venue": null,
+    "pincode": null,
+    "date_posted": "2026-09-02",
+    "walkin_date": "2016-11-12",
+    "walkin_time": "",
+    "experience": "Fresher / Experienced",
+    "salary": "Competitive / Best in Industry",
+    "contact_email": null,
+    "contact_phone": null,
+    "apply_url": null,
+    "flyer_image_url": "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/4DA0/production/_92427891_31fc2ed5-acad-4c38-9977-7653f19d56fb.jpg",
+    "raw_flyer_src": "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/4DA0/production/_92427891_31fc2ed5-acad-4c38-9977-7653f19d56fb.jpg",
+    "qr_decoded": null,
+    "signal_score": 6,
+    "confidence": 0.85,
+    "image_hash": "15eef825bbe88926cc588e9c2fd47c2d",
+    "phash": "bac7c538c54e32a5"
   }
 ]
