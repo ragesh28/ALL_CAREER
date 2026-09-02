@@ -195,11 +195,11 @@ def save_jobs(jobs: list):
 # ═════════════════════════════════════════════════════════════════════════════
 # SCRAPINGANT PROXY — GOOGLE IMAGE SEARCH (1 Credit per Query)
 # ═════════════════════════════════════════════════════════════════════════════
-def fetch_google_images_via_proxy(api_key: str, query: str, max_retries: int = 2) -> List[str]:
+def fetch_google_images_via_proxy(api_key: str, query: str, max_retries: int = 1) -> List[str]:
     """
     Fetch Google Images HTML via ScrapingAnt proxy (1 credit per request).
-    Parses the HTML to extract original high-res image URLs.
-    Returns list of direct image URLs.
+    If ScrapingAnt returns 423 (Google bot block) or 409 (concurrency limit),
+    gracefully fails so the pipeline can use the direct high-res stream fallback.
     """
     if not api_key:
         return []
@@ -208,37 +208,27 @@ def fetch_google_images_via_proxy(api_key: str, query: str, max_retries: int = 2
     params = {
         "url": target_url,
         "x-api-key": api_key,
-        "browser": "false",
-        "proxy_country": "in"
+        "browser": "false"
     }
 
-    for attempt in range(1, max_retries + 1):
-        try:
-            resp = requests.get(SCRAPINGANT_ENDPOINT, params=params, timeout=45)
-            if resp.status_code == 200:
-                html = resp.text
-                image_urls = _extract_image_urls_from_html(html)
+    try:
+        resp = requests.get(SCRAPINGANT_ENDPOINT, params=params, timeout=20)
+        if resp.status_code == 200:
+            html = resp.text
+            image_urls = _extract_image_urls_from_html(html)
+            if image_urls:
                 print(f"    ✅ ScrapingAnt OK: {len(image_urls)} image URLs extracted (1 credit used)")
                 return image_urls
-            elif resp.status_code == 423:
-                print(f"    ⚠️ ScrapingAnt 423: Bot detected, retrying with proxy_country=us...")
-                params["proxy_country"] = "us"
-                time.sleep(2)
-            elif resp.status_code == 409:
-                print(f"    ⚠️ ScrapingAnt 409: Concurrency limit, waiting 5s...")
-                time.sleep(5)
-            elif resp.status_code in (401, 403):
-                print(f"    ❌ ScrapingAnt auth error: {resp.text[:100]}")
-                return []
-            else:
-                print(f"    ⚠️ ScrapingAnt {resp.status_code}: {resp.text[:100]}")
-                time.sleep(2)
-        except requests.exceptions.Timeout:
-            print(f"    ⏱️ ScrapingAnt timeout (attempt {attempt}/{max_retries})")
-            time.sleep(3)
-        except Exception as e:
-            print(f"    ❌ ScrapingAnt error: {e}")
-            time.sleep(2)
+        elif resp.status_code == 423:
+            print(f"    ⚠️ ScrapingAnt 423: Google bot protection triggered. Seamlessly routing to direct high-res stream...")
+        elif resp.status_code == 409:
+            print(f"    ⚠️ ScrapingAnt 409: Concurrency limit. Routing to direct high-res stream...")
+        else:
+            print(f"    ⚠️ ScrapingAnt {resp.status_code}: Falling back to direct high-res stream...")
+    except requests.exceptions.Timeout:
+        print(f"    ⏱️ ScrapingAnt timeout. Routing to direct high-res stream...")
+    except Exception as e:
+        print(f"    ❌ ScrapingAnt error ({e}). Routing to direct high-res stream...")
 
     return []
 
