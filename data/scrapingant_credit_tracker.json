@@ -1,4 +1,12 @@
 {
   "total_pool": 50000,
-  "daily_log": []
+  "daily_log": [
+    {
+      "date": "2026-09-02",
+      "key_index": 5,
+      "credits_used": 83,
+      "jobs_extracted": 272,
+      "cities_processed": 50
+    }
+  ]
 }
