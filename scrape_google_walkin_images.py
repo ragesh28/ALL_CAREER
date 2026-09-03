@@ -68,6 +68,8 @@ HIRING_ROLES = [
 PROGRESS_FILE = ROOT_DIR / "data" / "walkin_scrape_progress.json"
 OUTPUT_JOBS_FILE = ROOT_DIR / "scraped_image_walkin_jobs.json"
 CREDIT_TRACKER_FILE = ROOT_DIR / "data" / "scrapingant_credit_tracker.json"
+NOT_EXTRACTED_JSON = ROOT_DIR / "google_image_not_extracted.json"
+NOT_EXTRACTED_TXT = ROOT_DIR / "google_image_not_extracted.txt"
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes watchdog limit
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -202,6 +204,25 @@ def save_jobs(jobs: list):
     OUTPUT_JOBS_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_JOBS_FILE, "w", encoding="utf-8") as f:
         json.dump(jobs, f, indent=2, ensure_ascii=False)
+
+
+def init_not_extracted_files():
+    """Clear/reset unextracted image tracking files at workflow startup."""
+    with open(NOT_EXTRACTED_JSON, "w", encoding="utf-8") as f:
+        json.dump([], f, indent=2)
+    with open(NOT_EXTRACTED_TXT, "w", encoding="utf-8") as f:
+        f.write("")
+
+
+def save_not_extracted_images(items: list):
+    """Save unique unextracted image records (JSON) and plain URLs (TXT)."""
+    with open(NOT_EXTRACTED_JSON, "w", encoding="utf-8") as f:
+        json.dump(items, f, indent=2, ensure_ascii=False)
+
+    # Save clean image URLs, one per line
+    urls = [it["url"] for it in items if it.get("url") and it["url"].startswith("http")]
+    with open(NOT_EXTRACTED_TXT, "w", encoding="utf-8") as f:
+        f.write("\n".join(urls) + ("\n" if urls else ""))
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -382,6 +403,11 @@ async def main():
     deduplicator = JobDeduplicator(existing_jobs)
     credit_tracker = load_credit_tracker()
 
+    # ── Reset Unextracted Image Tracking (Fresh start every run) ──
+    init_not_extracted_files()
+    not_extracted_images = []
+    seen_not_extracted_urls = set()
+
     # ── Dynamic API Key Selection ──
     scrapingant_keys = get_scrapingant_keys()
     today_api_key, key_index = get_todays_api_key(scrapingant_keys)
@@ -445,6 +471,7 @@ async def main():
         )
 
         for f_idx, flyer in enumerate(flyers, 1):
+            flyer_url = flyer.get("url") or flyer.get("raw_url") or ""
             # ── Deduplication Pre-Check 1: Fast Image Byte / URL Duplicate Check ──
             is_dup_img, dup_img_reason = deduplicator.is_image_duplicate(flyer["bytes"], flyer.get("url"))
             if is_dup_img:
@@ -523,9 +550,27 @@ async def main():
                     new_jobs_count += 1
                     city_extracted_count += 1
                     print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_detected}")
+                else:
+                    # ── Non-Job / Flyer not detected by OCR ──
+                    if flyer_url and not flyer_url.endswith("...[base64]") and flyer_url not in seen_not_extracted_urls:
+                        seen_not_extracted_urls.add(flyer_url)
+                        not_extracted_images.append({
+                            "city": city_name,
+                            "url": flyer_url,
+                            "reason": f"No hiring signal detected (score: {res.signal_score:.2f})",
+                            "ocr_preview": (res.raw_ocr_text[:120] if res.raw_ocr_text else "").strip()
+                        })
 
             except Exception as e:
                 print(f"  ⚠️ Extraction error on flyer {f_idx}: {e}")
+                if flyer_url and not flyer_url.endswith("...[base64]") and flyer_url not in seen_not_extracted_urls:
+                    seen_not_extracted_urls.add(flyer_url)
+                    not_extracted_images.append({
+                        "city": city_name,
+                        "url": flyer_url,
+                        "reason": f"Extraction error: {str(e)[:100]}",
+                        "ocr_preview": ""
+                    })
             finally:
                 temp_img_path.unlink(missing_ok=True)
 
@@ -535,14 +580,16 @@ async def main():
         print(f"     ✨ Walk-in Jobs Extracted: {city_extracted_count}")
         print(f"     💾 Cumulative Database Jobs: {len(existing_jobs)} (+{new_jobs_count} this run)")
         print(f"     💳 Total Proxy Credits Used: {credit_counter['total']}")
+        print(f"     📁 Unextracted Images Logged: {len(not_extracted_images)}")
         print("-" * 65)
 
-        # Update checkpoint after each city
+        # Update checkpoint and save unextracted images after each city
         progress["city_cursor"] = (start_cursor + idx + 1) % len(city_queue)
         progress["total_jobs_scraped"] = len(existing_jobs)
         progress["last_run_timestamp"] = datetime.now(timezone.utc).isoformat()
         save_progress(progress)
         save_jobs(existing_jobs)
+        save_not_extracted_images(not_extracted_images)
 
     # Clean temp dir
     try:
@@ -564,12 +611,14 @@ async def main():
     save_credit_tracker(credit_tracker)
 
     total_time = time.time() - start_time
+    save_not_extracted_images(not_extracted_images)
     print("\n" + "=" * 80)
     print(f"  🏆 FLYER IMAGE EXTRACTOR RUN COMPLETE")
     print(f"  ⏱️ Total Execution Time: {total_time / 60:.1f} minutes")
     print(f"  ✨ New Walk-ins Added: {new_jobs_count}")
     print(f"  💾 Total Database Walk-ins: {len(existing_jobs):,}")
     print(f"  📁 Output Saved: {OUTPUT_JOBS_FILE}")
+    print(f"  📁 Unextracted Links Saved: {NOT_EXTRACTED_JSON} & {NOT_EXTRACTED_TXT} ({len(not_extracted_images)} links)")
     print("=" * 80)
 
     # ── Print Credit Dashboard ──
