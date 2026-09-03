@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "720",
+  "workflow_run_id": "33702509192",
+  "timestamp": "2026-09-03T01:12:32.110709",
+  "runtime_minutes": 0.6,
+  "messages_processed": 1,
+  "new_jobs_stored": 0,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "bangalorejobseekers",
+      "msg_id": 145288,
+      "text": "who can uban instagram pages,dm me pls",
+      "timestamp": "2026-09-03T00:48:26+00:00"
+    }
+  ]
+}
