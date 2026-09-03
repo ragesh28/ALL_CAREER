@@ -71,12 +71,17 @@ KNOWN_COMPANIES = {
     "modenik": "Modenik Lifestyle",
     "modenik lifestyle": "Modenik Lifestyle",
     "apollo": "Apollo Hospitals",
-    "fortis": "Fortis Healthcare"
+    "fortis": "Fortis Healthcare",
+    "kauvery": "Kauvery Hospital",
+    "kauvery hospital": "Kauvery Hospital",
+    "manipal": "Manipal Hospitals",
+    "manipal hospital": "Manipal Hospitals",
+    "max healthcare": "Max Healthcare"
 }
 
-# Legal and corporate suffix regex
+# Legal and corporate suffix regex (constrained to single line with [ \t] to prevent cross-line captures)
 COMPANY_SUFFIX_REGEX = re.compile(
-    r'\b([A-Z0-9][A-Za-z0-9&\s\.\-]{2,40}\s+(?:Pvt\.?\s*Ltd\.?|Private\s+Limited|Ltd\.?|Limited|LLP|Inc\.?|Corp\.?|Corporation|Technologies|Technology|Solutions|Systems|Services|Industries|Enterprises|Consulting|Labs|Digital|Software|Infotech|Healthcare|Hospital|Motors|Lifestyle))\b',
+    r'\b([A-Za-z0-9&.\-][A-Za-z0-9& .\-]{1,35}[ \t]+(?:Pvt\.?\s*Ltd\.?|Private\s+Limited|Ltd\.?|Limited|LLP|Inc\.?|Corp\.?|Corporation|Technologies|Technology|Solutions|Systems|Services|Industries|Enterprises|Consulting|Labs|Digital|Software|Infotech|Healthcare|Hospital|Hospitals|Clinic|Motors|Lifestyle|Pharmacy))\b',
     re.IGNORECASE
 )
 
@@ -88,11 +93,13 @@ GENERIC_WORDS_BLACKLIST: Set[str] = {
     "immediate openings", "now hiring", "job opening", "job openings", "career opportunity",
     "selection drive", "recruitment drive", "chennai", "bangalore", "bengaluru", "hyderabad",
     "pune", "mumbai", "delhi", "noida", "gurgaon", "experience", "salary",
-    "qualification", "skills", "venue", "contact", "apply now", "register now",
+    "qualification", "qualifications", "skills", "venue", "contact", "apply now", "register now",
     "send resume", "share cv", "fresher", "experienced", "notice period",
     "candidates", "requirement", "requirements", "eligibility", "criteria",
     "role", "roles", "position", "positions", "job title", "location", "freshers",
-    "great careers", "assessment", "office openings", "careers", "we are hiring!"
+    "great careers", "assessment", "office openings", "careers", "we are hiring!",
+    "vacancies", "vacancy", "job vacancy", "job vacancies", "urgent vacancy", "urgent vacancies",
+    "clinical pharmacist vacancies", "pharmacist vacancies", "multiple vacancies"
 }
 
 
@@ -222,8 +229,12 @@ class CompanyDetector:
         for line in text.splitlines()[:8]:
             cand = line.strip(" ,.-:\n")
             cand = re.sub(r'^(?:we[\'’]?re|we are|join our|join us|urgent|urgently|now|welcome to|hiring for)\s+', '', cand, flags=re.IGNORECASE).strip()
+            cand_clean = re.sub(r'\b(?:vacancies|vacancy|openings|opening|walk-?in|interview|job)\b', '', cand, flags=re.IGNORECASE).strip(" ,.-:")
             if not cls.is_blacklisted(cand) and 3 <= len(cand) <= 50:
-                header_candidates.append(cand)
+                if cand_clean and not cls.is_blacklisted(cand_clean) and len(cand_clean) >= 3:
+                    header_candidates.append(cand_clean)
+                else:
+                    header_candidates.append(cand)
 
         if resolver:
             for cand in header_candidates:
@@ -239,6 +250,16 @@ class CompanyDetector:
         # ── 3. Check Known Company Dictionary ──
         low_text = " " + text.lower() + " "
         for key, canonical in KNOWN_COMPANIES.items():
+            if key == "google":
+                # Never detect Google when used in web/search/form referral context
+                if re.search(r'\b(?:on\s+google|visit\s+.*google|search\s+(?:on\s+)?google|google\s+(?:form|forms|play|meet|map|maps|lens|site|drive|website|stuff))\b', low_text):
+                    continue
+                if not re.search(r'\b(?:google\s+(?:india|inc|llc|operations|cloud)|careers\s+at\s+google|hiring\s+(?:at|for)\s+google)\b', low_text):
+                    continue
+            if key in ["amazon", "microsoft"]:
+                if re.search(rf'\b(?:aws|azure|learn\s+{key})\b', low_text):
+                    continue
+
             if f" {key} " in low_text or f"\n{key}\n" in low_text or f"\n{key} " in low_text or f" {key}\n" in low_text or f"at {key}" in low_text or f"for {key}" in low_text:
                 return CompanyResult(
                     name=canonical,

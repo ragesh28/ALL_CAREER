@@ -58,11 +58,11 @@ NEXT_30_CITIES = [
 # ═════════════════════════════════════════════════════════════════════════════
 HIRING_ROLES = [
     "software developer", "python developer", "data analyst",
-    "fresher", "IT jobs", "pharma", "java developer",
+    "fresher", "IT jobs", "full stack developer", "java developer",
     "web developer", "customer support", "accountant",
     "HR executive", "sales executive", "marketing",
     "mechanical engineer", "electrical engineer",
-    "nurse", "telecaller", "BPO", "back office", "receptionist"
+    "business analyst", "telecaller", "BPO", "back office", "devops engineer"
 ]
 
 PROGRESS_FILE = ROOT_DIR / "data" / "walkin_scrape_progress.json"
@@ -249,46 +249,78 @@ def fetch_flyer_urls_via_proxy_sync(
     seen = set()
     credits_used = 0
 
-    # Search with page offset (first=1, 36, 71)
-    for first in [1, 36]:
-        url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&first={first}&count=35"
-        try:
-            resp = requests.get(
-                url,
-                headers=headers,
-                proxies=proxies,
-                verify=False,
-                timeout=25
-            )
-            if resp.status_code == 200:
-                if proxies:
-                    credits_used += 1
-                # Parse high-res direct image links (murl parameter)
-                murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
-                for u in murls:
-                    clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
-                    if clean.startswith("http") and clean not in seen:
-                        seen.add(clean)
-                        found_urls.append(clean)
-            elif resp.status_code == 403 or resp.status_code == 429:
-                print(f"    ⚠️ Proxy rate-limited ({resp.status_code}), continuing...")
-                break
-        except Exception as e:
-            # If proxy fails, attempt direct request as fallback
+    # ── 1. Google Images Search (Last 24 Hours: udm=2&tbs=qdr:d) ──
+    google_url = f"https://www.google.com/search?udm=2&tbs=qdr:d&q={urllib.parse.quote_plus(query)}"
+    try:
+        resp = requests.get(
+            google_url,
+            headers=headers,
+            proxies=proxies,
+            verify=False,
+            timeout=20
+        )
+        if resp.status_code == 200:
+            if proxies:
+                credits_used += 1
+            # Extract high-res image URLs from Google scripts/response
+            g_urls = re.findall(r'\["(https?://[^"\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\s\\]*)?)",\s*\d+,\s*\d+\]', resp.text)
+            for u in g_urls:
+                clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+                # Skip expired image URLs containing 2025, 2024, etc.
+                if re.search(r'/(?:202[0-5]|201\d)/', clean):
+                    continue
+                if clean.startswith("http") and clean not in seen:
+                    seen.add(clean)
+                    found_urls.append(clean)
+    except Exception:
+        pass
+
+    # ── 2. Bing Images Search (Last 24 Hours: qft=+filterui:age-1d) ──
+    if len(found_urls) < max_count:
+        for first in [1, 36]:
+            bing_url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&qft=+filterui:age-1d&first={first}&count=35"
             try:
-                resp = requests.get(url, headers=headers, timeout=10)
+                resp = requests.get(
+                    bing_url,
+                    headers=headers,
+                    proxies=proxies,
+                    verify=False,
+                    timeout=25
+                )
                 if resp.status_code == 200:
+                    if proxies:
+                        credits_used += 1
+                    # Parse high-res direct image links (murl parameter)
                     murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
                     for u in murls:
                         clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+                        # Skip expired image URLs containing 2025, 2024, etc.
+                        if re.search(r'/(?:202[0-5]|201\d)/', clean):
+                            continue
                         if clean.startswith("http") and clean not in seen:
                             seen.add(clean)
                             found_urls.append(clean)
-            except Exception:
-                pass
+                elif resp.status_code in (403, 429):
+                    print(f"    ⚠️ Proxy rate-limited ({resp.status_code}), continuing...")
+                    break
+            except Exception as e:
+                # If proxy fails, attempt direct request as fallback
+                try:
+                    resp = requests.get(bing_url, headers=headers, timeout=10)
+                    if resp.status_code == 200:
+                        murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
+                        for u in murls:
+                            clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+                            if re.search(r'/(?:202[0-5]|201\d)/', clean):
+                                continue
+                            if clean.startswith("http") and clean not in seen:
+                                seen.add(clean)
+                                found_urls.append(clean)
+                except Exception:
+                    pass
 
-        if len(found_urls) >= max_count:
-            break
+            if len(found_urls) >= max_count:
+                break
 
     return found_urls[:max_count], credits_used
 
@@ -494,13 +526,26 @@ async def main():
                     city_detected = res.location.city or city_name.title()
                     roles_list = [r.name for r in res.roles]
 
+                    is_walkin = (res.job_type == "walk_in_interview")
+                    source_type = "Walk-in Interview Flyer" if is_walkin else "Job Vacancy Flyer (Direct Hiring)"
+
+                    # Clean role / title
+                    if is_walkin:
+                        job_title = role_name if role_name != "Walk-in" else f"{co_name} Walk-in Drive"
+                        walkin_date_val = res.date  # Only if explicitly extracted from flyer
+                        walkin_time_val = f"{res.time.start or ''} - {res.time.end or ''}".strip(" -")
+                    else:
+                        job_title = role_name if role_name != "Walk-in" else f"{co_name} Hiring Vacancy"
+                        walkin_date_val = None
+                        walkin_time_val = ""
+
                     # ── Deduplication Post-Check 2: Job Content & Signatures Check ──
                     is_dup_job, dup_job_reason = deduplicator.is_job_duplicate(
                         company=co_canonical,
-                        title=role_name,
+                        title=job_title,
                         roles=roles_list,
                         location=city_detected,
-                        walkin_date=res.date,
+                        walkin_date=walkin_date_val,
                         contact_email=res.contact_email,
                         contact_phone=res.contact_phone
                     )
@@ -510,28 +555,28 @@ async def main():
                         continue
 
                     # Generate unique dedup hash
-                    hash_src = f"{co_canonical}_{role_name}_{res.date}_{res.contact_email}_{res.contact_phone}_{city_name}"
+                    hash_src = f"{co_canonical}_{job_title}_{walkin_date_val}_{res.contact_email}_{res.contact_phone}_{city_name}"
                     dedup_hash = hashlib.sha256(hash_src.encode("utf-8")).hexdigest()[:16]
 
                     # Format clean job record with direct web flyer image URL
                     job_record = {
-                        "id": f"walkin_{dedup_hash}",
+                        "id": f"walkin_{dedup_hash}" if is_walkin else f"job_{dedup_hash}",
                         "dedup_hash": dedup_hash,
                         "source": "Image Flyer (Proxy Scrape)",
-                        "source_type": "Walk-in Interview Flyer",
+                        "source_type": source_type,
                         "company": co_name,
                         "company_canonical": co_canonical,
                         "company_confidence": res.company.confidence,
                         "company_method": res.company.detection_method,
-                        "title": role_name if role_name != "Walk-in" else f"{co_name} Walk-in Drive",
+                        "title": job_title,
                         "roles": roles_list,
                         "location": city_detected,
                         "state": res.location.state or "India",
                         "venue": res.location.venue,
                         "pincode": res.location.pincode,
                         "date_posted": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-                        "walkin_date": res.date,
-                        "walkin_time": f"{res.time.start or ''} - {res.time.end or ''}".strip(" -"),
+                        "walkin_date": walkin_date_val,
+                        "walkin_time": walkin_time_val,
                         "experience": res.experience if isinstance(res.experience, str) and res.experience else "Fresher / Experienced",
                         "salary": res.salary if isinstance(res.salary, str) and res.salary else "Competitive / Best in Industry",
                         "contact_email": res.contact_email,
@@ -549,7 +594,8 @@ async def main():
                     existing_jobs.append(job_record)
                     new_jobs_count += 1
                     city_extracted_count += 1
-                    print(f"  ✅ [New Walk-in #{new_jobs_count}] {co_name} | {role_name} | {city_detected}")
+                    status_tag = "Walk-in" if is_walkin else "Direct Hiring"
+                    print(f"  ✅ [New {status_tag} #{new_jobs_count}] {co_name} | {job_title} | {city_detected} (Date: {walkin_date_val or 'N/A'})")
                 else:
                     # ── Non-Job / Flyer not detected by OCR ──
                     if flyer_url and not flyer_url.endswith("...[base64]") and flyer_url not in seen_not_extracted_urls:

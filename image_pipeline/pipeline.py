@@ -136,9 +136,21 @@ class ImageToJobPipeline:
             min_threshold=self.min_signal_score
         )
 
-        # Build initial extraction result
-        job_type = "walk_in_interview" if any("walk_in" in s for s in signal_details) else "direct_hiring"
-        title = roles[0].name if roles else "Job Opportunity"
+        # Check if flyer is expired from a previous year (e.g. 2025, 2024)
+        is_expired, expired_reason = DateTimeDetector.is_expired_poster(raw_ocr_text)
+        if is_expired:
+            is_candidate_job = False
+            signal_details.append(f"rejected:{expired_reason}")
+
+        # Build initial extraction result: distinguish Walk-in Interview vs Direct Hiring
+        is_walkin = any("walk_in" in s for s in signal_details)
+        job_type = "walk_in_interview" if is_walkin else "direct_hiring"
+        
+        # If it's a general direct hiring flyer (not walk-in), walkin date is None
+        walkin_date = date_time_info["date"] if is_walkin else None
+        walkin_end_date = date_time_info["end_date"] if is_walkin else None
+        
+        title = roles[0].name if roles else ("Walk-in Opportunity" if is_walkin else "Job Vacancy")
 
         # Extract Experience
         exp_match = re.search(r'\b(\d+\s*[-–to]+\s*\d+\s*(?:years?|yrs?)|(?:fresher|freshers)|\d+\+?\s*(?:years?|yrs?))\b', raw_ocr_text, re.IGNORECASE)
@@ -155,8 +167,8 @@ class ImageToJobPipeline:
             company=company,
             roles=roles,
             location=location,
-            date=date_time_info["date"],
-            end_date=date_time_info["end_date"],
+            date=walkin_date,
+            end_date=walkin_end_date,
             time=date_time_info["time"],
             contact_phone=phone,
             contact_email=email,

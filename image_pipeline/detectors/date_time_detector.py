@@ -70,6 +70,10 @@ class DateTimeDetector:
             yr = int(range_match.group(4)) if range_match.group(4) else current_year
             month_num = cls.MONTH_MAP.get(month_str)
 
+            if yr < current_year:
+                # Expired date from previous year (e.g. 2025, 2024) - do not accept
+                return None, None
+
             if month_num:
                 start_iso = f"{yr:04d}-{month_num:02d}-{d1:02d}"
                 end_iso = f"{yr:04d}-{month_num:02d}-{d2:02d}"
@@ -81,6 +85,9 @@ class DateTimeDetector:
             d = int(word_match.group(1))
             month_str = word_match.group(2).lower()
             yr = int(word_match.group(3)) if word_match.group(3) else current_year
+            if yr < current_year:
+                # Expired date from past year
+                return None, None
             month_num = cls.MONTH_MAP.get(month_str)
             if month_num and 1 <= d <= 31:
                 start_iso = f"{yr:04d}-{month_num:02d}-{d:02d}"
@@ -94,11 +101,37 @@ class DateTimeDetector:
             y = int(num_match.group(3))
             if y < 100:
                 y += 2000
+            if y < current_year:
+                # Expired numeric date (e.g. 2025)
+                return None, None
             if 1 <= m <= 12 and 1 <= d <= 31:
                 start_iso = f"{y:04d}-{m:02d}-{d:02d}"
                 return start_iso, None
 
         return None, None
+
+    @classmethod
+    def is_expired_poster(cls, text: str, current_year: int = 2026) -> Tuple[bool, str]:
+        """
+        Check if flyer is from a previous year (e.g. 2025, 2024, 2023).
+        Returns: (is_expired, reason)
+        """
+        if not text:
+            return False, ""
+        # Match past year patterns (e.g. "November 2025", "2025/11", "30-10-2025", "2025")
+        past_years = [str(y) for y in range(2020, current_year)]
+        past_years_pattern = "|".join(past_years)
+
+        # Date with past year: e.g. "Oct 2025", "25/10/2025", "2025-11-04"
+        past_date_match = re.search(
+            rf'\b(?:(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[\s,/-]+(?:\d{{1,2}}[\s,/-]+)?(?:{past_years_pattern})|\d{{1,2}}[/-]\d{{1,2}}[/-](?:{past_years_pattern}))\b',
+            text,
+            re.IGNORECASE
+        )
+        if past_date_match:
+            return True, f"Expired flyer date: {past_date_match.group(0)}"
+
+        return False, ""
 
     @classmethod
     def detect_date_time(cls, text: str) -> Dict[str, Any]:
