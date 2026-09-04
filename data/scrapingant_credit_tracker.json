@@ -21,6 +21,13 @@
       "credits_used": 149,
       "jobs_extracted": 132,
       "cities_processed": 50
+    },
+    {
+      "date": "2026-09-04",
+      "key_index": 2,
+      "credits_used": 177,
+      "jobs_extracted": 19,
+      "cities_processed": 50
     }
   ]
 }
