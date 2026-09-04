@@ -1,0 +1,47 @@
+{
+  "workflow_run_number": "727",
+  "workflow_run_id": "33842512188",
+  "timestamp": "2026-09-04T06:22:04.889523",
+  "runtime_minutes": 21.05,
+  "messages_processed": 40,
+  "new_jobs_stored": 18,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Internshipsworld",
+      "msg_id": 5880,
+      "text": "🚀 𝗗𝗿𝗲𝗮𝗺𝗶𝗻𝗴 𝗼𝗳 𝗪𝗼𝗿𝗸𝗶𝗻𝗴 𝗮𝘁 𝗧𝗼𝗽 𝗧𝗲𝗰𝗵 𝗖𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀? 💻🔥\n\n Here’s a collection of company-specific resources to help you understand their interview and hiring processes.\n\n🎯 Interview Preparation Guides For:\n\n🟠 Amazon – Interviewing Guide\n🔵 Google – Interview Tips\n🪟 Microsoft – Hiring & Interview Tips\n🟢 NVIDIA – Hiring Process\n🔷 Meta – Software Engineering Interview Prep\n\n𝐋𝐢𝐧𝐤 👇:- \n\nhttps://pdlink.in/4i6HkgN\n\n📢 Save & share this with your friends — start learning for FREE!\nDreaming of\nWorking at\nTop Tech\nCompanies?\nHere's your guide to\nInterview Preparation\nace the interviews!\nTechnical Skills\nData Structures\n回\nSystem Design\na\nBehavioral Questions\nCompany Research\namazon\nGoogle\nMicrosoft\nNVIDIA.\nMeta",
+      "timestamp": "2026-09-04T05:29:25+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 42685,
+      "text": "**🚨Free Gen AI Claude Workshop - FREE (Today Only) 🚀**\n\n💸 Cost: ~~₹10,000~~ ₹0 (FREE!)\n\nDeadline: 4th September 2026\n\nWhat You Will Learn:\n✅ Learn 25+ AI tools\n✅ Master practical AI workflows and automate tasks\n✅ Automate assignments, content & research\n✅ Stand out in internships & placements\n\n⏰ Limited to 100 seats — Fill before they're gone!\n\n**Enroll Now (Free)**: https://link.outskill.com/A-13",
+      "timestamp": "2026-09-04T05:25:10+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18648,
+      "text": "Always stay\nhumble and kind.\nYour genuine heart\nattracts blessings.\nDon't change.",
+      "timestamp": "2026-09-04T01:45:07+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 19666,
+      "text": "Happy  Janmashtami 🕉🙏",
+      "timestamp": "2026-09-04T05:21:46+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8247,
+      "text": "SDE Roadmap 📈 \n\nhttps://www.instagram.com/p/Dc2YEXhhG4U/\n\nSave this, and follow for more",
+      "timestamp": "2026-09-04T03:57:29+00:00"
+    }
+  ]
+}

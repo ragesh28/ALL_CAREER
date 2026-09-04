@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "727",
+  "workflow_run_id": "33842512188",
+  "timestamp": "2026-09-04T06:22:04.889523",
+  "runtime_minutes": 21.05,
+  "messages_processed": 40,
+  "new_jobs_stored": 18,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 29951,
+      "text": "**FREE Claude AI Certification - FREE for today!🚀\n**\n**Last Day To Register\n**\n💸 Cost: ~~₹10,000~~ ₹0 (FREE!)\n\n**Enroll Now (Free):**   https://link.outskill.com/A-11\n\n**Deadline**: 7 PM, 4th September 2026 \n\n**What you’ll learn:\n**✅ 25+ Powerful AI Tools\n✅ Become an Excel Pro \n✅ Build Websites in seconds \n✅ Crack Exams & Interviews faster \n\n⚡ Only Limited Seats Left!\n\n**Enroll Now (Free):**   https://link.outskill.com/A-11",
+      "timestamp": "2026-09-04T04:32:02+00:00"
+    }
+  ]
+}
