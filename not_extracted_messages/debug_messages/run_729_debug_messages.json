@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "729",
+  "workflow_run_id": "33895164224",
+  "timestamp": "2026-09-04T17:15:19.621883",
+  "runtime_minutes": 46.51,
+  "messages_processed": 69,
+  "new_jobs_stored": 40,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258302,
+      "text": "舌C2舌\nBenwd\n \n\n83\nWE ARE\nSSLC\nPUC\nHIRING!\naa 3ead\nQ\n3：\nSSLC  UC \nevassen\no   \n\n     \n  \nGCa a：\n\n3/3\n6\nsads deçaverr\nde o, oo,\n.\no, \n24:\n3TA 2OJGE\nX\n7338311706\neo\noLAdHod",
+      "timestamp": "2026-09-04T11:49:03+00:00"
+    }
+  ]
+}
