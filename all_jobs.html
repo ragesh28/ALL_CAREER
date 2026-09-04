@@ -2322,7 +2322,10 @@
             if (!isWalk) return [];
 
             const rawDateStr = String(job.walkin_date || extractWalkinDateFromText(rawTitle) || '');
-            const fallbackStr = job.date || job.fetchedAt || '';
+            // Don't use date_posted as walkin date fallback for google_images source,
+            // because date_posted is just the scraping date (today), NOT the actual walk-in date.
+            const src = String(job.source || '').toLowerCase();
+            const fallbackStr = (src === 'google_images') ? '' : (job.date || job.fetchedAt || '');
             return parseWalkinDates(rawDateStr, fallbackStr);
         }
 
@@ -2502,8 +2505,8 @@
                             experience: (typeof job.experience === 'object' && job.experience !== null) ? (job.experience.raw_text || '') : pick(job.experience),
                             salary: (typeof job.salary === 'object' && job.salary !== null) ? (job.salary.raw_text || '') : pick(job.salary),
                             skills: Array.isArray(job.skills) ? job.skills : [],
-                            is_walkin: true,
-                            walkin_date: walkDate,
+                            is_walkin: Boolean(walkDate) || /\b(walk[\s-]?in|walkin|walking)\b/i.test(rawTitle),
+                            walkin_date: walkDate || null,
                             walkin_time: (typeof job.time === 'object' && job.time !== null) ? `${job.time.start || ''} - ${job.time.end || ''}`.trim(' -') : (job.walkin_time || ''),
                             flyer_image_url: job.flyer_image_url || job.raw_flyer_src || job.image_path || '',
                             contact_email: job.contact_email || '',
