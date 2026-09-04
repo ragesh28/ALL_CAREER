@@ -29,7 +29,11 @@ import requests
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding='utf-8')
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 from image_pipeline.pipeline import ImageToJobPipeline
 from company_db.resolver import CompanyResolver
@@ -252,17 +256,18 @@ def main():
     else:
         print("⚠️ Warning: company_master.db not found. Running in fallback mode.\n")
 
-    # If CLI argument passed (e.g. python test_image.py "https://...")
+    # If CLI argument passed (e.g. python test_image.py "https://..."), process it first
     if len(sys.argv) > 1:
         arg_input = sys.argv[1].strip()
-        print(f"👉 Testing provided argument: {arg_input}\n")
+        print(f"👉 Processing provided link: {arg_input}\n")
         handle_input(pipeline, resolver, arg_input)
-        return
+        print()
 
-    # Interactive loop
+    # Continuous Interactive loop (keeps running so user never has to restart)
+    print("✨ Continuous Mode Active: Paste any flyer link below, press Enter, and get instant extraction!")
     while True:
         try:
-            user_input = input("👉 Enter Image URL or Local File Path (or 'q' to quit): ").strip()
+            user_input = input("\n🔗 Paste Image Link (or 'q' to quit): ").strip()
             if not user_input:
                 continue
             if user_input.lower() in ("q", "quit", "exit"):
@@ -270,7 +275,6 @@ def main():
                 break
 
             handle_input(pipeline, resolver, user_input)
-            print()
 
         except KeyboardInterrupt:
             print("\n\n👋 Interrupted by user. Exiting.\n")
