@@ -593,15 +593,11 @@
                 }
 
                 let year = currentYear;
-                if (monthIdx !== -1) {
-                    if (monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
-                        year = currentYear + 1;
-                    }
-                }
-
                 const yearMatch = text.match(/\b(20\d{2})\b/);
                 if (yearMatch) {
                     year = parseInt(yearMatch[1]);
+                } else if (monthIdx !== -1 && monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
+                    year = currentYear + 1;
                 }
 
                 if (monthIdx !== -1) {
@@ -648,15 +644,12 @@
                         });
                     }
                 } else {
-                    const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
-                    if (numMatch) {
-                        let d = parseInt(numMatch[1]);
-                        let m = parseInt(numMatch[2]) - 1;
-                        let y = parseInt(numMatch[3]);
-                        if (y < 100) y += 2000;
-                        if (m > 11 && d <= 12) {
-                            const tmp = d; d = m + 1; m = tmp - 1;
-                        }
+                    // ISO format: YYYY-MM-DD or YYYY/MM/DD
+                    const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+                    if (isoMatch) {
+                        const y = parseInt(isoMatch[1]);
+                        const m = parseInt(isoMatch[2]) - 1;
+                        const d = parseInt(isoMatch[3]);
                         if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
                             const dObj = new Date(y, m, d);
                             dObj.setHours(0, 0, 0, 0);
@@ -665,6 +658,28 @@
                                     label: `${MONTH_NAMES[m]} ${d}`,
                                     dateObj: dObj
                                 });
+                            }
+                        }
+                    } else {
+                        // Numeric patterns: DD/MM/YYYY or DD-MM-YYYY or MM/DD/YYYY
+                        const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+                        if (numMatch) {
+                            let d = parseInt(numMatch[1]);
+                            let m = parseInt(numMatch[2]) - 1;
+                            let y = parseInt(numMatch[3]);
+                            if (y < 100) y += 2000;
+                            if (m > 11 && d <= 12) {
+                                const tmp = d; d = m + 1; m = tmp - 1;
+                            }
+                            if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
+                                const dObj = new Date(y, m, d);
+                                dObj.setHours(0, 0, 0, 0);
+                                if (dObj >= now && dObj <= maxFuture) {
+                                    resultDates.push({
+                                        label: `${MONTH_NAMES[m]} ${d}`,
+                                        dateObj: dObj
+                                    });
+                                }
                             }
                         }
                     }
