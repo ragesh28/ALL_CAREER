@@ -118,18 +118,27 @@ class DateTimeDetector:
         """
         if not text:
             return False, ""
-        # Match past year patterns (e.g. "November 2025", "2025/11", "30-10-2025", "2025")
         past_years = [str(y) for y in range(2020, current_year)]
         past_years_pattern = "|".join(past_years)
+        month_abbr = r'(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*'
 
-        # Date with past year: e.g. "Oct 2025", "25/10/2025", "2025-11-04"
-        past_date_match = re.search(
-            rf'\b(?:(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[\s,/-]+(?:\d{{1,2}}[\s,/-]+)?(?:{past_years_pattern})|\d{{1,2}}[/-]\d{{1,2}}[/-](?:{past_years_pattern}))\b',
+        # 1. Day & Month with past year: e.g. "16thMar2024", "16 March 2025", "Mar 16, 2024", "Oct 2025"
+        d_m_y_match = re.search(
+            rf'(?:\b\d{{1,2}}(?:st|nd|rd|th)?[\s,/-]*)?{month_abbr}[\s,/-]*(?:\d{{1,2}}(?:st|nd|rd|th)?[\s,/-]*)?(?:{past_years_pattern})\b',
             text,
             re.IGNORECASE
         )
-        if past_date_match:
-            return True, f"Expired flyer date: {past_date_match.group(0)}"
+        if d_m_y_match:
+            return True, f"Expired flyer date: {d_m_y_match.group(0)}"
+
+        # 2. Numeric date with past year: e.g. "25/10/2025", "2024-03-16", "16.03.2024"
+        num_date_match = re.search(
+            rf'\b(?:\d{{1,2}}[./-]\d{{1,2}}[./-](?:{past_years_pattern})|(?:{past_years_pattern})[./-]\d{{1,2}}[./-]\d{{1,2}})\b',
+            text,
+            re.IGNORECASE
+        )
+        if num_date_match:
+            return True, f"Expired flyer numeric date: {num_date_match.group(0)}"
 
         return False, ""
 

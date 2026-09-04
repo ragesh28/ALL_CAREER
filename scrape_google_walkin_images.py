@@ -380,7 +380,7 @@ async def scrape_images_for_city_deep(
 
     # ── Query 1: Walk-in Interview Flyers ──
     query1 = f'"walk in interview" {city} hiring poster'
-    print(f"\n  🔍 Query 1 (Proxy): {query1}")
+    print(f"\n  🔍 Query 1 (Proxy | 24h Filter [Google udm=2&tbs=qdr:d / Bing age-1d]): {query1}")
     urls1, creds1 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query1, api_key, max_count=max_images // 2 + 10)
     city_credits += creds1
     for u in urls1:
@@ -394,7 +394,7 @@ async def scrape_images_for_city_deep(
     role_index = (day_of_year - 1) % len(HIRING_ROLES)
     todays_role = HIRING_ROLES[role_index]
     query2 = f'"we are hiring" {city} {todays_role}'
-    print(f"  🔍 Query 2 (Proxy): {query2}")
+    print(f"  🔍 Query 2 (Proxy | 24h Filter [Google udm=2&tbs=qdr:d / Bing age-1d]): {query2}")
     urls2, creds2 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query2, api_key, max_count=max_images // 2 + 10)
     city_credits += creds2
     for u in urls2:
