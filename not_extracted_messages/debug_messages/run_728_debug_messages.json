@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "728",
+  "workflow_run_id": "33867904064",
+  "timestamp": "2026-09-04T12:02:59.975486",
+  "runtime_minutes": 35.25,
+  "messages_processed": 50,
+  "new_jobs_stored": 35,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258295,
+      "text": "Pan Karnataka\nSSt\nur   ars\nS  EEL一\nute\nEIIN\nIECE\nQUALIFICATIONS\n. PUC+\nTARGET-DRIVEN MINDSET\nEXCELLENT COMMUNICATION\nSTRATEGIC THINKING\n• 2 WHEELER WITH DL\n• LOCATION : MANGALORE,PUTTUR SULLIA,\nBANTWALA BELTHANGADY, KARKALA\nMOODABIDRI, UDUPI, KUNDAPURA\nAPPLY NOW\n+91-8792054099",
+      "timestamp": "2026-09-04T10:23:37+00:00"
+    }
+  ]
+}
