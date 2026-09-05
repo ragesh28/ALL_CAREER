@@ -699,7 +699,9 @@
             opacity: 1;
         }
 
-        .flyer-source-btn {
+        .top-source-badge-btn,
+        .flyer-source-btn,
+        .telegram-source-btn {
             position: absolute;
             top: 12px;
             right: 14px;
@@ -709,13 +711,16 @@
             padding: 3px 8px;
             font-size: 0.65rem;
             font-weight: 600;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 6px;
             text-decoration: none;
             transition: all 0.2s ease;
             z-index: 2;
+        }
+
+        .flyer-source-btn {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .flyer-source-btn:hover {
@@ -724,6 +729,20 @@
             color: #fff;
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+        }
+
+        .telegram-source-btn {
+            color: #229ED9;
+            background: rgba(34, 158, 217, 0.12);
+            border: 1px solid rgba(34, 158, 217, 0.35);
+        }
+
+        .telegram-source-btn:hover {
+            background: rgba(34, 158, 217, 0.28);
+            border-color: #229ED9;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(34, 158, 217, 0.4);
         }
 
         .job-card:hover {
@@ -2456,7 +2475,11 @@
                             title: rawTitle,
                             company: String(job.company_name || job.company || ''),
                             location: String(job.location || ''),
-                            date: cleanDate, url: String(job.apply_link || job.url || job.linkedin_url || ''),
+                            date: cleanDate,
+                            url: String(job.apply_link || job.url || job.linkedin_url || ''),
+                            telegram_url: String(job.telegram_url || (String(job.url || '').includes('t.me') ? job.url : '')),
+                            contact_email: String(job.contact_email || ''),
+                            contact_phone: String(job.contact_phone || ''),
                             source: sourceVal,
                             role_search: String(job.search_keyword || job.role_search || ''),
                             experience: pick(job.experience),
@@ -2464,6 +2487,7 @@
                             is_walkin: isWalk,
                             walkin_date: walkDate,
                             walkin_time: job.walkin_time || '',
+                            flyer_image_url: String(job.flyer_image_url || ''),
                             fetchedAt: cleanDate
                         });
                     }
@@ -2698,7 +2722,17 @@
                 const phone = job.contact_phone || (url.startsWith('tel:') ? url.replace('tel:', '') : '');
                 const telegramUrl = job.telegram_url || (url.includes('t.me') ? url : '');
                 const flyerUrl = job.flyer_image_url || job.raw_flyer_src || (source.includes('google') ? url : '');
-                const flyerBadgeHtml = flyerUrl ? `<a href="${esc(flyerUrl)}" target="_blank" class="flyer-source-btn" title="View original walk-in flyer image">🖼️ Source</a>` : '';
+                
+                let topSourceBadgeHtml = '';
+                if (source.includes('telegram') || telegramUrl) {
+                    const tgLink = telegramUrl || (url.includes('t.me') ? url : '');
+                    if (tgLink) {
+                        const tgLabel = (source === 'telegram_post') ? '📲 Post Source' : (source === 'telegram_message' ? '💬 Msg Source' : '📲 Source');
+                        topSourceBadgeHtml = `<a href="${esc(tgLink)}" target="_blank" rel="noopener" class="top-source-badge-btn telegram-source-btn" title="View original Telegram post / message">${tgLabel}</a>`;
+                    }
+                } else if (flyerUrl) {
+                    topSourceBadgeHtml = `<a href="${esc(flyerUrl)}" target="_blank" rel="noopener" class="top-source-badge-btn flyer-source-btn" title="View original walk-in flyer image">🖼️ Source</a>`;
+                }
                 
                 const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
                 const portalLogoSrc = PORTAL_LOGOS[source] || '';
@@ -2739,7 +2773,7 @@
 
                 return `
             <div class="job-card" style="animation-delay:${i * 0.025}s">
-                ${flyerBadgeHtml}
+                ${topSourceBadgeHtml}
                 <div class="card-top">
                     <div class="logo-box">
                         <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">

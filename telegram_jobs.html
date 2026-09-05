@@ -210,12 +210,21 @@
             padding: 4px 12px; border-radius: 0 0 10px 10px;
             font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
             letter-spacing: 0.5px; display: flex; align-items: center; gap: 5px;
+            text-decoration: none; transition: all 0.2s ease; z-index: 2;
         }
-        .stripe-telegram { background: rgba(0,136,204,0.15); color: #0088cc; }
-        .stripe-linkedin { background: rgba(10,102,194,0.15); color: #0a66c2; }
-        .stripe-naukri { background: rgba(74,144,217,0.15); color: #4A90D9; }
-        .stripe-indeed { background: rgba(0,58,155,0.15); color: #6c8bc2; }
-        .stripe-other { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        a.card-source-stripe:hover {
+            transform: translateY(2px);
+            filter: brightness(1.25);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.4);
+            cursor: pointer;
+        }
+        .stripe-telegram,
+        .stripe-telegram_message,
+        .stripe-telegram_post { background: rgba(0,136,204,0.18); color: #0088cc; border: 1px solid rgba(0,136,204,0.3); border-top: none; }
+        .stripe-linkedin { background: rgba(10,102,194,0.18); color: #0a66c2; border: 1px solid rgba(10,102,194,0.3); border-top: none; }
+        .stripe-naukri { background: rgba(74,144,217,0.18); color: #4A90D9; border: 1px solid rgba(74,144,217,0.3); border-top: none; }
+        .stripe-indeed { background: rgba(0,58,155,0.18); color: #6c8bc2; border: 1px solid rgba(0,58,155,0.3); border-top: none; }
+        .stripe-other { background: rgba(255,255,255,0.08); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.15); border-top: none; }
 
         .card-top { display: flex; gap: 14px; align-items: flex-start; margin-top: 8px; }
         .logo-box {
@@ -415,6 +424,8 @@
 
         const SOURCE_LOGO_MAP = {
             'telegram': 'logos/portals/telegram.svg',
+            'telegram_message': 'logos/portals/telegram.svg',
+            'telegram_post': 'logos/portals/telegram.svg',
             'linkedin': 'logos/portals/linkedin.png',
             'indeed': 'logos/portals/indeed.png',
             'naukri': 'logos/portals/naukri.png',
@@ -431,6 +442,8 @@
 
         const SOURCE_STRIPE_MAP = {
             'telegram': 'stripe-telegram',
+            'telegram_message': 'stripe-telegram',
+            'telegram_post': 'stripe-telegram',
             'linkedin': 'stripe-linkedin',
             'naukri': 'stripe-naukri',
             'indeed': 'stripe-indeed',
@@ -764,6 +777,9 @@
                             location: job.location || "",
                             date: job.job_posted_date || job.fetched_at || job.date || job.date_posted || "",
                             url: job.apply_link || job.url || job.linkedin_url || "",
+                            telegram_url: job.telegram_url || (String(job.url || '').includes('t.me') ? job.url : ''),
+                            contact_email: job.contact_email || '',
+                            contact_phone: job.contact_phone || '',
                             source: (job.platform || job.source || "").toLowerCase(),
                             experience: job.experience || null,
                             salary: job.salary || null,
@@ -901,7 +917,7 @@
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const url = job.url || '';
-                const source = job.source || '';
+                const source = (job.source || '').toLowerCase();
                 const sourceName = source ? (source.charAt(0).toUpperCase() + source.slice(1)) : '';
                 const sourceLogoSrc = SOURCE_LOGO_MAP[source] || '';
                 const stripeClass = SOURCE_STRIPE_MAP[source] || 'stripe-other';
@@ -910,13 +926,23 @@
                 const upcomingWalkin = getNormalizedWalkinDates(job);
                 const isWalkin = upcomingWalkin.length > 0 || job.walking_interview || job.is_walkin || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(job.title || '');
                 const walkDate = upcomingWalkin.length > 0 ? upcomingWalkin[0] : (job.walkin_date || 'Upcoming');
+                
+                const telegramUrl = job.telegram_url || (url.includes('t.me') ? url : '');
+                const sourceUrl = telegramUrl || url || '';
+                const isTg = source.includes('telegram') || Boolean(telegramUrl);
+                const sourceDisplayLabel = source === 'telegram_post' ? 'Telegram Post' : (source === 'telegram_message' ? 'Telegram Msg' : (sourceName || 'Source'));
 
                 return `
             <div class="job-card ${isWalkin ? 'walkin-card' : ''}" style="animation-delay:${i * 0.02}s">
+                ${sourceUrl ? `
+                <a href="${esc(sourceUrl)}" target="_blank" rel="noopener" class="card-source-stripe ${stripeClass}" title="View original ${isTg ? 'Telegram post / message' : 'source'}">
+                    ${sourceLogoSrc ? `<img src="${sourceLogoSrc}" style="width:12px;height:12px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">` : ''}
+                    ${esc(sourceDisplayLabel)} ↗
+                </a>` : `
                 <div class="card-source-stripe ${stripeClass}">
                     ${sourceLogoSrc ? `<img src="${sourceLogoSrc}" style="width:12px;height:12px;object-fit:contain;border-radius:2px;" onerror="this.style.display='none'">` : ''}
-                    ${esc(sourceName)}
-                </div>
+                    ${esc(sourceDisplayLabel)}
+                </div>`}
                 <div class="card-top">
                     <div class="logo-box">
                         <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">

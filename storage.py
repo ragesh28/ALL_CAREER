@@ -316,7 +316,11 @@ def store_jobs_batch(jobs):
                 job_updated = True
                 
             # 2. Enrich other missing fields
-            enrich_fields = ["experience", "skills", "salary", "qualification", "last_date", "other_details", "walkin_date", "walkin_time"]
+            enrich_fields = [
+                "experience", "skills", "salary", "qualification", "last_date",
+                "other_details", "walkin_date", "walkin_time", "telegram_url",
+                "contact_email", "contact_phone", "flyer_image_url"
+            ]
             for field in enrich_fields:
                 new_val = j.get(field)
                 old_val = existing_job.get(field)
