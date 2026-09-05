@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "737",
+  "workflow_run_id": "33981790583",
+  "timestamp": "2026-09-05T17:53:32.052146",
+  "runtime_minutes": 9.16,
+  "messages_processed": 8,
+  "new_jobs_stored": 2,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14808,
+      "text": "FREE GenAI Claude\n\n🎯 For freelancers, professionals & self-employed individuals.\n\n👉 Register FREE : https://link.outskill.com/A-12",
+      "timestamp": "2026-09-05T16:38:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6341,
+      "text": "ElevenLabs Full Masterclass in 20 minutes\n\nThis video can help you become the best in learning about Voice AI and how can you use ElevenLabs platform for integrating in your projects.\n\n\nLink to the video: https://yt.openinapp.co/nhsu7\n\nPlease do like the video, it would mean a lot to me 🙏\nIlElevenLabs\nMASTERCLASS\nllElevenLabs\nClone Any Voice\nText to Speech\nVoice Clone\nDubbing\nSound Effects\nVoice Design\nStudio\n三",
+      "timestamp": "2026-09-05T15:58:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6342,
+      "text": "Are you a software engineer who wants to become a content creator?\n\nSomething that can help: https://lnkd.in/p/d8aNrbXj",
+      "timestamp": "2026-09-05T16:35:12+00:00"
+    }
+  ]
+}
