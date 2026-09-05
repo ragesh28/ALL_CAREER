@@ -260,7 +260,7 @@ def save_not_extracted_images(items: list):
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# HIGH-RES FLYER IMAGE SCRAPING VIA SCRAPINGANT PROXY PORT (1 Credit/Query)
+# HIGH-RES FLYER IMAGE SCRAPING VIA GOOGLE IMAGES (ScrapingAnt Proxy Port)
 # ═════════════════════════════════════════════════════════════════════════════
 def fetch_flyer_urls_via_proxy_sync(
     query: str,
@@ -268,14 +268,15 @@ def fetch_flyer_urls_via_proxy_sync(
     max_count: int = 50
 ) -> Tuple[List[str], int]:
     """
-    Scrape high-res flyer image URLs using ScrapingAnt Rotating Proxy Port.
-    1. Routes through ScrapingAnt proxy port (1 credit, masks GitHub IP).
-    2. Extracts direct high-resolution flyer image URLs from search responses.
+    Scrape high-res flyer image URLs using ONLY Google Images via ScrapingAnt Proxy.
+    1. Routes through ScrapingAnt proxy port (1 credit, masks GitHub Actions IP).
+    2. Uses Google Images (24h India: udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en).
+    3. Outputs full, comprehensive diagnostic logs if any error, block, or exception occurs.
     """
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Language': 'en-IN,en;q=0.9',
     }
 
     proxies = get_proxy_dict(api_key)
@@ -283,7 +284,7 @@ def fetch_flyer_urls_via_proxy_sync(
     seen = set()
     credits_used = 0
 
-    # ── 1. Google Images Search (Last 24 Hours: udm=2&tbs=qdr:d, India Only: cr=countryIN) ──
+    # ── Google Images Search (24h India: udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en) ──
     google_url = f"https://www.google.com/search?udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en&q={urllib.parse.quote_plus(query)}"
     try:
         resp = requests.get(
@@ -291,78 +292,77 @@ def fetch_flyer_urls_via_proxy_sync(
             headers=headers,
             proxies=proxies,
             verify=False,
-            timeout=20
+            timeout=25
         )
-        if resp.status_code == 200:
-            if proxies:
-                credits_used += 1
-            # Extract high-res image URLs from Google scripts/response
-            g_urls = re.findall(r'\["(https?://[^"\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\s\\]*)?)",\s*\d+,\s*\d+\]', resp.text)
-            for u in g_urls:
-                clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
-                # Skip expired image URLs containing 2025, 2024, etc.
-                if re.search(r'/(?:202[0-5]|201\d)/', clean):
-                    continue
-                # Skip foreign job aggregators & template sites
-                if is_blocked_flyer_url(clean):
-                    continue
-                if clean.startswith("http") and clean not in seen:
-                    seen.add(clean)
-                    found_urls.append(clean)
-    except Exception:
-        pass
+        if proxies:
+            credits_used += 1
 
-    # ── 2. Bing Images Search (Last 24 Hours: qft=+filterui:age-1d, India: cc=IN) ──
-    if len(found_urls) < max_count:
-        for first in [1, 36]:
-            bing_url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&qft=+filterui:age-1d&cc=IN&setlang=en-IN&setmkt=en-IN&first={first}&count=35"
-            try:
-                resp = requests.get(
-                    bing_url,
-                    headers=headers,
-                    proxies=proxies,
-                    verify=False,
-                    timeout=25
-                )
-                if resp.status_code == 200:
-                    if proxies:
-                        credits_used += 1
-                    # Parse high-res direct image links (murl parameter)
-                    murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
-                    for u in murls:
-                        clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
-                        # Skip expired image URLs containing 2025, 2024, etc.
-                        if re.search(r'/(?:202[0-5]|201\d)/', clean):
-                            continue
-                        # Skip foreign job aggregators & template sites
-                        if is_blocked_flyer_url(clean):
-                            continue
-                        if clean.startswith("http") and clean not in seen:
-                            seen.add(clean)
-                            found_urls.append(clean)
-                elif resp.status_code in (403, 429):
-                    print(f"    ⚠️ Proxy rate-limited ({resp.status_code}), continuing...")
-                    break
-            except Exception as e:
-                # If proxy fails, attempt direct request as fallback
-                try:
-                    resp = requests.get(bing_url, headers=headers, timeout=10)
-                    if resp.status_code == 200:
-                        murls = re.findall(r'murl&quot;:&quot;(http[^&]+)&quot;', resp.text)
-                        for u in murls:
-                            clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
-                            if re.search(r'/(?:202[0-5]|201\d)/', clean):
-                                continue
-                            if is_blocked_flyer_url(clean):
-                                continue
-                            if clean.startswith("http") and clean not in seen:
-                                seen.add(clean)
-                                found_urls.append(clean)
-                except Exception:
-                    pass
+        if resp.status_code != 200:
+            print(f"\n  ❌ [GOOGLE SEARCH HTTP ERROR: {resp.status_code}]")
+            print(f"     Target URL: {google_url}")
+            print(f"     Proxy Host: {SCRAPINGANT_PROXY_HOST if proxies else 'None (Direct)'}")
+            print(f"     Response Headers: {dict(resp.headers)}")
+            print(f"     Response Snippet (First 500 chars):")
+            print(f"     {resp.text[:500]}")
+            print("-" * 70)
+            return [], credits_used
 
-            if len(found_urls) >= max_count:
-                break
+        # Check for Google Bot Protection / CAPTCHA / JS requirement
+        text = resp.text
+        bot_reasons = []
+        if "sorry/index" in text or "recaptcha" in text.lower():
+            bot_reasons.append("CAPTCHA / Bot Protection page ('sorry/index')")
+        if "consent.google.com" in resp.url or "consent.google.com" in text:
+            bot_reasons.append("Consent / Region selection redirect")
+        if "enablejs" in text or "<noscript>" in text:
+            bot_reasons.append("JavaScript required ('enablejs' static HTML shell)")
+        if "Our systems have detected unusual traffic" in text:
+            bot_reasons.append("Unusual Traffic Block")
+
+        if bot_reasons:
+            print(f"\n  ⚠️ [GOOGLE SEARCH BOT/JS WARNING]")
+            print(f"     Target URL: {google_url}")
+            print(f"     Detected Block Signals: {', '.join(bot_reasons)}")
+            print(f"     Response Length: {len(text)} bytes")
+            print(f"     HTML Sample (First 400 chars):")
+            print(f"     {text[:400]}")
+            print("-" * 70)
+
+        # Multi-pattern regex extraction for high-res images
+        g_urls_1 = re.findall(r'\["(https?://[^"\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\s\\]*)?)",\s*\d+,\s*\d+\]', text)
+        g_urls_2 = re.findall(r'"(https?://[^"]+?\.(?:jpg|jpeg|png|webp))"', text.replace(r'\/', '/'))
+        g_urls_3 = re.findall(r'(https?://[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,6}/[^\s"\'<>\\]+?\.(?:jpg|jpeg|png|webp))', text)
+
+        raw_candidate_urls = g_urls_1 + g_urls_2 + g_urls_3
+
+        for u in raw_candidate_urls:
+            clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
+            # Skip expired image URLs containing 2025, 2024, etc.
+            if re.search(r'/(?:202[0-5]|201\d)/', clean):
+                continue
+            # Skip foreign job aggregators & template sites
+            if is_blocked_flyer_url(clean):
+                continue
+            # Skip Google internal icons/logos
+            if "google.com" in clean or "gstatic.com" in clean:
+                continue
+            if clean.startswith("http") and clean not in seen:
+                seen.add(clean)
+                found_urls.append(clean)
+
+        if len(found_urls) == 0:
+            print(f"  ℹ️ [Google Returned 0 Images] (HTML Size: {len(text)} bytes, Regex Matches: {len(raw_candidate_urls)})")
+            if not bot_reasons and len(text) < 20000:
+                print(f"     HTML Body Preview:\n     {text[:300]}")
+
+    except Exception as e:
+        print(f"\n  ❌ [GOOGLE SEARCH EXCEPTION]")
+        print(f"     Target URL: {google_url}")
+        print(f"     Error Type: {type(e).__name__}")
+        print(f"     Error Details: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        print("-" * 70)
 
     return found_urls[:max_count], credits_used
 
@@ -410,7 +410,7 @@ async def scrape_images_for_city_deep(
     credit_counter: dict = None
 ) -> list:
     """
-    Deep Search Mode: 2 proxy-backed high-res queries per city.
+    Deep Search Mode: 2 proxy-backed high-res queries per city using ONLY Google Images.
     Query 1: "walk in interview" {city} hiring poster
     Query 2: "we are hiring" {city} {todays_role}
 
@@ -422,7 +422,7 @@ async def scrape_images_for_city_deep(
 
     # ── Query 1: Walk-in Interview Flyers ──
     query1 = f'"walk in interview" {city} hiring poster'
-    print(f"\n  🔍 Query 1 (Proxy | 24h India-Only [Google udm=2&tbs=qdr:d&cr=countryIN / Bing age-1d]): {query1}")
+    print(f"\n  🔍 Query 1 (Proxy | Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query1}")
     urls1, creds1 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query1, api_key, max_count=max_images // 2 + 10)
     city_credits += creds1
     for u in urls1:
@@ -436,7 +436,7 @@ async def scrape_images_for_city_deep(
     role_index = (day_of_year - 1) % len(HIRING_ROLES)
     todays_role = HIRING_ROLES[role_index]
     query2 = f'"we are hiring" {city} {todays_role}'
-    print(f"  🔍 Query 2 (Proxy | 24h India-Only [Google udm=2&tbs=qdr:d&cr=countryIN / Bing age-1d]): {query2}")
+    print(f"  🔍 Query 2 (Proxy | Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query2}")
     urls2, creds2 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query2, api_key, max_count=max_images // 2 + 10)
     city_credits += creds2
     for u in urls2:
