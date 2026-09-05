@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "733",
+  "workflow_run_id": "33948214523",
+  "timestamp": "2026-09-05T06:19:07.010991",
+  "runtime_minutes": 27.42,
+  "messages_processed": 41,
+  "new_jobs_stored": 18,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 29967,
+      "text": "🚨 𝙒𝙝𝙮 𝙊𝙩𝙝𝙚𝙧𝙨 𝙆𝙚𝙚𝙥 𝙂𝙚𝙩𝙩𝙞𝙣𝙜 𝙄𝙣𝙩𝙚𝙧𝙫𝙞𝙚𝙬𝙨 (𝙖𝙣𝙙 𝙉𝙤𝙩 𝙔𝙤𝙪) 🚨\n\nYou don’t talk about your job search anymore.\nBecause every post felt the same… “All the best!” comments, zero calls.\nYour friends stopped asking — they know it hurts.\nSomewhere along the way, you stopped expecting anything at all.\nRejections became routine. Silence became normal. 😔\n\nBut here’s the truth nobody tells you:\n\n✨ 𝙔𝙤𝙪’𝙧𝙚 𝙣𝙤𝙩 𝙛𝙖𝙞𝙡𝙞𝙣𝙜.\n✨ 𝙔𝙤𝙪’𝙧𝙚 𝙟𝙪𝙨𝙩 𝙣𝙤𝙩 𝙨𝙚𝙚𝙞𝙣𝙜 𝙩𝙝𝙚 𝙧𝙞𝙜𝙝𝙩 𝙤𝙥𝙥𝙤𝙧𝙩𝙪𝙣𝙞𝙩𝙞𝙚𝙨.\n\nLast week alone, 𝟗𝟓𝟎+ hidden openings were shared with our members —\n💼 Jobs that never reached LinkedIn\n⚡ Jobs filled before you even knew they existed\n🎯 Jobs you were qualified for\n\nThe only difference between them getting interviews\nand you refreshing your inbox?\n\n💸 𝙅𝙪𝙨𝙩 ₹𝟰𝟵𝟵 𝗳𝗼𝗿 𝗹𝗶𝗳𝗲𝘁𝗶𝗺𝗲.\n\n👉  https://freshershunt.in/pro\n\nStop struggling in silence.\n\n🔥 𝙎𝙩𝙖𝙧𝙩 𝙬𝙞𝙣𝙣𝙞𝙣𝙜 𝙞𝙣 𝙨𝙚𝙘𝙧𝙚𝙩.",
+      "timestamp": "2026-09-05T02:31:50+00:00"
+    }
+  ]
+}
