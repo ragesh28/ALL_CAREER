@@ -3,7 +3,7 @@ Location detector for Indian job flyers.
 Extracts canonical city, state, district, IT corridors, PIN codes, and venue address.
 """
 import re
-from typing import Optional, List
+from typing import Optional, List, Tuple
 from ..schema.job_schema import LocationResult, OCRBoundingBox
 from ..taxonomy.location_taxonomy import LocationTaxonomyResolver
 
@@ -39,6 +39,11 @@ class LocationDetector:
                     if len(cleaned) >= 5:
                         return cleaned
         return None
+
+    @classmethod
+    def is_foreign_location(cls, text: str) -> Tuple[bool, Optional[str]]:
+        """Check if flyer references foreign / Gulf / Middle East locations."""
+        return LocationTaxonomyResolver.is_foreign_location(text)
 
     @classmethod
     def detect_location(

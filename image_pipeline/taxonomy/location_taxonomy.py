@@ -4,7 +4,7 @@ Maps 50+ major Indian cities, states, districts, IT corridors, industrial zones,
 and employment hubs to canonical location entities.
 """
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 
 # ── 50 Major Indian Job Hubs & Cities ──
@@ -131,8 +131,32 @@ LOCATION_DATABASE: List[Dict] = [
 ]
 
 
+FOREIGN_LOCATIONS: List[str] = [
+    "dubai", "abu dhabi", "abudhabi", "uae", "united arab emirates",
+    "qatar", "doha", "kuwait", "oman", "muscat", "saudi", "saudi arabia",
+    "riyadh", "jeddah", "dammam", "sharjah", "fujairah", "bahrain",
+    "manama", "ras al khaimah", "gcc", "middle east", "gulf", "poland",
+    "malaysia", "singapore", "al quoz", "bur dubai", "deira dubai",
+    "al wadi al kabir", "binhadis", "mailyourjob", "gccwalkins"
+]
+
+
 class LocationTaxonomyResolver:
     """Resolves raw text or locality names to canonical Indian cities/states."""
+
+    @classmethod
+    def is_foreign_location(cls, text: str) -> Tuple[bool, Optional[str]]:
+        """
+        Check if text refers to foreign / Gulf / Middle East locations.
+        Returns: (is_foreign, matched_keyword)
+        """
+        if not text:
+            return False, None
+        low = " " + re.sub(r'[^a-zA-Z0-9\s]', ' ', text.lower()) + " "
+        for kw in FOREIGN_LOCATIONS:
+            if re.search(r'\b' + re.escape(kw) + r'\b', low):
+                return True, kw
+        return False, None
 
     @classmethod
     def resolve_location(cls, text: str) -> Optional[Dict]:

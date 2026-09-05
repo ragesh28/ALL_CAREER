@@ -142,6 +142,26 @@ class ImageToJobPipeline:
             is_candidate_job = False
             signal_details.append(f"rejected:{expired_reason}")
 
+        # Check if flyer is from a foreign / Gulf location (e.g. Dubai, UAE, Kuwait, Qatar, Oman, Saudi, Poland)
+        is_foreign, foreign_kw = LocationDetector.is_foreign_location(raw_ocr_text)
+        if not is_foreign and source_url:
+            is_foreign, foreign_kw = LocationDetector.is_foreign_location(source_url)
+        if not is_foreign and image_path:
+            is_foreign, foreign_kw = LocationDetector.is_foreign_location(image_path)
+
+        if is_foreign:
+            has_strong_indian_city = bool(location.city and location.confidence >= 0.90)
+            foreign_venue = bool(location.venue and LocationDetector.is_foreign_location(location.venue)[0])
+            foreign_headline = any(k in raw_ocr_text.lower() for k in [
+                "dubai", "uae", "kuwait", "qatar", "oman", "saudi", "bahrain",
+                "walk-in in dubai", "interview in dubai", "required for uae",
+                "required for kuwait", "required for qatar", "required for saudi",
+                "binhadis", "mailyourjob", "gccwalkins"
+            ])
+            if not has_strong_indian_city or foreign_venue or foreign_headline:
+                is_candidate_job = False
+                signal_details.append(f"rejected:foreign_location_{foreign_kw}")
+
         # Build initial extraction result: distinguish Walk-in Interview vs Direct Hiring
         is_walkin = any("walk_in" in s for s in signal_details)
         job_type = "walk_in_interview" if is_walkin else "direct_hiring"

@@ -72,6 +72,40 @@ NOT_EXTRACTED_JSON = ROOT_DIR / "google_image_not_extracted.json"
 NOT_EXTRACTED_TXT = ROOT_DIR / "google_image_not_extracted.txt"
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes watchdog limit
 
+# Blocked foreign job aggregator domains & template websites
+BLOCKED_DOMAINS = [
+    "binhadis.com", "gccwalkins.com", "mailyourjob.com", "gulflive.com",
+    "dubaivacancy.ae", "naukrigulf.com", "khaleejtimes.com", "gulfjobvacancy.in",
+    "livegulfjobs.com", "jobsatgulf.org", "gulfjobpaper.com", "iswkoman.com",
+    "freepik.com", "canva.com", "shutterstock.com", "designwiz.com",
+    "graphicsfamily.com", "alamy.com", "vecteezy.com", "istockphoto.com",
+    "behance.net", "slidesharecdn.com", "d1csarkz8obe9u.cloudfront.net"
+]
+
+BLOCKED_URL_PATTERNS = [
+    re.compile(p, re.IGNORECASE) for p in [
+        r'/dubai/', r'/uae/', r'/qatar/', r'/kuwait/', r'/oman/', r'/saudi/',
+        r'/sharjah/', r'/fujairah/', r'/abu-?dhabi/', r'/gulf/', r'/middle-?east/',
+        r'/poland/', r'gcc-', r'dubai-', r'walk-in-interview-in-dubai',
+        r'dubai-job', r'gulf-job'
+    ]
+]
+
+
+def is_blocked_flyer_url(url: str) -> bool:
+    """Check if flyer URL is from a foreign domain or template site."""
+    if not url:
+        return False
+    u_low = url.lower()
+    for d in BLOCKED_DOMAINS:
+        if d in u_low:
+            return True
+    for pat in BLOCKED_URL_PATTERNS:
+        if pat.search(url):
+            return True
+    return False
+
+
 # ═════════════════════════════════════════════════════════════════════════════
 # SCRAPINGANT PROXY CONFIGURATION (Proxy Port 8080, 1 Credit per Request)
 # ═════════════════════════════════════════════════════════════════════════════
@@ -250,7 +284,7 @@ def fetch_flyer_urls_via_proxy_sync(
     credits_used = 0
 
     # ── 1. Google Images Search (Last 24 Hours: udm=2&tbs=qdr:d, India Only: cr=countryIN) ──
-    google_url = f"https://www.google.com/search?udm=2&tbs=qdr:d&cr=countryIN&q={urllib.parse.quote_plus(query)}"
+    google_url = f"https://www.google.com/search?udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en&q={urllib.parse.quote_plus(query)}"
     try:
         resp = requests.get(
             google_url,
@@ -269,16 +303,19 @@ def fetch_flyer_urls_via_proxy_sync(
                 # Skip expired image URLs containing 2025, 2024, etc.
                 if re.search(r'/(?:202[0-5]|201\d)/', clean):
                     continue
+                # Skip foreign job aggregators & template sites
+                if is_blocked_flyer_url(clean):
+                    continue
                 if clean.startswith("http") and clean not in seen:
                     seen.add(clean)
                     found_urls.append(clean)
     except Exception:
         pass
 
-    # ── 2. Bing Images Search (Last 24 Hours: qft=+filterui:age-1d) ──
+    # ── 2. Bing Images Search (Last 24 Hours: qft=+filterui:age-1d, India: cc=IN) ──
     if len(found_urls) < max_count:
         for first in [1, 36]:
-            bing_url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&qft=+filterui:age-1d&first={first}&count=35"
+            bing_url = f"https://www.bing.com/images/search?q={urllib.parse.quote_plus(query)}&qft=+filterui:age-1d&cc=IN&setlang=en-IN&setmkt=en-IN&first={first}&count=35"
             try:
                 resp = requests.get(
                     bing_url,
@@ -297,6 +334,9 @@ def fetch_flyer_urls_via_proxy_sync(
                         # Skip expired image URLs containing 2025, 2024, etc.
                         if re.search(r'/(?:202[0-5]|201\d)/', clean):
                             continue
+                        # Skip foreign job aggregators & template sites
+                        if is_blocked_flyer_url(clean):
+                            continue
                         if clean.startswith("http") and clean not in seen:
                             seen.add(clean)
                             found_urls.append(clean)
@@ -312,6 +352,8 @@ def fetch_flyer_urls_via_proxy_sync(
                         for u in murls:
                             clean = u.replace(r'\/', '/').replace('&amp;', '&').strip()
                             if re.search(r'/(?:202[0-5]|201\d)/', clean):
+                                continue
+                            if is_blocked_flyer_url(clean):
                                 continue
                             if clean.startswith("http") and clean not in seen:
                                 seen.add(clean)
@@ -504,6 +546,11 @@ async def main():
 
         for f_idx, flyer in enumerate(flyers, 1):
             flyer_url = flyer.get("url") or flyer.get("raw_url") or ""
+            # ── Pre-Check 0: Reject foreign job domains & stock templates ──
+            if is_blocked_flyer_url(flyer_url):
+                print(f"  ⏭️ [Skip Foreign/Template Flyer #{f_idx}] Blocked domain or URL pattern: {flyer_url[:60]}")
+                continue
+
             # ── Deduplication Pre-Check 1: Fast Image Byte / URL Duplicate Check ──
             is_dup_img, dup_img_reason = deduplicator.is_image_duplicate(flyer["bytes"], flyer.get("url"))
             if is_dup_img:
@@ -517,13 +564,26 @@ async def main():
                     f.write(flyer["bytes"])
 
                 # Process via RapidOCR + Taxonomy + MCA Resolver
-                res = pipeline.process_image(str(temp_img_path))
+                res = pipeline.process_image(str(temp_img_path), source_url=flyer_url)
 
                 if res.is_job:
                     co_name = res.company.name or "Unknown"
                     co_canonical = res.company.canonical or co_name
                     role_name = res.roles[0].name if res.roles else "Walk-in"
-                    city_detected = res.location.city or city_name.title()
+
+                    # ── Strict Indian City Verification (Prevent foreign flyers from taking search loop city) ──
+                    if res.location.city:
+                        city_detected = res.location.city
+                    elif city_name.lower() in (res.raw_ocr_text or "").lower():
+                        city_detected = city_name.title()
+                    elif res.location.state and res.location.state != "India":
+                        city_detected = res.location.state
+                    elif res.location.pincode or (res.contact_phone and res.contact_phone.startswith("91")):
+                        city_detected = "Pan-India"
+                    else:
+                        print(f"  ⏭️ [Skip Unverified Location] Flyer has no verified Indian city or context ({co_name})")
+                        continue
+
                     roles_list = [r.name for r in res.roles]
 
                     is_walkin = (res.job_type == "walk_in_interview")
