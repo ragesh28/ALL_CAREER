@@ -39,9 +39,12 @@ jobs:
           python scripts/split_company_db.py reassemble
 
       # ── 5. Run 50-City Deep Search Google Image Scraper & OCR Pipeline ─
-      - name: Run Google Image Extractor Pipeline (ScrapingAnt Proxy)
+      - name: Run Google Image Extractor Pipeline (ScraperAPI Google Unblocker)
         env:
           PYTHONUNBUFFERED: "1"
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+          SCRAPERAPI_KEYS: ${{ secrets.SCRAPERAPI_KEYS }}
+          SCRAPERAPI_KEYS_LIST: ${{ secrets.SCRAPERAPI_KEYS_LIST }}
           SCRAPINGANT_API_KEYS: ${{ secrets.SCRAPINGANT_API_KEYS }}
         run: |
           python -u scrape_google_walkin_images.py
@@ -52,7 +55,7 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add scraped_image_walkin_jobs.json data/walkin_scrape_progress.json data/scrapingant_credit_tracker.json google_image_not_extracted.json google_image_not_extracted.txt || true
+          git add scraped_image_walkin_jobs.json data/walkin_scrape_progress.json data/scraperapi_credit_tracker.json data/scrapingant_credit_tracker.json google_image_not_extracted.json google_image_not_extracted.txt || true
           git diff --cached --quiet || git commit -m "feat(walkin): update google image walk-in jobs & progress [skip ci]"
           git pull --rebase -X theirs --autostash origin main || true
           git push origin main || echo "Push skipped or already up-to-date"

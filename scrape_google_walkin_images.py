@@ -1,9 +1,9 @@
 """
-ALL_CAREER — Google & High-Res Walk-in Flyer Extractor Workflow (v2.1: ScrapingAnt Proxy Mode).
+ALL_CAREER — Google Images Walk-in Flyer Extractor Workflow (v3.0: ScraperAPI Google Unblocker Engine).
 Combines:
 1. 50-City Deep Search Mode: "walk in interview" + "we are hiring" role-based queries
-2. ScrapingAnt Rotating Proxy Port (1 Credit/query, masks GitHub Actions datacenter IP)
-3. 5-Key Dynamic Daily Rotation (anti-detection across accounts)
+2. ScraperAPI Google Unblocker Engine (1 Credit/query, clean residential TLS fingerprinting)
+3. Dynamic Multi-Key Rotation (anti-detection across accounts)
 4. Top 20 Metros @ 100 images, Next 30 Cities @ 20 images
 5. 30-Day Rolling Credit Usage Tracker
 6. Memory-Streamed RapidOCR + MCA Company Resolution + QR Decoding
@@ -67,7 +67,7 @@ HIRING_ROLES = [
 
 PROGRESS_FILE = ROOT_DIR / "data" / "walkin_scrape_progress.json"
 OUTPUT_JOBS_FILE = ROOT_DIR / "scraped_image_walkin_jobs.json"
-CREDIT_TRACKER_FILE = ROOT_DIR / "data" / "scrapingant_credit_tracker.json"
+CREDIT_TRACKER_FILE = ROOT_DIR / "data" / "scraperapi_credit_tracker.json"
 NOT_EXTRACTED_JSON = ROOT_DIR / "google_image_not_extracted.json"
 NOT_EXTRACTED_TXT = ROOT_DIR / "google_image_not_extracted.txt"
 MAX_RUN_SECONDS = 5 * 3600 + 50 * 60  # 5 hours 50 minutes watchdog limit
@@ -107,46 +107,44 @@ def is_blocked_flyer_url(url: str) -> bool:
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# SCRAPINGANT PROXY CONFIGURATION (Proxy Port 8080, 1 Credit per Request)
+# SCRAPERAPI CONFIGURATION (Google Unblocker Engine — 1 Credit per Search)
 # ═════════════════════════════════════════════════════════════════════════════
-SCRAPINGANT_PROXY_HOST = "proxy.scrapingant.com:8080"
+SCRAPERAPI_ENDPOINT = "http://api.scraperapi.com"
 
 
-def get_scrapingant_keys() -> List[str]:
-    """Load all ScrapingAnt API keys from environment variable (comma-separated)."""
-    raw = os.environ.get("SCRAPINGANT_API_KEYS", "").strip()
-    if not raw:
-        # Check individual keys as fallback
-        keys = []
-        for i in range(1, 10):
-            k = os.environ.get(f"SCRAPINGANT_KEY_{i}", "").strip()
-            if k:
-                keys.append(k)
-        return keys
-    return [k.strip() for k in raw.split(",") if k.strip()]
-
-
-def get_todays_api_key(keys: List[str]) -> Tuple[str, int]:
+def get_scraperapi_keys() -> List[str]:
     """
-    Select today's API key using day-of-year rotation: (day - 1) % len(keys).
-    Day 1 -> Key 1, Day 2 -> Key 2, ..., Day 5 -> Key 5, Day 6 -> Key 1 (repeats).
+    Load all ScraperAPI keys from environment variables:
+    - SCRAPERAPI_KEY
+    - SCRAPERAPI_KEY_2
+    - SCRAPERAPI_KEYS
+    - SCRAPERAPI_KEYS_LIST
     """
+    keys = []
+    for env_name in ["SCRAPERAPI_KEY", "SCRAPERAPI_KEY_2", "SCRAPERAPI_KEYS", "SCRAPERAPI_KEYS_LIST"]:
+        val = os.environ.get(env_name, "").strip()
+        if val:
+            for k in val.split(","):
+                k = k.strip()
+                if k and k not in keys:
+                    keys.append(k)
+    # Default fallback key if environment is unset
+    if not keys:
+        keys.append("1b6c35559408237568f35243b3b00a76")
+    return keys
+
+
+_scraperapi_key_cursor = 0
+
+
+def get_next_scraperapi_key(keys: List[str]) -> Tuple[str, int]:
+    """Rotate sequentially across available ScraperAPI keys."""
+    global _scraperapi_key_cursor
     if not keys:
         return "", -1
-    day_of_year = datetime.now(timezone.utc).timetuple().tm_yday
-    key_index = (day_of_year - 1) % len(keys)
-    return keys[key_index], key_index
-
-
-def get_proxy_dict(api_key: str) -> Optional[dict]:
-    """Build proxy dict for requests using ScrapingAnt proxy port (1 credit mode)."""
-    if not api_key:
-        return None
-    proxy_url = f"http://scrapingant&browser=false:{api_key}@{SCRAPINGANT_PROXY_HOST}"
-    return {
-        "http": proxy_url,
-        "https": proxy_url
-    }
+    idx = _scraperapi_key_cursor % len(keys)
+    _scraperapi_key_cursor += 1
+    return keys[idx], idx
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -160,7 +158,7 @@ def load_credit_tracker() -> dict:
                 return json.load(f)
         except Exception:
             pass
-    return {"total_pool": 50000, "daily_log": []}
+    return {"total_pool": 10000, "daily_log": []}
 
 
 def save_credit_tracker(tracker: dict):
@@ -180,19 +178,18 @@ def get_30day_used_credits(tracker: dict) -> int:
     return sum(entry.get("credits_used", 0) for entry in tracker.get("daily_log", []))
 
 
-def print_credit_dashboard(tracker: dict, today_credits: int, key_index: int):
+def print_credit_dashboard(tracker: dict, today_credits: int, key_count: int):
     """Print a credit usage dashboard at the end of the workflow."""
-    total_pool = tracker.get("total_pool", 50000)
+    total_pool = tracker.get("total_pool", 10000)
     used_30d = get_30day_used_credits(tracker)
-    remaining = total_pool - used_30d
 
     print("\n" + "=" * 70)
-    print("  💳 SCRAPINGANT PROXY CREDIT DASHBOARD (30-Day Rolling)")
+    print("  💳 SCRAPERAPI GOOGLE IMAGES CREDIT DASHBOARD (30-Day Rolling)")
     print("=" * 70)
-    print(f"  🔑 Today's API Key   : Key #{key_index + 1} (rotated daily)")
-    print(f"  📊 Today's Credits   : {today_credits} credits consumed")
-    print(f"  📅 30-Day Usage      : {used_30d:,} / {total_pool:,} credits")
-    print(f"  ⚡ Remaining Balance : {remaining:,} credits ({remaining/total_pool*100:.1f}% left)")
+    print(f"  🔑 Active API Keys   : {key_count} keys in rotation pool")
+    print(f"  📊 Today's Credits   : {today_credits} search requests consumed")
+    print(f"  📅 30-Day Usage      : {used_30d:,} credits")
+    print(f"  ⚡ Image Downloads   : 0 credits (direct downloads from host servers)")
     print("=" * 70)
 
 
@@ -260,7 +257,7 @@ def save_not_extracted_images(items: list):
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# HIGH-RES FLYER IMAGE SCRAPING VIA GOOGLE IMAGES (ScrapingAnt Proxy Port)
+# HIGH-RES FLYER IMAGE SCRAPING VIA GOOGLE IMAGES (ScraperAPI Gateway)
 # ═════════════════════════════════════════════════════════════════════════════
 def fetch_flyer_urls_via_proxy_sync(
     query: str,
@@ -268,67 +265,43 @@ def fetch_flyer_urls_via_proxy_sync(
     max_count: int = 50
 ) -> Tuple[List[str], int]:
     """
-    Scrape high-res flyer image URLs using ONLY Google Images via ScrapingAnt Proxy.
-    1. Routes through ScrapingAnt proxy port (1 credit, masks GitHub Actions IP).
+    Scrape high-res flyer image URLs using ONLY Google Images via ScraperAPI.
+    1. Routes through ScraperAPI (1 credit, built-in residential Google unblocker).
     2. Uses Google Images (24h India: udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en).
-    3. Outputs full, comprehensive diagnostic logs if any error, block, or exception occurs.
+    3. Outputs comprehensive diagnostic logs if any error or exception occurs.
+    4. NEVER falls back to Bing or any other search engine. Pure Google only.
     """
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-IN,en;q=0.9',
-    }
-
-    proxies = get_proxy_dict(api_key)
     found_urls = []
     seen = set()
     credits_used = 0
 
     # ── Google Images Search (24h India: udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en) ──
     google_url = f"https://www.google.com/search?udm=2&tbs=qdr:d&cr=countryIN&gl=in&hl=en&q={urllib.parse.quote_plus(query)}"
+    params = {
+        "api_key": api_key,
+        "url": google_url,
+        "country_code": "in"
+    }
+
     try:
         resp = requests.get(
-            google_url,
-            headers=headers,
-            proxies=proxies,
-            verify=False,
-            timeout=25
+            SCRAPERAPI_ENDPOINT,
+            params=params,
+            timeout=45
         )
-        if proxies:
-            credits_used += 1
+        credits_used += 1
 
         if resp.status_code != 200:
-            print(f"\n  ❌ [GOOGLE SEARCH HTTP ERROR: {resp.status_code}]")
+            print(f"\n  ❌ [GOOGLE IMAGES SEARCH HTTP ERROR: {resp.status_code}]")
             print(f"     Target URL: {google_url}")
-            print(f"     Proxy Host: {SCRAPINGANT_PROXY_HOST if proxies else 'None (Direct)'}")
-            print(f"     Response Headers: {dict(resp.headers)}")
-            print(f"     Response Snippet (First 500 chars):")
-            print(f"     {resp.text[:500]}")
+            print(f"     Key Prefix: {api_key[:6]}...{api_key[-4:] if len(api_key) > 8 else ''}")
+            print(f"     Response Snippet (First 400 chars): {resp.text[:400]}")
             print("-" * 70)
             return [], credits_used
 
-        # Check for Google Bot Protection / CAPTCHA / JS requirement
         text = resp.text
-        bot_reasons = []
-        if "sorry/index" in text or "recaptcha" in text.lower():
-            bot_reasons.append("CAPTCHA / Bot Protection page ('sorry/index')")
-        if "consent.google.com" in resp.url or "consent.google.com" in text:
-            bot_reasons.append("Consent / Region selection redirect")
-        if "enablejs" in text or "<noscript>" in text:
-            bot_reasons.append("JavaScript required ('enablejs' static HTML shell)")
-        if "Our systems have detected unusual traffic" in text:
-            bot_reasons.append("Unusual Traffic Block")
 
-        if bot_reasons:
-            print(f"\n  ⚠️ [GOOGLE SEARCH BOT/JS WARNING]")
-            print(f"     Target URL: {google_url}")
-            print(f"     Detected Block Signals: {', '.join(bot_reasons)}")
-            print(f"     Response Length: {len(text)} bytes")
-            print(f"     HTML Sample (First 400 chars):")
-            print(f"     {text[:400]}")
-            print("-" * 70)
-
-        # Multi-pattern regex extraction for high-res images
+        # Multi-pattern regex extraction for high-res images from Google Images HTML
         g_urls_1 = re.findall(r'\["(https?://[^"\\<>\s]+?\.(?:jpg|jpeg|png|webp)(?:\?[^"\s\\]*)?)",\s*\d+,\s*\d+\]', text)
         g_urls_2 = re.findall(r'"(https?://[^"]+?\.(?:jpg|jpeg|png|webp))"', text.replace(r'\/', '/'))
         g_urls_3 = re.findall(r'(https?://[a-zA-Z0-9_\-\.]+\.[a-zA-Z]{2,6}/[^\s"\'<>\\]+?\.(?:jpg|jpeg|png|webp))', text)
@@ -352,11 +325,11 @@ def fetch_flyer_urls_via_proxy_sync(
 
         if len(found_urls) == 0:
             print(f"  ℹ️ [Google Returned 0 Images] (HTML Size: {len(text)} bytes, Regex Matches: {len(raw_candidate_urls)})")
-            if not bot_reasons and len(text) < 20000:
+            if len(text) < 20000:
                 print(f"     HTML Body Preview:\n     {text[:300]}")
 
     except Exception as e:
-        print(f"\n  ❌ [GOOGLE SEARCH EXCEPTION]")
+        print(f"\n  ❌ [GOOGLE IMAGES SEARCH EXCEPTION]")
         print(f"     Target URL: {google_url}")
         print(f"     Error Type: {type(e).__name__}")
         print(f"     Error Details: {str(e)}")
@@ -404,7 +377,7 @@ async def download_image_buffer(session: aiohttp.ClientSession, url: str, city: 
 # DEEP SEARCH MODE: Multi-Query Proxy Extraction per City
 # ═════════════════════════════════════════════════════════════════════════════
 async def scrape_images_for_city_deep(
-    api_key: str,
+    api_keys: list,
     city: str,
     max_images: int = 100,
     credit_counter: dict = None
@@ -414,16 +387,17 @@ async def scrape_images_for_city_deep(
     Query 1: "walk in interview" {city} hiring poster
     Query 2: "we are hiring" {city} {todays_role}
 
-    Uses ScrapingAnt proxy port (1 credit per query = 2 credits per city).
+    Uses ScraperAPI (1 credit per query = 2 credits per city).
     """
     all_image_urls = []
     seen = set()
     city_credits = 0
 
     # ── Query 1: Walk-in Interview Flyers ──
+    key1, _ = get_next_scraperapi_key(api_keys)
     query1 = f'"walk in interview" {city} hiring poster'
-    print(f"\n  🔍 Query 1 (Proxy | Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query1}")
-    urls1, creds1 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query1, api_key, max_count=max_images // 2 + 10)
+    print(f"\n  🔍 Query 1 (Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query1}")
+    urls1, creds1 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query1, key1, max_count=max_images // 2 + 10)
     city_credits += creds1
     for u in urls1:
         if u not in seen:
@@ -432,12 +406,13 @@ async def scrape_images_for_city_deep(
     print(f"     Found {len(urls1)} image streams (Credits: {creds1})")
 
     # ── Query 2: "We Are Hiring" + Rotating Role ──
+    key2, _ = get_next_scraperapi_key(api_keys)
     day_of_year = datetime.now(timezone.utc).timetuple().tm_yday
     role_index = (day_of_year - 1) % len(HIRING_ROLES)
     todays_role = HIRING_ROLES[role_index]
     query2 = f'"we are hiring" {city} {todays_role}'
-    print(f"  🔍 Query 2 (Proxy | Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query2}")
-    urls2, creds2 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query2, api_key, max_count=max_images // 2 + 10)
+    print(f"  🔍 Query 2 (Google Images Only [24h India: udm=2&tbs=qdr:d&cr=countryIN]): {query2}")
+    urls2, creds2 = await asyncio.to_thread(fetch_flyer_urls_via_proxy_sync, query2, key2, max_count=max_images // 2 + 10)
     city_credits += creds2
     for u in urls2:
         if u not in seen:
@@ -483,9 +458,7 @@ async def main():
     seen_not_extracted_urls = set()
 
     # ── Dynamic API Key Selection ──
-    scrapingant_keys = get_scrapingant_keys()
-    today_api_key, key_index = get_todays_api_key(scrapingant_keys)
-    key_masked = today_api_key[:6] + "..." + today_api_key[-4:] if len(today_api_key) > 10 else "DIRECT/UNSET"
+    scraperapi_keys = get_scraperapi_keys()
 
     # ── Credit Counter for This Run ──
     credit_counter = {"total": 0}
@@ -496,13 +469,13 @@ async def main():
     todays_role = HIRING_ROLES[role_index]
 
     print("=" * 80)
-    print(f"  🚀 ALL_CAREER — SCRAPINGANT PROXY WALK-IN FLYER EXTRACTOR (v2.1)")
+    print(f"  🚀 ALL_CAREER — SCRAPERAPI GOOGLE IMAGES WALK-IN EXTRACTOR (v3.0)")
     print(f"  📅 Start Time (UTC): {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  ⏱️ Maximum Run Budget: 5 Hours 50 Minutes ({MAX_RUN_SECONDS}s)")
     print(f"  📊 Previously Scraped Jobs: {len(existing_jobs):,}")
-    print(f"  🔑 Today's Proxy Key: Key #{key_index + 1} [{key_masked}]")
+    print(f"  🔑 Active Proxy Keys: {len(scraperapi_keys)} ScraperAPI key(s) in rotation pool")
     print(f"  👔 Today's Hiring Role: \"{todays_role}\"")
-    print(f"  💳 30-Day Credits Used: {get_30day_used_credits(credit_tracker):,} / {credit_tracker.get('total_pool', 50000):,}")
+    print(f"  💳 30-Day Credits Used: {get_30day_used_credits(credit_tracker):,} requests")
     print("=" * 80)
 
     # Initialize OCR Pipeline
@@ -538,7 +511,7 @@ async def main():
         print(f"\n{'='*25} [{idx+1}/{len(reordered_queue)}] {city_name.upper()} ({tier}) {'='*25}")
 
         flyers = await scrape_images_for_city_deep(
-            api_key=today_api_key,
+            api_keys=scraperapi_keys,
             city=city_name,
             max_images=max_imgs,
             credit_counter=credit_counter
@@ -709,7 +682,6 @@ async def main():
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     credit_tracker.setdefault("daily_log", []).append({
         "date": today_str,
-        "key_index": key_index + 1,
         "credits_used": credit_counter["total"],
         "jobs_extracted": new_jobs_count,
         "cities_processed": min(idx + 1, len(reordered_queue))
@@ -728,7 +700,7 @@ async def main():
     print("=" * 80)
 
     # ── Print Credit Dashboard ──
-    print_credit_dashboard(credit_tracker, credit_counter["total"], key_index)
+    print_credit_dashboard(credit_tracker, credit_counter["total"], len(scraperapi_keys))
 
 
 if __name__ == "__main__":
