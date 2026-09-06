@@ -1,0 +1,11 @@
+{
+  "total_pool": 10000,
+  "daily_log": [
+    {
+      "date": "2026-09-06",
+      "credits_used": 96,
+      "jobs_extracted": 35,
+      "cities_processed": 50
+    }
+  ]
+}
