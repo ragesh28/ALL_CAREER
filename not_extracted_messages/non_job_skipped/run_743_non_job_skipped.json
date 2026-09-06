@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "743",
+  "workflow_run_id": "34036906021",
+  "timestamp": "2026-09-06T13:56:56.803526",
+  "runtime_minutes": 12.48,
+  "messages_processed": 19,
+  "new_jobs_stored": 5,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18664,
+      "text": "The importance of\nhaving the right\npeople in your life...",
+      "timestamp": "2026-09-06T09:46:37+00:00"
+    }
+  ]
+}
