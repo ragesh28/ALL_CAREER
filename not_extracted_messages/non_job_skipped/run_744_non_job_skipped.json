@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "744",
+  "workflow_run_id": "34047603066",
+  "timestamp": "2026-09-06T17:47:25.136757",
+  "runtime_minutes": 38.24,
+  "messages_processed": 29,
+  "new_jobs_stored": 9,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 42745,
+      "text": "**Free Gen AI Claude Workshop – FREE!** 🚀\n\nLast Date: 6th Sep 2026\n\n💸 ~~₹10,000~~ → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\nFor Freelancers, Working Professionals, Self Employed Personals\n \nRegister Free: https://link.outskill.com/A-13\n\n⚡️ Limited Seats!",
+      "timestamp": "2026-09-06T15:50:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8250,
+      "text": "if you're learning PYTHON, then you should be aware of this!\n\nhttps://x.com/imarun_chauhan/status/2096596055387525582\n\nBookmark and follow for more!",
+      "timestamp": "2026-09-06T14:10:02+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6344,
+      "text": "Challenge Name: Monad AI Blitz Hackathon\nLocation: Mumbai\nEligibility: Anyone who is interested in learning AI or have some experience in Blockchain\nCash Prizes of 2 lakhs INR, Swags for everyone, Free food\n\nRegister for FREE: https://luma.com/monad-blitz-mumbai-september-2026\n\nWill only accept first 150 participants.",
+      "timestamp": "2026-09-06T17:31:35+00:00"
+    }
+  ]
+}
