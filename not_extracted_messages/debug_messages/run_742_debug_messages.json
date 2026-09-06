@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "742",
+  "workflow_run_id": "34024798026",
+  "timestamp": "2026-09-06T09:46:57.527248",
+  "runtime_minutes": 15.64,
+  "messages_processed": 29,
+  "new_jobs_stored": 12,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Internshipsworld",
+      "msg_id": 5907,
+      "text": "🚀 𝗠𝗮𝘀𝘁𝗲𝗿 𝗜𝗻-𝗗𝗲𝗺𝗮𝗻𝗱 𝗧𝗲𝗰𝗵 𝗦𝗸𝗶𝗹𝗹𝘀 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘 𝗶𝗻 𝟮𝟬𝟮𝟲 🔥\n\nWant to upgrade your tech skills without spending money? \n\nHere are some excellent FREE YouTube resources to learn high-demand technologies through tutorials and hands-on practice.\n\n🔥 Learn → Practice → Build Projects → Upgrade Your Resume\n\n🔗 𝗘𝗻𝗿𝗼𝗹𝗹 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘 👇:-\n\nhttps://pdlink.in/4x3B9hb\n\n🎯 Perfect for Students • Freshers • Job Seekers • Working Professionals\nLEARN\nPRACTICE\nBUILD\nGROW\nBetter\nDISCIPLINE\nMaster Tech Skills\nCREATES\nYou\nOPPORTUNITIE\nIn Tech\nwith Free Learning Resources\nLearn from top YouTube channels and build the skills\nhat employers look for in 2026.\naws\nCloud\nWeb\nAI&\nData Analytics\nNetworking\nComputing\nDevelopment\nMachine Learning\n&R Programming\nGood\nBoost\nSkills\nLearn\nHands-on\nBuild\nat Your Own Pace\nPractice\nYour Career\nBetter\nReal Projects\nOpportunities\nCode\nLearn\nClean Code\nBuild\nDesign Patterns\nRepeat\nStart Learning for Free\nNew Skills\n11\nSystem Design\n1\nNYYN\nLearn\nBrighter Opportunities!\nCloud Computing\nPractice\nd\nBuild\nData Science\nGrow",
+      "timestamp": "2026-09-06T06:04:18+00:00"
+    }
+  ]
+}
