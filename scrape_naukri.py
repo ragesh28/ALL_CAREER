@@ -298,6 +298,9 @@ def scrape_naukri_page(role, city, page):
                 clean_jd = fetch_naukri_description_with_retry(jd_url, max_retries=3)
                 if not clean_jd or len(clean_jd) < 40:
                     print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{title[:50]}' ({jd_url})", flush=True)
+                    clean_jd = "cannot scrape description"
+            elif not clean_jd or len(clean_jd) < 20:
+                clean_jd = "cannot scrape description"
 
             # Check walk-in details from API payload
             walkin_details = job_obj.get("walkInDetail") or job_obj.get("walkinDetails") or {}
@@ -354,6 +357,8 @@ def scrape_naukri_page(role, city, page):
                 desc_sections.append(f"Key Skills: {tags_skills}")
 
             full_description = "\n\n".join(desc_sections).strip()
+            if not full_description:
+                full_description = "cannot scrape description"
             combined_text = f"{tags_skills} {full_description}"
             skills = extract_skills(combined_text)
 
@@ -450,7 +455,7 @@ def main():
                 jobs = scrape_naukri_page(role, city, page)
                 ins  = store_jobs_batch(jobs)
                 
-                with_desc = sum(1 for j in jobs if j.get("description") and len(j["description"].strip()) >= 40)
+                with_desc = sum(1 for j in jobs if j.get("description") and j["description"] != "cannot scrape description" and len(j["description"].strip()) >= 40)
                 without_desc = len(jobs) - with_desc
 
                 combo_scraped += len(jobs)

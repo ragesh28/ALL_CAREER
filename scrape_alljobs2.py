@@ -329,6 +329,7 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
                 consecutive_failures = 0
                 print(f"    ✅ Got description for: {job.get('title', '')[:50]}", flush=True)
             else:
+                batch[idx]["description"] = "cannot scrape description"
                 still_blocked += 1
                 consecutive_failures += 1
                 print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{job.get('title', '')[:50]}' ({job.get('url', '')})", flush=True)
@@ -361,6 +362,7 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
                 indeed_refetched += 1
                 print(f"    ✅ Indeed desc: {job.get('title', '')[:50]}", flush=True)
             else:
+                batch[idx]["description"] = "cannot scrape description"
                 indeed_still_missing += 1
                 print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{job.get('title', '')[:50]}' ({job.get('url', '')})", flush=True)
 
@@ -622,11 +624,16 @@ def main():
                 # ── Re-fetch blocked LinkedIn + Indeed descriptions ──
                 batch, linkedin_blocked = refetch_blocked_descriptions(batch)
 
+                # Ensure every job has description set (or fallback if empty)
+                for j in batch:
+                    if not j.get("description") or len(str(j["description"]).strip()) < 30:
+                        j["description"] = "cannot scrape description"
+
                 stored = store_jobs_batch(batch)
                 total_new += stored
                 total_found += len(batch)
 
-                batch_with_desc = sum(1 for j in batch if j.get("description") and len(j["description"].strip()) >= 50)
+                batch_with_desc = sum(1 for j in batch if j.get("description") and j["description"] != "cannot scrape description" and len(j["description"].strip()) >= 50)
                 total_desc_scraped += batch_with_desc
                 total_missing_desc += (len(batch) - batch_with_desc)
 
