@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "749",
+  "workflow_run_id": "34111443837",
+  "timestamp": "2026-09-07T11:06:54.056609",
+  "runtime_minutes": 38.35,
+  "messages_processed": 60,
+  "new_jobs_stored": 33,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 42754,
+      "text": "**🚨Free Gen AI Claude Workshop – FREE!** 🚀\n\n💸 ~~₹10,000~~ → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\nFor Freelancers, Working Professionals, Self Employed Personals\n \nRegister Free: https://link.outskill.com/A-13\n\n⚡️ Limited Seats!",
+      "timestamp": "2026-09-07T05:25:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 5879,
+      "text": "Career Tips for Fresher’s\n\nhttps://www.instagram.com/reel/Dc-Xy9kJkJh/?stkn=bGozbDN0bzRjM2xr",
+      "timestamp": "2026-09-07T05:37:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8253,
+      "text": "Let's connect on X 😄🫣 \n\nhttps://x.com/imarun_chauhan/status/2096644598844276966\n\nSee you all\nLearn, sarcasm and lot of Useful stuff!",
+      "timestamp": "2026-09-07T06:15:34+00:00"
+    }
+  ]
+}
