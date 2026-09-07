@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "748",
+  "workflow_run_id": "34084622929",
+  "timestamp": "2026-09-07T05:28:02.299074",
+  "runtime_minutes": 35.09,
+  "messages_processed": 33,
+  "new_jobs_stored": 11,
+  "skipped_jobs_count": 6,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 30000,
+      "text": "🎯 𝗦𝗲𝗽𝘁𝗲𝗺𝗯𝗲𝗿 𝗶𝘀 𝗛𝗲𝗿𝗲. 𝗛𝗶𝗿𝗶𝗻𝗴 𝗦𝗲𝗮𝘀𝗼𝗻 𝗕𝗲𝗴𝗶𝗻𝘀. 🎯\n\nFreshers, listen up 👇\n\nLast week (Aug 31 – Sep 6), we posted 𝟯𝟭𝟭 𝘃𝗲𝗿𝗶𝗳𝗶𝗲𝗱 𝗷𝗼𝗯𝘀 — through one of the slowest markets in years.\n\nNow the game is changing 🔄\n\n📅 Campus & off-campus placement season kicks off this month. Companies that were holding openings for months will start releasing them.\n\n𝗧𝗵𝗲 𝗾𝘂𝗲𝘀𝘁𝗶𝗼𝗻 𝗶𝘀 — 𝗮𝗿𝗲 𝗬𝗢𝗨 𝗿𝗲𝗮𝗱𝘆? 🤔\n\nAsk yourself:\n✔️ Is my resume updated?\n✔️ Do I have 1-2 projects to show?\n✔️ Is my GitHub/portfolio active?\n✔️ Am I applying within 24 hours of every opening?\n\nIf any answer is NO — fix it THIS week. When the wave comes, prepared freshers get the offers. 🌊\n\nWe'll be posting every genuine opening the moment it drops. Don't miss a single one 👇\n\n🚀 𝗚𝗲𝘁 𝗱𝗮𝗶𝗹𝘆 𝗰𝘂𝗿𝗮𝘁𝗲𝗱 𝗷𝗼𝗯𝘀 𝘄𝗶𝘁𝗵 𝗣𝗿𝗼: https://freshershunt.in/pro\n\nYour season starts now. Let's go. 💪\n\n— Team Freshershunt ❤️",
+      "timestamp": "2026-09-07T02:31:46+00:00"
+    }
+  ]
+}
