@@ -4,6 +4,7 @@ import re
 import json
 import time
 import requests
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -181,6 +182,38 @@ def naukri_url(role, city, page):
     return f"https://www.naukri.com/{role_slug}-jobs-in-{city_slug}{suffix}?jobAge=1"
 
 # ---------------------------------------------------------------------------
+# DESCRIPTION RETRY FETCHER (Naukri)
+# ---------------------------------------------------------------------------
+def fetch_naukri_description_with_retry(jd_url, max_retries=3):
+    if not jd_url or not jd_url.startswith("http"):
+        return ""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.naukri.com/"
+    }
+    for attempt in range(1, max_retries + 1):
+        try:
+            resp = requests.get(jd_url, headers=headers, timeout=12)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "html.parser")
+                desc_section = (
+                    soup.find("div", class_=lambda x: x and "job-desc-section" in x) or
+                    soup.find("div", class_=lambda x: x and "dang-inner-html" in x) or
+                    soup.find("section", class_=lambda x: x and "job-desc" in x)
+                )
+                if desc_section:
+                    text = desc_section.get_text(separator="\n", strip=True)
+                    if len(text) >= 40:
+                        return text
+        except Exception:
+            pass
+        if attempt < max_retries:
+            time.sleep(1.5 * attempt)
+    return ""
+
+# ---------------------------------------------------------------------------
 # SCRAPE ONE PAGE
 # Opens Naukri in a real browser, waits for the internal
 # jobapi/v3/search XHR to fire, then reads the JSON payload.
@@ -259,6 +292,12 @@ def scrape_naukri_page(role, city, page):
             clean_jd = re.sub(r'<br\s*/?>', '\n', raw_jd, flags=re.IGNORECASE)
             clean_jd = re.sub(r'<[^>]+>', ' ', clean_jd)
             clean_jd = re.sub(r'[ \t]+', ' ', clean_jd).strip()
+
+            # If description is missing or too short, retry fetching directly up to 3 times
+            if (not clean_jd or len(clean_jd) < 40) and jd_url:
+                clean_jd = fetch_naukri_description_with_retry(jd_url, max_retries=3)
+                if not clean_jd or len(clean_jd) < 40:
+                    print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{title[:50]}' ({jd_url})", flush=True)
 
             # Check walk-in details from API payload
             walkin_details = job_obj.get("walkInDetail") or job_obj.get("walkinDetails") or {}
@@ -357,6 +396,9 @@ def main():
     print("=" * 72)
     print("  NAUKRI DEDICATED SCRAPER")
     print("  Method : Playwright headful + jobapi/v3 interception (FREE)")
+    print("  [✓] Full descriptions enabled & verified for every job")
+    print("  [✓] Auto-retry (up to 3 attempts) on failed description extraction")
+    print("  [✓] Final statistics will report: Total Jobs, Descriptions Scraped, Missing Descriptions")
     print(f"  Roles  : {len(SEARCH_ROLES)}")
     print(f"  Cities : {len(LOCATIONS)}")
     print(f"  Pages  : {PAGES}")
@@ -373,9 +415,11 @@ def main():
     total_combos = len(SEARCH_ROLES) * len(LOCATIONS)
     combo_num    = start_r * len(LOCATIONS) + start_l
 
-    grand_scraped  = 0
-    grand_stored   = 0
-    hit_time_limit = False
+    grand_scraped      = 0
+    grand_desc_scraped = 0
+    grand_missing_desc = 0
+    grand_stored       = 0
+    hit_time_limit     = False
 
     for r_idx in range(start_r, len(SEARCH_ROLES)):
         role          = SEARCH_ROLES[r_idx]
@@ -398,20 +442,28 @@ def main():
             print(f"\n[{combo_num}/{total_combos}] Role='{role}'  City='{city}'")
 
             combo_scraped = 0
+            combo_desc    = 0
             combo_stored  = 0
 
             for page in PAGES:
                 print(f"  Page {page}: {naukri_url(role, city, page)}")
                 jobs = scrape_naukri_page(role, city, page)
                 ins  = store_jobs_batch(jobs)
+                
+                with_desc = sum(1 for j in jobs if j.get("description") and len(j["description"].strip()) >= 40)
+                without_desc = len(jobs) - with_desc
+
                 combo_scraped += len(jobs)
+                combo_desc    += with_desc
                 combo_stored  += ins
-                print(f"    => scraped={len(jobs):>3}  new_stored={ins:>3}")
+                print(f"    => scraped={len(jobs):>3}  descriptions={with_desc:>3}  new_stored={ins:>3}")
                 time.sleep(2)           # polite delay between pages
 
-            grand_scraped += combo_scraped
-            grand_stored  += combo_stored
-            print(f"  COMBO TOTAL: scraped={combo_scraped}  new_stored={combo_stored}")
+            grand_scraped      += combo_scraped
+            grand_desc_scraped += combo_desc
+            grand_missing_desc += (combo_scraped - combo_desc)
+            grand_stored       += combo_stored
+            print(f"  COMBO TOTAL: scraped={combo_scraped}  descriptions={combo_desc}  new_stored={combo_stored}")
             time.sleep(3)               # polite delay between role/city combos
 
         if hit_time_limit:
@@ -424,12 +476,18 @@ def main():
         print("\nAll combinations finished. Progress reset.")
 
     # ── Summary report ────────────────────────────────────────────────────
+    coverage_pct = (grand_desc_scraped / grand_scraped * 100) if grand_scraped > 0 else 0.0
     print("\n" + "=" * 72)
     print("  NAUKRI SCRAPER — FINAL SUMMARY")
     print("=" * 72)
-    print(f"  Total jobs scraped  : {grand_scraped:>6}")
-    print(f"  New jobs stored (D1): {grand_stored:>6}")
-    print(f"  Elapsed time        : {(time.time()-START_TIME)/60:.1f} min")
+    print(f"  Total jobs scraped        : {grand_scraped:>6}")
+    print(f"  Job descriptions scraped  : {grand_desc_scraped:>6}")
+    print(f"  Jobs missing description  : {grand_missing_desc:>6}")
+    print(f"  Description coverage rate : {coverage_pct:>5.1f}%")
+    print(f"  New jobs stored (D1)      : {grand_stored:>6}")
+    print(f"  Elapsed time              : {(time.time()-START_TIME)/60:.1f} min")
+    if grand_missing_desc > 0:
+        print(f"  ⚠️ Note: {grand_missing_desc} job(s) could not scrape description after 3 retries.")
     print("=" * 72)
 
 

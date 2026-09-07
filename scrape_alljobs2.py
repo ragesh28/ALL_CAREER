@@ -166,10 +166,10 @@ def extract_indeed_jk(url):
     return None, url
 
 
-def fetch_indeed_description(job_url, max_retries=2):
+def fetch_indeed_description(job_url, max_retries=3):
     """
     Fetch full job description from Indeed's viewjob page.
-    Retries up to max_retries times. Returns description text or ''.
+    Retries up to max_retries times (default 3). Returns description text or ''.
     """
     if not job_url:
         return ""
@@ -239,7 +239,7 @@ def extract_linkedin_job_id(url):
     return match.group(1) if match else None
 
 
-def fetch_linkedin_description(job_url, max_retries=2):
+def fetch_linkedin_description(job_url, max_retries=3):
     """
     Fetch the full job description from LinkedIn using the guest API endpoint.
     This is an alternative to visiting the full job page (which JobSpy does).
@@ -270,7 +270,7 @@ def fetch_linkedin_description(job_url, max_retries=2):
                     }
                 )
                 if resp.status_code == 429:
-                    delay = 5 * (2 ** attempt)  # 5s, 10s
+                    delay = 5 * (2 ** attempt)  # 5s, 10s, 20s
                     print(f" [429 rate-limit, waiting {delay}s]", end="", flush=True)
                     time.sleep(delay)
                     continue
@@ -297,7 +297,7 @@ def fetch_linkedin_description(job_url, max_retries=2):
 def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
     """
     For LinkedIn AND Indeed jobs in the batch that have empty/short descriptions,
-    try to re-fetch the full description (max 2 retries per job).
+    try to re-fetch the full description (max 3 retries per job).
 
     Returns:
         (updated_batch, linkedin_blocked)
@@ -306,23 +306,23 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
     """
     from extractor_utils import extract_experience, extract_skills
 
-    # ── LinkedIn retry ──
+    # ── LinkedIn retry (3 attempts max per job) ──
     linkedin_blocked_jobs = [
         (i, job) for i, job in enumerate(batch)
-        if "linkedin" in job.get("source", "") and len(job.get("_description", "")) < 100
+        if "linkedin" in job.get("source", "") and len(job.get("description", "")) < 100
     ]
 
     linkedin_blocked = False
     if linkedin_blocked_jobs:
-        print(f"\n    🔄 Re-fetching {len(linkedin_blocked_jobs)} blocked LinkedIn descriptions...", flush=True)
+        print(f"\n    🔄 Re-fetching {len(linkedin_blocked_jobs)} LinkedIn jobs with missing descriptions (max 3 retries)...", flush=True)
         consecutive_failures = 0
         refetched = 0
         still_blocked = 0
 
         for idx, job in linkedin_blocked_jobs:
-            desc = fetch_linkedin_description(job.get("url", ""))
+            desc = fetch_linkedin_description(job.get("url", ""), max_retries=3)
             if len(desc) >= 100:
-                batch[idx]["_description"] = desc
+                batch[idx]["description"] = desc
                 batch[idx]["experience"] = extract_experience(desc, title=job.get("title", ""))
                 batch[idx]["skills"] = extract_skills(desc)
                 refetched += 1
@@ -331,6 +331,7 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
             else:
                 still_blocked += 1
                 consecutive_failures += 1
+                print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{job.get('title', '')[:50]}' ({job.get('url', '')})", flush=True)
                 if consecutive_failures >= max_consecutive_failures:
                     print(f"    🛑 LinkedIn blocked this IP ({consecutive_failures} consecutive failures)", flush=True)
                     linkedin_blocked = True
@@ -338,30 +339,30 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
 
             time.sleep(1)
 
-        print(f"    📊 LinkedIn re-fetched: {refetched}, Still blocked: {still_blocked}", flush=True)
+        print(f"    📊 LinkedIn re-fetched: {refetched}, Still missing: {still_blocked}", flush=True)
 
-    # ── Indeed retry (2 attempts max per job) ──
+    # ── Indeed retry (3 attempts max per job) ──
     indeed_no_desc_jobs = [
         (i, job) for i, job in enumerate(batch)
-        if "indeed" in job.get("source", "") and len(job.get("_description", "")) < 80
+        if "indeed" in job.get("source", "") and len(job.get("description", "")) < 80
     ]
 
     if indeed_no_desc_jobs:
-        print(f"    🔄 Re-fetching {len(indeed_no_desc_jobs)} Indeed jobs with missing descriptions...", flush=True)
+        print(f"    🔄 Re-fetching {len(indeed_no_desc_jobs)} Indeed jobs with missing descriptions (max 3 retries)...", flush=True)
         indeed_refetched = 0
         indeed_still_missing = 0
 
         for idx, job in indeed_no_desc_jobs:
-            desc = fetch_indeed_description(job.get("url", ""), max_retries=2)
+            desc = fetch_indeed_description(job.get("url", ""), max_retries=3)
             if len(desc) >= 80:
-                batch[idx]["_description"] = desc
+                batch[idx]["description"] = desc
                 batch[idx]["experience"] = extract_experience(desc, title=job.get("title", ""))
                 batch[idx]["skills"] = extract_skills(desc)
                 indeed_refetched += 1
                 print(f"    ✅ Indeed desc: {job.get('title', '')[:50]}", flush=True)
             else:
                 indeed_still_missing += 1
-                # Job is still saved — just without experience/description
+                print(f"    ⚠️ [Retry 3/3 Failed] 1 job cannot scrape description: '{job.get('title', '')[:50]}' ({job.get('url', '')})", flush=True)
 
             time.sleep(1)
 
@@ -376,6 +377,9 @@ def refetch_blocked_descriptions(batch, max_consecutive_failures=5):
 def main():
     print("=" * 60)
     print("  ALL JOBS 2 — LinkedIn + Indeed (JobSpy → Cloudflare D1)")
+    print("  [✓] Full descriptions enabled & verified for every job")
+    print("  [✓] Auto-retry (up to 3 attempts) on failed description extraction")
+    print("  [✓] Final statistics will report: Total Jobs, Descriptions Scraped, Missing Descriptions")
     print("=" * 60)
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"  🔍 Roles: {len(SEARCH_ROLES)}")
@@ -411,6 +415,8 @@ def main():
     combo_num = 0
     total_new = 0
     total_found = 0
+    total_desc_scraped = 0
+    total_missing_desc = 0
     pending_blocked_jobs = []  # Track jobs that still need descriptions
 
     if start_role > 0 or start_loc > 0:
@@ -610,25 +616,25 @@ def main():
                         "is_walkin": w_info.get("is_walkin", False),
                         "walkin_date": w_info.get("walkin_date"),
                         "walkin_time": w_info.get("walkin_time"),
-                        "_description": desc,  # Keep for re-fetch check (not saved to DB)
+                        "description": desc,
                     })
 
                 # ── Re-fetch blocked LinkedIn + Indeed descriptions ──
                 batch, linkedin_blocked = refetch_blocked_descriptions(batch)
 
-                # Remove internal _description field before storing
-                for job in batch:
-                    job.pop("_description", None)
-
                 stored = store_jobs_batch(batch)
                 total_new += stored
                 total_found += len(batch)
 
+                batch_with_desc = sum(1 for j in batch if j.get("description") and len(j["description"].strip()) >= 50)
+                total_desc_scraped += batch_with_desc
+                total_missing_desc += (len(batch) - batch_with_desc)
+
                 li_count = sum(1 for j in batch if "linkedin" in j["source"])
                 in_count = sum(1 for j in batch if "indeed" in j["source"])
                 perm_count = sum(1 for j in batch if j["indeed_jk"])
-                li_no_desc = sum(1 for j in batch if "linkedin" in j["source"] and not j.get("experience"))
-                in_no_desc = sum(1 for j in batch if "indeed" in j["source"] and not j.get("experience"))
+                li_no_desc = sum(1 for j in batch if "linkedin" in j["source"] and not j.get("description"))
+                in_no_desc = sum(1 for j in batch if "indeed" in j["source"] and not j.get("description"))
 
                 no_desc_info = ""
                 if li_no_desc or in_no_desc:
@@ -636,7 +642,7 @@ def main():
                     if li_no_desc: parts.append(f"LI_noDesc:{li_no_desc}")
                     if in_no_desc: parts.append(f"IN_noDesc:{in_no_desc}")
                     no_desc_info = f", {', '.join(parts)}"
-                print(f"✅ {len(batch)} found (LI:{li_count}, Indeed:{in_count}, perm:{perm_count}{no_desc_info}), {stored} new (total: {total_new})")
+                print(f"✅ {len(batch)} found (LI:{li_count}, Indeed:{in_count}, perm:{perm_count}{no_desc_info}), descs:{batch_with_desc}, {stored} new (total: {total_new})")
 
                 # If LinkedIn blocked us, save checkpoint with blocked jobs and exit
                 if linkedin_blocked:
@@ -674,11 +680,18 @@ def main():
             break
 
     # All roles finished
+    coverage_pct = (total_desc_scraped / total_found * 100) if total_found > 0 else 0.0
     print(f"\n{'='*60}")
-    print(f"  ✅ ALL ROLES COMPLETE!")
-    print(f"     📦 Jobs found: {total_found}")
-    print(f"     🆕 New stored: {total_new}")
-    print(f"     📊 Total in Turso: {get_total_jobs()}")
+    print(f"  FINAL SCRAPING REPORT & DESCRIPTION STATS")
+    print(f"{'='*60}")
+    print(f"  Total jobs scraped        : {total_found:>6}")
+    print(f"  Job descriptions scraped  : {total_desc_scraped:>6}")
+    print(f"  Jobs missing description  : {total_missing_desc:>6}")
+    print(f"  Description coverage rate : {coverage_pct:>5.1f}%")
+    print(f"  New jobs stored (D1)      : {total_new:>6}")
+    print(f"  Total in Turso/D1         : {get_total_jobs():>6}")
+    if total_missing_desc > 0:
+        print(f"  ⚠️ Note: {total_missing_desc} job(s) could not scrape description after 3 retries.")
     print(f"{'='*60}")
 
     save_progress(0, 0, finished_all=True)

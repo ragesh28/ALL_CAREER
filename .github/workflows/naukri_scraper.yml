@@ -25,7 +25,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python dependencies
-        run: pip install requests playwright
+        run: pip install requests playwright beautifulsoup4
 
       # ── 3. Playwright Chromium ─────────────────────────────────────────
       - name: Install Playwright Chromium + system deps

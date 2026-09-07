@@ -2288,150 +2288,169 @@
             now.setHours(0, 0, 0, 0);
             const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window
             maxFuture.setHours(23, 59, 59, 999);
-
             const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth();
             const resultDates = [];
 
-            if (rawDateStr && typeof rawDateStr === 'string') {
-                const text = rawDateStr.trim();
-                const cleanedText = cleanTimeAndNoise(text);
+            if (!rawDateStr || typeof rawDateStr !== 'string') return resultDates;
+            let text = rawDateStr.trim();
 
-                // Cross-month range: e.g. "28th Aug - 2nd Sep"
-                const crossMonthRegex = /\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\s*(?:-|–|—|to)\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{4}))?\b/i;
-                const crossMatch = cleanedText.match(crossMonthRegex);
-                if (crossMatch) {
-                    const d1 = parseInt(crossMatch[1]);
-                    const m1Str = crossMatch[2].toLowerCase();
-                    const d2 = parseInt(crossMatch[3]);
-                    const m2Str = crossMatch[4].toLowerCase();
-                    const yr = crossMatch[5] ? parseInt(crossMatch[5]) : currentYear;
+            // Normalize underscores to spaces
+            text = text.replace(/[_]/g, ' ');
 
-                    const m1Idx = MONTH_NAMES.findIndex(m => m.toLowerCase().startsWith(m1Str.slice(0, 3)));
-                    const m2Idx = MONTH_NAMES.findIndex(m => m.toLowerCase().startsWith(m2Str.slice(0, 3)));
+            // Split concatenated day and month like "7thSep", "5thSep", "5Sep"
+            text = text.replace(/\b(\d{1,2}(?:st|nd|rd|th)?)([A-Za-z]{3,9})\b/gi, '$1 $2');
 
-                    if (m1Idx !== -1 && m2Idx !== -1) {
-                        const startDate = new Date(yr, m1Idx, d1);
-                        const endDate = new Date(yr, m2Idx, d2);
-                        startDate.setHours(0, 0, 0, 0);
-                        endDate.setHours(0, 0, 0, 0);
+            // Clean noise (timings, salary, exp, phone, openings)
+            text = cleanTimeAndNoise(text);
 
-                        const diffDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
-                        if (diffDays >= 0 && diffDays <= 31) {
-                            for (let cur = new Date(startDate); cur <= endDate; cur.setDate(cur.getDate() + 1)) {
-                                if (cur >= now && cur <= maxFuture) {
-                                    resultDates.push({
-                                        label: `${MONTH_NAMES[cur.getMonth()]} ${cur.getDate()}`,
-                                        dateObj: new Date(cur)
-                                    });
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (resultDates.length === 0) {
-                    let monthIdx = -1;
-                    let monthFullName = "";
-                    for (let i = 0; i < MONTH_NAMES.length; i++) {
-                        const pattern = new RegExp('\\b(' + MONTH_NAMES[i] + '|' + MONTH_SHORT[i] + ')\\b', 'i');
-                        if (pattern.test(cleanedText)) {
-                            monthIdx = i;
-                            monthFullName = MONTH_NAMES[i];
-                            break;
-                        }
-                    }
-
-                    let year = currentYear;
-                    const yearMatch = cleanedText.match(/\b(20\d{2})\b/);
-                    if (yearMatch) {
-                        year = parseInt(yearMatch[1]);
-                    } else if (monthIdx !== -1 && monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
-                        year = currentYear + 1;
-                    }
-
-                    if (monthIdx !== -1) {
-                        const dayMatches = [...cleanedText.matchAll(/\b([0-2]?\d|3[01])(?:st|nd|rd|th)?\b/gi)]
-                            .map(m => parseInt(m[1]))
-                            .filter(d => d >= 1 && d <= 31);
-
-                        const isRange = /(?:-|–|—|\bto\b)/i.test(cleanedText);
-                        if (dayMatches.length >= 2 && isRange) {
-                            const minDay = Math.min(dayMatches[0], dayMatches[1]);
-                            const maxDay = Math.max(dayMatches[0], dayMatches[1]);
-                            if (maxDay - minDay <= 31) {
-                                for (let d = minDay; d <= maxDay; d++) {
-                                    const dObj = new Date(year, monthIdx, d);
-                                    dObj.setHours(0, 0, 0, 0);
-                                    if (dObj >= now && dObj <= maxFuture) {
-                                        resultDates.push({
-                                            label: `${monthFullName} ${d}`,
-                                            dateObj: dObj
-                                        });
-                                    }
-                                }
-                            }
-                        } else if (dayMatches.length > 0) {
-                            dayMatches.forEach(d => {
-                                const dObj = new Date(year, monthIdx, d);
-                                dObj.setHours(0, 0, 0, 0);
-                                if (dObj >= now && dObj <= maxFuture) {
-                                    resultDates.push({
-                                        label: `${monthFullName} ${d}`,
-                                        dateObj: dObj
-                                    });
-                                }
-                            });
-                        }
-                    } else {
-                        // ISO format: YYYY-MM-DD
-                        const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
-                        if (isoMatch) {
-                            const y = parseInt(isoMatch[1]);
-                            const m = parseInt(isoMatch[2]) - 1;
-                            const d = parseInt(isoMatch[3]);
-                            if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
-                                const dObj = new Date(y, m, d);
-                                dObj.setHours(0, 0, 0, 0);
-                                if (dObj >= now && dObj <= maxFuture) {
-                                    resultDates.push({
-                                        label: `${MONTH_NAMES[m]} ${d}`,
-                                        dateObj: dObj
-                                    });
-                                }
-                            }
-                        } else {
-                            // Numeric: DD/MM/YYYY
-                            const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
-                            if (numMatch) {
-                                let d = parseInt(numMatch[1]);
-                                let m = parseInt(numMatch[2]) - 1;
-                                let y = parseInt(numMatch[3]);
-                                if (y < 100) y += 2000;
-                                if (m > 11 && d <= 12) { const tmp = d; d = m + 1; m = tmp - 1; }
-                                if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
-                                    const dObj = new Date(y, m, d);
-                                    dObj.setHours(0, 0, 0, 0);
-                                    if (dObj >= now && dObj <= maxFuture) {
-                                        resultDates.push({
-                                            label: `${MONTH_NAMES[m]} ${d}`,
-                                            dateObj: dObj
-                                        });
-                                    }
-                                }
-                            }
-                        }
+            function addDate(y, m, d) {
+                if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
+                    const dObj = new Date(y, m, d);
+                    dObj.setHours(0, 0, 0, 0);
+                    if (dObj >= now && dObj <= maxFuture) {
+                        resultDates.push({
+                            label: MONTH_NAMES[m] + ' ' + d,
+                            dateObj: dObj
+                        });
                     }
                 }
             }
 
-            // Strictly deduplicate
-            const seen = new Set();
-            return resultDates.filter(item => {
-                if (seen.has(item.label)) return false;
-                seen.add(item.label);
-                return true;
-            });
+            function getMonthIndex(str) {
+                if (!str) return -1;
+                const s = str.toLowerCase().slice(0, 3);
+                return MONTH_SHORT.findIndex(m => m.toLowerCase() === s);
+            }
+
+            function dedupe(arr) {
+                const seen = new Set();
+                return arr.filter(item => {
+                    if (seen.has(item.label)) return false;
+                    seen.add(item.label);
+                    return true;
+                });
+            }
+
+            // 1. Cross-month or discrete dates with two months:
+            // e.g. '28th Aug - 2nd Sep 2026', '7th Sep & 8th Sep 2026'
+            const crossMonth = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\s*(?:(-|–|—|\bto\b)|(&|\band\b|,))\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{2,4}))?\b/i);
+            if (crossMonth) {
+                const d1 = parseInt(crossMonth[1]), m1 = getMonthIndex(crossMonth[2]);
+                const isRange = Boolean(crossMonth[3]);
+                const d2 = parseInt(crossMonth[5]), m2 = getMonthIndex(crossMonth[6]);
+                let yr = crossMonth[7] ? parseInt(crossMonth[7]) : currentYear;
+                if (yr < 100) yr += 2000;
+                if (m1 !== -1 && m2 !== -1) {
+                    if (isRange) {
+                        const sDate = new Date(yr, m1, d1);
+                        const eDate = new Date(yr, m2, d2);
+                        sDate.setHours(0, 0, 0, 0); eDate.setHours(0, 0, 0, 0);
+                        const diff = Math.round((eDate - sDate) / 86400000);
+                        if (diff >= 0 && diff <= 31) {
+                            for (let cur = new Date(sDate); cur <= eDate; cur.setDate(cur.getDate() + 1)) {
+                                addDate(cur.getFullYear(), cur.getMonth(), cur.getDate());
+                            }
+                            return dedupe(resultDates);
+                        }
+                    } else {
+                        addDate(yr, m1, d1);
+                        addDate(yr, m2, d2);
+                        return dedupe(resultDates);
+                    }
+                }
+            }
+
+            // 2. Same-month discrete dates or range BEFORE month name:
+            // e.g. '7th - 9th September 2026', '7th & 8th Sep 2026', '10th to 12th Sep', '7, 8 & 9 Sep'
+            const preMonthRange = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:(-|–|—|\bto\b|&|\band\b|,)\s*(\d{1,2})(?:st|nd|rd|th)?)+\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{2,4}))?\b/i);
+            if (preMonthRange) {
+                const mIdx = getMonthIndex(preMonthRange[4]);
+                let yr = preMonthRange[5] ? parseInt(preMonthRange[5]) : currentYear;
+                if (yr < 100) yr += 2000;
+                if (mIdx !== -1) {
+                    const fullMatchedStr = preMonthRange[0];
+                    const daysSection = fullMatchedStr.slice(0, fullMatchedStr.toLowerCase().lastIndexOf(preMonthRange[4].toLowerCase()));
+                    const days = [...daysSection.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\b/gi)]
+                        .map(m => parseInt(m[1]))
+                        .filter(d => d >= 1 && d <= 31);
+                    
+                    const isContinuousRange = /(-|–|—|\bto\b)/i.test(daysSection);
+                    if (isContinuousRange && days.length >= 2) {
+                        const minD = Math.min(...days);
+                        const maxD = Math.max(...days);
+                        if (maxD - minD <= 31) {
+                            for (let d = minD; d <= maxD; d++) addDate(yr, mIdx, d);
+                            return dedupe(resultDates);
+                        }
+                    } else if (days.length > 0) {
+                        days.forEach(d => addDate(yr, mIdx, d));
+                        return dedupe(resultDates);
+                    }
+                }
+            }
+
+            // 3. Month name followed by day range: e.g. 'September 7 - 9, 2026' or 'Sep 7 to 10'
+            const postMonthRange = text.match(/\b([A-Za-z]{3,9})\s+(\d{1,2})(?:st|nd|rd|th)?\s*(?:-|–|—|\bto\b|&|\band\b)\s*(\d{1,2})(?:st|nd|rd|th)?(?:\s*,?\s*(\d{2,4}))?\b/i);
+            if (postMonthRange) {
+                const mIdx = getMonthIndex(postMonthRange[1]);
+                let yr = postMonthRange[4] ? parseInt(postMonthRange[4]) : currentYear;
+                if (yr < 100) yr += 2000;
+                if (mIdx !== -1) {
+                    const d1 = parseInt(postMonthRange[2]);
+                    const d2 = parseInt(postMonthRange[3]);
+                    const minD = Math.min(d1, d2);
+                    const maxD = Math.max(d1, d2);
+                    if (maxD - minD <= 31) {
+                        for (let d = minD; d <= maxD; d++) addDate(yr, mIdx, d);
+                        return dedupe(resultDates);
+                    }
+                }
+            }
+
+            // 4. Single full date:
+            // e.g. '5-Sep-26', '05-Sep-2026', '5th Sep 2026', '7 September 2026', 'Sep 7, 2026'
+            const dayMonthSingle = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?[-/\s]+([A-Za-z]{3,9})(?:[-/\s]+(20\d{2}|\b\d{2}\b))?\b/i);
+            if (dayMonthSingle) {
+                const d = parseInt(dayMonthSingle[1]);
+                const mIdx = getMonthIndex(dayMonthSingle[2]);
+                let yr = dayMonthSingle[3] ? parseInt(dayMonthSingle[3]) : currentYear;
+                if (yr < 100) yr += 2000;
+                if (mIdx !== -1) {
+                    addDate(yr, mIdx, d);
+                    return dedupe(resultDates);
+                }
+            }
+
+            const monthDaySingle = text.match(/\b([A-Za-z]{3,9})[-/\s]+(\d{1,2})(?:st|nd|rd|th)?(?:[-/\s,]+(20\d{2}|\b\d{2}\b))?\b/i);
+            if (monthDaySingle) {
+                const mIdx = getMonthIndex(monthDaySingle[1]);
+                const d = parseInt(monthDaySingle[2]);
+                let yr = monthDaySingle[3] ? parseInt(monthDaySingle[3]) : currentYear;
+                if (yr < 100) yr += 2000;
+                if (mIdx !== -1) {
+                    addDate(yr, mIdx, d);
+                    return dedupe(resultDates);
+                }
+            }
+
+            // 5. ISO format: YYYY-MM-DD
+            const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+            if (isoMatch) {
+                addDate(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1, parseInt(isoMatch[3]));
+                return dedupe(resultDates);
+            }
+
+            // 6. Numeric: DD/MM/YYYY or DD-MM-YYYY
+            const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+            if (numMatch) {
+                let d = parseInt(numMatch[1]), m = parseInt(numMatch[2]) - 1, y = parseInt(numMatch[3]);
+                if (y < 100) y += 2000;
+                if (m > 11 && d <= 12) { const tmp = d; d = m + 1; m = tmp - 1; }
+                addDate(y, m, d);
+                return dedupe(resultDates);
+            }
+
+            return dedupe(resultDates);
         }
 
         function getWalkinDateObjects(job) {
@@ -2833,7 +2852,25 @@
                 
                 const isWalkin = isWalkinJob(job);
                 const upcomingWalkinDates = getNormalizedWalkinDates(job);
-                const walkinDisplayDate = upcomingWalkinDates.length > 0 ? upcomingWalkinDates.join(', ') : (job.walkin_date || 'Upcoming Walk-in');
+                let walkinDisplayDate = 'Upcoming Walk-in';
+                if (selectedWalkinDates.size > 0) {
+                    const matched = upcomingWalkinDates.filter(d => selectedWalkinDates.has(d));
+                    if (matched.length === 1) {
+                        walkinDisplayDate = matched[0];
+                    } else if (matched.length > 1) {
+                        walkinDisplayDate = `${matched[0]} – ${matched[matched.length - 1]}`;
+                    } else {
+                        walkinDisplayDate = upcomingWalkinDates[0] || job.walkin_date || 'Upcoming Walk-in';
+                    }
+                } else if (upcomingWalkinDates.length > 0) {
+                    if (upcomingWalkinDates.length === 1) {
+                        walkinDisplayDate = upcomingWalkinDates[0];
+                    } else {
+                        walkinDisplayDate = `${upcomingWalkinDates[0]} – ${upcomingWalkinDates[upcomingWalkinDates.length - 1]}`;
+                    }
+                } else if (job.walkin_date) {
+                    walkinDisplayDate = job.walkin_date;
+                }
 
                 let applyButtonsHtml = '';
                 if (url && url.startsWith('http')) {
