@@ -1476,6 +1476,7 @@
                                 </svg>
                             </div>
                             <span class="option-label">🚶 All Walk-ins</span>
+                            <span class="source-count" id="walkinAllCount"></span>
                         </div>
                         <div style="font-size:0.73rem; font-weight:700; color:var(--text-dim); margin: 12px 0 6px 4px; text-transform:uppercase; letter-spacing:0.5px; border-top: 1px solid var(--border); padding-top: 10px;">Interview Dates</div>
                         <div id="walkin-dates-options">
@@ -1780,36 +1781,54 @@
         function buildSourceOptions() {
             const container = document.getElementById('source-options');
             container.innerHTML = PORTALS.map(p => `
-            <div class="filter-option" id="src-${p.id}" onclick="toggleSource('${p.id}', this)">
+            <div class="filter-option ${selectedPortals.has(p.id) ? 'checked' : ''}" id="src-${p.id}" onclick="toggleSource('${p.id}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
                 </div>
                 <img src="${p.logo}" class="option-img" onerror="this.style.display='none'">
                 <span class="option-label">${p.label}</span>
+                <span class="source-count" id="cnt-src-${p.id}"></span>
             </div>
         `).join('');
         }
 
         function updateSourceCounts() {
             let sourceCounts = {};
+            let walkinCount = 0;
             if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
                 allJobs.forEach(j => {
-                    let src = (j.source || '').toLowerCase();
-                    if (src.includes('google')) src = 'google_images';
-                    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                    // Count source matches based on all active filters excluding the portal facet
+                    if (typeof jobMatchesFilters === 'function' && jobMatchesFilters(j, 'portal')) {
+                        let src = (j.source || '').toLowerCase();
+                        if (src.includes('google')) src = 'google_images';
+                        else if (src.includes('telegram')) src = 'telegram';
+                        sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                    }
+                    // For Walkin All count: matches all filters excluding walkin facet
+                    if (isWalkinJob(j) && (typeof jobMatchesFilters !== 'function' || jobMatchesFilters(j, 'walkinFacet'))) {
+                        walkinCount++;
+                    }
                 });
             }
             PORTALS.forEach(p => {
-                const count = sourceCounts[p.id.toLowerCase()] || 0;
-                const el = document.getElementById(`src-${p.id}`);
-                if (el) {
-                    const labelEl = el.querySelector('.option-label');
-                    if (labelEl) {
-                        const countHtml = count > 0 ? `<span class="source-count">(${count})</span>` : '';
-                        labelEl.innerHTML = `${p.label} ${countHtml}`;
-                    }
+                let count = 0;
+                if (p.id === 'telegram') {
+                    count = (sourceCounts['telegram'] || 0) + (sourceCounts['telegram_post'] || 0) + (sourceCounts['telegram_message'] || 0);
+                } else {
+                    count = sourceCounts[p.id.toLowerCase()] || 0;
+                }
+                const cntEl = document.getElementById(`cnt-src-${p.id}`);
+                if (cntEl) {
+                    cntEl.textContent = count > 0 ? `(${count.toLocaleString()})` : '(0)';
+                    cntEl.style.opacity = count > 0 ? '1' : '0.4';
                 }
             });
+
+            const walkinAllEl = document.getElementById('walkinAllCount');
+            if (walkinAllEl) {
+                walkinAllEl.textContent = walkinCount > 0 ? `(${walkinCount.toLocaleString()})` : '(0)';
+                walkinAllEl.style.opacity = walkinCount > 0 ? '1' : '0.4';
+            }
         }
 
         function buildLocationOptions(filter = '') {
@@ -2199,62 +2218,160 @@
         const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        function parseWalkinDates(rawDateStr, fallbackDateStr) {
+        function cleanTimeAndNoise(text) {
+            if (!text) return "";
+            let s = text;
+            // Remove timings like "9.30 AM - 10.30 AM", "9:30 AM to 5:30 PM", "7:00 PM", "6:00 PM 3:00 AM"
+            s = s.replace(/\b\d{1,2}(?:[:.]\d{2})?\s*(?:AM|PM|am|pm)\b(?:\s*(?:-|–|—|to)\s*\b\d{1,2}(?:[:.]\d{2})?\s*(?:AM|PM|am|pm)\b)?/gi, ' ');
+            s = s.replace(/\b\d{1,2}[:.]\d{2}\b/g, ' ');
+            // Remove experience like "0 - 4 years", "2 - 5 yrs"
+            s = s.replace(/\b\d{1,2}\s*(?:-|–|to)\s*\d{1,2}\s*(?:years?|yrs?)\b/gi, ' ');
+            // Remove salary like "2.25-2.5 Lacs", "3 - 5 LPA"
+            s = s.replace(/\b\d+(?:\.\d+)?\s*(?:-|–|to)\s*\d+(?:\.\d+)?\s*(?:lacs?|lpa|ctc)\b/gi, ' ');
+            // Remove phone numbers
+            s = s.replace(/\b(?:\+?91|0)?[6-9]\d{9}\b/g, ' ');
+            // Remove openings like "Openings: 10"
+            s = s.replace(/openings?\s*:\s*\d+/gi, ' ');
+            return s;
+        }
+
+        function isWalkinJob(job) {
+            if (!job) return false;
+            const src = String(job.source || '').toLowerCase();
+            if (src === 'google_images' || src.includes('flyer')) return true;
+
+            const title = String(job.title || job.role || '');
+            const desc = String(job.description || job.other_details || '');
+            const walkKwRegex = /\b(walk[\s-]?in|walking[\s-]?interview|walkin|walk-in drive|direct interview)\b/i;
+
+            if (walkKwRegex.test(title) || walkKwRegex.test(desc)) {
+                return true;
+            }
+            if (job.is_walkin === true && (walkKwRegex.test(title) || walkKwRegex.test(desc) || src === 'google_images')) {
+                return true;
+            }
+            return false;
+        }
+
+        function extractWalkinDateFromText(text) {
+            if (!text || typeof text !== 'string') return null;
+
+            // Look for labeled dates first: "Walk-in Date: ...", "Time and Venue \n 10th September..."
+            const labelMatch = text.match(/(?:walk[\s-]?in\s*(?:date|drive)?|interview\s*date|time\s*and\s*venue|date\s*&?\s*time)\s*[:\-]?\s*([^\n\r]+)/i);
+            if (labelMatch) {
+                const candidate = labelMatch[1].trim();
+                const dMatch = candidate.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}|\d{1,2}(?:st|nd|rd|th)?\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}|\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?|\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})\b/i);
+                if (dMatch) return dMatch[0].trim();
+            }
+
+            // 1. Two months range: "10th September - 11th September" or "28th August - 2nd September"
+            const rangeBothMonths = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
+            if (rangeBothMonths) return rangeBothMonths[1].trim();
+
+            // 2. Single month range: "10th - 11th September" or "10 to 11 September"
+            const rangeMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?(?:\s*,\s*\d{1,2}(?:st|nd|rd|th)?)*\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
+            if (rangeMatch) return rangeMatch[1].trim();
+
+            // 3. Single Date with Month Name: "4th September 2026", "7th September"
+            const singleMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s*,?\s*\d{4})?|\d{1,2}-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*-\d{2,4})\b/i);
+            if (singleMatch) return singleMatch[1].trim();
+
+            // 4. Numeric Date: "10/09/2026"
+            const numMatch = text.match(/\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b/);
+            if (numMatch) return numMatch[1].trim();
+
+            return null;
+        }
+
+        function parseWalkinDates(rawDateStr) {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
-            const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window (2 months)
+            const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window
             maxFuture.setHours(23, 59, 59, 999);
 
             const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth(); // 0 to 11
-
-            const resultDates = []; // Array of { label: "August 29", dateObj: Date }
+            const currentMonth = now.getMonth();
+            const resultDates = [];
 
             if (rawDateStr && typeof rawDateStr === 'string') {
                 const text = rawDateStr.trim();
-                
-                // 1. Check for Month names in text (e.g., "August", "Aug", etc.)
-                let monthIdx = -1;
-                let monthFullName = "";
-                for (let i = 0; i < MONTH_NAMES.length; i++) {
-                    const pattern = new RegExp('\\b(' + MONTH_NAMES[i] + '|' + MONTH_SHORT[i] + ')\\b', 'i');
-                    if (pattern.test(text)) {
-                        monthIdx = i;
-                        monthFullName = MONTH_NAMES[i];
-                        break;
-                    }
-                }
+                const cleanedText = cleanTimeAndNoise(text);
 
-                // Determine year: if month is earlier in the year than current month (e.g. current is Nov/Dec, month is Jan/Feb), use next year
-                let year = currentYear;
-                const yearMatch = text.match(/\b(20\d{2})\b/);
-                if (yearMatch) {
-                    year = parseInt(yearMatch[1]);
-                } else if (monthIdx !== -1 && monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
-                    year = currentYear + 1;
-                }
+                // Cross-month range: e.g. "28th Aug - 2nd Sep"
+                const crossMonthRegex = /\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\s*(?:-|–|—|to)\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{4}))?\b/i;
+                const crossMatch = cleanedText.match(crossMonthRegex);
+                if (crossMatch) {
+                    const d1 = parseInt(crossMatch[1]);
+                    const m1Str = crossMatch[2].toLowerCase();
+                    const d2 = parseInt(crossMatch[3]);
+                    const m2Str = crossMatch[4].toLowerCase();
+                    const yr = crossMatch[5] ? parseInt(crossMatch[5]) : currentYear;
 
-                if (monthIdx !== -1) {
-                    // Find all numbers (days of month)
-                    const dayMatches = [...text.matchAll(/\b([0-2]?\d|3[01])(?:st|nd|rd|th)?\b/gi)]
-                        .map(m => parseInt(m[1]))
-                        .filter(d => d >= 1 && d <= 31);
+                    const m1Idx = MONTH_NAMES.findIndex(m => m.toLowerCase().startsWith(m1Str.slice(0, 3)));
+                    const m2Idx = MONTH_NAMES.findIndex(m => m.toLowerCase().startsWith(m2Str.slice(0, 3)));
 
-                    if (dayMatches.length >= 2 && /\b(to|-|–|—|&)\b/i.test(text)) {
-                        const minDay = Math.min(dayMatches[0], dayMatches[dayMatches.length - 1]);
-                        const maxDay = Math.max(dayMatches[0], dayMatches[dayMatches.length - 1]);
-                        if (maxDay - minDay <= 14) {
-                            for (let d = minDay; d <= maxDay; d++) {
-                                const dObj = new Date(year, monthIdx, d);
-                                dObj.setHours(0, 0, 0, 0);
-                                if (dObj >= now && dObj <= maxFuture) {
+                    if (m1Idx !== -1 && m2Idx !== -1) {
+                        const startDate = new Date(yr, m1Idx, d1);
+                        const endDate = new Date(yr, m2Idx, d2);
+                        startDate.setHours(0, 0, 0, 0);
+                        endDate.setHours(0, 0, 0, 0);
+
+                        const diffDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+                        if (diffDays >= 0 && diffDays <= 31) {
+                            for (let cur = new Date(startDate); cur <= endDate; cur.setDate(cur.getDate() + 1)) {
+                                if (cur >= now && cur <= maxFuture) {
                                     resultDates.push({
-                                        label: `${monthFullName} ${d}`,
-                                        dateObj: dObj
+                                        label: `${MONTH_NAMES[cur.getMonth()]} ${cur.getDate()}`,
+                                        dateObj: new Date(cur)
                                     });
                                 }
                             }
-                        } else {
+                        }
+                    }
+                }
+
+                if (resultDates.length === 0) {
+                    let monthIdx = -1;
+                    let monthFullName = "";
+                    for (let i = 0; i < MONTH_NAMES.length; i++) {
+                        const pattern = new RegExp('\\b(' + MONTH_NAMES[i] + '|' + MONTH_SHORT[i] + ')\\b', 'i');
+                        if (pattern.test(cleanedText)) {
+                            monthIdx = i;
+                            monthFullName = MONTH_NAMES[i];
+                            break;
+                        }
+                    }
+
+                    let year = currentYear;
+                    const yearMatch = cleanedText.match(/\b(20\d{2})\b/);
+                    if (yearMatch) {
+                        year = parseInt(yearMatch[1]);
+                    } else if (monthIdx !== -1 && monthIdx < currentMonth && (currentMonth - monthIdx > 6)) {
+                        year = currentYear + 1;
+                    }
+
+                    if (monthIdx !== -1) {
+                        const dayMatches = [...cleanedText.matchAll(/\b([0-2]?\d|3[01])(?:st|nd|rd|th)?\b/gi)]
+                            .map(m => parseInt(m[1]))
+                            .filter(d => d >= 1 && d <= 31);
+
+                        const isRange = /(?:-|–|—|\bto\b)/i.test(cleanedText);
+                        if (dayMatches.length >= 2 && isRange) {
+                            const minDay = Math.min(dayMatches[0], dayMatches[1]);
+                            const maxDay = Math.max(dayMatches[0], dayMatches[1]);
+                            if (maxDay - minDay <= 31) {
+                                for (let d = minDay; d <= maxDay; d++) {
+                                    const dObj = new Date(year, monthIdx, d);
+                                    dObj.setHours(0, 0, 0, 0);
+                                    if (dObj >= now && dObj <= maxFuture) {
+                                        resultDates.push({
+                                            label: `${monthFullName} ${d}`,
+                                            dateObj: dObj
+                                        });
+                                    }
+                                }
+                            }
+                        } else if (dayMatches.length > 0) {
                             dayMatches.forEach(d => {
                                 const dObj = new Date(year, monthIdx, d);
                                 dObj.setHours(0, 0, 0, 0);
@@ -2266,46 +2383,13 @@
                                 }
                             });
                         }
-                    } else if (dayMatches.length > 0) {
-                        dayMatches.forEach(d => {
-                            const dObj = new Date(year, monthIdx, d);
-                            dObj.setHours(0, 0, 0, 0);
-                            if (dObj >= now && dObj <= maxFuture) {
-                                resultDates.push({
-                                    label: `${monthFullName} ${d}`,
-                                    dateObj: dObj
-                                });
-                            }
-                        });
-                    }
-                } else {
-                    // ISO format: YYYY-MM-DD or YYYY/MM/DD (e.g. "2026-09-06")
-                    const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
-                    if (isoMatch) {
-                        const y = parseInt(isoMatch[1]);
-                        const m = parseInt(isoMatch[2]) - 1;
-                        const d = parseInt(isoMatch[3]);
-                        if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
-                            const dObj = new Date(y, m, d);
-                            dObj.setHours(0, 0, 0, 0);
-                            if (dObj >= now && dObj <= maxFuture) {
-                                resultDates.push({
-                                    label: `${MONTH_NAMES[m]} ${d}`,
-                                    dateObj: dObj
-                                });
-                            }
-                        }
                     } else {
-                        // Numeric patterns: DD/MM/YYYY or DD-MM-YYYY or MM/DD/YYYY
-                        const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
-                        if (numMatch) {
-                            let d = parseInt(numMatch[1]);
-                            let m = parseInt(numMatch[2]) - 1;
-                            let y = parseInt(numMatch[3]);
-                            if (y < 100) y += 2000;
-                            if (m > 11 && d <= 12) {
-                                const tmp = d; d = m + 1; m = tmp - 1;
-                            }
+                        // ISO format: YYYY-MM-DD
+                        const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+                        if (isoMatch) {
+                            const y = parseInt(isoMatch[1]);
+                            const m = parseInt(isoMatch[2]) - 1;
+                            const d = parseInt(isoMatch[3]);
                             if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
                                 const dObj = new Date(y, m, d);
                                 dObj.setHours(0, 0, 0, 0);
@@ -2316,28 +2400,32 @@
                                     });
                                 }
                             }
+                        } else {
+                            // Numeric: DD/MM/YYYY
+                            const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+                            if (numMatch) {
+                                let d = parseInt(numMatch[1]);
+                                let m = parseInt(numMatch[2]) - 1;
+                                let y = parseInt(numMatch[3]);
+                                if (y < 100) y += 2000;
+                                if (m > 11 && d <= 12) { const tmp = d; d = m + 1; m = tmp - 1; }
+                                if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
+                                    const dObj = new Date(y, m, d);
+                                    dObj.setHours(0, 0, 0, 0);
+                                    if (dObj >= now && dObj <= maxFuture) {
+                                        resultDates.push({
+                                            label: `${MONTH_NAMES[m]} ${d}`,
+                                            dateObj: dObj
+                                        });
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            // Fallback: If no explicit date extracted from text, check fallbackDateStr
-            if (resultDates.length === 0 && fallbackDateStr) {
-                const dObj = new Date(fallbackDateStr);
-                if (!isNaN(dObj.getTime())) {
-                    dObj.setHours(0, 0, 0, 0);
-                    if (dObj >= now && dObj <= maxFuture) {
-                        const m = dObj.getMonth();
-                        const d = dObj.getDate();
-                        resultDates.push({
-                            label: `${MONTH_NAMES[m]} ${d}`,
-                            dateObj: dObj
-                        });
-                    }
-                }
-            }
-
-            // Deduplicate
+            // Strictly deduplicate
             const seen = new Set();
             return resultDates.filter(item => {
                 if (seen.has(item.label)) return false;
@@ -2347,18 +2435,14 @@
         }
 
         function getWalkinDateObjects(job) {
-            if (!job) return [];
-            const rawTitle = String(job.title || '');
-            const titleLow = rawTitle.toLowerCase();
-            const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(titleLow));
-            if (!isWalk) return [];
+            if (!job || !isWalkinJob(job)) return [];
 
-            const rawDateStr = String(job.walkin_date || extractWalkinDateFromText(rawTitle) || '');
-            // Don't use date_posted as walkin date fallback for google_images source,
-            // because date_posted is just the scraping date (today), NOT the actual walk-in date.
-            const src = String(job.source || '').toLowerCase();
-            const fallbackStr = (src === 'google_images') ? '' : (job.date || job.fetchedAt || '');
-            return parseWalkinDates(rawDateStr, fallbackStr);
+            let rawDateStr = String(job.walkin_date || '').trim();
+            if (!rawDateStr) {
+                rawDateStr = extractWalkinDateFromText(job.title) || extractWalkinDateFromText(job.description) || '';
+            }
+            if (!rawDateStr) return [];
+            return parseWalkinDates(rawDateStr);
         }
 
         function getNormalizedWalkinDates(job) {
@@ -2369,18 +2453,26 @@
             const container = document.getElementById('walkin-dates-options');
             if (!container) return;
             const counts = {};
-            const dateMap = {}; // label -> Date object for accurate chronological sorting
+            const dateMap = {};
 
-            allJobs.forEach(job => {
-                const dateObjs = getWalkinDateObjects(job);
-                dateObjs.forEach(item => {
-                    counts[item.label] = (counts[item.label] || 0) + 1;
-                    dateMap[item.label] = item.dateObj;
+            if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
+                allJobs.forEach(job => {
+                    if (!isWalkinJob(job)) return;
+                    if (typeof jobMatchesFilters === 'function' && !jobMatchesFilters(job, 'walkinDate')) return;
+
+                    const dateObjs = getWalkinDateObjects(job);
+                    dateObjs.forEach(item => {
+                        counts[item.label] = (counts[item.label] || 0) + 1;
+                        dateMap[item.label] = item.dateObj;
+                    });
                 });
+            }
+
+            // Ensure any currently selected dates remain visible
+            selectedWalkinDates.forEach(d => {
+                if (counts[d] === undefined) counts[d] = 0;
             });
 
-            // Only dates with at least 1 upcoming walk-in interview are in counts
-            // Sort strictly chronologically from nearest upcoming date to furthest within 60 days
             const sortedDates = Object.keys(counts).sort((a, b) => {
                 const da = dateMap[a];
                 const db = dateMap[b];
@@ -2391,12 +2483,13 @@
             });
 
             if (sortedDates.length === 0) {
-                container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-dim); padding:6px 4px;">No upcoming walk-in interview dates (next 60 days)</div>`;
+                container.innerHTML = `<div style="font-size:0.75rem; color:var(--text-dim); padding:6px 4px;">No upcoming walk-in interview dates found</div>`;
                 return;
             }
 
             container.innerHTML = sortedDates.map(date => {
                 const isChecked = selectedWalkinDates.has(date);
+                const count = counts[date] || 0;
                 return `
                     <div class="filter-option ${isChecked ? 'checked' : ''}" onclick="toggleWalkinDate('${esc(date)}')">
                         <div class="custom-checkbox">
@@ -2405,7 +2498,7 @@
                             </svg>
                         </div>
                         <span class="option-label">${esc(date)}</span>
-                        <span class="source-count">(${counts[date]})</span>
+                        <span class="source-count" style="opacity:${count > 0 ? '1' : '0.4'}">(${count.toLocaleString()})</span>
                     </div>
                 `;
             }).join('');
@@ -2417,28 +2510,7 @@
             } else {
                 selectedWalkinDates.add(date);
             }
-            buildWalkinDateOptions();
             refreshChips();
-        }
-
-        function extractWalkinDateFromText(text) {
-            if (!text) return null;
-            const isWalk = /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(text);
-            if (!isWalk) return null;
-            
-            // 1. Date Ranges with Month Names
-            const rangeMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?(?:\s*,\s*\d{1,2}(?:st|nd|rd|th)?)*(?:\s+[A-Za-z]{3,9})?\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?)\b/i);
-            if (rangeMatch) return rangeMatch[1].trim();
-
-            // 2. Single Date with Month Name
-            const singleMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s*,?\s*(?:20\d{2}|19\d{2}|\b\d{2}\b(?!\s*[:.])))?|\d{1,2}-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*-\d{2,4})\b/i);
-            if (singleMatch) return singleMatch[1].trim();
-
-            // 3. Numeric Date
-            const numMatch = text.match(/\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b/);
-            if (numMatch) return numMatch[1].trim();
-
-            return null;
         }
 
         // ══════════════════════════════════════════════
@@ -2467,8 +2539,13 @@
                         }
 
                         const rawTitle = String(job.role || job.title || '');
-                        const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(rawTitle));
-                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+                        const descText = String(job.description || job.job_description || job.other_details || '');
+                        const venueText = String(job.venue || job.venue_address || '');
+                        const isWalk = isWalkinJob({ title: rawTitle, description: descText, source: sourceVal, is_walkin: job.is_walkin });
+                        let walkDate = String(job.walkin_date || '').trim();
+                        if (!walkDate && isWalk) {
+                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
+                        }
 
                         fetchedJobs.push({
                             _id: job.id || 0,
@@ -2488,7 +2565,9 @@
                             walkin_date: walkDate,
                             walkin_time: job.walkin_time || '',
                             flyer_image_url: String(job.flyer_image_url || ''),
-                            fetchedAt: cleanDate
+                            fetchedAt: cleanDate,
+                            description: descText,
+                            venue: venueText
                         });
                     }
                     chunkNum++;
@@ -2510,7 +2589,11 @@
                         const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
                         const cleanDate = pick(job.date_posted, job.fetched_at, job.fetchedAt, job.date);
                         const rawTitle = String(job.title || job.role || 'Walk-in Interview');
-                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+                        const descText = String(job.description || job.clean_text || '');
+                        let walkDate = String(job.walkin_date || '').trim();
+                        if (!walkDate) {
+                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
+                        }
 
                         let coName = '';
                         if (typeof job.company === 'object' && job.company !== null) {
@@ -2542,13 +2625,15 @@
                             experience: (typeof job.experience === 'object' && job.experience !== null) ? (job.experience.raw_text || '') : pick(job.experience),
                             salary: (typeof job.salary === 'object' && job.salary !== null) ? (job.salary.raw_text || '') : pick(job.salary),
                             skills: Array.isArray(job.skills) ? job.skills : [],
-                            is_walkin: Boolean(walkDate) || /\b(walk[\s-]?in|walkin|walking)\b/i.test(rawTitle),
+                            is_walkin: true,
                             walkin_date: walkDate || null,
                             walkin_time: (typeof job.time === 'object' && job.time !== null) ? `${job.time.start || ''} - ${job.time.end || ''}`.trim(' -') : (job.walkin_time || ''),
                             flyer_image_url: job.flyer_image_url || job.raw_flyer_src || job.image_path || '',
                             contact_email: job.contact_email || '',
                             contact_phone: job.contact_phone || '',
-                            fetchedAt: cleanDate
+                            fetchedAt: cleanDate,
+                            description: descText,
+                            venue: (typeof job.location === 'object' && job.location !== null) ? (job.location.address || '') : ''
                         });
                     }
                     console.log(`Loaded ${walkinRows.length} jobs from scraped_image_walkin_jobs.json as 'google_images' source`);
@@ -2568,8 +2653,12 @@
                         const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
                         const cleanDate = pick(job.fetched_at, job.fetchedAt, job.date_posted, job.date);
                         const rawTitle = String(job.title || job.role || '');
-                        const isWalk = Boolean(job.is_walkin || job.walking_interview || /\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b/i.test(rawTitle));
-                        const walkDate = job.walkin_date || extractWalkinDateFromText(rawTitle);
+                        const descText = String(job.description || job.job_description || job.other_details || '');
+                        const isWalk = isWalkinJob({ title: rawTitle, description: descText, source: 'other', is_walkin: job.is_walkin });
+                        let walkDate = String(job.walkin_date || '').trim();
+                        if (!walkDate && isWalk) {
+                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
+                        }
 
                         fetchedJobs.push({
                             _id: job.id || 0,
@@ -2585,7 +2674,9 @@
                             is_walkin: isWalk,
                             walkin_date: walkDate,
                             walkin_time: '',
-                            fetchedAt: cleanDate
+                            fetchedAt: cleanDate,
+                            description: descText,
+                            venue: ''
                         });
                     }
                     console.log(`Loaded ${bigJobsRows.length} jobs from big_company_jobs.json as 'other' source`);
@@ -2600,93 +2691,91 @@
         // ══════════════════════════════════════════════
         //  FILTER + RENDER
         // ══════════════════════════════════════════════
-        function applyFilters() {
-            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+        function jobMatchesFilters(j, excludeDimension = null) {
+            const search = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
             const now = new Date(); now.setHours(0, 0, 0, 0);
-            const sortBy = document.getElementById('sortSelect').value;
 
-            filteredJobs = allJobs.filter(j => {
-                const titleLow = (j.title || '').toLowerCase();
-                const hay = [j.title, j.company, j.location, j.role_search, j.walkin_date].filter(Boolean).join(' ').toLowerCase();
-                if (search && !hay.includes(search)) return false;
+            const titleLow = (j.title || '').toLowerCase();
+            const hay = [j.title, j.company, j.location, j.role_search, j.walkin_date, j.description, j.venue].filter(Boolean).join(' ').toLowerCase();
+            if (search && !hay.includes(search)) return false;
 
-                if (selectedPortals.size > 0) {
-                    const src = (j.source || '').toLowerCase();
-                    const match = [...selectedPortals].some(p => (
-                        src === p ||
-                        (p === 'google_images' && src.includes('google')) ||
-                        (p.includes('telegram') && src.includes('telegram'))
-                    ));
-                    if (!match) return false;
+            if (excludeDimension !== 'portal' && selectedPortals.size > 0) {
+                const src = (j.source || '').toLowerCase();
+                const match = [...selectedPortals].some(p => (
+                    src === p ||
+                    (p === 'google_images' && src.includes('google')) ||
+                    (p.includes('telegram') && src.includes('telegram'))
+                ));
+                if (!match) return false;
+            }
+
+            if (activeDateRange !== 'all') {
+                const jd = new Date((j.fetchedAt || j.date || '').slice(0, 10));
+                if (isNaN(jd.getTime())) return false;
+                const diff = Math.floor((now - jd) / 86400000);
+                if (activeDateRange === '24h' && diff > 1) return false;
+                if (activeDateRange === '3d' && diff > 3) return false;
+                if (activeDateRange === '7d' && diff > 7) return false;
+                if (activeDateRange === '15d' && diff > 15) return false;
+            }
+
+            if (selectedLocations.size > 0) {
+                const loc = (j.location || '').toLowerCase();
+                const city = loc.split(',')[0].trim();
+                const match = [...selectedLocations].some(l => city.includes(l.toLowerCase()) || loc.includes(l.toLowerCase()));
+                if (!match) return false;
+            }
+
+            if (selectedRoles.size > 0) {
+                const match = [...selectedRoles].some(role => {
+                    const kws = ROLE_KEYWORDS[role] || [role.toLowerCase()];
+                    return kws.some(kw => titleLow.includes(kw) || (j.role_search || '').toLowerCase().includes(kw));
+                });
+                if (!match) return false;
+            }
+
+            if (activeExp >= 0) {
+                const [minExp, maxExp] = parseExperience(j.experience);
+                if (minExp === null) return false;
+                if (activeExp === 0) {
+                    if (minExp !== 0) return false;
+                    if (exactlyZeroExp && maxExp !== 0) return false;
+                } else {
+                    if (minExp < activeExp) return false;
                 }
+            }
 
-                if (activeDateRange !== 'all') {
-                    const jd = new Date((j.fetchedAt || '').slice(0, 10));
-                    if (isNaN(jd.getTime())) return false;
-                    const diff = Math.floor((now - jd) / 86400000);
-                    if (activeDateRange === '24h' && diff > 1) return false;
-                    if (activeDateRange === '3d' && diff > 3) return false;
-                    if (activeDateRange === '7d' && diff > 7) return false;
-                    if (activeDateRange === '15d' && diff > 15) return false;
-                }
+            if (selectedSkills.size > 0) {
+                const hasSkill = Array.isArray(j.skills) && j.skills.some(sid => selectedSkills.has(sid));
+                if (!hasSkill) return false;
+            }
 
-                if (selectedLocations.size > 0) {
-                    const loc = (j.location || '').toLowerCase();
-                    const city = loc.split(',')[0].trim();
-                    const match = [...selectedLocations].some(l => city.includes(l.toLowerCase()) || loc.includes(l.toLowerCase()));
-                    if (!match) return false;
-                }
+            if (selectedCompanies.size > 0) {
+                const co = (j.company || '').toLowerCase();
+                if (![...selectedCompanies].some(c => co.includes(c.toLowerCase()))) return false;
+            }
 
-                if (selectedRoles.size > 0) {
-                    const match = [...selectedRoles].some(role => {
-                        const kws = ROLE_KEYWORDS[role] || [role.toLowerCase()];
-                        return kws.some(kw => titleLow.includes(kw) || (j.role_search || '').toLowerCase().includes(kw));
-                    });
-                    if (!match) return false;
-                }
-
-                if (activeExp >= 0) {
-                    const [minExp, maxExp] = parseExperience(j.experience);
-                    if (minExp === null) {
-                        return false; // If no exp info, it doesn't match
-                    }
-                    if (activeExp === 0) {
-                        // User typed 0: show jobs where min experience is 0
-                        if (minExp !== 0) return false;
-                        // If "Exactly 0" checkbox is checked, also require maxExp == 0
-                        if (exactlyZeroExp && maxExp !== 0) return false;
-                    } else {
-                        // Min Year filter: job's minimum experience must be >= user's input
-                        if (minExp < activeExp) return false;
-                    }
-                }
-
-                if (selectedSkills.size > 0) {
-                    const hasSkill = Array.isArray(j.skills) && j.skills.some(sid => selectedSkills.has(sid));
-                    if (!hasSkill) return false;
-                }
-
-                if (selectedCompanies.size > 0) {
-                    const co = (j.company || '').toLowerCase();
-                    if (![...selectedCompanies].some(c => co.includes(c.toLowerCase()))) return false;
-                }
-
-                // Walk-in filter: check is_walkin flag, walkin_date, or title keywords
+            // Walk-in filter: check isWalkinJob
+            if (excludeDimension !== 'walkinFacet') {
                 if (walkinOnly || selectedWalkinDates.size > 0) {
-                    const walkKw = ['walk-in', 'walkin', 'walk in', 'walking'];
-                    const isW = j.is_walkin || Boolean(j.walkin_date) || walkKw.some(kw => titleLow.includes(kw));
-                    if (!isW) return false;
+                    if (!isWalkinJob(j)) return false;
 
                     // If user selected specific dates from date-wise filter, job must match at least one selected date
-                    if (selectedWalkinDates.size > 0) {
+                    if (excludeDimension !== 'walkinDate' && selectedWalkinDates.size > 0) {
                         const jDates = getNormalizedWalkinDates(j);
                         const matchesDate = jDates.some(d => selectedWalkinDates.has(d));
                         if (!matchesDate) return false;
                     }
                 }
+            }
 
-                return true;
-            });
+            return true;
+        }
+
+        function applyFilters() {
+            const sortBy = document.getElementById('sortSelect').value;
+
+            filteredJobs = allJobs.filter(j => jobMatchesFilters(j, null));
 
             if (sortBy === 'company') {
                 filteredJobs.sort((a, b) => (a.company || '').localeCompare(b.company || ''));
@@ -2694,6 +2783,8 @@
 
             currentPage = 1;
             renderPage();
+            updateSourceCounts();
+            buildWalkinDateOptions();
         }
 
         function renderPage() {
@@ -2740,9 +2831,9 @@
                 const hasLoc = rawLocStr && rawLocStr.toLowerCase() !== 'nan' && rawLocStr.toLowerCase() !== 'none' && rawLocStr.toLowerCase() !== 'null';
                 const cityLoc = hasLoc ? rawLocStr.split(',')[0].trim() : '';
                 
+                const isWalkin = isWalkinJob(job);
                 const upcomingWalkinDates = getNormalizedWalkinDates(job);
-                const isWalkin = upcomingWalkinDates.length > 0 || job.is_walkin || Boolean(job.walkin_date) || ['walk-in', 'walkin', 'walk in', 'walking'].some(kw => (job.title || '').toLowerCase().includes(kw));
-                const walkinDisplayDate = upcomingWalkinDates.length > 0 ? upcomingWalkinDates[0] : (job.walkin_date || 'Upcoming');
+                const walkinDisplayDate = upcomingWalkinDates.length > 0 ? upcomingWalkinDates.join(', ') : (job.walkin_date || 'Upcoming Walk-in');
 
                 let applyButtonsHtml = '';
                 if (url && url.startsWith('http')) {

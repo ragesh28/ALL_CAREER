@@ -262,12 +262,19 @@ def store_jobs_batch(jobs):
                 title=str(j.get("title") or j.get("role") or ""),
                 description=str(j.get("description") or j.get("other_details") or "")
             )
-            if w_info.get("is_walkin") or j.get("is_walkin") or j.get("walking_interview"):
+            # A job is ONLY a walk-in if it has explicit walk-in keywords, or is an explicit walk-in source
+            src_val = str(j.get("source") or "").lower()
+            is_explicit_walkin_source = ("google" in src_val or "flyer" in src_val or "walkin" in src_val)
+            if w_info.get("is_walkin") or is_explicit_walkin_source:
                 j["is_walkin"] = True
                 if w_info.get("walkin_date") and not j.get("walkin_date"):
                     j["walkin_date"] = w_info["walkin_date"]
                 if w_info.get("walkin_time") and not j.get("walkin_time"):
                     j["walkin_time"] = w_info["walkin_time"]
+            else:
+                j["is_walkin"] = False
+                j["walkin_date"] = None
+                j["walkin_time"] = None
         except Exception:
             pass
 
@@ -297,8 +304,8 @@ def store_jobs_batch(jobs):
             job_updated = False
             
             # 1. Update walk-in details
-            new_is_walkin = j.get("is_walkin") or j.get("walking_interview")
-            old_is_walkin = existing_job.get("is_walkin") or existing_job.get("walking_interview")
+            new_is_walkin = j.get("is_walkin")
+            old_is_walkin = existing_job.get("is_walkin")
             if new_is_walkin is True and old_is_walkin is not True:
                 existing_job["is_walkin"] = True
                 job_updated = True
@@ -317,9 +324,9 @@ def store_jobs_batch(jobs):
                 
             # 2. Enrich other missing fields
             enrich_fields = [
-                "experience", "skills", "salary", "qualification", "last_date",
+                "description", "experience", "skills", "salary", "qualification", "last_date",
                 "other_details", "walkin_date", "walkin_time", "telegram_url",
-                "contact_email", "contact_phone", "flyer_image_url"
+                "contact_email", "contact_phone", "flyer_image_url", "venue"
             ]
             for field in enrich_fields:
                 new_val = j.get(field)

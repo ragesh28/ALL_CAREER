@@ -230,15 +230,19 @@ def scrape_naukri_page(role, city, page):
             title   = job_obj.get("title", "").strip()
             company = job_obj.get("companyName", "").strip()
 
-            # location and experience from placeholders array
+            # location, experience, and date from placeholders array
             loc = city
             experience = ""
+            placeholder_date = None
             for ph in job_obj.get("placeholders", []):
                 if isinstance(ph, dict):
-                    if ph.get("type") == "location":
+                    ptype = ph.get("type")
+                    if ptype == "location":
                         loc = ph.get("label", city)
-                    elif ph.get("type") == "experience":
+                    elif ptype == "experience":
                         experience = ph.get("label", "")
+                    elif ptype == "date":
+                        placeholder_date = ph.get("label", "").strip()
 
             jd_url = job_obj.get("jdURL", "")
             if jd_url and not jd_url.startswith("http"):
@@ -250,27 +254,81 @@ def scrape_naukri_page(role, city, page):
             from extractor_utils import extract_skills, extract_walkin_info
             
             tags_skills = job_obj.get("tagsAndSkills", "")
-            jd = job_obj.get("jobDescription", "")
-            combined_text = f"{tags_skills} {jd}"
-            skills = extract_skills(combined_text)
+            raw_jd = job_obj.get("jobDescription", "")
+            # Clean HTML formatting from job description
+            clean_jd = re.sub(r'<br\s*/?>', '\n', raw_jd, flags=re.IGNORECASE)
+            clean_jd = re.sub(r'<[^>]+>', ' ', clean_jd)
+            clean_jd = re.sub(r'[ \t]+', ' ', clean_jd).strip()
 
-            # Check walk-in details from API payload or description
-            walkin_details = job_obj.get("walkinDetails") or {}
+            # Check walk-in details from API payload
+            walkin_details = job_obj.get("walkInDetail") or job_obj.get("walkinDetails") or {}
+            is_walkin_flag = bool(job_obj.get("walkinJob")) or bool(walkin_details)
+
             w_date = None
             w_time = None
+            venue = ""
+            contact_phone = ""
+            contact_name = ""
+
             if isinstance(walkin_details, dict) and walkin_details:
-                start_d = walkin_details.get("startDate")
-                end_d = walkin_details.get("endDate")
-                if start_d and end_d and start_d != end_d:
+                start_raw = walkin_details.get("walkinStartDate") or walkin_details.get("startDate")
+                end_raw = walkin_details.get("walkinEndDate") or walkin_details.get("endDate")
+                
+                start_d = start_raw.split(" ")[0] if start_raw else None
+                end_d = end_raw.split(" ")[0] if end_raw else None
+
+                if placeholder_date:
+                    w_date = placeholder_date
+                elif start_d and end_d and start_d != end_d:
                     w_date = f"{start_d} - {end_d}"
                 else:
                     w_date = start_d or end_d
-                w_time = walkin_details.get("time")
 
-            w_info = extract_walkin_info(title=title, description=combined_text)
-            is_walk = bool(walkin_details) or w_info.get("is_walkin", False)
+                w_time = walkin_details.get("dailyTiming") or walkin_details.get("time")
+                venue = (walkin_details.get("venueAddress") or "").strip()
+                contact_phone = (walkin_details.get("contactPhone") or "").strip()
+                contact_name = (walkin_details.get("contactName") or "").strip()
+            elif placeholder_date:
+                w_date = placeholder_date
+
+            # Assemble structured rich description
+            desc_sections = []
+            if is_walkin_flag or "walk" in title.lower() or "walk" in clean_jd.lower():
+                tv_header = []
+                if w_date:
+                    tv_header.append(f"Interview Date: {w_date}")
+                if w_time:
+                    tv_header.append(f"Timing: {w_time}")
+                if venue:
+                    tv_header.append(f"Venue: {venue}")
+                if contact_name or contact_phone:
+                    c_str = f"Contact: {contact_name}"
+                    if contact_phone:
+                        c_str += f" ({contact_phone})"
+                    tv_header.append(c_str.strip())
+                if tv_header:
+                    desc_sections.append("Time and Venue:\n" + "\n".join(tv_header))
+
+            if clean_jd:
+                desc_sections.append(clean_jd)
+            if tags_skills:
+                desc_sections.append(f"Key Skills: {tags_skills}")
+
+            full_description = "\n\n".join(desc_sections).strip()
+            combined_text = f"{tags_skills} {full_description}"
+            skills = extract_skills(combined_text)
+
+            w_info = extract_walkin_info(title=title, description=full_description)
+            is_walk = is_walkin_flag or w_info.get("is_walkin", False)
             final_w_date = w_date or w_info.get("walkin_date")
             final_w_time = w_time or w_info.get("walkin_time")
+
+            # Strict rule: must have walk-in keywords or official flag
+            walk_kw = re.compile(r'\b(walk[\s-]?in|walking[\s-]?interview|walkin)\b', re.IGNORECASE)
+            if not (is_walkin_flag or walk_kw.search(title) or walk_kw.search(full_description)):
+                is_walk = False
+                final_w_date = None
+                final_w_time = None
 
             if title and jd_url:
                 jobs.append({
@@ -286,6 +344,9 @@ def scrape_naukri_page(role, city, page):
                     "is_walkin":   is_walk,
                     "walkin_date": final_w_date,
                     "walkin_time": final_w_time,
+                    "description": full_description,
+                    "venue":       venue or None,
+                    "contact_phone": contact_phone or None
                 })
     return jobs
 

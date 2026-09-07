@@ -262,6 +262,15 @@ def extract_walkin_info(title="", description="", full_text=""):
     if WALKIN_REGEX.search(title_clean) or WALKIN_REGEX.search(combined):
         is_walkin = True
 
+    # If NOT a walk-in, do not extract any walk-in date or time
+    if not is_walkin:
+        return {
+            "is_walkin": False,
+            "walkin_date": None,
+            "walkin_time": None,
+            "matched_snippet": ""
+        }
+
     # 2. Contextual search around headers like "Time and Venue", "Walk-in Date:", "Drive on"
     context_patterns = [
         r'(?:Time and Venue|Time & Venue|Walk-in Date|Interview Date|Drive Date|Date & Time|Date\s*:|Venue & Date|Walkin on|Drive on)[^\n\r]+',
@@ -311,7 +320,7 @@ def extract_walkin_info(title="", description="", full_text=""):
                 break
 
     # 4. Check for Weekday ranges (e.g. "Monday to Friday")
-    if not walkin_date and is_walkin:
+    if not walkin_date:
         wk = WEEKDAY_REGEX.search(combined)
         if wk:
             walkin_date = wk.group(1).strip()
@@ -322,7 +331,7 @@ def extract_walkin_info(title="", description="", full_text=""):
         walkin_time = t_match.group(1).strip()
 
     return {
-        "is_walkin": is_walkin,
+        "is_walkin": True,
         "walkin_date": walkin_date,
         "walkin_time": walkin_time,
         "matched_snippet": matched_snippet
