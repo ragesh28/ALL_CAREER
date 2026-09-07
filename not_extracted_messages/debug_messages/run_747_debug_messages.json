@@ -1,0 +1,11 @@
+{
+  "workflow_run_number": "747",
+  "workflow_run_id": "34068392372",
+  "timestamp": "2026-09-07T00:04:45.651457",
+  "runtime_minutes": 2.31,
+  "messages_processed": 1,
+  "new_jobs_stored": 4,
+  "skipped_jobs_count": 0,
+  "failed_extractions_count": 0,
+  "debug_failed_messages": []
+}
