@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "760",
+  "workflow_run_id": "34317372736",
+  "timestamp": "2026-09-09T06:39:03.624319",
+  "runtime_minutes": 34.03,
+  "messages_processed": 58,
+  "new_jobs_stored": 25,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "getjobss",
+      "msg_id": 8169,
+      "text": "🚀 𝗧𝗼𝗽 𝗧𝗲𝗰𝗵 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻𝘀 𝘁𝗼 𝗟𝗮𝗻𝗱 𝗛𝗶𝗴𝗵-𝗣𝗮𝘆𝗶𝗻𝗴 𝗝𝗼𝗯𝘀 𝗶𝗻 𝟮𝟬𝟮𝟲😍\n\n💰 Highest Salary: ₹41 LPA\n📈 Average Salary: ₹7.4 LPA\n🎓 2,000+ Students Placed\n🏢 500+ Hiring Partners\n\n💻 Full Stack :- https://pdlink.in/3SuUeuD\n\n📊 Data Analytics :- https://pdlink.in/45vk5ph\n\n💫AI Engineering :- https://pdlink.in/4fWJVID\n\n🔥 Take the first step towards your high-paying tech career in 2026!\nTop Certifications To Get\nHigh Paying Job In 2026\nLearn\nBuild\nGet Ple\nPlacement Highlights:-\n₹41LPA\n₹7.4 LPA\n2,000+\n500+\nHighest Salary\nAverage Salary\nStudents Placed\nPartner Companies\nFullstack\nData\nAl\nDevelopment\nAnalytics\nEngineering\nSkills\nToday\nA Better\nAnalyse. Visualize. Succeed.\nInnovate. Automate. Lead.\nGood\nBuild. Develop. Grow.\nTomorrow\nCareers\nHappen\nIndustry Relevant\nHands-on\nPlacement\nGet Hired\n7\nHere\nProjects\nSupport\nin Top Companies\nCurriculum\n③\n四\nLearn\nPractice\nake the first step toward\nBuild Projects\nGet Placed\nour dream tech career today!",
+      "timestamp": "2026-09-09T05:45:10+00:00"
+    }
+  ]
+}
