@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "768",
+  "workflow_run_id": "34471443845",
+  "timestamp": "2026-09-10T12:02:58.566519",
+  "runtime_minutes": 32.08,
+  "messages_processed": 56,
+  "new_jobs_stored": 29,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8263,
+      "text": "launching eBook v1.0 soon, 30 pages 📄 \nOn Gen AI, RAG and AI agents \n\nStay tuned ♥️",
+      "timestamp": "2026-09-10T09:10:44+00:00"
+    }
+  ]
+}
