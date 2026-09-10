@@ -558,12 +558,19 @@ def main():
                     continue
 
                 from extractor_utils import extract_experience, extract_skills, extract_walkin_info
+                from storage import normalize_location
                 
                 batch = []
                 for _, row in jobs_df.iterrows():
                     title = str(row.get("title", "")).strip()
                     company = str(row.get("company", "")).strip()
                     loc = str(row.get("location", "")).strip()
+                    city_val = str(row.get("city", "")).strip() if "city" in row else ""
+                    state_val = str(row.get("state", "")).strip() if "state" in row else ""
+                    if city_val and city_val.lower() not in ("nan", "none", "null", ""):
+                        if not loc or loc.lower() in ("nan", "none", "null", "india", "tamil nadu", "karnataka", "maharashtra", "telangana", "andhra pradesh", "uttar pradesh", "haryana", "kerala", "gujarat"):
+                            loc = f"{city_val}, {state_val}".strip(", ")
+                    
                     date_posted = str(row.get("date_posted", "")).strip()
                     job_url = str(row.get("job_url", "")).strip()
                     site = str(row.get("site", "")).strip().lower()
@@ -601,10 +608,13 @@ def main():
                     # Extract Walk-in Interview status & Date
                     w_info = extract_walkin_info(title=title, description=desc)
 
+                    # Normalize location accurately using context
+                    loc_clean = normalize_location(loc if loc != "nan" else "", title=title, description=desc)
+
                     batch.append({
                         "title": title,
                         "company": company,
-                        "location": loc if loc != "nan" else "",
+                        "location": loc_clean,
                         "date_posted": date_posted if date_posted != "nan" else "",
                         "url": final_url,
                         "linkedin_url": linkedin_url,

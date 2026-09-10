@@ -121,98 +121,137 @@ def get_category_filename(category):
     s = re.sub(r'[^a-z0-9_]', '', s)
     return f"{s}.json"
 
-def normalize_location(loc):
-    if not loc or not isinstance(loc, str) or loc.strip().lower() in ("null", "none", "unknown", "nan", ""):
-        return ""
+def normalize_location(loc, title="", description=""):
+    loc_str = str(loc or "").strip()
+    if not loc_str or loc_str.lower() in ("null", "none", "unknown", "nan", "india"):
+        loc_str = ""
     
-    loc_clean = loc.strip().lower()
-    loc_clean = re.sub(r'[^a-z0-9\s,]', '', loc_clean)
-    loc_clean = loc_clean.strip()
+    loc_clean = loc_str.lower()
+    loc_clean = re.sub(r'[^a-z0-9\s,]', ' ', loc_clean)
+    loc_clean = re.sub(r'\s+', ' ', loc_clean).strip()
     
-    exact_mappings = {
-        "ka": "Bangalore",
-        "karnataka": "Bangalore",
-        "bengaluru": "Bangalore",
-        "bengaluru, karnataka": "Bangalore",
-        "bangalore, karnataka": "Bangalore",
-        "bangalore, ka": "Bangalore",
-        "bengaluru, ka": "Bangalore",
-        
-        "tn": "Chennai",
-        "tamil nadu": "Chennai",
-        "chennai, tamil nadu": "Chennai",
-        "chennai, tn": "Chennai",
-        
-        "mh": "Mumbai",
-        "maharashtra": "Mumbai",
-        "mumbai, maharashtra": "Mumbai",
-        "mumbai, mh": "Mumbai",
-        
-        "ts": "Hyderabad",
-        "telangana": "Hyderabad",
-        "hyderabad, telangana": "Hyderabad",
-        "hyderabad, ts": "Hyderabad",
-        "ap": "Hyderabad",
-        "andhra pradesh": "Hyderabad",
-        
-        "dl": "Delhi",
-        "delhi": "Delhi",
-        "new delhi": "Delhi",
-        "delhi ncr": "Delhi",
-        
-        "up": "Noida",
-        "uttar pradesh": "Noida",
-        "noida, uttar pradesh": "Noida",
-        "noida, up": "Noida",
-        
-        "hr": "Delhi",
-        "haryana": "Delhi",
-        "gurugram": "Delhi",
-        "gurgaon": "Delhi",
-        "gurgaon, haryana": "Delhi",
-        "gurugram, haryana": "Delhi",
+    context_text = f"{loc_str} {title} {description}".lower()
+
+    # Cities priority: specific cities checked first
+    cities_priority = [
+        ("coimbatore", "Coimbatore"),
+        ("kovai", "Coimbatore"),
+        ("chennai", "Chennai"),
+        ("madras", "Chennai"),
+        ("madurai", "Madurai"),
+        ("tiruchirappalli", "Trichy"),
+        ("trichy", "Trichy"),
+        ("salem", "Salem"),
+        ("tirunelveli", "Tirunelveli"),
+        ("erode", "Erode"),
+        ("tirupur", "Tirupur"),
+        ("vellore", "Vellore"),
+        ("bangalore", "Bangalore"),
+        ("bengaluru", "Bangalore"),
+        ("mysore", "Mysore"),
+        ("mysuru", "Mysore"),
+        ("mangalore", "Mangalore"),
+        ("mangaluru", "Mangalore"),
+        ("hubli", "Hubli"),
+        ("dharwad", "Hubli"),
+        ("belgaum", "Belgaum"),
+        ("hyderabad", "Hyderabad"),
+        ("secunderabad", "Hyderabad"),
+        ("visakhapatnam", "Visakhapatnam"),
+        ("vizag", "Visakhapatnam"),
+        ("vijayawada", "Vijayawada"),
+        ("navi mumbai", "Mumbai"),
+        ("mumbai", "Mumbai"),
+        ("thane", "Mumbai"),
+        ("pune", "Pune"),
+        ("nagpur", "Nagpur"),
+        ("nashik", "Nashik"),
+        ("noida", "Noida"),
+        ("greater noida", "Noida"),
+        ("gurgaon", "Delhi"),
+        ("gurugram", "Delhi"),
+        ("new delhi", "Delhi"),
+        ("delhi", "Delhi"),
+        ("faridabad", "Delhi"),
+        ("ghaziabad", "Delhi"),
+        ("kolkata", "Kolkata"),
+        ("calcutta", "Kolkata"),
+        ("ahmedabad", "Ahmedabad"),
+        ("surat", "Surat"),
+        ("vadodara", "Vadodara"),
+        ("rajkot", "Rajkot"),
+        ("kochi", "Kochi"),
+        ("cochin", "Kochi"),
+        ("thiruvananthapuram", "Trivandrum"),
+        ("trivandrum", "Trivandrum"),
+        ("kozhikode", "Kozhikode"),
+        ("calicut", "Kozhikode"),
+        ("chandigarh", "Chandigarh"),
+        ("mohali", "Chandigarh"),
+        ("jaipur", "Jaipur"),
+        ("lucknow", "Lucknow"),
+        ("kanpur", "Kanpur"),
+        ("indore", "Indore"),
+        ("bhopal", "Bhopal"),
+        ("bhubaneswar", "Bhubaneswar"),
+        ("patna", "Patna"),
+        ("remote", "Remote"),
+        ("wfh", "Remote"),
+    ]
+
+    for kw, city_name in cities_priority:
+        if re.search(r'\b' + re.escape(kw) + r'\b', loc_clean):
+            return city_name
+
+    state_names = {
+        "tamil nadu": "Tamil Nadu",
+        "tn": "Tamil Nadu",
+        "karnataka": "Karnataka",
+        "ka": "Karnataka",
+        "maharashtra": "Maharashtra",
+        "mh": "Maharashtra",
+        "telangana": "Telangana",
+        "ts": "Telangana",
+        "andhra pradesh": "Andhra Pradesh",
+        "ap": "Andhra Pradesh",
+        "uttar pradesh": "Uttar Pradesh",
+        "up": "Uttar Pradesh",
+        "haryana": "Haryana",
+        "hr": "Haryana",
+        "kerala": "Kerala",
+        "kl": "Kerala",
+        "gujarat": "Gujarat",
+        "gj": "Gujarat",
+        "west bengal": "West Bengal",
+        "wb": "West Bengal",
+        "rajasthan": "Rajasthan",
+        "rj": "Rajasthan",
+        "madhya pradesh": "Madhya Pradesh",
+        "mp": "Madhya Pradesh",
+        "odisha": "Odisha",
+        "punjab": "Punjab",
+        "pb": "Punjab",
+        "bihar": "Bihar",
+        "assam": "Assam",
     }
-    
-    if loc_clean in exact_mappings:
-        return exact_mappings[loc_clean]
-        
-    if "bangalore" in loc_clean or "bengaluru" in loc_clean:
-        return "Bangalore"
-    if "chennai" in loc_clean:
-        return "Chennai"
-    if "mumbai" in loc_clean:
-        return "Mumbai"
-    if "hyderabad" in loc_clean:
-        return "Hyderabad"
-    if "delhi" in loc_clean or "gurgaon" in loc_clean or "gurugram" in loc_clean:
-        return "Delhi"
-    if "noida" in loc_clean:
-        return "Noida"
-    if "pune" in loc_clean:
-        return "Pune"
-    if "kolkata" in loc_clean:
-        return "Kolkata"
-    if "ahmedabad" in loc_clean:
-        return "Ahmedabad"
-    if "kochi" in loc_clean:
-        return "Kochi"
-    if "coimbatore" in loc_clean:
-        return "Coimbatore"
-        
-    if loc_clean == "karnataka":
-        return "Bangalore"
-    if loc_clean == "tamil nadu":
-        return "Chennai"
-    if loc_clean == "maharashtra":
-        return "Mumbai"
-    if loc_clean == "telangana":
-        return "Hyderabad"
-        
-    parts = [p.strip() for p in loc.split(',')]
+
+    # If loc mentions a state or is empty/India, inspect title & description for specific city
+    is_state_or_empty = (not loc_clean) or any(re.search(r'\b' + re.escape(st) + r'\b', loc_clean) for st in state_names)
+    if is_state_or_empty and context_text.strip():
+        for kw, city_name in cities_priority:
+            if re.search(r'\b' + re.escape(kw) + r'\b', context_text):
+                return city_name
+
+    # If it's a state and no city found, preserve the clean state name (NEVER map to a capital city)
+    for st_kw, st_name in state_names.items():
+        if re.search(r'\b' + re.escape(st_kw) + r'\b', loc_clean):
+            return st_name
+
+    parts = [p.strip() for p in loc_str.split(',') if p.strip()]
     if parts:
-        city = parts[0]
-        if city:
-            return city.title()
+        first_part = parts[0]
+        if first_part.lower() not in ("india", "null", "none", "nan"):
+            return first_part.title()
     return ""
 
 def store_jobs_batch(jobs):
@@ -253,7 +292,11 @@ def store_jobs_batch(jobs):
             continue
             
         # Clean/normalize location
-        j["location"] = normalize_location(j.get("location"))
+        j["location"] = normalize_location(
+            j.get("location"),
+            title=str(j.get("title") or j.get("role") or ""),
+            description=str(j.get("description") or j.get("other_details") or "")
+        )
         
         # Extract walk-in status & date
         try:

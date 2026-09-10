@@ -173,7 +173,9 @@ def scrape_indeed(role, location, max_results=50):
 
                     # Get location
                     loc_el = card.locator('[data-testid="text-location"], div.css-1restlb')
-                    job_loc = loc_el.inner_text().strip() if loc_el.count() > 0 else location
+                    raw_loc = loc_el.inner_text().strip() if loc_el.count() > 0 else location
+                    from storage import normalize_location
+                    job_loc = normalize_location(raw_loc, title=job_title) or raw_loc
 
                     if not job_title or not company:
                         continue

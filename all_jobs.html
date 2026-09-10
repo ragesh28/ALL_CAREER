@@ -1557,6 +1557,13 @@
             { id: 'other', label: 'Other Sources', logo: '' },
         ];
 
+        const knownPortals = new Set([
+            'linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine',
+            'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld',
+            'telegram', 'telegram_message', 'telegram_post',
+            'google_images', 'google images', 'google'
+        ]);
+
         const TOP_CITIES = ['Bangalore', 'Chennai', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Noida', 'Kolkata', 'Ahmedabad', 'Remote'];
 
         const ALL_ROLES = [
@@ -1799,10 +1806,25 @@
                 allJobs.forEach(j => {
                     // Count source matches based on all active filters excluding the portal facet
                     if (typeof jobMatchesFilters === 'function' && jobMatchesFilters(j, 'portal')) {
-                        let src = (j.source || '').toLowerCase();
-                        if (src.includes('google')) src = 'google_images';
-                        else if (src.includes('telegram')) src = 'telegram';
-                        sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                        let src = (j.source || '').toLowerCase().trim();
+                        if (src.includes('google')) {
+                            sourceCounts['google_images'] = (sourceCounts['google_images'] || 0) + 1;
+                        } else if (src === 'telegram_message') {
+                            sourceCounts['telegram_message'] = (sourceCounts['telegram_message'] || 0) + 1;
+                            sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
+                        } else if (src === 'telegram_post') {
+                            sourceCounts['telegram_post'] = (sourceCounts['telegram_post'] || 0) + 1;
+                            sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
+                        } else if (src.includes('telegram')) {
+                            // Generic telegram fallback
+                            sourceCounts['telegram_message'] = (sourceCounts['telegram_message'] || 0) + 1;
+                            sourceCounts['telegram_post'] = (sourceCounts['telegram_post'] || 0) + 1;
+                            sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
+                        } else if (src === 'other' || (typeof knownPortals !== 'undefined' && !knownPortals.has(src))) {
+                            sourceCounts['other'] = (sourceCounts['other'] || 0) + 1;
+                        } else {
+                            sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                        }
                     }
                     // For Walkin All count: matches all filters excluding walkin facet
                     if (isWalkinJob(j) && (typeof jobMatchesFilters !== 'function' || jobMatchesFilters(j, 'walkinFacet'))) {
@@ -1811,11 +1833,9 @@
                 });
             }
             PORTALS.forEach(p => {
-                let count = 0;
-                if (p.id === 'telegram') {
-                    count = (sourceCounts['telegram'] || 0) + (sourceCounts['telegram_post'] || 0) + (sourceCounts['telegram_message'] || 0);
-                } else {
-                    count = sourceCounts[p.id.toLowerCase()] || 0;
+                let count = sourceCounts[p.id.toLowerCase()] || 0;
+                if (p.id === 'telegram' && !count) {
+                    count = sourceCounts['telegram'] || 0;
                 }
                 const cntEl = document.getElementById(`cnt-src-${p.id}`);
                 if (cntEl) {
@@ -2606,7 +2626,7 @@
                     for (const job of walkinRows) {
                         const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
                         const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        const cleanDate = pick(job.date_posted, job.fetched_at, job.fetchedAt, job.date);
+                        const cleanDate = pick(job.date_posted, job.fetched_at, job.fetchedAt, job.date, job.walkin_date) || new Date().toISOString().slice(0, 10);
                         const rawTitle = String(job.title || job.role || 'Walk-in Interview');
                         const descText = String(job.description || job.clean_text || '');
                         let walkDate = String(job.walkin_date || '').trim();
@@ -2663,9 +2683,12 @@
 
             // Fetch Big Company / Other Source ATS jobs
             try {
-                const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
-                const bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime());
-                if (bigJobsRes.ok) {
+                let bigJobsRes = await fetch("workday_scraper/big_company_jobs.json?t=" + new Date().getTime()).catch(() => null);
+                if (!bigJobsRes || !bigJobsRes.ok) {
+                    const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
+                    bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime()).catch(() => null);
+                }
+                if (bigJobsRes && bigJobsRes.ok) {
                     const bigJobsRows = await bigJobsRes.json();
                     for (const job of bigJobsRows) {
                         const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
@@ -2719,12 +2742,25 @@
             if (search && !hay.includes(search)) return false;
 
             if (excludeDimension !== 'portal' && selectedPortals.size > 0) {
-                const src = (j.source || '').toLowerCase();
-                const match = [...selectedPortals].some(p => (
-                    src === p ||
-                    (p === 'google_images' && src.includes('google')) ||
-                    (p.includes('telegram') && src.includes('telegram'))
-                ));
+                const src = (j.source || '').toLowerCase().trim();
+                const match = [...selectedPortals].some(p => {
+                    if (p === 'telegram_message') {
+                        return src === 'telegram_message' || (src.includes('telegram') && !src.includes('post'));
+                    }
+                    if (p === 'telegram_post') {
+                        return src === 'telegram_post' || (src.includes('telegram') && !src.includes('message'));
+                    }
+                    if (p === 'telegram') {
+                        return src.includes('telegram');
+                    }
+                    if (p === 'google_images') {
+                        return src.includes('google');
+                    }
+                    if (p === 'other') {
+                        return src === 'other' || (typeof knownPortals !== 'undefined' && !knownPortals.has(src));
+                    }
+                    return src === p;
+                });
                 if (!match) return false;
             }
 
