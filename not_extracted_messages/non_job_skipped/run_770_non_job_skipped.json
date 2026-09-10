@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "770",
+  "workflow_run_id": "34507728944",
+  "timestamp": "2026-09-10T18:02:12.359208",
+  "runtime_minutes": 37.6,
+  "messages_processed": 41,
+  "new_jobs_stored": 26,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8264,
+      "text": "Hey everyone!\n\nOur TECH discord server is LIVE\n\nhttps://discord.gg/cD9uDYpk5\n\njoin asap, all techies, developers & anyone in tech most welcome :)",
+      "timestamp": "2026-09-10T17:38:43+00:00"
+    }
+  ]
+}
