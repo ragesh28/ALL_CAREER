@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "767",
+  "workflow_run_id": "34447348681",
+  "timestamp": "2026-09-10T07:25:04.008494",
+  "runtime_minutes": 27.74,
+  "messages_processed": 33,
+  "new_jobs_stored": 19,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8262,
+      "text": "**Announcement** ⚡️\n\n🚀 I’M OPENING 1:1 MENTORSHIP AGAIN!\n\nAfter almost 2 years, I’m finally opening my 1:1 sessions again ❤️\n\nI’ve been getting a lot of DMs around:\n→ Job switches\n→ Product company preparation\n→ Resume & LinkedIn\n→ Mock interviews\n→ Career confusion\n→ DSA / Java / Backend / System Design\n\nSo I’ve opened a few ways you can connect with me directly:\n\n📱 Quick Connect — 20 mins\n🚀 1:1 Career & Tech Mentorship\n🎯 Mock Interview + Detailed Feedback\n📄 Resume + LinkedIn Review\n💬 Priority DM — Ask me anything\n\nIf you're preparing for placements, looking for a job switch, or targeting product companies, feel free to book a session 👇\n\n🔗 https://topmate.io/iamarunchauhan\n\nI’ll keep the number of slots limited so I can give proper time to everyone.\n\nSee you on the other side! 🚀❤️\nCheck out my\ntopmate page\ntopmate.io/iamarunchauhan",
+      "timestamp": "2026-09-10T06:53:31+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6350,
+      "text": "This most will surely motivate you if you are feeling low. I too was at the same stage a few years back.\n\nthankyou 🥹\n\nhttps://lnkd.in/p/dmvKxvx4",
+      "timestamp": "2026-09-10T03:44:14+00:00"
+    }
+  ]
+}
