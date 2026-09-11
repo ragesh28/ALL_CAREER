@@ -30,6 +30,12 @@
       "credits_used": 100,
       "jobs_extracted": 0,
       "cities_processed": 50
+    },
+    {
+      "date": "2026-09-11",
+      "credits_used": 100,
+      "jobs_extracted": 0,
+      "cities_processed": 50
     }
   ]
 }
