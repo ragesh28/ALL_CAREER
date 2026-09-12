@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "789",
+  "workflow_run_id": "34698590237",
+  "timestamp": "2026-09-12T14:44:04.030569",
+  "runtime_minutes": 28.4,
+  "messages_processed": 43,
+  "new_jobs_stored": 24,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 5896,
+      "text": "🚨 ONLY 16 SEATS LEFT – MASTER ADVANCED DATA ANALYTICS THIS YEAR!\n🔥 DON’T JUST ANALYZE DATA — TURN IT INTO INSIGHTS THAT DRIVE BUSINESS DECISIONS.\n\n🚀 GO FROM DATA ANALYST TO ADVANCED ANALYTICS PROFESSIONAL\n📊 Advanced Data Analytics Course\n\n🎓 LearnTube | Backed by Google\n\n🛠 YOU’LL MASTER:\nAdvanced Excel • SQL • Python • Pandas • Power BI • Data Visualization • Advanced Analytics • Statistical Analysis • Dashboards • Business Intelligence\n\n🎓 Hands-on Projects • Practical Training • Certificate • Lifetime Access\n\n👇 START MASTERING ADVANCED DATA ANALYTICS TODAY!\n\nhttps://tinyurl.com/AdvancedDataAnalyticsXCoCK",
+      "timestamp": "2026-09-12T12:31:12+00:00"
+    }
+  ]
+}
