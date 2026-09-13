@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "795",
+  "workflow_run_id": "34756151916",
+  "timestamp": "2026-09-13T12:25:50.334076",
+  "runtime_minutes": 16.91,
+  "messages_processed": 39,
+  "new_jobs_stored": 23,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Internshipsworld",
+      "msg_id": 5989,
+      "text": "🚀 𝗧𝗼𝗽 𝟯 𝗙𝗥𝗘𝗘 𝗥𝗲𝘀𝗼𝘂𝗿𝗰𝗲𝘀 𝘁𝗼 𝗟𝗲𝗮𝗿𝗻 𝗜𝗻-𝗗𝗲𝗺𝗮𝗻𝗱 𝗧𝗲𝗰𝗵 𝗦𝗸𝗶𝗹𝗹𝘀 🔥\n\n💫 Artificial Intelligence (AI)\n📊 Data Analytics\n🔐 Cybersecurity\n\n🔗 𝗘𝗻𝗿𝗼𝗹𝗹 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘 👇:-\n\nhttps://pdlink.in/4y2XyN1\n\n🎯 Perfect for Students • Freshers • Beginners • Tech Enthusiasts\n\n💡 Learn for FREE → Build Skills → Upgrade Your Career\nYouTube\nSKILLS\nTop 3 Free Resources\nCREATE\nOPPORTUNITIES\nfor Al, Analytics & Cybersecurity\nLEARN\nBUILD\nGROW\nYouTube\na\nto\nAI\nAl\nA\nAl\nAnalytics\nCybersecurity\nGOOD\nTHINGS\nLEARNERS\nBUILD\nARTIFICIAL INTELLIGENCE\nDATA ANALYTICS\nCYBERSECURITY\n件\nLearn",
+      "timestamp": "2026-09-13T09:20:19+00:00"
+    }
+  ]
+}
