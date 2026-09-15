@@ -1,0 +1,124 @@
+{
+  "workflow_run_number": "811",
+  "workflow_run_id": "35006359219",
+  "timestamp": "2026-09-15T18:59:01.606836",
+  "runtime_minutes": 41.11,
+  "messages_processed": 64,
+  "new_jobs_stored": 37,
+  "skipped_jobs_count": 16,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258947,
+      "text": "We’re Hiring | Vendor Manager – Customer Experience\n\n📍 Bengaluru | 5+ Years Experience\n\nLooking for professionals with experience in BPO/Vendor Management, SLA & Performance Management, CSAT, WBR/MBR Governance, and Workforce Planning.\n\n📩 Apply now at shivani.rai@wakefit.co",
+      "timestamp": "2026-09-15T16:07:42+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258948,
+      "text": "PVR INOX is looking for an experienced and dynamic Area Head to manage and drive the performance of our Smart Cinemas.\nWe are looking for candidates with experience in the Hospitality industry or a similar customer-centric/service industry, with strong operational and people-management skills.\n🔹 Ideal Candidate\n• Hospitality / Service Industry experience\n• Strong leadership and team-management skills\n• Experience in managing operations and multiple stakeholders\n• Strong customer-service orientation\n• Ability to drive business performance and operational excellence\n• Excellent communication and problem-solving skills\n🌟 If you are passionate about people, operations and customer experience and want to be part of the growth journey of Smart Cinemas, we would love to hear from you!\n📩 Interested candidates can share their updated resume at:\nrahul.arora@pvrinox.com\nanuranjan.yadav@pvrinox.com",
+      "timestamp": "2026-09-15T16:08:32+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258949,
+      "text": "Greetings from Wipro!!\n\nExciting career opportunities available across multiple skills, experience levels, and locations. Please refer to the table below and share your details if you find a suitable match.\n\n📩 Interested candidates can either share their updated CV at naga.sravan@wipro.com. We look forward to connecting with you!\nJob Title\nPrimary Skills\nExp\nWork Location\nJava Development\nJAVA + KAFKA+ AWS/ GCP\n6+yrs\nBglr/Chen/Hyd\nJava Development\nJAVA + KAFKA+ AWS/ GCP\n12+yrs\nBglr/Chen/Hyd\nJava Development\nJAVA GCP\n6+yrs\nBglr/Chen/Hyd\nJava Development\nJAVA Quarkus\n6+yrs\nBglr/Chen/Hyd\nPython GenAl\nTensorFlow, PyTorch, SQL, Big\n6+yrs\nPune/Hyderabad\nquery, AI, Python GenAl\nGen Al Automation Testing\nGen Al Automation Testing\n6+yrs\nBglr/Chen/Hyd/Kolk/Pune\nJava Full Stack Developer/Lead\nJava, Spring, Microservices, React\n4+yrs\nPune - Kharadi\nIncident Management, Problem\nProduction Support Engineer\nManagement, Change\n4+yrs\nPune\nManagement\nPython Developer\nAWS Lambda, API Gateway\n4+yrs\nPune\nSoftware Development Engineer in\nSelenium | Java | Cucumber BDD |\nREST Assured | API Testing |\n6+yrs\nTest\nBangalore\nTestNG | CI/CD\nSelenium | Java | REST Assured |\nPlaywright with Agentic Al\nAPI Automation | Cucumber BDD\n6+yrs\nBglr/Chen/Hyd\nGit | CI/CD | Agile Scrum\nAppium | Selenium | Core Java |\nAutomation Testing\nCucumber BDD | REST Assured |\n6+yrs\nAPI Automation | Maven | Jenkins |\nPune/Hyderabad\nGit | Mobile Automation",
+      "timestamp": "2026-09-15T16:09:28+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258950,
+      "text": "Google is hiring - Product Manager\n\nWork Location: Bengaluru, Karnataka, India\nExperience: 5+ Years (Product Management or related technical roles, with 2+ years leading 0-to-1 launches)\n\nKey Skills: 0-to-1 Product Incubation, Generative AI & LLM Integration, Foundation Models & Agentic Workflows, AI-Assisted Rapid Prototyping (POCs), Strategic Roadmapping, Cross-Functional Execution, and Google Play/Gaming Ecosystems.\n\n𝐀𝐩𝐩𝐥𝐲 𝐡𝐞𝐫𝐞:\nhttps://www.google.com/about/careers/applications/jobs/results/116494524569526982-product-manager-airx",
+      "timestamp": "2026-09-15T16:16:59+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258951,
+      "text": "🚀 We're Hiring: SOC Senior Verification Engineer (5+ Years Experience) 🚀\n\nAre you passionate about SoC Verification and looking to work on cutting-edge technologies such as UFS, Ethernet, PCIe, and High-Speed IPs? We are looking for talented Verification Engineers to join our growing team!\n\n🔹 Role Overview As a Verification Engineer, you will be responsible for managing and driving the verification of UFS, Ethernet, PCIe, and other high-speed IPs at the IP and SoC level. You will work closely with architects, designers, and verification teams to ensure high-quality silicon delivery.\n\n🔹 Key Responsibilities \n✅ Understand design specifications and define verification scope, test plans, and verification infrastructure.\n✅ Develop and execute verification test cases to validate design correctness.\n✅ Implement and analyze SystemVerilog Assertions (SVA) and coverage metrics (Code, Toggle, and Functional Coverage).\n✅ Collaborate with architects, design teams, and pre/post-silicon verification teams.\n✅ Debug complex issues and provide effective solutions.\n✅ Follow industry-standard verification methodologies and quality practices.\n\n🔹 Required Skills & Experience \n✔️ 5+ years of experience in the verification domain.\n✔️ Strong experience in UVM, SystemVerilog, and C/C++.\n✔️ Experience with IP-level and SoC-level verification.\n✔️ Good understanding of processor-based SoC verification environments.\n✔️ Hands-on experience with tools such as VCS, waveform analyzers, and third-party VIPs (e.g., Synopsys VIPs).\n✔️ Strong knowledge of AXI/AMBA protocols and ASIC design flows.\n✔️ Scripting experience with Shell, Perl, or Makefiles.\n✔️ Excellent debugging, analytical, and problem-solving skills.\n\n🔹 Preferred Skills\n⭐ Experience with UFS (Universal Flash Storage), Ethernet, and PCIe protocols.\n⭐ Exposure to high-speed interface verification and complex SoC environments.\nIf you're interested in working on next-generation semiconductor products and challenging verification problems, we'd love to connect!\n\n📩 Interested candidates can share their updated resume via direct message or email\nkeerkart@qti.qualcomm.com.keerkart@qti.qualcomm.com.",
+      "timestamp": "2026-09-15T16:17:37+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258952,
+      "text": "Siemens hiring Software Engineer Freshers with 28-30 LPA\n\nBE/ BTech with 6 months of experience\nFluent in English language.\nStrong Knowledge of Microsoft Office.\nAble to interpret customer requirements, identify needs and resolve issues in a positive manner.\n\nApply here:\nhttps://jobs.siemens.com/en_US/externaljobs/JobDetail/521520",
+      "timestamp": "2026-09-15T16:21:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8194,
+      "text": "**📌Statusneo is hiring for Junior Software Engineer (Remote)\nExperience: 0 - 2 years\nSalary: 3-6 LPA\nApply here: ****https://www.linkedin.com/jobs/view/4465515044****\n\n**Like for more job opportunities",
+      "timestamp": "2026-09-15T18:26:17+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8195,
+      "text": "**📌Netomi is hiring for SDE I - Backend (Remote)\nExperience: 1-3 years\nSalary: 20-35 LPA\nApply here: ****https://jobs.lever.co/netomi/6724aa9e-157b-442e-894e-c995b976a78b****\n\n**Like for more job opportunities ❤️",
+      "timestamp": "2026-09-15T18:26:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8288,
+      "text": "AI Projects to Build 2026\n\nSave 📍 \nhttps://www.instagram.com/p/DdT8e2-E8BP/\n\nComment \"ai\" will add you in a Gen AI WhatsApp group",
+      "timestamp": "2026-09-15T15:57:08+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8289,
+      "text": "Google Hiring Intern\nBatch - 2028\n\nhttps://www.instagram.com/p/DdUEYTok-PU/",
+      "timestamp": "2026-09-15T16:17:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16443,
+      "text": "• Crypto.com is hiring [Social Media Manager/ Content Creator](https://hashtagweb3.com/manager93712?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Stripe is hiring [Data Scientist](https://hashtagweb3.com/devops80614?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Xapo Bank is hiring [Treasury Assistant Vice President](https://hashtagweb3.com/associate61?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Elliptic is hiring [Senior Product Manager](https://hashtagweb3.com/product269?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Telcoin is hiring [Regional Chief Risk Officer](https://hashtagweb3.com/regional95004?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n\n_\nTech Jobs: [t.me/techjobsdaily](https://t.me/techjobsdaily)",
+      "timestamp": "2026-09-15T15:45:00+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14854,
+      "text": "**📌Statusneo is hiring for Junior Software Engineer (Remote)\nExperience: 0 - 2 years\nSalary: 3-6 LPA\nApply here: ****https://www.linkedin.com/jobs/view/4465515044****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**",
+      "timestamp": "2026-09-15T17:32:51+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14855,
+      "text": "**📌Snowflake is hiring for Software Engineer\nExperience: 3 years\nSalary: 15-25 LPA\nApply here: ****https://careers.snowflake.com/us/en/job/SNCOUSADD0152E58CE43AEAE9063BA78161809EXTERNALENUSD61BD4D8D04B46B8B087CA952DFE5C87****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**\nsnowflake",
+      "timestamp": "2026-09-15T17:32:58+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14856,
+      "text": "**📌Netomi is hiring for SDE I - Backend (Remote)\nExperience: 1-3 years\nSalary: 20-35 LPA\nApply here: ****https://jobs.lever.co/netomi/6724aa9e-157b-442e-894e-c995b976a78b****\n\nLand Your AI Job: 500+ Companies Hiring | Avg CTC ₹7.4 LPA\n****https://go.acciojob.com/kXwuMW****\n\nWhatsApp Channel- ****https://whatsapp.com/channel/0029Va5HM3OEAKWJT2QLQt33**\n2",
+      "timestamp": "2026-09-15T17:33:00+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "internfreak",
+      "msg_id": 5344,
+      "text": "SDE I - Backend Hiring At Netomi\nSalary: 20-35 LPA | Location: Remote\nBatch: 2025, 2024, 2023\n\nLink: https://jobs.lever.co/netomi/6724aa9e-157b-442e-894e-c995b976a78b",
+      "timestamp": "2026-09-15T17:38:27+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6357,
+      "text": "Do you want to get the best scholarships and a masters degree from Singapore?\n\nSingapore Team is coming to Delhi, Mumbai and Online - you can meet them for FREE on 19th and 20th September.\n\nLink to the events is here: https://linktr.ee/arsh_seedglobaleducation\n\nOnly 100 people allowed!",
+      "timestamp": "2026-09-15T16:32:09+00:00"
+    }
+  ]
+}
