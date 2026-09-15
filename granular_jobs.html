@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ALL_CAREER - Granular Sharded JSON Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #131a2b;
+      --border: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .header {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .stats-card {
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .stat-item h4 { font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+    .stat-item .val { font-size: 20px; font-weight: 700; color: #fff; margin-top: 4px; }
+    .stat-item .val.green { color: var(--accent-green); }
+    .stat-item .val.purple { color: var(--accent-purple); }
+    .stat-item .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+    .filter-panel {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 16px;
+      align-items: end;
+    }
+    .field-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    select {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      cursor: pointer;
+    }
+    select:focus { border-color: var(--primary); }
+    .btn-apply {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-apply:hover { background: var(--primary-hover); }
+
+    .jobs-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 16px;
+    }
+    .job-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .job-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(59, 130, 246, 0.4);
+    }
+    .job-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+    .job-company {
+      font-size: 13px;
+      color: #93c5fd;
+      margin-bottom: 12px;
+    }
+    .job-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+    .tag.source { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; text-transform: uppercase; }
+    .tag.loc { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .job-date { font-size: 12px; color: var(--text-muted); }
+    .apply-btn {
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .apply-btn:hover { text-decoration: underline; }
+
+    .loading-state, .empty-state {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>ALL_CAREER &bull; Granular Sharded Architecture</h1>
+      <p>Instant sub-second job searches powered by partitioned JSON files on GitHub Pages</p>
+    </div>
+    <div class="badge" id="statusBadge">⚡ System Ready</div>
+  </div>
+
+  <div class="stats-card">
+    <div class="stat-item">
+      <h4>Total Jobs Indexed</h4>
+      <div class="val" id="statTotalJobs">Loading...</div>
+      <div class="sub">Across all shards</div>
+    </div>
+    <div class="stat-item">
+      <h4>Active Shard File</h4>
+      <div class="val purple" id="statActiveFile" style="font-size: 14px; word-break: break-all;">latest_preview_100.json</div>
+      <div class="sub" id="statFileSize">~45 KB</div>
+    </div>
+    <div class="stat-item">
+      <h4>Network Fetch Time</h4>
+      <div class="val green" id="statFetchTime">0 ms</div>
+      <div class="sub">Sub-second response</div>
+    </div>
+    <div class="stat-item">
+      <h4>Jobs Rendered</h4>
+      <div class="val" id="statJobsRendered">0</div>
+      <div class="sub" id="statMatchSub">Showing preview</div>
+    </div>
+  </div>
+
+  <div class="filter-panel">
+    <div class="field-group">
+      <label for="roleSelect">Role / Domain</label>
+      <select id="roleSelect">
+        <option value="">Loading roles...</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="sourceSelect">Source / Portal</label>
+      <select id="sourceSelect">
+        <option value="">Select a role first</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="locationSelect">Location / City</label>
+      <select id="locationSelect">
+        <option value="">Select source first</option>
+      </select>
+    </div>
+
+    <button class="btn-apply" id="applyBtn" onclick="loadSelectedShard()">Search Shard</button>
+  </div>
+
+  <div class="jobs-container">
+    <div class="jobs-grid" id="jobsGrid">
+      <div class="loading-state">Loading initial preview...</div>
+    </div>
+  </div>
+
+  <script>
+    let manifestData = null;
+
+    async function init() {
+      const startT = performance.now();
+      try {
+        // 1. Fetch manifest and initial preview in parallel
+        const [manifestRes, previewRes] = await Promise.all([
+          fetch('data/index/manifest.json'),
+          fetch('data/index/latest_preview_100.json')
+        ]);
+
+        manifestData = await manifestRes.json();
+        const previewJobs = await previewRes.json();
+
+        const duration = Math.round(performance.now() - startT);
+        document.getElementById('statTotalJobs').textContent = manifestData.total_jobs.toLocaleString();
+        document.getElementById('statFetchTime').textContent = `${duration} ms`;
+
+        populateRoleDropdown();
+        initProgressiveRender(previewJobs, 'latest_preview_100.json', 32, duration, false);
+      } catch (err) {
+        console.error('Failed to initialize:', err);
+        document.getElementById('jobsGrid').innerHTML = `
+          <div class="empty-state">
+            <p style="color: #ef4444; font-weight: 600;">Failed to load manifest or preview shards.</p>
+            <p style="margin-top: 8px;">Ensure 'scripts/split_existing_jobs.py' has completed and you are running via a web server.</p>
+          </div>
+        `;
+      }
+    }
+
+    function populateRoleDropdown() {
+      const roleSelect = document.getElementById('roleSelect');
+      roleSelect.innerHTML = '<option value="">-- Choose a Role --</option>';
+
+      // Sort roles by job count descending
+      const sortedRoles = Object.entries(manifestData.roles).sort((a, b) => (b[1].total || b[1].total_jobs) - (a[1].total || a[1].total_jobs));
+
+      for (const [roleKey, roleObj] of sortedRoles) {
+        const opt = document.createElement('option');
+        opt.value = roleKey;
+        const total = (roleObj.total || roleObj.total_jobs || 0).toLocaleString();
+        const displayName = roleObj.name || roleObj.display_name || roleKey.replace(/_/g, ' ');
+        opt.textContent = `${displayName} (${total} jobs)`;
+        roleSelect.appendChild(opt);
+      }
+
+      roleSelect.addEventListener('change', onRoleChange);
+
+      // Pre-select 'full_stack_developer' if available as a showcase
+      if (manifestData.roles['full_stack_developer']) {
+        roleSelect.value = 'full_stack_developer';
+        onRoleChange();
+      }
+    }
+
+    function onRoleChange() {
+      const roleKey = document.getElementById('roleSelect').value;
+      const sourceSelect = document.getElementById('sourceSelect');
+      const locationSelect = document.getElementById('locationSelect');
+
+      sourceSelect.innerHTML = '<option value="">-- Choose Source --</option>';
+      locationSelect.innerHTML = '<option value="">-- Choose Location --</option>';
+
+      if (!roleKey || !manifestData.roles[roleKey]) return;
+
+      const sources = manifestData.roles[roleKey].sources || {};
+      const sortedSources = Object.entries(sources).sort((a, b) => (b[1].total || b[1].total_jobs) - (a[1].total || a[1].total_jobs));
+
+      for (const [srcKey, srcObj] of sortedSources) {
+        const opt = document.createElement('option');
+        opt.value = srcKey;
+        const total = (srcObj.total || srcObj.total_jobs || 0).toLocaleString();
+        const displayName = srcObj.display_name || srcKey.replace(/_/g, ' ').toUpperCase();
+        opt.textContent = `${displayName} (${total} jobs)`;
+        sourceSelect.appendChild(opt);
+      }
+
+      sourceSelect.addEventListener('change', onSourceChange);
+
+      // Pre-select linkedin if available
+      if (sources['linkedin']) {
+        sourceSelect.value = 'linkedin';
+        onSourceChange();
+      }
+    }
+
+    function onSourceChange() {
+      const roleKey = document.getElementById('roleSelect').value;
+      const sourceKey = document.getElementById('sourceSelect').value;
+      const locationSelect = document.getElementById('locationSelect');
+
+      locationSelect.innerHTML = '<option value="">-- Choose Location --</option>';
+      if (!roleKey || !sourceKey) return;
+
+      const srcObj = manifestData.roles[roleKey]?.sources[sourceKey];
+      const locations = srcObj?.locs || srcObj?.locations || {};
+      const sortedLocs = Object.entries(locations).sort((a, b) => {
+        const countA = typeof a[1] === 'object' ? a[1].count : a[1];
+        const countB = typeof b[1] === 'object' ? b[1].count : b[1];
+        return countB - countA;
+      });
+
+      for (const [locKey, locVal] of sortedLocs) {
+        const opt = document.createElement('option');
+        opt.value = locKey;
+        const count = typeof locVal === 'object' ? locVal.count : locVal;
+        const cleanName = locKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        opt.textContent = `${cleanName} (${count.toLocaleString()} jobs)`;
+        locationSelect.appendChild(opt);
+      }
+
+      // Pre-select chennai if available
+      if (locations['chennai']) {
+        locationSelect.value = 'chennai';
+      }
+      prefetchShards(roleKey, sourceKey);
+    }
+
+    // Speed Optimizations:
+    // 1. In-Memory Client Cache (0ms response on repeat clicks)
+    const shardCache = new Map();
+    let currentJobsList = [];
+    let currentBatchIndex = 0;
+    const BATCH_SIZE = 24;
+    let observer = null;
+
+    // 2. Predictive Pre-fetching: preload top shards in background
+    function prefetchShards(roleKey, sourceKey) {
+      if (!roleKey || !manifestData?.roles[roleKey]) return;
+      const srcObj = manifestData.roles[roleKey].sources[sourceKey];
+      if (!srcObj) return;
+
+      const topLocs = Object.keys(srcObj.locs || srcObj.locations || {}).slice(0, 3);
+      for (const loc of topLocs) {
+        const path = `data/jobs/${roleKey}/${sourceKey}_${loc}.json`;
+        if (!shardCache.has(path)) {
+          // Low-priority background fetch
+          fetch(path)
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+              if (data) shardCache.set(path, data);
+            })
+            .catch(() => {});
+        }
+      }
+    }
+
+    async function loadSelectedShard() {
+      const roleKey = document.getElementById('roleSelect').value;
+      const sourceKey = document.getElementById('sourceSelect').value;
+      const locationKey = document.getElementById('locationSelect').value;
+
+      if (!roleKey || !sourceKey || !locationKey) {
+        alert('Please select a Role, Source, and Location first.');
+        return;
+      }
+
+      // Shard file path pattern
+      const filePath = `data/jobs/${roleKey}/${sourceKey}_${locationKey}.json`;
+      const statusBadge = document.getElementById('statusBadge');
+      statusBadge.textContent = '⏳ Fetching Shard...';
+
+      const startT = performance.now();
+      try {
+        let jobs;
+        let isCacheHit = false;
+
+        // Check in-memory cache first
+        if (shardCache.has(filePath)) {
+          jobs = shardCache.get(filePath);
+          isCacheHit = true;
+        } else {
+          const res = await fetch(filePath);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          jobs = await res.json();
+          shardCache.set(filePath, jobs);
+        }
+
+        const duration = Math.round(performance.now() - startT);
+        const estKb = Math.round(JSON.stringify(jobs).length / 1024);
+
+        initProgressiveRender(jobs, filePath, estKb, duration, isCacheHit);
+        statusBadge.textContent = isCacheHit ? '⚡ 0ms Cache Hit' : '⚡ Shard Loaded';
+      } catch (err) {
+        console.error('Error loading shard:', err);
+        statusBadge.textContent = '❌ Fetch Failed';
+        alert(`Failed to load ${filePath}: ${err.message}`);
+      }
+    }
+
+    // 3. Progressive Virtual DOM Rendering: renders initial 24 cards instantly, streams rest on scroll
+    function initProgressiveRender(jobs, fileName, fileSizeKb, fetchTimeMs, isCacheHit) {
+      document.getElementById('statActiveFile').textContent = fileName;
+      document.getElementById('statFileSize').textContent = `~${fileSizeKb} KB`;
+      document.getElementById('statFetchTime').textContent = isCacheHit ? '0 ms (RAM Cache)' : `${fetchTimeMs} ms`;
+      document.getElementById('statJobsRendered').textContent = jobs.length.toLocaleString();
+      document.getElementById('statMatchSub').textContent = `Matches for current filter`;
+
+      const grid = document.getElementById('jobsGrid');
+      grid.innerHTML = '';
+
+      if (!jobs || jobs.length === 0) {
+        grid.innerHTML = '<div class="empty-state">No jobs found in this shard.</div>';
+        return;
+      }
+
+      currentJobsList = jobs;
+      currentBatchIndex = 0;
+
+      // Disconnect previous observer
+      if (observer) observer.disconnect();
+
+      // Render first batch immediately
+      renderNextBatch();
+
+      // Setup IntersectionObserver for infinite smooth scroll
+      observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && currentBatchIndex < currentJobsList.length) {
+          renderNextBatch();
+        }
+      }, { rootMargin: '400px' });
+
+      attachSentinel();
+    }
+
+    function renderNextBatch() {
+      const grid = document.getElementById('jobsGrid');
+      const sentinel = document.getElementById('scrollSentinel');
+      if (sentinel) sentinel.remove();
+
+      const nextBatch = currentJobsList.slice(currentBatchIndex, currentBatchIndex + BATCH_SIZE);
+      currentBatchIndex += BATCH_SIZE;
+
+      const fragment = document.createDocumentFragment();
+      for (const j of nextBatch) {
+        const card = document.createElement('div');
+        card.className = 'job-card';
+        card.innerHTML = `
+          <div>
+            <div class="job-title">${escapeHtml(j.title || 'Untitled Position')}</div>
+            <div class="job-company">${escapeHtml(j.company || 'Confidential')}</div>
+            <div class="job-tags">
+              <span class="tag source">${escapeHtml(j.source || document.getElementById('sourceSelect').value || 'Other')}</span>
+              <span class="tag loc">${escapeHtml(j.location || document.getElementById('locationSelect').value || 'All India')}</span>
+              ${j.experience ? `<span class="tag">${escapeHtml(j.experience)}</span>` : ''}
+              ${j.is_walkin ? `<span class="tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">⚡ Walk-in</span>` : ''}
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="job-date">${escapeHtml(j.date_posted || 'Recently')}</span>
+            <a href="${escapeHtml(j.url || '#')}" target="_blank" rel="noopener" class="apply-btn">Apply &rarr;</a>
+          </div>
+        `;
+        fragment.appendChild(card);
+      }
+
+      grid.appendChild(fragment);
+
+      if (currentBatchIndex < currentJobsList.length) {
+        attachSentinel();
+      }
+    }
+
+    function attachSentinel() {
+      const grid = document.getElementById('jobsGrid');
+      let sentinel = document.getElementById('scrollSentinel');
+      if (!sentinel) {
+        sentinel = document.createElement('div');
+        sentinel.id = 'scrollSentinel';
+        sentinel.style.height = '40px';
+        sentinel.style.gridColumn = '1 / -1';
+        sentinel.style.textAlign = 'center';
+        sentinel.style.color = 'var(--text-muted)';
+        sentinel.style.fontSize = '12px';
+        sentinel.textContent = 'Loading more jobs...';
+      }
+      grid.appendChild(sentinel);
+      if (observer) observer.observe(sentinel);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

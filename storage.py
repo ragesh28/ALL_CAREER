@@ -495,4 +495,126 @@ def store_jobs_batch(jobs):
             
     return new_jobs_added
 
+def store_jobs_granular(jobs):
+    """
+    Directly upserts scraped jobs into targeted granular shards:
+    data/jobs/<role_slug>/<source>_<location>.json
+    Instead of rewriting 335 MB across monolithic chunks, this only opens and updates
+    the matching small JSON files.
+    """
+    if not jobs:
+        return 0
+        
+    cutoff_date = (datetime.now() - timedelta(days=25)).strftime("%Y-%m-%d")
+    
+    from collections import defaultdict
+    # Lazy imports to avoid circular dependency
+    from scripts.split_existing_jobs import slugify, clean_location, get_role_slug
+    import role_classifier
+    
+    # Group jobs by (role_slug, source_slug, location_slug)
+    grouped = defaultdict(list)
+    
+    for j in jobs:
+        if not is_valid_job(j):
+            continue
+            
+        j["location"] = normalize_location(
+            j.get("location"),
+            title=str(j.get("title") or j.get("role") or ""),
+            description=str(j.get("description") or j.get("other_details") or "")
+        )
+        
+        # Walkin info extraction
+        try:
+            from extractor_utils import extract_walkin_info
+            w_info = extract_walkin_info(
+                title=str(j.get("title") or j.get("role") or ""),
+                description=str(j.get("description") or j.get("other_details") or "")
+            )
+            src_val = str(j.get("source") or "").lower()
+            is_explicit_walkin = ("google" in src_val or "flyer" in src_val or "walkin" in src_val)
+            if w_info.get("is_walkin") or is_explicit_walkin:
+                j["is_walkin"] = True
+                if w_info.get("walkin_date") and not j.get("walkin_date"):
+                    j["walkin_date"] = w_info["walkin_date"]
+                if w_info.get("walkin_time") and not j.get("walkin_time"):
+                    j["walkin_time"] = w_info["walkin_time"]
+            else:
+                j["is_walkin"] = False
+        except Exception:
+            pass
+            
+        date_str = get_job_date(j)
+        if not date_str:
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            j["date_posted"] = date_str
+            
+        if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
+            continue
+            
+        # Classify role if not present
+        if not j.get("role_category"):
+            j["role_category"] = role_classifier.classify_job(j)
+            
+        role_slug = get_role_slug(j)
+        src_slug = slugify(j.get("source") or "other", default="other")
+        loc_slug = clean_location(j.get("location"))
+        
+        grouped[(role_slug, src_slug, loc_slug)].append(j)
+        
+    if not grouped:
+        return 0
+        
+    jobs_dir = os.path.join("data", "jobs")
+    os.makedirs(jobs_dir, exist_ok=True)
+    
+    total_added = 0
+    updated_files = 0
+    
+    # Process only the targeted shard files
+    for (role_slug, src_slug, loc_slug), new_items in grouped.items():
+        role_dir = os.path.join(jobs_dir, role_slug)
+        os.makedirs(role_dir, exist_ok=True)
+        shard_path = os.path.join(role_dir, f"{src_slug}_{loc_slug}.json")
+        
+        existing_shard = []
+        if os.path.exists(shard_path):
+            try:
+                with open(shard_path, "r", encoding="utf-8") as sf:
+                    existing_shard = json.load(sf)
+            except Exception:
+                existing_shard = []
+                
+        # Index existing shard jobs
+        url_set = {get_job_url(item) for item in existing_shard if get_job_url(item)}
+        tc_set = {get_job_title_company_key(item) for item in existing_shard if get_job_title_company_key(item)}
+        
+        items_to_add = []
+        for item in new_items:
+            u = get_job_url(item)
+            tc = get_job_title_company_key(item)
+            if (u and u in url_set) or (tc and tc in tc_set):
+                continue
+            items_to_add.append(item)
+            if u:
+                url_set.add(u)
+            if tc:
+                tc_set.add(tc)
+                
+        if items_to_add:
+            # Prepend new jobs
+            combined = items_to_add + existing_shard
+            from scripts.optimize_shards import compact_job
+            compacted = [compact_job(x) for x in combined]
+            
+            with open(shard_path, "w", encoding="utf-8") as sf:
+                json.dump(compacted, sf, separators=(',', ':'))
+                
+            total_added += len(items_to_add)
+            updated_files += 1
+            
+    print(f"[store_jobs_granular] Added {total_added} new jobs across {updated_files} shards.")
+    return total_added
+
 
