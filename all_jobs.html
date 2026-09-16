@@ -2579,6 +2579,8 @@
             return getWalkinDateObjects(job).map(item => item.label);
         }
 
+        let globalWalkinDateCounts = {};
+
         function buildWalkinDateOptions() {
             const container = document.getElementById('walkin-dates-options');
             if (!container) return;
@@ -2597,6 +2599,7 @@
                     });
                 });
             }
+            globalWalkinDateCounts = counts;
 
             // Ensure any currently selected dates remain visible
             selectedWalkinDates.forEach(d => {
@@ -3118,7 +3121,24 @@
 
             const displayTotal = getActiveFilterTotal();
             const jobCountEl = document.getElementById('jobCount');
-            if (jobCountEl) {
+            const topnavCountEl = document.querySelector('.topnav-count');
+
+            if (topnavCountEl) {
+                if (selectedWalkinDates.size > 1) {
+                    let sumDates = 0;
+                    selectedWalkinDates.forEach(d => {
+                        sumDates += (globalWalkinDateCounts[d] || 0);
+                    });
+                    const overlap = sumDates - displayTotal;
+                    if (overlap > 0) {
+                        topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> unique jobs <span style="font-size:0.75rem; color:#38bdf8; font-weight:normal; margin-left:4px;" title="${selectedWalkinDates.size} dates selected with ${sumDates} total date listings. ${overlap} multi-day drives appear on multiple selected dates.">(${overlap} multi-day drives)</span>`;
+                    } else {
+                        topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> jobs`;
+                    }
+                } else {
+                    topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> jobs`;
+                }
+            } else if (jobCountEl) {
                 jobCountEl.textContent = displayTotal.toLocaleString();
             }
         }
