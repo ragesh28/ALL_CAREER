@@ -1815,12 +1815,47 @@
         `).join('');
         }
 
+        function getSourceCountsFromManifest() {
+            if (!manifestData || !manifestData.roles) return (sidebarCountsData && sidebarCountsData.sources) ? sidebarCountsData.sources : {};
+            const activeRoles = [...selectedRoles].map(roleNameToSlug).filter(Boolean);
+            const activeLocs = [...selectedLocations].map(cityToLocSlug).filter(Boolean);
+
+            if (activeRoles.length === 0 && activeLocs.length === 0) {
+                return (sidebarCountsData && sidebarCountsData.sources) ? sidebarCountsData.sources : {};
+            }
+
+            const counts = {};
+            const targetRoles = activeRoles.length > 0 ? activeRoles : Object.keys(manifestData.roles);
+
+            for (const rSlug of targetRoles) {
+                const roleObj = manifestData.roles[rSlug];
+                if (!roleObj || !roleObj.sources) continue;
+
+                for (const [sSlug, sObj] of Object.entries(roleObj.sources)) {
+                    if (!sObj.locs) continue;
+                    if (activeLocs.length > 0) {
+                        for (const lSlug of activeLocs) {
+                            if (sObj.locs[lSlug]) {
+                                counts[sSlug] = (counts[sSlug] || 0) + sObj.locs[lSlug];
+                            }
+                        }
+                    } else {
+                        counts[sSlug] = (counts[sSlug] || 0) + (sObj.total || 0);
+                    }
+                }
+            }
+            return counts;
+        }
+
         function updateSourceCounts() {
             let sourceCounts = {};
             let walkinCount = 0;
-            const hasActiveFilters = selectedPortals.size > 0 || selectedLocations.size > 0 || selectedRoles.size > 0 || activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || (document.getElementById('searchInput')?.value || '').trim().length > 0;
+            const searchVal = (document.getElementById('searchInput')?.value || '').trim();
+            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0;
 
-            if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
+            if (!hasOtherFilters && manifestData && manifestData.roles) {
+                sourceCounts = getSourceCountsFromManifest();
+            } else if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
                 allJobs.forEach(j => {
                     if (typeof jobMatchesFilters === 'function' && jobMatchesFilters(j, 'portal')) {
                         let src = (j.source || '').toLowerCase().trim();
@@ -1836,12 +1871,18 @@
                             sourceCounts['telegram_message'] = (sourceCounts['telegram_message'] || 0) + 1;
                             sourceCounts['telegram_post'] = (sourceCounts['telegram_post'] || 0) + 1;
                             sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
-                        } else if (src === 'other' || (typeof knownPortals !== 'undefined' && !knownPortals.has(src))) {
-                            sourceCounts['other'] = (sourceCounts['other'] || 0) + 1;
-                        } else {
+                        } else if (src && knownPortals.has(src)) {
                             sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+                        } else {
+                            sourceCounts['other'] = (sourceCounts['other'] || 0) + 1;
                         }
                     }
+                });
+            }
+
+            // Also tally walkins from loaded jobs
+            if (typeof allJobs !== 'undefined') {
+                allJobs.forEach(j => {
                     if (isWalkinJob(j) && (typeof jobMatchesFilters !== 'function' || jobMatchesFilters(j, 'walkinFacet'))) {
                         walkinCount++;
                     }
@@ -1849,11 +1890,10 @@
             }
 
             PORTALS.forEach(p => {
-                let count = 0;
-                if (!hasActiveFilters && sidebarCountsData && sidebarCountsData.sources) {
-                    count = sidebarCountsData.sources[p.id.toLowerCase()] || 0;
-                } else {
-                    count = sourceCounts[p.id.toLowerCase()] || 0;
+                const pId = p.id.toLowerCase();
+                let count = sourceCounts[pId];
+                if (count === undefined) {
+                    count = sidebarCountsData?.sources?.[pId] || 0;
                 }
                 if (p.id === 'telegram' && !count) {
                     count = sourceCounts['telegram'] || 0;
@@ -2609,16 +2649,33 @@
         // ══════════════════════════════════════════════
         //  DATA FETCH & GRANULAR SHARDING
         // ══════════════════════════════════════════════
-        function normalizeJob(job, id = 0) {
+        function normalizeJob(job, id = 0, sourceHint = '') {
             const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
             const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
             const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date) || new Date().toISOString().slice(0, 10);
 
-            let sourceVal = String(job.platform || job.source || '').toLowerCase().trim();
+            const jUrl = String(job.apply_link || job.url || job.linkedin_url || job.apply_url || job.source_url || '');
+            const uLow = jUrl.toLowerCase();
+
+            let sourceVal = String(job.platform || job.source || sourceHint || '').toLowerCase().trim();
             if (sourceVal.includes('google')) {
                 sourceVal = 'google_images';
-            } else if (!knownPortals.has(sourceVal)) {
-                sourceVal = 'other';
+            } else if (!sourceVal || !knownPortals.has(sourceVal) || sourceVal === 'other') {
+                if (uLow.includes('linkedin.com') || job.linkedin_url) sourceVal = 'linkedin';
+                else if (uLow.includes('naukri.com')) sourceVal = 'naukri';
+                else if (uLow.includes('indeed.com')) sourceVal = 'indeed';
+                else if (uLow.includes('internshala.com')) sourceVal = 'internshala';
+                else if (uLow.includes('timesjobs.com')) sourceVal = 'timesjobs';
+                else if (uLow.includes('shine.com')) sourceVal = 'shine';
+                else if (uLow.includes('glassdoor.com')) sourceVal = 'glassdoor';
+                else if (uLow.includes('foundit.in') || uLow.includes('monsterindia')) sourceVal = 'foundit';
+                else if (uLow.includes('apna.co')) sourceVal = 'apna';
+                else if (uLow.includes('freshersworld.com')) sourceVal = 'freshersworld';
+                else if (uLow.includes('hirist.')) sourceVal = 'hirist';
+                else if (uLow.includes('workindia.in')) sourceVal = 'workindia';
+                else if (uLow.includes('t.me')) sourceVal = 'telegram_post';
+                else if (sourceHint && knownPortals.has(sourceHint)) sourceVal = sourceHint;
+                else sourceVal = 'other';
             }
 
             const rawTitle = String(job.role || job.title || '');
@@ -2644,7 +2701,6 @@
                 locName = String(job.location || '');
             }
 
-            const jUrl = String(job.apply_link || job.url || job.linkedin_url || job.apply_url || job.source_url || '');
             const jId = job.id || job._id || (jUrl ? jUrl : `${rawTitle}_${coName}_${id}`);
 
             return {
@@ -2672,11 +2728,11 @@
             };
         }
 
-        function ingestJobs(rawJobList) {
+        function ingestJobs(rawJobList, sourceHint = '') {
             if (!Array.isArray(rawJobList)) return 0;
             let added = 0;
             for (let i = 0; i < rawJobList.length; i++) {
-                const j = normalizeJob(rawJobList[i], allJobs.length + i);
+                const j = normalizeJob(rawJobList[i], allJobs.length + i, sourceHint);
                 const key = j.url || `${j.title.toLowerCase()}|||${j.company.toLowerCase()}|||${j.location.toLowerCase()}`;
                 if (!loadedJobKeys.has(key)) {
                     loadedJobKeys.add(key);
@@ -2742,20 +2798,28 @@
             ind.style.display = show ? 'flex' : 'none';
         }
 
+        let isFetchingShards = false;
+
         function triggerGranularFetch() {
             clearTimeout(shardDebounceTimer);
-            shardDebounceTimer = setTimeout(() => {
-                loadShardsForFilters();
-            }, 100);
+            const hasFilter = selectedPortals.size > 0 || selectedLocations.size > 0 || selectedRoles.size > 0;
+            if (filteredJobs.length === 0 && hasFilter) {
+                isFetchingShards = true;
+                renderJobs([]);
+            }
+            shardDebounceTimer = setTimeout(async () => {
+                await loadShardsForFilters();
+                isFetchingShards = false;
+            }, 50);
         }
 
         async function loadShardsForFilters() {
             if (!manifestData || !manifestData.roles) return;
 
-            const pathsToFetch = new Set();
-            const activeRoles = [...selectedRoles].map(roleNameToSlug);
+            const pathsWithCount = [];
+            const activeRoles = [...selectedRoles].map(roleNameToSlug).filter(Boolean);
             const activeSources = [...selectedPortals];
-            const activeLocs = [...selectedLocations].map(cityToLocSlug);
+            const activeLocs = [...selectedLocations].map(cityToLocSlug).filter(Boolean);
             const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
 
             const targetRoles = activeRoles.length > 0 ? activeRoles : Object.keys(manifestData.roles);
@@ -2766,7 +2830,7 @@
 
                 const targetSources = activeSources.length > 0 
                     ? activeSources.filter(s => roleObj.sources[s]) 
-                    : (activeRoles.length > 0 ? Object.keys(roleObj.sources) : Object.keys(roleObj.sources).slice(0, 3));
+                    : Object.keys(roleObj.sources);
 
                 for (const sSlug of targetSources) {
                     const srcObj = roleObj.sources[sSlug];
@@ -2775,13 +2839,23 @@
                     if (activeLocs.length > 0) {
                         for (const lSlug of activeLocs) {
                             if (srcObj.locs[lSlug]) {
-                                pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                                pathsWithCount.push({
+                                    path: `data/jobs/${rSlug}/${sSlug}_${lSlug}.json`,
+                                    count: srcObj.locs[lSlug],
+                                    source: sSlug
+                                });
                             }
                         }
-                    } else if (activeRoles.length > 0 || activeSources.length > 0) {
-                        const topLocs = Object.keys(srcObj.locs).slice(0, 5);
-                        for (const lSlug of topLocs) {
-                            pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                    } else {
+                        // Sort locations by count descending so richest cities load first
+                        const sortedLocs = Object.entries(srcObj.locs).sort((a, b) => b[1] - a[1]);
+                        const topLocs = sortedLocs.slice(0, activeRoles.length > 0 || activeSources.length > 0 ? 8 : 2);
+                        for (const [lSlug, cnt] of topLocs) {
+                            pathsWithCount.push({
+                                path: `data/jobs/${rSlug}/${sSlug}_${lSlug}.json`,
+                                count: cnt,
+                                source: sSlug
+                            });
                         }
                     }
                 }
@@ -2792,28 +2866,43 @@
                 for (const [rSlug, roleObj] of Object.entries(manifestData.roles)) {
                     const cleanName = (roleObj.name || rSlug).toLowerCase();
                     if (cleanName.includes(searchVal) || searchVal.includes(rSlug.replace(/_/g, ' '))) {
-                        for (const sSlug of Object.keys(roleObj.sources).slice(0, 3)) {
-                            for (const lSlug of Object.keys(roleObj.sources[sSlug].locs || {}).slice(0, 3)) {
-                                pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                        for (const sSlug of (activeSources.length > 0 ? activeSources : Object.keys(roleObj.sources))) {
+                            const srcObj = roleObj.sources[sSlug];
+                            if (!srcObj || !srcObj.locs) continue;
+                            const sortedLocs = Object.entries(srcObj.locs).sort((a, b) => b[1] - a[1]).slice(0, 5);
+                            for (const [lSlug, cnt] of sortedLocs) {
+                                pathsWithCount.push({
+                                    path: `data/jobs/${rSlug}/${sSlug}_${lSlug}.json`,
+                                    count: cnt,
+                                    source: sSlug
+                                });
                             }
                         }
                     }
                 }
             }
 
-            const uncached = [...pathsToFetch].filter(p => !shardCache.has(p)).slice(0, 16);
-            if (uncached.length === 0) return;
+            // Sort paths by job count descending so richest shards load first!
+            pathsWithCount.sort((a, b) => b.count - a.count);
+
+            const uncached = pathsWithCount.filter(item => !shardCache.has(item.path)).slice(0, 20);
+
+            if (uncached.length === 0) {
+                filteredJobs = allJobs.filter(j => jobMatchesFilters(j, null));
+                renderPage();
+                return;
+            }
 
             showShardFetchIndicator(true);
 
             try {
-                const fetchPromises = uncached.map(async (path) => {
+                const fetchPromises = uncached.map(async (item) => {
                     try {
-                        const res = await fetch(path);
+                        const res = await fetch(item.path);
                         if (res.ok) {
                             const data = await res.json();
-                            shardCache.set(path, data);
-                            return data;
+                            shardCache.set(item.path, data);
+                            return { jobs: data, source: item.source };
                         }
                     } catch (e) {}
                     return null;
@@ -2821,16 +2910,14 @@
 
                 const results = await Promise.all(fetchPromises);
                 let newCount = 0;
-                for (const shardJobs of results) {
-                    if (shardJobs) {
-                        newCount += ingestJobs(shardJobs);
+                for (const item of results) {
+                    if (item && item.jobs) {
+                        newCount += ingestJobs(item.jobs, item.source);
                     }
                 }
-                if (newCount > 0) {
-                    filteredJobs = allJobs.filter(j => jobMatchesFilters(j, null));
-                    renderPage();
-                    buildWalkinDateOptions();
-                }
+                filteredJobs = allJobs.filter(j => jobMatchesFilters(j, null));
+                renderPage();
+                buildWalkinDateOptions();
             } finally {
                 showShardFetchIndicator(false);
             }
@@ -2840,20 +2927,21 @@
         function preloadPopularShards() {
             if (!manifestData || !manifestData.roles) return;
             const popularShards = [
-                'data/jobs/software_engineer/naukri_bangalore.json',
-                'data/jobs/full_stack_developer/linkedin_chennai.json',
-                'data/jobs/data_analyst/indeed_all_india.json',
-                'data/jobs/sales_executive/naukri_mumbai.json',
-                'data/jobs/python_developer/naukri_hyderabad.json'
+                { path: 'data/jobs/software_engineer/naukri_bangalore.json', source: 'naukri' },
+                { path: 'data/jobs/full_stack_developer/linkedin_chennai.json', source: 'linkedin' },
+                { path: 'data/jobs/data_analyst/indeed_all_india.json', source: 'indeed' },
+                { path: 'data/jobs/sales_executive/naukri_mumbai.json', source: 'naukri' },
+                { path: 'data/jobs/python_developer/naukri_hyderabad.json', source: 'naukri' },
+                { path: 'data/jobs/software_engineer/linkedin_bangalore.json', source: 'linkedin' }
             ];
-            popularShards.forEach(path => {
-                if (!shardCache.has(path)) {
-                    fetch(path)
+            popularShards.forEach(item => {
+                if (!shardCache.has(item.path)) {
+                    fetch(item.path)
                         .then(r => r.ok ? r.json() : null)
                         .then(data => {
                             if (data) {
-                                shardCache.set(path, data);
-                                ingestJobs(data);
+                                shardCache.set(item.path, data);
+                                ingestJobs(data, item.source);
                             }
                         })
                         .catch(() => {});
@@ -2977,6 +3065,50 @@
             triggerGranularFetch();
         }
 
+        function getActiveFilterTotal() {
+            if (!manifestData || !manifestData.roles) return filteredJobs.length;
+
+            const activeRoles = [...selectedRoles].map(roleNameToSlug).filter(Boolean);
+            const activeSources = [...selectedPortals];
+            const activeLocs = [...selectedLocations].map(cityToLocSlug).filter(Boolean);
+            const searchVal = (document.getElementById('searchInput')?.value || '').trim();
+            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0;
+
+            if (hasOtherFilters) {
+                return filteredJobs.length;
+            }
+
+            if (activeRoles.length === 0 && activeSources.length === 0 && activeLocs.length === 0) {
+                return (sidebarCountsData && sidebarCountsData.total_jobs) ? sidebarCountsData.total_jobs : (manifestData.total_jobs || filteredJobs.length);
+            }
+
+            let total = 0;
+            const targetRoles = activeRoles.length > 0 ? activeRoles : Object.keys(manifestData.roles);
+
+            for (const rSlug of targetRoles) {
+                const roleObj = manifestData.roles[rSlug];
+                if (!roleObj || !roleObj.sources) continue;
+
+                const targetSources = activeSources.length > 0 ? activeSources.filter(s => roleObj.sources[s]) : Object.keys(roleObj.sources);
+
+                for (const sSlug of targetSources) {
+                    const srcObj = roleObj.sources[sSlug];
+                    if (!srcObj || !srcObj.locs) continue;
+
+                    if (activeLocs.length > 0) {
+                        for (const lSlug of activeLocs) {
+                            if (srcObj.locs[lSlug]) {
+                                total += srcObj.locs[lSlug];
+                            }
+                        }
+                    } else {
+                        total += (srcObj.total || 0);
+                    }
+                }
+            }
+            return total > 0 ? total : filteredJobs.length;
+        }
+
         function renderPage() {
             const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
             if (currentPage > totalPages) currentPage = totalPages;
@@ -2984,9 +3116,11 @@
             renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
             renderPagination(totalPages);
 
-            const hasActiveFilters = selectedPortals.size > 0 || selectedLocations.size > 0 || selectedRoles.size > 0 || activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || (document.getElementById('searchInput')?.value || '').trim().length > 0;
-            const displayTotal = !hasActiveFilters && sidebarCountsData && sidebarCountsData.total_jobs ? sidebarCountsData.total_jobs : filteredJobs.length;
-            document.getElementById('jobCount').textContent = displayTotal.toLocaleString();
+            const displayTotal = getActiveFilterTotal();
+            const jobCountEl = document.getElementById('jobCount');
+            if (jobCountEl) {
+                jobCountEl.textContent = displayTotal.toLocaleString();
+            }
         }
 
         function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -2994,6 +3128,15 @@
         function renderJobs(jobs) {
             const grid = document.getElementById('jobsGrid');
             const noRes = document.getElementById('noResults');
+            if (isFetchingShards) {
+                noRes.style.display = 'none';
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                        <div style="display:inline-block;width:38px;height:38px;border:3px solid rgba(56,189,248,0.2);border-top-color:#38bdf8;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+                        <p style="color:#94a3b8;margin-top:14px;font-size:15px;font-weight:500;">⚡ Loading matching jobs...</p>
+                    </div>`;
+                return;
+            }
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
             grid.innerHTML = jobs.map((job, i) => {
