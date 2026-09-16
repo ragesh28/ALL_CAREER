@@ -1,5 +1,5 @@
 {
-  "total_jobs": 559934,
+  "total_jobs": 559996,
   "sources": {
     "naukri": 228113,
     "linkedin": 134626,
@@ -13,23 +13,23 @@
     "freshersworld": 4065,
     "foundit": 2403,
     "hirist": 2340,
-    "telegram_message": 1009,
-    "telegram_post": 836
+    "telegram_message": 1041,
+    "telegram_post": 866
   },
   "locations": {
-    "bangalore": 130173,
+    "bangalore": 130207,
     "mumbai": 79210,
-    "delhi": 60412,
-    "chennai": 54891,
-    "hyderabad": 52964,
+    "delhi": 60413,
+    "chennai": 54898,
+    "hyderabad": 52966,
     "pune": 41422,
     "noida": 26124,
     "ahmedabad": 22360,
-    "all_india": 19919,
+    "all_india": 19930,
     "kolkata": 17192,
     "coimbatore": 9974,
     "kochi": 8483,
-    "remote": 5363,
+    "remote": 5364,
     "jaipur": 3900,
     "indore": 2848,
     "chandigarh": 2110,
@@ -115,8 +115,12 @@
     "kondapur": 41,
     "mysore_mysuru": 40,
     "vijayawada": 38,
-    "belagavi": 38,
-    "mysuru": 37
+    "belagavi": 39,
+    "mysuru": 37,
+    "across_india": 1,
+    "multiple": 1,
+    "tumkur": 1,
+    "shivamogga": 2
   },
   "generated_at": "2026-09-15T17:53:34.398442"
 }

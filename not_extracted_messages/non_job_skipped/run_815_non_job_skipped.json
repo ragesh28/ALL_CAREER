@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "815",
+  "workflow_run_id": "35091990729",
+  "timestamp": "2026-09-16T12:17:03.270784",
+  "runtime_minutes": 29.57,
+  "messages_processed": 90,
+  "new_jobs_stored": 77,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258970,
+      "text": "Shivamogga\n(O) 2PP3 P3P3P 33\n30\nPe\npepeva'epas\n8....e20\n3\nez ade\n \nBenwao.\n8\nzdeas,net\n e\nm\n23226\n3\nBruu\n202\nanc\nGEZa Zaa\n3 08:00 800\n- \noa\n05:00\n239f 08:00 80\n用\nw\n02:00\nE\n9886629846",
+      "timestamp": "2026-09-16T06:58:44+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258976,
+      "text": "Belagavi\nONAM\nE Z  AI\na  td\nPO\na\nPp s)\n1 Senior Manager\n2 Team Leader\n3 Sales Relationship Manager (RM\nNEW JOB ROLES:\nREQUIREMENTS FOR LOCATIONS\n(i.e., CHIKODI, GOKAK, ATHANI)\nBOTH ARENA & NEXA\nOUTLETS\nPER LOCATION (CHIKODI,\nGOKAK, ATHANI):\n☑ Sales (RM)\n5\nELIGIBILITY:\nTeam Leader (TL). 3\nGraduate / Diploma / PUC\nSenior Manager . 2\nExperience in sales preferred / Freshers also welcome\nshantesha.hroperations@gmail.com\n6366576907|6366970537|8884477048\nPELACAVLOEFICE: Vaibhay Nagar Indal Poed",
+      "timestamp": "2026-09-16T07:06:43+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 258985,
+      "text": "AMD is hiring for Software Development Engineer 1 !!!\n\n📍 Location: Bangalore, India\n🎓 Qualification: Bachelor’s in Computer/Software Engineering, Computer Science or related field\n\n💡 Skills Required:\n• C / C++\n• Object-Oriented Design\n• Data Structures & Algorithms\n• Operating Systems\n• Multithreaded Programming\n• Linux\n• Software Engineering Fundamentals\n• Analytical & Problem-solving Skills\n\n⚡ Applications are open. Apply early.\n\nApply here:\nhttps://careers.amd.com/careers-home/jobs/91918?lang=en-us&iis=Job%20Board&iisn=Linkedin",
+      "timestamp": "2026-09-16T08:04:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8290,
+      "text": "Heard Oracle laid off again... 6 AM email 💔 \n\nhttps://www.instagram.com/p/DdWEH0jzYeo/\n\nI'm there to support, with my network, referrals and all my communities... please do reach out if needed :)",
+      "timestamp": "2026-09-16T11:47:31+00:00"
+    }
+  ]
+}
