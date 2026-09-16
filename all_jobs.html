@@ -1534,8 +1534,24 @@
         let selectedWalkinDates = new Set();
         let skillsMap = {};
 
+        // Granular Sharding State & Caches
+        let manifestData = null;
+        let sidebarCountsData = null;
+        const shardCache = new Map();
+        const loadedJobKeys = new Set();
+        let shardDebounceTimer = null;
+
+        // Seed top employers for immediate company filter availability
+        const SEED_COMPANIES = [
+            'Amazon', 'Google', 'Microsoft', 'TCS', 'Infosys', 'Wipro', 'HCL Technologies',
+            'Cognizant', 'Accenture', 'Capgemini', 'Tech Mahindra', 'IBM', 'Deloitte',
+            'Oracle', 'SAP', 'Cisco', 'Flipkart', 'Swiggy', 'Zomato', 'Paytm', 'PhonePe',
+            'Razorpay', 'Zoho', 'Freshworks', 'Jio', 'Reliance', 'HDFC Bank', 'ICICI Bank',
+            'LTIMindtree', 'Persistent Systems', 'Hexaware Technologies', 'Genpact'
+        ];
+
         // Data for dynamic options
-        let allCompanies = [];
+        let allCompanies = [...SEED_COMPANIES];
         let allLocations = [];
 
         const PORTALS = [
@@ -1802,9 +1818,10 @@
         function updateSourceCounts() {
             let sourceCounts = {};
             let walkinCount = 0;
+            const hasActiveFilters = selectedPortals.size > 0 || selectedLocations.size > 0 || selectedRoles.size > 0 || activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || (document.getElementById('searchInput')?.value || '').trim().length > 0;
+
             if (typeof allJobs !== 'undefined' && allJobs.length > 0) {
                 allJobs.forEach(j => {
-                    // Count source matches based on all active filters excluding the portal facet
                     if (typeof jobMatchesFilters === 'function' && jobMatchesFilters(j, 'portal')) {
                         let src = (j.source || '').toLowerCase().trim();
                         if (src.includes('google')) {
@@ -1816,7 +1833,6 @@
                             sourceCounts['telegram_post'] = (sourceCounts['telegram_post'] || 0) + 1;
                             sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
                         } else if (src.includes('telegram')) {
-                            // Generic telegram fallback
                             sourceCounts['telegram_message'] = (sourceCounts['telegram_message'] || 0) + 1;
                             sourceCounts['telegram_post'] = (sourceCounts['telegram_post'] || 0) + 1;
                             sourceCounts['telegram'] = (sourceCounts['telegram'] || 0) + 1;
@@ -1826,14 +1842,19 @@
                             sourceCounts[src] = (sourceCounts[src] || 0) + 1;
                         }
                     }
-                    // For Walkin All count: matches all filters excluding walkin facet
                     if (isWalkinJob(j) && (typeof jobMatchesFilters !== 'function' || jobMatchesFilters(j, 'walkinFacet'))) {
                         walkinCount++;
                     }
                 });
             }
+
             PORTALS.forEach(p => {
-                let count = sourceCounts[p.id.toLowerCase()] || 0;
+                let count = 0;
+                if (!hasActiveFilters && sidebarCountsData && sidebarCountsData.sources) {
+                    count = sidebarCountsData.sources[p.id.toLowerCase()] || 0;
+                } else {
+                    count = sourceCounts[p.id.toLowerCase()] || 0;
+                }
                 if (p.id === 'telegram' && !count) {
                     count = sourceCounts['telegram'] || 0;
                 }
@@ -1851,19 +1872,48 @@
             }
         }
 
+        function roleNameToSlug(name) {
+            if (!name) return "";
+            let s = name.toLowerCase().replace(/[\/\\&+\-,\s]+/g, '_').replace(/[^a-z0-9_]/g, '').replace(/_+/g, '_').replace(/^_|_$/g, '');
+            if (s === 'software_developer' || s === 'java_developer' || s === 'python_developer' || s === 'react_developer' || s === 'nodejs_developer') return 'software_engineer';
+            if (s === 'qa_engineer' || s === 'qa_automation_engineer' || s === 'test_automation_engineer') return 'qa_analyst';
+            if (s === 'cloud_engineer' || s === 'aws_engineer' || s === 'azure_engineer') return 'cloud_architect';
+            if (s === 'cybersecurity_analyst' || s === 'cybersecurity_engineer') return 'security_analyst';
+            if (s === 'machine_learning_engineer' || s === 'deep_learning_engineer') return 'ml_engineer';
+            if (s === 'business_development_executive' || s === 'business_development_manager' || s === 'sales_manager') return 'sales_executive';
+            if (s === 'hr_executive' || s === 'hr_manager' || s === 'talent_acquisition_specialist') return 'hr_business_partner';
+            if (s === 'technical_project_manager') return 'project_manager';
+            if (s === 'database_administrator') return 'dba';
+            if (s === 'it_support_specialist') return 'it_support';
+            return s;
+        }
+
+        function cityToLocSlug(city) {
+            if (!city) return "all_india";
+            let s = city.toLowerCase().replace(/[\/\\&+\-,\s]+/g, '_').replace(/[^a-z0-9_]/g, '').replace(/_+/g, '_').replace(/^_|_$/g, '');
+            if (s === 'bengaluru') return 'bangalore';
+            if (s === 'new_delhi' || s === 'gurgaon' || s === 'gurugram' || s === 'noida') return 'delhi';
+            return s;
+        }
+
         function buildLocationOptions(filter = '') {
             const container = document.getElementById('location-options');
             const cities = filter
                 ? TOP_CITIES.filter(c => c.toLowerCase().includes(filter.toLowerCase()))
                 : TOP_CITIES;
-            container.innerHTML = cities.map(city => `
+            container.innerHTML = cities.map(city => {
+                const lSlug = cityToLocSlug(city);
+                const count = sidebarCountsData?.locations?.[lSlug] || 0;
+                const countStr = count > 0 ? ` <span class="source-count">(${count.toLocaleString()})</span>` : '';
+                return `
             <div class="filter-option ${selectedLocations.has(city) ? 'checked' : ''}" onclick="toggleLocation('${city}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
                 </div>
-                <span class="option-label">${city}</span>
+                <span class="option-label">${city}${countStr}</span>
             </div>
-        `).join('');
+                `;
+            }).join('');
         }
 
         function buildRolesOptions(filter = '') {
@@ -1873,22 +1923,23 @@
                 : ALL_ROLES;
             const visible = roles.slice(0, 8);
             const more = roles.slice(8);
-            container.innerHTML = visible.map(r => `
+
+            const makeRoleOption = r => {
+                const rSlug = roleNameToSlug(r);
+                const count = manifestData?.roles?.[rSlug]?.total || 0;
+                const countStr = count > 0 ? ` <span class="source-count">(${count.toLocaleString()})</span>` : '';
+                return `
             <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
                 <div class="custom-checkbox">
                     <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
                 </div>
-                <span class="option-label">${r}</span>
+                <span class="option-label">${r}${countStr}</span>
             </div>
-        `).join('') +
-                (more.length > 0 && !filter ? `<div id="moreRolesWrap" style="display:none">${more.map(r => `
-            <div class="filter-option ${selectedRoles.has(r) ? 'checked' : ''}" onclick="toggleRole('${r}', this)">
-                <div class="custom-checkbox">
-                    <svg width="10" height="10" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                <span class="option-label">${r}</span>
-            </div>
-        `).join('')}</div>
+                `;
+            };
+
+            container.innerHTML = visible.map(makeRoleOption).join('') +
+                (more.length > 0 && !filter ? `<div id="moreRolesWrap" style="display:none">${more.map(makeRoleOption).join('')}</div>
         <span class="show-more-btn" onclick="toggleMoreRoles(this)">+ ${more.length} more</span>` : '');
         }
 
@@ -2555,180 +2606,261 @@
         // ══════════════════════════════════════════════
         //  DATA FETCH
         // ══════════════════════════════════════════════
-        async function fetchJobsFromTurso() {
-            let fetchedJobs = [];
-            let chunkNum = 1;
-            const knownPortals = new Set(['linkedin', 'naukri', 'indeed', 'internshala', 'glassdoor', 'shine', 'timesjobs', 'hirist', 'workindia', 'foundit', 'apna', 'freshersworld', 'telegram', 'telegram_message', 'telegram_post', 'google_images', 'google images', 'google']);
+        // ══════════════════════════════════════════════
+        //  DATA FETCH & GRANULAR SHARDING
+        // ══════════════════════════════════════════════
+        function normalizeJob(job, id = 0) {
+            const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
+            const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
+            const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date) || new Date().toISOString().slice(0, 10);
 
-            while (true) {
-                try {
-                    const res = await fetch(`all_jobs_${chunkNum}.json`);
-                    if (!res.ok) { if (res.status === 404) break; throw new Error(`Chunk ${chunkNum} failed`); }
-                    const rows = await res.json();
-                    for (const job of rows) {
-                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.job_posted_date, job.date_posted, job.date);
-
-                        let sourceVal = String(job.platform || job.source || '').toLowerCase();
-                        if (sourceVal.includes('google')) {
-                            sourceVal = 'google_images';
-                        } else if (!knownPortals.has(sourceVal)) {
-                            sourceVal = 'other';
-                        }
-
-                        const rawTitle = String(job.role || job.title || '');
-                        const descText = String(job.description || job.job_description || job.other_details || '');
-                        const venueText = String(job.venue || job.venue_address || '');
-                        const isWalk = isWalkinJob({ title: rawTitle, description: descText, source: sourceVal, is_walkin: job.is_walkin });
-                        let walkDate = String(job.walkin_date || '').trim();
-                        if (!walkDate && isWalk) {
-                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
-                        }
-
-                        fetchedJobs.push({
-                            _id: job.id || 0,
-                            title: rawTitle,
-                            company: String(job.company_name || job.company || ''),
-                            location: String(job.location || ''),
-                            date: cleanDate,
-                            url: String(job.apply_link || job.url || job.linkedin_url || ''),
-                            telegram_url: String(job.telegram_url || (String(job.url || '').includes('t.me') ? job.url : '')),
-                            contact_email: String(job.contact_email || ''),
-                            contact_phone: String(job.contact_phone || ''),
-                            source: sourceVal,
-                            role_search: String(job.search_keyword || job.role_search || ''),
-                            experience: pick(job.experience),
-                            skills: Array.isArray(job.skills) ? job.skills : [],
-                            is_walkin: isWalk,
-                            walkin_date: walkDate,
-                            walkin_time: job.walkin_time || '',
-                            flyer_image_url: String(job.flyer_image_url || ''),
-                            fetchedAt: cleanDate,
-                            description: descText,
-                            venue: venueText
-                        });
-                    }
-                    chunkNum++;
-                } catch (e) {
-                    console.error(e);
-                    if (fetchedJobs.length === 0) return { error: String(e) };
-                    break;
-                }
+            let sourceVal = String(job.platform || job.source || '').toLowerCase().trim();
+            if (sourceVal.includes('google')) {
+                sourceVal = 'google_images';
+            } else if (!knownPortals.has(sourceVal)) {
+                sourceVal = 'other';
             }
 
-            // Fetch Google Images Walk-in Jobs
-            try {
-                const walkinUrl = "scraped_image_walkin_jobs.json";
-                const walkinRes = await fetch(walkinUrl + "?t=" + new Date().getTime());
-                if (walkinRes.ok) {
-                    const walkinRows = await walkinRes.json();
-                    for (const job of walkinRows) {
-                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        const cleanDate = pick(job.date_posted, job.fetched_at, job.fetchedAt, job.date, job.walkin_date) || new Date().toISOString().slice(0, 10);
-                        const rawTitle = String(job.title || job.role || 'Walk-in Interview');
-                        const descText = String(job.description || job.clean_text || '');
-                        let walkDate = String(job.walkin_date || '').trim();
-                        if (!walkDate) {
-                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
-                        }
-
-                        let coName = '';
-                        if (typeof job.company === 'object' && job.company !== null) {
-                            coName = job.company.name || job.company.canonical || '';
-                        } else {
-                            coName = String(job.company || job.company_canonical || '');
-                        }
-
-                        let locName = '';
-                        if (typeof job.location === 'object' && job.location !== null) {
-                            locName = job.location.city ? `${job.location.city}${job.location.state ? ', ' + job.location.state : ''}` : '';
-                        } else {
-                            locName = String(job.location || '');
-                        }
-
-                        const rolesArr = Array.isArray(job.roles) 
-                            ? job.roles.map(r => (typeof r === 'object' ? r.name : r)) 
-                            : [];
-
-                        fetchedJobs.push({
-                            _id: job.id || ('walkin_' + Math.random().toString(36).substr(2, 9)),
-                            title: rawTitle,
-                            company: coName,
-                            location: locName,
-                            date: cleanDate,
-                            url: String(job.apply_url || job.url || job.source_url || ''),
-                            source: 'google_images',
-                            role_search: rolesArr.join(', '),
-                            experience: (typeof job.experience === 'object' && job.experience !== null) ? (job.experience.raw_text || '') : pick(job.experience),
-                            salary: (typeof job.salary === 'object' && job.salary !== null) ? (job.salary.raw_text || '') : pick(job.salary),
-                            skills: Array.isArray(job.skills) ? job.skills : [],
-                            is_walkin: true,
-                            walkin_date: walkDate || null,
-                            walkin_time: (typeof job.time === 'object' && job.time !== null) ? `${job.time.start || ''} - ${job.time.end || ''}`.trim(' -') : (job.walkin_time || ''),
-                            flyer_image_url: job.flyer_image_url || job.raw_flyer_src || job.image_path || '',
-                            contact_email: job.contact_email || '',
-                            contact_phone: job.contact_phone || '',
-                            fetchedAt: cleanDate,
-                            description: descText,
-                            venue: (typeof job.location === 'object' && job.location !== null) ? (job.location.address || '') : ''
-                        });
-                    }
-                    console.log(`Loaded ${walkinRows.length} jobs from scraped_image_walkin_jobs.json as 'google_images' source`);
-                }
-            } catch (e) {
-                console.warn("Note on loading walkin jobs:", e);
+            const rawTitle = String(job.role || job.title || '');
+            const descText = String(job.description || job.job_description || job.other_details || job.clean_text || '');
+            const venueText = String(job.venue || job.venue_address || (typeof job.location === 'object' && job.location !== null ? (job.location.address || '') : ''));
+            const isWalk = job.is_walkin !== undefined ? Boolean(job.is_walkin) : isWalkinJob({ title: rawTitle, description: descText, source: sourceVal, is_walkin: job.is_walkin });
+            let walkDate = String(job.walkin_date || '').trim();
+            if (!walkDate && isWalk) {
+                walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
             }
 
-            // Fetch Big Company / Other Source ATS jobs
-            try {
-                let bigJobsRes = await fetch("workday_scraper/big_company_jobs.json?t=" + new Date().getTime()).catch(() => null);
-                if (!bigJobsRes || !bigJobsRes.ok) {
-                    const bigJobsUrl = "https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json";
-                    bigJobsRes = await fetch(bigJobsUrl + "?t=" + new Date().getTime()).catch(() => null);
-                }
-                if (bigJobsRes && bigJobsRes.ok) {
-                    const bigJobsRows = await bigJobsRes.json();
-                    for (const job of bigJobsRows) {
-                        const bad = v => !v || v === 'None' || v === 'nan' || v === 'null';
-                        const pick = (...vals) => { for (const v of vals) if (!bad(v)) return String(v); return ''; };
-                        const cleanDate = pick(job.fetched_at, job.fetchedAt, job.date_posted, job.date);
-                        const rawTitle = String(job.title || job.role || '');
-                        const descText = String(job.description || job.job_description || job.other_details || '');
-                        const isWalk = isWalkinJob({ title: rawTitle, description: descText, source: 'other', is_walkin: job.is_walkin });
-                        let walkDate = String(job.walkin_date || '').trim();
-                        if (!walkDate && isWalk) {
-                            walkDate = extractWalkinDateFromText(rawTitle) || extractWalkinDateFromText(descText) || '';
-                        }
-
-                        fetchedJobs.push({
-                            _id: job.id || 0,
-                            title: rawTitle,
-                            company: String(job.company || job.company_name || ''),
-                            location: String(job.location || ''),
-                            date: cleanDate,
-                            url: String(job.apply_url || job.apply_link || job.url || ''),
-                            source: 'other',
-                            role_search: '',
-                            experience: '',
-                            skills: [],
-                            is_walkin: isWalk,
-                            walkin_date: walkDate,
-                            walkin_time: '',
-                            fetchedAt: cleanDate,
-                            description: descText,
-                            venue: ''
-                        });
-                    }
-                    console.log(`Loaded ${bigJobsRows.length} jobs from big_company_jobs.json as 'other' source`);
-                }
-            } catch (e) {
-                console.error("Error fetching big company jobs:", e);
+            let coName = '';
+            if (typeof job.company === 'object' && job.company !== null) {
+                coName = job.company.name || job.company.canonical || '';
+            } else {
+                coName = String(job.company_name || job.company || job.company_canonical || '');
             }
 
-            return fetchedJobs;
+            let locName = '';
+            if (typeof job.location === 'object' && job.location !== null) {
+                locName = job.location.city ? `${job.location.city}${job.location.state ? ', ' + job.location.state : ''}` : '';
+            } else {
+                locName = String(job.location || '');
+            }
+
+            const jUrl = String(job.apply_link || job.url || job.linkedin_url || job.apply_url || job.source_url || '');
+            const jId = job.id || job._id || (jUrl ? jUrl : `${rawTitle}_${coName}_${id}`);
+
+            return {
+                _id: jId,
+                title: rawTitle,
+                company: coName,
+                location: locName,
+                date: cleanDate,
+                url: jUrl,
+                telegram_url: String(job.telegram_url || (jUrl.includes('t.me') ? jUrl : '')),
+                contact_email: String(job.contact_email || ''),
+                contact_phone: String(job.contact_phone || ''),
+                source: sourceVal,
+                role_search: String(job.search_keyword || job.role_search || job.role_category || ''),
+                experience: (typeof job.experience === 'object' && job.experience !== null) ? (job.experience.raw_text || '') : pick(job.experience),
+                salary: (typeof job.salary === 'object' && job.salary !== null) ? (job.salary.raw_text || '') : pick(job.salary),
+                skills: Array.isArray(job.skills) ? job.skills : [],
+                is_walkin: isWalk,
+                walkin_date: walkDate || null,
+                walkin_time: (typeof job.time === 'object' && job.time !== null) ? `${job.time.start || ''} - ${job.time.end || ''}`.trim(' -') : (job.walkin_time || ''),
+                flyer_image_url: String(job.flyer_image_url || job.raw_flyer_src || job.image_path || ''),
+                fetchedAt: cleanDate,
+                description: descText,
+                venue: venueText
+            };
         }
+
+        function ingestJobs(rawJobList) {
+            if (!Array.isArray(rawJobList)) return 0;
+            let added = 0;
+            for (let i = 0; i < rawJobList.length; i++) {
+                const j = normalizeJob(rawJobList[i], allJobs.length + i);
+                const key = j.url || `${j.title.toLowerCase()}|||${j.company.toLowerCase()}|||${j.location.toLowerCase()}`;
+                if (!loadedJobKeys.has(key)) {
+                    loadedJobKeys.add(key);
+                    allJobs.push(j);
+                    added++;
+                }
+            }
+            return added;
+        }
+
+        async function fetchJobsFromTurso() {
+            // Step 1: Fetch metadata indexes + initial 100 latest preview jobs (< 60ms)
+            try {
+                const [mRes, scRes, prevRes] = await Promise.allSettled([
+                    fetch('data/index/manifest.json'),
+                    fetch('data/index/sidebar_counts.json'),
+                    fetch('data/index/latest_preview_100.json')
+                ]);
+
+                if (mRes.status === 'fulfilled' && mRes.value.ok) manifestData = await mRes.value.json();
+                if (scRes.status === 'fulfilled' && scRes.value.ok) sidebarCountsData = await scRes.value.json();
+                if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
+                    const previewRows = await prevRes.value.json();
+                    ingestJobs(previewRows);
+                }
+            } catch (e) {
+                console.warn("Could not load granular index:", e);
+            }
+
+            // Step 2: Fetch Walk-in images and Big Company ATS jobs concurrently
+            try {
+                const [walkinRes, bigJobsRes] = await Promise.allSettled([
+                    fetch("scraped_image_walkin_jobs.json?t=" + Date.now()),
+                    fetch("workday_scraper/big_company_jobs.json?t=" + Date.now()).catch(() => 
+                        fetch("https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json?t=" + Date.now())
+                    )
+                ]);
+
+                if (walkinRes.status === 'fulfilled' && walkinRes.value.ok) {
+                    const walkinRows = await walkinRes.value.json();
+                    ingestJobs(walkinRows);
+                }
+                if (bigJobsRes.status === 'fulfilled' && bigJobsRes.value.ok) {
+                    const bigJobsRows = await bigJobsRes.value.json();
+                    ingestJobs(bigJobsRows);
+                }
+            } catch (e) {
+                console.warn("Note on walkin/big jobs:", e);
+            }
+
+            return allJobs;
+        }
+
+        function showShardFetchIndicator(show) {
+            let ind = document.getElementById('shardFetchIndicator');
+            if (!ind) {
+                ind = document.createElement('div');
+                ind.id = 'shardFetchIndicator';
+                ind.style.cssText = 'position:fixed;bottom:24px;left:24px;background:rgba(15,23,42,0.92);color:#38bdf8;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(56,189,248,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.5);display:none;z-index:9999;align-items:center;gap:8px;backdrop-filter:blur(8px);';
+                ind.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite;">⚡</span> Loading matching jobs...';
+                document.body.appendChild(ind);
+            }
+            ind.style.display = show ? 'flex' : 'none';
+        }
+
+        function triggerGranularFetch() {
+            clearTimeout(shardDebounceTimer);
+            shardDebounceTimer = setTimeout(() => {
+                loadShardsForFilters();
+            }, 100);
+        }
+
+        async function loadShardsForFilters() {
+            if (!manifestData || !manifestData.roles) return;
+
+            const pathsToFetch = new Set();
+            const activeRoles = [...selectedRoles].map(roleNameToSlug);
+            const activeSources = [...selectedPortals];
+            const activeLocs = [...selectedLocations].map(cityToLocSlug);
+            const searchVal = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+            const targetRoles = activeRoles.length > 0 ? activeRoles : Object.keys(manifestData.roles);
+
+            for (const rSlug of targetRoles) {
+                const roleObj = manifestData.roles[rSlug];
+                if (!roleObj || !roleObj.sources) continue;
+
+                const targetSources = activeSources.length > 0 
+                    ? activeSources.filter(s => roleObj.sources[s]) 
+                    : (activeRoles.length > 0 ? Object.keys(roleObj.sources) : Object.keys(roleObj.sources).slice(0, 3));
+
+                for (const sSlug of targetSources) {
+                    const srcObj = roleObj.sources[sSlug];
+                    if (!srcObj || !srcObj.locs) continue;
+
+                    if (activeLocs.length > 0) {
+                        for (const lSlug of activeLocs) {
+                            if (srcObj.locs[lSlug]) {
+                                pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                            }
+                        }
+                    } else if (activeRoles.length > 0 || activeSources.length > 0) {
+                        const topLocs = Object.keys(srcObj.locs).slice(0, 5);
+                        for (const lSlug of topLocs) {
+                            pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                        }
+                    }
+                }
+            }
+
+            // Keyword match in search bar
+            if (searchVal.length >= 3) {
+                for (const [rSlug, roleObj] of Object.entries(manifestData.roles)) {
+                    const cleanName = (roleObj.name || rSlug).toLowerCase();
+                    if (cleanName.includes(searchVal) || searchVal.includes(rSlug.replace(/_/g, ' '))) {
+                        for (const sSlug of Object.keys(roleObj.sources).slice(0, 3)) {
+                            for (const lSlug of Object.keys(roleObj.sources[sSlug].locs || {}).slice(0, 3)) {
+                                pathsToFetch.add(`data/jobs/${rSlug}/${sSlug}_${lSlug}.json`);
+                            }
+                        }
+                    }
+                }
+            }
+
+            const uncached = [...pathsToFetch].filter(p => !shardCache.has(p)).slice(0, 16);
+            if (uncached.length === 0) return;
+
+            showShardFetchIndicator(true);
+
+            try {
+                const fetchPromises = uncached.map(async (path) => {
+                    try {
+                        const res = await fetch(path);
+                        if (res.ok) {
+                            const data = await res.json();
+                            shardCache.set(path, data);
+                            return data;
+                        }
+                    } catch (e) {}
+                    return null;
+                });
+
+                const results = await Promise.all(fetchPromises);
+                let newCount = 0;
+                for (const shardJobs of results) {
+                    if (shardJobs) {
+                        newCount += ingestJobs(shardJobs);
+                    }
+                }
+                if (newCount > 0) {
+                    filteredJobs = allJobs.filter(j => jobMatchesFilters(j, null));
+                    renderPage();
+                    buildWalkinDateOptions();
+                }
+            } finally {
+                showShardFetchIndicator(false);
+            }
+        }
+
+        // Idle preload of popular shards in background
+        function preloadPopularShards() {
+            if (!manifestData || !manifestData.roles) return;
+            const popularShards = [
+                'data/jobs/software_engineer/naukri_bangalore.json',
+                'data/jobs/full_stack_developer/linkedin_chennai.json',
+                'data/jobs/data_analyst/indeed_all_india.json',
+                'data/jobs/sales_executive/naukri_mumbai.json',
+                'data/jobs/python_developer/naukri_hyderabad.json'
+            ];
+            popularShards.forEach(path => {
+                if (!shardCache.has(path)) {
+                    fetch(path)
+                        .then(r => r.ok ? r.json() : null)
+                        .then(data => {
+                            if (data) {
+                                shardCache.set(path, data);
+                                ingestJobs(data);
+                            }
+                        })
+                        .catch(() => {});
+                }
+            });
+        }
+
 
         // ══════════════════════════════════════════════
         //  FILTER + RENDER
@@ -2840,6 +2972,9 @@
             renderPage();
             updateSourceCounts();
             buildWalkinDateOptions();
+
+            // Trigger granular shard fetch for active filter selections
+            triggerGranularFetch();
         }
 
         function renderPage() {
@@ -2848,7 +2983,10 @@
             const start = (currentPage - 1) * JOBS_PER_PAGE;
             renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
             renderPagination(totalPages);
-            document.getElementById('jobCount').textContent = filteredJobs.length.toLocaleString();
+
+            const hasActiveFilters = selectedPortals.size > 0 || selectedLocations.size > 0 || selectedRoles.size > 0 || activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || (document.getElementById('searchInput')?.value || '').trim().length > 0;
+            const displayTotal = !hasActiveFilters && sidebarCountsData && sidebarCountsData.total_jobs ? sidebarCountsData.total_jobs : filteredJobs.length;
+            document.getElementById('jobCount').textContent = displayTotal.toLocaleString();
         }
 
         function goToPage(p) { currentPage = p; renderPage(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -3168,23 +3306,15 @@
 
         async function init() {
             const loading = document.getElementById('loading');
+            loading.innerHTML = '⚡ Loading catalog...';
 
-            // Build static sidebar options
-            buildSourceOptions();
-            buildLocationOptions();
-            buildRolesOptions();
+            // Load skills map in parallel with jobs
+            fetch('skills_map.json')
+                .then(r => r.ok ? r.json() : {})
+                .then(m => { skillsMap = m; })
+                .catch(() => {});
 
-            // Load skills map
-            try {
-                const smRes = await fetch('skills_map.json');
-                if (smRes.ok) {
-                    skillsMap = await smRes.json();
-                }
-            } catch (e) {
-                console.error("Failed to load skills_map.json", e);
-            }
-
-            loading.innerHTML = 'Loading jobs...';
+            // Fetch initial preview + catalog indexes (< 60ms)
             allJobs = await fetchJobsFromTurso();
 
             if (allJobs.error) {
@@ -3193,15 +3323,21 @@
             }
 
             allJobs.sort((a, b) => {
-                const da = a.fetchedAt || '', db = b.fetchedAt || '';
+                const da = a.fetchedAt || a.date || '', db = b.fetchedAt || b.date || '';
                 if (da !== db) return db.localeCompare(da);
                 return (b._id || 0) - (a._id || 0);
             });
 
-            // Build dynamic company list from loaded data
+            // Seed companies
             const coMap = {};
+            SEED_COMPANIES.forEach(c => { coMap[c] = 10; });
             allJobs.forEach(j => { if (j.company) coMap[j.company] = (coMap[j.company] || 0) + 1; });
             allCompanies = Object.entries(coMap).sort((a, b) => b[1] - a[1]).map(e => e[0]).slice(0, 100);
+
+            // Build options with pre-aggregated counts
+            buildSourceOptions();
+            buildLocationOptions();
+            buildRolesOptions();
             buildCompanyOptions();
             buildSkillsOptions();
             buildWalkinDateOptions();
@@ -3209,6 +3345,9 @@
 
             loading.style.display = 'none';
             applyFilters();
+
+            // Background idle preload of top shards for multi-page browsing
+            setTimeout(preloadPopularShards, 1500);
         }
 
         init();

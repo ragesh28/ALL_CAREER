@@ -42,22 +42,23 @@ def main():
 
     # 1. Discard local database changes to avoid merge conflicts during pull
     print("\nStep 1: Discarding local database changes before pull...")
-    # Use glob to expand filenames explicitly since subprocess list mode
-    # might not expand wildcards correctly on all platforms
     chunk_files = glob.glob("all_jobs_*.json")
+    checkout_targets = ["role_index.json"]
     if chunk_files:
-        run_cmd(["git", "checkout", "HEAD", "--"] + chunk_files + ["role_index.json"])
-    else:
-        run_cmd(["git", "checkout", "HEAD", "--", "role_index.json"])
-    
+        checkout_targets.extend(chunk_files)
+    if os.path.exists("data"):
+        checkout_targets.append("data")
     if os.path.exists("jobs_by_role"):
         role_files = glob.glob("jobs_by_role/*.json")
         if role_files:
-            run_cmd(["git", "checkout", "HEAD", "--"] + role_files)
+            checkout_targets.extend(role_files)
+            
+    run_cmd(["git", "checkout", "HEAD", "--"] + checkout_targets)
 
     # 2. Pull latest changes from remote
     print("\nStep 2: Pulling latest changes from origin main...")
-    run_cmd(["git", "pull", "origin", "main"])
+    run_cmd(["git", "pull", "--rebase", "-X", "theirs", "--autostash", "origin", "main"])
+
 
     # 3. Verify current state of database
     chunk_files_after = sorted(glob.glob("all_jobs_*.json"))
