@@ -54,6 +54,8 @@ def main():
             checkout_targets.extend(role_files)
             
     run_cmd(["git", "checkout", "HEAD", "--"] + checkout_targets)
+    if os.path.exists(os.path.join("data", "jobs")):
+        run_cmd(["git", "clean", "-fd", "data/jobs"])
 
     # 2. Pull latest changes from remote
     print("\nStep 2: Pulling latest changes from origin main...")

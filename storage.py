@@ -285,7 +285,7 @@ def append_to_archival_chunks(new_jobs):
     with open(latest_chunk, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, separators=(',', ':'))
 
-def update_indexes_after_add(newly_added_jobs):
+def update_indexes_after_add(newly_added_jobs, new_files_count=0):
     if not newly_added_jobs:
         return
         
@@ -343,6 +343,8 @@ def update_indexes_after_add(newly_added_jobs):
             with open(manifest_file, "r", encoding="utf-8") as f:
                 manifest = json.load(f)
             manifest["total_jobs"] = manifest.get("total_jobs", 0) + len(newly_added_jobs)
+            if new_files_count > 0:
+                manifest["total_files"] = manifest.get("total_files", 0) + new_files_count
             for j in newly_added_jobs:
                 r_slug = get_role_slug(j)
                 s_slug = slugify(j.get("source") or "other")
@@ -396,6 +398,10 @@ def store_jobs_granular(jobs):
         if not is_valid_job(j):
             continue
             
+        canon_url = get_job_url(j)
+        if canon_url and not j.get("url"):
+            j["url"] = canon_url
+            
         j["location"] = normalize_location(
             j.get("location"),
             title=str(j.get("title") or j.get("role") or ""),
@@ -447,6 +453,7 @@ def store_jobs_granular(jobs):
     
     total_added = 0
     updated_files = 0
+    new_files_created = 0
     all_truly_added = []
     
     # Process only the targeted shard files
@@ -455,8 +462,9 @@ def store_jobs_granular(jobs):
         os.makedirs(role_dir, exist_ok=True)
         shard_path = os.path.join(role_dir, f"{src_slug}_{loc_slug}.json")
         
+        is_new_file = not os.path.exists(shard_path)
         existing_shard = []
-        if os.path.exists(shard_path):
+        if not is_new_file:
             try:
                 with open(shard_path, "r", encoding="utf-8") as sf:
                     existing_shard = json.load(sf)
@@ -490,11 +498,13 @@ def store_jobs_granular(jobs):
                 
             total_added += len(items_to_add)
             updated_files += 1
+            if is_new_file:
+                new_files_created += 1
             all_truly_added.extend(items_to_add)
             
     if all_truly_added:
         # 1. Update preview and counts
-        update_indexes_after_add(all_truly_added)
+        update_indexes_after_add(all_truly_added, new_files_count=new_files_created)
         
         # 2. Append to archival chunk
         try:
