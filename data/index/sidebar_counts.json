@@ -1,5 +1,5 @@
 {
-  "total_jobs": 569434,
+  "total_jobs": 569447,
   "sources": {
     "naukri": 233599,
     "linkedin": 138186,
@@ -13,21 +13,21 @@
     "freshersworld": 4065,
     "foundit": 2403,
     "hirist": 2340,
-    "telegram_message": 1041,
-    "telegram_post": 866
+    "telegram_message": 1049,
+    "telegram_post": 871
   },
   "locations": {
-    "bangalore": 131709,
+    "bangalore": 131714,
     "mumbai": 80466,
     "delhi": 61888,
-    "chennai": 55904,
+    "chennai": 55906,
     "hyderabad": 53574,
     "pune": 42254,
     "noida": 26949,
     "ahmedabad": 22965,
-    "all_india": 20144,
+    "all_india": 20149,
     "kolkata": 17719,
-    "coimbatore": 10202,
+    "coimbatore": 10203,
     "kochi": 8687,
     "remote": 5441,
     "jaipur": 3900,
