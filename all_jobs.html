@@ -2765,10 +2765,10 @@
                 console.warn("Could not load granular index:", e);
             }
 
-            // Step 2: Fetch Walk-in images and Big Company ATS jobs concurrently
+            // Step 2: Fetch Walk-in jobs (all 11,000+ portal & image walk-ins) and Big Company ATS jobs concurrently
             try {
                 const [walkinRes, bigJobsRes] = await Promise.allSettled([
-                    fetch("scraped_image_walkin_jobs.json?t=" + Date.now()),
+                    fetch("data/index/walkin_jobs.json?t=" + Date.now()).catch(() => fetch("scraped_image_walkin_jobs.json?t=" + Date.now())),
                     fetch("workday_scraper/big_company_jobs.json?t=" + Date.now()).catch(() => 
                         fetch("https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json?t=" + Date.now())
                     )

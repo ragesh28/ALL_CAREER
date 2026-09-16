@@ -368,6 +368,33 @@ def update_indexes_after_add(newly_added_jobs, new_files_count=0):
     except Exception as e:
         print(f"Error updating manifest: {e}")
 
+    # 4. Update walkin_jobs.json if any newly added jobs are walk-ins
+    walkin_file = os.path.join(idx_dir, "walkin_jobs.json")
+    new_walkins = [j for j in newly_added_jobs if j.get("is_walkin") or j.get("walkin_date")]
+    if new_walkins:
+        try:
+            existing_walkins = []
+            if os.path.exists(walkin_file):
+                with open(walkin_file, "r", encoding="utf-8") as wf:
+                    existing_walkins = json.load(wf)
+            w_seen = {get_job_url(w) for w in existing_walkins if get_job_url(w)}
+            w_tc_seen = {get_job_title_company_key(w) for w in existing_walkins if get_job_title_company_key(w)}
+            to_add = []
+            for w in new_walkins:
+                u = get_job_url(w)
+                tc = get_job_title_company_key(w)
+                if (u and u in w_seen) or (tc and tc in w_tc_seen):
+                    continue
+                to_add.append(compact_job(w))
+                if u: w_seen.add(u)
+                if tc: w_tc_seen.add(tc)
+            if to_add:
+                combined_walkins = to_add + existing_walkins
+                with open(walkin_file, "w", encoding="utf-8") as wf:
+                    json.dump(combined_walkins, wf, separators=(',', ':'))
+        except Exception as e:
+            print(f"Error updating walkin_jobs.json: {e}")
+
 def store_jobs_batch(jobs):
     """
     Main entry point for scrapers to save jobs.
