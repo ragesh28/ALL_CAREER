@@ -35,6 +35,8 @@ def get_job_url(job):
         job.get("apply_link") or 
         job.get("linkedin_url") or 
         job.get("permanent_url") or 
+        job.get("apply_url") or 
+        job.get("source_url") or 
         ""
     )
     return normalize_url(raw_url)
@@ -60,12 +62,16 @@ HAS_ALPHA = re.compile(r'[a-zA-Z]')
 def get_job_title_company_key(job):
     """Create a normalized key based on title, company, and location."""
     title = job.get("title") or job.get("role") or ""
-    company = job.get("company") or job.get("company_name") or ""
+    company_raw = job.get("company") or job.get("company_name") or job.get("company_canonical") or ""
+    if isinstance(company_raw, dict):
+        company = company_raw.get("name") or company_raw.get("canonical") or ""
+    else:
+        company = str(company_raw)
     location = job.get("location") or ""
     
     # Normalize: lowercase, keep only alphanumeric
     t_clean = NON_ALPHANUM.sub('', str(title).lower())
-    c_clean = NON_ALPHANUM.sub('', str(company).lower())
+    c_clean = NON_ALPHANUM.sub('', company.lower())
     l_clean = NON_ALPHANUM.sub('', str(location).lower())
     
     if t_clean and c_clean:

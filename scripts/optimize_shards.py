@@ -18,7 +18,7 @@ def compact_job(j):
     
     # Priority keys to keep compact
     keep_keys = [
-        "title", "company", "location", "date_posted", "url",
+        "title", "company", "location", "date_posted", "url", "source",
         "experience", "skills", "is_walkin", "walkin_date", "walkin_time",
         "telegram_url", "contact_email", "contact_phone", "flyer_image_url",
         "description", "venue"
@@ -32,7 +32,7 @@ def compact_job(j):
 
     # If any other non-redundant custom key exists, keep it if non-empty
     for k, v in j.items():
-        if k in keep_keys or k in ("role_category", "role_search", "source", "platform", "_id", "fetched_at", "fetchedAt", "job_posted_date", "clean_text"):
+        if k in keep_keys or k in ("role_category", "role_search", "platform", "_id", "fetched_at", "fetchedAt", "job_posted_date", "clean_text"):
             continue
         if v is not None and v != "" and v != "null" and v != "None" and v != "nan" and v != []:
             cleaned[k] = v
