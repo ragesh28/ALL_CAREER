@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "total_jobs": 600697,
   "sources": {
     "naukri": 239692,
@@ -7,6 +8,16 @@
     "shine": 46279,
     "timesjobs": 45179,
     "internshala": 35159,
+=======
+  "total_jobs": 602651,
+  "sources": {
+    "naukri": 237585,
+    "linkedin": 145697,
+    "indeed": 59114,
+    "shine": 45362,
+    "timesjobs": 43602,
+    "internshala": 31687,
+>>>>>>> Stashed changes
     "workindia": 15876,
     "apna": 7394,
     "glassdoor": 4774,
@@ -17,6 +28,7 @@
     "telegram_post": 897
   },
   "locations": {
+<<<<<<< Updated upstream
     "bangalore": 136542,
     "mumbai": 83490,
     "delhi": 64827,
@@ -33,6 +45,24 @@
     "jaipur": 4523,
     "indore": 3547,
     "chandigarh": 3078,
+=======
+    "bangalore": 136918,
+    "mumbai": 83453,
+    "delhi": 65012,
+    "chennai": 59765,
+    "hyderabad": 56701,
+    "pune": 44956,
+    "noida": 28480,
+    "ahmedabad": 24286,
+    "all_india": 20620,
+    "kolkata": 19289,
+    "coimbatore": 11331,
+    "kochi": 9224,
+    "remote": 5659,
+    "jaipur": 4403,
+    "indore": 3426,
+    "chandigarh": 2887,
+>>>>>>> Stashed changes
     "kl": 1467,
     "thane": 1164,
     "faridabad": 1079,
@@ -40,7 +70,11 @@
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
+<<<<<<< Updated upstream
     "kerala": 1093,
+=======
+    "kerala": 1099,
+>>>>>>> Stashed changes
     "ka": 505,
     "nanakramguda": 557,
     "rajasthan": 869,
@@ -48,11 +82,19 @@
     "tn": 236,
     "bhopal": 291,
     "ts": 222,
+<<<<<<< Updated upstream
     "gandhinagar": 220,
     "ernakulam": 228,
     "vadodara": 238,
     "panchkula": 209,
     "surat": 163,
+=======
+    "gandhinagar": 217,
+    "ernakulam": 224,
+    "vadodara": 223,
+    "panchkula": 202,
+    "surat": 162,
+>>>>>>> Stashed changes
     "serilingampalli": 155,
     "up": 126,
     "thiruvananthapuram": 124,
@@ -68,8 +110,13 @@
     "guindy": 84,
     "dehradun": 85,
     "rennes": 81,
+<<<<<<< Updated upstream
     "dl": 127,
     "pimpri_chinchwad": 98,
+=======
+    "dl": 268,
+    "pimpri_chinchwad": 92,
+>>>>>>> Stashed changes
     "prayagraj": 69,
     "hybrid_faridabad": 69,
     "borivali": 67,
@@ -106,7 +153,11 @@
     "raipur": 47,
     "mira_bhayandar": 45,
     "vijay_nagar": 44,
+<<<<<<< Updated upstream
     "visakhapatnam": 56,
+=======
+    "visakhapatnam": 47,
+>>>>>>> Stashed changes
     "kharar": 42,
     "cesson_svign": 42,
     "ahmednagar": 41,
@@ -127,6 +178,7 @@
     "rohini": 1,
     "asansol": 17,
     "daskroi": 1,
+<<<<<<< Updated upstream
     "kollam": 27,
     "trivandrum": 14,
     "gulbarga": 30,
@@ -134,14 +186,29 @@
     "ambala": 20,
     "zirakpur": 12,
     "rajpura": 24,
+=======
+    "kollam": 22,
+    "trivandrum": 9,
+    "gulbarga": 26,
+    "aluva": 7,
+    "ambala": 16,
+    "zirakpur": 10,
+    "rajpura": 20,
+>>>>>>> Stashed changes
     "mysore": 14,
     "jabalpur": 27,
     "bilaspur": 8,
     "agra": 9,
     "ajmer": 1,
+<<<<<<< Updated upstream
     "bharatpur": 9,
     "akola": 13,
     "maharashtra": 891,
+=======
+    "bharatpur": 7,
+    "akola": 11,
+    "maharashtra": 926,
+>>>>>>> Stashed changes
     "area": 1,
     "barasat": 11,
     "krishnanagar": 1,
@@ -177,7 +244,7 @@
     "malappuram": 11,
     "pathanamthitta": 12,
     "ujjain": 7,
-    "haryana": 1,
+    "haryana": 127,
     "shimla": 1,
     "bihar": 1,
     "adilabad": 6,
@@ -193,6 +260,7 @@
     "pitampura": 2,
     "jodhpur": 1,
     "udaipura": 1,
+<<<<<<< Updated upstream
     "hubli": 1,
     "shamirpet": 6,
     "guntur": 1,
@@ -214,6 +282,15 @@
     "vajarahalli": 1,
     "bharuch": 1,
     "papua_new_guinea": 1
+=======
+    "karnataka": 348,
+    "tamil_nadu": 190,
+    "telangana": 190,
+    "uttar_pradesh": 62,
+    "west_bengal": 28,
+    "gujarat": 82,
+    "hubli": 1
+>>>>>>> Stashed changes
   },
   "generated_at": "2026-09-15T17:53:34.398442"
 }
