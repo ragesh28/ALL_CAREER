@@ -1,5 +1,5 @@
 {
-  "total_jobs": 598553,
+  "total_jobs": 598590,
   "sources": {
     "naukri": 237585,
     "linkedin": 138186,
@@ -13,23 +13,23 @@
     "freshersworld": 4065,
     "foundit": 2403,
     "hirist": 3383,
-    "telegram_message": 1052,
-    "telegram_post": 871
+    "telegram_message": 1063,
+    "telegram_post": 897
   },
   "locations": {
-    "bangalore": 136129,
+    "bangalore": 136139,
     "mumbai": 83178,
-    "delhi": 64521,
-    "chennai": 59669,
-    "hyderabad": 56153,
-    "pune": 44338,
+    "delhi": 64524,
+    "chennai": 59672,
+    "hyderabad": 56156,
+    "pune": 44340,
     "noida": 28368,
     "ahmedabad": 24324,
-    "all_india": 20149,
+    "all_india": 20158,
     "kolkata": 19332,
-    "coimbatore": 11332,
+    "coimbatore": 11333,
     "kochi": 8980,
-    "remote": 5515,
+    "remote": 5517,
     "jaipur": 4522,
     "indore": 3545,
     "chandigarh": 3077,
@@ -91,7 +91,7 @@
     "kurla": 52,
     "madurai": 53,
     "kottayam": 51,
-    "patna": 63,
+    "patna": 64,
     "kulim": 50,
     "howrah": 62,
     "vasai": 50,
@@ -208,7 +208,10 @@
     "gorakhpur": 1,
     "kanpur": 1,
     "beora": 1,
-    "vapi": 1
+    "vapi": 1,
+    "telangana": 1,
+    "whitefield": 1,
+    "vajarahalli": 1
   },
   "generated_at": "2026-09-15T17:53:34.398442"
 }
