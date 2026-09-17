@@ -370,6 +370,13 @@ function setupUIEvents() {
     window.close();
   });
 
+  // Exit / Cancel Recording
+  document.getElementById('wf-exit-record')?.addEventListener('click', async () => {
+    await chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+    sendToTargetTab({ action: 'WORKFLOW_RECORD_STOP' });
+    window.close();
+  });
+
   // Back to Studio
   backStudioBtn?.addEventListener('click', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('options.html#workflows') });
