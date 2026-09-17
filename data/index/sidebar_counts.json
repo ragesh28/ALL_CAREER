@@ -1,5 +1,5 @@
 {
-  "total_jobs": 588385,
+  "total_jobs": 588387,
   "sources": {
     "naukri": 233599,
     "linkedin": 138186,
@@ -13,7 +13,7 @@
     "freshersworld": 4065,
     "foundit": 2403,
     "hirist": 3169,
-    "telegram_message": 1050,
+    "telegram_message": 1052,
     "telegram_post": 871
   },
   "locations": {
@@ -29,7 +29,7 @@
     "kolkata": 18890,
     "coimbatore": 11003,
     "kochi": 8837,
-    "remote": 5441,
+    "remote": 5442,
     "jaipur": 4402,
     "indore": 3426,
     "chandigarh": 2886,
@@ -117,7 +117,7 @@
     "vijayawada": 38,
     "belagavi": 53,
     "mysuru": 37,
-    "across_india": 2,
+    "across_india": 3,
     "multiple": 1,
     "tumkur": 1,
     "shivamogga": 2,
