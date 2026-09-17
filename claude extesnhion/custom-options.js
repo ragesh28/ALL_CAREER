@@ -884,6 +884,13 @@ function attachEvents() {
         activeSidepanelView: mode === 'record' ? 'recorder' : 'chat',
         currentRecordingWorkflowId: wfId,
       });
+      if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function' && tabId) {
+        await chrome.sidePanel.setOptions({
+          tabId,
+          path: mode === 'record' ? `recorder.html?tabId=${tabId}&wf=${wfId}` : `sidepanel.html?tabId=${tabId}`,
+          enabled: true,
+        });
+      }
       if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function' && tabId) {
         await chrome.sidePanel.open({ tabId });
         return;
@@ -919,6 +926,8 @@ function attachEvents() {
     try {
       const newTab = await chrome.tabs.create({ url: targetUrl, active: true });
       if (newTab?.id) {
+        await openSidePanelForTab(newTab.id, newWf.id, 'record');
+
         const startRecording = () => {
           chrome.runtime.sendMessage({
             action: 'WORKFLOW_RECORD_START',

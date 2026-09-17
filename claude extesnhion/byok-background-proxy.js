@@ -126,6 +126,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           } catch (err) {}
         }
 
+        // Configure dedicated recorder side panel for this tab and open it
+        try {
+          if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function') {
+            await chrome.sidePanel.setOptions({
+              tabId: tabId,
+              path: `recorder.html?tabId=${tabId}&wf=${recording.workflow.id}`,
+              enabled: true,
+            });
+          }
+          if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function') {
+            await chrome.sidePanel.open({ tabId });
+          }
+        } catch (err) {
+          console.warn('[BYOK] Could not open recorder sidePanel:', err);
+        }
+
         sendResponse({ success: true, recording: true, workflowId: recording.workflow.id, tabId });
       } catch (err) {
         sendResponse({ success: false, error: err instanceof Error ? err.message : String(err) });
@@ -307,6 +323,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Tell active tabs to remove floating recorder panel and hover tracker
         if (recording.tabId) {
           chrome.tabs.sendMessage(recording.tabId, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+          try {
+            if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function') {
+              chrome.sidePanel.setOptions({
+                tabId: recording.tabId,
+                path: 'sidepanel.html',
+                enabled: true,
+              }).catch(() => {});
+            }
+          } catch (_) {}
         }
 
         recording.workflow.updatedAt = Date.now();

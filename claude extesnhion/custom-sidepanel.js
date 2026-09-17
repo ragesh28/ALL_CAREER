@@ -1154,16 +1154,12 @@ function renderApp() {
           <div class="logo-icon">✳</div>
           <div class="brand-text">
             <strong>Claude</strong>
-            <span class="badge-byok">${activeSidepanelView === 'recorder' ? 'RECORDER' : (aiDecisionMode === 'autonomous' ? 'AUTONOMOUS' : 'AGENT')}</span>
+            <span class="badge-byok">${aiDecisionMode === 'autonomous' ? 'AUTONOMOUS' : 'AGENT'}</span>
           </div>
         </div>
         <div class="header-actions">
-          <div class="view-switcher">
-            <button class="view-switch-btn ${activeSidepanelView === 'chat' ? 'active' : ''}" id="btn-view-chat">💬 Chat</button>
-            <button class="view-switch-btn ${activeSidepanelView === 'recorder' ? 'active' : ''}" id="btn-view-recorder">⏺️ Recorder</button>
-          </div>
           <button id="btn-stop-agent" class="stop-agent-btn" style="display: none;" title="Stop running agent">🛑 Stop</button>
-          <select id="quick-model-select" class="quick-model-picker" title="Change active AI model" style="${activeSidepanelView === 'recorder' ? 'display:none;' : ''}"></select>
+          <select id="quick-model-select" class="quick-model-picker" title="Change active AI model"></select>
           <button id="btn-settings" class="icon-button" title="Settings">⚙️</button>
         </div>
       </header>
@@ -1171,7 +1167,7 @@ function renderApp() {
       <!-- Target Tab Bar (With Lock Status & Switcher) -->
       <div id="tab-info" class="tab-bar"></div>
 
-      ${activeSidepanelView === 'recorder' ? renderSidepanelRecorderView() : renderSidepanelChatView()}
+      ${renderSidepanelChatView()}
 
       <!-- Settings Modal -->
       <div id="settings-modal" class="modal-backdrop" style="display: none;">
@@ -1423,18 +1419,6 @@ function setupEventListeners() {
     updateLastStepInChat('🛑 **Agent stopped by user.**');
   });
 
-  // View switcher (Chat vs Recorder)
-  document.getElementById('btn-view-chat')?.addEventListener('click', () => {
-    activeSidepanelView = 'chat';
-    renderApp();
-    setupEventListeners();
-  });
-  document.getElementById('btn-view-recorder')?.addEventListener('click', async () => {
-    activeSidepanelView = 'recorder';
-    await loadSidepanelWorkflows();
-    renderApp();
-    setupEventListeners();
-  });
 
   // Sidepanel Recorder Controls
   const sideActSelect = document.getElementById('side-action-select');

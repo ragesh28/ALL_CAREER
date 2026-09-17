@@ -1,34 +1,41 @@
 /**
- * Claude in Chrome — Workflow Recorder Script
- * Live step recording, element picking, and AI node insertion.
+ * Claude in Chrome — Dedicated Workflow Step Recorder Sidebar Script
+ * Real-time step recording, element picking, AI node selection, and loop control.
+ * Matches Autofill V4 workflow creating popup format and syncs directly with content.js.
  */
 
 const STORAGE_KEY_WORKFLOWS = 'browserWorkflows';
+const RECORDING_KEY = 'recording_session';
 
 const INSTRUCTIONS = {
-  click: 'Click any element on the website tab. Buttons, links, dropdowns and uploads are auto-detected.',
-  fill: 'Select the typing area or enter text below to fill into the element on the website.',
-  dropdown: 'Select the dropdown on the website, then select your desired option.',
-  checkbox: 'Select the checkbox or its label on the website.',
-  multiple_choice: 'Select the radio button or choice on the website.',
-  file_upload: 'Upload resume step. Silently attaches candidate resume from Settings.',
-  ai_step: 'AI will read the question or region on the page and autonomously answer from candidate profile.',
-  loop: 'Select a repeated item on the website (e.g. first job card) to loop through.',
-  loop_end: 'Select the element or success message that completes a single loop item.',
-  full_end: 'Select the element that confirms the entire workflow is finished.',
+  click: 'Select any element. Dropdowns, checkboxes, choices, and uploads are detected automatically.',
+  fill: 'Select the input where the workflow should type.',
+  dropdown: 'Select the dropdown, then select the required option.',
+  checkbox: 'Select the checkbox or its label.',
+  multiple_choice: 'Select the required radio or multiple-choice option.',
+  file_upload: 'Select Add File or the file input. Replay uses the workflow resume.',
+  ai_step: 'Click the box, modal, or region containing the recruiter questions. AI will automatically answer everything in it.',
+  loop: 'Select one repeated item, such as the first job card.',
+  loop_end: 'Move over the page and select the success message that ends this loop item.',
+  full_end: 'Move over the page and select the success message that ends the full workflow.',
 };
 
 const ACTION_COLORS = {
   open_url: '#22c55e',
   click: '#38bdf8',
   fill: '#a855f7',
+  select_option: '#eab308',
   dropdown: '#eab308',
+  check: '#ec4899',
   checkbox: '#ec4899',
   multiple_choice: '#06b6d4',
+  attach_resume: '#f97316',
   file_upload: '#f97316',
-  ai_step: '#14b8a6',
   ai_fallback: '#14b8a6',
+  ai_step: '#14b8a6',
+  loop_start: '#eab308',
   loop: '#eab308',
+  loop_end: '#eab308',
   stop: '#ef4444',
 };
 
@@ -36,13 +43,18 @@ const ACTION_BADGES = {
   open_url: 'URL',
   click: 'CLK',
   fill: 'TYP',
+  select_option: 'SEL',
   dropdown: 'DRP',
+  check: 'CHK',
   checkbox: 'CHK',
   multiple_choice: 'RAD',
-  file_upload: 'RES',
-  ai_step: 'AI',
+  attach_resume: 'FILE',
+  file_upload: 'FILE',
   ai_fallback: 'AI',
+  ai_step: 'AI',
+  loop_start: 'LOOP',
   loop: 'LOOP',
+  loop_end: 'LEND',
   stop: 'STOP',
 };
 
@@ -50,6 +62,8 @@ let targetTabId = null;
 let currentWorkflowId = null;
 let currentWorkflow = null;
 let workflows = [];
+let manualLoopDepth = 0;
+let isStopWorkingActive = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
@@ -61,15 +75,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadWorkflowData();
   await updateTargetTabHeader();
   setupUIEvents();
+  setupCrossTabSync();
   renderStepsList();
 });
 
 async function loadWorkflowData() {
+  // Check active recording session in storage first
+  try {
+    const sessionData = await chrome.storage.session.get(RECORDING_KEY);
+    const recSession = sessionData?.[RECORDING_KEY];
+    if (recSession?.workflow) {
+      currentWorkflow = recSession.workflow;
+      currentWorkflowId = currentWorkflow.id;
+      if (recSession.tabId) targetTabId = recSession.tabId;
+      manualLoopDepth = (recSession.loopStack || []).length;
+    }
+  } catch (_) {}
+
+  // Fallback to local storage workflows
   const data = await chrome.storage.local.get([STORAGE_KEY_WORKFLOWS]);
   workflows = Array.isArray(data[STORAGE_KEY_WORKFLOWS]) ? data[STORAGE_KEY_WORKFLOWS] : [];
 
-  if (currentWorkflowId) {
-    currentWorkflow = workflows.find(w => w.id === currentWorkflowId);
+  if (!currentWorkflow && currentWorkflowId) {
+    currentWorkflow = workflows.find((w) => w.id === currentWorkflowId);
   }
 
   if (!currentWorkflow && workflows.length > 0) {
@@ -83,18 +111,31 @@ async function loadWorkflowData() {
       name: 'Recorded workflow',
       startUrl: 'https://www.naukri.com/',
       steps: [
-        { id: 's1', type: 'open_url', name: 'Open Page', value: 'https://www.naukri.com/', waitMs: 400, color: '#22c55e', badge: 'URL', target: 'https://www.naukri.com/', disabled: false, stopAfter: false, finalSubmit: false }
+        {
+          id: 's1',
+          type: 'open_url',
+          name: 'Open Page',
+          value: 'https://www.naukri.com/',
+          waitMs: 400,
+          color: '#22c55e',
+          badge: 'URL',
+          target: 'https://www.naukri.com/',
+          disabled: false,
+          stopAfter: false,
+          finalSubmit: false,
+        },
       ],
     };
     workflows.push(currentWorkflow);
     await saveWorkflows();
   }
 
-  document.getElementById('wf-name-label').textContent = currentWorkflow.name || 'Recorded workflow';
+  const nameEl = document.getElementById('wf-name-label');
+  if (nameEl) nameEl.textContent = currentWorkflow.name || 'Recorded workflow';
 }
 
 async function saveWorkflows(msg = 'Workflow updated!') {
-  const idx = workflows.findIndex(w => w.id === currentWorkflow.id);
+  const idx = workflows.findIndex((w) => w.id === currentWorkflow.id);
   if (idx >= 0) workflows[idx] = currentWorkflow;
   else workflows.push(currentWorkflow);
 
@@ -108,150 +149,155 @@ async function updateTargetTabHeader() {
     try {
       const tab = await chrome.tabs.get(targetTabId);
       if (tab) {
-        document.getElementById('tab-title-val').textContent = tab.title || tab.url || 'Active Website Tab';
         document.getElementById('conn-banner').className = 'status-banner';
-        document.getElementById('conn-text').textContent = '🟢 Connected to website tab — ready to record';
+        document.getElementById('conn-text').textContent = '🟢 Connected to ' + (tab.title || tab.url || 'target tab');
         return;
       }
-    } catch (e) {}
+    } catch (_) {}
   }
 
-  // Fallback: find active http tab
   try {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    const target = tabs.find(t => t.url && /^https?:/i.test(t.url));
+    const target = tabs.find((t) => t.url && /^https?:/i.test(t.url));
     if (target?.id) {
       targetTabId = target.id;
-      document.getElementById('tab-title-val').textContent = target.title || target.url;
       document.getElementById('conn-banner').className = 'status-banner';
-      document.getElementById('conn-text').textContent = '🟢 Connected to ' + (target.title || 'website');
+      document.getElementById('conn-text').textContent = '🟢 Connected to ' + (target.title || 'target tab');
       return;
     }
-  } catch (e) {}
+  } catch (_) {}
 
-  document.getElementById('tab-title-val').textContent = 'No target tab connected';
   document.getElementById('conn-banner').className = 'status-banner disconnected';
   document.getElementById('conn-text').textContent = '🔴 Target website tab not found';
 }
 
-function showStatus(text, color = '#a7f3d0') {
-  const el = document.getElementById('status-box');
+function showStatus(text, error = false) {
+  const el = document.getElementById('wf-status');
   if (el) {
     el.textContent = text;
-    el.style.color = color;
+    el.style.color = error ? '#fca5a5' : '#a7f3d0';
+    el.style.borderLeftColor = error ? '#ef4444' : '#10b981';
   }
 }
 
+function sendToTargetTab(message) {
+  if (!targetTabId) return;
+  chrome.tabs.sendMessage(targetTabId, message).catch(() => {});
+}
+
 function setupUIEvents() {
-  const actionSelect = document.getElementById('action-type-select');
-  const aiBox = document.getElementById('ai-options-box');
-  const fillBox = document.getElementById('fill-box');
-  const promptChk = document.getElementById('ai-prompt-chk');
-  const promptInput = document.getElementById('ai-custom-prompt');
+  const stepNameInput = document.getElementById('wf-step-name');
+  const modeSelect = document.getElementById('wf-mode');
+  const waitCheckbox = document.getElementById('wf-wait-for-element');
+  const aiEditor = document.getElementById('wf-ai-editor');
+  const aiElementCountSelect = document.getElementById('wf-ai-element-count');
+  const aiFullPageCheckbox = document.getElementById('wf-ai-full-page');
+  const aiPromptToggle = document.getElementById('wf-ai-custom-prompt-toggle');
+  const aiPromptBox = document.getElementById('wf-ai-prompt-box');
+  const aiPromptInput = document.getElementById('wf-ai-prompt-input');
+  const fillEditor = document.getElementById('wf-fill-editor');
+  const fillValueInput = document.getElementById('wf-fill-value');
+  const saveFillBtn = document.getElementById('wf-save-fill');
+  const pickBtn = document.getElementById('wf-pick');
+  const addStepBtn = document.getElementById('wf-add-step');
+  const undoBtn = document.getElementById('wf-undo');
+  const inspectBtn = document.getElementById('wf-inspect');
+  const endLoopBtn = document.getElementById('wf-end-loop');
+  const finishBtn = document.getElementById('wf-finish');
+  const backStudioBtn = document.getElementById('btn-back-studio');
+  const refreshConnBtn = document.getElementById('btn-refresh-conn');
 
-  actionSelect?.addEventListener('change', (e) => {
+  // Step name sync
+  stepNameInput?.addEventListener('input', (e) => {
+    sendToTargetTab({
+      action: 'RECORDER_TAB_STEP_NAME_CHANGE',
+      name: e.target.value.trim(),
+    });
+  });
+
+  // Action type change
+  modeSelect?.addEventListener('change', (e) => {
     const act = e.target.value;
-    aiBox.style.display = act === 'ai_step' ? 'grid' : 'none';
-    fillBox.style.display = act === 'fill' ? 'grid' : 'none';
-    showStatus(INSTRUCTIONS[act] || 'Select an action.');
+    if (aiEditor) aiEditor.style.display = act === 'ai_step' ? 'grid' : 'none';
+    if (fillEditor) fillEditor.style.display = act === 'fill' ? 'grid' : 'none';
+    showStatus(INSTRUCTIONS[act] || 'Select an action, then click an element on the page.');
+
+    sendToTargetTab({
+      action: 'RECORDER_TAB_MODE_CHANGE',
+      mode: act,
+    });
   });
 
-  promptChk?.addEventListener('change', (e) => {
-    promptInput.style.display = e.target.checked ? 'block' : 'none';
+  // Wait toggle
+  waitCheckbox?.addEventListener('change', (e) => {
+    const checked = e.target.checked;
+    showStatus(checked ? 'Move over the page and select the element that must appear before this action.' : 'Appearance wait removed.');
+    sendToTargetTab({
+      action: 'RECORDER_TAB_WAIT_TOGGLE',
+      checked,
+    });
   });
 
-  // Pick element on page (injects picker overlay into target tab)
-  document.getElementById('btn-pick-element')?.addEventListener('click', async () => {
+  // AI Options
+  aiElementCountSelect?.addEventListener('change', (e) => {
+    sendToTargetTab({
+      action: 'RECORDER_TAB_AI_ELEMENT_COUNT_CHANGE',
+      count: parseInt(e.target.value, 10) || 2,
+    });
+  });
+
+  aiFullPageCheckbox?.addEventListener('change', (e) => {
+    sendToTargetTab({
+      action: 'RECORDER_TAB_AI_FULL_PAGE_TOGGLE',
+      checked: e.target.checked,
+    });
+  });
+
+  aiPromptToggle?.addEventListener('change', (e) => {
+    if (aiPromptBox) aiPromptBox.style.display = e.target.checked ? 'block' : 'none';
+  });
+
+  aiPromptInput?.addEventListener('input', (e) => {
+    sendToTargetTab({
+      action: 'RECORDER_TAB_AI_PROMPT_CHANGE',
+      prompt: e.target.value.trim(),
+    });
+  });
+
+  // Save Fill Text
+  saveFillBtn?.addEventListener('click', () => {
+    const val = fillValueInput?.value.trim() || '';
+    sendToTargetTab({
+      action: 'RECORDER_TAB_SAVE_FILL',
+      value: val,
+    });
+    showStatus(`Saved typing value: ${val}`);
+  });
+
+  // Pick Element on Page
+  pickBtn?.addEventListener('click', async () => {
     if (!targetTabId) return alert('No target tab connected.');
-    const act = actionSelect.value;
-    showStatus(`🔍 Picking element on target tab for [${act}]...`);
+    const act = modeSelect?.value || 'click';
+    showStatus(`🔍 Click an element on the target website to record [${act}]...`);
 
     try {
       await chrome.tabs.update(targetTabId, { active: true });
-      const [res] = await chrome.scripting.executeScript({
-        target: { tabId: targetTabId },
-        func: (actionType) => {
-          return new Promise((resolve) => {
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(56,189,248,0.08);z-index:2147483640;cursor:crosshair;pointer-events:all;border:4px solid #38bdf8;box-sizing:border-box;';
-            const badge = document.createElement('div');
-            badge.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:8px 16px;border-radius:8px;border:1px solid #38bdf8;font:700 13px sans-serif;z-index:2147483647;box-shadow:0 10px 25px rgba(0,0,0,0.5);';
-            badge.textContent = `🎯 Click any element on this page to record [${actionType}]`;
-            document.body.appendChild(overlay);
-            document.body.appendChild(badge);
-
-            function cleanup() {
-              overlay.remove();
-              badge.remove();
-              document.removeEventListener('click', clickHandler, true);
-            }
-
-            function clickHandler(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              cleanup();
-
-              const target = e.target;
-              let selector = target.tagName.toLowerCase();
-              if (target.id && !target.id.includes('__') && !/\d{4,}/.test(target.id)) selector = '#' + CSS.escape(target.id);
-              else if (target.className && typeof target.className === 'string') {
-                const c = target.className.split(/\s+/).filter(x => x && !x.includes(':'))[0];
-                if (c) selector = `${target.tagName.toLowerCase()}.${CSS.escape(c)}`;
-              }
-
-              const label = (target.textContent || target.getAttribute('aria-label') || target.getAttribute('placeholder') || target.tagName).trim().substring(0, 50);
-
-              resolve({
-                selector,
-                label,
-                tagName: target.tagName,
-                type: target.type || '',
-              });
-            }
-
-            document.addEventListener('click', clickHandler, true);
-          });
-        },
-        args: [act],
-      });
-
-      if (res?.result) {
-        const picked = res.result;
-        const stepName = document.getElementById('step-name-input').value.trim() || `${act === 'click' ? 'Click' : 'Interact with'} ${picked.label || picked.selector}`;
-        const fillVal = document.getElementById('fill-val-input').value.trim();
-
-        currentWorkflow.steps.push({
-          id: 's_' + Date.now(),
-          type: act === 'ai_step' ? 'ai_fallback' : act,
-          name: stepName,
-          value: fillVal || picked.label || '',
-          target: picked.selector,
-          waitMs: 400,
-          color: ACTION_COLORS[act] || '#38bdf8',
-          badge: ACTION_BADGES[act] || 'ACT',
-          disabled: false,
-          stopAfter: false,
-          finalSubmit: false,
-        });
-
-        document.getElementById('step-name-input').value = '';
-        await saveWorkflows(`Recorded: "${stepName}" [${picked.selector}]`);
-      }
+      sendToTargetTab({ action: 'ENTER_PICKER_MODE' });
     } catch (err) {
-      showStatus('Pick error: ' + err.message, '#f87171');
+      showStatus('Pick error: ' + err.message, true);
     }
   });
 
-  // Manual Add Step
-  document.getElementById('btn-add-step-manual')?.addEventListener('click', async () => {
-    const act = actionSelect.value;
-    const name = document.getElementById('step-name-input').value.trim() || `Step ${currentWorkflow.steps.length + 1}`;
-    const fillVal = document.getElementById('fill-val-input').value.trim();
+  // Add Step manually
+  addStepBtn?.addEventListener('click', async () => {
+    const act = modeSelect?.value || 'click';
+    const name = stepNameInput?.value.trim() || `Step ${(currentWorkflow?.steps?.length || 0) + 1}`;
+    const fillVal = fillValueInput?.value.trim() || '';
     const isAi = act === 'ai_step';
 
-    currentWorkflow.steps.push({
+    const newStep = {
       id: 's_' + Date.now(),
-      type: isAi ? 'ai_fallback' : act,
+      type: isAi ? 'ai_fallback' : act === 'file_upload' ? 'attach_resume' : act,
       name,
       value: fillVal || (isAi ? 'AI screening auto-response' : ''),
       target: isAi ? 'Questionnaire container' : 'Element selector',
@@ -261,47 +307,148 @@ function setupUIEvents() {
       disabled: false,
       stopAfter: false,
       finalSubmit: false,
-    });
+    };
 
-    document.getElementById('step-name-input').value = '';
+    currentWorkflow.steps.push(newStep);
+    if (stepNameInput) stepNameInput.value = '';
     await saveWorkflows(`Added step "${name}"!`);
   });
 
-  // Undo step
-  document.getElementById('btn-undo-step')?.addEventListener('click', async () => {
-    if (currentWorkflow.steps.length <= 1) return showStatus('Workflow must have at least one step.');
-    const popped = currentWorkflow.steps.pop();
-    await saveWorkflows(`Undid: "${popped.name}"`);
+  // Undo Step
+  undoBtn?.addEventListener('click', async () => {
+    undoBtn.disabled = true;
+    try {
+      const result = await chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_UNDO' });
+      if (result?.success) {
+        if (currentWorkflow?.steps?.length > 1) {
+          currentWorkflow.steps.pop();
+        }
+        await saveWorkflows(result.undone ? `Removed "${String(result.removedStep)}".` : 'The starting page is protected.');
+      } else {
+        showStatus(result?.error || 'Could not undo step.', true);
+      }
+    } catch (e) {
+      if (currentWorkflow?.steps?.length > 1) {
+        currentWorkflow.steps.pop();
+        await saveWorkflows('Undid last step.');
+      }
+    } finally {
+      undoBtn.disabled = false;
+    }
   });
 
-  // Finish & Save
-  document.getElementById('btn-finish-wf')?.addEventListener('click', async () => {
+  // Stop Working (allow one untracked website click)
+  inspectBtn?.addEventListener('click', () => {
+    isStopWorkingActive = !isStopWorkingActive;
+    inspectBtn.classList.toggle('inspecting', isStopWorkingActive);
+    inspectBtn.textContent = isStopWorkingActive ? 'Stopping next click' : 'Stop working';
+    showStatus(isStopWorkingActive
+      ? 'Stop working is ready. Your next website click will not be added; recording resumes automatically after it.'
+      : 'Recording active.');
+
+    sendToTargetTab({ action: 'RECORDER_TAB_STOP_WORKING' });
+  });
+
+  // End Loop Now
+  endLoopBtn?.addEventListener('click', async () => {
+    if (manualLoopDepth < 1) return;
+    sendToTargetTab({ action: 'RECORDER_TAB_END_LOOP' });
+    manualLoopDepth = Math.max(0, manualLoopDepth - 1);
+    document.getElementById('wf-loop-state').textContent = manualLoopDepth > 0 ? `Inside loop ${manualLoopDepth}` : 'No active loop';
+    endLoopBtn.disabled = manualLoopDepth === 0;
+    showStatus('Loop ended.');
+  });
+
+  // Finish and Save
+  finishBtn?.addEventListener('click', async () => {
+    await chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+    sendToTargetTab({ action: 'RECORDER_TAB_FINISH' });
     await saveWorkflows('Workflow saved successfully!');
-    window.location.href = chrome.runtime.getURL('options.html');
+    // Return to Options / Studio page
+    const studioUrl = chrome.runtime.getURL('options.html#workflows');
+    chrome.tabs.create({ url: studioUrl });
+    window.close();
   });
 
   // Back to Studio
-  document.getElementById('btn-back-studio')?.addEventListener('click', () => {
-    window.location.href = chrome.runtime.getURL('options.html');
+  backStudioBtn?.addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('options.html#workflows') });
   });
 
   // Refresh Connection
-  document.getElementById('btn-refresh-conn')?.addEventListener('click', async () => {
+  refreshConnBtn?.addEventListener('click', async () => {
     await updateTargetTabHeader();
-    showStatus('Refreshed connection.');
+    showStatus('Refreshed connection to target tab.');
+  });
+}
+
+function setupCrossTabSync() {
+  // Listen to background & content script state broadcast
+  chrome.runtime.onMessage.addListener((message) => {
+    if (!message || typeof message.action !== 'string') return;
+
+    if (message.action === 'RECORDER_STATE_UPDATE') {
+      if (typeof message.stepCount === 'number') {
+        const stepNum = document.getElementById('wf-step-number');
+        if (stepNum) stepNum.textContent = `Step ${message.stepCount + 1}`;
+      }
+      if (typeof message.loopDepth === 'number') {
+        manualLoopDepth = message.loopDepth;
+        const loopLabel = document.getElementById('wf-loop-state');
+        if (loopLabel) loopLabel.textContent = manualLoopDepth > 0 ? `Inside loop ${manualLoopDepth}` : 'No active loop';
+        const endLoopBtn = document.getElementById('wf-end-loop');
+        if (endLoopBtn) endLoopBtn.disabled = manualLoopDepth === 0;
+      }
+      if (message.status) {
+        showStatus(message.status, message.error === true);
+      }
+      if (message.waitTarget !== undefined) {
+        const waitTarget = document.getElementById('wf-wait-target');
+        if (waitTarget) waitTarget.textContent = message.waitTarget;
+      }
+      if (message.skipNextCapture !== undefined) {
+        isStopWorkingActive = Boolean(message.skipNextCapture);
+        const inspectBtn = document.getElementById('wf-inspect');
+        if (inspectBtn) {
+          inspectBtn.classList.toggle('inspecting', isStopWorkingActive);
+          inspectBtn.textContent = isStopWorkingActive ? 'Stopping next click' : 'Stop working';
+        }
+      }
+    }
+  });
+
+  // Real-time storage listener: updates steps list immediately when webpage clicks are recorded
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'session' && changes[RECORDING_KEY]?.newValue) {
+      const rec = changes[RECORDING_KEY].newValue;
+      if (rec.workflow?.steps) {
+        currentWorkflow = rec.workflow;
+        renderStepsList();
+      }
+    }
+    if (areaName === 'local' && changes[STORAGE_KEY_WORKFLOWS]?.newValue) {
+      const list = changes[STORAGE_KEY_WORKFLOWS].newValue;
+      if (Array.isArray(list) && currentWorkflowId) {
+        const updated = list.find((w) => w.id === currentWorkflowId);
+        if (updated?.steps) {
+          currentWorkflow = updated;
+          renderStepsList();
+        }
+      }
+    }
   });
 }
 
 function renderStepsList() {
   const container = document.getElementById('steps-container');
   const countEl = document.getElementById('steps-count');
-  const stepNumLabel = document.getElementById('step-num-label');
+  const stepNumEl = document.getElementById('wf-step-number');
 
   if (!container || !currentWorkflow) return;
 
   const steps = currentWorkflow.steps || [];
-  countEl.textContent = steps.length;
-  stepNumLabel.textContent = `Step ${steps.length + 1}`;
+  if (countEl) countEl.textContent = steps.length;
+  if (stepNumEl) stepNumEl.textContent = `Step ${steps.length + 1}`;
 
   container.innerHTML = steps.map((step, idx) => {
     const badgeColor = step.color || ACTION_COLORS[step.type] || '#38bdf8';
@@ -310,14 +457,14 @@ function renderStepsList() {
       <div class="step-item" style="border-left: 3px solid ${badgeColor};">
         <div style="display:flex;align-items:center;min-width:0;flex:1;">
           <span class="step-badge" style="background:${badgeColor};">${badgeText}</span>
-          <span class="step-name">${idx + 1}. ${escapeHtml(step.name || 'Step ' + (idx + 1))}</span>
+          <span class="step-title">${idx + 1}. ${escapeHtml(step.name || 'Step ' + (idx + 1))}</span>
         </div>
-        <button class="step-del btn-del-step" data-idx="${idx}" title="Delete Step">✕</button>
+        <button class="step-del btn-del-step" data-idx="${idx}" title="Delete step">✕</button>
       </div>
     `;
   }).join('');
 
-  container.querySelectorAll('.btn-del-step').forEach(btn => {
+  container.querySelectorAll('.btn-del-step').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const idx = parseInt(btn.getAttribute('data-idx'), 10);
       if (currentWorkflow.steps.length <= 1) return alert('Workflow must have at least 1 step.');
@@ -329,5 +476,9 @@ function renderStepsList() {
 
 function escapeHtml(str) {
   if (!str) return '';
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
