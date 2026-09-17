@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "821",
+  "workflow_run_id": "35227814447",
+  "timestamp": "2026-09-17T13:54:37.640450",
+  "runtime_minutes": 18.38,
+  "messages_processed": 52,
+  "new_jobs_stored": 43,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "seekeras",
+      "msg_id": 18232,
+      "text": "Hi Everyone are Your Guys Looking for Daily Walkin Interview Drive Do Join our Whatsapp Channel for Regular Walkin Interview 👇👇\n\n https://whatsapp.com/channel/0029Vb4MNSJFSAt7QX1fgv32",
+      "timestamp": "2026-09-17T08:33:34+00:00"
+    }
+  ]
+}
