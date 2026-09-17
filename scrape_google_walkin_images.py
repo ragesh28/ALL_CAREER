@@ -1,5 +1,5 @@
 """
-ALL_CAREER — Google Images Walk-in Flyer Extractor Workflow (v4.0: HasData 100-Image Engine).
+ALL_CAREER — Google Images Walk-in Flyer Extractor Workflow (v4.5: HasData 100-Image Engine).
 Combines:
 1. Top 20 Indian Metros & Tech Hubs @ 100 Images per City
 2. HasData Google Images Engine (100 images per single request, 5 credits/city)
@@ -10,6 +10,9 @@ Combines:
 7. Walk-in interview vs Direct hiring classification (is_walkin: True/False)
 8. Direct image links on top source (flyer_image_url, url, raw_flyer_src)
 9. Dual-Database Sync: scraped_image_walkin_jobs.json + data/index/walkin_jobs.json
+10. Live per-request credit progress tracker with quota gauge
+11. Automatic 1-Month Billing Cycle Reset (auto-resets to 100% full credits each month)
+12. Workflow End Credit & Job Dashboard (Console + GitHub Actions Step Summary)
 """
 import os
 import sys
@@ -135,68 +138,239 @@ def get_next_hasdata_key(keys: List[str]) -> Tuple[str, int]:
     return keys[idx], idx
 
 
-# Fallback ScraperAPI configuration (if HasData exhausted)
-SCRAPERAPI_ENDPOINT = "http://api.scraperapi.com"
-
-
-def get_scraperapi_keys() -> List[str]:
-    keys = []
-    for env_name in ["SCRAPERAPI_KEY", "SCRAPERAPI_KEYS", "SCRAPERAPI_KEYS_LIST"]:
-        val = os.environ.get(env_name, "").strip()
-        if val:
-            for k in re.split(r'[\r\n,]+', val):
-                k = k.strip()
-                if k and k not in keys:
-                    keys.append(k)
-    if not keys:
-        keys.append("1b6c35559408237568f35243b3b00a76")
-    return keys
-
-
 # ═════════════════════════════════════════════════════════════════════════════
-# 30-DAY ROLLING CREDIT TRACKER
+# MONTHLY CREDIT TRACKER WITH AUTOMATIC 1-MONTH RESET & LIVE PROGRESS
 # ═════════════════════════════════════════════════════════════════════════════
-def load_credit_tracker() -> dict:
-    """Load the 30-day rolling credit usage tracker."""
+def check_and_reset_monthly_cycle(tracker: dict, key_count: int) -> Tuple[dict, bool]:
+    """
+    Evaluate if 1 month has ended (calendar month change or 30 days elapsed).
+    When 1 month ends, archives previous cycle and resets cycle_used_credits to 0 (100% full pool).
+    """
+    current_utc = datetime.now(timezone.utc)
+    current_month = current_utc.strftime("%Y-%m")
+    current_date = current_utc.strftime("%Y-%m-%d")
+    total_pool = key_count * 1000
+
+    tracker["total_pool"] = total_pool
+    tracker.setdefault("cycle_history", [])
+    tracker.setdefault("daily_log", [])
+
+    cycle_month = tracker.get("cycle_month")
+    cycle_start = tracker.get("cycle_start_date")
+
+    days_elapsed = 0
+    if cycle_start:
+        try:
+            start_dt = datetime.strptime(cycle_start, "%Y-%m-%d")
+            days_elapsed = (current_utc.date() - start_dt.date()).days
+        except Exception:
+            days_elapsed = 0
+
+    is_reset = False
+    if not cycle_month:
+        # First time initialization
+        tracker["cycle_month"] = current_month
+        tracker["cycle_start_date"] = current_date
+        tracker["cycle_used_credits"] = 0
+    elif cycle_month != current_month or days_elapsed >= 30:
+        # 1-Month Reset condition met
+        is_reset = True
+        tracker["cycle_history"].append({
+            "month": cycle_month,
+            "start_date": cycle_start or current_date,
+            "end_date": current_date,
+            "credits_used": tracker.get("cycle_used_credits", 0),
+            "total_pool": tracker.get("total_pool", total_pool)
+        })
+        tracker["cycle_used_credits"] = 0
+        tracker["cycle_month"] = current_month
+        tracker["cycle_start_date"] = current_date
+
+    return tracker, is_reset
+
+
+def load_credit_tracker(key_count: int) -> Tuple[dict, bool]:
+    """Load persistent credit tracker and evaluate monthly auto-reset."""
+    tracker = {}
     if CREDIT_TRACKER_FILE.exists():
         try:
             with open(CREDIT_TRACKER_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                tracker = json.load(f)
         except Exception:
-            pass
-    return {"total_pool": 4000, "daily_log": []}
+            tracker = {}
+
+    tracker, is_reset = check_and_reset_monthly_cycle(tracker, key_count)
+    save_credit_tracker(tracker)
+    return tracker, is_reset
 
 
 def save_credit_tracker(tracker: dict):
-    """Save the credit tracker, pruning entries older than 30 days."""
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
-    tracker["daily_log"] = [
-        entry for entry in tracker.get("daily_log", [])
-        if entry.get("date", "") >= cutoff
-    ]
+    """Save credit tracker to JSON file, keeping the latest 60 daily log entries."""
+    if "daily_log" in tracker and len(tracker["daily_log"]) > 60:
+        tracker["daily_log"] = tracker["daily_log"][-60:]
     CREDIT_TRACKER_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(CREDIT_TRACKER_FILE, "w", encoding="utf-8") as f:
         json.dump(tracker, f, indent=2, ensure_ascii=False)
 
 
-def get_30day_used_credits(tracker: dict) -> int:
-    """Calculate total credits used in the last 30 days."""
-    return sum(entry.get("credits_used", 0) for entry in tracker.get("daily_log", []))
+def record_request_credits(tracker: dict, credits_used: int, city_name: str):
+    """Update cycle usage and daily log atomically after every request."""
+    tracker["cycle_used_credits"] = tracker.get("cycle_used_credits", 0) + credits_used
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    entry = next((e for e in tracker.setdefault("daily_log", []) if e.get("date") == today_str), None)
+    if entry:
+        entry["credits_used"] += credits_used
+        entry["cities_processed"] += 1
+    else:
+        tracker["daily_log"].append({
+            "date": today_str,
+            "credits_used": credits_used,
+            "jobs_extracted": 0,
+            "cities_processed": 1
+        })
+    save_credit_tracker(tracker)
 
 
-def print_credit_dashboard(tracker: dict, today_credits: int, key_count: int):
-    """Print a credit usage dashboard at the end of the workflow."""
-    used_30d = get_30day_used_credits(tracker)
-    total_pool = key_count * 1000  # 1000 credits per free HasData account
+def record_city_extracted_jobs(tracker: dict, new_jobs_count: int):
+    """Update job count in today's daily log."""
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    entry = next((e for e in tracker.setdefault("daily_log", []) if e.get("date") == today_str), None)
+    if entry:
+        entry["jobs_extracted"] = entry.get("jobs_extracted", 0) + new_jobs_count
+        save_credit_tracker(tracker)
 
-    print("\n" + "=" * 70)
-    print("  💳 HASDATA GOOGLE IMAGES CREDIT DASHBOARD (30-Day Rolling)")
-    print("=" * 70)
-    print(f"  🔑 Active HasData Keys : {key_count} keys in rotation pool ({total_pool:,} monthly pool)")
-    print(f"  📊 Today's Credits     : {today_credits} credits consumed (5 credits per 100 images)")
-    print(f"  📅 30-Day Usage        : {used_30d:,} / {total_pool:,} credits ({total_pool - used_30d:,} remaining)")
-    print(f"  ⚡ Image Downloads     : 0 credits (direct in-memory buffer streaming)")
-    print("=" * 70)
+
+def render_gauge_bar(used: int, total: int, width: int = 24) -> str:
+    """Render a visual ASCII gauge bar for quota availability."""
+    if total <= 0:
+        return "[------------------------] 0.0% Available"
+    avail = max(0, total - used)
+    pct = min(1.0, max(0.0, avail / total))
+    filled = int(round(width * pct))
+    bar = "█" * filled + "░" * (width - filled)
+    return f"[{bar}] {pct*100:.1f}% Available ({avail:,} / {total:,})"
+
+
+def print_request_progress(
+    city_idx: int,
+    total_cities: int,
+    city_name: str,
+    req_credits: int,
+    run_credits: int,
+    tracker: dict,
+    key_info: str,
+    images_count: int
+):
+    """
+    Print a live, beautiful progress box on EVERY single search request.
+    Displays:
+    - Current city progress (X / 20)
+    - Credits consumed for this request (+5)
+    - Credits used this run
+    - Monthly cycle credits consumed & remaining
+    - Visual quota gauge bar
+    - Active key info
+    """
+    pool = tracker.get("total_pool", 4000)
+    month_used = tracker.get("cycle_used_credits", 0)
+    month_left = max(0, pool - month_used)
+    gauge = render_gauge_bar(month_used, pool, width=22)
+    cycle_month = tracker.get("cycle_month", "Current Month")
+
+    print("\n  ┌" + "─" * 74 + "┐")
+    header_line = f"🌐 [REQUEST PROGRESS: {city_idx}/{total_cities}]"
+    print(f"  │  {header_line:<70}  │")
+    print(f"  │  🏙️ City        : {city_name.upper():<22} ({images_count} candidate images returned) │")
+    print(f"  │  💳 This Request : +{req_credits} Credits consumed {' '*42}│")
+    print(f"  │  📊 Today's Run  : {run_credits} Credits used ({city_idx}/{total_cities} requests completed) {' '*18}│")
+    print(f"  │  📅 Monthly Cycle: {month_used:,} / {pool:,} Credits consumed (Cycle: {cycle_month}) │")
+    print(f"  │  ✨ Remaining    : {month_left:,} / {pool:,} Credits available │")
+    print(f"  │  🔋 Quota Gauge  : {gauge:<50}  │")
+    print(f"  │  🔑 Active Key   : {key_info:<50}  │")
+    print("  └" + "─" * 74 + "┘")
+
+
+def print_credit_dashboard(
+    tracker: dict,
+    run_credits: int,
+    key_count: int,
+    run_duration_str: str,
+    stats: dict
+):
+    """Print grand credit and extraction dashboard at the end of the workflow."""
+    pool = tracker.get("total_pool", key_count * 1000)
+    month_used = tracker.get("cycle_used_credits", 0)
+    month_left = max(0, pool - month_used)
+    pct_left = (month_left / pool * 100) if pool > 0 else 0.0
+    cycle_month = tracker.get("cycle_month", "Current Month")
+    cycle_start = tracker.get("cycle_start_date", "N/A")
+    gauge = render_gauge_bar(month_used, pool, width=26)
+    cities_done = stats.get("cities_processed", 20)
+    new_jobs = stats.get("new_jobs", 0)
+    total_db = stats.get("total_db_jobs", 0)
+
+    print("\n╔" + "═" * 76 + "╗")
+    print("║        💳 HASDATA GOOGLE IMAGES MONTHLY CREDIT USAGE DASHBOARD            ║")
+    print("╠" + "═" * 76 + "╣")
+    print(f"║  🔑 Active API Keys       : {key_count} accounts in rotation pool {' '*(33 - len(str(key_count)))}║")
+    print(f"║  🏊 Total Monthly Pool    : {pool:,} Credits {' '*(45 - len(f'{pool:,}'))}║")
+    print(f"║  📊 This Run Consumed     : {run_credits:,} Credits ({cities_done} cities × 5 credits) {' '*(27 - len(f'{run_credits:,}') - len(str(cities_done)))}║")
+    print(f"║  📅 Current Month Cycle   : {cycle_month} (Cycle Started: {cycle_start}) {' '*(27 - len(cycle_month) - len(cycle_start))}║")
+    print(f"║  📈 Month-to-Date Used    : {month_used:,} / {pool:,} Credits ({100 - pct_left:.1f}% used) │")
+    print(f"║  ✨ Monthly Credits Left  : {month_left:,} / {pool:,} Credits ({pct_left:.1f}% Available) │")
+    print(f"║  🔋 Quota Gauge           : {gauge:<50} ║")
+    print(f"║  ⚡ Image Downloads       : 0 Credits (Direct host stream, 100% free)          ║")
+    print("╠" + "═" * 76 + "╣")
+    print("║  🏆 WORKFLOW EXTRACTION SUMMARY:                                           ║")
+    print(f"║  ⏱️ Run Duration          : {run_duration_str:<50} ║")
+    print(f"║  🏙️ Cities Processed      : {cities_done} / {stats.get('total_cities', 20)} {' '*(48 - len(str(cities_done)) - len(str(stats.get('total_cities', 20))))}║")
+    print(f"║  ✨ New Walk-ins Added    : {new_jobs} jobs {' '*(48 - len(str(new_jobs)))}║")
+    print(f"║  💾 Total Database Size   : {total_db:,} Walk-in Opportunities {' '*(32 - len(f'{total_db:,}'))}║")
+    print("║  📁 Database Files Synced : scraped_image_walkin_jobs.json                   ║")
+    print("║                             data/index/walkin_jobs.json                      ║")
+    print("╚" + "═" * 76 + "╝\n")
+
+
+def write_github_step_summary(
+    tracker: dict,
+    run_credits: int,
+    key_count: int,
+    run_duration_str: str,
+    stats: dict
+):
+    """Write rich GitHub Actions summary markdown table if running in CI."""
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not summary_path:
+        return
+    try:
+        pool = tracker.get("total_pool", key_count * 1000)
+        month_used = tracker.get("cycle_used_credits", 0)
+        month_left = max(0, pool - month_used)
+        pct_left = (month_left / pool * 100) if pool > 0 else 0.0
+        cycle = tracker.get("cycle_month", "Current Month")
+        cycle_start = tracker.get("cycle_start_date", "N/A")
+
+        md = f"""## 💳 HasData Google Images Flyer Scraper — Run & Credit Dashboard
+
+| Metric | Status / Value |
+|:---|:---|
+| **🔑 Active Keys in Pool** | `{key_count}` HasData Accounts (`{pool:,}` monthly credits) |
+| **📊 Credits Used This Run** | **`{run_credits:,}` Credits** ({stats.get('cities_processed', 0)} cities × 5 credits) |
+| **📅 Month-to-Date Consumed** | **`{month_used:,}` / `{pool:,}` Credits** (`{100 - pct_left:.1f}%` used) |
+| **✨ Remaining Monthly Credits** | **`{month_left:,} / {pool:,}` Credits** (`{pct_left:.1f}%` available) |
+| **🔄 Billing Cycle** | `{cycle}` (Started: `{cycle_start}` — **Auto-resets to `{pool:,}` credits** at month end) |
+| **⏱️ Run Execution Time** | `{run_duration_str}` |
+| **✨ New Walk-in Jobs Added** | **`+{stats.get('new_jobs', 0)}` jobs** |
+| **💾 Total Walk-ins in Database** | **`{stats.get('total_db_jobs', 0):,}` opportunities** |
+
+> ℹ️ **Monthly Auto-Reset**: At the end of every monthly billing cycle, the credit tracker automatically resets to **`0 / {pool:,}`** (100% full pool). Direct image downloads consume **0 credits**.
+"""
+        with open(summary_path, "a", encoding="utf-8") as f:
+            f.write(md + "\n")
+        print(f"  📄 [GitHub Actions Summary] Written to GITHUB_STEP_SUMMARY.")
+    except Exception as e:
+        print(f"  ⚠️ Could not write GITHUB_STEP_SUMMARY: {e}")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -323,12 +497,13 @@ def fetch_flyer_items_via_hasdata_sync(
     query: str,
     api_keys: List[str],
     max_count: int = 100
-) -> Tuple[List[Dict[str, Any]], int]:
+) -> Tuple[List[Dict[str, Any]], int, str]:
     """
     Fetch up to 100 high-res image flyer candidates from Google Images via HasData.
     - Consumes exactly 5 credits per search request.
     - Delivers up to 100 images with original link, thumbnail, title, and landing page.
     - Automatically rotates to next key if any key hits quota/rate limits.
+    Returns: (clean_items, credits_used, key_info_str)
     """
     params = {
         "q": query,
@@ -341,6 +516,7 @@ def fetch_flyer_items_via_hasdata_sync(
 
     credits_used = 0
     raw_images = []
+    key_info = "Unknown"
 
     for attempt in range(len(api_keys)):
         key, key_idx = get_next_hasdata_key(api_keys)
@@ -348,6 +524,7 @@ def fetch_flyer_items_via_hasdata_sync(
             "x-api-key": key,
             "Content-Type": "application/json"
         }
+        key_info = f"Key #{key_idx+1} ({key[:8]}...)"
 
         try:
             resp = requests.get(
@@ -358,19 +535,18 @@ def fetch_flyer_items_via_hasdata_sync(
             )
 
             if resp.status_code == 200:
-                credits_used += 5
+                credits_used = 5
                 data = resp.json()
                 raw_images = data.get("imagesResults") or data.get("images") or data.get("imageResults") or []
-                print(f"     ✅ HasData [Key #{key_idx+1} {key[:8]}...]: Retrieved {len(raw_images)} images (Cost: 5 credits)")
                 break
             elif resp.status_code in (401, 403, 429):
-                print(f"     ⚠️ HasData [Key #{key_idx+1} {key[:8]}...] Quota / Auth issue (HTTP {resp.status_code}). Rotating to next key...")
+                print(f"     ⚠️ HasData [{key_info}] Quota / Auth issue (HTTP {resp.status_code}). Rotating to next key...")
                 continue
             else:
-                print(f"     ⚠️ HasData [Key #{key_idx+1} {key[:8]}...] HTTP {resp.status_code}: {resp.text[:150]}")
+                print(f"     ⚠️ HasData [{key_info}] HTTP {resp.status_code}: {resp.text[:150]}")
                 continue
         except Exception as e:
-            print(f"     ⚠️ HasData connection error on key #{key_idx+1}: {e}")
+            print(f"     ⚠️ HasData connection error on {key_info}: {e}")
             continue
 
     # Clean and structure candidate flyer items
@@ -402,7 +578,7 @@ def fetch_flyer_items_via_hasdata_sync(
             "source_site": img.get("source") or "Google Images"
         })
 
-    return clean_items[:max_count], credits_used
+    return clean_items[:max_count], credits_used, key_info
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -427,7 +603,7 @@ async def download_flyer_buffer(
             async with session.get(original_url, timeout=aiohttp.ClientTimeout(total=8)) as resp:
                 if resp.status == 200:
                     content = await resp.read()
-                    # Verify real image buffer (JPEG \xff\xd8\xff, PNG \x89PNG, WebP RIFF)
+                    # Verify real image buffer (JPEG, PNG, WebP)
                     if len(content) >= 4000 and not content.startswith(b"<!DOCTYPE") and not content.startswith(b"<html"):
                         return {
                             "url": original_url,
@@ -462,31 +638,45 @@ async def download_flyer_buffer(
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# CITY IMAGE SCRAPER
+# CITY IMAGE SCRAPER WITH LIVE PER-REQUEST PROGRESS DISPLAY
 # ═════════════════════════════════════════════════════════════════════════════
 async def scrape_images_for_city(
     hasdata_keys: list,
     city: str,
-    max_images: int = 100,
-    credit_counter: dict = None
+    city_idx: int,
+    total_cities: int,
+    tracker: dict,
+    credit_counter: dict,
+    max_images: int = 100
 ) -> list:
     """
     Scrape 100 flyer candidate images for a city using HasData (5 credits per city).
+    Outputs live per-request progress box and updates tracker immediately.
     """
     query = f'"walk in interview" {city} hiring poster'
-    print(f"\n  🔍 Query (HasData Google Images [India Past 24h]): {query}")
 
-    candidate_items, credits_used = await asyncio.to_thread(
+    candidate_items, credits_used, key_info = await asyncio.to_thread(
         fetch_flyer_items_via_hasdata_sync,
         query,
         hasdata_keys,
         max_count=max_images
     )
 
-    if credit_counter is not None:
-        credit_counter["total"] += credits_used
+    # Record credits and update progress
+    credit_counter["total"] += credits_used
+    record_request_credits(tracker, credits_used, city)
 
-    print(f"  📷 Candidate Images Found: {len(candidate_items)} (Credits Consumed: {credits_used})")
+    # Live progress box on EVERY request
+    print_request_progress(
+        city_idx=city_idx,
+        total_cities=total_cities,
+        city_name=city,
+        req_credits=credits_used,
+        run_credits=credit_counter["total"],
+        tracker=tracker,
+        key_info=key_info,
+        images_count=len(candidate_items)
+    )
 
     # Concurrent buffer download
     downloaded = []
@@ -514,7 +704,6 @@ async def main():
     progress = load_progress()
     existing_jobs = load_existing_jobs()
     deduplicator = JobDeduplicator(existing_jobs)
-    credit_tracker = load_credit_tracker()
 
     init_not_extracted_files()
     not_extracted_images = []
@@ -523,15 +712,27 @@ async def main():
     hasdata_keys = get_hasdata_keys()
     credit_counter = {"total": 0}
 
+    # Load credit tracker and evaluate 1-Month Auto-Reset
+    tracker, is_reset = load_credit_tracker(len(hasdata_keys))
+
     print("=" * 80)
-    print("  🚀 ALL_CAREER — HASDATA GOOGLE IMAGES WALK-IN EXTRACTOR (v4.0)")
+    print("  🚀 ALL_CAREER — HASDATA GOOGLE IMAGES WALK-IN EXTRACTOR (v4.5)")
     print(f"  📅 Start Time (UTC): {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"  ⏱️ Maximum Run Budget: 5 Hours 50 Minutes ({MAX_RUN_SECONDS}s)")
     print(f"  📊 Previously Scraped Jobs: {len(existing_jobs):,}")
-    print(f"  🔑 Active HasData Keys: {len(hasdata_keys)} keys in pool (4,000 monthly credits)")
+    print(f"  🔑 Active HasData Keys: {len(hasdata_keys)} keys in rotation pool ({tracker.get('total_pool', 4000):,} monthly credits)")
     print(f"  🏙️ Target Cities: Top 20 Indian Cities @ 100 images each")
-    print(f"  💳 30-Day Credits Used: {get_30day_used_credits(credit_tracker):,} credits")
+    print(f"  📅 Billing Cycle: {tracker.get('cycle_month', 'N/A')} (Started: {tracker.get('cycle_start_date', 'N/A')})")
+    print(f"  💳 Cycle Credits Used: {tracker.get('cycle_used_credits', 0):,} / {tracker.get('total_pool', 4000):,} ({tracker.get('total_pool', 4000) - tracker.get('cycle_used_credits', 0):,} remaining)")
     print("=" * 80)
+
+    if is_reset:
+        c_month = tracker.get('cycle_month', 'N/A')
+        p_str = f"{tracker.get('total_pool', 4000):,}"
+        print("\n╔" + "═" * 76 + "╗")
+        print(f"║  🔄 MONTHLY CREDIT RESET TRIGGERED (NEW CYCLE: {c_month})")
+        print(f"║  Previous billing cycle archived. Quota reset to {p_str} / {p_str} (100% full pool)!")
+        print("╚" + "═" * 76 + "╝\n")
 
     # Initialize OCR Pipeline
     pipeline = ImageToJobPipeline(enable_ai_verification=False)
@@ -563,8 +764,11 @@ async def main():
         flyers = await scrape_images_for_city(
             hasdata_keys=hasdata_keys,
             city=city_name,
-            max_images=100,
-            credit_counter=credit_counter
+            city_idx=idx + 1,
+            total_cities=len(city_queue),
+            tracker=tracker,
+            credit_counter=credit_counter,
+            max_images=100
         )
 
         city_new_jobs = []
@@ -711,12 +915,15 @@ async def main():
             finally:
                 temp_img_path.unlink(missing_ok=True)
 
+        # Update job counts in tracker
+        record_city_extracted_jobs(tracker, city_extracted_count)
+
         # ── Per-City Summary & Database Sync ──
         print(f"\n  📊 [{city_name.upper()} SUMMARY]")
         print(f"     📥 Total Flyers Processed: {len(flyers)}")
         print(f"     ✨ Walk-in Jobs Extracted: {city_extracted_count}")
         print(f"     💾 Total Database Jobs: {len(existing_jobs):,} (+{len(new_jobs_this_run)} this run)")
-        print(f"     💳 Total Proxy Credits Used: {credit_counter['total']}")
+        print(f"     💳 Total Run Credits Used: {credit_counter['total']}")
         print("-" * 65)
 
         # Checkpoint & sync files after each city
@@ -736,30 +943,34 @@ async def main():
     except Exception:
         pass
 
-    # ── Update Credit Tracker ──
-    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    credit_tracker.setdefault("daily_log", []).append({
-        "date": today_str,
-        "credits_used": credit_counter["total"],
-        "jobs_extracted": len(new_jobs_this_run),
-        "cities_processed": min(idx + 1, len(city_queue))
-    })
-    save_credit_tracker(credit_tracker)
-
     total_time = time.time() - start_time
+    duration_str = f"{total_time / 60:.1f} minutes"
     save_not_extracted_images(not_extracted_images)
-    print("\n" + "=" * 80)
-    print("  🏆 FLYER IMAGE EXTRACTOR RUN COMPLETE")
-    print(f"  ⏱️ Total Execution Time: {total_time / 60:.1f} minutes")
-    print(f"  ✨ New Walk-ins Added: {len(new_jobs_this_run)}")
-    print(f"  💾 Total Database Walk-ins: {len(existing_jobs):,}")
-    print(f"  📁 Output Saved: {OUTPUT_JOBS_FILE}")
-    print(f"  📁 Walk-in Index Saved: {WALKIN_INDEX_FILE}")
-    print(f"  📁 Unextracted Links Saved: {NOT_EXTRACTED_JSON} & {NOT_EXTRACTED_TXT} ({len(not_extracted_images)} links)")
-    print("=" * 80)
 
-    # Print Credit Dashboard
-    print_credit_dashboard(credit_tracker, credit_counter["total"], len(hasdata_keys))
+    stats = {
+        "cities_processed": min(idx + 1, len(city_queue)),
+        "total_cities": len(city_queue),
+        "new_jobs": len(new_jobs_this_run),
+        "total_db_jobs": len(existing_jobs)
+    }
+
+    # ── Print Grand Credit Dashboard (Console) ──
+    print_credit_dashboard(
+        tracker=tracker,
+        run_credits=credit_counter["total"],
+        key_count=len(hasdata_keys),
+        run_duration_str=duration_str,
+        stats=stats
+    )
+
+    # ── Write GitHub Actions Step Summary (UI Dashboard) ──
+    write_github_step_summary(
+        tracker=tracker,
+        run_credits=credit_counter["total"],
+        key_count=len(hasdata_keys),
+        run_duration_str=duration_str,
+        stats=stats
+    )
 
 
 if __name__ == "__main__":
