@@ -101,18 +101,19 @@ class JobDeduplicator:
         email_norm = normalize_email(job.get("contact_email"))
         phone_norm = normalize_phone(job.get("contact_phone"))
 
-        # 3. Register composite signatures
-        if co_norm and loc_norm:
+        # 3. Register composite signatures (skip generic "unknown" company to prevent collisions)
+        is_generic_co = co_norm in ("unknown", "unknown company", "na", "")
+        if co_norm and loc_norm and not is_generic_co:
             # Match company + city + role
             self.seen_signatures.add(f"co_loc_role:{co_norm}|{loc_norm}|{role_norm}")
             # Match company + city + date
             if date_norm:
                 self.seen_signatures.add(f"co_loc_date:{co_norm}|{loc_norm}|{date_norm}")
 
-        if co_norm and email_norm:
+        if co_norm and email_norm and not is_generic_co:
             self.seen_email_keys.add(f"co_email:{co_norm}|{email_norm}")
 
-        if co_norm and phone_norm:
+        if co_norm and phone_norm and not is_generic_co:
             self.seen_phone_keys.add(f"co_phone:{co_norm}|{phone_norm}")
 
         if email_norm and date_norm:
@@ -171,12 +172,14 @@ class JobDeduplicator:
         email_norm = normalize_email(contact_email)
         phone_norm = normalize_phone(contact_phone)
 
+        is_generic_co = co_norm in ("unknown", "unknown company", "na", "")
+
         # Check Company + Contact Email match
-        if co_norm and email_norm and f"co_email:{co_norm}|{email_norm}" in self.seen_email_keys:
+        if co_norm and email_norm and not is_generic_co and f"co_email:{co_norm}|{email_norm}" in self.seen_email_keys:
             return True, f"Duplicate job by company & email: {co_norm} ({email_norm})"
 
         # Check Company + Contact Phone match
-        if co_norm and phone_norm and f"co_phone:{co_norm}|{phone_norm}" in self.seen_phone_keys:
+        if co_norm and phone_norm and not is_generic_co and f"co_phone:{co_norm}|{phone_norm}" in self.seen_phone_keys:
             return True, f"Duplicate job by company & phone: {co_norm} ({phone_norm})"
 
         # Check Email + Date match
@@ -184,11 +187,11 @@ class JobDeduplicator:
             return True, f"Duplicate job by email & date: {email_norm} on {date_norm}"
 
         # Check Company + City + Date match
-        if co_norm and loc_norm and date_norm and f"co_loc_date:{co_norm}|{loc_norm}|{date_norm}" in self.seen_signatures:
+        if co_norm and loc_norm and date_norm and not is_generic_co and f"co_loc_date:{co_norm}|{loc_norm}|{date_norm}" in self.seen_signatures:
             return True, f"Duplicate drive by company, city & date: {co_norm} in {loc_norm} ({date_norm})"
 
         # Check Company + City + Role match
-        if co_norm and loc_norm and role_norm and f"co_loc_role:{co_norm}|{loc_norm}|{role_norm}" in self.seen_signatures:
+        if co_norm and loc_norm and role_norm and not is_generic_co and f"co_loc_role:{co_norm}|{loc_norm}|{role_norm}" in self.seen_signatures:
             return True, f"Duplicate job by company, city & role: {co_norm} for {role_norm}"
 
         return False, ""
