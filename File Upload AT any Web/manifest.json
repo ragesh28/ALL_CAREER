@@ -1,0 +1,42 @@
+{
+   "action": {
+      "default_title": "Master File Picker"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "browser_specific_settings": {
+      "gecko": {
+         "data_collection_permissions": {
+            "required": [ "none" ]
+         },
+         "id": "master-file-picker@extensionmaster.com"
+      }
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "content-scripts/content.js" ],
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "matches": [ "\u003Call_urls>" ]
+   } ],
+   "description": "Instantly reuse your saved photos, resumes & files on any website's upload form — smart suggestions, no folder digging.",
+   "icons": {
+      "128": "icon/128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzDulMVKl4pT/VAaO66Avy7DIm8Zyk29G/+jDjoJIB1o3ss1AAgxgGMvbawtMfkOgFmcTFyjZLBksTBR7s3NkhThwza1BKpWQDqMz7pHrhTFL7Q98PW4JWV4XDf1uWiaBDoKTo6Xg7f3kerSFYgLX/ARFm5Au5jfdoPEBCzN8pAfq2I5T+PbvdNs2jxmSoeGFqviP7NM6TaPfK8HMvtXOb9v8bZR01zio0e5ScUkoUjPF+fm8E1XIy4d9w9MbPMx61aB26jr8WO52YvYvnrgM0rTOHKUtnJS0gkPQJEhvqfXb7rZhcJmnSzunBX/d7N1cLd2VTwU9Vd5QFYgWz0MH+QIDAQAB",
+   "manifest_version": 3,
+   "name": "Master File Picker - Quick Upload Manager",
+   "permissions": [ "sidePanel" ],
+   "short_name": "Master File Picker",
+   "side_panel": {
+      "default_path": "sidepanel.html"
+   },
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.0.5",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "content-scripts/content.css" ],
+      "use_dynamic_url": true
+   } ]
+}

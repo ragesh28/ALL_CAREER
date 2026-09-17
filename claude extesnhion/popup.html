@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Auto Fill V4</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container" id="popupContainer">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="logo">
+        <span class="logo-icon">✨</span>
+        <span class="logo-text">AI Auto Fill</span>
+        <span class="badge">V4</span>
+      </div>
+      <div class="header-actions">
+        <button id="btnOpenAsTab" class="btn-tab-toggle" title="Open as a persistent full-page tab">
+          📌 Open as Tab
+        </button>
+        <button id="btnSettingsGear" class="btn-icon" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Profile Card -->
+    <div class="profile-card" id="profileCard">
+      <div class="profile-name" id="profileName">👤 Not set</div>
+      <div class="profile-meta" id="profileMeta">📚 0 Learned Fields</div>
+    </div>
+
+    <!-- URL Section -->
+    <div class="url-section">
+      <label class="section-label">🔗 Form URL</label>
+      <div class="url-row">
+        <input type="text" id="targetUrl" placeholder="Paste URL..." />
+        <button id="btnGoUrl" class="btn-go">Go</button>
+      </div>
+    </div>
+
+    <!-- Main Action Button -->
+    <button id="btnFillForm" class="btn-fill-main">
+      <span class="fill-icon">✨</span>
+      <span id="btnFillText">Fill This Form</span>
+    </button>
+
+    <hr class="divider" />
+
+    <!-- 2x3 Tools Grid -->
+    <div class="tools-grid">
+      <button class="tool-btn" id="btnWorkflows">
+        Workflows
+      </button>
+      <button class="tool-btn" id="btnBatchUrls">
+        📋 Batch URLs
+      </button>
+      <button class="tool-btn" id="btnAnswers">
+        📝 Answers
+      </button>
+      <button class="tool-btn" id="btnHistory">
+        📜 History
+      </button>
+      <button class="tool-btn" id="btnSettings">
+        ⚙️ Settings
+      </button>
+      <button class="tool-btn" id="btnAiChat">
+        💬 AI Chat
+      </button>
+    </div>
+
+    <!-- Notification / Status Banner -->
+    <div id="statusBanner" class="status-banner" style="display: none;"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
