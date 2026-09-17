@@ -1,8 +1,11 @@
 {
   "total_pool": 4000,
-  "cycle_history": [],
-  "daily_log": [],
-  "cycle_month": "2026-09",
-  "cycle_start_date": "2026-09-17",
-  "cycle_used_credits": 0
+  "daily_log": [
+    {
+      "date": "2026-09-17",
+      "credits_used": 100,
+      "jobs_extracted": 504,
+      "cities_processed": 20
+    }
+  ]
 }
