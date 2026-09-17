@@ -665,15 +665,15 @@ function renderResumesTab() {
 
     <div style="background: #11131c; border: 1px dashed var(--border-color); border-radius: 6px; padding: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span style="font-size: 24px;">📄</span>
+        <span style="font-size: 24px;">📁</span>
         <div>
-          <strong style="font-size: 13px;">Upload Resume File (PDF / DOCX)</strong>
-          <p style="font-size: 11px; color: var(--text-muted);">Stored locally for silent injection.</p>
+          <strong style="font-size: 13px;">Upload Resume or File (PDF / PNG / DOCX)</strong>
+          <p style="font-size: 11px; color: var(--text-muted);">Stored locally for 1-click & silent injection.</p>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <input type="text" id="resume-label" class="dark-input" placeholder="Resume label" style="width: 150px;" />
-        <input type="file" id="resume-file-input" accept=".pdf,.docx,.doc" style="color: var(--text-muted); font-size: 11px;" />
+        <input type="text" id="resume-label" class="dark-input" placeholder="File label" style="width: 150px;" />
+        <input type="file" id="resume-file-input" accept=".pdf,.docx,.doc,.png,.jpg,.jpeg,.txt" style="color: var(--text-muted); font-size: 11px;" />
         <button class="btn-primary-blue" id="btn-upload-file">Attach & Save</button>
       </div>
     </div>
