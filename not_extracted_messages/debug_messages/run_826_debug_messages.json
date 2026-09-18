@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "826",
+  "workflow_run_id": "35339493310",
+  "timestamp": "2026-09-18T11:47:44.614148",
+  "runtime_minutes": 20.35,
+  "messages_processed": 47,
+  "new_jobs_stored": 38,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "job4softwaree",
+      "msg_id": 13334,
+      "text": "Learn Coding Now, Pay After Placement !\n\nLearn Coding from Top Software Developers Working at Leading Tech Companies !🚀\n\n Eligibility :- BTech / BCA / BSc\n\n🌟 2000+ Students Placed\n🤝 500+ Hiring Partners\n💼 Avg. Rs. 7.4 LPA\n🚀 41 LPA Highest Package\n\nHurry, limited seats available!\n\nRegister Now👇\n\nhttps://tinyurl.com/4n4h7c2r",
+      "timestamp": "2026-09-18T10:39:15+00:00"
+    }
+  ]
+}
