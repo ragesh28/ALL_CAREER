@@ -16,6 +16,7 @@ const STORAGE_KEYS = {
   AI_DECISION_MODE: 'aiDecisionMode',
   ALLOW_MULTI_TAB: 'allowMultiTabControl',
   ALLOW_SETTINGS_ACCESS: 'allowSettingsAccess',
+  FILE_UPLOAD_MODE: 'fileUploadMode',
 };
 
 const DEFAULT_MASTER_SYSTEM_PROMPT = `You are Claude in Chrome, an elite autonomous browser agent and job application assistant with direct browser execution capabilities.
@@ -79,6 +80,7 @@ let customAnswers = [
   { id: 'qa_2', question: 'Notice Period', answer: 'Immediate (0 days)', matchType: 'contains' },
   { id: 'qa_3', question: 'Years of Python / ML experience', answer: '2+ years', matchType: 'contains' },
 ];
+let fileUploadMode = 'workflow_only';
 
 let workflows = [
   {
@@ -183,6 +185,7 @@ async function loadAllData() {
       STORAGE_KEYS.AI_DECISION_MODE,
       STORAGE_KEYS.ALLOW_MULTI_TAB,
       STORAGE_KEYS.ALLOW_SETTINGS_ACCESS,
+      STORAGE_KEYS.FILE_UPLOAD_MODE,
     ]);
 
     if (data[STORAGE_KEYS.USER_PROFILE]) profile = { ...DEFAULT_PROFILE, ...data[STORAGE_KEYS.USER_PROFILE] };
@@ -197,6 +200,7 @@ async function loadAllData() {
     if (Array.isArray(data[STORAGE_KEYS.WORKFLOWS]) && data[STORAGE_KEYS.WORKFLOWS].length > 0) workflows = data[STORAGE_KEYS.WORKFLOWS];
     if (data[STORAGE_KEYS.SYSTEM_PROMPT]) systemPrompt = data[STORAGE_KEYS.SYSTEM_PROMPT];
     if (data[STORAGE_KEYS.AI_DECISION_MODE]) aiDecisionMode = data[STORAGE_KEYS.AI_DECISION_MODE];
+    if (data[STORAGE_KEYS.FILE_UPLOAD_MODE]) fileUploadMode = data[STORAGE_KEYS.FILE_UPLOAD_MODE];
     if (typeof data[STORAGE_KEYS.ALLOW_MULTI_TAB] === 'boolean') allowMultiTabControl = data[STORAGE_KEYS.ALLOW_MULTI_TAB];
     if (typeof data[STORAGE_KEYS.ALLOW_SETTINGS_ACCESS] === 'boolean') allowSettingsAccess = data[STORAGE_KEYS.ALLOW_SETTINGS_ACCESS];
   } catch (e) {}
@@ -728,6 +732,26 @@ function renderSettingsTab() {
         </div>
       </div>
 
+      <div class="form-group span-full" style="background: #11131c; border: 1px solid var(--border-color); border-radius: 6px; padding: 14px;">
+        <label style="font-size: 13px; color: #fff; margin-bottom: 6px;">📁 File Upload Interception Mode</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <label class="toggle-row" style="background: #1b1e2b; padding: 10px; border-radius: 4px;">
+            <input type="radio" name="rad-file-upload-mode" value="workflow_only" ${fileUploadMode === 'workflow_only' ? 'checked' : ''} />
+            <div>
+              <strong style="color: #fff;">Workflow Creating Only (Default)</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">Only intercepts file uploads when creating or running a workflow. Normal browsing opens Windows File Explorer.</div>
+            </div>
+          </label>
+          <label class="toggle-row" style="background: #1b1e2b; padding: 10px; border-radius: 4px;">
+            <input type="radio" name="rad-file-upload-mode" value="all_web" ${fileUploadMode === 'all_web' ? 'checked' : ''} />
+            <div>
+              <strong style="color: #fff;">All Websites</strong>
+              <div style="font-size: 10px; color: var(--text-muted);">Always intercept file uploads across all websites with the extension popup.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
       <div class="form-group" style="background: #11131c; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
         <label class="toggle-row">
           <input type="checkbox" id="chk-multi-tab" ${allowMultiTabControl ? 'checked' : ''} />
@@ -1158,9 +1182,12 @@ function attachEvents() {
   document.getElementById('btn-save-settings-tab')?.addEventListener('click', async () => {
     const rad = document.querySelector('input[name="rad-decision"]:checked');
     aiDecisionMode = rad?.value || 'autonomous';
+    const uploadRad = document.querySelector('input[name="rad-file-upload-mode"]:checked');
+    fileUploadMode = uploadRad?.value || 'workflow_only';
     allowMultiTabControl = document.getElementById('chk-multi-tab')?.checked ?? true;
     allowSettingsAccess = document.getElementById('chk-settings-access')?.checked ?? true;
     await persist(STORAGE_KEYS.AI_DECISION_MODE, aiDecisionMode);
+    await persist(STORAGE_KEYS.FILE_UPLOAD_MODE, fileUploadMode);
     await persist(STORAGE_KEYS.ALLOW_MULTI_TAB, allowMultiTabControl);
     await persist(STORAGE_KEYS.ALLOW_SETTINGS_ACCESS, allowSettingsAccess, 'Settings saved!');
     renderAppHub();

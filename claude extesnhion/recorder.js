@@ -337,16 +337,17 @@ function setupUIEvents() {
     }
   });
 
-  // Stop Working (allow one untracked website click)
-  inspectBtn?.addEventListener('click', () => {
+  // Stop Working (toggle pause tracking / OFF condition)
+  inspectBtn?.addEventListener('click', async () => {
     isStopWorkingActive = !isStopWorkingActive;
     inspectBtn.classList.toggle('inspecting', isStopWorkingActive);
-    inspectBtn.textContent = isStopWorkingActive ? 'Stopping next click' : 'Stop working';
+    inspectBtn.textContent = isStopWorkingActive ? 'Resume working' : 'Stop working';
     showStatus(isStopWorkingActive
-      ? 'Stop working is ready. Your next website click will not be added; recording resumes automatically after it.'
-      : 'Recording active.');
+      ? 'Tracking paused (OFF condition). Clicks & uploads work normally on websites.'
+      : 'Recording active. Tracking enabled.');
 
     sendToTargetTab({ action: 'RECORDER_TAB_STOP_WORKING' });
+    chrome.runtime.sendMessage({ action: 'RECORDER_TAB_STOP_WORKING' }).catch(() => {});
   });
 
   // End Loop Now
@@ -413,12 +414,12 @@ function setupCrossTabSync() {
         const waitTarget = document.getElementById('wf-wait-target');
         if (waitTarget) waitTarget.textContent = message.waitTarget;
       }
-      if (message.skipNextCapture !== undefined) {
-        isStopWorkingActive = Boolean(message.skipNextCapture);
+      if (message.paused !== undefined || message.skipNextCapture !== undefined) {
+        isStopWorkingActive = Boolean(message.paused ?? message.skipNextCapture);
         const inspectBtn = document.getElementById('wf-inspect');
         if (inspectBtn) {
           inspectBtn.classList.toggle('inspecting', isStopWorkingActive);
-          inspectBtn.textContent = isStopWorkingActive ? 'Stopping next click' : 'Stop working';
+          inspectBtn.textContent = isStopWorkingActive ? 'Resume working' : 'Stop working';
         }
       }
     }
