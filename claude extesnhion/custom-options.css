@@ -184,8 +184,10 @@ body {
   display: grid;
   grid-template-columns: 210px 1fr 310px;
   gap: 12px;
-  min-height: 540px;
+  height: calc(100vh - 240px);
+  min-height: 520px;
   width: 100%;
+  overflow: hidden;
 }
 
 @media (max-width: 1100px) {
@@ -204,6 +206,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .wf-search-input {
@@ -215,6 +220,7 @@ body {
   padding: 7px 10px;
   font-size: 12px;
   outline: none;
+  flex-shrink: 0;
 }
 
 .wf-list {
@@ -222,7 +228,31 @@ body {
   flex-direction: column;
   gap: 6px;
   overflow-y: auto;
-  flex: 1;
+  overflow-x: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #3b4256 #11131c;
+}
+
+.wf-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wf-list::-webkit-scrollbar-track {
+  background: #0d0f17;
+  border-radius: 4px;
+}
+
+.wf-list::-webkit-scrollbar-thumb {
+  background: #2e344a;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wf-list::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
 }
 
 .wf-item-btn {
@@ -236,6 +266,7 @@ body {
   flex-direction: column;
   gap: 2px;
   transition: all 0.15s;
+  flex-shrink: 0;
 }
 
 .wf-item-btn:hover {
@@ -267,6 +298,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
+  min-height: 0;
 }
 
 .properties-bar {
@@ -277,6 +310,7 @@ body {
   background: #161822;
   border-bottom: 1px solid var(--border-color);
   align-items: flex-end;
+  flex-shrink: 0;
 }
 
 .prop-field {
@@ -297,12 +331,13 @@ body {
   padding: 6px 12px;
   background: #131520;
   border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 /* Dot Grid Canvas */
 .dot-canvas {
   flex: 1;
-  min-height: 380px;
+  min-height: 250px;
   background-color: #0d0f17;
   background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
   background-size: 18px 18px;
@@ -311,6 +346,29 @@ body {
   align-items: center;
   gap: 16px;
   overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #3b4256 #11131c;
+}
+
+.dot-canvas::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dot-canvas::-webkit-scrollbar-track {
+  background: #0d0f17;
+  border-radius: 4px;
+}
+
+.dot-canvas::-webkit-scrollbar-thumb {
+  background: #2e344a;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dot-canvas::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
 }
 
 .wf-node-block {
@@ -384,6 +442,7 @@ body {
   padding: 8px 12px;
   background: #161822;
   border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 /* ── 3. Right Column (Node Inspector Panel) ─────────────────── */
@@ -397,6 +456,30 @@ body {
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #3b4256 #11131c;
+}
+
+.wf-inspector::-webkit-scrollbar {
+  width: 6px;
+}
+
+.wf-inspector::-webkit-scrollbar-track {
+  background: #0d0f17;
+  border-radius: 4px;
+}
+
+.wf-inspector::-webkit-scrollbar-thumb {
+  background: #2e344a;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wf-inspector::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
 }
 
 .inspector-header {
