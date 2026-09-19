@@ -271,17 +271,22 @@ async function getActivePageContext(tabId = null) {
   const isInternal = url.startsWith('chrome://') || url.startsWith('edge://') || url.startsWith('about:') || url.startsWith('chrome-extension://');
 
   if (isInternal) {
+    const isStudio = url.includes(chrome.runtime.id);
     return {
-      title: target.title || (isNewTab ? 'New Tab' : 'Internal Browser Page'),
+      title: target.title || (isNewTab ? 'New Tab' : isStudio ? 'Claude Automation Studio & Hub' : 'Internal Browser Page'),
       url: target.url || '',
-      isRestricted: true,
+      isRestricted: !isStudio,
       isNewTab,
       text: isNewTab
         ? 'Blank / New Tab page. Tell the agent which website or search URL to navigate to.'
-        : 'Internal browser page. Navigate to an external website to begin.',
+        : isStudio
+          ? 'Claude in Chrome Automation Studio & Hub. All saved workflows, candidate profile, and settings are directly accessible to you in extension storage.'
+          : 'Internal browser page. Navigate to an external website to begin.',
       accessibilityTree: isNewTab
         ? '[Blank New Tab Page - Ready to navigate to target website URL]'
-        : '[Internal browser page]',
+        : isStudio
+          ? '[Claude in Chrome Automation Studio - Note: You have direct programmatic access to view, edit inputs of, and run all saved workflows via extension storage]'
+          : '[Internal browser page]',
     };
   }
 
@@ -324,7 +329,10 @@ async function getActivePageContext(tabId = null) {
 // ─── Browser Action Execution Engine ────────────────────────────────────────
 
 async function executeActionInTab(actionData, targetTabId) {
-  const { action, tabIndex, url, workflowName, steps, question, answer } = actionData;
+  const {
+    action, tabIndex, url, workflowName, workflowId, stepIndex, stepName,
+    value, name, target, waitMs, startUrl, variables, steps, question, answer
+  } = actionData;
 
   // 1. Tab Management Actions
   if (action === 'list_tabs') {
@@ -412,7 +420,129 @@ async function executeActionInTab(actionData, targetTabId) {
     }
   }
 
-  // 3. Workflow Creation
+  // 3. Workflow Management Actions (Full Read, Write, Edit Inputs & Run)
+  if (action === 'list_workflows') {
+    try {
+      const storageData = await chrome.storage.local.get(['browserWorkflows']);
+      const wfs = Array.isArray(storageData.browserWorkflows) ? storageData.browserWorkflows : [];
+      if (wfs.length === 0) {
+        return { success: true, message: 'No workflows currently saved in extension storage.' };
+      }
+      const summary = wfs.map((w, i) => {
+        const stepsStr = (w.steps || []).map((s, si) => `    • Step ${si + 1} [${s.type}]: "${s.name || s.type}" (Input value: "${s.value || ''}", Target: "${s.target || ''}")`).join('\n');
+        return `[Workflow ${i + 1}] "${w.name}" (ID: "${w.id}")\n  Start URL: ${w.startUrl || 'N/A'}\n  Variables: ${JSON.stringify(w.variables || {})}\n  Steps (${(w.steps || []).length} nodes):\n${stepsStr}`;
+      }).join('\n\n');
+      return { success: true, message: `Found ${wfs.length} saved workflow(s):\n\n${summary}` };
+    } catch (e) {
+      return { success: false, error: 'Failed to list workflows: ' + e.message };
+    }
+  }
+
+  if (action === 'get_workflow') {
+    try {
+      const storageData = await chrome.storage.local.get(['browserWorkflows']);
+      const wfs = Array.isArray(storageData.browserWorkflows) ? storageData.browserWorkflows : [];
+      const query = (workflowName || workflowId || '').toLowerCase();
+      const wf = wfs.find(w => w.id === workflowId || (w.name && w.name.toLowerCase().includes(query))) || wfs[0];
+      if (!wf) return { success: false, error: `Workflow "${workflowName || workflowId}" not found.` };
+      return { success: true, message: `Workflow Details:\n${JSON.stringify(wf, null, 2)}` };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  }
+
+  if (action === 'update_workflow_input' || action === 'update_workflow_step' || action === 'update_workflow') {
+    if (!allowSettingsAccess) return { success: false, error: 'Settings/workflow access is disabled in Settings.' };
+    try {
+      const storageData = await chrome.storage.local.get(['browserWorkflows']);
+      const wfs = Array.isArray(storageData.browserWorkflows) ? storageData.browserWorkflows : [];
+      if (wfs.length === 0) return { success: false, error: 'No workflows found in storage to update.' };
+
+      const query = (workflowName || workflowId || '').toLowerCase();
+      let wf = null;
+      if (query) {
+        wf = wfs.find(w => w.id === workflowId || (w.name && w.name.toLowerCase().includes(query)));
+      }
+      if (!wf && typeof actionData.workflowIndex === 'number' && wfs[actionData.workflowIndex]) {
+        wf = wfs[actionData.workflowIndex];
+      }
+      if (!wf) wf = wfs[0];
+
+      // Update top-level properties if provided
+      if (startUrl) wf.startUrl = startUrl;
+      if (actionData.newWorkflowName) wf.name = actionData.newWorkflowName;
+      if (variables && typeof variables === 'object') wf.variables = { ...(wf.variables || {}), ...variables };
+
+      // Identify target step
+      let step = null;
+      let targetStepIdx = -1;
+      if (typeof stepIndex === 'number') {
+        targetStepIdx = stepIndex >= 1 && stepIndex <= (wf.steps || []).length ? stepIndex - 1 : stepIndex;
+        step = wf.steps?.[targetStepIdx];
+      } else if (stepName) {
+        const sQuery = stepName.toLowerCase();
+        targetStepIdx = (wf.steps || []).findIndex(s => (s.name && s.name.toLowerCase().includes(sQuery)) || s.id === stepName);
+        if (targetStepIdx >= 0) step = wf.steps[targetStepIdx];
+      } else if (actionData.stepId) {
+        targetStepIdx = (wf.steps || []).findIndex(s => s.id === actionData.stepId);
+        if (targetStepIdx >= 0) step = wf.steps[targetStepIdx];
+      } else if (typeof value === 'string' && (wf.steps || []).length > 0) {
+        targetStepIdx = (wf.steps || []).findIndex(s => s.type === 'fill' || s.type === 'open_url');
+        if (targetStepIdx < 0) targetStepIdx = 0;
+        step = wf.steps[targetStepIdx];
+      }
+
+      if (step) {
+        if (typeof value !== 'undefined') step.value = value;
+        if (name) step.name = name;
+        if (target) step.target = target;
+        if (waitMs) step.waitMs = parseInt(waitMs, 10) || 400;
+      }
+
+      await chrome.storage.local.set({ browserWorkflows: wfs });
+      return {
+        success: true,
+        message: `Successfully updated workflow "${wf.name}"${step ? ` (Step ${targetStepIdx + 1} "${step.name}": input value set to "${step.value}")` : ''}. Changes saved to storage!`
+      };
+    } catch (e) {
+      return { success: false, error: 'Failed to update workflow input: ' + e.message };
+    }
+  }
+
+  if (action === 'run_workflow') {
+    try {
+      const storageData = await chrome.storage.local.get(['browserWorkflows']);
+      const wfs = Array.isArray(storageData.browserWorkflows) ? storageData.browserWorkflows : [];
+      const query = (workflowName || workflowId || '').toLowerCase();
+      const wf = wfs.find(w => w.id === workflowId || (w.name && w.name.toLowerCase().includes(query))) || wfs[0];
+      if (!wf) return { success: false, error: `Workflow "${workflowName || workflowId}" not found.` };
+      const res = await chrome.runtime.sendMessage({
+        action: 'WORKFLOW_RUN',
+        workflowId: wf.id,
+        workflow: wf,
+      });
+      return { success: true, message: `Started running workflow "${wf.name}" on active target tab!` };
+    } catch (e) {
+      return { success: false, error: 'Failed to run workflow: ' + e.message };
+    }
+  }
+
+  if (action === 'delete_workflow') {
+    if (!allowSettingsAccess) return { success: false, error: 'Settings access is disabled in Settings.' };
+    try {
+      const storageData = await chrome.storage.local.get(['browserWorkflows']);
+      let wfs = Array.isArray(storageData.browserWorkflows) ? storageData.browserWorkflows : [];
+      const query = (workflowName || workflowId || '').toLowerCase();
+      const initialLen = wfs.length;
+      wfs = wfs.filter(w => w.id !== workflowId && (!w.name || !w.name.toLowerCase().includes(query)));
+      if (wfs.length === initialLen) return { success: false, error: `Workflow "${workflowName || workflowId}" not found.` };
+      await chrome.storage.local.set({ browserWorkflows: wfs });
+      return { success: true, message: `Deleted workflow "${workflowName || workflowId}". ${wfs.length} workflows remain.` };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  }
+
   if (action === 'create_workflow') {
     if (!allowSettingsAccess) return { success: false, error: 'Settings access is disabled in Settings.' };
     try {
@@ -862,7 +992,7 @@ async function callAnthropic(apiKey, model, systemPrompt, messages) {
 
 // ─── Dynamic System Prompt Builder ──────────────────────────────────────────
 
-function buildAgentSystemPrompt() {
+async function buildAgentSystemPrompt() {
   const autonomyClause = aiDecisionMode === 'autonomous'
     ? `\n\n### CRITICAL AUTONOMY MODE ACTIVE:\n- You MUST make your own intelligent decisions and deductions from candidate profile.\n- NEVER stop to ask human. Complete all fields and actions autonomously.`
     : `\n\n### ASK HUMAN MODE ACTIVE:\n- If you encounter a crucial mandatory field that is completely missing from candidate profile, invoke action {"action": "ask_human", "question": "..."}.`;
@@ -871,8 +1001,62 @@ function buildAgentSystemPrompt() {
     ? `\n- Tab Management: {"thought": "...", "action": "switch_tab", "tabIndex": 1} or {"action": "new_tab", "url": "..."} or {"action": "close_tab"}`
     : `\n- Tab Management: Disabled by user. Stay on current tab.`;
 
-  return `You are Claude in Chrome, an elite autonomous AI browser agent with direct browser execution capabilities.
-You inspect interactive accessibility trees, click buttons, upload resumes silently, auto-fill forms, navigate to URLs, and record workflows.
+  // Fetch all saved workflows and profile directly from extension storage
+  let workflowsSummary = 'No saved workflows currently in storage.';
+  let candidateProfileSummary = '';
+  let customAnswersSummary = '';
+
+  try {
+    const storage = await chrome.storage.local.get(['browserWorkflows', 'userProfile', 'customAnswers']);
+    const wfs = Array.isArray(storage.browserWorkflows) ? storage.browserWorkflows : [];
+    if (wfs.length > 0) {
+      workflowsSummary = wfs.map((w, i) => {
+        const stepsStr = (w.steps || []).map((s, si) => {
+          const val = s.value ? ` [input/value: "${s.value}"]` : '';
+          const tgt = s.target ? ` [target: "${s.target}"]` : '';
+          return `    • Step ${si + 1} (${(s.type || 'action').toUpperCase()}): "${s.name || s.type}"${val}${tgt}`;
+        }).join('\n');
+        return `  ${i + 1}. Workflow Name: "${w.name}" (ID: "${w.id}")
+     Start URL: ${w.startUrl || 'https://www.naukri.com/'}
+     Variables: ${JSON.stringify(w.variables || { role: '', location: '' })}
+     Steps (${(w.steps || []).length} nodes):
+${stepsStr}`;
+      }).join('\n\n');
+    }
+
+    if (storage.userProfile) {
+      candidateProfileSummary = `\n\n### CANDIDATE PROFILE:\n- Name: ${storage.userProfile.fullName || ''}\n- Email: ${storage.userProfile.email || ''}\n- Phone: ${storage.userProfile.phone || ''}\n- Skills: ${storage.userProfile.skills || ''}\n- Experience: ${storage.userProfile.experienceYears || ''} years\n- City: ${storage.userProfile.city || ''}, ${storage.userProfile.country || ''}`;
+    }
+
+    if (Array.isArray(storage.customAnswers) && storage.customAnswers.length > 0) {
+      customAnswersSummary = `\n\n### SAVED Q&A RULES:\n${storage.customAnswers.map(a => `- "${a.question}" ➔ "${a.answer}"`).join('\n')}`;
+    }
+  } catch (e) {}
+
+  return `You are Claude in Chrome, an elite autonomous AI browser agent and automation orchestrator with direct browser execution and extension storage access.
+You inspect interactive accessibility trees, click buttons, upload resumes silently, auto-fill forms, navigate to URLs, and have FULL PROGRAMMATIC ACCESS to read and modify all saved workflows.
+
+### ⚡ WORKFLOWS CURRENTLY AVAILABLE IN EXTENSION (DIRECT ACCESS):
+${workflowsSummary}
+${candidateProfileSummary}
+${customAnswersSummary}
+
+### ⚡ WORKFLOW ACCESS & INPUT MODIFICATION RULES:
+You have DIRECT, FULL READ AND WRITE ACCESS to all saved workflows stored in the extension.
+- When the user asks "what workflows do we have?" or asks about existing workflows: Answer clearly with the exact workflow names, start URLs, and steps listed above. NEVER say you cannot read workflows because of internal extension pages!
+- When the user asks "can you change the input or not?": Answer affirmatively YES, you have full access to change any input values (URLs, search terms, text inputs, form values, and variables), and you can update them immediately upon request.
+- To update an input value in any workflow:
+  \`\`\`json
+  {"thought": "Updating input value of Step 1 in workflow t1", "action": "update_workflow_input", "workflowName": "t1", "stepIndex": 1, "value": "https://www.naukri.com/new-jobs"}
+  \`\`\`
+- To run a workflow:
+  \`\`\`json
+  {"thought": "Launching workflow t1", "action": "run_workflow", "workflowName": "t1"}
+  \`\`\`
+- To list or refresh workflows:
+  \`\`\`json
+  {"thought": "Listing all workflows", "action": "list_workflows"}
+  \`\`\`
 
 ### STARTING ON A BLANK / NEW TAB:
 If the user says "open indeed" or "search for jobs" and the current tab is a New Tab or blank page, your first action MUST be:
@@ -880,23 +1064,27 @@ If the user says "open indeed" or "search for jobs" and the current tab is a New
 {"thought": "Navigating to Indeed job search", "action": "navigate", "url": "https://www.indeed.com"}
 \`\`\`
 
-### AVAILABLE BROWSER ACTIONS & TOOLS:
-1. Navigate to website (works from any tab): \`\`\`json\n{"thought": "Opening Indeed", "action": "navigate", "url": "https://www.indeed.com"}\n\`\`\`
-2. Click element: \`\`\`json\n{"thought": "Clicking apply button", "action": "click", "ref_id": "ref_10"}\n\`\`\`
-3. Type text: \`\`\`json\n{"thought": "Entering job search", "action": "type", "ref_id": "ref_5", "text": "AI Engineer", "press_enter": true}\n\`\`\`
-4. Upload resume (SILENTLY attaches stored resume without file dialogs): \`\`\`json\n{"thought": "Uploading resume", "action": "upload_resume", "ref_id": "ref_12"}\n\`\`\`
-5. Select dropdown: \`\`\`json\n{"thought": "Selecting job location", "action": "select_option", "ref_id": "ref_8", "value": "Remote"}\n\`\`\`
-6. AutoFill page: \`\`\`json\n{"thought": "Autofilling form fields with profile", "action": "autofill_page"}\n\`\`\`
-7. Create workflow: \`\`\`json\n{"thought": "Saving workflow", "action": "create_workflow", "workflowName": "Apply Job", "steps": [...]}\n\`\`\`
-8. Save custom answer: \`\`\`json\n{"thought": "Saving Q&A rule", "action": "save_custom_answer", "question": "...", "answer": "..."}\n\`\`\`
-9. Scroll: \`\`\`json\n{"thought": "Scrolling down", "action": "scroll", "direction": "down"}\n\`\`\`
+### AVAILABLE BROWSER & WORKFLOW ACTIONS:
+1. List workflows: \`\`\`json\n{"thought": "Listing workflows", "action": "list_workflows"}\n\`\`\`
+2. Update workflow input: \`\`\`json\n{"thought": "Changing input value", "action": "update_workflow_input", "workflowName": "...", "stepIndex": 1, "value": "new value"}\n\`\`\`
+3. Run workflow: \`\`\`json\n{"thought": "Executing workflow", "action": "run_workflow", "workflowName": "..."}\n\`\`\`
+4. Create workflow: \`\`\`json\n{"thought": "Saving workflow", "action": "create_workflow", "workflowName": "Apply Job", "steps": [...]}\n\`\`\`
+5. Delete workflow: \`\`\`json\n{"thought": "Deleting workflow", "action": "delete_workflow", "workflowName": "..."}\n\`\`\`
+6. Navigate to website: \`\`\`json\n{"thought": "Opening website", "action": "navigate", "url": "https://www.naukri.com"}\n\`\`\`
+7. Click element: \`\`\`json\n{"thought": "Clicking button", "action": "click", "ref_id": "ref_10"}\n\`\`\`
+8. Type text: \`\`\`json\n{"thought": "Entering text", "action": "type", "ref_id": "ref_5", "text": "AI Engineer", "press_enter": true}\n\`\`\`
+9. Upload resume: \`\`\`json\n{"thought": "Uploading resume", "action": "upload_resume", "ref_id": "ref_12"}\n\`\`\`
+10. Select dropdown: \`\`\`json\n{"thought": "Selecting dropdown", "action": "select_option", "ref_id": "ref_8", "value": "Remote"}\n\`\`\`
+11. AutoFill page: \`\`\`json\n{"thought": "Autofilling form fields with profile", "action": "autofill_page"}\n\`\`\`
+12. Save custom answer: \`\`\`json\n{"thought": "Saving Q&A rule", "action": "save_custom_answer", "question": "...", "answer": "..."}\n\`\`\`
+13. Scroll: \`\`\`json\n{"thought": "Scrolling down", "action": "scroll", "direction": "down"}\n\`\`\`
 ${tabClause}
-10. Finish and report: \`\`\`json\n{"thought": "Task completed", "action": "done", "message": "I opened Indeed and searched for AI jobs."}\n\`\`\`
+14. Finish and report: \`\`\`json\n{"thought": "Task completed", "action": "done", "message": "..."}\n\`\`\`
 ${autonomyClause}
 
 IMPORTANT RULES:
 - Perform ONE action per step.
-- Always use the exact ref_id matching the element in the accessibility tree.`;
+- When asked informational questions about workflows, profile, or capabilities, you can immediately answer using action "done" with your complete, helpful explanation!`;
 }
 
 function parseActionFromResponse(text) {
@@ -946,7 +1134,7 @@ async function runAutonomousAgent(userGoal) {
   const MAX_STEPS = 15;
   let currentStep = 0;
   const historyMessages = [];
-  const activePrompt = buildAgentSystemPrompt();
+  const activePrompt = await buildAgentSystemPrompt();
 
   try {
     while (currentStep < MAX_STEPS && isAgentRunning) {

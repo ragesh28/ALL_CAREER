@@ -35,7 +35,11 @@ You inspect interactive accessibility trees, click elements, upload resumes sile
 - Upload Resume: {"thought": "...", "action": "upload_resume", "ref_id": "ref_3"}
 - Select Dropdown: {"thought": "...", "action": "select_option", "ref_id": "ref_4", "value": "Option"}
 - AutoFill Form: {"thought": "...", "action": "autofill_page"}
+- List Workflows: {"thought": "...", "action": "list_workflows"}
+- Update Workflow Input: {"thought": "...", "action": "update_workflow_input", "workflowName": "...", "stepIndex": 1, "value": "New Value"}
+- Run Workflow: {"thought": "...", "action": "run_workflow", "workflowName": "..."}
 - Create Workflow: {"thought": "...", "action": "create_workflow", "workflowName": "...", "steps": [...]}
+- Delete Workflow: {"thought": "...", "action": "delete_workflow", "workflowName": "..."}
 - Save Custom Answer: {"thought": "...", "action": "save_custom_answer", "question": "...", "answer": "..."}
 - Tab Control: {"thought": "...", "action": "switch_tab", "tabIndex": 1} / {"action": "new_tab", "url": "..."}
 - Ask Human: {"thought": "...", "action": "ask_human", "question": "..."}
