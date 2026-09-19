@@ -672,12 +672,59 @@ async function waitForTabReady(tabId, timeoutMs = 35000) {
   return null;
 }
 
-async function sendWorkflowStepToTab(tabId, step, loopIndex = 0) {
+function isNaukriJobClick(step) {
+  if (!step || step.type !== 'click' || !step.target) return false;
+  const target = step.target;
+  const descriptor = `${target.collectionSelector ?? ''} ${target.relativeSelector ?? ''} ${target.selector ?? ''} ${(target.selectors ?? []).join(' ')} ${step.name || ''}`.toLowerCase();
+  return /cust-job-tuple|srp-jobtuple|jobtuple|\/job-listings-|a\.title/.test(descriptor);
+}
+
+function matchesExpectedNaukriJobUrl(actualUrl, expectedUrl) {
+  if (!actualUrl || !expectedUrl) return false;
+  try {
+    const actual = new URL(actualUrl);
+    const expected = new URL(expectedUrl);
+    const actualPath = actual.pathname.replace(/\/+$/, '');
+    const expectedPath = expected.pathname.replace(/\/+$/, '');
+    const isNaukriHost = (hostname) => hostname === 'naukri.com' || hostname.endsWith('.naukri.com');
+    return isNaukriHost(actual.hostname)
+      && isNaukriHost(expected.hostname)
+      && Boolean(expectedPath)
+      && actualPath.includes('/job-listings-')
+      && (actualPath === expectedPath || actualPath.includes(expectedPath));
+  } catch {
+    return actualUrl === expectedUrl;
+  }
+}
+
+async function waitForExpectedNaukriDestination(sourceTabId, beforeTabs, expectedUrl, timeoutMs = 3500) {
+  const deadline = Date.now() + timeoutMs;
+  const createdTabs = [];
+  while (Date.now() <= deadline) {
+    const tabs = await chrome.tabs.query({});
+    const newTabs = tabs.filter((t) => t.id !== undefined && !beforeTabs.has(t.id));
+    for (const tab of newTabs) {
+      if (!createdTabs.some((c) => c.id === tab.id)) createdTabs.push(tab);
+    }
+    const source = await chrome.tabs.get(sourceTabId).catch(() => null);
+    const candidates = [...newTabs, ...(source ? [source] : [])];
+    for (const candidate of candidates) {
+      if (matchesExpectedNaukriJobUrl(candidate.url, expectedUrl)) {
+        return { destination: candidate, actualUrl: candidate.url, createdTabs };
+      }
+    }
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  const source = await chrome.tabs.get(sourceTabId).catch(() => null);
+  return { actualUrl: source?.url, createdTabs };
+}
+
+async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'dom') {
   const msg = {
     action: 'WORKFLOW_EXECUTE_STEP',
     step,
     loopIndex,
-    clickMode: 'dom',
+    clickMode,
   };
 
   try {
@@ -774,6 +821,11 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         step.target = { selector: '', text: step.name || '' };
       }
 
+      // If it's a Naukri click step without collectionIndex, default to the first job (0)
+      if (isNaukriJobClick(step) && step.target && step.target.collectionIndex === undefined) {
+        step.target.collectionIndex = 0;
+      }
+
       // 3. Attach resume if step type is attach_resume
       if (step.type === 'attach_resume') {
         const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume']);
@@ -792,21 +844,56 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       } else {
         // Normal step execution (click, fill, select_option, checkbox, multiple_choice, etc.)
         const beforeTabs = new Set((await chrome.tabs.query({})).map(t => t.id));
-        const execRes = await sendWorkflowStepToTab(activeTabId, step);
+        const isNaukri = isNaukriJobClick(step);
+        const execRes = await sendWorkflowStepToTab(activeTabId, step, 0, isNaukri ? 'mouse' : 'dom');
 
-        const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
-        await new Promise(r => setTimeout(r, waitMs));
-
-        // Check if action opened a new tab
-        const afterTabs = await chrome.tabs.query({});
-        const newTab = afterTabs.find(t => !beforeTabs.has(t.id) && t.id && /^https?:/i.test(t.url || ''));
-        if (newTab?.id) {
-          console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url);
-          activeTabId = newTab.id;
-          runState.tabId = activeTabId;
-          await waitForTabReady(activeTabId);
-          await chrome.tabs.update(activeTabId, { active: true });
+        const isNaukriExec = execRes?.siteHandler === 'naukri-job-card' || isNaukri;
+        if (isNaukriExec && execRes?.href) {
+          const expectedUrl = execRes.href;
+          runState.logs.push(`[Naukri] Waiting for job destination: ${expectedUrl}`);
           await chrome.storage.local.set({ workflowRunState: runState });
+
+          const check = await waitForExpectedNaukriDestination(activeTabId, beforeTabs, expectedUrl, 3000);
+          if (check.destination?.id) {
+            runState.logs.push(`[Naukri] Job tab opened via click: tab ${check.destination.id}`);
+            activeTabId = check.destination.id;
+            runState.tabId = activeTabId;
+            await waitForTabReady(activeTabId);
+            await chrome.tabs.update(activeTabId, { active: true });
+            await chrome.storage.local.set({ workflowRunState: runState });
+          } else {
+            // Fallback: create tab directly with expectedUrl if native popup/target=_blank was suppressed
+            runState.logs.push(`[Naukri] Opening job in new tab fallback: ${expectedUrl}`);
+            const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+            const fallbackTab = await chrome.tabs.create({
+              url: expectedUrl,
+              active: true,
+              openerTabId: activeTabId,
+              ...(typeof curTab?.windowId === 'number' ? { windowId: curTab.windowId } : {}),
+            });
+            if (fallbackTab?.id) {
+              activeTabId = fallbackTab.id;
+              runState.tabId = activeTabId;
+              await waitForTabReady(activeTabId);
+              await chrome.tabs.update(activeTabId, { active: true });
+              await chrome.storage.local.set({ workflowRunState: runState });
+            }
+          }
+        } else {
+          const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
+          await new Promise(r => setTimeout(r, waitMs));
+
+          // Check if action opened a new tab
+          const afterTabs = await chrome.tabs.query({});
+          const newTab = afterTabs.find(t => !beforeTabs.has(t.id) && t.id && /^https?:/i.test(t.url || ''));
+          if (newTab?.id) {
+            console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url);
+            activeTabId = newTab.id;
+            runState.tabId = activeTabId;
+            await waitForTabReady(activeTabId);
+            await chrome.tabs.update(activeTabId, { active: true });
+            await chrome.storage.local.set({ workflowRunState: runState });
+          }
         }
       }
 
