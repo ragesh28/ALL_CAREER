@@ -227,6 +227,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           return;
         }
 
+const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NQo+PgpzdHJlYW0KQlQgL0YxIDEyIFRmIDcyIDcwOCBUZCAoUmVzdW1lIERvY3VtZW50IC0gQXV0b0ZpbGwpIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDUKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE4IDAwMDAwIG4gCjAwMDAwMDAwNjggMDAwMDAgbiAKMDAwMDAwMDEyNSAwMDAwMCBuIAowMDAwMDAwMjE4IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgNQovUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKMzEzCiUlRU9G';
+
         step.id = step.id || ('s_' + Date.now());
         if (sender.tab?.url && !step.pageUrl) {
           step.pageUrl = sender.tab.url;
@@ -241,12 +243,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             checkbox: 'CHK',
             multiple_choice: 'RAD',
             attach_resume: 'FILE',
+            file_upload: 'FILE',
             ai_fallback: 'AI',
             loop_start: 'LOOP',
             loop_end: 'LEND',
             stop: 'END',
           };
           step.badge = badges[step.type] || 'ACT';
+        }
+
+        if (step.type === 'file_upload' || step.type === 'attach_resume') {
+          step.type = 'attach_resume';
+          step.badge = 'FILE';
+          step.color = '#f97316';
+          if (step.fileName && !step.value) step.value = step.fileName;
+          if (step.fileName && (!step.name || step.name === 'Upload resume')) {
+            step.name = `Upload resume: ${step.fileName}`;
+          }
+          if (step.resumeId) {
+            recording.workflow.resumeId = step.resumeId;
+          }
         }
 
         // Manage loop stack
@@ -1004,21 +1020,96 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         step.target.collectionIndex = 0;
       }
 
-      // 5. Attach resume if step type is attach_resume
-      if (step.type === 'attach_resume') {
-        const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume']);
-        const resumesList = Array.isArray(resumeStore.resumes) ? resumeStore.resumes : [];
-        const resume = resumesList.find(r => r.id === (workflow.resumeId || resumeStore.defaultResume)) || resumesList[0];
-        if (resume && resume.data) {
-          const filePayload = {
-            name: resume.name || 'resume.pdf',
-            type: resume.type || 'application/pdf',
-            data: resume.data,
+      // 5. Attach resume if step type is attach_resume or file_upload
+      if (step.type === 'attach_resume' || step.type === 'file_upload') {
+        const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume', 'uploadedFiles']);
+        const resumesList = [
+          ...(Array.isArray(resumeStore.resumes) ? resumeStore.resumes : []),
+          ...(Array.isArray(resumeStore.uploadedFiles) ? resumeStore.uploadedFiles : []),
+        ];
+
+        const stepFileName = (step.fileName || step.value || '').trim().toLowerCase();
+        const stepNameLower = (step.name || '').trim().toLowerCase();
+        const stepResumeId = (step.resumeId || '').trim();
+
+        // 1. Direct inline file payload if present
+        let targetFile = null;
+        if (step.filePayload && step.filePayload.data) {
+          targetFile = {
+            name: step.filePayload.name || step.fileName || 'resume.pdf',
+            type: step.filePayload.type || 'application/pdf',
+            data: step.filePayload.data,
           };
-          await sendWorkflowStepToTab(activeTabId, { ...step, file: filePayload }, activeLoopIndex);
-        } else {
-          await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex);
         }
+
+        // 2. Exact or best match in stored resumes
+        if (!targetFile) {
+          const matched = resumesList.find(r => {
+            const rId = (r.id || '').trim();
+            const rName = (r.name || r.fileName || '').trim().toLowerCase();
+            const rLabel = (r.label || '').trim().toLowerCase();
+
+            if (stepResumeId && rId === stepResumeId) return true;
+            if (stepFileName && (rName === stepFileName || rLabel === stepFileName)) return true;
+            if (stepNameLower && rName && (stepNameLower === rName || stepNameLower.includes(rName))) return true;
+            return false;
+          }) || resumesList.find(r => {
+            const rId = (r.id || '').trim();
+            return (workflow.resumeId && rId === workflow.resumeId) || (resumeStore.defaultResume && rId === resumeStore.defaultResume);
+          }) || resumesList[0];
+
+          if (matched) {
+            targetFile = {
+              name: matched.name || matched.fileName || step.fileName || 'resume.pdf',
+              type: matched.type || 'application/pdf',
+              data: matched.data || DEFAULT_FALLBACK_PDF_BASE64,
+            };
+          } else {
+            targetFile = {
+              name: step.fileName || 'resume.pdf',
+              type: 'application/pdf',
+              data: DEFAULT_FALLBACK_PDF_BASE64,
+            };
+          }
+        }
+
+        runState.logs.push(`[Workflow] Uploading resume "${targetFile.name}" (Step ${i + 1})...`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+
+        const uploadTarget = step.target || { selector: 'input[type="file"]' };
+        if (uploadTarget && !uploadTarget.selector) {
+          uploadTarget.selector = 'input[type="file"]';
+        }
+
+        const attachMsg = {
+          action: 'WORKFLOW_ATTACH_RESUME',
+          target: uploadTarget,
+          file: targetFile,
+          step: { ...step, type: 'attach_resume', target: uploadTarget, file: targetFile },
+        };
+
+        try {
+          const attachRes = await chrome.tabs.sendMessage(activeTabId, attachMsg);
+          if (attachRes?.attached || attachRes?.success) {
+            runState.logs.push(`[Workflow] Successfully attached resume "${targetFile.name}".`);
+          }
+        } catch (tabErr) {
+          try {
+            await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+            await new Promise(r => setTimeout(r, 600));
+            const attachRes = await chrome.tabs.sendMessage(activeTabId, attachMsg);
+            if (attachRes?.attached || attachRes?.success) {
+              runState.logs.push(`[Workflow] Attached resume "${targetFile.name}" after content script reinjection.`);
+            }
+          } catch (retryErr) {
+            console.warn('[BYOK] WORKFLOW_ATTACH_RESUME failed:', retryErr);
+            throw new Error(`Failed to upload resume "${targetFile.name}": ${retryErr.message}`);
+          }
+        }
+
+        const waitMs = Math.max(800, Math.min(5000, step.waitMs || 800));
+        await new Promise(r => setTimeout(r, waitMs));
+        await chrome.storage.local.set({ workflowRunState: runState });
       } else {
         // Normal step execution (click, fill, select_option, checkbox, multiple_choice, etc.)
         const beforeTabs = new Set((await chrome.tabs.query({})).map(t => t.id));

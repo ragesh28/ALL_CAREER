@@ -1413,6 +1413,18 @@ function renderSidepanelRecorderView() {
           </label>
         </div>
 
+        <div id="side-resume-group" style="display: none;">
+          <label class="rec-label">
+            Select Resume PDF to Upload
+            <select id="side-resume-select" class="rec-select">
+              <option value="">Loading resumes...</option>
+            </select>
+          </label>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Whichever PDF you select here will be attached during workflow execution.
+          </div>
+        </div>
+
         ${hasOpenLoop ? `
           <div style="margin-top: 6px;">
             <button class="rec-btn-orange" id="btn-side-continue-loop" style="background:#f59e0b;color:#000;font-weight:700;width:100%;padding:8px 12px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(245,158,11,0.35);">
@@ -1758,10 +1770,39 @@ function setupEventListeners() {
   const sideActSelect = document.getElementById('side-action-select');
   const sideFillGroup = document.getElementById('side-fill-group');
   const sideLoopGroup = document.getElementById('side-loop-group');
+  const sideResumeGroup = document.getElementById('side-resume-group');
+  const sideResumeSelect = document.getElementById('side-resume-select');
+
+  const updateSideActionUI = (val) => {
+    if (sideFillGroup) sideFillGroup.style.display = val === 'fill' ? 'block' : 'none';
+    if (sideLoopGroup) sideLoopGroup.style.display = val === 'loop' ? 'block' : 'none';
+    if (sideResumeGroup) sideResumeGroup.style.display = val === 'file_upload' ? 'block' : 'none';
+  };
+
   sideActSelect?.addEventListener('change', (e) => {
-    if (sideFillGroup) sideFillGroup.style.display = e.target.value === 'fill' ? 'block' : 'none';
-    if (sideLoopGroup) sideLoopGroup.style.display = e.target.value === 'loop' ? 'block' : 'none';
+    updateSideActionUI(e.target.value);
   });
+  if (sideActSelect) updateSideActionUI(sideActSelect.value);
+
+  // Populate resume list
+  if (sideResumeSelect) {
+    chrome.storage.local.get(['resumes', 'defaultResume', 'uploadedFiles']).then((resData) => {
+      const allRes = [
+        ...(Array.isArray(resData.resumes) ? resData.resumes : []),
+        ...(Array.isArray(resData.uploadedFiles) ? resData.uploadedFiles : []),
+      ];
+      const defaultId = resData.defaultResume || allRes[0]?.id;
+      if (allRes.length === 0) {
+        sideResumeSelect.innerHTML = '<option value="res_default_pdf" data-filename="Ragesh_Resume.pdf">Ragesh_Resume.pdf (Default)</option>';
+      } else {
+        sideResumeSelect.innerHTML = allRes.map(r => {
+          const fn = r.name || r.fileName || 'Resume.pdf';
+          const isSel = r.id === (currentSidepanelWorkflow?.resumeId || defaultId);
+          return `<option value="${r.id}" data-filename="${escapeHtml(fn)}" ${isSel ? 'selected' : ''}>${escapeHtml(r.label || fn)} (${escapeHtml(fn)})</option>`;
+        }).join('');
+      }
+    }).catch(() => {});
+  }
 
   // Pick Element on Page
   document.getElementById('btn-side-pick')?.addEventListener('click', async () => {
@@ -1905,6 +1946,39 @@ function setupEventListeners() {
           return;
         }
 
+        if (act === 'file_upload') {
+          const resumeSelect = document.getElementById('side-resume-select');
+          const selectedOption = resumeSelect?.options[resumeSelect.selectedIndex];
+          const resumeId = resumeSelect?.value || '';
+          const resumeName = selectedOption?.getAttribute('data-filename') || selectedOption?.textContent?.trim() || 'Resume.pdf';
+          const stepName = document.getElementById('side-step-name')?.value.trim() || `Upload resume: ${resumeName}`;
+
+          currentSidepanelWorkflow.steps.push({
+            id: 's_' + Date.now(),
+            type: 'attach_resume',
+            name: stepName,
+            fileName: resumeName,
+            resumeId: resumeId,
+            value: resumeName,
+            target: picked.selector || 'input[type="file"]',
+            pageUrl: target.url,
+            waitMs: 800,
+            color: '#f97316',
+            badge: 'FILE',
+            disabled: false,
+            stopAfter: false,
+            finalSubmit: false,
+          });
+
+          if (resumeId) {
+            currentSidepanelWorkflow.resumeId = resumeId;
+          }
+
+          await saveSidepanelWorkflow(`Recorded file upload: "${resumeName}" [${picked.selector}]`);
+          setupEventListeners();
+          return;
+        }
+
         const stepName = document.getElementById('side-step-name')?.value.trim() || `${act === 'click' ? 'Click' : 'Interact with'} ${picked.label || picked.selector}`;
 
         currentSidepanelWorkflow.steps.push({
@@ -1987,6 +2061,39 @@ function setupEventListeners() {
     const name = document.getElementById('side-step-name')?.value.trim() || `Step ${currentSidepanelWorkflow.steps.length + 1}`;
     const fillVal = document.getElementById('side-fill-val')?.value.trim();
     const target = await getTargetTab().catch(() => null);
+
+    if (act === 'file_upload') {
+      const resumeSelect = document.getElementById('side-resume-select');
+      const selectedOption = resumeSelect?.options[resumeSelect.selectedIndex];
+      const resumeId = resumeSelect?.value || '';
+      const resumeName = selectedOption?.getAttribute('data-filename') || selectedOption?.textContent?.trim() || 'Resume.pdf';
+      const stepName = document.getElementById('side-step-name')?.value.trim() || `Upload resume: ${resumeName}`;
+
+      currentSidepanelWorkflow.steps.push({
+        id: 's_' + Date.now(),
+        type: 'attach_resume',
+        name: stepName,
+        fileName: resumeName,
+        resumeId: resumeId,
+        value: resumeName,
+        target: 'input[type="file"]',
+        pageUrl: target?.url,
+        waitMs: 800,
+        color: '#f97316',
+        badge: 'FILE',
+        disabled: false,
+        stopAfter: false,
+        finalSubmit: false,
+      });
+
+      if (resumeId) {
+        currentSidepanelWorkflow.resumeId = resumeId;
+      }
+
+      await saveSidepanelWorkflow(`Added step "${stepName}"!`);
+      setupEventListeners();
+      return;
+    }
 
     currentSidepanelWorkflow.steps.push({
       id: 's_' + Date.now(),

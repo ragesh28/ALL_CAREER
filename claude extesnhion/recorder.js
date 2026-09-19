@@ -77,7 +77,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupUIEvents();
   setupCrossTabSync();
   renderStepsList();
+  populateRecorderResumes();
 });
+
+async function populateRecorderResumes() {
+  const resumeSelect = document.getElementById('wf-resume-select');
+  if (!resumeSelect) return;
+  try {
+    const resData = await chrome.storage.local.get(['resumes', 'defaultResume', 'uploadedFiles']);
+    const list = Array.isArray(resData.resumes) ? resData.resumes : Array.isArray(resData.uploadedFiles) ? resData.uploadedFiles : [];
+    const defId = resData.defaultResume || '';
+    resumeSelect.innerHTML = '<option value="">Default Resume PDF</option>';
+    list.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r.id || r.name;
+      opt.dataset.filename = r.name || 'resume.pdf';
+      opt.textContent = `${r.name || 'Resume'} ${r.id === defId ? '(Default ⭐)' : ''}`;
+      if (r.id === defId) opt.selected = true;
+      resumeSelect.appendChild(opt);
+    });
+  } catch (_) {}
+}
 
 async function loadWorkflowData() {
   // Check active recording session in storage first
@@ -222,6 +242,11 @@ function setupUIEvents() {
     if (fillEditor) fillEditor.style.display = act === 'fill' ? 'grid' : 'none';
     const loopEditor = document.getElementById('wf-loop-editor');
     if (loopEditor) loopEditor.style.display = act === 'loop' ? 'block' : 'none';
+    const resumeEditor = document.getElementById('wf-resume-editor');
+    if (resumeEditor) {
+      resumeEditor.style.display = act === 'file_upload' ? 'block' : 'none';
+      if (act === 'file_upload') populateRecorderResumes();
+    }
     showStatus(INSTRUCTIONS[act] || 'Select an action, then click an element on the page.');
 
     sendToTargetTab({
@@ -282,6 +307,15 @@ function setupUIEvents() {
     const act = modeSelect?.value || 'click';
     showStatus(`🔍 Click an element on the target website to record [${act}]...`);
 
+    if (act === 'file_upload') {
+      const resumeSelect = document.getElementById('wf-resume-select');
+      const chosenResumeId = resumeSelect?.value || '';
+      if (chosenResumeId && currentWorkflow) {
+        currentWorkflow.resumeId = chosenResumeId;
+        chrome.storage.local.set({ [STORAGE_KEY_WORKFLOWS]: workflows }).catch(() => {});
+      }
+    }
+
     try {
       await chrome.tabs.update(targetTabId, { active: true });
       sendToTargetTab({ action: 'ENTER_PICKER_MODE' });
@@ -293,16 +327,23 @@ function setupUIEvents() {
   // Add Step manually
   addStepBtn?.addEventListener('click', async () => {
     const act = modeSelect?.value || 'click';
-    const name = stepNameInput?.value.trim() || `Step ${(currentWorkflow?.steps?.length || 0) + 1}`;
     const fillVal = fillValueInput?.value.trim() || '';
     const isAi = act === 'ai_step';
+
+    const resumeSelect = document.getElementById('wf-resume-select');
+    const chosenResumeId = resumeSelect?.value || '';
+    const chosenResumeOption = resumeSelect?.selectedOptions?.[0];
+    const chosenFileName = chosenResumeOption?.dataset?.filename || chosenResumeOption?.textContent?.replace('(Default ⭐)', '').trim() || 'resume.pdf';
+    const name = stepNameInput?.value.trim() || (act === 'file_upload' ? `Upload resume: ${chosenFileName}` : `Step ${(currentWorkflow?.steps?.length || 0) + 1}`);
 
     const newStep = {
       id: 's_' + Date.now(),
       type: isAi ? 'ai_fallback' : act === 'file_upload' ? 'attach_resume' : act,
       name,
-      value: fillVal || (isAi ? 'AI screening auto-response' : ''),
-      target: isAi ? 'Questionnaire container' : 'Element selector',
+      value: act === 'file_upload' ? chosenFileName : (fillVal || (isAi ? 'AI screening auto-response' : '')),
+      fileName: act === 'file_upload' ? chosenFileName : undefined,
+      resumeId: act === 'file_upload' ? chosenResumeId : undefined,
+      target: isAi ? 'Questionnaire container' : act === 'file_upload' ? 'input[type="file"]' : 'Element selector',
       waitMs: isAi ? 800 : 400,
       color: ACTION_COLORS[act] || '#38bdf8',
       badge: ACTION_BADGES[act] || 'ACT',
@@ -310,6 +351,10 @@ function setupUIEvents() {
       stopAfter: false,
       finalSubmit: false,
     };
+
+    if (act === 'file_upload' && chosenResumeId) {
+      currentWorkflow.resumeId = chosenResumeId;
+    }
 
     currentWorkflow.steps.push(newStep);
     if (stepNameInput) stepNameInput.value = '';
