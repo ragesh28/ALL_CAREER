@@ -341,6 +341,9 @@ function renderWorkflowsTab() {
             </button>
           `).join('')}
         </div>
+        <div class="wf-sidebar-footer">
+          <button class="btn-delete-all-wf" id="btn-delete-all-wf" title="Delete all workflows">🗑️ Delete all workflows (${workflows.length})</button>
+        </div>
       </aside>
 
       <!-- 2. Center Column: Properties, Dot Canvas, Bottom Bar -->
@@ -406,6 +409,7 @@ function renderWorkflowsTab() {
           <button class="btn-secondary-gray" id="btn-create-branch-nodisabled">Branch without disabled nodes</button>
           <div style="flex: 1;"></div>
           <button class="btn-danger-outline" id="btn-del-wf-main">Delete workflow</button>
+          <button class="btn-danger-outline" id="btn-del-all-wf-canvas" style="border-color: #ef4444; color: #fca5a5; background: rgba(239, 68, 68, 0.1);">Delete all workflows</button>
         </div>
       </main>
 
@@ -1118,17 +1122,26 @@ function attachEvents() {
     }
   });
 
-  // Delete All Workflows (Settings Tab Danger Zone)
-  document.getElementById('btn-delete-all-workflows')?.addEventListener('click', async () => {
-    if (confirm('Are you sure you want to delete ALL workflows? This cannot be undone.')) {
+  // Delete All Workflows Handler (Sidebar button, Bottom bar button, and Settings tab)
+  const handleDeleteAllWorkflows = async () => {
+    if (!workflows || workflows.length === 0) {
+      showToast('No workflows to delete.', true);
+      return;
+    }
+    const count = workflows.length;
+    if (confirm(`Are you sure you want to delete ALL ${count} recorded workflow(s)?\n\nThis will permanently remove all workflows and branches you created. This action cannot be undone.`)) {
       workflows = [];
       selectedWfIndex = 0;
       selectedStepIndex = 0;
-      await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'All workflows deleted.');
+      await persist(STORAGE_KEYS.WORKFLOWS, [], `All ${count} workflow(s) deleted.`);
       chrome.runtime.sendMessage({ action: 'WORKFLOW_DELETE_ALL' }).catch(() => {});
       renderAppHub();
     }
-  });
+  };
+
+  document.getElementById('btn-delete-all-wf')?.addEventListener('click', handleDeleteAllWorkflows);
+  document.getElementById('btn-del-all-wf-canvas')?.addEventListener('click', handleDeleteAllWorkflows);
+  document.getElementById('btn-delete-all-workflows')?.addEventListener('click', handleDeleteAllWorkflows);
 
   // Profile Save
   document.getElementById('btn-save-profile')?.addEventListener('click', async () => {

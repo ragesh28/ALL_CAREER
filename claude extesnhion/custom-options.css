@@ -183,8 +183,10 @@ body {
 .studio-workspace {
   display: grid;
   grid-template-columns: 210px 1fr 310px;
+  grid-template-rows: minmax(0, 1fr);
   gap: 12px;
   height: calc(100vh - 240px);
+  max-height: calc(100vh - 240px);
   min-height: 520px;
   width: 100%;
   overflow: hidden;
@@ -207,6 +209,7 @@ body {
   flex-direction: column;
   gap: 8px;
   height: 100%;
+  max-height: 100%;
   min-height: 0;
   overflow: hidden;
 }
@@ -227,17 +230,19 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow-y: auto;
+  overflow-y: auto !important;
   overflow-x: hidden;
-  flex: 1 1 auto;
+  flex: 1 1 0px;
   min-height: 0;
+  max-height: 100%;
   padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: #3b4256 #11131c;
+  scrollbar-color: #3b82f6 #0d0f17;
 }
 
 .wf-list::-webkit-scrollbar {
   width: 6px;
+  display: block;
 }
 
 .wf-list::-webkit-scrollbar-track {
@@ -246,13 +251,43 @@ body {
 }
 
 .wf-list::-webkit-scrollbar-thumb {
-  background: #2e344a;
+  background: #3b82f6;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .wf-list::-webkit-scrollbar-thumb:hover {
-  background: #3b82f6;
+  background: #60a5fa;
+}
+
+.wf-sidebar-footer {
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.btn-delete-all-wf {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 4px;
+  color: #fca5a5;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-delete-all-wf:hover {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: #ef4444;
+  color: #fee2e2;
 }
 
 .wf-item-btn {

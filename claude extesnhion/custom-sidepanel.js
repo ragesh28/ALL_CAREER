@@ -111,10 +111,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadChatHistory();
   await updateActiveTabInfo();
 
-  const recData = await chrome.storage.local.get(['workflowRecordingActive', 'activeSidepanelView', 'currentRecordingWorkflowId']);
-  if (recData.workflowRecordingActive || recData.activeSidepanelView === 'recorder' || queryMode === 'record') {
+  const recData = await chrome.storage.local.get(['workflowRecordingActive', 'currentRecordingWorkflowId']);
+  if (queryMode === 'record') {
     activeSidepanelView = 'recorder';
     await loadSidepanelWorkflows();
+  } else {
+    activeSidepanelView = 'chat';
   }
 
   if (queryMode === 'record') {
@@ -1197,10 +1199,6 @@ function renderApp() {
           </div>
         </div>
         <div class="header-actions">
-          <div class="view-switcher">
-            <button class="view-switch-btn ${activeSidepanelView === 'recorder' ? 'active' : ''}" id="btn-switch-rec" title="Switch to Workflow Recorder">⚡ Recorder</button>
-            <button class="view-switch-btn ${activeSidepanelView === 'chat' ? 'active' : ''}" id="btn-switch-chat" title="Switch to AI Chat">💬 Chat</button>
-          </div>
           <button id="btn-stop-agent" class="stop-agent-btn" style="display: none;" title="Stop running agent">🛑 Stop</button>
           <select id="quick-model-select" class="quick-model-picker" title="Change active AI model"></select>
           <button id="btn-settings" class="icon-button" title="Settings">⚙️</button>
@@ -1443,20 +1441,6 @@ function escapeHtml(text) {
 // ─── Event Handling ──────────────────────────────────────────────────────────
 
 function setupEventListeners() {
-  // Top View Switcher Buttons
-  document.getElementById('btn-switch-rec')?.addEventListener('click', async () => {
-    activeSidepanelView = 'recorder';
-    await chrome.storage.local.set({ activeSidepanelView: 'recorder' });
-    await loadSidepanelWorkflows();
-    renderApp();
-    setupEventListeners();
-  });
-  document.getElementById('btn-switch-chat')?.addEventListener('click', async () => {
-    activeSidepanelView = 'chat';
-    await chrome.storage.local.set({ activeSidepanelView: 'chat' });
-    renderApp();
-    setupEventListeners();
-  });
 
   const sendBtn = document.getElementById('btn-send');
   const promptInput = document.getElementById('prompt-input');
