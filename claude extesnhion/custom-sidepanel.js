@@ -1453,6 +1453,22 @@ function renderSidepanelRecorderView() {
           </div>
         </div>
 
+        <div id="side-ai-group" style="display: none;">
+          <label class="rec-label">
+            How many elements the AI will see
+            <select id="side-ai-element-count" class="rec-select">
+              <option value="1">1 element (Single box / Auto-detect)</option>
+              <option value="2">2 elements (Question + Answer box)</option>
+              <option value="3" selected>3 elements (Question + Answer + Save button)</option>
+              <option value="4">4 elements (Question + Multiple inputs)</option>
+              <option value="5">5 elements (Complex questionnaire)</option>
+            </select>
+          </label>
+          <div id="side-ai-count-status" style="font-size: 11px; color: #14b8a6; font-weight: 600; margin-top: 3px;">
+            Count: 3 elements set. Click "Pick Element" to select them on the page.
+          </div>
+        </div>
+
         ${hasOpenLoop ? `
           <div style="margin-top: 6px;">
             <button class="rec-btn-orange" id="btn-side-continue-loop" style="background:#f59e0b;color:#000;font-weight:700;width:100%;padding:8px 12px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(245,158,11,0.35);">
@@ -1800,12 +1816,23 @@ function setupEventListeners() {
   const sideLoopGroup = document.getElementById('side-loop-group');
   const sideResumeGroup = document.getElementById('side-resume-group');
   const sideResumeSelect = document.getElementById('side-resume-select');
+  const sideAiGroup = document.getElementById('side-ai-group');
+  const sideAiElementCount = document.getElementById('side-ai-element-count');
+  const sideAiCountStatus = document.getElementById('side-ai-count-status');
 
   const updateSideActionUI = (val) => {
     if (sideFillGroup) sideFillGroup.style.display = val === 'fill' ? 'block' : 'none';
     if (sideLoopGroup) sideLoopGroup.style.display = val === 'loop' ? 'block' : 'none';
     if (sideResumeGroup) sideResumeGroup.style.display = val === 'file_upload' ? 'block' : 'none';
+    if (sideAiGroup) sideAiGroup.style.display = val === 'ai_step' ? 'block' : 'none';
   };
+
+  sideAiElementCount?.addEventListener('change', (e) => {
+    const val = parseInt(e.target.value, 10) || 3;
+    if (sideAiCountStatus) {
+      sideAiCountStatus.textContent = `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
+    }
+  });
 
   sideActSelect?.addEventListener('change', (e) => {
     updateSideActionUI(e.target.value);
@@ -1838,13 +1865,139 @@ function setupEventListeners() {
     if (!target?.id) return alert('No active target tab found.');
     const act = document.getElementById('side-action-select')?.value || 'click';
     const statusEl = document.getElementById('side-rec-status');
-    if (statusEl) statusEl.textContent = `🔍 Click an element on the website to record [${act}]...`;
+    const aiCount = parseInt(document.getElementById('side-ai-element-count')?.value, 10) || 3;
+    if (statusEl) {
+      statusEl.textContent = act === 'ai_step'
+        ? `🔍 Selecting ${aiCount} elements for AI. Click Element 1 on the website...`
+        : `🔍 Click an element on the website to record [${act}]...`;
+    }
 
     try {
       const [res] = await chrome.scripting.executeScript({
         target: { tabId: target.id },
-        func: (actionType) => {
+        func: (actionType, aiTargetCount) => {
           return new Promise((resolve) => {
+            if (actionType === 'ai_step') {
+              const total = Math.max(1, parseInt(aiTargetCount, 10) || 3);
+              const collected = [];
+              const pinnedBadges = [];
+
+              const overlay = document.createElement('div');
+              overlay.id = '__wf_ai_picker_overlay';
+              overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(20,184,166,0.08);z-index:2147483640;cursor:crosshair;pointer-events:all;border:3px solid #14b8a6;box-sizing:border-box;';
+
+              const hud = document.createElement('div');
+              hud.id = '__wf_ai_picker_hud';
+              hud.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f172a;color:#f8fafc;padding:10px 20px;border-radius:10px;border:2px solid #14b8a6;font:700 13px system-ui,-apple-system,sans-serif;z-index:2147483647;box-shadow:0 10px 30px rgba(0,0,0,0.65);display:flex;align-items:center;gap:12px;letter-spacing:0.3px;white-space:nowrap;';
+
+              function updateHud(currentCount) {
+                if (currentCount === 0) {
+                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">AI STEP</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
+                } else if (currentCount < total) {
+                  const countText = currentCount === 1 ? '1 element seted' : `${currentCount} elements seted`;
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">✓ SET</span> <span style="color:#34d399;font-weight:800;">✅ ${countText}</span> <span style="color:#94a3b8;">(${currentCount} of ${total} elements set)</span> ➔ <span style="color:#fff;">Now click <strong>Element ${currentCount + 1} of ${total}</strong></span>`;
+                } else {
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted! Completing AI step...</span>`;
+                }
+              }
+
+              updateHud(0);
+              document.body.appendChild(overlay);
+              document.body.appendChild(hud);
+
+              function cleanup() {
+                overlay.remove();
+                hud.remove();
+                document.removeEventListener('click', clickHandler, true);
+                document.removeEventListener('keydown', keyHandler, true);
+                setTimeout(() => {
+                  pinnedBadges.forEach(b => b.remove());
+                }, 4000);
+              }
+
+              function keyHandler(e) {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  cleanup();
+                  resolve(null);
+                }
+              }
+
+              function clickHandler(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                overlay.style.display = 'none';
+                hud.style.display = 'none';
+                pinnedBadges.forEach(b => b.style.display = 'none');
+                const target = document.elementFromPoint(e.clientX, e.clientY) || e.target;
+                overlay.style.display = 'block';
+                hud.style.display = 'flex';
+                pinnedBadges.forEach(b => b.style.display = 'block');
+
+                if (!target || target === document.documentElement || target === document.body) return;
+
+                let selector = target.tagName.toLowerCase();
+                if (target.id && !target.id.includes('__') && !/\d{4,}/.test(target.id) && !/_[a-z0-9]{5,}/i.test(target.id)) {
+                  selector = '#' + CSS.escape(target.id);
+                } else {
+                  const testAttrs = ['data-testid', 'data-test', 'data-automation-id', 'name', 'role'];
+                  let matchedAttr = false;
+                  for (const attr of testAttrs) {
+                    const val = target.getAttribute(attr);
+                    if (val && val.length <= 80) {
+                      selector = `${target.tagName.toLowerCase()}[${attr}="${CSS.escape(val)}"]`;
+                      matchedAttr = true;
+                      break;
+                    }
+                  }
+                  if (!matchedAttr && target.className && typeof target.className === 'string') {
+                    const c = target.className.split(/\s+/).filter(x => x && !x.includes(':') && !/\d{4,}/.test(x))[0];
+                    if (c) selector = `${target.tagName.toLowerCase()}.${CSS.escape(c)}`;
+                  }
+                }
+
+                const label = (target.textContent || target.getAttribute('aria-label') || target.getAttribute('placeholder') || target.tagName).trim().substring(0, 50);
+                const currentIdx = collected.length + 1;
+                const countLabel = currentIdx === 1 ? '1 element seted' : `${currentIdx} elements seted`;
+
+                const pin = document.createElement('div');
+                pin.className = '__wf_ai_pinned_badge';
+                const rect = target.getBoundingClientRect();
+                pin.style.cssText = `position:fixed;top:${Math.max(4, rect.top - 24)}px;left:${Math.max(4, rect.left)}px;background:#0d9488;color:#fff;font:700 11px system-ui,-apple-system,sans-serif;padding:3px 8px;border-radius:4px;z-index:2147483646;box-shadow:0 2px 10px rgba(0,0,0,0.5);border:1px solid #2dd4bf;pointer-events:none;`;
+                pin.textContent = `✅ #${currentIdx}: ${label.slice(0, 20) || selector} (${countLabel})`;
+                document.body.appendChild(pin);
+                pinnedBadges.push(pin);
+
+                try {
+                  target.style.outline = '2.5px solid #14b8a6';
+                  target.style.outlineOffset = '2px';
+                } catch (_) {}
+
+                collected.push({
+                  selector,
+                  label,
+                  tagName: target.tagName,
+                  index: currentIdx,
+                  countLabel,
+                });
+
+                updateHud(collected.length);
+
+                if (collected.length >= total) {
+                  setTimeout(() => {
+                    cleanup();
+                    resolve({ isAiMulti: true, items: collected, total });
+                  }, 400);
+                }
+              }
+
+              document.addEventListener('click', clickHandler, true);
+              document.addEventListener('keydown', keyHandler, true);
+              return;
+            }
+
             const overlay = document.createElement('div');
             overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(217,119,87,0.1);z-index:2147483640;cursor:crosshair;pointer-events:all;border:3px solid #d97757;box-sizing:border-box;';
             const badge = document.createElement('div');
@@ -1912,12 +2065,48 @@ function setupEventListeners() {
             document.addEventListener('click', clickHandler, true);
           });
         },
-        args: [act],
+        args: [act, aiCount],
       });
 
       if (res?.result && currentSidepanelWorkflow) {
         const picked = res.result;
         const fillVal = document.getElementById('side-fill-val')?.value.trim();
+
+        if (act === 'ai_step') {
+          const items = picked.items || (Array.isArray(picked) ? picked : [picked]);
+          const first = items[0];
+          const second = items[1] || first;
+          const userStepName = document.getElementById('side-step-name')?.value.trim();
+          const autoName = userStepName || `AI question and answer (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
+
+          currentSidepanelWorkflow.steps.push({
+            id: 's_' + Date.now(),
+            type: 'ai_fallback',
+            name: autoName,
+            value: 'AI screening auto-response',
+            elementCount: items.length,
+            targets: items.map(it => it.selector),
+            targetDetails: items,
+            sourceTarget: first.selector,
+            sourceText: first.label,
+            target: second.selector,
+            pageUrl: target.url,
+            waitMs: 800,
+            color: '#14b8a6',
+            badge: 'AI',
+            disabled: false,
+            stopAfter: false,
+            finalSubmit: false,
+          });
+
+          const summaryText = items.map((it, idx) => `${idx + 1} element seted: "${it.label || it.selector}"`).join(' | ');
+          await saveSidepanelWorkflow(`Recorded AI step (${items.length} elements seted): ${autoName}`);
+          if (statusEl) {
+            statusEl.textContent = `✅ Recorded AI step (${items.length} elements seted)! [${summaryText}]`;
+          }
+          setupEventListeners();
+          return;
+        }
 
         if (act === 'loop') {
           const userLoopCount = parseInt(document.getElementById('side-loop-count')?.value, 10);
@@ -2123,15 +2312,42 @@ function setupEventListeners() {
       return;
     }
 
+    if (act === 'ai_step') {
+      const aiCount = parseInt(document.getElementById('side-ai-element-count')?.value, 10) || 3;
+      const placeholderTargets = Array.from({ length: aiCount }, (_, i) => `AI Element ${i + 1}`);
+      const stepName = document.getElementById('side-step-name')?.value.trim() || `AI question & answer (${aiCount} elements)`;
+      currentSidepanelWorkflow.steps.push({
+        id: 's_' + Date.now(),
+        type: 'ai_fallback',
+        name: stepName,
+        value: 'Auto answer screening questions',
+        elementCount: aiCount,
+        targets: placeholderTargets,
+        target: placeholderTargets[1] || placeholderTargets[0],
+        sourceTarget: placeholderTargets[0],
+        pageUrl: target?.url,
+        waitMs: 800,
+        color: '#14b8a6',
+        badge: 'AI',
+        disabled: false,
+        stopAfter: false,
+        finalSubmit: false,
+      });
+
+      await saveSidepanelWorkflow(`Added step "${stepName}" (${aiCount} elements seted)!`);
+      setupEventListeners();
+      return;
+    }
+
     currentSidepanelWorkflow.steps.push({
       id: 's_' + Date.now(),
-      type: act === 'ai_step' ? 'ai_fallback' : act,
+      type: act,
       name,
-      value: fillVal || (act === 'ai_step' ? 'Auto answer screening questions' : ''),
-      target: act === 'ai_step' ? 'Questionnaire container' : 'Target element',
+      value: fillVal || '',
+      target: 'Target element',
       pageUrl: target?.url,
-      waitMs: act === 'ai_step' ? 800 : 400,
-      color: act === 'open_url' ? '#22c55e' : act === 'click' ? '#38bdf8' : act === 'ai_step' ? '#14b8a6' : '#a855f7',
+      waitMs: 400,
+      color: act === 'open_url' ? '#22c55e' : act === 'click' ? '#38bdf8' : '#a855f7',
       badge: act.toUpperCase().substring(0, 3),
       disabled: false,
       stopAfter: false,

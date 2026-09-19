@@ -347,15 +347,18 @@
       <!-- AI Options -->
       <div id="wf-ai-editor" class="ai-panel">
         <label id="wf-ai-element-count-label">
-          Number of elements to select
+          How many elements the AI will see
           <select id="wf-ai-element-count">
             <option value="1">1 element (Single box / Auto-detect)</option>
-            <option value="2" selected>2 elements (Question + Answer box)</option>
-            <option value="3">3 elements (Question + Answer + Save button)</option>
+            <option value="2">2 elements (Question + Answer box)</option>
+            <option value="3" selected>3 elements (Question + Answer + Save button)</option>
             <option value="4">4 elements (Question + Multiple inputs)</option>
             <option value="5">5 elements (Complex questionnaire)</option>
           </select>
         </label>
+        <div id="wf-ai-count-status" style="font-size:11px;color:#14b8a6;font-weight:600;margin-top:2px;margin-bottom:6px;">
+          Count: 3 elements set. Click "Pick Element" to select them on the page.
+        </div>
 
         <label id="wf-ai-full-page-label" class="wait-option">
           <input id="wf-ai-full-page" type="checkbox" />

@@ -295,9 +295,14 @@ function setupUIEvents() {
 
   // AI Options
   aiElementCountSelect?.addEventListener('change', (e) => {
+    const val = parseInt(e.target.value, 10) || 3;
+    const statusLabel = document.getElementById('wf-ai-count-status');
+    if (statusLabel) {
+      statusLabel.textContent = `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
+    }
     sendToTargetTab({
       action: 'RECORDER_TAB_AI_ELEMENT_COUNT_CHANGE',
-      count: parseInt(e.target.value, 10) || 2,
+      count: val,
     });
   });
 
@@ -333,7 +338,10 @@ function setupUIEvents() {
   pickBtn?.addEventListener('click', async () => {
     if (!targetTabId) return alert('No target tab connected.');
     const act = modeSelect?.value || 'click';
-    showStatus(`🔍 Click an element on the target website to record [${act}]...`);
+    const aiCount = parseInt(aiElementCountSelect?.value, 10) || 3;
+    showStatus(act === 'ai_step'
+      ? `🔍 Selecting ${aiCount} elements for AI. Click Element 1 on the target website...`
+      : `🔍 Click an element on the target website to record [${act}]...`);
 
     if (act === 'file_upload') {
       const resumeSelect = document.getElementById('wf-resume-select');
@@ -342,6 +350,173 @@ function setupUIEvents() {
         currentWorkflow.resumeId = chosenResumeId;
         chrome.storage.local.set({ [STORAGE_KEY_WORKFLOWS]: workflows }).catch(() => {});
       }
+    }
+
+    if (act === 'ai_step') {
+      try {
+        await chrome.tabs.update(targetTabId, { active: true });
+        const [res] = await chrome.scripting.executeScript({
+          target: { tabId: targetTabId },
+          func: (totalCount) => {
+            return new Promise((resolve) => {
+              const total = Math.max(1, parseInt(totalCount, 10) || 3);
+              const collected = [];
+              const pinnedBadges = [];
+
+              const overlay = document.createElement('div');
+              overlay.id = '__wf_ai_picker_overlay';
+              overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(20,184,166,0.08);z-index:2147483640;cursor:crosshair;pointer-events:all;border:3px solid #14b8a6;box-sizing:border-box;';
+
+              const hud = document.createElement('div');
+              hud.id = '__wf_ai_picker_hud';
+              hud.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f172a;color:#f8fafc;padding:10px 20px;border-radius:10px;border:2px solid #14b8a6;font:700 13px system-ui,-apple-system,sans-serif;z-index:2147483647;box-shadow:0 10px 30px rgba(0,0,0,0.65);display:flex;align-items:center;gap:12px;letter-spacing:0.3px;white-space:nowrap;';
+
+              function updateHud(currentCount) {
+                if (currentCount === 0) {
+                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">AI STEP</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
+                } else if (currentCount < total) {
+                  const countText = currentCount === 1 ? '1 element seted' : `${currentCount} elements seted`;
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">✓ SET</span> <span style="color:#34d399;font-weight:800;">✅ ${countText}</span> <span style="color:#94a3b8;">(${currentCount} of ${total} elements set)</span> ➔ <span style="color:#fff;">Now click <strong>Element ${currentCount + 1} of ${total}</strong></span>`;
+                } else {
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted! Completing AI step...</span>`;
+                }
+              }
+
+              updateHud(0);
+              document.body.appendChild(overlay);
+              document.body.appendChild(hud);
+
+              function cleanup() {
+                overlay.remove();
+                hud.remove();
+                document.removeEventListener('click', clickHandler, true);
+                document.removeEventListener('keydown', keyHandler, true);
+                setTimeout(() => {
+                  pinnedBadges.forEach(b => b.remove());
+                }, 4000);
+              }
+
+              function keyHandler(e) {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  cleanup();
+                  resolve(null);
+                }
+              }
+
+              function clickHandler(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                overlay.style.display = 'none';
+                hud.style.display = 'none';
+                pinnedBadges.forEach(b => b.style.display = 'none');
+                const target = document.elementFromPoint(e.clientX, e.clientY) || e.target;
+                overlay.style.display = 'block';
+                hud.style.display = 'flex';
+                pinnedBadges.forEach(b => b.style.display = 'block');
+
+                if (!target || target === document.documentElement || target === document.body) return;
+
+                let selector = target.tagName.toLowerCase();
+                if (target.id && !target.id.includes('__') && !/\d{4,}/.test(target.id) && !/_[a-z0-9]{5,}/i.test(target.id)) {
+                  selector = '#' + CSS.escape(target.id);
+                } else {
+                  const testAttrs = ['data-testid', 'data-test', 'data-automation-id', 'name', 'role'];
+                  let matchedAttr = false;
+                  for (const attr of testAttrs) {
+                    const val = target.getAttribute(attr);
+                    if (val && val.length <= 80) {
+                      selector = `${target.tagName.toLowerCase()}[${attr}="${CSS.escape(val)}"]`;
+                      matchedAttr = true;
+                      break;
+                    }
+                  }
+                  if (!matchedAttr && target.className && typeof target.className === 'string') {
+                    const c = target.className.split(/\s+/).filter(x => x && !x.includes(':') && !/\d{4,}/.test(x))[0];
+                    if (c) selector = `${target.tagName.toLowerCase()}.${CSS.escape(c)}`;
+                  }
+                }
+
+                const label = (target.textContent || target.getAttribute('aria-label') || target.getAttribute('placeholder') || target.tagName).trim().substring(0, 50);
+                const currentIdx = collected.length + 1;
+                const countLabel = currentIdx === 1 ? '1 element seted' : `${currentIdx} elements seted`;
+
+                const pin = document.createElement('div');
+                pin.className = '__wf_ai_pinned_badge';
+                const rect = target.getBoundingClientRect();
+                pin.style.cssText = `position:fixed;top:${Math.max(4, rect.top - 24)}px;left:${Math.max(4, rect.left)}px;background:#0d9488;color:#fff;font:700 11px system-ui,-apple-system,sans-serif;padding:3px 8px;border-radius:4px;z-index:2147483646;box-shadow:0 2px 10px rgba(0,0,0,0.5);border:1px solid #2dd4bf;pointer-events:none;`;
+                pin.textContent = `✅ #${currentIdx}: ${label.slice(0, 20) || selector} (${countLabel})`;
+                document.body.appendChild(pin);
+                pinnedBadges.push(pin);
+
+                try {
+                  target.style.outline = '2.5px solid #14b8a6';
+                  target.style.outlineOffset = '2px';
+                } catch (_) {}
+
+                collected.push({
+                  selector,
+                  label,
+                  tagName: target.tagName,
+                  index: currentIdx,
+                  countLabel,
+                });
+
+                updateHud(collected.length);
+
+                if (collected.length >= total) {
+                  setTimeout(() => {
+                    cleanup();
+                    resolve({ isAiMulti: true, items: collected, total });
+                  }, 400);
+                }
+              }
+
+              document.addEventListener('click', clickHandler, true);
+              document.addEventListener('keydown', keyHandler, true);
+            });
+          },
+          args: [aiCount],
+        });
+
+        if (res?.result && currentWorkflow) {
+          const items = res.result.items || (Array.isArray(res.result) ? res.result : [res.result]);
+          const first = items[0];
+          const second = items[1] || first;
+          const userStepName = stepNameInput?.value.trim();
+          const autoName = userStepName || `AI question and answer (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
+
+          const newAiStep = {
+            id: 's_' + Date.now(),
+            type: 'ai_fallback',
+            name: autoName,
+            value: 'AI screening auto-response',
+            elementCount: items.length,
+            targets: items.map(it => it.selector),
+            targetDetails: items,
+            sourceTarget: first.selector,
+            sourceText: first.label,
+            target: second.selector,
+            waitMs: 800,
+            color: '#14b8a6',
+            badge: 'AI',
+            disabled: false,
+            stopAfter: false,
+            finalSubmit: false,
+          };
+
+          currentWorkflow.steps.push(newAiStep);
+          if (stepNameInput) stepNameInput.value = '';
+          const summaryText = items.map((it, idx) => `${idx + 1} element seted: "${it.label || it.selector}"`).join(' | ');
+          await saveWorkflows(`Recorded AI step (${items.length} elements seted)!`);
+          showStatus(`✅ Recorded AI step (${items.length} elements seted)! [${summaryText}]`);
+        }
+      } catch (err) {
+        showStatus('Pick error: ' + err.message, true);
+      }
+      return;
     }
 
     try {
@@ -362,7 +537,9 @@ function setupUIEvents() {
     const chosenResumeId = resumeSelect?.value || '';
     const chosenResumeOption = resumeSelect?.selectedOptions?.[0];
     const chosenFileName = chosenResumeOption?.dataset?.filename || chosenResumeOption?.textContent?.replace('(Default ⭐)', '').trim() || 'resume.pdf';
-    const name = stepNameInput?.value.trim() || (act === 'file_upload' ? `Upload resume: ${chosenFileName}` : `Step ${(currentWorkflow?.steps?.length || 0) + 1}`);
+    const aiCount = parseInt(aiElementCountSelect?.value, 10) || 3;
+    const placeholderTargets = Array.from({ length: aiCount }, (_, i) => `AI Element ${i + 1}`);
+    const name = stepNameInput?.value.trim() || (isAi ? `AI question & answer (${aiCount} elements)` : act === 'file_upload' ? `Upload resume: ${chosenFileName}` : `Step ${(currentWorkflow?.steps?.length || 0) + 1}`);
 
     const newStep = {
       id: 's_' + Date.now(),
@@ -371,7 +548,10 @@ function setupUIEvents() {
       value: act === 'file_upload' ? chosenFileName : (fillVal || (isAi ? 'AI screening auto-response' : '')),
       fileName: act === 'file_upload' ? chosenFileName : undefined,
       resumeId: act === 'file_upload' ? chosenResumeId : undefined,
-      target: isAi ? 'Questionnaire container' : act === 'file_upload' ? 'input[type="file"]' : 'Element selector',
+      elementCount: isAi ? aiCount : undefined,
+      targets: isAi ? placeholderTargets : undefined,
+      sourceTarget: isAi ? placeholderTargets[0] : undefined,
+      target: isAi ? (placeholderTargets[1] || placeholderTargets[0]) : act === 'file_upload' ? 'input[type="file"]' : 'Element selector',
       waitMs: isAi ? 800 : 400,
       color: ACTION_COLORS[act] || '#38bdf8',
       badge: ACTION_BADGES[act] || 'ACT',
