@@ -166,8 +166,8 @@ window.addEventListener('hashchange', () => {
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes[STORAGE_KEYS.WORKFLOWS]) {
-    workflows = changes[STORAGE_KEYS.WORKFLOWS].newValue || workflows;
-    if (selectedWfIndex >= workflows.length) selectedWfIndex = workflows.length - 1;
+    workflows = changes[STORAGE_KEYS.WORKFLOWS].newValue || [];
+    if (selectedWfIndex >= workflows.length) selectedWfIndex = Math.max(0, workflows.length - 1);
     renderAppHub();
   }
 });
@@ -274,6 +274,33 @@ function renderActiveTabBody() {
 
 function renderWorkflowsTab() {
   const currentWf = workflows[selectedWfIndex] || workflows[0];
+  if (!currentWf) {
+    return `
+      <div class="heading-row">
+        <div class="title-box">
+          <h3>Workflow Studio</h3>
+          <p>Record once, edit the graph, then replay locally. Explicit AI nodes handle selected live questions.</p>
+        </div>
+      </div>
+
+      <!-- Create manual workflow bar -->
+      <div class="manual-bar">
+        <div class="manual-title">Create manual workflow</div>
+        <input type="text" id="manual-wf-name" class="dark-input" style="max-width: 220px;" placeholder="Workflow name" />
+        <input type="text" id="manual-wf-url" class="dark-input" style="max-width: 320px;" placeholder="https://www.naukri.com/" />
+        <button class="btn-success-green" id="btn-manual-open-record">Open and record</button>
+      </div>
+
+      <div style="margin-top: 24px; padding: 56px 24px; text-align: center; background: #0f121d; border: 1px dashed #334155; border-radius: 8px; color: #94a3b8;">
+        <div style="font-size: 40px; margin-bottom: 12px;">⚡</div>
+        <strong style="color: #e2e8f0; font-size: 16px; display: block; margin-bottom: 8px;">No Workflows Found</strong>
+        <p style="font-size: 13px; max-width: 480px; margin: 0 auto; line-height: 1.5;">
+          All workflows have been deleted. Enter a workflow name and start URL above, then click <strong>"Open and record"</strong> to record a new workflow.
+        </p>
+      </div>
+    `;
+  }
+
   const activeStep = currentWf?.steps?.[selectedStepIndex] || currentWf?.steps?.[0] || {
     id: 's1', type: 'open_url', name: 'Open page', value: '', waitMs: 400, color: '#22c55e', badge: 'URL', target: ''
   };
@@ -771,6 +798,17 @@ function renderSettingsTab() {
           </div>
         </label>
       </div>
+
+      <!-- Danger Zone: Delete All Workflows -->
+      <div class="form-group span-full" style="background: #11131c; border: 1px solid #7f1d1d; border-radius: 6px; padding: 14px; margin-top: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <strong style="color: #f87171; font-size: 13px;">⚠️ Danger Zone: Delete All Workflows</strong>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">Permanently delete all saved workflows and branches from local storage. This action cannot be undone.</div>
+          </div>
+          <button class="btn-danger-outline" id="btn-delete-all-workflows" style="background: rgba(239, 68, 68, 0.15); border-color: #ef4444; color: #fca5a5; font-weight: 600; padding: 8px 16px;">Delete All Workflows</button>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -975,33 +1013,44 @@ function attachEvents() {
     }
   });
 
-  // Run main workflow
+  // Run main workflow (Executes steps on page, no AI chat sidebar)
   document.getElementById('btn-wf-run-main')?.addEventListener('click', async () => {
     if (!curWf) return;
     await saveWfHandler();
-    const targetUrl = normalizeUrl(curWf.startUrl);
     try {
-      const newTab = await chrome.tabs.create({ url: targetUrl, active: true });
-      if (newTab?.id) {
-        await openSidePanelForTab(newTab.id, curWf.id, 'run');
+      showToast(`Starting workflow "${curWf.name}"...`);
+      const res = await chrome.runtime.sendMessage({
+        action: 'WORKFLOW_RUN',
+        workflowId: curWf.id,
+        workflow: curWf,
+      });
+      if (res?.success) {
+        showToast(`Workflow "${curWf.name}" running in target tab!`);
+      } else {
+        showToast(`Could not start workflow: ${res?.error || 'Unknown error'}`, true);
       }
-      showToast('Workflow launched with Side Panel!');
     } catch (err) {
       showToast('Run error: ' + err.message, true);
     }
   });
 
-  // Test to this node
+  // Test to this node (Executes steps up to selected node, no AI chat sidebar)
   document.getElementById('btn-test-node-btn')?.addEventListener('click', async () => {
     if (!curWf) return;
     await saveWfHandler();
-    const targetUrl = normalizeUrl(curWf.startUrl);
     try {
-      const newTab = await chrome.tabs.create({ url: targetUrl, active: true });
-      if (newTab?.id) {
-        await openSidePanelForTab(newTab.id, curWf.id, 'run');
-      }
       showToast(`Testing workflow up to Step ${selectedStepIndex + 1}...`);
+      const res = await chrome.runtime.sendMessage({
+        action: 'WORKFLOW_RUN',
+        workflowId: curWf.id,
+        workflow: curWf,
+        stopAfterIndex: selectedStepIndex,
+      });
+      if (res?.success) {
+        showToast(`Testing up to Step ${selectedStepIndex + 1} running in target tab!`);
+      } else {
+        showToast(`Could not start test: ${res?.error || 'Unknown error'}`, true);
+      }
     } catch (err) {
       showToast('Test error: ' + err.message, true);
     }
@@ -1044,18 +1093,39 @@ function attachEvents() {
   });
 
   // Status button
-  document.getElementById('btn-wf-status')?.addEventListener('click', () => {
-    showToast(`Workflow "${curWf?.name || 'Main'}" has ${curWf?.steps?.length || 0} nodes.`);
+  document.getElementById('btn-wf-status')?.addEventListener('click', async () => {
+    try {
+      const res = await chrome.runtime.sendMessage({ action: 'WORKFLOW_STATUS' });
+      if (res?.state && res.state.status) {
+        showToast(`Status: ${res.state.status.toUpperCase()} (${res.state.stepIndex + 1}/${res.state.stepCount} nodes)`);
+      } else {
+        showToast(`Workflow "${curWf?.name || 'Main'}" has ${curWf?.steps?.length || 0} nodes.`);
+      }
+    } catch {
+      showToast(`Workflow "${curWf?.name || 'Main'}" has ${curWf?.steps?.length || 0} nodes.`);
+    }
   });
 
-  // Delete Workflow
-  document.getElementById('btn-del-wf-main')?.addEventListener('click', () => {
-    if (workflows.length <= 1) return alert('Cannot delete the only workflow.');
+  // Delete Current Workflow (Allowed even if only 1 workflow remains)
+  document.getElementById('btn-del-wf-main')?.addEventListener('click', async () => {
+    if (!curWf) return;
     if (confirm(`Delete "${curWf?.name}"?`)) {
       workflows.splice(selectedWfIndex, 1);
+      selectedWfIndex = Math.max(0, Math.min(selectedWfIndex, workflows.length - 1));
+      selectedStepIndex = 0;
+      await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Workflow deleted.');
+      renderAppHub();
+    }
+  });
+
+  // Delete All Workflows (Settings Tab Danger Zone)
+  document.getElementById('btn-delete-all-workflows')?.addEventListener('click', async () => {
+    if (confirm('Are you sure you want to delete ALL workflows? This cannot be undone.')) {
+      workflows = [];
       selectedWfIndex = 0;
       selectedStepIndex = 0;
-      persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Workflow deleted.');
+      await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'All workflows deleted.');
+      chrome.runtime.sendMessage({ action: 'WORKFLOW_DELETE_ALL' }).catch(() => {});
       renderAppHub();
     }
   });

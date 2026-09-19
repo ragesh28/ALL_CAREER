@@ -429,6 +429,86 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ success: true });
     return true;
   }
+
+  // 10. Run Workflow Execution Engine
+  if (message?.action === 'WORKFLOW_RUN') {
+    (async () => {
+      try {
+        const { workflowId, workflow: passedWf, stopAfterIndex, variables } = message;
+        let wf = passedWf;
+        if (!wf && workflowId) {
+          const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
+          const list = Array.isArray(stored[WORKFLOWS_KEY]) ? stored[WORKFLOWS_KEY] : [];
+          wf = list.find(w => w.id === workflowId);
+        }
+        if (!wf) {
+          sendResponse({ success: false, error: 'Workflow was not found.' });
+          return;
+        }
+
+        const rawUrl = wf.startUrl || (wf.steps && wf.steps[0] ? (wf.steps[0].value || wf.steps[0].target) : '') || 'https://www.naukri.com/';
+        const targetUrl = normalizeUrl(rawUrl);
+
+        // Open target website tab cleanly WITHOUT opening Claude AI chat sidebar
+        const newTab = await chrome.tabs.create({ url: targetUrl, active: true });
+        if (!newTab?.id) {
+          sendResponse({ success: false, error: 'Failed to create browser tab.' });
+          return;
+        }
+
+        executeWorkflowRun(wf, newTab.id, stopAfterIndex, variables).catch(err => {
+          console.error('[BYOK] executeWorkflowRun error:', err);
+        });
+
+        sendResponse({ success: true, started: true, tabId: newTab.id, workflowId: wf.id });
+      } catch (err) {
+        sendResponse({ success: false, error: err instanceof Error ? err.message : String(err) });
+      }
+    })();
+    return true;
+  }
+
+  // 11. Workflow Run Status
+  if (message?.action === 'WORKFLOW_STATUS') {
+    (async () => {
+      try {
+        const stored = await chrome.storage.local.get('workflowRunState');
+        sendResponse({ success: true, state: stored.workflowRunState || null });
+      } catch (err) {
+        sendResponse({ success: false, error: err.message });
+      }
+    })();
+    return true;
+  }
+
+  // 12. Delete All Workflows
+  if (message?.action === 'WORKFLOW_DELETE_ALL') {
+    (async () => {
+      try {
+        await chrome.storage.local.set({ [WORKFLOWS_KEY]: [] });
+        sendResponse({ success: true });
+      } catch (err) {
+        sendResponse({ success: false, error: err.message });
+      }
+    })();
+    return true;
+  }
+
+  // 13. Delete Single Workflow
+  if (message?.action === 'WORKFLOW_DELETE') {
+    (async () => {
+      try {
+        const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
+        let list = Array.isArray(stored[WORKFLOWS_KEY]) ? stored[WORKFLOWS_KEY] : [];
+        list = list.filter(w => w.id !== message.workflowId);
+        await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
+        sendResponse({ success: true });
+      } catch (err) {
+        sendResponse({ success: false, error: err.message });
+      }
+    })();
+    return true;
+  }
 });
 
 // Automatically track child tabs opened from the recorded tab (e.g. redirect links or job cards opened in new tab)
@@ -567,3 +647,190 @@ chrome.tabs.onRemoved.addListener(async (closedTabId) => {
     }
   } catch (e) {}
 });
+
+// ─── Workflow Runner Helpers ──────────────────────────────────────────────────
+
+function normalizeUrl(input) {
+  let u = (input || '').trim();
+  if (!u) return 'https://www.naukri.com/';
+  if (u.startsWith('http://') || u.startsWith('https://')) return u;
+  if (!u.includes('.')) return `https://www.google.com/search?q=${encodeURIComponent(u)}`;
+  return 'https://' + u;
+}
+
+async function waitForTabReady(tabId, timeoutMs = 35000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    try {
+      const tab = await chrome.tabs.get(tabId);
+      if (tab?.status === 'complete') return tab;
+    } catch {
+      return null;
+    }
+    await new Promise(r => setTimeout(r, 250));
+  }
+  return null;
+}
+
+async function sendWorkflowStepToTab(tabId, step, loopIndex = 0) {
+  const msg = {
+    action: 'WORKFLOW_EXECUTE_STEP',
+    step,
+    loopIndex,
+    clickMode: 'dom',
+  };
+
+  try {
+    return await chrome.tabs.sendMessage(tabId, msg);
+  } catch (err) {
+    // If receiving end does not exist, inject content.js and retry
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+      await new Promise(r => setTimeout(r, 600));
+      return await chrome.tabs.sendMessage(tabId, msg);
+    } catch (injectErr) {
+      console.warn(`[BYOK] sendWorkflowStepToTab failed on tab ${tabId}:`, injectErr);
+      throw injectErr;
+    }
+  }
+}
+
+async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variables = {}) {
+  let activeTabId = initialTabId;
+  const steps = Array.isArray(workflow.steps) ? workflow.steps : [];
+  const runState = {
+    runId: 'run_' + Date.now(),
+    status: 'running',
+    workflowId: workflow.id,
+    workflowName: workflow.name,
+    tabId: initialTabId,
+    stepIndex: 0,
+    stepCount: steps.length,
+    variables: { ...(workflow.variables || {}), ...variables },
+    stopAfterIndex: typeof stopAfterIndex === 'number' ? stopAfterIndex : undefined,
+    startedAt: Date.now(),
+    logs: [`Workflow "${workflow.name}" started in tab ${initialTabId}`],
+  };
+  await chrome.storage.local.set({ workflowRunState: runState });
+
+  try {
+    await waitForTabReady(activeTabId);
+    // Allow single page apps / frameworks to finish initial DOM render
+    await new Promise(r => setTimeout(r, 1000));
+
+    for (let i = 0; i < steps.length; i++) {
+      if (typeof stopAfterIndex === 'number' && i > stopAfterIndex) {
+        break;
+      }
+
+      const sourceStep = steps[i];
+      if (!sourceStep) continue;
+
+      const step = JSON.parse(JSON.stringify(sourceStep));
+
+      // Resolve step variables {{var}}
+      if (typeof step.value === 'string' && step.value.includes('{{')) {
+        for (const [k, v] of Object.entries(runState.variables)) {
+          step.value = step.value.replace(new RegExp(`\\{\\{${k}\\}\\}`, 'g'), v || '');
+        }
+      }
+
+      if (step.disabled) {
+        runState.logs.push(`Skipped disabled Step ${i + 1}: ${step.name || step.type}`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+        continue;
+      }
+
+      runState.stepIndex = i;
+      runState.logs.push(`Executing Step ${i + 1} of ${steps.length}: ${step.name || step.type}`);
+      await chrome.storage.local.set({ workflowRunState: runState });
+
+      // 1. Handle open_url step
+      if (step.type === 'open_url') {
+        const rawTarget = step.value || (typeof step.target === 'string' ? step.target : step.target?.selector) || workflow.startUrl;
+        const targetUrl = normalizeUrl(rawTarget);
+        const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+        if (curTab && curTab.url !== targetUrl) {
+          await chrome.tabs.update(activeTabId, { url: targetUrl });
+          await waitForTabReady(activeTabId);
+          await new Promise(r => setTimeout(r, 800));
+        }
+        if (step.stopAfter || (typeof stopAfterIndex === 'number' && i === stopAfterIndex)) {
+          runState.status = 'completed';
+          runState.message = `Test stopped after Step ${i + 1}: ${step.name || step.type}`;
+          runState.finishedAt = Date.now();
+          await chrome.storage.local.set({ workflowRunState: runState });
+          return;
+        }
+        continue;
+      }
+
+      // 2. Ensure target format is compatible with content.js runtime
+      if (typeof step.target === 'string') {
+        step.target = { selector: step.target, selectors: [step.target], text: step.name || '' };
+      } else if (!step.target && step.targetSelector) {
+        step.target = { selector: step.targetSelector, selectors: [step.targetSelector], text: step.name || '' };
+      } else if (!step.target) {
+        step.target = { selector: '', text: step.name || '' };
+      }
+
+      // 3. Attach resume if step type is attach_resume
+      if (step.type === 'attach_resume') {
+        const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume']);
+        const resumesList = Array.isArray(resumeStore.resumes) ? resumeStore.resumes : [];
+        const resume = resumesList.find(r => r.id === (workflow.resumeId || resumeStore.defaultResume)) || resumesList[0];
+        if (resume && resume.data) {
+          const filePayload = {
+            name: resume.name || 'resume.pdf',
+            type: resume.type || 'application/pdf',
+            data: resume.data,
+          };
+          await sendWorkflowStepToTab(activeTabId, { ...step, file: filePayload });
+        } else {
+          await sendWorkflowStepToTab(activeTabId, step);
+        }
+      } else {
+        // Normal step execution (click, fill, select_option, checkbox, multiple_choice, etc.)
+        const beforeTabs = new Set((await chrome.tabs.query({})).map(t => t.id));
+        const execRes = await sendWorkflowStepToTab(activeTabId, step);
+
+        const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
+        await new Promise(r => setTimeout(r, waitMs));
+
+        // Check if action opened a new tab
+        const afterTabs = await chrome.tabs.query({});
+        const newTab = afterTabs.find(t => !beforeTabs.has(t.id) && t.id && /^https?:/i.test(t.url || ''));
+        if (newTab?.id) {
+          console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url);
+          activeTabId = newTab.id;
+          runState.tabId = activeTabId;
+          await waitForTabReady(activeTabId);
+          await chrome.tabs.update(activeTabId, { active: true });
+          await chrome.storage.local.set({ workflowRunState: runState });
+        }
+      }
+
+      if (step.stopAfter || (typeof stopAfterIndex === 'number' && i === stopAfterIndex)) {
+        runState.status = 'completed';
+        runState.message = `Test stopped after Step ${i + 1}: ${step.name || step.type}`;
+        runState.finishedAt = Date.now();
+        await chrome.storage.local.set({ workflowRunState: runState });
+        return;
+      }
+    }
+
+    runState.status = 'completed';
+    runState.message = 'Workflow completed successfully!';
+    runState.finishedAt = Date.now();
+    runState.logs.push('All steps executed successfully.');
+    await chrome.storage.local.set({ workflowRunState: runState });
+  } catch (err) {
+    console.error('[BYOK] Workflow execution error:', err);
+    runState.status = 'error';
+    runState.error = err instanceof Error ? err.message : String(err);
+    runState.finishedAt = Date.now();
+    runState.logs.push(`Error: ${runState.error}`);
+    await chrome.storage.local.set({ workflowRunState: runState });
+  }
+}
+
