@@ -56,7 +56,8 @@ let chatMessages = [];
 let isGenerating = false;
 let isAgentRunning = false;
 let currentTab = null;
-let lockedTabId = null; // Target Tab Lock: AI stays locked on this tab even if user switches tabs!
+let lockedTabId = null; // Follows active tab by default, or locked if manually requested
+let isManuallyLocked = false; // When false (default), AI dynamically targets whichever tab the user is viewing!
 
 // Extension Autonomy and Permissions
 let aiDecisionMode = 'autonomous'; // 'autonomous' | 'ask_human'
@@ -102,8 +103,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const queryMode = urlParams.get('mode');
   const queryWf = urlParams.get('wf');
 
-  if (queryTabId) {
+  if (queryTabId && (queryMode === 'record' || queryMode === 'run')) {
     lockedTabId = queryTabId;
+    isManuallyLocked = true;
   }
 
   await loadConfig();
@@ -140,13 +142,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     fetchOmniRouteModels(true).catch(() => {});
   }
 
-  // Listen for tab switches
+  // Listen for tab switches - follow user active tab!
   chrome.tabs.onActivated?.addListener(async (activeInfo) => {
-    await updateActiveTabInfo();
-    // If agent is NOT running, follow user active tab
-    if (!isAgentRunning && !lockedTabId) {
-      lockedTabId = activeInfo.tabId;
-    }
+    try {
+      const tab = await chrome.tabs.get(activeInfo.tabId);
+      if (tab) {
+        currentTab = tab;
+        if (!isManuallyLocked || !isAgentRunning) {
+          lockedTabId = tab.id;
+        }
+      }
+    } catch (e) {}
     renderTabInfo();
   });
 
@@ -239,9 +245,11 @@ async function saveChatHistory() {
 async function updateActiveTabInfo() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    currentTab = tab || null;
-    if (!lockedTabId && currentTab?.id) {
-      lockedTabId = currentTab.id;
+    if (tab?.id) {
+      currentTab = tab;
+      if (!isManuallyLocked || !isAgentRunning) {
+        lockedTabId = tab.id;
+      }
     }
   } catch (err) {
     currentTab = null;
@@ -249,14 +257,25 @@ async function updateActiveTabInfo() {
 }
 
 async function getTargetTab() {
+  if (!isManuallyLocked || !isAgentRunning) {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tab?.id) {
+        currentTab = tab;
+        lockedTabId = tab.id;
+        return tab;
+      }
+    } catch (e) {}
+  }
+
   if (lockedTabId) {
     try {
       const tab = await chrome.tabs.get(lockedTabId);
       if (tab) return tab;
     } catch (e) {}
   }
+
   await updateActiveTabInfo();
-  lockedTabId = currentTab?.id || null;
   return currentTab;
 }
 
@@ -337,34 +356,63 @@ async function executeActionInTab(actionData, targetTabId) {
   // 1. Tab Management Actions
   if (action === 'list_tabs') {
     if (!allowMultiTabControl) return { success: false, error: 'Multi-Tab control is disabled in Settings.' };
-    const tabs = await chrome.tabs.query({});
-    const list = tabs.map((t, i) => `[${i + 1}] "${t.title}" (${t.url}) ${t.id === targetTabId ? '(locked)' : ''}`).join('\n');
-    return { success: true, message: `Open tabs:\n${list}` };
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    const list = tabs.map((t, i) => `[Tab ${i + 1}] "${t.title}" (${t.url}) ${t.id === targetTabId ? '👈 [CURRENT ACTIVE TAB USER IS LOOKING AT]' : ''}`).join('\n');
+    return { success: true, message: `Open tabs in this window (${tabs.length}):\n${list}` };
   }
 
   if (action === 'switch_tab') {
     if (!allowMultiTabControl) return { success: false, error: 'Multi-Tab control is disabled in Settings.' };
-    const tabs = await chrome.tabs.query({});
+    const tabs = await chrome.tabs.query({ currentWindow: true });
     let target = null;
-    if (typeof tabIndex === 'number' && tabs[tabIndex]) {
-      target = tabs[tabIndex];
-    } else if (url) {
-      target = tabs.find(t => t.url?.includes(url));
+    if (typeof tabIndex === 'number') {
+      const idx = tabIndex >= 1 && tabIndex <= tabs.length ? tabIndex - 1 : tabIndex;
+      target = tabs[idx];
+    } else if (url || actionData.title || actionData.query) {
+      const q = (url || actionData.title || actionData.query).toLowerCase();
+      target = tabs.find(t => (t.url && t.url.toLowerCase().includes(q)) || (t.title && t.title.toLowerCase().includes(q)));
+    } else {
+      target = tabs.find(t => t.id !== targetTabId);
     }
     if (target?.id) {
       lockedTabId = target.id;
+      currentTab = target;
       await chrome.tabs.update(target.id, { active: true });
       if (target.windowId) await chrome.windows.update(target.windowId, { focused: true });
       renderTabInfo();
-      return { success: true, message: `Switched target tab to: ${target.title || target.url}` };
+      return { success: true, message: `Switched active tab to: "${target.title}" (${target.url})` };
     }
     return { success: false, error: 'Could not find tab to switch to.' };
+  }
+
+  if (action === 'inspect_tab') {
+    if (!allowMultiTabControl) return { success: false, error: 'Multi-Tab control is disabled in Settings.' };
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+    let target = null;
+    if (typeof tabIndex === 'number') {
+      const idx = tabIndex >= 1 && tabIndex <= tabs.length ? tabIndex - 1 : tabIndex;
+      target = tabs[idx];
+    } else if (url || actionData.title || actionData.query) {
+      const q = (url || actionData.title || actionData.query).toLowerCase();
+      target = tabs.find(t => (t.url && t.url.toLowerCase().includes(q)) || (t.title && t.title.toLowerCase().includes(q)));
+    } else {
+      target = tabs.find(t => t.id !== targetTabId);
+    }
+    if (target?.id) {
+      const page = await getActivePageContext(target.id);
+      return {
+        success: true,
+        message: `Inspected tab "${target.title}" (${target.url}):\n${page?.text ? page.text.substring(0, 2000) : '[No text content detected]'}`
+      };
+    }
+    return { success: false, error: 'Could not find other tab to inspect.' };
   }
 
   if (action === 'new_tab') {
     if (!allowMultiTabControl) return { success: false, error: 'Multi-Tab control is disabled in Settings.' };
     const newTab = await chrome.tabs.create({ url: url || 'https://www.google.com', active: true });
     lockedTabId = newTab.id;
+    currentTab = newTab;
     renderTabInfo();
     return { success: true, message: `Opened new tab and locked AI control: ${url || 'New Tab'}` };
   }
@@ -1033,8 +1081,38 @@ ${stepsStr}`;
     }
   } catch (e) {}
 
+  // Fetch all open tabs in current window
+  let openTabsSummary = '';
+  try {
+    const allTabs = await chrome.tabs.query({ currentWindow: true });
+    openTabsSummary = allTabs.map((t, i) => `  [Tab ${i + 1}] "${t.title}" (${t.url}) ${t.id === (currentTab?.id || lockedTabId) ? '👈 [CURRENT ACTIVE TAB USER IS LOOKING AT]' : ''}`).join('\n');
+  } catch (e) {}
+
   return `You are Claude in Chrome, an elite autonomous AI browser agent and automation orchestrator with direct browser execution and extension storage access.
 You inspect interactive accessibility trees, click buttons, upload resumes silently, auto-fill forms, navigate to URLs, and have FULL PROGRAMMATIC ACCESS to read and modify all saved workflows.
+
+### 🌐 ACTIVE BROWSER TAB (USER FOCUS):
+- Currently Active Tab: "${currentTab?.title || 'Active Tab'}" (${currentTab?.url || ''})
+- All Open Tabs in Window:
+${openTabsSummary || '  (None)'}
+
+### 🌐 TAB TARGETING & SWITCHING RULES:
+1. BY DEFAULT, ALWAYS PERFORM ACTIONS ON THE USER'S CURRENT ACTIVE TAB ("${currentTab?.title || 'Active Tab'}"):
+   - When the user asks to click, type, fill, apply, search, or summarize, ALWAYS act on this active tab!
+   - You are directly connected to what the user is currently seeing.
+2. WHEN THE USER ASKS "SEE OTHER TAB", "CHECK ANOTHER TAB", OR ASKS ABOUT OTHER WEBSITES:
+   - Use action "list_tabs" to see all open tabs:
+     \`\`\`json
+     {"thought": "Listing all open tabs", "action": "list_tabs"}
+     \`\`\`
+   - Use action "switch_tab" to switch to the other tab:
+     \`\`\`json
+     {"thought": "Switching to the other tab", "action": "switch_tab"}
+     \`\`\`
+   - Use action "inspect_tab" to inspect what is on another tab without leaving:
+     \`\`\`json
+     {"thought": "Reading content of other tab", "action": "inspect_tab", "query": "indeed"}
+     \`\`\`
 
 ### ⚡ WORKFLOWS CURRENTLY AVAILABLE IN EXTENSION (DIRECT ACCESS):
 ${workflowsSummary}
@@ -1551,7 +1629,6 @@ async function renderTabInfo() {
 
   const isSecureFavicon = tab.favIconUrl && (tab.favIconUrl.startsWith('https://') || tab.favIconUrl.startsWith('data:'));
   const favIcon = isSecureFavicon ? `<img src="${escapeHtml(tab.favIconUrl)}" class="fav-icon" alt="" />` : '🌐';
-  const isLocked = lockedTabId === tab.id;
 
   tabEl.innerHTML = `
     <div class="tab-pill" title="${escapeHtml(tab.url || '')}" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
@@ -1559,15 +1636,15 @@ async function renderTabInfo() {
         ${favIcon}
         <span class="tab-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;">${escapeHtml(tab.title || 'New Tab')}</span>
       </div>
-      <span class="badge ${isLocked ? 'badge-coral' : 'badge-sky'}" style="font-size: 9px; cursor: pointer;" id="btn-toggle-lock" title="Click to lock/switch AI to current tab">
-        ${isLocked ? '🎯 LOCKED' : 'FOLLOW'}
+      <span class="badge ${isManuallyLocked ? 'badge-coral' : 'badge-sky'}" style="font-size: 9px; cursor: pointer;" id="btn-toggle-lock" title="Click to ${isManuallyLocked ? 'unlock and follow active tab' : 'lock AI to this tab'}">
+        ${isManuallyLocked ? '🎯 LOCKED' : '👀 ACTIVE'}
       </span>
     </div>
   `;
 
   document.getElementById('btn-toggle-lock')?.addEventListener('click', async () => {
+    isManuallyLocked = !isManuallyLocked;
     await updateActiveTabInfo();
-    lockedTabId = currentTab?.id || null;
     renderTabInfo();
   });
 }
@@ -2010,6 +2087,18 @@ async function handleUserSubmit() {
 
   const text = promptInput.value.trim();
   if (!text) return;
+
+  // Crucial: Always refresh to user's currently viewed active tab upon submission
+  if (!isManuallyLocked) {
+    try {
+      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (activeTab?.id) {
+        currentTab = activeTab;
+        lockedTabId = activeTab.id;
+      }
+    } catch (e) {}
+    renderTabInfo();
+  }
 
   promptInput.value = '';
   promptInput.style.height = 'auto';
