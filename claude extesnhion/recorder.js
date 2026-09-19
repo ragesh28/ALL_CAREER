@@ -220,6 +220,8 @@ function setupUIEvents() {
     const act = e.target.value;
     if (aiEditor) aiEditor.style.display = act === 'ai_step' ? 'grid' : 'none';
     if (fillEditor) fillEditor.style.display = act === 'fill' ? 'grid' : 'none';
+    const loopEditor = document.getElementById('wf-loop-editor');
+    if (loopEditor) loopEditor.style.display = act === 'loop' ? 'block' : 'none';
     showStatus(INSTRUCTIONS[act] || 'Select an action, then click an element on the page.');
 
     sendToTargetTab({
@@ -350,14 +352,18 @@ function setupUIEvents() {
     chrome.runtime.sendMessage({ action: 'RECORDER_TAB_STOP_WORKING' }).catch(() => {});
   });
 
-  // End Loop Now
+  // Continue to loop step 1 / End Loop
   endLoopBtn?.addEventListener('click', async () => {
     if (manualLoopDepth < 1) return;
     sendToTargetTab({ action: 'RECORDER_TAB_END_LOOP' });
     manualLoopDepth = Math.max(0, manualLoopDepth - 1);
     document.getElementById('wf-loop-state').textContent = manualLoopDepth > 0 ? `Inside loop ${manualLoopDepth}` : 'No active loop';
     endLoopBtn.disabled = manualLoopDepth === 0;
-    showStatus('Loop ended.');
+    if (manualLoopDepth === 0) {
+      endLoopBtn.style.background = '';
+      endLoopBtn.style.color = '';
+    }
+    showStatus('Loop closed! Added "Continue to loop step 1".');
   });
 
   // Finish and Save
@@ -405,7 +411,18 @@ function setupCrossTabSync() {
         const loopLabel = document.getElementById('wf-loop-state');
         if (loopLabel) loopLabel.textContent = manualLoopDepth > 0 ? `Inside loop ${manualLoopDepth}` : 'No active loop';
         const endLoopBtn = document.getElementById('wf-end-loop');
-        if (endLoopBtn) endLoopBtn.disabled = manualLoopDepth === 0;
+        if (endLoopBtn) {
+          endLoopBtn.disabled = manualLoopDepth === 0;
+          if (manualLoopDepth > 0) {
+            endLoopBtn.style.background = '#f59e0b';
+            endLoopBtn.style.color = '#000';
+            endLoopBtn.style.fontWeight = '700';
+          } else {
+            endLoopBtn.style.background = '';
+            endLoopBtn.style.color = '';
+            endLoopBtn.style.fontWeight = '';
+          }
+        }
       }
       if (message.status) {
         showStatus(message.status, message.error === true);

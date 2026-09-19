@@ -1355,11 +1355,19 @@ function renderSidepanelStepsList() {
 }
 
 function renderSidepanelRecorderView() {
+  const steps = currentSidepanelWorkflow?.steps || [];
+  let openLoopCount = 0;
+  for (const s of steps) {
+    if (s.type === 'loop_start') openLoopCount++;
+    else if (s.type === 'loop_end') openLoopCount = Math.max(0, openLoopCount - 1);
+  }
+  const hasOpenLoop = openLoopCount > 0;
+
   return `
     <div class="sidepanel-recorder-view">
       <div class="rec-card">
         <div class="rec-status-banner" id="side-rec-status">
-          🟢 Connected to target tab. Pick an element or add a step.
+          ${hasOpenLoop ? '🔄 Inside Loop (Recording loop actions). Click "Continue to loop step 1" when done.' : '🟢 Connected to target tab. Pick an element or add a step.'}
         </div>
         
         <label class="rec-label">
@@ -1375,7 +1383,7 @@ function renderSidepanelRecorderView() {
         <label class="rec-label">
           Action Type
           <select id="side-action-select" class="rec-select">
-            <option value="click" selected>Click element (auto detect)</option>
+            <option value="click" ${!hasOpenLoop ? 'selected' : ''}>Click element (auto detect)</option>
             <option value="fill">Type anything (fill text)</option>
             <option value="dropdown">Select dropdown option</option>
             <option value="checkbox">Toggle checkbox</option>
@@ -1383,9 +1391,20 @@ function renderSidepanelRecorderView() {
             <option value="file_upload">Upload resume</option>
             <option value="ai_step">AI question &amp; answer</option>
             <option value="loop">Start loop from element</option>
+            ${hasOpenLoop ? '<option value="continue_loop" selected>Continue to loop step 1</option>' : ''}
             <option value="loop_end">End loop when element appears</option>
           </select>
         </label>
+
+        <div id="side-loop-group" style="display: none;">
+          <label class="rec-label">
+            Loop Count (optional)
+            <input type="number" id="side-loop-count" class="rec-input" min="1" max="200" placeholder="e.g. 10 (optional - leave blank for all items)" />
+          </label>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Optional: How many times the loop should run. Leave blank to process all items found on the page.
+          </div>
+        </div>
 
         <div id="side-fill-group" style="display: none;">
           <label class="rec-label">
@@ -1394,13 +1413,21 @@ function renderSidepanelRecorderView() {
           </label>
         </div>
 
-        <div class="rec-btn-grid" style="margin-top: 4px;">
+        ${hasOpenLoop ? `
+          <div style="margin-top: 6px;">
+            <button class="rec-btn-orange" id="btn-side-continue-loop" style="background:#f59e0b;color:#000;font-weight:700;width:100%;padding:8px 12px;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 8px rgba(245,158,11,0.35);">
+              🔁 Continue to loop step 1
+            </button>
+          </div>
+        ` : ''}
+
+        <div class="rec-btn-grid" style="margin-top: 6px;">
           <button class="rec-btn-orange" id="btn-side-pick">🎯 Pick Element</button>
           <button class="rec-btn-orange" id="btn-side-add-step" style="background:#1f6feb;">+ Add Step</button>
         </div>
 
         <div class="rec-btn-grid">
-          <button class="secondary-btn" id="btn-side-undo">↺ Undo Step</button>
+          <button class="secondary-btn" id="btn-side-undo">↺ Undo Step &amp; back</button>
           <button class="rec-btn-green" id="btn-side-finish">💾 Finish &amp; Save</button>
         </div>
       </div>
@@ -1730,8 +1757,10 @@ function setupEventListeners() {
   // Sidepanel Recorder Controls
   const sideActSelect = document.getElementById('side-action-select');
   const sideFillGroup = document.getElementById('side-fill-group');
+  const sideLoopGroup = document.getElementById('side-loop-group');
   sideActSelect?.addEventListener('change', (e) => {
     if (sideFillGroup) sideFillGroup.style.display = e.target.value === 'fill' ? 'block' : 'none';
+    if (sideLoopGroup) sideLoopGroup.style.display = e.target.value === 'loop' ? 'block' : 'none';
   });
 
   // Pick Element on Page
@@ -1776,7 +1805,39 @@ function setupEventListeners() {
 
               const label = (target.textContent || target.getAttribute('aria-label') || target.getAttribute('placeholder') || target.tagName).trim().substring(0, 50);
 
-              resolve({ selector, label, tagName: target.tagName });
+              // Detect repeated group if loop
+              let repeated = null;
+              if (actionType === 'loop') {
+                const naukriCard = target.closest('div.cust-job-tuple, div.srp-jobtuple-wrapper, [class*="cust-job-tuple"], [class*="jobtuple"], [class*="sjw__tuple"]');
+                if (naukriCard || location.hostname.includes('naukri.com')) {
+                  const cards = [...document.querySelectorAll('div.cust-job-tuple, div.srp-jobtuple-wrapper, [class*="cust-job-tuple"], [class*="sjw__tuple"]')].filter(el => el.offsetHeight > 0);
+                  repeated = {
+                    collectionSelector: 'div.cust-job-tuple',
+                    relativeSelector: 'a.title[href*="/job-listings-"], a.title, a[href*="/job-listings-"]',
+                    count: Math.max(1, cards.length),
+                  };
+                } else {
+                  const tag = target.tagName.toLowerCase();
+                  const classes = [...target.classList].filter(c => !/[0-9]{4,}|active|selected/i.test(c));
+                  if (classes.length > 0) {
+                    const sel = `${tag}.${CSS.escape(classes[0])}`;
+                    const matches = [...document.querySelectorAll(sel)].filter(el => el.offsetHeight > 0);
+                    if (matches.length > 1) {
+                      repeated = { collectionSelector: sel, count: matches.length };
+                    }
+                  }
+                }
+              }
+
+              // Dispatch click so target element responds
+              setTimeout(() => {
+                try {
+                  const clickTarget = target.closest('a, button, [role="button"]') || target;
+                  clickTarget.click();
+                } catch (_) {}
+              }, 150);
+
+              resolve({ selector, label, tagName: target.tagName, repeated });
             }
 
             document.addEventListener('click', clickHandler, true);
@@ -1787,8 +1848,64 @@ function setupEventListeners() {
 
       if (res?.result && currentSidepanelWorkflow) {
         const picked = res.result;
-        const stepName = document.getElementById('side-step-name')?.value.trim() || `${act === 'click' ? 'Click' : 'Interact with'} ${picked.label || picked.selector}`;
         const fillVal = document.getElementById('side-fill-val')?.value.trim();
+
+        if (act === 'loop') {
+          const userLoopCount = parseInt(document.getElementById('side-loop-count')?.value, 10);
+          const finalCount = (!isNaN(userLoopCount) && userLoopCount > 0) ? userLoopCount : (picked.repeated?.count || 10);
+          const loopId = 'loop_' + Date.now();
+          const listUrl = target.url || currentSidepanelWorkflow.startUrl;
+
+          // Step 1: loop_start
+          currentSidepanelWorkflow.steps.push({
+            id: 's_' + Date.now() + '_start',
+            type: 'loop_start',
+            name: `Start loop (${finalCount} items)`,
+            loopId,
+            loopCount: finalCount,
+            target: {
+              collectionSelector: picked.repeated?.collectionSelector || picked.selector,
+            },
+            pageUrl: listUrl,
+            returnUrl: listUrl,
+            waitMs: 400,
+            color: '#f59e0b',
+            badge: 'LOOP',
+            disabled: false,
+            stopAfter: false,
+            finalSubmit: false,
+          });
+
+          // Step 2: item click
+          currentSidepanelWorkflow.steps.push({
+            id: 's_' + (Date.now() + 1) + '_item',
+            type: 'click',
+            name: `Open loop item: ${picked.label || 'Job card'}`,
+            loopId,
+            useLoopIndex: true,
+            target: {
+              collectionSelector: picked.repeated?.collectionSelector || picked.selector,
+              relativeSelector: picked.repeated?.relativeSelector || undefined,
+              selector: picked.selector,
+              useLoopIndex: true,
+              collectionIndex: 0,
+            },
+            pageUrl: listUrl,
+            waitMs: 800,
+            onError: 'continue_loop',
+            color: '#38bdf8',
+            badge: 'CLK',
+            disabled: false,
+            stopAfter: false,
+            finalSubmit: false,
+          });
+
+          await saveSidepanelWorkflow(`Started loop with ${finalCount} items! Recording inner steps.`);
+          setupEventListeners();
+          return;
+        }
+
+        const stepName = document.getElementById('side-step-name')?.value.trim() || `${act === 'click' ? 'Click' : 'Interact with'} ${picked.label || picked.selector}`;
 
         currentSidepanelWorkflow.steps.push({
           id: 's_' + Date.now(),
@@ -1796,6 +1913,7 @@ function setupEventListeners() {
           name: stepName,
           value: fillVal || picked.label || '',
           target: picked.selector,
+          pageUrl: target.url,
           waitMs: 400,
           color: act === 'open_url' ? '#22c55e' : act === 'click' ? '#38bdf8' : act === 'ai_step' ? '#14b8a6' : '#a855f7',
           badge: act.toUpperCase().substring(0, 3),
@@ -1812,12 +1930,63 @@ function setupEventListeners() {
     }
   });
 
+  // "Continue to loop step 1" Action
+  const handleContinueLoop = async () => {
+    if (!currentSidepanelWorkflow) return;
+    const steps = currentSidepanelWorkflow.steps || [];
+    const openLoop = [...steps].reverse().find(s => s.type === 'loop_start');
+    const loopId = openLoop?.loopId || ('loop_' + Date.now());
+    const returnUrl = openLoop?.returnUrl || openLoop?.pageUrl || currentSidepanelWorkflow.startUrl;
+
+    currentSidepanelWorkflow.steps.push({
+      id: 's_' + Date.now() + '_end',
+      type: 'loop_end',
+      name: 'Continue to loop step 1',
+      loopId,
+      target: {},
+      waitMs: 400,
+      color: '#f59e0b',
+      badge: 'LEND',
+      disabled: false,
+      stopAfter: false,
+      finalSubmit: false,
+    });
+
+    // Restore the browser tab to the list page / close redirected child tab
+    try {
+      const target = await getTargetTab();
+      const stored = await chrome.storage.session.get(RECORDING_KEY).catch(() => ({}));
+      const rec = stored?.[RECORDING_KEY];
+      if (rec?.tabId && rec?.rootTabId && rec.tabId !== rec.rootTabId) {
+        const childId = rec.tabId;
+        rec.tabId = rec.rootTabId;
+        await chrome.storage.session.set({ [RECORDING_KEY]: rec });
+        await chrome.tabs.update(rec.rootTabId, { active: true }).catch(() => {});
+        await chrome.tabs.remove(childId).catch(() => {});
+      } else if (target?.id && returnUrl && target.url !== returnUrl) {
+        await chrome.tabs.update(target.id, { url: returnUrl }).catch(() => {});
+      }
+    } catch (e) {
+      console.warn('[Sidepanel] Continue loop navigation error:', e);
+    }
+
+    await saveSidepanelWorkflow('Loop closed! Added "Continue to loop step 1".');
+    setupEventListeners();
+  };
+
+  document.getElementById('btn-side-continue-loop')?.addEventListener('click', handleContinueLoop);
+
   // Manual Add Step
   document.getElementById('btn-side-add-step')?.addEventListener('click', async () => {
     if (!currentSidepanelWorkflow) return;
     const act = document.getElementById('side-action-select')?.value || 'click';
+    if (act === 'continue_loop') {
+      return handleContinueLoop();
+    }
+
     const name = document.getElementById('side-step-name')?.value.trim() || `Step ${currentSidepanelWorkflow.steps.length + 1}`;
     const fillVal = document.getElementById('side-fill-val')?.value.trim();
+    const target = await getTargetTab().catch(() => null);
 
     currentSidepanelWorkflow.steps.push({
       id: 's_' + Date.now(),
@@ -1825,6 +1994,7 @@ function setupEventListeners() {
       name,
       value: fillVal || (act === 'ai_step' ? 'Auto answer screening questions' : ''),
       target: act === 'ai_step' ? 'Questionnaire container' : 'Target element',
+      pageUrl: target?.url,
       waitMs: act === 'ai_step' ? 800 : 400,
       color: act === 'open_url' ? '#22c55e' : act === 'click' ? '#38bdf8' : act === 'ai_step' ? '#14b8a6' : '#a855f7',
       badge: act.toUpperCase().substring(0, 3),
@@ -1837,10 +2007,41 @@ function setupEventListeners() {
     setupEventListeners();
   });
 
-  // Undo Step
+  // Undo Step & Back Navigation
   document.getElementById('btn-side-undo')?.addEventListener('click', async () => {
     if (!currentSidepanelWorkflow || currentSidepanelWorkflow.steps.length <= 1) return alert('Workflow must have at least one step.');
     const popped = currentSidepanelWorkflow.steps.pop();
+
+    // Inform background session to keep in sync
+    chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_UNDO' }).catch(() => {});
+
+    // Restore web page / close redirected child tab
+    try {
+      const target = await getTargetTab();
+      const stored = await chrome.storage.session.get(RECORDING_KEY).catch(() => ({}));
+      const rec = stored?.[RECORDING_KEY];
+      if (rec?.tabId && rec?.rootTabId && rec.tabId !== rec.rootTabId) {
+        const childToClose = rec.tabId;
+        rec.tabId = rec.rootTabId;
+        await chrome.storage.session.set({ [RECORDING_KEY]: rec });
+        await chrome.tabs.update(rec.rootTabId, { active: true }).catch(() => {});
+        await chrome.tabs.remove(childToClose).catch(() => {});
+      } else if (target?.id) {
+        const prevStep = currentSidepanelWorkflow.steps[currentSidepanelWorkflow.steps.length - 1];
+        const restoreUrl = prevStep?.pageUrl || currentSidepanelWorkflow.startUrl;
+        const shouldGoBack = Boolean(popped?.pageUrl && target.url && target.url !== popped.pageUrl) || Boolean(restoreUrl && target.url && target.url !== restoreUrl);
+        if (shouldGoBack) {
+          try {
+            await chrome.tabs.goBack(target.id);
+          } catch {
+            if (restoreUrl) await chrome.tabs.update(target.id, { url: restoreUrl }).catch(() => {});
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[Sidepanel] Undo back navigation error:', e);
+    }
+
     await saveSidepanelWorkflow(`Undid: "${popped?.name || 'step'}"`);
     setupEventListeners();
   });

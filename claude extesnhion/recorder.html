@@ -361,6 +361,14 @@
         </div>
       </div>
 
+      <!-- Loop Options -->
+      <div id="wf-loop-editor" class="ai-panel" style="display:none;padding:6px 0;">
+        <label>
+          Loop Count (optional)
+          <input id="wf-loop-count" type="number" min="1" max="200" placeholder="e.g. 10 (leave blank for all items)" />
+        </label>
+      </div>
+
       <!-- Wait For Element Option -->
       <label class="wait-option">
         <input id="wf-wait-for-element" type="checkbox" />
@@ -386,7 +394,7 @@
       </div>
 
       <div class="row">
-        <button id="wf-end-loop" class="loop" disabled title="End the current loop">End loop now</button>
+        <button id="wf-end-loop" class="loop" disabled title="End the current loop and continue to loop step 1">🔁 Continue to loop step 1</button>
         <button id="wf-finish" class="finish" title="Finish recording and save workflow">Finish and save</button>
       </div>
 

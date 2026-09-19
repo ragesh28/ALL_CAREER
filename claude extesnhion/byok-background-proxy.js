@@ -249,6 +249,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           step.badge = badges[step.type] || 'ACT';
         }
 
+        // Manage loop stack
+        if (step.type === 'loop_start') {
+          if (!Array.isArray(recording.loopStack)) recording.loopStack = [];
+          const tab = sender.tab?.id ? await chrome.tabs.get(sender.tab.id).catch(() => null) : null;
+          const loopId = step.loopId || ('loop_' + Date.now());
+          step.loopId = loopId;
+          recording.loopStack.push({
+            loopId,
+            tabId: sender.tab?.id || recording.tabId,
+            url: tab?.url || step.returnUrl || step.pageUrl || recording.workflow.startUrl,
+          });
+        }
+        if (step.type === 'loop_end') {
+          if (!Array.isArray(recording.loopStack)) recording.loopStack = [];
+          const frame = recording.loopStack[recording.loopStack.length - 1];
+          if (frame) {
+            step.loopId = frame.loopId;
+          }
+        }
+
         if (step.type === 'click') {
           recording.lastClickAt = Date.now();
         }
@@ -259,6 +279,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         recording.workflow.steps.push(step);
         recording.workflow.updatedAt = Date.now();
         await chrome.storage.session.set({ [RECORDING_KEY]: recording });
+
+        // If loop_end was recorded, restore the list tab and close child tab if applicable
+        if (step.type === 'loop_end' && Array.isArray(recording.loopStack) && recording.loopStack.length > 0) {
+          const frame = recording.loopStack.pop();
+          if (frame) {
+            const currentTabId = sender.tab?.id || recording.tabId;
+            if (currentTabId && frame.tabId && currentTabId !== frame.tabId) {
+              await chrome.tabs.sendMessage(currentTabId, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+              recording.tabId = frame.tabId;
+              await chrome.storage.session.set({ [RECORDING_KEY]: recording });
+              const listTab = await chrome.tabs.get(frame.tabId).catch(() => null);
+              const restoreUrl = listTab?.url !== frame.url ? frame.url : undefined;
+              await chrome.tabs.update(frame.tabId, { active: true, ...(restoreUrl ? { url: restoreUrl } : {}) }).catch(() => {});
+              await chrome.tabs.remove(currentTabId).catch(() => {});
+              await chrome.tabs.sendMessage(frame.tabId, {
+                action: 'WORKFLOW_RECORD_START',
+                manual: true,
+                stepCount: recording.workflow.steps.length,
+                loopDepth: recording.loopStack.length,
+                workflowName: recording.workflow.name,
+                paused: recording.paused === true,
+              }).catch(() => {});
+            }
+          }
+        }
 
         // Sync with browserWorkflows in chrome.storage.local
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
@@ -291,8 +336,56 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
         const removed = recording.workflow.steps.pop();
+        if (!Array.isArray(recording.loopStack)) recording.loopStack = [];
+        const activeLoop = recording.loopStack[recording.loopStack.length - 1];
+        if (removed.type === 'loop_start' && activeLoop?.loopId === removed.loopId) {
+          recording.loopStack.pop();
+        }
+        if (removed.type === 'loop_end' && removed.loopId) {
+          const start = [...recording.workflow.steps].reverse().find(s => s.type === 'loop_start' && s.loopId === removed.loopId);
+          if (start) {
+            recording.loopStack.push({
+              loopId: removed.loopId,
+              tabId: recording.tabId,
+              url: start.returnUrl || start.pageUrl || recording.workflow.startUrl,
+            });
+          }
+        }
+
+        recording.lastClickAt = undefined;
         recording.workflow.updatedAt = Date.now();
         await chrome.storage.session.set({ [RECORDING_KEY]: recording });
+
+        // Check if there was a redirected child tab opened during recording
+        let activeTabId = recording.tabId;
+        const rootTabId = recording.rootTabId || activeTabId;
+        if (activeTabId && rootTabId && activeTabId !== rootTabId) {
+          console.log('[BYOK] Undo closing redirected child tab:', activeTabId, 'returning to root:', rootTabId);
+          const childToClose = activeTabId;
+          recording.tabId = rootTabId;
+          activeTabId = rootTabId;
+          if (Array.isArray(recording.childTabIds)) {
+            recording.childTabIds = recording.childTabIds.filter(id => id !== childToClose);
+          }
+          await chrome.storage.session.set({ [RECORDING_KEY]: recording });
+          await chrome.tabs.update(rootTabId, { active: true }).catch(() => {});
+          await chrome.tabs.remove(childToClose).catch(() => {});
+        } else if (activeTabId) {
+          // Check if page navigated or changed URL on the same tab
+          const tab = await chrome.tabs.get(activeTabId).catch(() => null);
+          const prevStep = recording.workflow.steps[recording.workflow.steps.length - 1];
+          const targetUrl = prevStep?.pageUrl || recording.workflow.startUrl;
+          const shouldNavigateBack = Boolean(removed.pageUrl && tab?.url && tab.url !== removed.pageUrl) || Boolean(targetUrl && tab?.url && tab.url !== targetUrl);
+          if (shouldNavigateBack) {
+            try {
+              await chrome.tabs.goBack(activeTabId);
+            } catch {
+              if (targetUrl) {
+                await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => {});
+              }
+            }
+          }
+        }
 
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
         let list = Array.isArray(wfStored[WORKFLOWS_KEY]) ? wfStored[WORKFLOWS_KEY] : [];
@@ -300,6 +393,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (idx >= 0) {
           list[idx] = recording.workflow;
           await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
+        }
+
+        // Notify active tab of updated state
+        if (activeTabId) {
+          chrome.tabs.sendMessage(activeTabId, {
+            action: 'WORKFLOW_RECORD_START',
+            manual: true,
+            stepCount: recording.workflow.steps.length,
+            loopDepth: recording.loopStack.length,
+            workflowName: recording.workflow.name,
+            paused: recording.paused === true,
+          }).catch(() => {});
         }
 
         sendResponse({
@@ -745,6 +850,7 @@ async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'do
 async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variables = {}) {
   let activeTabId = initialTabId;
   const steps = Array.isArray(workflow.steps) ? workflow.steps : [];
+  const loopFrames = [];
   const runState = {
     runId: 'run_' + Date.now(),
     status: 'running',
@@ -812,7 +918,72 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         continue;
       }
 
-      // 2. Ensure target format is compatible with content.js runtime
+      // 2. Handle loop_start step
+      if (step.type === 'loop_start') {
+        const loopId = step.loopId || ('loop_' + i);
+        const endIndex = steps.findIndex((c, cIdx) => cIdx > i && c.type === 'loop_end' && (c.loopId === loopId || !c.loopId));
+        let detectedCount = 0;
+        try {
+          const countRes = await sendWorkflowStepToTab(activeTabId, { action: 'WORKFLOW_COUNT_TARGETS', target: step.target });
+          detectedCount = Number(countRes?.count ?? 0);
+        } catch (_) {}
+        const count = Math.min(200, detectedCount || step.loopCount || 10);
+        const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+        const frame = {
+          loopId,
+          startIndex: i,
+          endIndex: endIndex >= 0 ? endIndex : steps.length,
+          current: 0,
+          count,
+          listTabId: activeTabId,
+          listUrl: curTab?.url || workflow.startUrl,
+        };
+        loopFrames.push(frame);
+        runState.logs.push(`Loop "${step.name}" initialized for ${count} items. Starting loop iteration 1.`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+        continue;
+      }
+
+      // 3. Handle loop_end step ("Continue to loop step 1")
+      if (step.type === 'loop_end') {
+        const frame = loopFrames[loopFrames.length - 1];
+        if (frame) {
+          if (frame.current + 1 < frame.count) {
+            // Restore list tab and close child tab if one was opened
+            if (activeTabId !== frame.listTabId) {
+              await chrome.tabs.remove(activeTabId).catch(() => {});
+              activeTabId = frame.listTabId;
+              runState.tabId = activeTabId;
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              await waitForTabReady(activeTabId);
+            }
+            const cur = await chrome.tabs.get(activeTabId).catch(() => null);
+            if (frame.listUrl && cur?.url !== frame.listUrl) {
+              await chrome.tabs.update(activeTabId, { url: frame.listUrl }).catch(() => {});
+              await waitForTabReady(activeTabId);
+            }
+            frame.current += 1;
+            runState.logs.push(`Completed loop item ${frame.current} of ${frame.count}. Continuing to loop step 1 for item ${frame.current + 1}...`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            i = frame.startIndex; // Next loop cycle will execute frame.startIndex + 1
+            continue;
+          } else {
+            // Loop finished
+            if (activeTabId !== frame.listTabId) {
+              await chrome.tabs.remove(activeTabId).catch(() => {});
+              activeTabId = frame.listTabId;
+              runState.tabId = activeTabId;
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+            }
+            loopFrames.pop();
+            runState.logs.push(`Loop completed successfully (${frame.count} items).`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            continue;
+          }
+        }
+      }
+
+      // 4. Ensure target format is compatible with content.js runtime
       if (typeof step.target === 'string') {
         step.target = { selector: step.target, selectors: [step.target], text: step.name || '' };
       } else if (!step.target && step.targetSelector) {
@@ -821,12 +992,19 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         step.target = { selector: '', text: step.name || '' };
       }
 
+      // Active loop index calculation
+      const activeFrame = loopFrames[loopFrames.length - 1];
+      const activeLoopIndex = activeFrame ? activeFrame.current : 0;
+      if (activeFrame && (step.target?.useLoopIndex || step.useLoopIndex || isNaukriJobClick(step))) {
+        step.target.useLoopIndex = true;
+      }
+
       // If it's a Naukri click step without collectionIndex, default to the first job (0)
-      if (isNaukriJobClick(step) && step.target && step.target.collectionIndex === undefined) {
+      if (isNaukriJobClick(step) && step.target && step.target.collectionIndex === undefined && !step.target.useLoopIndex) {
         step.target.collectionIndex = 0;
       }
 
-      // 3. Attach resume if step type is attach_resume
+      // 5. Attach resume if step type is attach_resume
       if (step.type === 'attach_resume') {
         const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume']);
         const resumesList = Array.isArray(resumeStore.resumes) ? resumeStore.resumes : [];
@@ -837,15 +1015,15 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             type: resume.type || 'application/pdf',
             data: resume.data,
           };
-          await sendWorkflowStepToTab(activeTabId, { ...step, file: filePayload });
+          await sendWorkflowStepToTab(activeTabId, { ...step, file: filePayload }, activeLoopIndex);
         } else {
-          await sendWorkflowStepToTab(activeTabId, step);
+          await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex);
         }
       } else {
         // Normal step execution (click, fill, select_option, checkbox, multiple_choice, etc.)
         const beforeTabs = new Set((await chrome.tabs.query({})).map(t => t.id));
         const isNaukri = isNaukriJobClick(step);
-        const execRes = await sendWorkflowStepToTab(activeTabId, step, 0, isNaukri ? 'mouse' : 'dom');
+        const execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
 
         const isNaukriExec = execRes?.siteHandler === 'naukri-job-card' || isNaukri;
         if (isNaukriExec && execRes?.href) {
