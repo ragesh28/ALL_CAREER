@@ -69,7 +69,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const recording = {
           tabId,
           rootTabId: tabId,
+          creatorTabId: sender.tab?.id,
           manual: true,
+          paused: false,
           loopStack: [],
           workflow: {
             id: message.workflowId || ('wf_' + Date.now()),
@@ -162,6 +164,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
         const senderTabId = sender.tab?.id;
+        // Verify that the recorded target tab still exists!
+        const currentTarget = await chrome.tabs.get(recording.tabId).catch(() => null);
+        if (!currentTarget) {
+          // The target tab was closed! Clean up recording immediately
+          await chrome.storage.session.remove(RECORDING_KEY);
+          await chrome.storage.local.remove('recordingPaused');
+          await chrome.storage.local.set({ workflowRecordingActive: false, recordingPaused: false });
+          sendResponse({ success: true, active: false });
+          return;
+        }
+
+        // ONLY respond active: true for the exact tab being recorded!
         if (senderTabId && (recording.tabId === senderTabId || recording.rootTabId === senderTabId)) {
           sendResponse({
             success: true,
@@ -170,36 +184,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             stepCount: recording.workflow.steps.length,
             loopDepth: recording.loopStack.length,
             workflowName: recording.workflow.name,
+            paused: recording.paused === true,
           });
           return;
         }
 
-        // Auto-transfer if previous tab is closed or navigated
-        if (senderTabId) {
-          const currentTarget = await chrome.tabs.get(recording.tabId).catch(() => null);
-          const currentValid = currentTarget?.url && /^https?:/i.test(currentTarget.url);
-          if (!currentValid) {
-            recording.tabId = senderTabId;
-            await chrome.storage.session.set({ [RECORDING_KEY]: recording });
-            sendResponse({
-              success: true,
-              active: true,
-              manual: true,
-              stepCount: recording.workflow.steps.length,
-              loopDepth: recording.loopStack.length,
-              workflowName: recording.workflow.name,
-            });
-            return;
-          }
-        }
-
+        // Any other tab (including newly opened tabs) is NOT recording!
         sendResponse({
           success: true,
-          active: true,
-          manual: true,
-          stepCount: recording.workflow.steps.length,
-          loopDepth: recording.loopStack.length,
-          workflowName: recording.workflow.name,
+          active: false,
         });
       } catch (e) {
         sendResponse({ success: true, active: false });
@@ -319,20 +312,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
         await chrome.storage.session.remove(RECORDING_KEY);
+        await chrome.storage.local.remove('recordingPaused');
+        await chrome.storage.local.set({ workflowRecordingActive: false, recordingPaused: false });
 
-        // Tell active tabs to remove floating recorder panel and hover tracker
-        if (recording.tabId) {
-          chrome.tabs.sendMessage(recording.tabId, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
-          try {
-            if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function') {
-              chrome.sidePanel.setOptions({
-                tabId: recording.tabId,
-                path: 'sidepanel.html',
-                enabled: true,
-              }).catch(() => {});
-            }
-          } catch (_) {}
-        }
+        // Tell all open tabs to remove floating recorder panel and hover tracker
+        try {
+          const allTabs = await chrome.tabs.query({});
+          for (const t of allTabs) {
+            if (t.id) chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+          }
+        } catch (_) {}
 
         recording.workflow.updatedAt = Date.now();
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
@@ -424,4 +413,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ success: true });
     return true;
   }
+});
+
+// Automatically stop and clean up recording when the target tab or creator tab is closed
+chrome.tabs.onRemoved.addListener(async (closedTabId) => {
+  try {
+    const stored = await chrome.storage.session.get(RECORDING_KEY);
+    const recording = stored[RECORDING_KEY];
+    if (!recording) return;
+
+    if (recording.tabId === closedTabId || recording.rootTabId === closedTabId || recording.creatorTabId === closedTabId) {
+      console.log('[BYOK] Target or creator tab closed. Stopping workflow recording.');
+      await chrome.storage.session.remove(RECORDING_KEY);
+      await chrome.storage.local.remove('recordingPaused');
+      await chrome.storage.local.set({ workflowRecordingActive: false, recordingPaused: false });
+      try {
+        const allTabs = await chrome.tabs.query({});
+        for (const t of allTabs) {
+          if (t.id && t.id !== closedTabId) {
+            chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+          }
+        }
+      } catch (_) {}
+    }
+  } catch (e) {}
 });
