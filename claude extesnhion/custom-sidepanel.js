@@ -111,6 +111,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadChatHistory();
   await updateActiveTabInfo();
 
+  const recData = await chrome.storage.local.get(['workflowRecordingActive', 'activeSidepanelView', 'currentRecordingWorkflowId']);
+  if (recData.workflowRecordingActive || recData.activeSidepanelView === 'recorder' || queryMode === 'record') {
+    activeSidepanelView = 'recorder';
+    await loadSidepanelWorkflows();
+  }
+
   if (queryMode === 'record') {
     chatMessages.push({
       role: 'assistant',
@@ -146,6 +152,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ((tabId === lockedTabId || tabId === currentTab?.id) && changeInfo.status === 'complete') {
       await updateActiveTabInfo();
       renderTabInfo();
+    }
+  });
+
+  // Listen for workflow recording updates
+  chrome.storage.onChanged?.addListener(async (changes, area) => {
+    if (area === 'local') {
+      if (changes.workflowRecordingActive) {
+        if (changes.workflowRecordingActive.newValue) {
+          activeSidepanelView = 'recorder';
+          await loadSidepanelWorkflows();
+          renderApp();
+          setupEventListeners();
+        }
+      }
+      if (changes.browserWorkflows && activeSidepanelView === 'recorder') {
+        await loadSidepanelWorkflows();
+        renderApp();
+        setupEventListeners();
+      }
+    }
+  });
+
+  chrome.runtime.onMessage?.addListener((msg) => {
+    if (msg.action === 'WORKFLOW_RECORD_START') {
+      activeSidepanelView = 'recorder';
+      loadSidepanelWorkflows().then(() => {
+        renderApp();
+        setupEventListeners();
+      });
+    }
+    if (msg.action === 'WORKFLOW_RECORD_STOP') {
+      const statusEl = document.getElementById('side-rec-status');
+      if (statusEl) statusEl.textContent = '⏹ Workflow recording stopped.';
     }
   });
 });
@@ -1158,6 +1197,10 @@ function renderApp() {
           </div>
         </div>
         <div class="header-actions">
+          <div class="view-switcher">
+            <button class="view-switch-btn ${activeSidepanelView === 'recorder' ? 'active' : ''}" id="btn-switch-rec" title="Switch to Workflow Recorder">⚡ Recorder</button>
+            <button class="view-switch-btn ${activeSidepanelView === 'chat' ? 'active' : ''}" id="btn-switch-chat" title="Switch to AI Chat">💬 Chat</button>
+          </div>
           <button id="btn-stop-agent" class="stop-agent-btn" style="display: none;" title="Stop running agent">🛑 Stop</button>
           <select id="quick-model-select" class="quick-model-picker" title="Change active AI model"></select>
           <button id="btn-settings" class="icon-button" title="Settings">⚙️</button>
@@ -1167,7 +1210,7 @@ function renderApp() {
       <!-- Target Tab Bar (With Lock Status & Switcher) -->
       <div id="tab-info" class="tab-bar"></div>
 
-      ${renderSidepanelChatView()}
+      ${activeSidepanelView === 'recorder' ? renderSidepanelRecorderView() : renderSidepanelChatView()}
 
       <!-- Settings Modal -->
       <div id="settings-modal" class="modal-backdrop" style="display: none;">
@@ -1400,6 +1443,21 @@ function escapeHtml(text) {
 // ─── Event Handling ──────────────────────────────────────────────────────────
 
 function setupEventListeners() {
+  // Top View Switcher Buttons
+  document.getElementById('btn-switch-rec')?.addEventListener('click', async () => {
+    activeSidepanelView = 'recorder';
+    await chrome.storage.local.set({ activeSidepanelView: 'recorder' });
+    await loadSidepanelWorkflows();
+    renderApp();
+    setupEventListeners();
+  });
+  document.getElementById('btn-switch-chat')?.addEventListener('click', async () => {
+    activeSidepanelView = 'chat';
+    await chrome.storage.local.set({ activeSidepanelView: 'chat' });
+    renderApp();
+    setupEventListeners();
+  });
+
   const sendBtn = document.getElementById('btn-send');
   const promptInput = document.getElementById('prompt-input');
   const clearBtn = document.getElementById('btn-clear-chat');

@@ -490,7 +490,3 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
-
-window.addEventListener('beforeunload', () => {
-  chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
-});
