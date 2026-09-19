@@ -168,10 +168,39 @@ window.addEventListener('hashchange', () => {
   renderAppHub();
 });
 
+function getNextDefaultWorkflowName(existingWorkflows = []) {
+  const wfs = Array.isArray(existingWorkflows) ? existingWorkflows : [];
+  let maxNum = 0;
+  const regex = /^Workflow\s*(\d+)$/i;
+  for (const wf of wfs) {
+    const name = (wf?.name || '').trim();
+    const match = name.match(regex);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (!isNaN(num) && num > maxNum) {
+        maxNum = num;
+      }
+    }
+  }
+  let nextNum = maxNum > 0 ? maxNum + 1 : 1;
+  while (wfs.some(w => (w?.name || '').trim().toLowerCase() === `workflow ${nextNum}`.toLowerCase())) {
+    nextNum++;
+  }
+  return `Workflow ${nextNum}`;
+}
+
+// Cross-tab / background real-time sync
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes[STORAGE_KEYS.WORKFLOWS]) {
-    workflows = changes[STORAGE_KEYS.WORKFLOWS].newValue || [];
-    if (selectedWfIndex >= workflows.length) selectedWfIndex = Math.max(0, workflows.length - 1);
+    const list = changes[STORAGE_KEYS.WORKFLOWS].newValue || [];
+    list.sort((a, b) => {
+      const timeA = a.updatedAt || a.createdAt || 0;
+      const timeB = b.updatedAt || b.createdAt || 0;
+      if (timeA && timeB) return timeB - timeA;
+      return 0;
+    });
+    workflows = list;
+    if (selectedWfIndex >= workflows.length) selectedWfIndex = 0;
     renderAppHub();
   }
 });
@@ -201,7 +230,15 @@ async function loadAllData() {
     }
     defaultResumeId = data[STORAGE_KEYS.DEFAULT_RESUME] || resumes[0]?.id;
     if (Array.isArray(data[STORAGE_KEYS.CUSTOM_ANSWERS])) customAnswers = data[STORAGE_KEYS.CUSTOM_ANSWERS];
-    if (Array.isArray(data[STORAGE_KEYS.WORKFLOWS]) && data[STORAGE_KEYS.WORKFLOWS].length > 0) workflows = data[STORAGE_KEYS.WORKFLOWS];
+    if (Array.isArray(data[STORAGE_KEYS.WORKFLOWS]) && data[STORAGE_KEYS.WORKFLOWS].length > 0) {
+      workflows = data[STORAGE_KEYS.WORKFLOWS];
+      workflows.sort((a, b) => {
+        const timeA = a.updatedAt || a.createdAt || 0;
+        const timeB = b.updatedAt || b.createdAt || 0;
+        if (timeA && timeB) return timeB - timeA;
+        return 0;
+      });
+    }
     if (data[STORAGE_KEYS.SYSTEM_PROMPT]) systemPrompt = data[STORAGE_KEYS.SYSTEM_PROMPT];
     if (data[STORAGE_KEYS.AI_DECISION_MODE]) aiDecisionMode = data[STORAGE_KEYS.AI_DECISION_MODE];
     if (data[STORAGE_KEYS.FILE_UPLOAD_MODE]) fileUploadMode = data[STORAGE_KEYS.FILE_UPLOAD_MODE];
@@ -278,6 +315,7 @@ function renderActiveTabBody() {
 
 function renderWorkflowsTab() {
   const currentWf = workflows[selectedWfIndex] || workflows[0];
+  const nextDefaultName = getNextDefaultWorkflowName(workflows);
   if (!currentWf) {
     return `
       <div class="heading-row">
@@ -290,7 +328,7 @@ function renderWorkflowsTab() {
       <!-- Create manual workflow bar -->
       <div class="manual-bar">
         <div class="manual-title">Create manual workflow</div>
-        <input type="text" id="manual-wf-name" class="dark-input" style="max-width: 220px;" placeholder="Workflow name" />
+        <input type="text" id="manual-wf-name" class="dark-input" style="max-width: 220px;" placeholder="e.g. ${nextDefaultName}" />
         <input type="text" id="manual-wf-url" class="dark-input" style="max-width: 320px;" placeholder="https://www.naukri.com/" />
         <button class="btn-success-green" id="btn-manual-open-record">Open and record</button>
       </div>
@@ -327,7 +365,7 @@ function renderWorkflowsTab() {
     <!-- Create manual workflow bar -->
     <div class="manual-bar">
       <div class="manual-title">Create manual workflow</div>
-      <input type="text" id="manual-wf-name" class="dark-input" style="max-width: 220px;" placeholder="Workflow name" />
+      <input type="text" id="manual-wf-name" class="dark-input" style="max-width: 220px;" placeholder="e.g. ${nextDefaultName}" />
       <input type="text" id="manual-wf-url" class="dark-input" style="max-width: 320px;" placeholder="https://www.naukri.com/" />
       <button class="btn-success-green" id="btn-manual-open-record">Open and record</button>
     </div>
@@ -338,12 +376,15 @@ function renderWorkflowsTab() {
       <aside class="wf-sidebar">
         <input type="text" id="wf-search-input" class="wf-search-input" placeholder="Search workflows" value="${escapeHtml(wfSearchQuery)}" />
         <div class="wf-list">
-          ${filteredWfs.map((w, idx) => `
-            <button class="wf-item-btn ${idx === selectedWfIndex ? 'active' : ''}" data-widx="${idx}">
-              <span class="wf-item-name">${escapeHtml(w.name)}</span>
-              <span class="wf-item-meta">Main workflow | ${w.steps?.length || 0} nodes</span>
-            </button>
-          `).join('')}
+          ${filteredWfs.map((w) => {
+            const realIdx = workflows.indexOf(w);
+            return `
+              <button class="wf-item-btn ${realIdx === selectedWfIndex ? 'active' : ''}" data-widx="${realIdx}">
+                <span class="wf-item-name">${escapeHtml(w.name)}</span>
+                <span class="wf-item-meta">Main workflow | ${w.steps?.length || 0} nodes</span>
+              </button>
+            `;
+          }).join('')}
         </div>
         <div class="wf-sidebar-footer">
           <button class="btn-delete-all-wf" id="btn-delete-all-wf" title="Delete all workflows">🗑️ Delete all workflows (${workflows.length})</button>
@@ -972,7 +1013,8 @@ function attachEvents() {
 
   // Manual create & record
   document.getElementById('btn-manual-open-record')?.addEventListener('click', async () => {
-    const name = document.getElementById('manual-wf-name')?.value.trim() || 'Recorded workflow';
+    const rawName = document.getElementById('manual-wf-name')?.value.trim();
+    const name = rawName || getNextDefaultWorkflowName(workflows);
     const rawUrl = document.getElementById('manual-wf-url')?.value.trim() || 'https://www.naukri.com/';
     const targetUrl = normalizeUrl(rawUrl);
 
@@ -982,12 +1024,14 @@ function attachEvents() {
       startUrl: targetUrl,
       resumeId: '',
       variables: { role: '', location: '' },
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
       steps: [
         { id: 's1', type: 'open_url', name: 'Open ' + targetUrl, value: targetUrl, waitMs: 400, color: '#22c55e', badge: 'URL', target: targetUrl, disabled: false, stopAfter: false, finalSubmit: false }
       ],
     };
-    workflows.push(newWf);
-    selectedWfIndex = workflows.length - 1;
+    workflows.unshift(newWf);
+    selectedWfIndex = 0;
     selectedStepIndex = 0;
     await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Opening website with Side Panel recorder...');
     renderAppHub();
@@ -1073,9 +1117,10 @@ function attachEvents() {
       id: 'wf_' + Date.now(),
       name: branchName,
       createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
-    workflows.push(newBranch);
-    selectedWfIndex = workflows.length - 1;
+    workflows.unshift(newBranch);
+    selectedWfIndex = 0;
     selectedStepIndex = 0;
     await persist(STORAGE_KEYS.WORKFLOWS, workflows, `Created branch "${branchName}"!`);
     renderAppHub();
@@ -1092,9 +1137,10 @@ function attachEvents() {
       name: branchName,
       steps: activeSteps.length > 0 ? activeSteps : curWf.steps,
       createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
-    workflows.push(newBranch);
-    selectedWfIndex = workflows.length - 1;
+    workflows.unshift(newBranch);
+    selectedWfIndex = 0;
     selectedStepIndex = 0;
     await persist(STORAGE_KEYS.WORKFLOWS, workflows, `Created branch without disabled nodes!`);
     renderAppHub();

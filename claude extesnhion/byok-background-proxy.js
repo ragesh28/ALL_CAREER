@@ -6,6 +6,26 @@
 const RECORDING_KEY = 'workflowRecording';
 const WORKFLOWS_KEY = 'browserWorkflows';
 
+function getNextDefaultWorkflowName(existingWorkflows) {
+  const wfs = Array.isArray(existingWorkflows) ? existingWorkflows : [];
+  let maxNum = 0;
+  for (const wf of wfs) {
+    const name = String(wf?.name || '').trim();
+    const match = name.match(/^Workflow\s*(\d+)$/i);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (!isNaN(num) && num > maxNum) {
+        maxNum = num;
+      }
+    }
+  }
+  let candidateNum = maxNum + 1;
+  while (wfs.some(w => String(w?.name || '').trim().toLowerCase() === `workflow ${candidateNum}`.toLowerCase())) {
+    candidateNum++;
+  }
+  return `Workflow ${candidateNum}`;
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // 1. BYOK Proxy Fetch
   if (message?.action === 'BYOK_PROXY_FETCH') {
@@ -57,7 +77,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         const tab = await chrome.tabs.get(tabId);
         const startUrl = tab.url || message.startUrl || 'https://www.naukri.com/';
-        const workflowName = String(message.name || message.workflowName || 'Recorded workflow');
+
+        // Sync with browserWorkflows in chrome.storage.local
+        const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
+        let list = Array.isArray(stored[WORKFLOWS_KEY]) ? stored[WORKFLOWS_KEY] : [];
+
+        let workflowName = String(message.name || message.workflowName || '').trim();
+        if (!workflowName || workflowName.toLowerCase() === 'recorded workflow') {
+          workflowName = getNextDefaultWorkflowName(list);
+        }
 
         let urlObj;
         try {
@@ -100,15 +128,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         await chrome.storage.session.set({ [RECORDING_KEY]: recording });
 
-        // Sync with browserWorkflows in chrome.storage.local
-        const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
-        let list = Array.isArray(stored[WORKFLOWS_KEY]) ? stored[WORKFLOWS_KEY] : [];
-        const existingIdx = list.findIndex(w => w.id === recording.workflow.id);
-        if (existingIdx >= 0) {
-          list[existingIdx] = recording.workflow;
-        } else {
-          list.push(recording.workflow);
-        }
+        list = list.filter(w => w.id !== recording.workflow.id);
+        list.unshift(recording.workflow);
         await chrome.storage.local.set({ [WORKFLOWS_KEY]: list, workflowRecordingActive: true, activeSidepanelView: 'recorder' });
 
         // Notify content.js to mount floating recorder HUD and activate element hover overlay
@@ -324,12 +345,8 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         // Sync with browserWorkflows in chrome.storage.local
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
         let list = Array.isArray(wfStored[WORKFLOWS_KEY]) ? wfStored[WORKFLOWS_KEY] : [];
-        const idx = list.findIndex(w => w.id === recording.workflow.id);
-        if (idx >= 0) {
-          list[idx] = recording.workflow;
-        } else {
-          list.push(recording.workflow);
-        }
+        list = list.filter(w => w.id !== recording.workflow.id);
+        list.unshift(recording.workflow);
         await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
 
         sendResponse({ success: true, recorded: true, stepIndex: recording.workflow.steps.length - 1 });
@@ -405,11 +422,9 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
 
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
         let list = Array.isArray(wfStored[WORKFLOWS_KEY]) ? wfStored[WORKFLOWS_KEY] : [];
-        const idx = list.findIndex(w => w.id === recording.workflow.id);
-        if (idx >= 0) {
-          list[idx] = recording.workflow;
-          await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
-        }
+        list = list.filter(w => w.id !== recording.workflow.id);
+        list.unshift(recording.workflow);
+        await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
 
         // Notify active tab of updated state
         if (activeTabId) {
@@ -463,12 +478,11 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         recording.workflow.updatedAt = Date.now();
         const wfStored = await chrome.storage.local.get(WORKFLOWS_KEY);
         let list = Array.isArray(wfStored[WORKFLOWS_KEY]) ? wfStored[WORKFLOWS_KEY] : [];
-        const idx = list.findIndex(w => w.id === recording.workflow.id);
-        if (idx >= 0) {
-          list[idx] = recording.workflow;
-        } else {
-          list.push(recording.workflow);
+        if (!recording.workflow.name || recording.workflow.name.trim().toLowerCase() === 'recorded workflow') {
+          recording.workflow.name = getNextDefaultWorkflowName(list.filter(w => w.id !== recording.workflow.id));
         }
+        list = list.filter(w => w.id !== recording.workflow.id);
+        list.unshift(recording.workflow);
         await chrome.storage.local.set({ [WORKFLOWS_KEY]: list });
 
         sendResponse({ success: true, saved: true, workflow: recording.workflow });

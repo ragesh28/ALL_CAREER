@@ -7,6 +7,26 @@
 const STORAGE_KEY_WORKFLOWS = 'browserWorkflows';
 const RECORDING_KEY = 'recording_session';
 
+function getNextDefaultWorkflowName(existingWorkflows) {
+  const wfs = Array.isArray(existingWorkflows) ? existingWorkflows : [];
+  let maxNum = 0;
+  for (const wf of wfs) {
+    const name = String(wf?.name || '').trim();
+    const match = name.match(/^Workflow\s*(\d+)$/i);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (!isNaN(num) && num > maxNum) {
+        maxNum = num;
+      }
+    }
+  }
+  let candidateNum = maxNum + 1;
+  while (wfs.some(w => String(w?.name || '').trim().toLowerCase() === `workflow ${candidateNum}`.toLowerCase())) {
+    candidateNum++;
+  }
+  return `Workflow ${candidateNum}`;
+}
+
 const INSTRUCTIONS = {
   click: 'Select any element. Dropdowns, checkboxes, choices, and uploads are detected automatically.',
   fill: 'Select the input where the workflow should type.',
@@ -121,15 +141,18 @@ async function loadWorkflowData() {
   }
 
   if (!currentWorkflow && workflows.length > 0) {
-    currentWorkflow = workflows[workflows.length - 1];
+    currentWorkflow = workflows[0];
     currentWorkflowId = currentWorkflow.id;
   }
 
   if (!currentWorkflow) {
+    const defaultName = getNextDefaultWorkflowName(workflows);
     currentWorkflow = {
       id: 'wf_' + Date.now(),
-      name: 'Recorded workflow',
+      name: defaultName,
       startUrl: 'https://www.naukri.com/',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
       steps: [
         {
           id: 's1',
@@ -146,18 +169,23 @@ async function loadWorkflowData() {
         },
       ],
     };
-    workflows.push(currentWorkflow);
+    workflows.unshift(currentWorkflow);
     await saveWorkflows();
   }
 
   const nameEl = document.getElementById('wf-name-label');
-  if (nameEl) nameEl.textContent = currentWorkflow.name || 'Recorded workflow';
+  if (nameEl) nameEl.textContent = currentWorkflow.name || getNextDefaultWorkflowName(workflows);
 }
 
 async function saveWorkflows(msg = 'Workflow updated!') {
-  const idx = workflows.findIndex((w) => w.id === currentWorkflow.id);
-  if (idx >= 0) workflows[idx] = currentWorkflow;
-  else workflows.push(currentWorkflow);
+  if (currentWorkflow) {
+    currentWorkflow.updatedAt = Date.now();
+    if (!currentWorkflow.name || currentWorkflow.name.trim().toLowerCase() === 'recorded workflow') {
+      currentWorkflow.name = getNextDefaultWorkflowName(workflows.filter(w => w.id !== currentWorkflow.id));
+    }
+    workflows = workflows.filter((w) => w.id !== currentWorkflow.id);
+    workflows.unshift(currentWorkflow);
+  }
 
   await chrome.storage.local.set({ [STORAGE_KEY_WORKFLOWS]: workflows });
   renderStepsList();
@@ -413,6 +441,12 @@ function setupUIEvents() {
 
   // Finish and Save
   finishBtn?.addEventListener('click', async () => {
+    if (currentWorkflow) {
+      if (!currentWorkflow.name || currentWorkflow.name.trim().toLowerCase() === 'recorded workflow') {
+        currentWorkflow.name = getNextDefaultWorkflowName(workflows.filter(w => w.id !== currentWorkflow.id));
+      }
+      currentWorkflow.updatedAt = Date.now();
+    }
     await chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
     sendToTargetTab({ action: 'RECORDER_TAB_FINISH' });
     await saveWorkflows('Workflow saved successfully!');

@@ -1295,6 +1295,26 @@ function getAvailableModelsForCurrentProvider() {
   return OMNIROUTE_PRESET_MODELS;
 }
 
+function getNextDefaultWorkflowName(existingWorkflows) {
+  const wfs = Array.isArray(existingWorkflows) ? existingWorkflows : [];
+  let maxNum = 0;
+  for (const wf of wfs) {
+    const name = String(wf?.name || '').trim();
+    const match = name.match(/^Workflow\s*(\d+)$/i);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (!isNaN(num) && num > maxNum) {
+        maxNum = num;
+      }
+    }
+  }
+  let candidateNum = maxNum + 1;
+  while (wfs.some(w => String(w?.name || '').trim().toLowerCase() === `workflow ${candidateNum}`.toLowerCase())) {
+    candidateNum++;
+  }
+  return `Workflow ${candidateNum}`;
+}
+
 let activeSidepanelView = 'chat'; // 'chat' | 'recorder'
 let currentSidepanelWorkflow = null;
 
@@ -1306,13 +1326,16 @@ async function loadSidepanelWorkflows() {
       currentSidepanelWorkflow = wfs.find(w => w.id === data.currentRecordingWorkflowId);
     }
     if (!currentSidepanelWorkflow && wfs.length > 0) {
-      currentSidepanelWorkflow = wfs[wfs.length - 1];
+      currentSidepanelWorkflow = wfs[0];
     }
     if (!currentSidepanelWorkflow) {
+      const defaultName = getNextDefaultWorkflowName(wfs);
       currentSidepanelWorkflow = {
         id: 'wf_' + Date.now(),
-        name: 'Recorded workflow',
+        name: defaultName,
         startUrl: currentTab?.url || 'https://www.naukri.com/',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
         steps: [
           { id: 's1', type: 'open_url', name: 'Open page', value: currentTab?.url || 'https://www.naukri.com/', waitMs: 400, color: '#22c55e', badge: 'URL', target: currentTab?.url || '' }
         ],
@@ -1324,10 +1347,15 @@ async function loadSidepanelWorkflows() {
 async function saveSidepanelWorkflow(msg = 'Workflow updated!') {
   try {
     const data = await chrome.storage.local.get(['browserWorkflows']);
-    const wfs = Array.isArray(data.browserWorkflows) ? data.browserWorkflows : [];
-    const idx = wfs.findIndex(w => w.id === currentSidepanelWorkflow.id);
-    if (idx >= 0) wfs[idx] = currentSidepanelWorkflow;
-    else wfs.push(currentSidepanelWorkflow);
+    let wfs = Array.isArray(data.browserWorkflows) ? data.browserWorkflows : [];
+    if (currentSidepanelWorkflow) {
+      currentSidepanelWorkflow.updatedAt = Date.now();
+      if (!currentSidepanelWorkflow.name || currentSidepanelWorkflow.name.trim().toLowerCase() === 'recorded workflow') {
+        currentSidepanelWorkflow.name = getNextDefaultWorkflowName(wfs.filter(w => w.id !== currentSidepanelWorkflow.id));
+      }
+      wfs = wfs.filter(w => w.id !== currentSidepanelWorkflow.id);
+      wfs.unshift(currentSidepanelWorkflow);
+    }
     await chrome.storage.local.set({ browserWorkflows: wfs });
     renderApp();
     const statusEl = document.getElementById('side-rec-status');
@@ -2157,7 +2185,15 @@ function setupEventListeners() {
   document.getElementById('btn-side-finish')?.addEventListener('click', async () => {
     if (currentSidepanelWorkflow) {
       const nameInput = document.getElementById('side-wf-name')?.value.trim();
-      if (nameInput) currentSidepanelWorkflow.name = nameInput;
+      if (nameInput) {
+        currentSidepanelWorkflow.name = nameInput;
+      } else if (!currentSidepanelWorkflow.name || currentSidepanelWorkflow.name.trim().toLowerCase() === 'recorded workflow') {
+        const data = await chrome.storage.local.get(['browserWorkflows']);
+        const wfs = Array.isArray(data.browserWorkflows) ? data.browserWorkflows : [];
+        currentSidepanelWorkflow.name = getNextDefaultWorkflowName(wfs.filter(w => w.id !== currentSidepanelWorkflow.id));
+      }
+      currentSidepanelWorkflow.updatedAt = Date.now();
+      await chrome.runtime.sendMessage({ action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
       await saveSidepanelWorkflow('Workflow saved to Studio!');
     }
   });
