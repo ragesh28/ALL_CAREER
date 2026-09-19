@@ -569,7 +569,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
   if (message?.action === 'WORKFLOW_RUN') {
     (async () => {
       try {
-        const { workflowId, workflow: passedWf, stopAfterIndex, variables } = message;
+        const { workflowId, workflow: passedWf, stopAfterIndex, variables, tabId: requestedTabId } = message;
         let wf = passedWf;
         if (!wf && workflowId) {
           const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
@@ -584,18 +584,36 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         const rawUrl = wf.startUrl || (wf.steps && wf.steps[0] ? (wf.steps[0].value || wf.steps[0].target) : '') || 'https://www.naukri.com/';
         const targetUrl = normalizeUrl(rawUrl);
 
-        // Open target website tab cleanly WITHOUT opening Claude AI chat sidebar
-        const newTab = await chrome.tabs.create({ url: targetUrl, active: true });
-        if (!newTab?.id) {
-          sendResponse({ success: false, error: 'Failed to create browser tab.' });
+        let targetTabId = null;
+        if (typeof requestedTabId === 'number') {
+          const validReq = await getValidTab(requestedTabId);
+          if (validReq?.id) {
+            targetTabId = validReq.id;
+          }
+        }
+
+        if (!targetTabId) {
+          // Open target website tab cleanly WITHOUT opening Claude AI chat sidebar
+          const newTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
+          if (newTab?.id) {
+            targetTabId = newTab.id;
+          }
+        }
+
+        if (!targetTabId) {
+          targetTabId = await ensureActiveTab(null, targetUrl).catch(() => null);
+        }
+
+        if (!targetTabId) {
+          sendResponse({ success: false, error: 'Failed to find or create browser tab.' });
           return;
         }
 
-        executeWorkflowRun(wf, newTab.id, stopAfterIndex, variables).catch(err => {
+        executeWorkflowRun(wf, targetTabId, stopAfterIndex, variables).catch(err => {
           console.error('[BYOK] executeWorkflowRun error:', err);
         });
 
-        sendResponse({ success: true, started: true, tabId: newTab.id, workflowId: wf.id });
+        sendResponse({ success: true, started: true, tabId: targetTabId, workflowId: wf.id });
       } catch (err) {
         sendResponse({ success: false, error: err instanceof Error ? err.message : String(err) });
       }
@@ -793,6 +811,70 @@ function normalizeUrl(input) {
   return 'https://' + u;
 }
 
+async function getValidTab(tabId) {
+  if (!tabId || typeof tabId !== 'number') return null;
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    return tab?.id ? tab : null;
+  } catch {
+    return null;
+  }
+}
+
+async function ensureActiveTab(currentTabId, fallbackUrl, runState = null) {
+  // 1. Check if the current tab is still valid and alive
+  const existing = await getValidTab(currentTabId);
+  if (existing?.id) {
+    return existing.id;
+  }
+
+  console.warn(`[BYOK] Tab ${currentTabId} is not available. Searching for replacement tab...`);
+
+  // 2. Look for an active web tab in the current window
+  try {
+    const activeTabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const validActive = activeTabs.find(t => t.id && t.url && /^https?:/i.test(t.url) && !t.url.startsWith('chrome-extension://'));
+    if (validActive?.id) {
+      if (runState) {
+        runState.tabId = validActive.id;
+        runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Resumed on active tab ${validActive.id} (${validActive.url || ''})`);
+        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+      }
+      return validActive.id;
+    }
+  } catch (_) {}
+
+  // 3. Search for ANY web tab currently open
+  try {
+    const allTabs = await chrome.tabs.query({});
+    const validWeb = allTabs.find(t => t.id && t.url && /^https?:/i.test(t.url) && !t.url.startsWith('chrome-extension://'));
+    if (validWeb?.id) {
+      await chrome.tabs.update(validWeb.id, { active: true }).catch(() => {});
+      if (runState) {
+        runState.tabId = validWeb.id;
+        runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Switched to open tab ${validWeb.id} (${validWeb.url || ''})`);
+        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+      }
+      return validWeb.id;
+    }
+  } catch (_) {}
+
+  // 4. If no living web tab exists, create a new one
+  const targetUrl = normalizeUrl(fallbackUrl || 'https://www.naukri.com/');
+  const newTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
+  if (newTab?.id) {
+    await waitForTabReady(newTab.id);
+    if (runState) {
+      runState.tabId = newTab.id;
+      runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Created replacement tab ${newTab.id} (${targetUrl})`);
+      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+    }
+    return newTab.id;
+  }
+
+  throw new Error(`Unable to find or create a valid browser tab for workflow execution.`);
+}
+
 async function waitForTabReady(tabId, timeoutMs = 35000) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
@@ -836,12 +918,12 @@ async function waitForExpectedNaukriDestination(sourceTabId, beforeTabs, expecte
   const deadline = Date.now() + timeoutMs;
   const createdTabs = [];
   while (Date.now() <= deadline) {
-    const tabs = await chrome.tabs.query({});
+    const tabs = await chrome.tabs.query({}).catch(() => []);
     const newTabs = tabs.filter((t) => t.id !== undefined && !beforeTabs.has(t.id));
     for (const tab of newTabs) {
       if (!createdTabs.some((c) => c.id === tab.id)) createdTabs.push(tab);
     }
-    const source = await chrome.tabs.get(sourceTabId).catch(() => null);
+    const source = await getValidTab(sourceTabId);
     const candidates = [...newTabs, ...(source ? [source] : [])];
     for (const candidate of candidates) {
       if (matchesExpectedNaukriJobUrl(candidate.url, expectedUrl)) {
@@ -850,7 +932,7 @@ async function waitForExpectedNaukriDestination(sourceTabId, beforeTabs, expecte
     }
     await new Promise((r) => setTimeout(r, 200));
   }
-  const source = await chrome.tabs.get(sourceTabId).catch(() => null);
+  const source = await getValidTab(sourceTabId);
   return { actualUrl: source?.url, createdTabs };
 }
 
@@ -862,10 +944,20 @@ async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'do
     clickMode,
   };
 
+  const validTab = await getValidTab(tabId);
+  if (!validTab) {
+    throw new Error(`No tab with id: ${tabId}`);
+  }
+
   try {
     return await chrome.tabs.sendMessage(tabId, msg);
   } catch (err) {
-    // If receiving end does not exist, inject content.js and retry
+    // If receiving end does not exist, verify tab is still alive before executeScript
+    const recheck = await getValidTab(tabId);
+    if (!recheck) {
+      throw new Error(`No tab with id: ${tabId}`);
+    }
+
     try {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
       await new Promise(r => setTimeout(r, 600));
@@ -897,6 +989,8 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
   await chrome.storage.local.set({ workflowRunState: runState });
 
   try {
+    // Verify initial tab exists and heal if needed
+    activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
     await waitForTabReady(activeTabId);
     // Allow single page apps / frameworks to finish initial DOM render
     await new Promise(r => setTimeout(r, 1000));
@@ -905,6 +999,9 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       if (typeof stopAfterIndex === 'number' && i > stopAfterIndex) {
         break;
       }
+
+      // Ensure activeTabId is valid and alive before each step
+      activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
 
       const sourceStep = steps[i];
       if (!sourceStep) continue;
@@ -932,9 +1029,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       if (step.type === 'open_url') {
         const rawTarget = step.value || (typeof step.target === 'string' ? step.target : step.target?.selector) || workflow.startUrl;
         const targetUrl = normalizeUrl(rawTarget);
-        const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+        activeTabId = await ensureActiveTab(activeTabId, targetUrl, runState);
+        const curTab = await getValidTab(activeTabId);
         if (curTab && curTab.url !== targetUrl) {
-          await chrome.tabs.update(activeTabId, { url: targetUrl });
+          await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => {});
           await waitForTabReady(activeTabId);
           await new Promise(r => setTimeout(r, 800));
         }
@@ -950,6 +1048,7 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
 
       // 2. Handle loop_start step
       if (step.type === 'loop_start') {
+        activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
         const loopId = step.loopId || ('loop_' + i);
         const endIndex = steps.findIndex((c, cIdx) => cIdx > i && c.type === 'loop_end' && (c.loopId === loopId || !c.loopId));
         let detectedCount = 0;
@@ -958,7 +1057,7 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
           detectedCount = Number(countRes?.count ?? 0);
         } catch (_) {}
         const count = Math.min(200, detectedCount || step.loopCount || 10);
-        const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+        const curTab = await getValidTab(activeTabId);
         const frame = {
           loopId,
           startIndex: i,
@@ -982,12 +1081,15 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             // Restore list tab and close child tab if one was opened
             if (activeTabId !== frame.listTabId) {
               await chrome.tabs.remove(activeTabId).catch(() => {});
-              activeTabId = frame.listTabId;
+              activeTabId = await ensureActiveTab(frame.listTabId, frame.listUrl || workflow.startUrl, runState);
+              frame.listTabId = activeTabId;
               runState.tabId = activeTabId;
               await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
               await waitForTabReady(activeTabId);
+            } else {
+              activeTabId = await ensureActiveTab(activeTabId, frame.listUrl || workflow.startUrl, runState);
             }
-            const cur = await chrome.tabs.get(activeTabId).catch(() => null);
+            const cur = await getValidTab(activeTabId);
             if (frame.listUrl && cur?.url !== frame.listUrl) {
               await chrome.tabs.update(activeTabId, { url: frame.listUrl }).catch(() => {});
               await waitForTabReady(activeTabId);
@@ -1001,7 +1103,7 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             // Loop finished
             if (activeTabId !== frame.listTabId) {
               await chrome.tabs.remove(activeTabId).catch(() => {});
-              activeTabId = frame.listTabId;
+              activeTabId = await ensureActiveTab(frame.listTabId, frame.listUrl || workflow.startUrl, runState);
               runState.tabId = activeTabId;
               await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
             }
@@ -1103,12 +1205,14 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         };
 
         try {
+          activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
           const attachRes = await chrome.tabs.sendMessage(activeTabId, attachMsg);
           if (attachRes?.attached || attachRes?.success) {
             runState.logs.push(`[Workflow] Successfully attached resume "${targetFile.name}".`);
           }
         } catch (tabErr) {
           try {
+            activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
             await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
             await new Promise(r => setTimeout(r, 600));
             const attachRes = await chrome.tabs.sendMessage(activeTabId, attachMsg);
@@ -1126,9 +1230,28 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         await chrome.storage.local.set({ workflowRunState: runState });
       } else {
         // Normal step execution (click, fill, select_option, checkbox, multiple_choice, etc.)
-        const beforeTabs = new Set((await chrome.tabs.query({})).map(t => t.id));
+        const beforeTabs = new Set((await chrome.tabs.query({}).catch(() => [])).map(t => t.id));
         const isNaukri = isNaukriJobClick(step);
-        const execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
+        activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
+
+        let execRes = null;
+        try {
+          execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
+        } catch (stepErr) {
+          if (/no tab with id|receiving end does not exist|closed/i.test(stepErr?.message || '')) {
+            runState.logs.push(`[BYOK] Connection to tab ${activeTabId} lost. Re-establishing connection...`);
+            await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+            activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
+            await waitForTabReady(activeTabId);
+            try {
+              await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+              await new Promise(r => setTimeout(r, 500));
+            } catch (_) {}
+            execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
+          } else {
+            throw stepErr;
+          }
+        }
 
         const isNaukriExec = execRes?.siteHandler === 'naukri-job-card' || isNaukri;
         if (isNaukriExec && execRes?.href) {
@@ -1142,23 +1265,23 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             activeTabId = check.destination.id;
             runState.tabId = activeTabId;
             await waitForTabReady(activeTabId);
-            await chrome.tabs.update(activeTabId, { active: true });
+            await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
             await chrome.storage.local.set({ workflowRunState: runState });
           } else {
             // Fallback: create tab directly with expectedUrl if native popup/target=_blank was suppressed
             runState.logs.push(`[Naukri] Opening job in new tab fallback: ${expectedUrl}`);
-            const curTab = await chrome.tabs.get(activeTabId).catch(() => null);
+            const curTab = await getValidTab(activeTabId);
             const fallbackTab = await chrome.tabs.create({
               url: expectedUrl,
               active: true,
-              openerTabId: activeTabId,
+              ...(curTab?.id ? { openerTabId: curTab.id } : {}),
               ...(typeof curTab?.windowId === 'number' ? { windowId: curTab.windowId } : {}),
-            });
+            }).catch(() => null);
             if (fallbackTab?.id) {
               activeTabId = fallbackTab.id;
               runState.tabId = activeTabId;
               await waitForTabReady(activeTabId);
-              await chrome.tabs.update(activeTabId, { active: true });
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
               await chrome.storage.local.set({ workflowRunState: runState });
             }
           }
@@ -1167,15 +1290,18 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
           await new Promise(r => setTimeout(r, waitMs));
 
           // Check if action opened a new tab
-          const afterTabs = await chrome.tabs.query({});
+          const afterTabs = await chrome.tabs.query({}).catch(() => []);
           const newTab = afterTabs.find(t => !beforeTabs.has(t.id) && t.id && /^https?:/i.test(t.url || ''));
           if (newTab?.id) {
             console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url);
             activeTabId = newTab.id;
             runState.tabId = activeTabId;
             await waitForTabReady(activeTabId);
-            await chrome.tabs.update(activeTabId, { active: true });
+            await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
             await chrome.storage.local.set({ workflowRunState: runState });
+          } else {
+            // Re-verify that activeTabId is still alive after action
+            activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
           }
         }
       }

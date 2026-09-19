@@ -354,7 +354,12 @@ function setupUIEvents() {
 
     if (act === 'ai_step') {
       try {
-        await chrome.tabs.update(targetTabId, { active: true });
+        await updateTargetTabHeader();
+        if (!targetTabId) {
+          showStatus('No target tab connected. Please open or select a website tab.', true);
+          return;
+        }
+        await chrome.tabs.update(targetTabId, { active: true }).catch(() => {});
         const [res] = await chrome.scripting.executeScript({
           target: { tabId: targetTabId },
           func: (totalCount) => {
@@ -520,7 +525,12 @@ function setupUIEvents() {
     }
 
     try {
-      await chrome.tabs.update(targetTabId, { active: true });
+      await updateTargetTabHeader();
+      if (!targetTabId) {
+        showStatus('No target tab connected. Please open or select a website tab.', true);
+        return;
+      }
+      await chrome.tabs.update(targetTabId, { active: true }).catch(() => {});
       sendToTargetTab({ action: 'ENTER_PICKER_MODE' });
     } catch (err) {
       showStatus('Pick error: ' + err.message, true);
