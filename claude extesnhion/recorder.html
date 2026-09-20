@@ -346,6 +346,10 @@
 
       <!-- AI Options -->
       <div id="wf-ai-editor" class="ai-panel">
+        <label id="wf-ai-loop-label" class="wait-option" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-weight:700;color:#0d9488;background:#f0fdfa;padding:8px 12px;border-radius:6px;border:1.5px solid #99f6e4;cursor:pointer;">
+          <input id="wf-ai-loop-toggle" type="checkbox" checked />
+          <span>🔄 AI Loop (process elements one by one)</span>
+        </label>
         <label id="wf-ai-element-count-label">
           How many elements the AI will see
           <select id="wf-ai-element-count">
@@ -357,7 +361,7 @@
           </select>
         </label>
         <div id="wf-ai-count-status" style="font-size:11px;color:#14b8a6;font-weight:600;margin-top:2px;margin-bottom:6px;">
-          Count: 3 elements set. Click "Pick Element" to select them on the page.
+          AI Loop: 3 elements set. Elements will be processed one by one.
         </div>
 
         <label id="wf-ai-full-page-label" class="wait-option">

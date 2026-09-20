@@ -936,6 +936,382 @@ async function waitForExpectedNaukriDestination(sourceTabId, beforeTabs, expecte
   return { actualUrl: source?.url, createdTabs };
 }
 
+// ─── AI Model Calling & Sequential AI Loop Execution ─────────────────────────
+
+async function callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages) {
+  let activeBaseUrl = (baseUrl || 'http://127.0.0.1:20128/v1').trim();
+  let endpoint = `${activeBaseUrl.replace(/\/+$/, '')}/chat/completions`;
+
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role, content: m.content })),
+  ];
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+  const body = JSON.stringify({
+    model: model || 'antigravity/gemini-3.6-flash-high',
+    messages: formattedMessages,
+    temperature: 0.2,
+    max_tokens: 1500,
+    stream: false,
+  });
+
+  let response;
+  try {
+    response = await fetch(endpoint, { method: 'POST', headers, body });
+  } catch (err) {
+    if (activeBaseUrl.includes('localhost')) {
+      endpoint = `${activeBaseUrl.replace('localhost', '127.0.0.1').replace(/\/+$/, '')}/chat/completions`;
+      response = await fetch(endpoint, { method: 'POST', headers, body });
+    } else if (activeBaseUrl.includes('127.0.0.1')) {
+      endpoint = `${activeBaseUrl.replace('127.0.0.1', 'localhost').replace(/\/+$/, '')}/chat/completions`;
+      response = await fetch(endpoint, { method: 'POST', headers, body });
+    } else {
+      throw err;
+    }
+  }
+
+  if (!response.ok) throw new Error(`OmniRoute Error (${response.status}): ${await response.text()}`);
+  const rawText = await response.text();
+  try {
+    const data = JSON.parse(rawText);
+    return data.choices?.[0]?.message?.content || rawText;
+  } catch (e) {
+    return rawText;
+  }
+}
+
+async function callGeminiAPI(apiKey, model, systemPrompt, messages) {
+  const activeModel = model || 'gemini-2.0-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(activeModel)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  const contents = messages.map(m => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }],
+  }));
+
+  const payload = {
+    contents,
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: { temperature: 0.2, maxOutputTokens: 1500 },
+  };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) throw new Error(`Gemini API Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Gemini returned an empty response.');
+  return text;
+}
+
+async function callAnthropicAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.anthropic.com/v1/messages';
+  const formattedMessages = messages.map(m => ({
+    role: m.role === 'assistant' ? 'assistant' : 'user',
+    content: m.content,
+  }));
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'dangerously-allow-browser': 'true',
+    },
+    body: JSON.stringify({
+      model: model || 'claude-3-7-sonnet-20250219',
+      system: systemPrompt,
+      messages: formattedMessages,
+      max_tokens: 1500,
+      temperature: 0.2,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Anthropic API Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  const text = data.content?.[0]?.text;
+  if (!text) throw new Error('Anthropic API returned an empty response.');
+  return text;
+}
+
+async function callActiveAIModel(config, systemPrompt, messages) {
+  const provider = config?.activeProvider || 'omniroute';
+  if (provider === 'gemini') {
+    if (!config?.gemini?.apiKey) throw new Error('Gemini API key is not configured in Settings.');
+    return await callGeminiAPI(config.gemini.apiKey, config.gemini.model, systemPrompt, messages);
+  } else if (provider === 'omniroute') {
+    return await callOmniRouteAPI(config?.omniroute?.apiKey, config?.omniroute?.baseUrl, config?.omniroute?.model, systemPrompt, messages);
+  } else {
+    if (!config?.anthropic?.apiKey) throw new Error('Anthropic API key is not configured in Settings.');
+    return await callAnthropicAPI(config.anthropic.apiKey, config.anthropic.model, systemPrompt, messages);
+  }
+}
+
+function parseAiActionJson(text) {
+  if (!text) return { action: 'click', value: '', reasoning: 'Empty response fallback' };
+
+  const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || text.match(/\{[\s\S]*?\}/);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse((jsonMatch[1] || jsonMatch[0]).trim());
+      const rawAction = String(parsed.action || '').toLowerCase().trim();
+      let normAction = 'click';
+      if (['fill', 'type', 'answer', 'text'].includes(rawAction)) normAction = 'fill';
+      else if (['select', 'select_option', 'dropdown', 'choose'].includes(rawAction)) normAction = 'select_option';
+      else if (['check', 'checkbox'].includes(rawAction)) normAction = 'check';
+      else normAction = 'click';
+
+      return {
+        action: normAction,
+        value: typeof parsed.value === 'string' ? parsed.value : (parsed.value !== undefined ? String(parsed.value) : ''),
+        reasoning: parsed.reasoning || parsed.thought || '',
+      };
+    } catch (_) {}
+  }
+
+  const lower = text.toLowerCase();
+  if (lower.includes('"action": "fill"') || lower.includes('fill') || lower.includes('type')) {
+    return { action: 'fill', value: text.replace(/^[^:]*:\s*/, '').trim(), reasoning: 'Heuristic text parsing' };
+  }
+  return { action: 'click', value: '', reasoning: 'Default click action' };
+}
+
+function extractStepTargets(step) {
+  if (Array.isArray(step.targets) && step.targets.length > 0) {
+    return step.targets.map(t => typeof t === 'string' ? { selector: t, selectors: [t] } : t);
+  }
+  if (Array.isArray(step.targetDetails) && step.targetDetails.length > 0) {
+    return step.targetDetails.map(t => ({ selector: t.selector, selectors: [t.selector], text: t.label || '' }));
+  }
+  const fallback = [];
+  if (step.sourceTarget) {
+    fallback.push(typeof step.sourceTarget === 'string' ? { selector: step.sourceTarget, selectors: [step.sourceTarget] } : step.sourceTarget);
+  }
+  if (step.target) {
+    const sSel = typeof step.sourceTarget === 'string' ? step.sourceTarget : step.sourceTarget?.selector;
+    const tSel = typeof step.target === 'string' ? step.target : step.target?.selector;
+    if (!sSel || sSel !== tSel) {
+      fallback.push(typeof step.target === 'string' ? { selector: step.target, selectors: [step.target] } : step.target);
+    }
+  }
+  return fallback.length > 0 ? fallback : [{ selector: '', text: step.name || '' }];
+}
+
+async function executeAIStepOneByOne(tabId, step, runState) {
+  let activeTabId = tabId;
+  const targets = extractStepTargets(step);
+  const total = targets.length;
+
+  const storeData = await chrome.storage.local.get(['byok_config', 'userProfile', 'customAnswers']);
+  const config = storeData.byok_config || {
+    activeProvider: 'omniroute',
+    omniroute: { baseUrl: 'http://127.0.0.1:20128/v1', apiKey: 'sk-f46d845e6a300177-0a895e-fbfbd25b', model: 'antigravity/gemini-3.6-flash-high' },
+    gemini: { apiKey: '', model: 'gemini-2.0-flash' },
+    anthropic: { apiKey: '', model: 'claude-3-7-sonnet-20250219' },
+  };
+  const profile = storeData.userProfile || {};
+  const customAnswers = Array.isArray(storeData.customAnswers) ? storeData.customAnswers : [];
+  const actionHistory = [];
+
+  runState.logs.push(`[AI Loop] 🚀 Starting sequential execution of ${total} element(s) one by one...`);
+  await chrome.storage.local.set({ workflowRunState: runState });
+
+  for (let idx = 0; idx < total; idx++) {
+    const target = targets[idx];
+    const elemNumber = idx + 1;
+    runState.logs.push(`[AI Loop] 🔍 [Element ${elemNumber}/${total}] Inspecting element: "${target.selector || target.text || 'element'}"...`);
+    await chrome.storage.local.set({ workflowRunState: runState });
+
+    // 1. Inspect single element in tab
+    let elemInfo = null;
+    try {
+      elemInfo = await chrome.tabs.sendMessage(activeTabId, {
+        action: 'WORKFLOW_READ_TARGET',
+        target,
+      });
+    } catch (err) {
+      try {
+        await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+        await new Promise(r => setTimeout(r, 400));
+        elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
+      } catch (_) {}
+    }
+
+    // Wait up to 4s if element not yet rendered
+    if (!elemInfo?.success && target.selector) {
+      const startWait = Date.now();
+      while (Date.now() - startWait < 4000) {
+        await new Promise(r => setTimeout(r, 400));
+        try {
+          elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
+          if (elemInfo?.success) break;
+        } catch (_) {}
+      }
+    }
+
+    const tag = (elemInfo?.tag || '').toLowerCase();
+    const targetName = elemInfo?.targetName || target.text || '';
+    const visibleText = elemInfo?.text || '';
+    const options = Array.isArray(elemInfo?.options) ? elemInfo.options : [];
+    const htmlSnippet = (elemInfo?.htmlSnippet || '').slice(0, 800);
+
+    // 2. Check Custom Answers first
+    let directAnswer = null;
+    const questionText = `${targetName} ${visibleText}`.trim().toLowerCase();
+    if (questionText) {
+      const match = customAnswers.find(qa => {
+        const q = (qa.question || '').toLowerCase().trim();
+        return q && (questionText.includes(q) || q.includes(questionText));
+      });
+      if (match) directAnswer = match.answer;
+    }
+
+    // 3. Formulate system & user prompts for THIS SINGLE ELEMENT ONLY
+    const systemPrompt = `You are an expert autonomous browser agent filling out job applications and answering recruiter screening questions.
+You are given details about ONE specific HTML element on the page (Element ${elemNumber} of ${total}).
+You have ALL capabilities:
+- "click": Click a button, link, radio option, or tab (e.g. Next, Submit, Save, Continue, Apply).
+- "fill": Type text or numbers into an input field or textarea.
+- "select_option": Select an option from a dropdown or choice list.
+- "check": Toggle a checkbox.
+
+Your task is to analyze THIS SINGLE ELEMENT and output the exact action to execute on it.
+
+Candidate Profile:
+${JSON.stringify(profile, null, 2)}
+
+Saved Custom Answers:
+${customAnswers.map(qa => `- Q: ${qa.question} -> A: ${qa.answer}`).join('\n')}
+
+${step.customPrompt ? `User Instruction for this step: ${step.customPrompt}` : ''}
+
+Previous actions in this loop:
+${actionHistory.length > 0 ? actionHistory.map(h => `- Step ${h.elementNumber}: ${h.action.toUpperCase()} on "${h.target}" ${h.value ? `("${h.value}")` : ''}`).join('\n') : 'None (this is the first element)'}
+
+CRITICAL RULES:
+1. Return ONLY a valid JSON object wrapped in \`\`\`json ... \`\`\`.
+2. Format:
+{
+  "action": "click" | "fill" | "select_option" | "check",
+  "value": "string value to type or option text to select (leave empty string for click/check)",
+  "reasoning": "brief 1-sentence reasoning"
+}
+3. If the element is a button (e.g. "Next", "Save", "Submit", "Continue", "Apply"), choose "click".
+4. If the element is an input or textarea asking for salary, experience, notice period, location, etc., answer accurately from the Candidate Profile and choose "fill".
+5. If the element is a dropdown, pick the best matching option from the available options list and choose "select_option".
+6. If a matching saved answer is available, use it!`;
+
+    const userPrompt = `Element ${elemNumber} of ${total}:
+Tag: <${tag || 'element'}>
+Label / Name: "${targetName}"
+Visible Text / Context: "${visibleText.slice(0, 400)}"
+${options.length > 0 ? `Available Options: ${JSON.stringify(options.slice(0, 30))}` : ''}
+HTML: ${htmlSnippet}`;
+
+    let aiDecision = null;
+    if (directAnswer && ['input', 'textarea'].includes(tag)) {
+      aiDecision = { action: 'fill', value: directAnswer, reasoning: `Matched saved Custom Answer for "${targetName}"` };
+    } else {
+      try {
+        runState.logs.push(`[AI Loop] 🤖 Sending Element ${elemNumber}/${total} to AI...`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+        const rawResponse = await callActiveAIModel(config, systemPrompt, [{ role: 'user', content: userPrompt }]);
+        aiDecision = parseAiActionJson(rawResponse);
+      } catch (aiErr) {
+        console.warn(`[AI Loop] AI call failed for Element ${elemNumber}:`, aiErr);
+        // Heuristic fallbacks
+        if (['button', 'a'].includes(tag) || /button|submit|save|continue|next/i.test(targetName)) {
+          aiDecision = { action: 'click', value: '', reasoning: 'Fallback: button detected' };
+        } else if (options.length > 0) {
+          aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
+        } else {
+          aiDecision = { action: 'fill', value: profile.noticePeriod || 'Immediate', reasoning: 'Fallback: profile fill' };
+        }
+      }
+    }
+
+    runState.logs.push(`[AI Loop] ✅ [Element ${elemNumber}/${total}] AI Decision: ${aiDecision.action.toUpperCase()} ${aiDecision.value ? `("${aiDecision.value}")` : ''} - ${aiDecision.reasoning || ''}`);
+    await chrome.storage.local.set({ workflowRunState: runState });
+
+    // 4. Execute the chosen action on the element in active tab
+    try {
+      if (aiDecision.action === 'click') {
+        await sendWorkflowStepToTab(activeTabId, {
+          type: 'click',
+          target,
+          name: `AI Click: ${targetName || target.selector}`,
+        });
+      } else if (aiDecision.action === 'fill') {
+        let fillSuccess = false;
+        try {
+          const fillRes = await chrome.tabs.sendMessage(activeTabId, {
+            action: 'WORKFLOW_APPLY_AI_OUTPUT',
+            target,
+            outputAction: 'fill',
+            answer: aiDecision.value,
+          });
+          fillSuccess = !!fillRes?.success;
+        } catch (_) {}
+
+        if (!fillSuccess) {
+          await sendWorkflowStepToTab(activeTabId, {
+            type: 'fill',
+            target,
+            value: aiDecision.value,
+            name: `AI Fill: ${targetName || target.selector}`,
+          });
+        }
+      } else if (aiDecision.action === 'select_option') {
+        await sendWorkflowStepToTab(activeTabId, {
+          type: 'select_option',
+          target,
+          value: aiDecision.value,
+          name: `AI Select: ${targetName || target.selector}`,
+        });
+      } else if (aiDecision.action === 'check') {
+        await sendWorkflowStepToTab(activeTabId, {
+          type: 'check',
+          target,
+          checked: true,
+          name: `AI Check: ${targetName || target.selector}`,
+        });
+      }
+
+      actionHistory.push({
+        elementNumber: elemNumber,
+        action: aiDecision.action,
+        target: targetName || target.selector,
+        value: aiDecision.value,
+      });
+    } catch (execErr) {
+      runState.logs.push(`[AI Loop] ⚠️ Error on Element ${elemNumber}: ${execErr.message}`);
+      await chrome.storage.local.set({ workflowRunState: runState });
+    }
+
+    // Brief pause between elements for DOM reaction
+    await new Promise(r => setTimeout(r, 600));
+
+    // Refresh activeTabId in case action switched tab or navigated
+    const valid = await getValidTab(activeTabId);
+    if (!valid) {
+      const activeTabs = await chrome.tabs.query({ currentWindow: true, active: true });
+      if (activeTabs[0]?.id) activeTabId = activeTabs[0].id;
+    }
+  }
+
+  runState.logs.push(`[AI Loop] 🎉 Completed all ${total} elements in AI Loop!`);
+  await chrome.storage.local.set({ workflowRunState: runState });
+  return { success: true, activeTabId, actionHistory };
+}
+
 async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'dom') {
   const msg = {
     action: 'WORKFLOW_EXECUTE_STEP',
@@ -1136,7 +1512,34 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         step.target.collectionIndex = 0;
       }
 
-      // 5. Attach resume if step type is attach_resume or file_upload
+      // 5. Handle AI Fallback / AI Loop step (Sequential one-by-one element execution)
+      if (step.type === 'ai_fallback') {
+        const isAiLoop = step.isAiLoop !== false;
+        runState.logs.push(`[Workflow] Running AI step "${step.name || 'AI Step'}" (${isAiLoop ? '🔄 AI Loop: 1-by-1' : 'AI step'})...`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+        activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
+
+        const aiResult = await executeAIStepOneByOne(activeTabId, step, runState);
+        if (aiResult?.activeTabId) {
+          activeTabId = aiResult.activeTabId;
+          runState.tabId = activeTabId;
+        }
+
+        const waitMs = Math.max(400, Math.min(5000, step.waitMs || 800));
+        await new Promise(r => setTimeout(r, waitMs));
+        await chrome.storage.local.set({ workflowRunState: runState });
+
+        if (step.stopAfter || (typeof stopAfterIndex === 'number' && i === stopAfterIndex)) {
+          runState.status = 'completed';
+          runState.message = `Test stopped after Step ${i + 1}: ${step.name || step.type}`;
+          runState.finishedAt = Date.now();
+          await chrome.storage.local.set({ workflowRunState: runState });
+          return;
+        }
+        continue;
+      }
+
+      // 6. Attach resume if step type is attach_resume or file_upload
       if (step.type === 'attach_resume' || step.type === 'file_upload') {
         const resumeStore = await chrome.storage.local.get(['resumes', 'defaultResume', 'uploadedFiles']);
         const resumesList = [

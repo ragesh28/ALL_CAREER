@@ -1454,6 +1454,10 @@ function renderSidepanelRecorderView() {
         </div>
 
         <div id="side-ai-group" style="display: none;">
+          <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;font-size:12px;font-weight:700;color:#0d9488;background:#f0fdfa;padding:8px 12px;border-radius:6px;border:1.5px solid #99f6e4;">
+            <input type="checkbox" id="side-ai-loop-toggle" checked />
+            <span>🔄 AI Loop (process elements one by one)</span>
+          </label>
           <label class="rec-label">
             How many elements the AI will see
             <select id="side-ai-element-count" class="rec-select">
@@ -1465,7 +1469,7 @@ function renderSidepanelRecorderView() {
             </select>
           </label>
           <div id="side-ai-count-status" style="font-size: 11px; color: #14b8a6; font-weight: 600; margin-top: 3px;">
-            Count: 3 elements set. Click "Pick Element" to select them on the page.
+            AI Loop: 3 elements set. Elements will be processed one by one.
           </div>
         </div>
 
@@ -1827,10 +1831,24 @@ function setupEventListeners() {
     if (sideAiGroup) sideAiGroup.style.display = val === 'ai_step' ? 'block' : 'none';
   };
 
+  const sideAiLoopToggle = document.getElementById('side-ai-loop-toggle');
+  sideAiLoopToggle?.addEventListener('change', (e) => {
+    const isLoop = e.target.checked;
+    const val = parseInt(sideAiElementCount?.value, 10) || 3;
+    if (sideAiCountStatus) {
+      sideAiCountStatus.textContent = isLoop
+        ? `AI Loop: ${val} element${val > 1 ? 's' : ''} set. Elements will be processed one by one.`
+        : `AI Single: Element will be processed with active model.`;
+    }
+  });
+
   sideAiElementCount?.addEventListener('change', (e) => {
     const val = parseInt(e.target.value, 10) || 3;
+    const isLoop = document.getElementById('side-ai-loop-toggle')?.checked !== false;
     if (sideAiCountStatus) {
-      sideAiCountStatus.textContent = `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
+      sideAiCountStatus.textContent = isLoop
+        ? `AI Loop: ${val} element${val > 1 ? 's' : ''} set. Elements will be processed one by one.`
+        : `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
     }
   });
 
@@ -1866,16 +1884,17 @@ function setupEventListeners() {
     const act = document.getElementById('side-action-select')?.value || 'click';
     const statusEl = document.getElementById('side-rec-status');
     const aiCount = parseInt(document.getElementById('side-ai-element-count')?.value, 10) || 3;
+    const isAiLoop = document.getElementById('side-ai-loop-toggle')?.checked !== false;
     if (statusEl) {
       statusEl.textContent = act === 'ai_step'
-        ? `🔍 Selecting ${aiCount} elements for AI. Click Element 1 on the website...`
+        ? `🔍 Selecting ${aiCount} elements for ${isAiLoop ? 'AI Loop' : 'AI'}. Click Element 1 on the website...`
         : `🔍 Click an element on the website to record [${act}]...`;
     }
 
     try {
       const [res] = await chrome.scripting.executeScript({
         target: { tabId: target.id },
-        func: (actionType, aiTargetCount) => {
+        func: (actionType, aiTargetCount, isAiLoopMode) => {
           return new Promise((resolve) => {
             if (actionType === 'ai_step') {
               const total = Math.max(1, parseInt(aiTargetCount, 10) || 3);
@@ -1891,13 +1910,14 @@ function setupEventListeners() {
               hud.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f172a;color:#f8fafc;padding:10px 20px;border-radius:10px;border:2px solid #14b8a6;font:700 13px system-ui,-apple-system,sans-serif;z-index:2147483647;box-shadow:0 10px 30px rgba(0,0,0,0.65);display:flex;align-items:center;gap:12px;letter-spacing:0.3px;white-space:nowrap;';
 
               function updateHud(currentCount) {
+                const titleTag = isAiLoopMode ? '🔄 AI LOOP' : 'AI STEP';
                 if (currentCount === 0) {
-                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">AI STEP</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
+                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">${titleTag}</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
                 } else if (currentCount < total) {
                   const countText = currentCount === 1 ? '1 element seted' : `${currentCount} elements seted`;
                   hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">✓ SET</span> <span style="color:#34d399;font-weight:800;">✅ ${countText}</span> <span style="color:#94a3b8;">(${currentCount} of ${total} elements set)</span> ➔ <span style="color:#fff;">Now click <strong>Element ${currentCount + 1} of ${total}</strong></span>`;
                 } else {
-                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted! Completing AI step...</span>`;
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted in ${titleTag}!</span>`;
                 }
               }
 
@@ -2065,7 +2085,7 @@ function setupEventListeners() {
             document.addEventListener('click', clickHandler, true);
           });
         },
-        args: [act, aiCount],
+        args: [act, aiCount, isAiLoop],
       });
 
       if (res?.result && currentSidepanelWorkflow) {
@@ -2077,13 +2097,14 @@ function setupEventListeners() {
           const first = items[0];
           const second = items[1] || first;
           const userStepName = document.getElementById('side-step-name')?.value.trim();
-          const autoName = userStepName || `AI question and answer (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
+          const autoName = userStepName || `${isAiLoop ? '🔄 AI Loop' : 'AI question and answer'} (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
 
           currentSidepanelWorkflow.steps.push({
             id: 's_' + Date.now(),
             type: 'ai_fallback',
             name: autoName,
             value: 'AI screening auto-response',
+            isAiLoop,
             elementCount: items.length,
             targets: items.map(it => it.selector),
             targetDetails: items,
@@ -2093,7 +2114,7 @@ function setupEventListeners() {
             pageUrl: target.url,
             waitMs: 800,
             color: '#14b8a6',
-            badge: 'AI',
+            badge: isAiLoop ? 'AI LOOP' : 'AI',
             disabled: false,
             stopAfter: false,
             finalSubmit: false,
@@ -2313,14 +2334,16 @@ function setupEventListeners() {
     }
 
     if (act === 'ai_step') {
+      const isAiLoop = document.getElementById('side-ai-loop-toggle')?.checked !== false;
       const aiCount = parseInt(document.getElementById('side-ai-element-count')?.value, 10) || 3;
       const placeholderTargets = Array.from({ length: aiCount }, (_, i) => `AI Element ${i + 1}`);
-      const stepName = document.getElementById('side-step-name')?.value.trim() || `AI question & answer (${aiCount} elements)`;
+      const stepName = document.getElementById('side-step-name')?.value.trim() || `${isAiLoop ? '🔄 AI Loop' : 'AI question & answer'} (${aiCount} elements)`;
       currentSidepanelWorkflow.steps.push({
         id: 's_' + Date.now(),
         type: 'ai_fallback',
         name: stepName,
         value: 'Auto answer screening questions',
+        isAiLoop,
         elementCount: aiCount,
         targets: placeholderTargets,
         target: placeholderTargets[1] || placeholderTargets[0],
@@ -2328,7 +2351,7 @@ function setupEventListeners() {
         pageUrl: target?.url,
         waitMs: 800,
         color: '#14b8a6',
-        badge: 'AI',
+        badge: isAiLoop ? 'AI LOOP' : 'AI',
         disabled: false,
         stopAfter: false,
         finalSubmit: false,

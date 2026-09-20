@@ -294,11 +294,26 @@ function setupUIEvents() {
   });
 
   // AI Options
+  const aiLoopToggle = document.getElementById('wf-ai-loop-toggle');
+  aiLoopToggle?.addEventListener('change', (e) => {
+    const isLoop = e.target.checked;
+    const statusLabel = document.getElementById('wf-ai-count-status');
+    const val = parseInt(aiElementCountSelect?.value, 10) || 3;
+    if (statusLabel) {
+      statusLabel.textContent = isLoop
+        ? `AI Loop: ${val} element${val > 1 ? 's' : ''} set. Elements will be processed one by one.`
+        : `AI Single: Element will be processed with active model.`;
+    }
+  });
+
   aiElementCountSelect?.addEventListener('change', (e) => {
     const val = parseInt(e.target.value, 10) || 3;
+    const isLoop = document.getElementById('wf-ai-loop-toggle')?.checked !== false;
     const statusLabel = document.getElementById('wf-ai-count-status');
     if (statusLabel) {
-      statusLabel.textContent = `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
+      statusLabel.textContent = isLoop
+        ? `AI Loop: ${val} element${val > 1 ? 's' : ''} set. Elements will be processed one by one.`
+        : `Count: ${val} element${val > 1 ? 's' : ''} set. Click "Pick Element" to select them on the page.`;
     }
     sendToTargetTab({
       action: 'RECORDER_TAB_AI_ELEMENT_COUNT_CHANGE',
@@ -360,9 +375,10 @@ function setupUIEvents() {
           return;
         }
         await chrome.tabs.update(targetTabId, { active: true }).catch(() => {});
+        const isAiLoop = document.getElementById('wf-ai-loop-toggle')?.checked !== false;
         const [res] = await chrome.scripting.executeScript({
           target: { tabId: targetTabId },
-          func: (totalCount) => {
+          func: (totalCount, isAiLoopMode) => {
             return new Promise((resolve) => {
               const total = Math.max(1, parseInt(totalCount, 10) || 3);
               const collected = [];
@@ -377,13 +393,14 @@ function setupUIEvents() {
               hud.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#0f172a;color:#f8fafc;padding:10px 20px;border-radius:10px;border:2px solid #14b8a6;font:700 13px system-ui,-apple-system,sans-serif;z-index:2147483647;box-shadow:0 10px 30px rgba(0,0,0,0.65);display:flex;align-items:center;gap:12px;letter-spacing:0.3px;white-space:nowrap;';
 
               function updateHud(currentCount) {
+                const titleTag = isAiLoopMode ? '🔄 AI LOOP' : 'AI STEP';
                 if (currentCount === 0) {
-                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">AI STEP</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
+                  hud.innerHTML = `<span style="background:#14b8a6;color:#042f2e;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">${titleTag}</span> <span>🎯 Click <strong>Element 1 of ${total}</strong> on this page <span style="color:#94a3b8;">(0 of ${total} elements set)</span></span>`;
                 } else if (currentCount < total) {
                   const countText = currentCount === 1 ? '1 element seted' : `${currentCount} elements seted`;
                   hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">✓ SET</span> <span style="color:#34d399;font-weight:800;">✅ ${countText}</span> <span style="color:#94a3b8;">(${currentCount} of ${total} elements set)</span> ➔ <span style="color:#fff;">Now click <strong>Element ${currentCount + 1} of ${total}</strong></span>`;
                 } else {
-                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted! Completing AI step...</span>`;
+                  hud.innerHTML = `<span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800;">DONE</span> <span style="color:#34d399;font-weight:800;">🎉 All ${total} of ${total} elements seted in ${titleTag}!</span>`;
                 }
               }
 
@@ -483,7 +500,7 @@ function setupUIEvents() {
               document.addEventListener('keydown', keyHandler, true);
             });
           },
-          args: [aiCount],
+          args: [aiCount, isAiLoop],
         });
 
         if (res?.result && currentWorkflow) {
@@ -491,13 +508,14 @@ function setupUIEvents() {
           const first = items[0];
           const second = items[1] || first;
           const userStepName = stepNameInput?.value.trim();
-          const autoName = userStepName || `AI question and answer (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
+          const autoName = userStepName || `${isAiLoop ? '🔄 AI Loop' : 'AI question and answer'} (${items.length} elements): ${first.label || first.selector} -> ${second.label || second.selector}`;
 
           const newAiStep = {
             id: 's_' + Date.now(),
             type: 'ai_fallback',
             name: autoName,
             value: 'AI screening auto-response',
+            isAiLoop,
             elementCount: items.length,
             targets: items.map(it => it.selector),
             targetDetails: items,
@@ -506,7 +524,7 @@ function setupUIEvents() {
             target: second.selector,
             waitMs: 800,
             color: '#14b8a6',
-            badge: 'AI',
+            badge: isAiLoop ? 'AI LOOP' : 'AI',
             disabled: false,
             stopAfter: false,
             finalSubmit: false,
@@ -548,8 +566,9 @@ function setupUIEvents() {
     const chosenResumeOption = resumeSelect?.selectedOptions?.[0];
     const chosenFileName = chosenResumeOption?.dataset?.filename || chosenResumeOption?.textContent?.replace('(Default ⭐)', '').trim() || 'resume.pdf';
     const aiCount = parseInt(aiElementCountSelect?.value, 10) || 3;
+    const isAiLoop = isAi && (document.getElementById('wf-ai-loop-toggle')?.checked !== false);
     const placeholderTargets = Array.from({ length: aiCount }, (_, i) => `AI Element ${i + 1}`);
-    const name = stepNameInput?.value.trim() || (isAi ? `AI question & answer (${aiCount} elements)` : act === 'file_upload' ? `Upload resume: ${chosenFileName}` : `Step ${(currentWorkflow?.steps?.length || 0) + 1}`);
+    const name = stepNameInput?.value.trim() || (isAi ? `${isAiLoop ? '🔄 AI Loop' : 'AI question & answer'} (${aiCount} elements)` : act === 'file_upload' ? `Upload resume: ${chosenFileName}` : `Step ${(currentWorkflow?.steps?.length || 0) + 1}`);
 
     const newStep = {
       id: 's_' + Date.now(),
@@ -559,12 +578,13 @@ function setupUIEvents() {
       fileName: act === 'file_upload' ? chosenFileName : undefined,
       resumeId: act === 'file_upload' ? chosenResumeId : undefined,
       elementCount: isAi ? aiCount : undefined,
+      isAiLoop: isAi ? isAiLoop : undefined,
       targets: isAi ? placeholderTargets : undefined,
       sourceTarget: isAi ? placeholderTargets[0] : undefined,
       target: isAi ? (placeholderTargets[1] || placeholderTargets[0]) : act === 'file_upload' ? 'input[type="file"]' : 'Element selector',
       waitMs: isAi ? 800 : 400,
       color: ACTION_COLORS[act] || '#38bdf8',
-      badge: ACTION_BADGES[act] || 'ACT',
+      badge: isAi ? (isAiLoop ? 'AI LOOP' : 'AI') : (ACTION_BADGES[act] || 'ACT'),
       disabled: false,
       stopAfter: false,
       finalSubmit: false,

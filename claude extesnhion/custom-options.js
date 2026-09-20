@@ -434,11 +434,11 @@ function renderWorkflowsTab() {
             return `
               <div class="wf-node-block ${idx === selectedStepIndex ? 'selected' : ''}" style="border-left-color: ${badgeColor};" data-sidx="${idx}">
                 <div class="wf-node-head">
-                  <span class="wf-badge" style="background: ${badgeColor};">${step.badge || String(stepType).toUpperCase().substring(0, 3)}</span>
+                  <span class="wf-badge" style="background: ${badgeColor};">${step.badge || (step.isAiLoop ? 'AI LOOP' : String(stepType).toUpperCase().substring(0, 3))}</span>
                   <div class="wf-node-title">${escapeHtml(step.name || 'Step ' + (idx + 1))}</div>
                 </div>
                 <div class="wf-node-sub">
-                  ${stepType === 'open_url' ? 'Open page' : stepType === 'click' ? 'Click element' : stepType === 'ai_fallback' ? 'Ask AI' : 'Action'} | Step ${idx + 1}<br />
+                  ${stepType === 'open_url' ? 'Open page' : stepType === 'click' ? 'Click element' : stepType === 'ai_fallback' ? (step.isAiLoop ? '🔄 AI Loop' : 'Ask AI') : 'Action'} | Step ${idx + 1}<br />
                   ${escapeHtml(step.value || step.target || '')}
                 </div>
               </div>
@@ -511,6 +511,18 @@ function renderWorkflowsTab() {
           <input type="checkbox" id="insp-chk-final" ${activeStep.finalSubmit ? 'checked' : ''} />
           <span>Final submission review</span>
         </label>
+
+        ${activeStep.type === 'ai_fallback' ? `
+          <div style="background:rgba(20,184,166,0.1);border:1.5px solid #14b8a6;border-radius:6px;padding:10px;margin-bottom:12px;">
+            <label class="toggle-row" style="margin-bottom:0;color:#2dd4bf;font-weight:700;">
+              <input type="checkbox" id="insp-chk-ai-loop" ${activeStep.isAiLoop !== false ? 'checked' : ''} />
+              <span>🔄 AI Loop (process elements one by one)</span>
+            </label>
+            <div style="font-size:11px;color:#94a3b8;margin-top:6px;">
+              Elements in this loop: ${activeStep.elementCount || (Array.isArray(activeStep.targets) ? activeStep.targets.length : 1)}
+            </div>
+          </div>
+        ` : ''}
 
         <textarea id="insp-target-code" class="dark-textarea" readonly>${escapeHtml(activeStep.target || activeStep.value || '')}</textarea>
 
@@ -906,6 +918,12 @@ function attachEvents() {
     document.getElementById('insp-chk-disable')?.addEventListener('change', (e) => { activeStep.disabled = e.target.checked; });
     document.getElementById('insp-chk-stop')?.addEventListener('change', (e) => { activeStep.stopAfter = e.target.checked; });
     document.getElementById('insp-chk-final')?.addEventListener('change', (e) => { activeStep.finalSubmit = e.target.checked; });
+    document.getElementById('insp-chk-ai-loop')?.addEventListener('change', (e) => {
+      activeStep.isAiLoop = e.target.checked;
+      activeStep.badge = activeStep.isAiLoop ? 'AI LOOP' : 'AI';
+      persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Updated AI Loop mode.');
+      renderAppHub();
+    });
   }
 
   // Node deletion
@@ -925,9 +943,11 @@ function attachEvents() {
       type: 'ai_fallback',
       name: 'Ask AI for unknown fields',
       value: 'Auto answer screening questions',
+      isAiLoop: true,
+      elementCount: 1,
       waitMs: 800,
       color: '#14b8a6',
-      badge: 'AI',
+      badge: 'AI LOOP',
       target: 'Screening questions',
       disabled: false,
       stopAfter: false,
