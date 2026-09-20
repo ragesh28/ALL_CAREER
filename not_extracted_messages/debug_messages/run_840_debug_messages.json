@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "840",
+  "workflow_run_id": "35524029988",
+  "timestamp": "2026-09-20T17:05:13.233727",
+  "runtime_minutes": 11.86,
+  "messages_processed": 41,
+  "new_jobs_stored": 23,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8303,
+      "text": "This channel for is for freshers, college grads and ppl who are looking for a job switch \n\nhttps://www.instagram.com/jobsinternshipswale\n\ngive it a follow, lot of opportunities daily ♥️",
+      "timestamp": "2026-09-20T12:45:22+00:00"
+    }
+  ]
+}
