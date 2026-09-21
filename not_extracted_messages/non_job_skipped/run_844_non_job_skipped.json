@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "844",
+  "workflow_run_id": "35568604050",
+  "timestamp": "2026-09-21T06:42:05.979649",
+  "runtime_minutes": 12.52,
+  "messages_processed": 51,
+  "new_jobs_stored": 38,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259265,
+      "text": "EBay is looking for devs for bengaluru location with below skills:\n\nWhat We’re Looking For\n- 10+ years of software engineering experience in storage, distributed systems, or infrastructure software.\n- Strong programming experience in C++, Go, Rust, Java, or equivalent.\n- Deep knowledge of Block, File, or Object Storage technologies.\n- Strong understanding of distributed systems, Linux, networking, and I/O architecture.\n- Experience with Kubernetes and containerized infrastructure.\n- Experience with technologies such as CSI, NVMe/NVMe-oF, SCSI/iSCSI, NFS, S3, UBD, io__uring, SPDK, replication, or erasure coding is highly desirable.\n\nPlease use below link to apply\n____https://jobs.ebayinc.com/us/en/job/R0076786/Storage-Software-Engineer?trk=feed__main-feed-card__reshare__feed-article-content",
+      "timestamp": "2026-09-21T02:50:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259266,
+      "text": "MANGALORE GROUP OF INSTITUTIONS\n\n### REQUIRED – FEMALE OFFICE STAFF\n\nWe are looking for a Female Office Staff with the following qualifications:\n\n** Good computer knowledge\n** Ability to communicate in Malayalam ,English and Kannada\n** Good communication and interpersonal skills\n** Prior office/administrative experience will be an advantage\n\nInterested candidates may send their updated CV to:\n📧 (mailto:admissionoffice942@gmail.com)\n\n📞 Contact: 6366105555\n\nAddress:\nDoor No. 2-331/6/0,\nNext to K.S. Hegde Medical College,\nDeralakatte, Mangaluru,\nKarnataka – 575 018.",
+      "timestamp": "2026-09-21T02:58:50+00:00"
+    }
+  ]
+}
