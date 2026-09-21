@@ -84,9 +84,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   btnWorkflows?.addEventListener('click', () => openStudioTab('workflows'));
   btnBatchUrls?.addEventListener('click', () => openStudioTab('workflows'));
   btnAnswers?.addEventListener('click', () => openStudioTab('customanswers'));
-  btnHistory?.addEventListener('click', () => openStudioTab('prompts'));
+  btnHistory?.addEventListener('click', () => openStudioTab('history'));
 
-  // 4. Open Claude AI Chat (Side Panel)
+  // 4. Open AI Chat (Side Panel)
   btnAiChat?.addEventListener('click', async () => {
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!isTabMode) {
           window.close();
         } else {
-          showStatus('Claude AI Chat opened in side panel', 'info');
+          showStatus('AI Chat opened in side panel', 'info');
         }
       } else {
         chrome.tabs.create({ url: chrome.runtime.getURL('sidepanel.html') });

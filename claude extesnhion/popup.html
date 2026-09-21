@@ -15,56 +15,38 @@
         <span class="logo-text">AI Auto Fill</span>
         <span class="badge">V4</span>
       </div>
-      <div class="header-actions">
-        <button id="btnOpenAsTab" class="btn-tab-toggle" title="Open as a persistent full-page tab">
-          📌 Open as Tab
-        </button>
-        <button id="btnSettingsGear" class="btn-icon" title="Settings">⚙️</button>
-      </div>
     </header>
 
-    <!-- Profile Card -->
+    <!-- Profile Summary Card -->
     <div class="profile-card" id="profileCard">
       <div class="profile-name" id="profileName">👤 Not set</div>
       <div class="profile-meta" id="profileMeta">📚 0 Learned Fields</div>
     </div>
 
-    <!-- URL Section -->
-    <div class="url-section">
-      <label class="section-label">🔗 Form URL</label>
-      <div class="url-row">
-        <input type="text" id="targetUrl" placeholder="Paste URL..." />
-        <button id="btnGoUrl" class="btn-go">Go</button>
-      </div>
-    </div>
+    <!-- 2x2 Clean Tools Grid: Only AI Chat, Workflows, History, Settings -->
+    <div class="tools-grid-four">
+      <button class="tool-btn-featured" id="btnAiChat">
+        <span class="btn-icon-large">💬</span>
+        <span class="btn-title">AI Chat</span>
+        <span class="btn-desc">Autonomous Assistant</span>
+      </button>
 
-    <!-- Main Action Button -->
-    <button id="btnFillForm" class="btn-fill-main">
-      <span class="fill-icon">✨</span>
-      <span id="btnFillText">Fill This Form</span>
-    </button>
+      <button class="tool-btn-featured" id="btnWorkflows">
+        <span class="btn-icon-large">⚡</span>
+        <span class="btn-title">Workflows</span>
+        <span class="btn-desc">Automation Studio</span>
+      </button>
 
-    <hr class="divider" />
+      <button class="tool-btn-featured" id="btnHistory">
+        <span class="btn-icon-large">📜</span>
+        <span class="btn-title">History</span>
+        <span class="btn-desc">Execution Logs</span>
+      </button>
 
-    <!-- 2x3 Tools Grid -->
-    <div class="tools-grid">
-      <button class="tool-btn" id="btnWorkflows">
-        Workflows
-      </button>
-      <button class="tool-btn" id="btnBatchUrls">
-        📋 Batch URLs
-      </button>
-      <button class="tool-btn" id="btnAnswers">
-        📝 Answers
-      </button>
-      <button class="tool-btn" id="btnHistory">
-        📜 History
-      </button>
-      <button class="tool-btn" id="btnSettings">
-        ⚙️ Settings
-      </button>
-      <button class="tool-btn" id="btnAiChat">
-        💬 AI Chat
+      <button class="tool-btn-featured" id="btnSettings">
+        <span class="btn-icon-large">⚙️</span>
+        <span class="btn-title">Settings</span>
+        <span class="btn-desc">System Preferences</span>
       </button>
     </div>
 

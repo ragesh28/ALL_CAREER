@@ -56,6 +56,101 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true; // Keep message channel open for async response
   }
 
+  // 1b. Test API Key Live
+  if (message?.action === 'TEST_API_KEY') {
+    (async () => {
+      try {
+        const result = await testApiKeyBackend(message.payload || {});
+        sendResponse(result);
+      } catch (err) {
+        sendResponse({ ok: false, error: err instanceof Error ? err.message : String(err) });
+      }
+    })();
+    return true;
+  }
+
+  // 1c. Fetch Provider Models Live
+  if (message?.action === 'FETCH_PROVIDER_MODELS') {
+    (async () => {
+      try {
+        const result = await fetchProviderModelsBackend(message.payload || {});
+        sendResponse(result);
+      } catch (err) {
+        sendResponse({ ok: false, error: err instanceof Error ? err.message : String(err) });
+      }
+    })();
+    return true;
+  }
+
+  // 1d. AI Extract User Details from Resume / Document / Text
+  if (message?.action === 'AI_EXTRACT_USER_DETAILS') {
+    (async () => {
+      try {
+        const storeData = await chrome.storage.local.get(['byok_config', 'userProfile']);
+        const config = storeData.byok_config || {
+          activeProvider: 'omniroute',
+          omniroute: { baseUrl: 'http://127.0.0.1:20128/v1', apiKey: 'sk-f46d845e6a300177-0a895e-fbfbd25b', model: 'antigravity/gemini-3.6-flash-high' },
+        };
+        const rawContent = String(message.text || '').trim();
+        if (!rawContent) {
+          sendResponse({ success: false, error: 'No text or resume content provided.' });
+          return;
+        }
+
+        const sysPrompt = `You are an expert HR data parser and professional profile assistant.
+Your task is to analyze the provided resume, CV, or candidate summary text, and extract all relevant candidate profile details into a clean, structured JSON object.
+Return ONLY valid JSON matching this schema:
+{
+  "fullName": "Candidate full name",
+  "email": "Email address",
+  "phone": "Phone number without special characters",
+  "altPhone": "Alternate contact number if available",
+  "address": "Street address / location",
+  "city": "Current city",
+  "state": "State or region",
+  "country": "Country",
+  "pincode": "Postal code",
+  "degree": "Highest qualification / degree",
+  "graduationYear": "Year of graduation",
+  "university": "College or university name",
+  "experienceYears": "Total years of relevant experience as a number or string",
+  "skills": "Comma-separated list of technical and soft skills",
+  "currentSalary": "Current compensation / CTC if mentioned",
+  "expectedSalary": "Expected compensation / CTC if mentioned",
+  "noticePeriod": "Notice period (e.g. Immediate, 15 days, 30 days)",
+  "linkedin": "LinkedIn profile URL",
+  "github": "GitHub / portfolio URL"
+}`;
+
+        const userMsg = `Here is the candidate resume / profile content to extract:\n\n${rawContent.slice(0, 15000)}`;
+        const rawAiRes = await callActiveAIModel(config, sysPrompt, [{ role: 'user', content: userMsg }]);
+        
+        let extracted = {};
+        const jsonMatch = rawAiRes.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || rawAiRes.match(/\{[\s\S]*?\}/);
+        if (jsonMatch) {
+          try {
+            extracted = JSON.parse((jsonMatch[1] || jsonMatch[0]).trim());
+          } catch (_) {}
+        }
+
+        // Merge with existing profile
+        const currentProfile = storeData.userProfile || {};
+        const merged = { ...currentProfile };
+        for (const [k, v] of Object.entries(extracted)) {
+          if (v && typeof v === 'string' && v.trim()) {
+            merged[k] = v.trim();
+          }
+        }
+
+        await chrome.storage.local.set({ userProfile: merged });
+        sendResponse({ success: true, profile: merged });
+      } catch (err) {
+        sendResponse({ success: false, error: err instanceof Error ? err.message : String(err) });
+      }
+    })();
+    return true;
+  }
+
   // 2. Start Workflow Recording Session
   if (message?.action === 'WORKFLOW_RECORD_START') {
     (async () => {
@@ -1042,16 +1137,733 @@ async function callAnthropicAPI(apiKey, model, systemPrompt, messages) {
   return text;
 }
 
+function calculateIntelligenceScore(modelId, modelName = '') {
+  const mid = String(modelId || '').toLowerCase();
+  const mname = String(modelName || '').toLowerCase();
+  const text = `${mid} ${mname}`;
+
+  // Explicit benchmarks & requested scores
+  if (text.includes('claude-3-7-sonnet') || text.includes('claude-3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('deepseek-r1') || text.includes('deepseek/deepseek-r1')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('o1') || text.includes('o3-mini')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('claude-3-5-sonnet') || text.includes('claude-3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('gpt-4o') && !text.includes('mini')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('deepseek-v3') || text.includes('deepseek-chat')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('claude-3-opus') || text.includes('claude-3.0-opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('gemini-2.5-pro') || text.includes('gemini-1.5-pro') || text.includes('gemini-pro')) return { score: 93, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('qwen-2.5-72b') || text.includes('qwen2.5-72b')) return { score: 91, tier: 'High Intelligence', badge: '🔥 High' };
+
+  // User explicit request: gemini 3.8 flash high 90 score
+  if (text.includes('gemini-3.8-flash-high') || text.includes('gemini-3.8-flash') || text.includes('gemini 3.8 flash') || text.includes('gemini-2.5-flash')) {
+    return { score: 90, tier: 'High Intelligence', badge: '🔥 High' };
+  }
+  if (text.includes('mistral-large')) return { score: 90, tier: 'High Intelligence', badge: '🔥 High' };
+  if (text.includes('llama-3.3-70b') || text.includes('llama-3.1-70b') || text.includes('70b-instruct')) return { score: 89, tier: 'High Intelligence', badge: '🔥 High' };
+  if (text.includes('nemotron-70b') || text.includes('llama-3.1-nemotron-70b')) return { score: 89, tier: 'High Intelligence', badge: '🔥 High' };
+  if (text.includes('gemini-2.0-flash') && !text.includes('lite')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
+  if (text.includes('command-r-plus') || text.includes('command-r+')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
+
+  if (text.includes('gpt-4o-mini')) return { score: 82, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('claude-3-5-haiku') || text.includes('claude-3-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('command-r') && !text.includes('plus')) return { score: 79, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('gemini-1.5-flash')) return { score: 78, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('qwen-2.5-32b') || text.includes('32b')) return { score: 83, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('qwen-2.5-14b') || text.includes('14b')) return { score: 77, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('mistral-small') || text.includes('mistral-nemo') || text.includes('open-mistral-nemo')) return { score: 75, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('llama-3.1-8b') || text.includes('llama-3-8b') || text.includes('8b-instant')) return { score: 70, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+
+  // User explicit request: gemini 3.6 light flash 50 score
+  if (text.includes('gemini-3.6-light-flash') || text.includes('gemini 3.6 light flash') || text.includes('gemini-3.6-flash-lite') || text.includes('gemini-2.0-flash-lite') || text.includes('flash-lite') || text.includes('flash-light')) {
+    return { score: 50, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
+  }
+  if (text.includes('llama-3.2-3b') || text.includes('3b')) return { score: 52, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
+  if (text.includes('llama-3.2-1b') || text.includes('1b')) return { score: 45, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
+  if (text.includes('mistral-7b') || text.includes('7b')) return { score: 60, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
+
+  // Heuristic based on parameter size and keywords
+  let score = 70;
+  if (/405b/i.test(text)) score = 95;
+  else if (/70b|72b/i.test(text)) score = 89;
+  else if (/32b|33b|34b/i.test(text)) score = 82;
+  else if (/14b|13b/i.test(text)) score = 77;
+  else if (/7b|8b/i.test(text)) score = 68;
+  else if (/3b|2b|1b/i.test(text)) score = 48;
+
+  if (/r1|reasoning|thinking/i.test(text)) score = Math.min(99, score + 12);
+  if (/pro|large|plus|high|max/i.test(text)) score = Math.min(99, score + 8);
+  if (/lite|light|nano|micro|mini/i.test(text)) score = Math.max(30, score - 18);
+  if (/turbo|flash|instant|fast/i.test(text)) score = Math.min(90, Math.max(50, score));
+
+  let tier = 'Fast & Balanced';
+  let badge = '⚡ Fast';
+  if (score >= 93) {
+    tier = 'Elite Intelligence';
+    badge = '🧠 Elite';
+  } else if (score >= 85) {
+    tier = 'High Intelligence';
+    badge = '🔥 High';
+  } else if (score < 68) {
+    tier = 'Lightweight / Fast';
+    badge = '🌱 Lite';
+  }
+
+  return { score, tier, badge };
+}
+
+async function callOpenRouterAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://openrouter.ai/api/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+      'HTTP-Referer': 'https://allcareer.ai',
+      'X-Title': 'AllCareer Automation Extension',
+    },
+    body: JSON.stringify({
+      model: model || 'google/gemini-2.0-flash-001',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => '');
+    throw new Error(`OpenRouter Error (${response.status}): ${errText}`);
+  }
+  const data = await response.json();
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) throw new Error('OpenRouter returned an empty response.');
+  return text;
+}
+
+async function callOpenAIAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.openai.com/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'gpt-4o',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => '');
+    throw new Error(`OpenAI Error (${response.status}): ${errText}`);
+  }
+  const data = await response.json();
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) throw new Error('OpenAI returned an empty response.');
+  return text;
+}
+
+async function callGroqAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.groq.com/openai/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'llama-3.3-70b-versatile',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Groq Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callMistralAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.mistral.ai/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'mistral-large-latest',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Mistral Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callCohereAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.cohere.com/v2/chat';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'command-r-plus-08-2024',
+      messages: formattedMessages,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Cohere Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.message?.content?.[0]?.text || '';
+}
+
+async function callNvidiaAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://integrate.api.nvidia.com/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'meta/llama-3.3-70b-instruct',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Nvidia NIM Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callCloudflareAPI(apiKey, accountId, model, systemPrompt, messages) {
+  if (!accountId) throw new Error('Cloudflare Account ID is required');
+  const activeModel = model || '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+  const cleanModel = activeModel.startsWith('@cf/') ? activeModel : `@cf/${activeModel}`;
+  const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${cleanModel}`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+      ],
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Cloudflare Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.result?.response || '';
+}
+
+async function callHuggingFaceAPI(apiKey, model, systemPrompt, messages) {
+  const url = 'https://router.huggingface.co/hf-inference/v1/chat/completions';
+  const formattedMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+  ];
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: model || 'meta-llama/Llama-3.3-70B-Instruct',
+      messages: formattedMessages,
+      temperature: 0.2,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Hugging Face Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callOllamaAPI(baseUrl, model, systemPrompt, messages) {
+  const cleanUrl = (baseUrl || 'http://localhost:11434').replace(/\/+$/, '');
+  const url = `${cleanUrl}/api/chat`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: model || 'llama3:latest',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...messages.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
+      ],
+      stream: false,
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Ollama Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.message?.content || '';
+}
+
+async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
+  const startTime = Date.now();
+  try {
+    switch (provider) {
+      case 'openai': {
+        const testModel = model || 'gpt-4o-mini';
+        const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${key}`,
+          },
+          body: JSON.stringify({
+            model: testModel,
+            messages: [{ role: 'user', content: 'Say OK' }],
+            max_tokens: 2,
+          }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        let desc = `Error ${resp.status}`;
+        try {
+          const parsed = JSON.parse(errText);
+          if (parsed?.error?.message) desc = parsed.error.message;
+        } catch (_) {
+          if (resp.status === 401) desc = 'OpenAI API key expired or invalid';
+        }
+        return { ok: false, status: resp.status, latencyMs, error: desc };
+      }
+      case 'openrouter': {
+        const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${key}`,
+            'HTTP-Referer': 'https://allcareer.ai',
+            'X-Title': 'AllCareer Test',
+          },
+          body: JSON.stringify({
+            model: model || 'google/gemini-2.0-flash-lite-001',
+            messages: [{ role: 'user', content: 'Say OK' }],
+            max_tokens: 2,
+          }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        let desc = `Error ${resp.status}`;
+        try {
+          const parsed = JSON.parse(errText);
+          if (parsed?.error?.message) desc = parsed.error.message;
+        } catch (_) {
+          if (resp.status === 401) desc = 'API key expired or invalid';
+        }
+        return { ok: false, status: resp.status, latencyMs, error: desc };
+      }
+      case 'gemini': {
+        const testModel = model || 'gemini-2.0-flash';
+        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(testModel)}:generateContent?key=${encodeURIComponent(key)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: 'OK' }] }], generationConfig: { maxOutputTokens: 2 } }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'groq': {
+        const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'mistral': {
+        const resp = await fetch('https://api.mistral.ai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model: 'open-mistral-nemo', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'cohere': {
+        const resp = await fetch('https://api.cohere.com/v2/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model: 'command-r', messages: [{ role: 'user', content: 'OK' }] }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'nvidia': {
+        const resp = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model: 'meta/llama-3.1-8b-instruct', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'cloudflare': {
+        if (!accountId) return { ok: false, error: 'Account ID required' };
+        const resp = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.1-8b-instruct`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ messages: [{ role: 'user', content: 'OK' }] }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'huggingface': {
+        const resp = await fetch('https://router.huggingface.co/hf-inference/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+          body: JSON.stringify({ model: 'meta-llama/Llama-3.1-8B-Instruct', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'ollama': {
+        const cleanUrl = (baseUrl || 'http://localhost:11434').replace(/\/+$/, '');
+        const resp = await fetch(`${cleanUrl}/api/tags`);
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Connected to Ollama server (${latencyMs}ms)!` };
+        return { ok: false, status: resp.status, latencyMs, error: `HTTP ${resp.status}` };
+      }
+      case 'omniroute': {
+        const cleanUrl = (baseUrl || 'http://127.0.0.1:20128/v1').replace(/\/+$/, '');
+        const headers = { 'Content-Type': 'application/json' };
+        if (key) headers['Authorization'] = `Bearer ${key}`;
+        const resp = await fetch(`${cleanUrl}/chat/completions`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ model: model || 'antigravity/gemini-3.6-flash-high', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      case 'anthropic': {
+        const resp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': key,
+            'anthropic-version': '2023-06-01',
+            'dangerously-allow-browser': 'true',
+          },
+          body: JSON.stringify({ model: 'claude-3-5-haiku-20241022', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+        });
+        const latencyMs = Date.now() - startTime;
+        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
+        const errText = await resp.text().catch(() => '');
+        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
+      }
+      default:
+        return { ok: false, error: `Unknown provider: ${provider}` };
+    }
+  } catch (err) {
+    return { ok: false, latencyMs: Date.now() - startTime, error: err instanceof Error ? err.message : 'Network error' };
+  }
+}
+
+async function fetchProviderModelsBackend({ provider, key, baseUrl, accountId }) {
+  try {
+    let rawModels = [];
+
+    switch (provider) {
+      case 'openai': {
+        const headers = key ? { 'Authorization': `Bearer ${key}` } : {};
+        const resp = await fetch('https://api.openai.com/v1/models', { headers });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || [])
+            .filter(m => m.id && (m.id.startsWith('gpt-') || m.id.startsWith('o1') || m.id.startsWith('o3') || m.id.startsWith('chatgpt')))
+            .map(m => ({ id: m.id, name: m.id }));
+        }
+        break;
+      }
+      case 'openrouter': {
+        const headers = key ? { 'Authorization': `Bearer ${key}` } : {};
+        const resp = await fetch('https://openrouter.ai/api/v1/models', { headers });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || []).map(m => ({ id: m.id, name: m.name || m.id }));
+        }
+        break;
+      }
+      case 'gemini': {
+        if (!key) break;
+        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.models || [])
+            .filter(m => Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent'))
+            .map(m => ({ id: (m.name || '').replace(/^models\//, ''), name: m.displayName || m.name }));
+        }
+        break;
+      }
+      case 'groq': {
+        const resp = await fetch('https://api.groq.com/openai/v1/models', {
+          headers: key ? { 'Authorization': `Bearer ${key}` } : {},
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || []).map(m => ({ id: m.id, name: m.id }));
+        }
+        break;
+      }
+      case 'mistral': {
+        const resp = await fetch('https://api.mistral.ai/v1/models', {
+          headers: key ? { 'Authorization': `Bearer ${key}` } : {},
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || []).map(m => ({ id: m.id, name: m.id }));
+        }
+        break;
+      }
+      case 'cohere': {
+        const resp = await fetch('https://api.cohere.com/v1/models', {
+          headers: key ? { 'Authorization': `Bearer ${key}` } : {},
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.models || []).map(m => ({ id: m.name, name: m.name }));
+        }
+        break;
+      }
+      case 'nvidia': {
+        const resp = await fetch('https://integrate.api.nvidia.com/v1/models', {
+          headers: key ? { 'Authorization': `Bearer ${key}` } : {},
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || []).map(m => ({ id: m.id, name: m.id }));
+        }
+        break;
+      }
+      case 'ollama': {
+        const cleanUrl = (baseUrl || 'http://localhost:11434').replace(/\/+$/, '');
+        const resp = await fetch(`${cleanUrl}/api/tags`);
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.models || []).map(m => ({ id: m.name, name: `${m.name} (${m.details?.parameter_size || 'local'})` }));
+        }
+        break;
+      }
+      case 'omniroute': {
+        const cleanUrl = (baseUrl || 'http://127.0.0.1:20128/v1').replace(/\/+$/, '');
+        const headers = key ? { 'Authorization': `Bearer ${key}` } : {};
+        const resp = await fetch(`${cleanUrl}/models`, { headers });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawModels = (data?.data || []).map(m => ({ id: m.id, name: m.name || m.id }));
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+    // Add fallback presets if API did not return models or returned empty
+    if (!rawModels || rawModels.length === 0) {
+      if (provider === 'gemini') {
+        rawModels = [
+          { id: 'gemini-3.8-flash-high', name: 'Gemini 3.8 Flash High' },
+          { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash' },
+          { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro' },
+          { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
+          { id: 'gemini-3.6-light-flash', name: 'Gemini 3.6 Light Flash' },
+        ];
+      } else if (provider === 'openrouter') {
+        rawModels = [
+          { id: 'anthropic/claude-3.7-sonnet', name: 'Claude 3.7 Sonnet' },
+          { id: 'deepseek/deepseek-r1', name: 'DeepSeek R1' },
+          { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet' },
+          { id: 'openai/gpt-4o', name: 'GPT-4o' },
+          { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
+          { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
+          { id: 'google/gemini-2.0-flash-lite-001', name: 'Gemini 2.0 Flash Lite' },
+        ];
+      } else if (provider === 'groq') {
+        rawModels = [
+          { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B Versatile' },
+          { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant' },
+          { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 Distill 70B' },
+          { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B' },
+        ];
+      } else if (provider === 'cloudflare') {
+        rawModels = [
+          { id: '@cf/meta/llama-3.3-70b-instruct-fp8-fast', name: 'Llama 3.3 70B Instruct (Fast)' },
+          { id: '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b', name: 'DeepSeek R1 Distill 32B' },
+          { id: '@cf/meta/llama-3.1-8b-instruct', name: 'Llama 3.1 8B Instruct' },
+          { id: '@cf/qwen/qwen2.5-72b-instruct', name: 'Qwen 2.5 72B Instruct' },
+        ];
+      } else if (provider === 'huggingface') {
+        rawModels = [
+          { id: 'meta-llama/Llama-3.3-70B-Instruct', name: 'Llama 3.3 70B Instruct' },
+          { id: 'deepseek-ai/DeepSeek-R1-Distill-Qwen-32B', name: 'DeepSeek R1 Distill Qwen 32B' },
+          { id: 'Qwen/Qwen2.5-72B-Instruct', name: 'Qwen 2.5 72B Instruct' },
+          { id: 'meta-llama/Llama-3.1-8B-Instruct', name: 'Llama 3.1 8B Instruct' },
+        ];
+      } else if (provider === 'mistral') {
+        rawModels = [
+          { id: 'mistral-large-latest', name: 'Mistral Large' },
+          { id: 'mistral-small-latest', name: 'Mistral Small' },
+          { id: 'open-mistral-nemo', name: 'Mistral NeMo' },
+        ];
+      } else if (provider === 'cohere') {
+        rawModels = [
+          { id: 'command-r-plus-08-2024', name: 'Command R+' },
+          { id: 'command-r-08-2024', name: 'Command R' },
+        ];
+      } else if (provider === 'nvidia') {
+        rawModels = [
+          { id: 'meta/llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
+          { id: 'nvidia/llama-3.1-nemotron-70b-instruct', name: 'Llama 3.1 Nemotron 70B' },
+          { id: 'meta/llama-3.1-8b-instruct', name: 'Llama 3.1 8B Instruct' },
+        ];
+      } else if (provider === 'anthropic') {
+        rawModels = [
+          { id: 'claude-3-7-sonnet-20250219', name: 'Claude 3.7 Sonnet' },
+          { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
+          { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
+        ];
+      }
+    }
+
+    // Attach Intelligence Scores and Sort Descending
+    const scoredModels = rawModels.map(m => {
+      const intel = calculateIntelligenceScore(m.id, m.name);
+      return {
+        id: m.id,
+        name: m.name || m.id,
+        score: intel.score,
+        tier: intel.tier,
+        badge: intel.badge,
+        label: `[Score: ${intel.score} ${intel.badge}] ${m.name || m.id}`,
+      };
+    }).sort((a, b) => b.score - a.score);
+
+    return { ok: true, models: scoredModels };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
 async function callActiveAIModel(config, systemPrompt, messages) {
-  const provider = config?.activeProvider || 'omniroute';
-  if (provider === 'gemini') {
-    if (!config?.gemini?.apiKey) throw new Error('Gemini API key is not configured in Settings.');
-    return await callGeminiAPI(config.gemini.apiKey, config.gemini.model, systemPrompt, messages);
-  } else if (provider === 'omniroute') {
-    return await callOmniRouteAPI(config?.omniroute?.apiKey, config?.omniroute?.baseUrl, config?.omniroute?.model, systemPrompt, messages);
-  } else {
-    if (!config?.anthropic?.apiKey) throw new Error('Anthropic API key is not configured in Settings.');
-    return await callAnthropicAPI(config.anthropic.apiKey, config.anthropic.model, systemPrompt, messages);
+  // 1. Resolve key config: check if there is an active key configured in apiKeys list
+  const activeKeyId = config?.activeKeyId;
+  const apiKeys = Array.isArray(config?.apiKeys) ? config.apiKeys : [];
+  const keyConfig = apiKeys.find(k => k.id === activeKeyId && k.enabled !== false) ||
+    apiKeys.find(k => k.enabled !== false) || null;
+
+  const provider = keyConfig?.provider || config?.activeProvider || 'omniroute';
+  const apiKey = keyConfig?.key || config?.[provider]?.apiKey || '';
+  const model = keyConfig?.model || config?.[provider]?.model || '';
+  const baseUrl = keyConfig?.baseUrl || config?.[provider]?.baseUrl || '';
+  const accountId = keyConfig?.accountId || config?.[provider]?.accountId || '';
+
+  switch (provider) {
+    case 'openai':
+      if (!apiKey) throw new Error('OpenAI API key is not configured in Settings.');
+      return await callOpenAIAPI(apiKey, model, systemPrompt, messages);
+    case 'openrouter':
+      if (!apiKey) throw new Error('OpenRouter API key is not configured in Settings.');
+      return await callOpenRouterAPI(apiKey, model, systemPrompt, messages);
+    case 'gemini':
+      if (!apiKey) throw new Error('Gemini API key is not configured in Settings.');
+      return await callGeminiAPI(apiKey, model, systemPrompt, messages);
+    case 'groq':
+      if (!apiKey) throw new Error('Groq API key is not configured in Settings.');
+      return await callGroqAPI(apiKey, model, systemPrompt, messages);
+    case 'mistral':
+      if (!apiKey) throw new Error('Mistral API key is not configured in Settings.');
+      return await callMistralAPI(apiKey, model, systemPrompt, messages);
+    case 'cohere':
+      if (!apiKey) throw new Error('Cohere API key is not configured in Settings.');
+      return await callCohereAPI(apiKey, model, systemPrompt, messages);
+    case 'nvidia':
+      if (!apiKey) throw new Error('Nvidia NIM API key is not configured in Settings.');
+      return await callNvidiaAPI(apiKey, model, systemPrompt, messages);
+    case 'cloudflare':
+      if (!apiKey) throw new Error('Cloudflare API token is not configured in Settings.');
+      return await callCloudflareAPI(apiKey, accountId, model, systemPrompt, messages);
+    case 'huggingface':
+      if (!apiKey) throw new Error('Hugging Face API token is not configured in Settings.');
+      return await callHuggingFaceAPI(apiKey, model, systemPrompt, messages);
+    case 'ollama':
+      return await callOllamaAPI(baseUrl, model, systemPrompt, messages);
+    case 'omniroute':
+      return await callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages);
+    case 'anthropic':
+    default:
+      if (!apiKey) throw new Error('Anthropic API key is not configured in Settings.');
+      return await callAnthropicAPI(apiKey, model, systemPrompt, messages);
   }
 }
 
@@ -1105,12 +1917,228 @@ function extractStepTargets(step) {
   return fallback.length > 0 ? fallback : [{ selector: '', text: step.name || '' }];
 }
 
+const UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT = `You are an elite autonomous browser AI agent specialized in automated job application workflows, recruitment chatbots (such as Naukri, Workday, Greenhouse, Lever, Taleo, LinkedIn), and screening forms.
+You inspect page elements, understand screening questions, and execute the exact right browser action.
+
+### CHATBOT & APPLICATION FORM DOMAIN KNOWLEDGE:
+1. Chatbot Dialogs: In modern applicant chatbots (e.g. Naukri), the bot asks a screening question in a chat bubble (e.g. "UG CGPA (Also mention the field) | College / university").
+2. Typing Area: The answer must be typed into the chat's typing area (which may be a contenteditable div like .textArea, a textarea, or an input field).
+3. Save / Send Button Activation: The Save or Send button is often initially DISABLED (e.g. has class "disabled"). It automatically activates after text is typed into the input. When you see a chat question, type the complete answer first, then click Save on the next step.
+4. Composite Questions: If a question asks for multiple items (e.g. "UG CGPA (Also mention the field) | College / university"), combine the relevant details from the candidate profile into a single coherent, concise answer (e.g. "8.2 CGPA in Computer Science, Anna University").
+5. Options & Dropdowns: If choice chips, dropdown items, or radio choices are provided, match the candidate's background to the best available option.
+
+### ACTION FORMAT (Return ONLY a single valid JSON block):
+\`\`\`json
+{
+  "action": "fill" | "click" | "select_option" | "check" | "ask_human",
+  "value": "string to type or option to select (leave empty string for click/check)",
+  "reasoning": "brief 1-sentence explanation"
+}
+\`\`\`
+
+### DECISION GUIDELINES:
+1. If the element is an input, textarea, contenteditable, or chat container with an unanswered question: Choose "fill" with the precise candidate answer.
+2. If the element is a button (e.g. "Save", "Send", "Submit", "Next", "Continue", "Apply"): Choose "click".
+3. If the element is a dropdown or list of options: Choose "select_option" with the exact option text.
+4. If the element is a checkbox: Choose "check".
+5. If the answer is completely unknown and cannot be found in the profile: Choose "ask_human" if uncertain, or infer a standard professional default if in autonomous mode.`;
+
+async function updateTabHud(tabId, hudData) {
+  try {
+    await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_UPDATE_HUD', data: hudData });
+  } catch (_) {
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+      await new Promise(r => setTimeout(r, 200));
+      await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_UPDATE_HUD', data: hudData });
+    } catch (_) {}
+  }
+}
+
+async function removeTabHud(tabId) {
+  try {
+    await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_REMOVE_HUD' });
+  } catch (_) {}
+}
+
+function normalizeWorkflowText(str) {
+  if (!str) return '';
+  return String(str)
+    .toLowerCase()
+    .replace(/^bot\s*says?:?/i, '')
+    .replace(/^naukri\s*bot:?/i, '')
+    .replace(/[?!:;.,/\\()\[\]{}"'’“”\-+_#*]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAnswers = [], profile = {}) {
+  const normQ = normalizeWorkflowText(targetQuestion);
+  const normText = normalizeWorkflowText(visibleText);
+  const normName = normalizeWorkflowText(targetName);
+  const combined = `${normQ} ${normName} ${normText}`.trim();
+  if (!combined) return null;
+
+  // 1. Check Custom Answers first (exact match, substring match, token match)
+  for (const item of customAnswers) {
+    if (!item?.question || !item?.answer) continue;
+    const itemQ = normalizeWorkflowText(item.question);
+    if (!itemQ) continue;
+
+    // Exact match
+    if (normQ === itemQ || normName === itemQ || combined === itemQ) {
+      return { answer: item.answer, source: 'customAnswers', matchedQuestion: item.question };
+    }
+
+    // Substring match
+    if (itemQ.length >= 3) {
+      if (combined.includes(itemQ) || (normQ && normQ.includes(itemQ)) || (itemQ.includes(normQ) && normQ.length >= 4)) {
+        return { answer: item.answer, source: 'customAnswers', matchedQuestion: item.question };
+      }
+    }
+
+    // Token keyword match (e.g. "what is your name" vs "name")
+    const itemTokens = itemQ.split(' ').filter(w => !['what', 'is', 'your', 'please', 'enter', 'the', 'a', 'an', 'provide', 'tell', 'me', 'us'].includes(w) && w.length >= 2);
+    if (itemTokens.length > 0) {
+      const allTokensMatch = itemTokens.every(tok => combined.includes(tok));
+      if (allTokensMatch) {
+        return { answer: item.answer, source: 'customAnswers', matchedQuestion: item.question };
+      }
+    }
+  }
+
+  // 2. Candidate Profile Smart Check
+  const candidateName = profile.fullName || profile.name;
+  if (candidateName) {
+    const isNameQuery = /\b(name|full name|first name|candidate name|your name|applicant name)\b/i.test(combined);
+    const isNotCompanyOrCollege = !/\b(company|employer|college|university|school|institution|file|resume|reference|father|mother)\b/i.test(combined);
+    if (isNameQuery && isNotCompanyOrCollege) {
+      return { answer: candidateName, source: 'profile', matchedQuestion: 'Name' };
+    }
+  }
+
+  const email = profile.email;
+  if (email && /\b(email|mail|e mail|email id|email address)\b/i.test(combined) && !/\b(company|reference)\b/i.test(combined)) {
+    return { answer: email, source: 'profile', matchedQuestion: 'Email' };
+  }
+
+  const phone = profile.phone || profile.mobile;
+  if (phone && /\b(phone|mobile|contact|contact number|cell|telephone|whatsapp)\b/i.test(combined) && !/\b(alt|alternate|company)\b/i.test(combined)) {
+    return { answer: phone, source: 'profile', matchedQuestion: 'Phone' };
+  }
+
+  const city = profile.city || profile.location || profile.address;
+  if (city && /\b(city|location|current city|current location|where do you live|residence|town)\b/i.test(combined) && !/\b(company|headquarter)\b/i.test(combined)) {
+    return { answer: city, source: 'profile', matchedQuestion: 'Location' };
+  }
+
+  const exp = profile.experienceYears || profile.experience;
+  if (exp && /\b(experience|years of experience|total experience|work experience)\b/i.test(combined)) {
+    return { answer: String(exp), source: 'profile', matchedQuestion: 'Experience' };
+  }
+
+  const salary = profile.expectedSalary || profile.currentSalary;
+  if (salary && /\b(expected salary|expected ctc|ctc expectation|salary expectation)\b/i.test(combined)) {
+    return { answer: String(salary), source: 'profile', matchedQuestion: 'Salary' };
+  }
+
+  const notice = profile.noticePeriod;
+  if (notice && /\b(notice period|serving notice|availability)\b/i.test(combined)) {
+    return { answer: String(notice), source: 'profile', matchedQuestion: 'Notice Period' };
+  }
+
+  const edu = profile.degree || profile.education;
+  if (edu && /\b(highest qualification|degree|education|qualification)\b/i.test(combined)) {
+    return { answer: edu, source: 'profile', matchedQuestion: 'Education' };
+  }
+
+  return null;
+}
+
+function isKnownActionButton(elemInfo, target, learnedButtons = []) {
+  const tag = (elemInfo?.tag || '').toLowerCase();
+  const targetName = (elemInfo?.targetName || target.text || '').toLowerCase().trim();
+  const selector = (target.selector || '').toLowerCase();
+  const isButtonFlag = Boolean(elemInfo?.isButton);
+  const text = (elemInfo?.text || '').toLowerCase().trim();
+
+  const ACTION_REGEX = /\b(save|submit|next|continue|apply|send|confirm|done|finish|proceed|ok|agree|accept|verify|start|post)\b/i;
+
+  // 1. Check learnedButtons
+  for (const lb of learnedButtons) {
+    const l = (lb || '').toLowerCase().trim();
+    if (!l) continue;
+    if (targetName === l || targetName.includes(l) || l.includes(targetName) || selector.includes(l) || text.includes(l)) {
+      return { isButton: true, reason: `Matches learned button: "${lb}"` };
+    }
+  }
+
+  // 2. Check Action Keywords
+  if (ACTION_REGEX.test(targetName)) {
+    return { isButton: true, reason: `Action button keyword matched in name ("${targetName}")` };
+  }
+  if (ACTION_REGEX.test(selector)) {
+    return { isButton: true, reason: `Action button keyword matched in selector ("${selector}")` };
+  }
+  if (text.length <= 40 && ACTION_REGEX.test(text)) {
+    return { isButton: true, reason: `Action button keyword matched in text ("${text}")` };
+  }
+
+  // 3. Native Button elements
+  if (isButtonFlag || ['button', 'a'].includes(tag) || selector.includes('button') || selector.includes('.btn') || selector.includes('.send')) {
+    return { isButton: true, reason: `Element is a button (<${tag}>)` };
+  }
+
+  return { isButton: false };
+}
+
+async function saveLearnedAnswer(customAnswers, question, answer) {
+  if (!question || !answer || typeof answer !== 'string') return;
+  const cleanQ = question.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const cleanAns = answer.trim();
+  if (!cleanQ || !cleanAns) return;
+
+  const existingIdx = customAnswers.findIndex(qa => {
+    const q1 = normalizeWorkflowText(qa.question);
+    const q2 = normalizeWorkflowText(cleanQ);
+    return q1 && q2 && (q1 === q2 || (q1.length >= 4 && q2.includes(q1)) || (q2.length >= 4 && q1.includes(q2)));
+  });
+
+  if (existingIdx >= 0) {
+    customAnswers[existingIdx].answer = cleanAns;
+    customAnswers[existingIdx].updatedAt = Date.now();
+  } else {
+    customAnswers.push({
+      id: 'qa_' + Date.now(),
+      question: cleanQ,
+      answer: cleanAns,
+      autoLearned: true,
+      createdAt: Date.now(),
+    });
+  }
+
+  try {
+    await chrome.storage.local.set({ customAnswers });
+  } catch (_) {}
+}
+
+async function saveLearnedButton(learnedButtons, btnIdentifier) {
+  const clean = (btnIdentifier || '').trim().toLowerCase();
+  if (!clean || clean.length < 2) return;
+  if (!learnedButtons.includes(clean)) {
+    learnedButtons.push(clean);
+    try {
+      await chrome.storage.local.set({ learnedButtons });
+    } catch (_) {}
+  }
+}
+
 async function executeAIStepOneByOne(tabId, step, runState) {
   let activeTabId = tabId;
   const targets = extractStepTargets(step);
   const total = targets.length;
 
-  const storeData = await chrome.storage.local.get(['byok_config', 'userProfile', 'customAnswers']);
+  const storeData = await chrome.storage.local.get(['byok_config', 'userProfile', 'customAnswers', 'aiDecisionMode', 'learnedButtons']);
   const config = storeData.byok_config || {
     activeProvider: 'omniroute',
     omniroute: { baseUrl: 'http://127.0.0.1:20128/v1', apiKey: 'sk-f46d845e6a300177-0a895e-fbfbd25b', model: 'antigravity/gemini-3.6-flash-high' },
@@ -1119,71 +2147,139 @@ async function executeAIStepOneByOne(tabId, step, runState) {
   };
   const profile = storeData.userProfile || {};
   const customAnswers = Array.isArray(storeData.customAnswers) ? storeData.customAnswers : [];
+  const learnedButtons = Array.isArray(storeData.learnedButtons) ? storeData.learnedButtons : [];
+  const aiDecisionMode = storeData.aiDecisionMode || 'ask_human';
   const actionHistory = [];
 
-  runState.logs.push(`[AI Loop] 🚀 Starting sequential execution of ${total} element(s) one by one...`);
+  // Multi-round conversational loop: can handle up to 20 question rounds in a chatbot
+  const MAX_ROUNDS = step.isAiLoop === false && !step.loopId && total <= 1 ? 1 : Math.max(1, Math.min(25, step.maxQuestions || 15));
+  let lastRecordedQuestion = '';
+
+  runState.logs.push(`[AI Loop] 🚀 Starting conversational AI execution (${total} element(s) per round, max ${MAX_ROUNDS} rounds)...`);
   await chrome.storage.local.set({ workflowRunState: runState });
 
-  for (let idx = 0; idx < total; idx++) {
-    const target = targets[idx];
-    const elemNumber = idx + 1;
-    runState.logs.push(`[AI Loop] 🔍 [Element ${elemNumber}/${total}] Inspecting element: "${target.selector || target.text || 'element'}"...`);
-    await chrome.storage.local.set({ workflowRunState: runState });
-
-    // 1. Inspect single element in tab
-    let elemInfo = null;
-    try {
-      elemInfo = await chrome.tabs.sendMessage(activeTabId, {
-        action: 'WORKFLOW_READ_TARGET',
-        target,
-      });
-    } catch (err) {
-      try {
-        await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-        await new Promise(r => setTimeout(r, 400));
-        elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
-      } catch (_) {}
+  for (let round = 1; round <= MAX_ROUNDS; round++) {
+    if (round > 1) {
+      runState.logs.push(`[AI Loop] 🔄 Starting Conversational Round ${round} of ${MAX_ROUNDS}...`);
+      await chrome.storage.local.set({ workflowRunState: runState });
     }
 
-    // Wait up to 4s if element not yet rendered
-    if (!elemInfo?.success && target.selector) {
-      const startWait = Date.now();
-      while (Date.now() - startWait < 4000) {
-        await new Promise(r => setTimeout(r, 400));
+    // Process all elements configured in this step sequentially
+    for (let idx = 0; idx < total; idx++) {
+      const target = targets[idx];
+      const elemNumber = idx + 1;
+      runState.logs.push(`[AI Loop] 🔍 [Round ${round} | Element ${elemNumber}/${total}] Inspecting element: "${target.selector || target.text || 'element'}"...`);
+      await chrome.storage.local.set({ workflowRunState: runState });
+
+      // 1. Inspect element in tab with retry if element is rendering
+      let elemInfo = null;
+      try {
+        elemInfo = await chrome.tabs.sendMessage(activeTabId, {
+          action: 'WORKFLOW_READ_TARGET',
+          target,
+        });
+      } catch (err) {
         try {
+          await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+          await new Promise(r => setTimeout(r, 400));
           elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
-          if (elemInfo?.success) break;
         } catch (_) {}
       }
-    }
 
-    const tag = (elemInfo?.tag || '').toLowerCase();
-    const targetName = elemInfo?.targetName || target.text || '';
-    const visibleText = elemInfo?.text || '';
-    const options = Array.isArray(elemInfo?.options) ? elemInfo.options : [];
-    const htmlSnippet = (elemInfo?.htmlSnippet || '').slice(0, 800);
+      // Wait up to 3.5s if element not yet rendered
+      if (!elemInfo?.success && target.selector) {
+        const startWait = Date.now();
+        while (Date.now() - startWait < 3500) {
+          await new Promise(r => setTimeout(r, 350));
+          try {
+            elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
+            if (elemInfo?.success) break;
+          } catch (_) {}
+        }
+      }
 
-    // 2. Check Custom Answers first
-    let directAnswer = null;
-    const questionText = `${targetName} ${visibleText}`.trim().toLowerCase();
-    if (questionText) {
-      const match = customAnswers.find(qa => {
-        const q = (qa.question || '').toLowerCase().trim();
-        return q && (questionText.includes(q) || q.includes(questionText));
+      const tag = (elemInfo?.tag || '').toLowerCase();
+      const targetName = elemInfo?.targetName || target.text || '';
+      const visibleText = elemInfo?.text || '';
+      const extractedQuestion = elemInfo?.question || '';
+      const targetQuestion = extractedQuestion || (tag === 'div' && visibleText.length > 5 ? visibleText : '') || targetName;
+      const options = Array.isArray(elemInfo?.options) ? elemInfo.options : [];
+      const hasInnerInput = Boolean(elemInfo?.hasInnerInput);
+      const isButton = Boolean(elemInfo?.isButton);
+      const isDisabled = Boolean(elemInfo?.isDisabled);
+      const htmlSnippet = (elemInfo?.htmlSnippet || '').slice(0, 800);
+
+      if (targetQuestion) {
+        lastRecordedQuestion = targetQuestion;
+      }
+
+      // Update HUD with inspected element & question
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: runState.stepIndex || 0,
+        totalSteps: runState.stepCount || 1,
+        stepName: step.name || 'AI Chat Step',
+        status: 'running',
+        elementIndex: elemNumber,
+        totalElements: total,
+        question: targetQuestion ? targetQuestion.slice(0, 150) : undefined,
+        actionTaken: isButton ? `Detected button: "${targetName}" (${isDisabled ? 'Disabled - requires typing first' : 'Active'})` : 'Analyzing question context...',
       });
-      if (match) directAnswer = match.answer;
-    }
 
-    // 3. Formulate system & user prompts for THIS SINGLE ELEMENT ONLY
-    const systemPrompt = `You are an expert autonomous browser agent filling out job applications and answering recruiter screening questions.
-You are given details about ONE specific HTML element on the page (Element ${elemNumber} of ${total}).
-You have ALL capabilities:
-- "click": Click a button, link, radio option, or tab (e.g. Next, Submit, Save, Continue, Apply).
-- "fill": Type text or numbers into an input field or textarea.
-- "select_option": Select an option from a dropdown or choice list.
-- "check": Toggle a checkbox.
+      // 2. Intelligent Decision Logic: Memorized Button vs 1-Option vs 2+ Options vs Known Question vs AI
+      let aiDecision = null;
+      const buttonCheck = isKnownActionButton(elemInfo, target, learnedButtons);
 
-Your task is to analyze THIS SINGLE ELEMENT and output the exact action to execute on it.
+      // A. IS THIS A BUTTON? (Save, Submit, Next, Send, or in learnedButtons)
+      // -> Bypass AI completely! Click directly and memorize for future jobs!
+      if (buttonCheck.isButton) {
+        aiDecision = {
+          action: 'click',
+          value: '',
+          reasoning: `⚡ Auto-detected button: ${buttonCheck.reason} (bypassed AI)`
+        };
+        runState.logs.push(`[AI Loop] ⚡ Button detected: "${targetName || target.selector}" (${buttonCheck.reason}). Bypassing AI and directly clicking.`);
+        await saveLearnedButton(learnedButtons, targetName || target.selector);
+      }
+      // B. DROPDOWN / CHOICE WITH ONLY 1 OPTION?
+      // -> Bypass AI! Auto-select that single choice directly and memorize!
+      else if (options.length === 1) {
+        const singleOption = options[0];
+        aiDecision = {
+          action: 'select_option',
+          value: singleOption,
+          reasoning: `⚡ Single option available: "${singleOption}" (auto-selected without AI)`
+        };
+        runState.logs.push(`[AI Loop] ⚡ Dropdown has only 1 option ("${singleOption}"). Auto-selecting without AI.`);
+        if (targetQuestion) {
+          await saveLearnedAnswer(customAnswers, targetQuestion, singleOption);
+        }
+      }
+      // C. DROPDOWN WITH 2 OR MORE OPTIONS: Check customAnswers first; if none, ask AI!
+      else if (options.length >= 2) {
+        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAnswers, profile);
+        let matchedOption = null;
+        if (smartMatch && smartMatch.answer) {
+          const val = smartMatch.answer.toLowerCase().trim();
+          matchedOption = options.find(opt => {
+            const o = opt.toLowerCase().trim();
+            return o === val || o.includes(val) || val.includes(o);
+          });
+        }
+
+        if (matchedOption) {
+          aiDecision = {
+            action: 'select_option',
+            value: matchedOption,
+            reasoning: `⚡ Reused saved answer for dropdown: "${matchedOption}" (source: ${smartMatch.source})`
+          };
+          runState.logs.push(`[AI Loop] ⚡ Dropdown has ${options.length} options, but question was already answered ("${matchedOption}"). Bypassing AI.`);
+        } else {
+          // Ask AI what to do for this 2+ option dropdown!
+          runState.logs.push(`[AI Loop] 🤖 Dropdown has ${options.length} options: ${JSON.stringify(options.slice(0, 10))}. Asking AI to choose...`);
+          await chrome.storage.local.set({ workflowRunState: runState });
+
+          const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
 
 Candidate Profile:
 ${JSON.stringify(profile, null, 2)}
@@ -1194,123 +2290,467 @@ ${customAnswers.map(qa => `- Q: ${qa.question} -> A: ${qa.answer}`).join('\n')}
 ${step.customPrompt ? `User Instruction for this step: ${step.customPrompt}` : ''}
 
 Previous actions in this loop:
-${actionHistory.length > 0 ? actionHistory.map(h => `- Step ${h.elementNumber}: ${h.action.toUpperCase()} on "${h.target}" ${h.value ? `("${h.value}")` : ''}`).join('\n') : 'None (this is the first element)'}
+${actionHistory.length > 0 ? actionHistory.map(h => `- Step ${h.elementNumber}: ${h.action.toUpperCase()} on "${h.target}" ${h.value ? `("${h.value}")` : ''}`).join('\n') : 'None (this is the first element)'}`;
 
-CRITICAL RULES:
-1. Return ONLY a valid JSON object wrapped in \`\`\`json ... \`\`\`.
-2. Format:
-{
-  "action": "click" | "fill" | "select_option" | "check",
-  "value": "string value to type or option text to select (leave empty string for click/check)",
-  "reasoning": "brief 1-sentence reasoning"
-}
-3. If the element is a button (e.g. "Next", "Save", "Submit", "Continue", "Apply"), choose "click".
-4. If the element is an input or textarea asking for salary, experience, notice period, location, etc., answer accurately from the Candidate Profile and choose "fill".
-5. If the element is a dropdown, pick the best matching option from the available options list and choose "select_option".
-6. If a matching saved answer is available, use it!`;
+          const choiceUserPrompt = `Element ${elemNumber} of ${total}:
+Question / Label: "${targetQuestion || targetName}"
+Visible Text / Context: "${visibleText.slice(0, 300)}"
+Available Dropdown Options (${options.length} choices):
+${JSON.stringify(options.slice(0, 30))}
 
-    const userPrompt = `Element ${elemNumber} of ${total}:
+INSTRUCTION: You must pick EXACTLY ONE option from the Available Dropdown Options list that best fits the candidate profile.
+Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exact option text>"}
+`;
+          try {
+            const rawResponse = await callActiveAIModel(config, systemPrompt, [{ role: 'user', content: choiceUserPrompt }]);
+            aiDecision = parseAiActionJson(rawResponse);
+            if (aiDecision.value) {
+              const found = options.find(o => o.toLowerCase().trim() === aiDecision.value.toLowerCase().trim())
+                || options.find(o => o.toLowerCase().includes(aiDecision.value.toLowerCase()) || aiDecision.value.toLowerCase().includes(o.toLowerCase()));
+              if (found) aiDecision.value = found;
+            }
+            if (!aiDecision.value && options.length > 0) {
+              aiDecision.value = options[0];
+            }
+            aiDecision.action = 'select_option';
+
+            // Auto-save AI's choice to customAnswers so future dropdowns don't need AI!
+            if (targetQuestion && aiDecision.value) {
+              await saveLearnedAnswer(customAnswers, targetQuestion, aiDecision.value);
+              runState.logs.push(`[AI Loop] 💾 Auto-memorized dropdown answer for "${targetQuestion}" ➔ "${aiDecision.value}" for future jobs.`);
+            }
+          } catch (aiErr) {
+            console.warn(`[AI Loop] AI dropdown call failed:`, aiErr);
+            aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
+          }
+        }
+      }
+      // D. TEXT QUESTION / INPUT FIELD / CHAT INPUT CONTAINER
+      else {
+        // Check if question was already answered previously or is in candidate profile!
+        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAnswers, profile);
+        if (smartMatch && smartMatch.answer && (['input', 'textarea'].includes(tag) || hasInnerInput || tag === 'div')) {
+          aiDecision = {
+            action: 'fill',
+            value: smartMatch.answer,
+            reasoning: `⚡ Reused saved answer for "${targetQuestion || targetName}": "${smartMatch.answer}" (source: ${smartMatch.source})`
+          };
+          runState.logs.push(`[AI Loop] ⚡ Question already asked/known ("${targetQuestion || targetName}"). Bypassing AI and directly typing: "${smartMatch.answer}"`);
+        } else {
+          // Unknown question: Ask AI to think and answer
+          const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
+
+Candidate Profile:
+${JSON.stringify(profile, null, 2)}
+
+Saved Custom Answers:
+${customAnswers.map(qa => `- Q: ${qa.question} -> A: ${qa.answer}`).join('\n')}
+
+${step.customPrompt ? `User Instruction for this step: ${step.customPrompt}` : ''}
+
+Previous actions in this loop:
+${actionHistory.length > 0 ? actionHistory.map(h => `- Step ${h.elementNumber}: ${h.action.toUpperCase()} on "${h.target}" ${h.value ? `("${h.value}")` : ''}`).join('\n') : 'None (this is the first element)'}`;
+
+          const userPrompt = `Element ${elemNumber} of ${total}:
 Tag: <${tag || 'element'}>
 Label / Name: "${targetName}"
+Extracted Question: "${targetQuestion}"
 Visible Text / Context: "${visibleText.slice(0, 400)}"
+${hasInnerInput ? 'Has Nested Input Field: YES (contenteditable / textarea / input detected inside this container)' : ''}
+${isButton ? `Is Button: YES (Currently ${isDisabled ? 'DISABLED - activates after typing' : 'ENABLED'})` : ''}
 ${options.length > 0 ? `Available Options: ${JSON.stringify(options.slice(0, 30))}` : ''}
 HTML: ${htmlSnippet}`;
 
-    let aiDecision = null;
-    if (directAnswer && ['input', 'textarea'].includes(tag)) {
-      aiDecision = { action: 'fill', value: directAnswer, reasoning: `Matched saved Custom Answer for "${targetName}"` };
-    } else {
-      try {
-        runState.logs.push(`[AI Loop] 🤖 Sending Element ${elemNumber}/${total} to AI...`);
-        await chrome.storage.local.set({ workflowRunState: runState });
-        const rawResponse = await callActiveAIModel(config, systemPrompt, [{ role: 'user', content: userPrompt }]);
-        aiDecision = parseAiActionJson(rawResponse);
-      } catch (aiErr) {
-        console.warn(`[AI Loop] AI call failed for Element ${elemNumber}:`, aiErr);
-        // Heuristic fallbacks
-        if (['button', 'a'].includes(tag) || /button|submit|save|continue|next/i.test(targetName)) {
-          aiDecision = { action: 'click', value: '', reasoning: 'Fallback: button detected' };
-        } else if (options.length > 0) {
-          aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
-        } else {
-          aiDecision = { action: 'fill', value: profile.noticePeriod || 'Immediate', reasoning: 'Fallback: profile fill' };
+          try {
+            runState.logs.push(`[AI Loop] 🤖 Sending Element ${elemNumber}/${total} to AI...`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            const rawResponse = await callActiveAIModel(config, systemPrompt, [{ role: 'user', content: userPrompt }]);
+            aiDecision = parseAiActionJson(rawResponse);
+
+            // AUTO-SAVE AI's response to customAnswers for ALL future jobs!
+            if (aiDecision.action === 'fill' && aiDecision.value && targetQuestion) {
+              await saveLearnedAnswer(customAnswers, targetQuestion, aiDecision.value);
+              runState.logs.push(`[AI Loop] 💾 Auto-memorized answer for "${targetQuestion}" ➔ "${aiDecision.value}" for all future jobs.`);
+            } else if (aiDecision.action === 'click') {
+              // If AI told us to click, memorize this button!
+              await saveLearnedButton(learnedButtons, targetName || target.selector);
+            }
+          } catch (aiErr) {
+            console.warn(`[AI Loop] AI call failed for Element ${elemNumber}:`, aiErr);
+            if (isButton || ['button', 'a'].includes(tag) || /button|submit|save|continue|next/i.test(targetName)) {
+              aiDecision = { action: 'click', value: '', reasoning: 'Fallback: button detected' };
+              await saveLearnedButton(learnedButtons, targetName || target.selector);
+            } else if (options.length > 0) {
+              aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
+            } else {
+              const fallbackAns = profile.fullName || profile.name || 'ragesh';
+              aiDecision = { action: 'fill', value: fallbackAns, reasoning: 'Fallback: profile fill' };
+            }
+          }
         }
       }
-    }
 
-    runState.logs.push(`[AI Loop] ✅ [Element ${elemNumber}/${total}] AI Decision: ${aiDecision.action.toUpperCase()} ${aiDecision.value ? `("${aiDecision.value}")` : ''} - ${aiDecision.reasoning || ''}`);
-    await chrome.storage.local.set({ workflowRunState: runState });
-
-    // 4. Execute the chosen action on the element in active tab
-    try {
-      if (aiDecision.action === 'click') {
-        await sendWorkflowStepToTab(activeTabId, {
-          type: 'click',
-          target,
-          name: `AI Click: ${targetName || target.selector}`,
+      // Check if Human Fallback is requested or needed when answer is unknown
+      if (aiDecisionMode === 'ask_human' && (aiDecision.action === 'ask_human' || (!aiDecision.value && aiDecision.action === 'fill' && !aiDecision.reasoning?.includes('Reused saved answer')))) {
+        const promptQ = targetQuestion || visibleText.slice(0, 150) || targetName || 'Application Question';
+        await updateTabHud(activeTabId, {
+          workflowName: runState.workflowName,
+          stepIndex: runState.stepIndex || 0,
+          totalSteps: runState.stepCount || 1,
+          stepName: step.name || 'AI Chat Step',
+          status: 'asking_human',
+          elementIndex: elemNumber,
+          totalElements: total,
+          question: promptQ,
+          actionTaken: 'Waiting for your answer in tab pop-up...',
         });
-      } else if (aiDecision.action === 'fill') {
-        let fillSuccess = false;
+
+        runState.logs.push(`[AI Loop] 👤 Question unknown: "${promptQ}". Waiting for user response in tab modal...`);
+        await chrome.storage.local.set({ workflowRunState: runState });
+
         try {
-          const fillRes = await chrome.tabs.sendMessage(activeTabId, {
-            action: 'WORKFLOW_APPLY_AI_OUTPUT',
-            target,
-            outputAction: 'fill',
-            answer: aiDecision.value,
+          const modalRes = await chrome.tabs.sendMessage(activeTabId, {
+            action: 'SHOW_INPAGE_QUESTION_MODAL',
+            data: {
+              question: promptQ,
+              defaultAnswer: '',
+            },
           });
-          fillSuccess = !!fillRes?.success;
+
+          if (modalRes?.success && modalRes.answer) {
+            aiDecision = {
+              action: 'fill',
+              value: modalRes.answer,
+              reasoning: 'Answer provided directly by user in tab modal',
+            };
+            await saveLearnedAnswer(customAnswers, promptQ, modalRes.answer);
+            runState.logs.push(`[AI Loop] 💾 Auto-memorized answer for "${promptQ}" ➔ "${modalRes.answer}".`);
+          } else {
+            aiDecision = {
+              action: 'fill',
+              value: profile.education || profile.experience || '',
+              reasoning: 'User skipped modal; profile fallback applied',
+            };
+          }
+        } catch (mErr) {
+          console.warn('[AI Loop] showInPageQuestionModal error:', mErr);
+        }
+      }
+
+      runState.logs.push(`[AI Loop] ✅ [Element ${elemNumber}/${total}] AI Decision: ${aiDecision.action.toUpperCase()} ${aiDecision.value ? `("${aiDecision.value}")` : ''} - ${aiDecision.reasoning || ''}`);
+      await chrome.storage.local.set({ workflowRunState: runState });
+
+      // Update HUD with chosen action & answer
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: runState.stepIndex || 0,
+        totalSteps: runState.stepCount || 1,
+        stepName: step.name || 'AI Chat Step',
+        status: 'running',
+        elementIndex: elemNumber,
+        totalElements: total,
+        question: targetQuestion ? targetQuestion.slice(0, 150) : undefined,
+        aiOutput: aiDecision.value ? `"${aiDecision.value}"` : (aiDecision.action === 'click' ? 'Click Save / Button' : aiDecision.action),
+        actionTaken: aiDecision.action === 'fill' ? 'Typing answer into chat...' : 'Clicking button...',
+      });
+
+      // 4. Execute the chosen action with 3-ATTEMPT RETRY MECHANISM & DIAGNOSTIC HUD
+      const MAX_ATTEMPTS = 3;
+      let actionSuccess = false;
+      let lastFailureReason = '';
+
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        // Pre-check target presence in tab
+        let check = null;
+        try {
+          check = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
         } catch (_) {}
 
-        if (!fillSuccess) {
-          await sendWorkflowStepToTab(activeTabId, {
-            type: 'fill',
-            target,
-            value: aiDecision.value,
-            name: `AI Fill: ${targetName || target.selector}`,
-          });
+        if (!check?.success) {
+          lastFailureReason = `Target element "${targetName || target.selector || 'element'}" not visible on page`;
+          if (attempt < MAX_ATTEMPTS) {
+            runState.logs.push(`[AI Retry] ⚠️ Attempt ${attempt}/${MAX_ATTEMPTS} failed: ${lastFailureReason}. Retrying in 1s...`);
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: runState.stepIndex || 0,
+              totalSteps: runState.stepCount || 1,
+              stepName: step.name || 'AI Chat Step',
+              status: 'running',
+              elementIndex: elemNumber,
+              totalElements: total,
+              question: targetQuestion ? targetQuestion.slice(0, 150) : undefined,
+              actionTaken: `⚠️ Retry ${attempt}/${MAX_ATTEMPTS}: ${lastFailureReason}...`,
+            });
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await new Promise(r => setTimeout(r, 1000));
+            continue;
+          }
         }
-      } else if (aiDecision.action === 'select_option') {
-        await sendWorkflowStepToTab(activeTabId, {
-          type: 'select_option',
-          target,
-          value: aiDecision.value,
-          name: `AI Select: ${targetName || target.selector}`,
-        });
-      } else if (aiDecision.action === 'check') {
-        await sendWorkflowStepToTab(activeTabId, {
-          type: 'check',
-          target,
-          checked: true,
-          name: `AI Check: ${targetName || target.selector}`,
-        });
+
+        // Diagnostic: If clicking a disabled button, wait for activation
+        if (aiDecision.action === 'click' && check?.isDisabled) {
+          lastFailureReason = `Button "${targetName || 'Save'}" is currently disabled (waiting for activation)`;
+          runState.logs.push(`[AI Retry] ⚠️ Attempt ${attempt}/${MAX_ATTEMPTS}: ${lastFailureReason}. Waiting for button to become active...`);
+          await updateTabHud(activeTabId, {
+            workflowName: runState.workflowName,
+            stepIndex: runState.stepIndex || 0,
+            totalSteps: runState.stepCount || 1,
+            stepName: step.name || 'AI Chat Step',
+            status: 'running',
+            elementIndex: elemNumber,
+            totalElements: total,
+            question: targetQuestion ? targetQuestion.slice(0, 150) : undefined,
+            actionTaken: `⚠️ Retry ${attempt}/${MAX_ATTEMPTS}: ${lastFailureReason}...`,
+          });
+          await chrome.storage.local.set({ workflowRunState: runState });
+          await new Promise(r => setTimeout(r, 1000));
+        }
+
+        try {
+          if (aiDecision.action === 'click') {
+            // Try smart container save first (handles inner .sendMsg, .send, button, pointer events, and Enter key)
+            let clickRes = await chrome.tabs.sendMessage(activeTabId, {
+              action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
+              target,
+            }).catch(() => null);
+
+            if (!clickRes?.clicked) {
+              clickRes = await sendWorkflowStepToTab(activeTabId, {
+                type: 'click',
+                target,
+                name: `AI Click: ${targetName || target.selector}`,
+              });
+            }
+
+            if (clickRes?.success !== false && clickRes?.clicked !== false) {
+              actionSuccess = true;
+            } else {
+              lastFailureReason = clickRes?.error || 'Click had no effect on button';
+            }
+          } else if (aiDecision.action === 'fill') {
+            let fillRes = await chrome.tabs.sendMessage(activeTabId, {
+              action: 'WORKFLOW_APPLY_AI_OUTPUT',
+              target,
+              outputAction: 'fill',
+              answer: aiDecision.value,
+            }).catch(() => null);
+
+            if (fillRes?.success) {
+              actionSuccess = true;
+            } else {
+              const fbRes = await sendWorkflowStepToTab(activeTabId, {
+                type: 'fill',
+                target,
+                value: aiDecision.value,
+                name: `AI Fill: ${targetName || target.selector}`,
+              }).catch(err => ({ success: false, error: err.message }));
+
+              if (fbRes?.success !== false) {
+                actionSuccess = true;
+              } else {
+                lastFailureReason = fbRes?.error || 'Typing into field failed';
+              }
+            }
+
+            // In a 2-element chatbot workflow (Element 1: question, Element 2: typing & save container):
+            // After filling answer, automatically click Save in the typing container if Save button is present!
+            if (actionSuccess && (total === 2 || elemNumber === total)) {
+              await new Promise(r => setTimeout(r, 500));
+              const autoSaveRes = await chrome.tabs.sendMessage(activeTabId, {
+                action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
+                target,
+              }).catch(() => null);
+              if (autoSaveRes?.clicked) {
+                runState.logs.push(`[AI Loop] 💾 Auto-triggered Save button ("${autoSaveRes.buttonText || 'Save'}") after typing.`);
+              }
+            }
+          } else if (aiDecision.action === 'select_option') {
+            let selRes = await chrome.tabs.sendMessage(activeTabId, {
+              action: 'WORKFLOW_APPLY_AI_OUTPUT',
+              target,
+              outputAction: 'click',
+              answer: aiDecision.value,
+            }).catch(() => null);
+
+            if (!selRes?.clicked && !selRes?.success) {
+              selRes = await sendWorkflowStepToTab(activeTabId, {
+                type: 'select_option',
+                target,
+                value: aiDecision.value,
+                name: `AI Select: ${targetName || target.selector}`,
+              }).catch(err => ({ success: false, error: err.message }));
+            }
+
+            if (selRes?.success !== false && !selRes?.error) {
+              actionSuccess = true;
+            } else {
+              lastFailureReason = selRes?.error || 'Option not found in dropdown';
+            }
+          } else if (aiDecision.action === 'check') {
+            const chkRes = await sendWorkflowStepToTab(activeTabId, {
+              type: 'check',
+              target,
+              checked: true,
+              name: `AI Check: ${targetName || target.selector}`,
+            }).catch(err => ({ success: false, error: err.message }));
+
+            if (chkRes?.success !== false) {
+              actionSuccess = true;
+            } else {
+              lastFailureReason = chkRes?.error || 'Checkbox could not be checked';
+            }
+          }
+
+          if (actionSuccess) break;
+        } catch (execErr) {
+          lastFailureReason = execErr.message || String(execErr);
+        }
+
+        if (!actionSuccess && attempt < MAX_ATTEMPTS) {
+          runState.logs.push(`[AI Retry] ⚠️ Attempt ${attempt}/${MAX_ATTEMPTS} failed: ${lastFailureReason}. Retrying in 1s...`);
+          await updateTabHud(activeTabId, {
+            workflowName: runState.workflowName,
+            stepIndex: runState.stepIndex || 0,
+            totalSteps: runState.stepCount || 1,
+            stepName: step.name || 'AI Chat Step',
+            status: 'running',
+            elementIndex: elemNumber,
+            totalElements: total,
+            question: targetQuestion ? targetQuestion.slice(0, 150) : undefined,
+            actionTaken: `⚠️ Retry ${attempt}/${MAX_ATTEMPTS}: ${lastFailureReason}...`,
+          });
+          await chrome.storage.local.set({ workflowRunState: runState });
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+
+      if (!actionSuccess) {
+        runState.logs.push(`[AI Loop] ⚠️ All ${MAX_ATTEMPTS} attempts failed on Element ${elemNumber}: ${lastFailureReason}`);
+        await chrome.storage.local.set({ workflowRunState: runState });
       }
 
       actionHistory.push({
+        round,
         elementNumber: elemNumber,
         action: aiDecision.action,
         target: targetName || target.selector,
         value: aiDecision.value,
+        success: actionSuccess,
       });
-    } catch (execErr) {
-      runState.logs.push(`[AI Loop] ⚠️ Error on Element ${elemNumber}: ${execErr.message}`);
-      await chrome.storage.local.set({ workflowRunState: runState });
+
+      // Brief pause between elements
+      await new Promise(r => setTimeout(r, 500));
+
+      // Refresh activeTabId in case action switched tab or navigated
+      const valid = await getValidTab(activeTabId);
+      if (!valid) {
+        const activeTabs = await chrome.tabs.query({ currentWindow: true, active: true });
+        if (activeTabs[0]?.id) activeTabId = activeTabs[0].id;
+      }
     }
 
-    // Brief pause between elements for DOM reaction
-    await new Promise(r => setTimeout(r, 600));
+    // 5. POST-ROUND DOM REACTION & CONVERSATIONAL LOOP VERIFICATION
+    // Check if Element 2 (or last element / chat container) closed or disappeared
+    const lastTarget = targets[targets.length - 1];
+    const closeCheck = await chrome.tabs.sendMessage(activeTabId, {
+      action: 'WORKFLOW_CONTAINER_DISAPPEARED',
+      target: lastTarget,
+    }).catch(() => ({ disappeared: false }));
 
-    // Refresh activeTabId in case action switched tab or navigated
-    const valid = await getValidTab(activeTabId);
-    if (!valid) {
-      const activeTabs = await chrome.tabs.query({ currentWindow: true, active: true });
-      if (activeTabs[0]?.id) activeTabId = activeTabs[0].id;
+    if (closeCheck?.disappeared) {
+      runState.logs.push(`[AI Loop] 🏁 Element 2 / Chatbot container closed! Workflow application submitted successfully.`);
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: runState.stepIndex || 0,
+        totalSteps: runState.stepCount || 1,
+        stepName: step.name || 'AI Chat Step',
+        status: 'completed',
+        actionTaken: '✅ Application submitted / chatbot closed.',
+      });
+      await chrome.storage.local.set({ workflowRunState: runState });
+      return { success: true, activeTabId, actionHistory };
+    }
+
+    // If single round configured, exit loop
+    if (MAX_ROUNDS === 1) {
+      break;
+    }
+
+    // Element 2 is STILL OPEN: Wait for page reaction before proceeding to next question!
+    runState.logs.push(`[AI Loop] ⏳ Element 2 remains open. Waiting for page reaction / next chatbot question...`);
+    await updateTabHud(activeTabId, {
+      workflowName: runState.workflowName,
+      stepIndex: runState.stepIndex || 0,
+      totalSteps: runState.stepCount || 1,
+      stepName: step.name || 'AI Chat Step',
+      status: 'running',
+      actionTaken: '⏳ Waiting for page reaction / next chatbot question...',
+    });
+    await chrome.storage.local.set({ workflowRunState: runState });
+
+    const reactionRes = await chrome.tabs.sendMessage(activeTabId, {
+      action: 'WORKFLOW_WAIT_REACTION',
+      questionTarget: targets[0],
+      inputTarget: lastTarget,
+      previousQuestion: lastRecordedQuestion,
+      timeoutMs: 8000,
+    }).catch(() => null);
+
+    if (reactionRes?.containerClosed) {
+      runState.logs.push(`[AI Loop] 🏁 Chat container closed while waiting for reaction. Completed!`);
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: runState.stepIndex || 0,
+        totalSteps: runState.stepCount || 1,
+        stepName: step.name || 'AI Chat Step',
+        status: 'completed',
+        actionTaken: '✅ Application submitted / chatbot closed.',
+      });
+      await chrome.storage.local.set({ workflowRunState: runState });
+      return { success: true, activeTabId, actionHistory };
+    }
+
+    if (reactionRes?.reacted) {
+      runState.logs.push(`[AI Loop] 🔄 Page reacted (${reactionRes.reason || 'new question detected'}). Continuing conversational loop to Round ${round + 1}...`);
+      await new Promise(r => setTimeout(r, 600));
+      continue; // Move to next round
+    } else {
+      // No reaction after 8s: Re-commit Save button click as requested by user
+      runState.logs.push(`[AI Loop] ⚠️ No page reaction after 8s. Re-committing Save button click / Enter...`);
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: runState.stepIndex || 0,
+        totalSteps: runState.stepCount || 1,
+        stepName: step.name || 'AI Chat Step',
+        status: 'running',
+        actionTaken: '⚠️ No page reaction; re-committing Save button...',
+      });
+      await chrome.storage.local.set({ workflowRunState: runState });
+
+      await chrome.tabs.sendMessage(activeTabId, {
+        action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
+        target: lastTarget,
+      }).catch(() => {});
+
+      await new Promise(r => setTimeout(r, 2000));
+
+      const recheck = await chrome.tabs.sendMessage(activeTabId, {
+        action: 'WORKFLOW_CONTAINER_DISAPPEARED',
+        target: lastTarget,
+      }).catch(() => ({ disappeared: false }));
+
+      if (recheck?.disappeared) {
+        runState.logs.push(`[AI Loop] 🏁 Container closed after re-commit Save. Completed!`);
+        return { success: true, activeTabId, actionHistory };
+      }
     }
   }
 
-  runState.logs.push(`[AI Loop] 🎉 Completed all ${total} elements in AI Loop!`);
+  runState.logs.push(`[AI Loop] 🎉 Completed conversational AI step execution.`);
   await chrome.storage.local.set({ workflowRunState: runState });
   return { success: true, activeTabId, actionHistory };
 }
+
 
 async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'dom') {
   const msg = {
@@ -1400,6 +2840,15 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       runState.stepIndex = i;
       runState.logs.push(`Executing Step ${i + 1} of ${steps.length}: ${step.name || step.type}`);
       await chrome.storage.local.set({ workflowRunState: runState });
+
+      await updateTabHud(activeTabId, {
+        workflowName: runState.workflowName,
+        stepIndex: i,
+        totalSteps: steps.length,
+        stepName: step.name || step.type,
+        status: 'running',
+        actionTaken: `Executing ${step.type}...`,
+      });
 
       // 1. Handle open_url step
       if (step.type === 'open_url') {
@@ -1722,14 +3171,45 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
     runState.message = 'Workflow completed successfully!';
     runState.finishedAt = Date.now();
     runState.logs.push('All steps executed successfully.');
-    await chrome.storage.local.set({ workflowRunState: runState });
+    const { historyRetentionDays: retDaysSuccess } = await chrome.storage.local.get('historyRetentionDays').catch(() => ({}));
+    if (retDaysSuccess === 0) {
+      await chrome.storage.local.set({ workflowRunState: null });
+    } else {
+      await chrome.storage.local.set({ workflowRunState: runState });
+    }
+
+    await updateTabHud(activeTabId, {
+      workflowName: runState.workflowName,
+      stepIndex: steps.length - 1,
+      totalSteps: steps.length,
+      stepName: 'Workflow Completed',
+      status: 'completed',
+      actionTaken: 'All steps completed successfully!',
+    });
+    setTimeout(() => {
+      removeTabHud(activeTabId);
+    }, 5000);
   } catch (err) {
     console.error('[BYOK] Workflow execution error:', err);
     runState.status = 'error';
     runState.error = err instanceof Error ? err.message : String(err);
     runState.finishedAt = Date.now();
     runState.logs.push(`Error: ${runState.error}`);
-    await chrome.storage.local.set({ workflowRunState: runState });
+    const { historyRetentionDays: retDaysErr } = await chrome.storage.local.get('historyRetentionDays').catch(() => ({}));
+    if (retDaysErr === 0) {
+      await chrome.storage.local.set({ workflowRunState: null });
+    } else {
+      await chrome.storage.local.set({ workflowRunState: runState });
+    }
+
+    await updateTabHud(activeTabId, {
+      workflowName: runState.workflowName,
+      stepIndex: runState.stepIndex || 0,
+      totalSteps: steps.length,
+      stepName: 'Execution Error',
+      status: 'error',
+      actionTaken: runState.error,
+    });
   }
 }
 

@@ -224,22 +224,43 @@ async function saveConfig() {
 }
 
 async function loadChatHistory() {
-  const data = await chrome.storage.local.get(CHAT_HISTORY_KEY);
+  const data = await chrome.storage.local.get([CHAT_HISTORY_KEY, 'historyRetentionDays']);
+  const retentionDays = typeof data.historyRetentionDays === 'number' ? data.historyRetentionDays : 2;
+
+  const defaultWelcome = [
+    {
+      role: 'assistant',
+      content: '👋 **Claude in Chrome Autonomous Agent**\n\nI can **inspect pages, upload resumes silently, auto-fill forms, create workflows, and manage tabs** step-by-step.\n\nTry: *"open indeed"*, *"Upload my resume"*, or *"Search for AI ML jobs and apply"*.',
+      timestamp: Date.now(),
+    },
+  ];
+
+  if (retentionDays === 0) {
+    chatMessages = defaultWelcome;
+    return;
+  }
+
   if (Array.isArray(data[CHAT_HISTORY_KEY])) {
-    chatMessages = data[CHAT_HISTORY_KEY];
+    const cutoff = retentionDays > 0 ? Date.now() - (retentionDays * 24 * 60 * 60 * 1000) : 0;
+    const filtered = data[CHAT_HISTORY_KEY].filter(m => !m.timestamp || m.timestamp >= cutoff);
+    chatMessages = filtered.length > 0 ? filtered : defaultWelcome;
   } else {
-    chatMessages = [
-      {
-        role: 'assistant',
-        content: '👋 **Claude in Chrome Autonomous Agent**\n\nI can **inspect pages, upload resumes silently, auto-fill forms, create workflows, and manage tabs** step-by-step.\n\nTry: *"open indeed"*, *"Upload my resume"*, or *"Search for AI ML jobs and apply"*.',
-        timestamp: Date.now(),
-      },
-    ];
+    chatMessages = defaultWelcome;
   }
 }
 
 async function saveChatHistory() {
-  await chrome.storage.local.set({ [CHAT_HISTORY_KEY]: chatMessages.slice(-50) });
+  const data = await chrome.storage.local.get('historyRetentionDays').catch(() => ({}));
+  const retentionDays = typeof data.historyRetentionDays === 'number' ? data.historyRetentionDays : 2;
+
+  if (retentionDays === 0) {
+    await chrome.storage.local.set({ [CHAT_HISTORY_KEY]: [] });
+    return;
+  }
+
+  const cutoff = retentionDays > 0 ? Date.now() - (retentionDays * 24 * 60 * 60 * 1000) : 0;
+  const filtered = chatMessages.filter(m => !m.timestamp || m.timestamp >= cutoff);
+  await chrome.storage.local.set({ [CHAT_HISTORY_KEY]: filtered.slice(-50) });
 }
 
 async function updateActiveTabInfo() {
@@ -1187,16 +1208,184 @@ function parseActionFromResponse(text) {
   return { action: 'done', message: text };
 }
 
+async function callOpenRouter(apiKey, model, systemPrompt, messages) {
+  const url = 'https://openrouter.ai/api/v1/chat/completions';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+      'HTTP-Referer': 'https://allcareer.ai',
+      'X-Title': 'AllCareer Sidepanel',
+    },
+    body: JSON.stringify({
+      model: model || 'google/gemini-2.0-flash-001',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      max_tokens: 2048,
+    }),
+  });
+  if (!response.ok) throw new Error(`OpenRouter Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callGroq(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.groq.com/openai/v1/chat/completions';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: model || 'llama-3.3-70b-versatile',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      max_tokens: 2048,
+    }),
+  });
+  if (!response.ok) throw new Error(`Groq Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callMistral(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.mistral.ai/v1/chat/completions';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: model || 'mistral-large-latest',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      max_tokens: 2048,
+    }),
+  });
+  if (!response.ok) throw new Error(`Mistral Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callCohere(apiKey, model, systemPrompt, messages) {
+  const url = 'https://api.cohere.com/v2/chat';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: model || 'command-r-plus-08-2024',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+    }),
+  });
+  if (!response.ok) throw new Error(`Cohere Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.message?.content?.[0]?.text || '';
+}
+
+async function callNvidia(apiKey, model, systemPrompt, messages) {
+  const url = 'https://integrate.api.nvidia.com/v1/chat/completions';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: model || 'meta/llama-3.3-70b-instruct',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      max_tokens: 2048,
+    }),
+  });
+  if (!response.ok) throw new Error(`Nvidia Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callCloudflare(apiKey, accountId, model, systemPrompt, messages) {
+  if (!accountId) throw new Error('Cloudflare Account ID required');
+  const activeModel = model || '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+  const cleanModel = activeModel.startsWith('@cf/') ? activeModel : `@cf/${activeModel}`;
+  const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${cleanModel}`;
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+    }),
+  });
+  if (!response.ok) throw new Error(`Cloudflare Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.result?.response || '';
+}
+
+async function callHuggingFace(apiKey, model, systemPrompt, messages) {
+  const url = 'https://router.huggingface.co/hf-inference/v1/chat/completions';
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: model || 'meta-llama/Llama-3.3-70B-Instruct',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      max_tokens: 2048,
+    }),
+  });
+  if (!response.ok) throw new Error(`Hugging Face Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
+}
+
+async function callOllama(baseUrl, model, systemPrompt, messages) {
+  const cleanUrl = (baseUrl || 'http://localhost:11434').replace(/\/+$/, '');
+  const url = `${cleanUrl}/api/chat`;
+  const response = await safeFetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: model || 'llama3:latest',
+      messages: [{ role: 'system', content: systemPrompt }, ...messages],
+      stream: false,
+    }),
+  });
+  if (!response.ok) throw new Error(`Ollama Error (${response.status}): ${await response.text()}`);
+  const data = await response.json();
+  return data.message?.content || '';
+}
+
 async function callActiveModelRaw(systemPrompt, messages) {
-  const provider = config.activeProvider;
-  if (provider === 'gemini') {
-    if (!config.gemini.apiKey) throw new Error('Please configure your Google Gemini API Key in Settings (⚙️).');
-    return await callGemini(config.gemini.apiKey, config.gemini.model, systemPrompt, messages);
-  } else if (provider === 'omniroute') {
-    return await callOmniRoute(config.omniroute.apiKey, config.omniroute.baseUrl, config.omniroute.model, systemPrompt, messages);
-  } else {
-    if (!config.anthropic.apiKey) throw new Error('Please configure your Anthropic API Key in Settings (⚙️).');
-    return await callAnthropic(config.anthropic.apiKey, config.anthropic.model, systemPrompt, messages);
+  const apiKeys = Array.isArray(config.apiKeys) ? config.apiKeys : [];
+  const activeKey = apiKeys.find(k => k.id === config.activeKeyId && k.enabled !== false) ||
+    apiKeys.find(k => k.enabled !== false);
+
+  const provider = activeKey?.provider || config.activeProvider || 'omniroute';
+  const apiKey = activeKey?.key || config[provider]?.apiKey || '';
+  const model = activeKey?.model || config[provider]?.model || '';
+  const baseUrl = activeKey?.baseUrl || config[provider]?.baseUrl || '';
+  const accountId = activeKey?.accountId || config[provider]?.accountId || '';
+
+  switch (provider) {
+    case 'openrouter':
+      if (!apiKey) throw new Error('Please configure OpenRouter API Key in Settings (⚙️).');
+      return await callOpenRouter(apiKey, model, systemPrompt, messages);
+    case 'gemini':
+      if (!apiKey) throw new Error('Please configure Google Gemini API Key in Settings (⚙️).');
+      return await callGemini(apiKey, model, systemPrompt, messages);
+    case 'groq':
+      if (!apiKey) throw new Error('Please configure Groq API Key in Settings (⚙️).');
+      return await callGroq(apiKey, model, systemPrompt, messages);
+    case 'mistral':
+      if (!apiKey) throw new Error('Please configure Mistral API Key in Settings (⚙️).');
+      return await callMistral(apiKey, model, systemPrompt, messages);
+    case 'cohere':
+      if (!apiKey) throw new Error('Please configure Cohere API Key in Settings (⚙️).');
+      return await callCohere(apiKey, model, systemPrompt, messages);
+    case 'nvidia':
+      if (!apiKey) throw new Error('Please configure Nvidia NIM API Key in Settings (⚙️).');
+      return await callNvidia(apiKey, model, systemPrompt, messages);
+    case 'cloudflare':
+      if (!apiKey) throw new Error('Please configure Cloudflare API Token in Settings (⚙️).');
+      return await callCloudflare(apiKey, accountId, model, systemPrompt, messages);
+    case 'huggingface':
+      if (!apiKey) throw new Error('Please configure Hugging Face API Token in Settings (⚙️).');
+      return await callHuggingFace(apiKey, model, systemPrompt, messages);
+    case 'ollama':
+      return await callOllama(baseUrl, model, systemPrompt, messages);
+    case 'omniroute':
+      return await callOmniRoute(apiKey, baseUrl, model, systemPrompt, messages);
+    case 'anthropic':
+    default:
+      if (!apiKey) throw new Error('Please configure Anthropic API Key in Settings (⚙️).');
+      return await callAnthropic(apiKey, model, systemPrompt, messages);
   }
 }
 
