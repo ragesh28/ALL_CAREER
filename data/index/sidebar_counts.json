@@ -1,5 +1,5 @@
 {
-  "total_jobs": 716608,
+  "total_jobs": 716669,
   "sources": {
     "naukri": 262628,
     "linkedin": 174633,
@@ -40,22 +40,24 @@
     "fedex": 2,
     "southwest": 2,
     "ups": 2,
-    "unico": 2
+    "unico": 2,
+    "telegram_post": 26,
+    "telegram_message": 35
   },
   "locations": {
-    "bangalore": 158735,
-    "mumbai": 95551,
+    "bangalore": 158758,
+    "mumbai": 95552,
     "delhi": 76597,
-    "chennai": 74276,
-    "hyderabad": 67049,
-    "pune": 53740,
-    "noida": 34404,
+    "chennai": 74285,
+    "hyderabad": 67051,
+    "pune": 53743,
+    "noida": 34407,
     "ahmedabad": 28827,
     "kolkata": 23546,
-    "all_india": 21693,
+    "all_india": 21705,
     "coimbatore": 13762,
     "kochi": 11028,
-    "remote": 6501,
+    "remote": 6503,
     "jaipur": 5161,
     "maharashtra": 4428,
     "indore": 4133,
@@ -66,7 +68,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 883,
+    "karnataka": 884,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -89,11 +91,11 @@
     "ernakulam": 234,
     "ts": 222,
     "lucknow": 217,
-    "surat": 203,
+    "surat": 204,
     "uttar_pradesh": 200,
     "post_all_india": 173,
     "serilingampalli": 155,
-    "nagpur": 152,
+    "nagpur": 153,
     "hosur": 148,
     "up": 126,
     "bhubaneswar": 123,
@@ -142,7 +144,10 @@
     "post_mangalore": 53,
     "pollachi": 52,
     "kurla": 52,
-    "kollam": 52
+    "kollam": 52,
+    "dadri_with_accommodation": 1,
+    "mangalore": 1,
+    "sarjapur": 1
   },
-  "generated_at": "2026-09-22T14:35:32.451672"
+  "generated_at": "2026-09-22T10:27:46.935791"
 }
