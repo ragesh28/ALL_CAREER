@@ -93,6 +93,27 @@ def main():
         traceback.print_exc()
         return
 
+    # Verify and ensure index files are 100% valid JSON, self-heal if corrupted
+    try:
+        import scripts.rebuild_index_files as rif
+        needs_rebuild = False
+        for fname in ["manifest.json", "sidebar_counts.json", "latest_preview_100.json"]:
+            p = os.path.join("data", "index", fname)
+            if not os.path.exists(p):
+                needs_rebuild = True
+                break
+            try:
+                with open(p, "r", encoding="utf-8") as fh:
+                    json.load(fh)
+            except Exception:
+                print(f"Detected invalid JSON in {p}, initiating automatic index rebuild...")
+                needs_rebuild = True
+                break
+        if needs_rebuild:
+            rif.rebuild_all()
+    except Exception as e:
+        print(f"Warning during index health check: {e}")
+
     # 5. Verify final state
     chunk_files_final = sorted(glob.glob("all_jobs_*.json"))
     total_after = 0

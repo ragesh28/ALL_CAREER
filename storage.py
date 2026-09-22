@@ -4,13 +4,77 @@ import glob
 import re
 from datetime import datetime, timedelta
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(ROOT_DIR, "data")
+INDEX_DIR = os.path.join(DATA_DIR, "index")
+JOBS_DIR = os.path.join(DATA_DIR, "jobs")
+
 MAX_FILE_SIZE = 45 * 1024 * 1024  # 45 MB
 
+def safe_load_json(file_path, default=None):
+    """
+    Safely load JSON, automatically stripping git merge conflict markers
+    if any were accidentally committed.
+    """
+    if not os.path.exists(file_path):
+        return default if default is not None else {}
+    try:
+        with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+            content = f.read()
+        if not content.strip():
+            return default if default is not None else {}
+        if "<<<<<<<" in content:
+            clean_lines = []
+            skip = False
+            for line in content.splitlines():
+                if line.startswith("<<<<<<<"):
+                    skip = False
+                    continue
+                elif line.startswith("======="):
+                    skip = True
+                    continue
+                elif line.startswith(">>>>>>>"):
+                    skip = False
+                    continue
+                if not skip:
+                    clean_lines.append(line)
+            content = "\n".join(clean_lines)
+        return json.loads(content)
+    except Exception as e:
+        print(f"Warning: safe_load_json on {file_path}: {e}")
+        return default if default is not None else {}
+
+def safe_write_json(file_path, data, indent=None, compact=True):
+    """
+    Safely write JSON using atomic write (.tmp + os.replace) to avoid partial or corrupt files.
+    """
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    tmp_path = file_path + ".tmp"
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            if indent is not None:
+                json.dump(data, f, indent=indent, ensure_ascii=False)
+            elif compact:
+                json.dump(data, f, separators=(',', ':'), ensure_ascii=False)
+            else:
+                json.dump(data, f, ensure_ascii=False)
+        os.replace(tmp_path, file_path)
+    except Exception as e:
+        print(f"Warning: atomic write error on {file_path} ({e}), falling back to direct write")
+        try:
+            with open(file_path, "w", encoding="utf-8") as f:
+                if indent is not None:
+                    json.dump(data, f, indent=indent, ensure_ascii=False)
+                else:
+                    json.dump(data, f, separators=(',', ':'), ensure_ascii=False)
+        except Exception as e2:
+            print(f"Error direct writing {file_path}: {e2}")
+
 def get_all_chunk_files():
-    files = glob.glob("all_jobs_*.json")
+    files = glob.glob(os.path.join(ROOT_DIR, "all_jobs_*.json"))
     valid_files = []
     for f in files:
-        parts = f.split("_")
+        parts = os.path.basename(f).split("_")
         if len(parts) >= 3:
             chunk_part = parts[2].split(".")[0]
             if chunk_part.isdigit():
@@ -289,20 +353,18 @@ def update_indexes_after_add(newly_added_jobs, new_files_count=0):
     if not newly_added_jobs:
         return
         
-    idx_dir = os.path.join("data", "index")
-    counts_file = os.path.join(idx_dir, "sidebar_counts.json")
-    preview_file = os.path.join(idx_dir, "latest_preview_100.json")
-    manifest_file = os.path.join(idx_dir, "manifest.json")
+    counts_file = os.path.join(INDEX_DIR, "sidebar_counts.json")
+    preview_file = os.path.join(INDEX_DIR, "latest_preview_100.json")
+    manifest_file = os.path.join(INDEX_DIR, "manifest.json")
 
     from scripts.optimize_shards import compact_job
     from scripts.split_existing_jobs import slugify, clean_location, get_role_slug
 
     # 1. Update preview
     try:
-        preview_jobs = []
-        if os.path.exists(preview_file):
-            with open(preview_file, "r", encoding="utf-8") as f:
-                preview_jobs = json.load(f)
+        preview_jobs = safe_load_json(preview_file, default=[])
+        if not isinstance(preview_jobs, list):
+            preview_jobs = []
         compacted_new = [compact_job(j) for j in newly_added_jobs]
         combined = compacted_new + preview_jobs
         seen = set()
@@ -312,71 +374,66 @@ def update_indexes_after_add(newly_added_jobs, new_files_count=0):
             if u not in seen:
                 seen.add(u)
                 deduped.append(j)
-        with open(preview_file, "w", encoding="utf-8") as f:
-            json.dump(deduped[:100], f, separators=(',', ':'))
+        safe_write_json(preview_file, deduped[:100], compact=True)
     except Exception as e:
         print(f"Error updating preview: {e}")
 
     # 2. Update sidebar counts
     try:
-        if os.path.exists(counts_file):
-            with open(counts_file, "r", encoding="utf-8") as f:
-                counts = json.load(f)
-            counts["total_jobs"] = counts.get("total_jobs", 0) + len(newly_added_jobs)
-            sources = counts.get("sources", {})
-            locs = counts.get("locations", {})
-            for j in newly_added_jobs:
-                s = slugify(j.get("source") or "other")
-                l = clean_location(j.get("location"))
-                sources[s] = sources.get(s, 0) + 1
-                locs[l] = locs.get(l, 0) + 1
-            counts["sources"] = sources
-            counts["locations"] = locs
-            with open(counts_file, "w", encoding="utf-8") as f:
-                json.dump(counts, f, indent=2)
+        counts = safe_load_json(counts_file, default={})
+        counts["total_jobs"] = counts.get("total_jobs", 0) + len(newly_added_jobs)
+        sources = counts.get("sources", {})
+        locs = counts.get("locations", {})
+        for j in newly_added_jobs:
+            s = slugify(j.get("source") or "other")
+            l = clean_location(j.get("location"))
+            sources[s] = sources.get(s, 0) + 1
+            locs[l] = locs.get(l, 0) + 1
+        counts["sources"] = sources
+        counts["locations"] = locs
+        counts["generated_at"] = datetime.now().isoformat()
+        safe_write_json(counts_file, counts, indent=2)
     except Exception as e:
         print(f"Error updating sidebar counts: {e}")
 
     # 3. Update manifest
     try:
-        if os.path.exists(manifest_file):
-            with open(manifest_file, "r", encoding="utf-8") as f:
-                manifest = json.load(f)
-            manifest["total_jobs"] = manifest.get("total_jobs", 0) + len(newly_added_jobs)
-            if new_files_count > 0:
-                manifest["total_files"] = manifest.get("total_files", 0) + new_files_count
-            for j in newly_added_jobs:
-                r_slug = get_role_slug(j)
-                s_slug = slugify(j.get("source") or "other")
-                l_slug = clean_location(j.get("location"))
+        manifest = safe_load_json(manifest_file, default={})
+        manifest["total_jobs"] = manifest.get("total_jobs", 0) + len(newly_added_jobs)
+        if new_files_count > 0:
+            manifest["total_files"] = manifest.get("total_files", 0) + new_files_count
+        manifest["generated_at"] = datetime.now().isoformat()
+        roles = manifest.get("roles", {})
+        for j in newly_added_jobs:
+            r_slug = get_role_slug(j)
+            s_slug = slugify(j.get("source") or "other")
+            l_slug = clean_location(j.get("location"))
 
-                roles = manifest.get("roles", {})
-                if r_slug not in roles:
-                    roles[r_slug] = {"name": r_slug.replace('_', ' ').title(), "total": 0, "sources": {}}
-                roles[r_slug]["total"] = roles[r_slug].get("total", 0) + 1
-                
-                srcs = roles[r_slug]["sources"]
-                if s_slug not in srcs:
-                    srcs[s_slug] = {"total": 0, "locs": {}}
-                srcs[s_slug]["total"] = srcs[s_slug].get("total", 0) + 1
-                
-                loc_map = srcs[s_slug]["locs"]
-                loc_map[l_slug] = loc_map.get(l_slug, 0) + 1
+            if r_slug not in roles:
+                roles[r_slug] = {"name": r_slug.replace('_', ' ').title(), "total": 0, "sources": {}}
+            roles[r_slug]["total"] = roles[r_slug].get("total", 0) + 1
+            
+            srcs = roles[r_slug]["sources"]
+            if s_slug not in srcs:
+                srcs[s_slug] = {"total": 0, "locs": {}}
+            srcs[s_slug]["total"] = srcs[s_slug].get("total", 0) + 1
+            
+            loc_map = srcs[s_slug]["locs"]
+            loc_map[l_slug] = loc_map.get(l_slug, 0) + 1
 
-            with open(manifest_file, "w", encoding="utf-8") as f:
-                json.dump(manifest, f, separators=(',', ':'))
+        manifest["roles"] = roles
+        safe_write_json(manifest_file, manifest, compact=True)
     except Exception as e:
         print(f"Error updating manifest: {e}")
 
     # 4. Update walkin_jobs.json if any newly added jobs are walk-ins
-    walkin_file = os.path.join(idx_dir, "walkin_jobs.json")
+    walkin_file = os.path.join(INDEX_DIR, "walkin_jobs.json")
     new_walkins = [j for j in newly_added_jobs if j.get("is_walkin") or j.get("walkin_date")]
     if new_walkins:
         try:
-            existing_walkins = []
-            if os.path.exists(walkin_file):
-                with open(walkin_file, "r", encoding="utf-8") as wf:
-                    existing_walkins = json.load(wf)
+            existing_walkins = safe_load_json(walkin_file, default=[])
+            if not isinstance(existing_walkins, list):
+                existing_walkins = []
             w_seen = {get_job_url(w) for w in existing_walkins if get_job_url(w)}
             w_tc_seen = {get_job_title_company_key(w) for w in existing_walkins if get_job_title_company_key(w)}
             to_add = []
@@ -390,8 +447,7 @@ def update_indexes_after_add(newly_added_jobs, new_files_count=0):
                 if tc: w_tc_seen.add(tc)
             if to_add:
                 combined_walkins = to_add + existing_walkins
-                with open(walkin_file, "w", encoding="utf-8") as wf:
-                    json.dump(combined_walkins, wf, separators=(',', ':'))
+                safe_write_json(walkin_file, combined_walkins, compact=True)
         except Exception as e:
             print(f"Error updating walkin_jobs.json: {e}")
 
@@ -476,8 +532,6 @@ def store_jobs_granular(jobs):
         return 0
         
     jobs_dir = os.path.join("data", "jobs")
-    os.makedirs(jobs_dir, exist_ok=True)
-    
     total_added = 0
     updated_files = 0
     new_files_created = 0
@@ -485,18 +539,16 @@ def store_jobs_granular(jobs):
     
     # Process only the targeted shard files
     for (role_slug, src_slug, loc_slug), new_items in grouped.items():
-        role_dir = os.path.join(jobs_dir, role_slug)
+        role_dir = os.path.join(JOBS_DIR, role_slug)
         os.makedirs(role_dir, exist_ok=True)
         shard_path = os.path.join(role_dir, f"{src_slug}_{loc_slug}.json")
         
         is_new_file = not os.path.exists(shard_path)
         existing_shard = []
         if not is_new_file:
-            try:
-                with open(shard_path, "r", encoding="utf-8") as sf:
-                    existing_shard = json.load(sf)
-            except Exception:
-                existing_shard = []
+            loaded = safe_load_json(shard_path, default=[])
+            if isinstance(loaded, list):
+                existing_shard = loaded
                 
         # Index existing shard jobs
         url_set = {get_job_url(item) for item in existing_shard if get_job_url(item)}
@@ -520,8 +572,7 @@ def store_jobs_granular(jobs):
             from scripts.optimize_shards import compact_job
             compacted = [compact_job(x) for x in combined]
             
-            with open(shard_path, "w", encoding="utf-8") as sf:
-                json.dump(compacted, sf, separators=(',', ':'))
+            safe_write_json(shard_path, compacted, compact=True)
                 
             total_added += len(items_to_add)
             updated_files += 1
@@ -541,21 +592,13 @@ def store_jobs_granular(jobs):
             
         # 3. Save newly added jobs to temp_new_jobs.json if not in merging mode
         if not os.environ.get("IS_MERGING_TEMP"):
-            temp_file = "temp_new_jobs.json"
-            existing_temp = []
-            if os.path.exists(temp_file):
-                try:
-                    with open(temp_file, "r", encoding="utf-8") as tf:
-                        existing_temp = json.load(tf)
-                except Exception:
-                    existing_temp = []
+            temp_file = os.path.join(ROOT_DIR, "temp_new_jobs.json")
+            existing_temp = safe_load_json(temp_file, default=[])
+            if not isinstance(existing_temp, list):
+                existing_temp = []
             existing_temp.extend(all_truly_added)
-            try:
-                with open(temp_file, "w", encoding="utf-8") as tf:
-                    json.dump(existing_temp, tf, separators=(',', ':'))
-                print(f"      Saved {len(all_truly_added)} jobs to temporary buffer {temp_file}.")
-            except Exception as e:
-                print(f"Error writing to temp_new_jobs.json: {e}")
+            safe_write_json(temp_file, existing_temp, compact=True)
+            print(f"      Saved {len(all_truly_added)} jobs to temporary buffer temp_new_jobs.json.")
 
     print(f"[store_jobs_granular] Added {total_added} new jobs across {updated_files} shards.")
     return total_added
