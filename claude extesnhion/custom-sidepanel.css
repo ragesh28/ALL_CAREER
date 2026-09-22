@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --bg-primary: #121316;
   --bg-secondary: #1a1b20;
   --bg-tertiary: #24252c;
@@ -23,6 +24,7 @@
 }
 
 body, html {
+  color-scheme: dark;
   height: 100%;
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -529,6 +531,15 @@ body, html {
   font-size: 12px;
   outline: none;
   transition: border-color 0.2s;
+  color-scheme: dark;
+}
+
+select option,
+.custom-select option,
+.rec-select option {
+  background-color: #1a1b20 !important;
+  color: #f3f4f6 !important;
+  padding: 8px 10px;
 }
 
 .custom-input:focus, .custom-select:focus {

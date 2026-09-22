@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --bg-page: #0f1117;
   --bg-panel: #161822;
   --bg-darker: #0d0f15;
@@ -29,7 +30,8 @@
   font-family: var(--font-sans);
 }
 
-body {
+html, body {
+  color-scheme: dark;
   background-color: var(--bg-page);
   color: var(--text-main);
   min-height: 100vh;
@@ -540,6 +542,32 @@ body {
   padding: 6px 9px;
   font-size: 12px;
   outline: none;
+  color-scheme: dark;
+}
+
+select,
+.dark-select,
+.provider-bar-select {
+  color-scheme: dark;
+}
+
+select option,
+.dark-select option,
+.provider-bar-select option,
+option {
+  background-color: #141724 !important;
+  color: #f1f5f9 !important;
+  padding: 8px 12px;
+}
+
+select option:checked,
+select option:hover,
+.dark-select option:checked,
+.dark-select option:hover,
+.provider-bar-select option:checked,
+.provider-bar-select option:hover {
+  background-color: #262c40 !important;
+  color: #38bdf8 !important;
 }
 
 .dark-input:focus, .dark-select:focus, .dark-textarea:focus {
@@ -1117,6 +1145,13 @@ body {
   color: #f1f5f9 !important;
   outline: none !important;
   cursor: pointer;
+  color-scheme: dark;
+}
+
+.provider-bar-select option {
+  background-color: #141724 !important;
+  color: #f1f5f9 !important;
+  padding: 8px 12px;
 }
 
 .provider-compact-list {
@@ -1224,6 +1259,13 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #f1f5f9;
   width: 100%;
+  color-scheme: dark;
+}
+
+.compact-field .dark-select option {
+  background-color: #141724 !important;
+  color: #f1f5f9 !important;
+  padding: 6px 10px;
 }
 
 .compact-field .dark-input:focus,
