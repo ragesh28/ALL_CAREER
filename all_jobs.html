@@ -321,11 +321,20 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             white-space: nowrap;
             transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
         }
 
         .wcat-pill:hover {
             transform: translateY(-1px);
-            background: rgba(255, 255, 255, 0.09);
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        .wcat-pill.active {
+            outline: 2px solid currentColor;
+            background: rgba(255, 255, 255, 0.16) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
         }
 
         .wcat-dot {
@@ -339,23 +348,26 @@
         .wcat-pill.technical { border-color: rgba(56, 189, 248, 0.35); color: #7dd3fc; }
         .wcat-pill.technical .wcat-dot, .wcat-dot.technical { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
 
+        .wcat-pill.electrical { border-color: rgba(245, 158, 11, 0.35); color: #fcd34d; }
+        .wcat-pill.electrical .wcat-dot, .wcat-dot.electrical { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+
         .wcat-pill.non-technical { border-color: rgba(52, 211, 153, 0.35); color: #6ee7b7; }
         .wcat-pill.non-technical .wcat-dot, .wcat-dot.non-technical { background: #34d399; box-shadow: 0 0 6px #34d399; }
 
         .wcat-pill.pharma { border-color: rgba(244, 63, 94, 0.35); color: #fda4af; }
         .wcat-pill.pharma .wcat-dot, .wcat-dot.pharma { background: #f43f5e; box-shadow: 0 0 6px #f43f5e; }
 
-        .wcat-pill.banking---finance { border-color: rgba(251, 191, 36, 0.35); color: #fde047; }
-        .wcat-pill.banking---finance .wcat-dot, .wcat-dot.banking---finance { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+        .wcat-pill.banking---finance, .wcat-pill.banking-finance { border-color: rgba(251, 191, 36, 0.35); color: #fde047; }
+        .wcat-pill.banking---finance .wcat-dot, .wcat-pill.banking-finance .wcat-dot, .wcat-dot.banking---finance, .wcat-dot.banking-finance { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
 
-        .wcat-pill.sales---marketing { border-color: rgba(168, 85, 247, 0.35); color: #d8b4fe; }
-        .wcat-pill.sales---marketing .wcat-dot, .wcat-dot.sales---marketing { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
+        .wcat-pill.sales---marketing, .wcat-pill.sales-marketing { border-color: rgba(168, 85, 247, 0.35); color: #d8b4fe; }
+        .wcat-pill.sales---marketing .wcat-dot, .wcat-pill.sales-marketing .wcat-dot, .wcat-dot.sales---marketing, .wcat-dot.sales-marketing { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
 
-        .wcat-pill.hr---staffing { border-color: rgba(236, 72, 153, 0.35); color: #f472b6; }
-        .wcat-pill.hr---staffing .wcat-dot, .wcat-dot.hr---staffing { background: #ec4899; box-shadow: 0 0 6px #ec4899; }
+        .wcat-pill.hr---staffing, .wcat-pill.hr-staffing { border-color: rgba(236, 72, 153, 0.35); color: #f472b6; }
+        .wcat-pill.hr---staffing .wcat-dot, .wcat-pill.hr-staffing .wcat-dot, .wcat-dot.hr---staffing, .wcat-dot.hr-staffing { background: #ec4899; box-shadow: 0 0 6px #ec4899; }
 
-        .wcat-pill.others { border-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
-        .wcat-pill.others .wcat-dot, .wcat-dot.others { background: #94a3b8; box-shadow: 0 0 4px #94a3b8; }
+        .wcat-pill.others, .wcat-pill.other { border-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+        .wcat-pill.others .wcat-dot, .wcat-pill.other .wcat-dot, .wcat-dot.others, .wcat-dot.other { background: #94a3b8; box-shadow: 0 0 4px #94a3b8; }
 
         .wcat-name {
             font-weight: 600;
@@ -1518,7 +1530,7 @@
                 </button>
                 <div class="category-dropdown-popover" id="categoryDropdownPopover">
                     <div class="popover-header">
-                        <span>Top Categories</span>
+                        <span>This Page Categories</span>
                         <span id="popoverTotalBadge" style="color:var(--primary);font-weight:700;"></span>
                     </div>
                     <div class="popover-body" id="popoverCategoryList"></div>
@@ -2518,7 +2530,8 @@
 
             const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
                 selectedLocations.size + selectedRoles.size + (activeExp >= 0 ? 1 : 0) +
-                selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedWalkinDates.size + selectedSkills.size;
+                selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedWalkinDates.size + selectedSkills.size +
+                (selectedRoleCategory ? 1 : 0);
 
             const badge = document.getElementById('appliedBadge');
             const clearBtn = document.getElementById('clearAllBtn');
@@ -2544,6 +2557,9 @@
         function renderChips() {
             const container = document.getElementById('activeChips');
             const chips = [];
+            if (selectedRoleCategory) {
+                chips.push({ label: '🏷️ ' + selectedRoleCategory, remove: () => { selectedRoleCategory = null; applyFilters(); refreshChips(); } });
+            }
             selectedPortals.forEach(p => {
                 const info = PORTALS.find(x => x.id === p);
                 chips.push({ label: info ? info.label : p, remove: () => { selectedPortals.delete(p); document.getElementById('src-' + p)?.classList.remove('checked'); refreshChips(); } });
@@ -2672,6 +2688,7 @@
         }
 
         function clearAllFilters() {
+            selectedRoleCategory = null;
             selectedPortals.clear();
             selectedLocations.clear();
             selectedRoles.clear();
@@ -3434,6 +3451,12 @@
                 }
             }
 
+            // Role Category filter (Technical, Electrical, Non-Technical, Pharma, etc.)
+            if (selectedRoleCategory) {
+                const cCat = classifyJobCategory(j);
+                if (cCat !== selectedRoleCategory) return false;
+            }
+
             return true;
         }
 
@@ -3462,7 +3485,7 @@
             const activeSources = [...selectedPortals];
             const activeLocs = [...selectedLocations].map(cityToLocSlug).filter(Boolean);
             const searchVal = (document.getElementById('searchInput')?.value || '').trim();
-            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0;
+            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0 || Boolean(selectedRoleCategory);
 
             if (hasOtherFilters) {
                 return filteredJobs.length;
@@ -3499,6 +3522,18 @@
             return total > 0 ? total : filteredJobs.length;
         }
 
+        let selectedRoleCategory = null;
+
+        function toggleRoleCategoryFilter(catName) {
+            if (selectedRoleCategory === catName) {
+                selectedRoleCategory = null;
+            } else {
+                selectedRoleCategory = catName;
+            }
+            applyFilters();
+            refreshChips();
+        }
+
         let ROLE_CATEGORIES_DICT = {
             "Technical": [
                 "software", "developer", "engineer", "full stack", "frontend", "backend", "java", "python", "react", "node",
@@ -3506,10 +3541,15 @@
                 "automation", "aem", "tech lead", "sap", "iics", "informatica", "data analyst", "data engineer", "data scientist",
                 "machine learning", "ai", "ml", "network engineer", "system admin", "server admin", "administrator", "cyber",
                 "security", "programmer", "ui/ux", "web developer", "mobile app", "android", "ios", "scrum master",
-                "architect", "dlp", "symantec", "oracle", "salesforce", ".net", "c++", "embedded", "vlsi", "panel design", "plc",
-                "structures", "it support", "database", "hardware", "graphic designer", "animator", "autocad", "cad", "bim",
-                "mechanical", "electrical", "electronics", "civil engineer", "civil", "mechatronics", "instrumentation",
+                "architect", "dlp", "symantec", "oracle", "salesforce", ".net", "c++", "packaging", "application packaging",
+                "structures", "it support", "database", "hardware", "graphic designer", "animator",
                 "technical", "it consultant", "network", "technologist", "systems engineer"
+            ],
+            "Electrical": [
+                "electrical", "electrician", "electronics", "ece", "eee", "embedded", "vlsi", "panel design", "plc", "scada",
+                "pcb", "mechatronics", "instrumentation", "mechanical", "mechanical engineer", "civil engineer", "civil",
+                "autocad", "cad", "bim", "hvac", "solar", "substation", "transformer", "switchgear", "circuit", "microcontroller",
+                "technician", "assembly", "hardware engineer", "maintenance engineer", "field engineer", "service engineer"
             ],
             "Non-Technical": [
                 "voice", "semi voice", "non voice", "chat", "chat support", "chat process", "customer support", "customer care",
@@ -3561,12 +3601,24 @@
 
         let COMPILED_ROLE_PATTERNS = buildCompiledRolePatterns(ROLE_CATEGORIES_DICT);
 
+        const ROLE_CATEGORY_PRIORITY = ['Pharma', 'Electrical', 'Banking & Finance', 'Sales & Marketing', 'HR & Staffing', 'Technical', 'Non-Technical'];
+
         function classifyJobCategory(job) {
             if (!job) return 'Others';
-            const text = ' ' + ((job.title || '') + ' ' + (job.role_search || '') + ' ' + (job.role_category || '') + ' ' + (job.company || '') + ' ' + (job.description || '')).toLowerCase() + ' ';
-            
-            for (const [cat, regex] of Object.entries(COMPILED_ROLE_PATTERNS)) {
-                if (regex.test(text)) {
+            // High-precision check on job title first
+            const titleText = ' ' + (job.title || '').toLowerCase() + ' ';
+            for (const cat of ROLE_CATEGORY_PRIORITY) {
+                const regex = COMPILED_ROLE_PATTERNS[cat];
+                if (regex && regex.test(titleText)) {
+                    return cat;
+                }
+            }
+
+            // Fallback: check full context (title, role_category, sector, company, description, role_search)
+            const fullText = ' ' + ((job.title || '') + ' ' + (job.role_category || '') + ' ' + (job.sector || '') + ' ' + (job.company || '') + ' ' + (job.description || '') + ' ' + (job.role_search || '')).toLowerCase() + ' ';
+            for (const cat of ROLE_CATEGORY_PRIORITY) {
+                const regex = COMPILED_ROLE_PATTERNS[cat];
+                if (regex && regex.test(fullText)) {
                     return cat;
                 }
             }
@@ -3581,18 +3633,15 @@
                 counts[cat] = (counts[cat] || 0) + 1;
             }
 
-            let otherCount = counts['Others'] || 0;
+            const otherCount = counts['Others'] || counts['Other'] || 0;
             delete counts['Others'];
+            delete counts['Other'];
 
-            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-            const top3 = sorted.slice(0, 3);
-            const remaining = sorted.slice(3);
+            const sorted = Object.entries(counts)
+                .filter(([_, cnt]) => cnt > 0)
+                .sort((a, b) => b[1] - a[1]);
 
-            for (const [cat, cnt] of remaining) {
-                otherCount += cnt;
-            }
-
-            const result = top3.map(([name, count]) => ({ name, count }));
+            const result = sorted.map(([name, count]) => ({ name, count }));
             if (otherCount > 0) {
                 result.push({ name: 'Others', count: otherCount });
             }
@@ -3622,7 +3671,8 @@
             const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
             if (currentPage > totalPages) currentPage = totalPages;
             const start = (currentPage - 1) * JOBS_PER_PAGE;
-            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+            const pageJobs = filteredJobs.slice(start, start + JOBS_PER_PAGE);
+            renderJobs(pageJobs);
             renderPagination(totalPages);
 
             const displayTotal = getActiveFilterTotal();
@@ -3635,23 +3685,32 @@
             if (jobCountEl) {
                 jobCountEl.textContent = displayTotal.toLocaleString();
             }
+
+            // CRITICAL: Compute categories ONLY for the jobs showing on THIS PAGE (100 jobs or page count)
+            const cats = getWalkinCategoryBreakdown(pageJobs);
+            const pageTotal = pageJobs.length;
+
             if (popoverTotalBadge) {
-                popoverTotalBadge.textContent = `${displayTotal.toLocaleString()} jobs`;
+                popoverTotalBadge.textContent = `${pageTotal} on this page (${displayTotal.toLocaleString()} total)`;
             }
 
-            // Always compute categories for ALL jobs currently filtered or displayed
-            const cats = getWalkinCategoryBreakdown(filteredJobs);
-
-            // Populate Sort-bar category pills
+            // Populate Sort-bar category pills for the current page
             if (sortBarCategories) {
-                if (cats.length > 0 && displayTotal > 0) {
-                    sortBarCategories.innerHTML = cats.map(c => {
+                if (cats.length > 0 && pageTotal > 0) {
+                    sortBarCategories.innerHTML = `
+                        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);display:inline-flex;align-items:center;margin-right:4px;">
+                            This Page (${pageTotal}):
+                        </span>
+                    ` + cats.map(c => {
                         const slug = c.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                        const isSelected = selectedRoleCategory === c.name;
                         return `
-                            <span class="wcat-pill ${slug}" title="${esc(c.name)}: ${c.count.toLocaleString()} jobs">
+                            <span class="wcat-pill ${slug} ${isSelected ? 'active' : ''}" 
+                                  onclick="toggleRoleCategoryFilter('${esc(c.name)}')" 
+                                  title="${esc(c.name)}: ${c.count} of ${pageTotal} jobs on this page. Click to filter.">
                                 <span class="wcat-dot"></span>
                                 <span class="wcat-name">${esc(c.name)}:</span>
-                                <span class="wcat-num">${c.count.toLocaleString()}</span>
+                                <span class="wcat-num">${c.count}</span>
                             </span>
                         `;
                     }).join('');
@@ -3664,18 +3723,22 @@
 
             // Populate Showing Count Button Popover
             if (popoverCatList) {
-                if (cats.length > 0 && displayTotal > 0) {
+                if (cats.length > 0 && pageTotal > 0) {
                     popoverCatList.innerHTML = cats.map(c => {
                         const slug = c.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-                        const pct = displayTotal > 0 ? Math.round((c.count / displayTotal) * 100) : 0;
+                        const pct = pageTotal > 0 ? Math.round((c.count / pageTotal) * 100) : 0;
+                        const isSelected = selectedRoleCategory === c.name;
                         return `
-                            <div class="popover-cat-item">
+                            <div class="popover-cat-item ${isSelected ? 'active' : ''}" 
+                                 onclick="toggleRoleCategoryFilter('${esc(c.name)}')" 
+                                 style="cursor:pointer;" 
+                                 title="Click to filter by ${esc(c.name)}">
                                 <div class="popover-cat-left">
                                     <span class="wcat-dot ${slug}"></span>
-                                    <span class="popover-cat-name">${esc(c.name)}</span>
+                                    <span class="popover-cat-name" style="${isSelected ? 'font-weight:700;color:#38bdf8;' : ''}">${esc(c.name)}</span>
                                 </div>
                                 <div style="display:flex;align-items:center;gap:6px;">
-                                    <span class="popover-cat-num">${c.count.toLocaleString()}</span>
+                                    <span class="popover-cat-num" style="font-weight:700;">${c.count}</span>
                                     <span style="font-size:0.68rem;color:var(--text-dim);">(${pct}%)</span>
                                 </div>
                             </div>
