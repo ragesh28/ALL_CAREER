@@ -1,8 +1,45 @@
 {
   "total_pool": 4000,
+  "daily_log": [
+    {
+      "date": "2026-09-17",
+      "credits_used": 100,
+      "jobs_extracted": 504,
+      "cities_processed": 20
+    },
+    {
+      "date": "2026-09-18",
+      "credits_used": 100,
+      "jobs_extracted": 446,
+      "cities_processed": 20
+    },
+    {
+      "date": "2026-09-19",
+      "credits_used": 100,
+      "jobs_extracted": 451,
+      "cities_processed": 20
+    },
+    {
+      "date": "2026-09-20",
+      "credits_used": 100,
+      "jobs_extracted": 460,
+      "cities_processed": 20
+    },
+    {
+      "date": "2026-09-21",
+      "credits_used": 100,
+      "jobs_extracted": 438,
+      "cities_processed": 20
+    },
+    {
+      "date": "2026-09-22",
+      "credits_used": 100,
+      "jobs_extracted": 508,
+      "cities_processed": 20
+    }
+  ],
   "cycle_history": [],
-  "daily_log": [],
   "cycle_month": "2026-09",
-  "cycle_start_date": "2026-09-17",
-  "cycle_used_credits": 0
+  "cycle_start_date": "2026-09-18",
+  "cycle_used_credits": 500
 }

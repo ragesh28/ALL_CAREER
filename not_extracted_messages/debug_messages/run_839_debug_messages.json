@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "839",
+  "workflow_run_id": "35510642629",
+  "timestamp": "2026-09-20T12:38:08.546742",
+  "runtime_minutes": 9.28,
+  "messages_processed": 43,
+  "new_jobs_stored": 37,
+  "skipped_jobs_count": 0,
+  "failed_extractions_count": 2,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Internshipsworld",
+      "msg_id": 6067,
+      "text": "🚀 𝗠𝗮𝘀𝘁𝗲𝗿 𝗧𝗼𝗽 𝗧𝗲𝗰𝗵 𝗦𝗸𝗶𝗹𝗹𝘀 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘! 💻🔥\n\n Explore 4 free learning resources covering valuable technology fields. \nPlacement Drive\n\nPerfect for students, freshers and tech enthusiasts looking to explore a new skill or strengthen their fundamentals.\n\n🔗 𝗘𝗻𝗿𝗼𝗹𝗹 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘 👇:-\n\nhttps://pdlink.in/4rj4HWU\n\n📌 Save this post and share it with a friend who wants to upskill!\nMaster\nDISCIPLINE\nLEARN\nTop Tech Skills\nAPPLY\nGROW\nfor FREE\n非\nData\nMachine\nCybersecurity\nDevOps\nAnalytics\nLearning\nLEARN\nPRACTICE\nBUILD\nIGROW\nA\nSKILLED\nCybersecurity\nyou\nData Analytics\nLEARN\nA BRIGHTER\nPRACTICE\nTOMORROW\nMachine Learning\nUPSKILL\nREPEAT\nDevOps",
+      "timestamp": "2026-09-20T10:56:19+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "placementdriveofficial",
+      "msg_id": 13076,
+      "text": "🚀 𝗠𝗮𝘀𝘁𝗲𝗿 𝗧𝗼𝗽 𝗧𝗲𝗰𝗵 𝗦𝗸𝗶𝗹𝗹𝘀 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘! 💻🔥\n\n Explore 4 free learning resources covering valuable technology fields. \nPlacement Drive\n\nPerfect for students, freshers and tech enthusiasts looking to explore a new skill or strengthen their fundamentals.\n\n🔗 𝗘𝗻𝗿𝗼𝗹𝗹 𝗳𝗼𝗿 𝗙𝗥𝗘𝗘 👇:-\n\nhttps://pdlink.in/4rj4HWU\n\n📌 Save this post and share it with a friend who wants to upskill!\nMaster\nDISCIPLINE\nLEARN\nTop Tech Skills\nAPPLY\nGROW\nfor FREE\n非\nData\nMachine\nCybersecurity\nDevOps\nAnalytics\nLearning\nLEARN\nPRACTICE\nBUILD\nIGROW\nA\nSKILLED\nCybersecurity\nyou\nData Analytics\nLEARN\nA BRIGHTER\nPRACTICE\nTOMORROW\nMachine Learning\nUPSKILL\nREPEAT\nDevOps",
+      "timestamp": "2026-09-20T10:56:19+00:00"
+    }
+  ]
+}
