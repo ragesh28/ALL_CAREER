@@ -688,7 +688,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         }
 
         if (!targetTabId) {
-          // Open target website tab cleanly WITHOUT opening Claude AI chat sidebar
+          // Open target website tab cleanly WITHOUT opening AI chat sidebar
           const newTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
           if (newTab?.id) {
             targetTabId = newTab.id;
@@ -1106,50 +1106,19 @@ async function callGeminiAPI(apiKey, model, systemPrompt, messages) {
   return text;
 }
 
-async function callAnthropicAPI(apiKey, model, systemPrompt, messages) {
-  const url = 'https://api.anthropic.com/v1/messages';
-  const formattedMessages = messages.map(m => ({
-    role: m.role === 'assistant' ? 'assistant' : 'user',
-    content: m.content,
-  }));
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'dangerously-allow-browser': 'true',
-    },
-    body: JSON.stringify({
-      model: model || 'claude-3-7-sonnet-20250219',
-      system: systemPrompt,
-      messages: formattedMessages,
-      max_tokens: 1500,
-      temperature: 0.2,
-    }),
-  });
-
-  if (!response.ok) throw new Error(`Anthropic API Error (${response.status}): ${await response.text()}`);
-  const data = await response.json();
-  const text = data.content?.[0]?.text;
-  if (!text) throw new Error('Anthropic API returned an empty response.');
-  return text;
-}
-
 function calculateIntelligenceScore(modelId, modelName = '') {
   const mid = String(modelId || '').toLowerCase();
   const mname = String(modelName || '').toLowerCase();
   const text = `${mid} ${mname}`;
 
   // Explicit benchmarks & requested scores
-  if (text.includes('claude-3-7-sonnet') || text.includes('claude-3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('sonnet-3-7') || text.includes('sonnet-3.7') || text.includes('3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('deepseek-r1') || text.includes('deepseek/deepseek-r1')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('o1') || text.includes('o3-mini')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('claude-3-5-sonnet') || text.includes('claude-3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('sonnet-3-5') || text.includes('sonnet-3.5') || text.includes('3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('gpt-4o') && !text.includes('mini')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('deepseek-v3') || text.includes('deepseek-chat')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('claude-3-opus') || text.includes('claude-3.0-opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('opus-3') || text.includes('3-opus') || text.includes('opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('gemini-2.5-pro') || text.includes('gemini-1.5-pro') || text.includes('gemini-pro')) return { score: 93, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('qwen-2.5-72b') || text.includes('qwen2.5-72b')) return { score: 91, tier: 'High Intelligence', badge: '🔥 High' };
 
@@ -1164,7 +1133,7 @@ function calculateIntelligenceScore(modelId, modelName = '') {
   if (text.includes('command-r-plus') || text.includes('command-r+')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
 
   if (text.includes('gpt-4o-mini')) return { score: 82, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('claude-3-5-haiku') || text.includes('claude-3-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('haiku-3-5') || text.includes('haiku-3') || text.includes('3.5-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('command-r') && !text.includes('plus')) return { score: 79, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('gemini-1.5-flash')) return { score: 78, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('qwen-2.5-32b') || text.includes('32b')) return { score: 83, tier: 'Fast & Balanced', badge: '⚡ Fast' };
@@ -1606,22 +1575,6 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
         const errText = await resp.text().catch(() => '');
         return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
       }
-      case 'anthropic': {
-        const resp = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': key,
-            'anthropic-version': '2023-06-01',
-            'dangerously-allow-browser': 'true',
-          },
-          body: JSON.stringify({ model: 'claude-3-5-haiku-20241022', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
-        });
-        const latencyMs = Date.now() - startTime;
-        if (resp.ok) return { ok: true, status: resp.status, latencyMs, message: `✅ Active & Working (${latencyMs}ms)!` };
-        const errText = await resp.text().catch(() => '');
-        return { ok: false, status: resp.status, latencyMs, error: errText.slice(0, 150) };
-      }
       default:
         return { ok: false, error: `Unknown provider: ${provider}` };
     }
@@ -1741,9 +1694,7 @@ async function fetchProviderModelsBackend({ provider, key, baseUrl, accountId })
         ];
       } else if (provider === 'openrouter') {
         rawModels = [
-          { id: 'anthropic/claude-3.7-sonnet', name: 'Claude 3.7 Sonnet' },
           { id: 'deepseek/deepseek-r1', name: 'DeepSeek R1' },
-          { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet' },
           { id: 'openai/gpt-4o', name: 'GPT-4o' },
           { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
           { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
@@ -1786,12 +1737,6 @@ async function fetchProviderModelsBackend({ provider, key, baseUrl, accountId })
           { id: 'meta/llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
           { id: 'nvidia/llama-3.1-nemotron-70b-instruct', name: 'Llama 3.1 Nemotron 70B' },
           { id: 'meta/llama-3.1-8b-instruct', name: 'Llama 3.1 8B Instruct' },
-        ];
-      } else if (provider === 'anthropic') {
-        rawModels = [
-          { id: 'claude-3-7-sonnet-20250219', name: 'Claude 3.7 Sonnet' },
-          { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
-          { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
         ];
       }
     }
@@ -1859,11 +1804,8 @@ async function callActiveAIModel(config, systemPrompt, messages) {
     case 'ollama':
       return await callOllamaAPI(baseUrl, model, systemPrompt, messages);
     case 'omniroute':
-      return await callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages);
-    case 'anthropic':
     default:
-      if (!apiKey) throw new Error('Anthropic API key is not configured in Settings.');
-      return await callAnthropicAPI(apiKey, model, systemPrompt, messages);
+      return await callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages);
   }
 }
 
@@ -2143,7 +2085,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
     activeProvider: 'omniroute',
     omniroute: { baseUrl: 'http://127.0.0.1:20128/v1', apiKey: 'sk-f46d845e6a300177-0a895e-fbfbd25b', model: 'antigravity/gemini-3.6-flash-high' },
     gemini: { apiKey: '', model: 'gemini-2.0-flash' },
-    anthropic: { apiKey: '', model: 'claude-3-7-sonnet-20250219' },
+    openai: { apiKey: '', model: 'gpt-4o' },
   };
   const profile = storeData.userProfile || {};
   const customAnswers = Array.isArray(storeData.customAnswers) ? storeData.customAnswers : [];

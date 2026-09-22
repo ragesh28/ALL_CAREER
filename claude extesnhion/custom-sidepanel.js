@@ -1,7 +1,7 @@
 /**
- * Custom Sidepanel for Claude in Chrome (BYOK Mode)
+ * Custom Sidepanel for AutoFill V4 (BYOK Mode)
  * Full Autonomous Browser Control & Agentic Execution Loop
- * Supports OmniRoute, Google Gemini, and Anthropic Claude
+ * Supports OmniRoute, Google Gemini, OpenAI, and BYOK providers
  * Features: Target Tab Locking (Background Execution) & New Tab Auto-Navigation
  */
 
@@ -20,9 +20,9 @@ const DEFAULT_CONFIG = {
     model: 'antigravity/gemini-3.6-flash-high',
     fetchedModels: [],
   },
-  anthropic: {
+  openai: {
     apiKey: '',
-    model: 'claude-3-7-sonnet-20250219',
+    model: 'gpt-4o',
   },
 };
 
@@ -35,20 +35,12 @@ const GEMINI_MODELS = [
 
 const OMNIROUTE_PRESET_MODELS = [
   { id: 'antigravity/gemini-3.6-flash-high', name: 'Gemini 3.6 Flash High' },
-  { id: 'auto/claude-sonnet', name: 'Claude Sonnet (Auto Routing)' },
-  { id: 'auto/claude-opus', name: 'Claude Opus (Auto Routing)' },
+  { id: 'auto/fast', name: 'Fastest Model (Auto Routing)' },
+  { id: 'auto/smart', name: 'Smartest Model (Auto Routing)' },
   { id: 'auto/best-coding', name: 'Best Coding Model' },
   { id: 'auto/best-chat', name: 'Best Chat Model' },
-  { id: 'auto/fast', name: 'Fastest Model' },
-  { id: 'auto/smart', name: 'Smartest Model' },
   { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
   { id: 'gpt-4o', name: 'GPT-4o' },
-];
-
-const ANTHROPIC_MODELS = [
-  { id: 'claude-3-7-sonnet-20250219', name: 'Claude 3.7 Sonnet' },
-  { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
-  { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
 ];
 
 let config = { ...DEFAULT_CONFIG };
@@ -205,7 +197,7 @@ async function loadConfig() {
       ...data[STORAGE_KEY],
       gemini: { ...DEFAULT_CONFIG.gemini, ...(data[STORAGE_KEY].gemini || {}) },
       omniroute: { ...DEFAULT_CONFIG.omniroute, ...(data[STORAGE_KEY].omniroute || {}) },
-      anthropic: { ...DEFAULT_CONFIG.anthropic, ...(data[STORAGE_KEY].anthropic || {}) },
+      openai: { ...DEFAULT_CONFIG.openai, ...(data[STORAGE_KEY].openai || {}) },
     };
   }
 }
@@ -230,7 +222,7 @@ async function loadChatHistory() {
   const defaultWelcome = [
     {
       role: 'assistant',
-      content: '👋 **Claude in Chrome Autonomous Agent**\n\nI can **inspect pages, upload resumes silently, auto-fill forms, create workflows, and manage tabs** step-by-step.\n\nTry: *"open indeed"*, *"Upload my resume"*, or *"Search for AI ML jobs and apply"*.',
+      content: '👋 **AutoFill V4 Autonomous Agent**\n\nI can **inspect pages, upload resumes silently, auto-fill forms, create workflows, and manage tabs** step-by-step.\n\nTry: *"open indeed"*, *"Upload my resume"*, or *"Search for AI ML jobs and apply"*.',
       timestamp: Date.now(),
     },
   ];
@@ -313,19 +305,19 @@ async function getActivePageContext(tabId = null) {
   if (isInternal) {
     const isStudio = url.includes(chrome.runtime.id);
     return {
-      title: target.title || (isNewTab ? 'New Tab' : isStudio ? 'Claude Automation Studio & Hub' : 'Internal Browser Page'),
+      title: target.title || (isNewTab ? 'New Tab' : isStudio ? 'AutoFill V4 Automation Studio & Hub' : 'Internal Browser Page'),
       url: target.url || '',
       isRestricted: !isStudio,
       isNewTab,
       text: isNewTab
         ? 'Blank / New Tab page. Tell the agent which website or search URL to navigate to.'
         : isStudio
-          ? 'Claude in Chrome Automation Studio & Hub. All saved workflows, candidate profile, and settings are directly accessible to you in extension storage.'
+          ? 'AutoFill V4 Automation Studio & Hub. All saved workflows, candidate profile, and settings are directly accessible to you in extension storage.'
           : 'Internal browser page. Navigate to an external website to begin.',
       accessibilityTree: isNewTab
         ? '[Blank New Tab Page - Ready to navigate to target website URL]'
         : isStudio
-          ? '[Claude in Chrome Automation Studio - Note: You have direct programmatic access to view, edit inputs of, and run all saved workflows via extension storage]'
+          ? '[AutoFill V4 Automation Studio - Note: You have direct programmatic access to view, edit inputs of, and run all saved workflows via extension storage]'
           : '[Internal browser page]',
     };
   }
@@ -706,7 +698,7 @@ async function executeActionInTab(actionData, targetTabId) {
 
         function findElement(refId, textHint = '') {
           if (refId) {
-            const maps = [window.__claudeElementMap, window.__autofillElementMap, window.__elementMap];
+            const maps = [window.__autofillElementMap, window.__elementMap];
             for (const m of maps) {
               if (m && m[refId]) {
                 const el = typeof m[refId].deref === 'function' ? m[refId].deref() : m[refId];
@@ -1028,37 +1020,6 @@ async function fetchOmniRouteModels(silent = false) {
   return [];
 }
 
-async function callAnthropic(apiKey, model, systemPrompt, messages) {
-  const url = 'https://api.anthropic.com/v1/messages';
-  const formattedMessages = messages.map(m => ({
-    role: m.role === 'assistant' ? 'assistant' : 'user',
-    content: m.content,
-  }));
-
-  const response = await safeFetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'dangerously-allow-browser': 'true',
-    },
-    body: JSON.stringify({
-      model,
-      system: systemPrompt,
-      messages: formattedMessages,
-      max_tokens: 2048,
-      temperature: 0.2,
-    }),
-  });
-
-  if (!response.ok) throw new Error(`Anthropic API Error (${response.status}): ${await response.text()}`);
-  const data = await response.json();
-  const text = data.content?.[0]?.text;
-  if (!text) throw new Error('Anthropic API returned an empty response.');
-  return text;
-}
-
 // ─── Dynamic System Prompt Builder ──────────────────────────────────────────
 
 async function buildAgentSystemPrompt() {
@@ -1109,7 +1070,7 @@ ${stepsStr}`;
     openTabsSummary = allTabs.map((t, i) => `  [Tab ${i + 1}] "${t.title}" (${t.url}) ${t.id === (currentTab?.id || lockedTabId) ? '👈 [CURRENT ACTIVE TAB USER IS LOOKING AT]' : ''}`).join('\n');
   } catch (e) {}
 
-  return `You are Claude in Chrome, an elite autonomous AI browser agent and automation orchestrator with direct browser execution and extension storage access.
+  return `You are AutoFill V4, an elite autonomous AI browser agent and automation orchestrator with direct browser execution and extension storage access.
 You inspect interactive accessibility trees, click buttons, upload resumes silently, auto-fill forms, navigate to URLs, and have FULL PROGRAMMATIC ACCESS to read and modify all saved workflows.
 
 ### 🌐 ACTIVE BROWSER TAB (USER FOCUS):
@@ -1381,11 +1342,8 @@ async function callActiveModelRaw(systemPrompt, messages) {
     case 'ollama':
       return await callOllama(baseUrl, model, systemPrompt, messages);
     case 'omniroute':
-      return await callOmniRoute(apiKey, baseUrl, model, systemPrompt, messages);
-    case 'anthropic':
     default:
-      if (!apiKey) throw new Error('Please configure Anthropic API Key in Settings (⚙️).');
-      return await callAnthropic(apiKey, model, systemPrompt, messages);
+      return await callOmniRoute(apiKey, baseUrl, model, systemPrompt, messages);
   }
 }
 
@@ -1477,7 +1435,6 @@ Decide your next action. Respond with your thought and JSON action block.`;
 function getAvailableModelsForCurrentProvider() {
   const p = config.activeProvider;
   if (p === 'gemini') return GEMINI_MODELS;
-  if (p === 'anthropic') return ANTHROPIC_MODELS;
 
   const customList = (config.omniroute.fetchedModels || []).map(id => ({ id, name: id }));
   if (customList.length > 0) return customList;
@@ -1736,7 +1693,7 @@ function renderApp() {
         <div class="brand">
           <div class="logo-icon">✳</div>
           <div class="brand-text">
-            <strong>Claude</strong>
+            <strong>AutoFill V4</strong>
             <span class="badge-byok">${aiDecisionMode === 'autonomous' ? 'AUTONOMOUS' : 'AGENT'}</span>
           </div>
         </div>
@@ -1764,7 +1721,7 @@ function renderApp() {
             <div class="form-group" style="background: rgba(217, 119, 87, 0.1); border: 1px solid rgba(217, 119, 87, 0.3); border-radius: 8px; padding: 12px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                  <strong style="font-size: 13px; color: #fff;">Claude Automation Studio</strong>
+                  <strong style="font-size: 13px; color: #fff;">AutoFill V4 Automation Studio</strong>
                   <div style="font-size: 11px; color: #94a3b8;">Workflow Studio • Profile • Prompts • Vault</div>
                 </div>
                 <button id="btn-open-options-page" class="primary-btn" style="padding: 6px 14px; font-size: 11px;">🚀 Open Full Studio</button>
@@ -1791,9 +1748,8 @@ function renderApp() {
             <div class="form-group">
               <label>Active AI Provider</label>
               <select id="sel-provider" class="custom-select">
-                <option value="omniroute">OmniRoute / Claude Server (http://127.0.0.1:20128)</option>
+                <option value="omniroute">OmniRoute Local Server (http://127.0.0.1:20128)</option>
                 <option value="gemini">Google Gemini (Free AI Studio)</option>
-                <option value="anthropic">Anthropic Claude (Direct API Key)</option>
               </select>
             </div>
 
@@ -1836,23 +1792,6 @@ function renderApp() {
               </div>
             </div>
 
-            <!-- Anthropic Section -->
-            <div id="section-anthropic" class="provider-section" style="display: none;">
-              <div class="form-group">
-                <label>Anthropic API Key</label>
-                <div class="password-wrapper">
-                  <input type="password" id="anthropic-key" placeholder="sk-ant-..." class="custom-input" />
-                  <button class="toggle-pass-btn" data-target="anthropic-key">👁</button>
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Model</label>
-                <select id="anthropic-model" class="custom-select">
-                  ${ANTHROPIC_MODELS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}
-                </select>
-              </div>
-            </div>
-
             <div class="test-row">
               <button id="btn-test-connection" class="secondary-btn">⚡ Test Connection</button>
               <span id="test-result" class="test-result"></span>
@@ -1885,8 +1824,7 @@ function renderModelSelector() {
   const models = getAvailableModelsForCurrentProvider();
   let currentActiveModel = '';
   if (config.activeProvider === 'gemini') currentActiveModel = config.gemini.model;
-  else if (config.activeProvider === 'omniroute') currentActiveModel = config.omniroute.model;
-  else currentActiveModel = config.anthropic.model;
+  else currentActiveModel = config.omniroute.model;
 
   quickSelect.innerHTML = models.map(m => `
     <option value="${m.id}" ${m.id === currentActiveModel ? 'selected' : ''}>${m.name}</option>
@@ -2675,8 +2613,7 @@ function setupEventListeners() {
   quickModelSelect?.addEventListener('change', async (e) => {
     const selectedModel = e.target.value;
     if (config.activeProvider === 'gemini') config.gemini.model = selectedModel;
-    else if (config.activeProvider === 'omniroute') config.omniroute.model = selectedModel;
-    else config.anthropic.model = selectedModel;
+    else config.omniroute.model = selectedModel;
     await saveConfig();
   });
 
@@ -2775,11 +2712,9 @@ function setupEventListeners() {
 function updateModalProviderSections(selected) {
   const geminiSec = document.getElementById('section-gemini');
   const omniSec = document.getElementById('section-omniroute');
-  const anthropicSec = document.getElementById('section-anthropic');
 
   if (geminiSec) geminiSec.style.display = selected === 'gemini' ? 'block' : 'none';
   if (omniSec) omniSec.style.display = selected === 'omniroute' ? 'block' : 'none';
-  if (anthropicSec) anthropicSec.style.display = selected === 'anthropic' ? 'block' : 'none';
 }
 
 function populateSettingsInputs() {
@@ -2789,8 +2724,6 @@ function populateSettingsInputs() {
   const omniUrl = document.getElementById('omniroute-url');
   const omniKey = document.getElementById('omniroute-key');
   const omniModel = document.getElementById('omniroute-model');
-  const anthropicKey = document.getElementById('anthropic-key');
-  const anthropicModel = document.getElementById('anthropic-model');
   const autonomySelect = document.getElementById('modal-sel-autonomy');
 
   if (providerSelect) providerSelect.value = config.activeProvider;
@@ -2807,9 +2740,6 @@ function populateSettingsInputs() {
     `).join('');
   }
 
-  if (anthropicKey) anthropicKey.value = config.anthropic.apiKey;
-  if (anthropicModel) anthropicModel.value = config.anthropic.model;
-
   updateModalProviderSections(config.activeProvider);
 }
 
@@ -2820,8 +2750,6 @@ function collectSettingsFromModal() {
   const omniUrl = document.getElementById('omniroute-url');
   const omniKey = document.getElementById('omniroute-key');
   const omniModel = document.getElementById('omniroute-model');
-  const anthropicKey = document.getElementById('anthropic-key');
-  const anthropicModel = document.getElementById('anthropic-model');
 
   if (providerSelect) config.activeProvider = providerSelect.value;
   if (geminiKey) config.gemini.apiKey = geminiKey.value.trim();
@@ -2829,8 +2757,6 @@ function collectSettingsFromModal() {
   if (omniUrl) config.omniroute.baseUrl = omniUrl.value.trim();
   if (omniKey) config.omniroute.apiKey = omniKey.value.trim();
   if (omniModel) config.omniroute.model = omniModel.value;
-  if (anthropicKey) config.anthropic.apiKey = anthropicKey.value.trim();
-  if (anthropicModel) config.anthropic.model = anthropicModel.value;
 }
 
 async function handleTestConnection() {

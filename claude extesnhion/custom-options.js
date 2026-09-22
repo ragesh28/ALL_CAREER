@@ -81,13 +81,11 @@ let byokConfig = {
   apiKeys: [],
   omniroute: { baseUrl: 'http://127.0.0.1:20128/v1', apiKey: 'sk-f46d845e6a300177-0a895e-fbfbd25b', model: 'antigravity/gemini-3.6-flash-high' },
   gemini: { apiKey: '', model: 'gemini-2.0-flash' },
-  anthropic: { apiKey: '', model: 'claude-3-7-sonnet-20250219' },
   openai: { apiKey: '', model: 'gpt-4o' },
 };
 
 const PROVIDER_METADATA = {
   openai: { name: 'OpenAI (Official)', icon: '🟢', tag: 'Official GPT & o1/o3', placeholder: 'sk-proj-...', defaultModel: 'gpt-4o' },
-  anthropic: { name: 'Anthropic Claude', icon: '🟣', tag: 'Claude 3.7 & 3.5', placeholder: 'sk-ant-...', defaultModel: 'claude-3-7-sonnet-20250219' },
   gemini: { name: 'Google Gemini', icon: '✨', tag: 'Gemini 2.5 & 3.8', placeholder: 'AIzaSy...', defaultModel: 'gemini-3.8-flash-high' },
   groq: { name: 'Groq (Ultra-Fast)', icon: '⚡', tag: 'LPU Inference', placeholder: 'gsk_...', defaultModel: 'llama-3.3-70b-versatile' },
   openrouter: { name: 'OpenRouter', icon: '🌐', tag: 'Aggregator 300+', placeholder: 'sk-or-v1-...', defaultModel: 'google/gemini-2.0-flash-001' },
@@ -97,7 +95,7 @@ const PROVIDER_METADATA = {
   cloudflare: { name: 'Cloudflare Workers AI', icon: '☁️', tag: 'Serverless AI', placeholder: 'API Token', defaultModel: '@cf/meta/llama-3.3-70b-instruct-fp8-fast', needsAccountId: true },
   huggingface: { name: 'Hugging Face', icon: '🤗', tag: 'Inference API', placeholder: 'hf_...', defaultModel: 'meta-llama/Llama-3.3-70B-Instruct' },
   ollama: { name: 'Ollama (Local URL)', icon: '🦙', tag: 'Local Host', placeholder: 'No key needed', defaultModel: 'llama3:latest', needsBaseUrl: true, defaultBaseUrl: 'http://localhost:11434' },
-  omniroute: { name: 'OmniRoute / Claude Server', icon: '🔄', tag: 'Local Routing', placeholder: 'sk-...', defaultModel: 'antigravity/gemini-3.6-flash-high', needsBaseUrl: true, defaultBaseUrl: 'http://127.0.0.1:20128/v1' },
+  omniroute: { name: 'OmniRoute Local Server', icon: '🔄', tag: 'Local Routing', placeholder: 'sk-...', defaultModel: 'antigravity/gemini-3.6-flash-high', needsBaseUrl: true, defaultBaseUrl: 'http://127.0.0.1:20128/v1' },
 };
 
 const PRESET_MODELS = {
@@ -117,9 +115,7 @@ const PRESET_MODELS = {
     { id: 'gemini-3.6-light-flash', name: 'Gemini 3.6 Light Flash' },
   ],
   openrouter: [
-    { id: 'anthropic/claude-3.7-sonnet', name: 'Claude 3.7 Sonnet' },
     { id: 'deepseek/deepseek-r1', name: 'DeepSeek R1' },
-    { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet' },
     { id: 'openai/gpt-4o', name: 'GPT-4o' },
     { id: 'google/gemini-2.0-flash-001', name: 'Gemini 2.0 Flash' },
     { id: 'meta-llama/llama-3.3-70b-instruct', name: 'Llama 3.3 70B Instruct' },
@@ -164,14 +160,9 @@ const PRESET_MODELS = {
   ],
   omniroute: [
     { id: 'antigravity/gemini-3.6-flash-high', name: 'Gemini 3.6 Flash High' },
-    { id: 'auto/claude-sonnet', name: 'Claude Sonnet (Auto Routing)' },
+    { id: 'auto/fast', name: 'Fastest Model (Auto Routing)' },
     { id: 'auto/best-coding', name: 'Best Coding Model' },
     { id: 'auto/smart', name: 'Smartest Model' },
-  ],
-  anthropic: [
-    { id: 'claude-3-7-sonnet-20250219', name: 'Claude 3.7 Sonnet' },
-    { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet' },
-    { id: 'claude-3-5-haiku-20241022', name: 'Claude 3.5 Haiku' },
   ],
 };
 
@@ -180,13 +171,13 @@ function calculateIntelligenceScore(modelId, modelName = '') {
   const mname = String(modelName || '').toLowerCase();
   const text = `${mid} ${mname}`;
 
-  if (text.includes('claude-3-7-sonnet') || text.includes('claude-3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('sonnet-3-7') || text.includes('sonnet-3.7') || text.includes('3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('deepseek-r1') || text.includes('deepseek/deepseek-r1')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('o1') || text.includes('o3-mini')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('claude-3-5-sonnet') || text.includes('claude-3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('sonnet-3-5') || text.includes('sonnet-3.5') || text.includes('3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('gpt-4o') && !text.includes('mini')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('deepseek-v3') || text.includes('deepseek-chat')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('claude-3-opus') || text.includes('claude-3.0-opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
+  if (text.includes('opus-3') || text.includes('3-opus') || text.includes('opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('gemini-2.5-pro') || text.includes('gemini-1.5-pro') || text.includes('gemini-pro')) return { score: 93, tier: 'Elite Intelligence', badge: '🧠 Elite' };
   if (text.includes('qwen-2.5-72b') || text.includes('qwen2.5-72b')) return { score: 91, tier: 'High Intelligence', badge: '🔥 High' };
 
@@ -200,7 +191,7 @@ function calculateIntelligenceScore(modelId, modelName = '') {
   if (text.includes('command-r-plus') || text.includes('command-r+')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
 
   if (text.includes('gpt-4o-mini')) return { score: 82, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('claude-3-5-haiku') || text.includes('claude-3-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
+  if (text.includes('haiku-3-5') || text.includes('haiku-3') || text.includes('3.5-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('command-r') && !text.includes('plus')) return { score: 79, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('gemini-1.5-flash')) return { score: 78, tier: 'Fast & Balanced', badge: '⚡ Fast' };
   if (text.includes('qwen-2.5-32b') || text.includes('32b')) return { score: 83, tier: 'Fast & Balanced', badge: '⚡ Fast' };
@@ -250,10 +241,6 @@ function getProviderLogoSvg(provider, size = 24) {
     case 'openai':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.28 9.82a5.98 5.98 0 0 0-.51-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.52 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08zm-9.02 12.61a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68v-6.74l2.02 1.17c.02.01.03.03.04.05v5.58a4.5 4.5 0 0 1-4.49 4.5zm-9.66-4.13a4.47 4.47 0 0 1-.53-3.01l.14.08 4.78 2.76a.77.77 0 0 0 .78 0l5.85-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.95a4.5 4.5 0 0 1-6.14-1.65zM2.34 7.9a4.48 4.48 0 0 1 2.37-1.98V11.6c0 .28.15.53.39.68l5.81 3.35-2.02 1.17a.08.08 0 0 1-.07 0l-4.83-2.79A4.5 4.5 0 0 1 2.34 7.9zm16.6 3.85L13.1 8.38l2.02-1.16a.08.08 0 0 1 .07 0l4.83 2.79a4.5 4.5 0 0 1-.68 8.1V12.44a.79.79 0 0 0-.4-.69zm2.01-3.02l-.14-.09-4.77-2.78a.78.78 0 0 0-.79 0L9.41 9.23V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66zM8.31 12.86l-2.02-1.16a.08.08 0 0 1-.04-.06V6.07a4.5 4.5 0 0 1 7.38-3.45l-.14.08-4.79 2.76a.79.79 0 0 0-.39.68v6.72zm1.1-2.36l2.6-1.5 2.6 1.5v3l-2.6 1.5-2.6-1.5Z" fill="#10A37F"/>
-      </svg>`;
-    case 'anthropic':
-      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.5 4h-5L3 20h4.5l1.6-4.5h5.8l1.6 4.5H21L14.5 4zm-4.2 9.5l2.2-6.2 2.2 6.2h-4.4z" fill="#D97706"/>
       </svg>`;
     case 'gemini':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1052,7 +1039,7 @@ function renderApiKeysTab() {
     <div class="heading-row">
       <div class="title-box">
         <h3>🔑 Multi-Provider & AI Models Studio</h3>
-        <p>Configure OpenAI, Anthropic Claude, Gemini, Groq, OpenRouter, Mistral, Cohere, Nvidia NIM, Cloudflare, Hugging Face, Ollama, and OmniRoute with original provider logos, live testing, and Intelligence Scoring.</p>
+        <p>Configure OpenAI, Gemini, Groq, OpenRouter, Mistral, Cohere, Nvidia NIM, Cloudflare, Hugging Face, Ollama, and OmniRoute with original provider logos, live testing, and Intelligence Scoring.</p>
       </div>
       <button class="btn-primary-blue" id="btn-save-all-keys">Save All</button>
     </div>
@@ -1072,7 +1059,7 @@ function renderApiKeysTab() {
     <div class="provider-card-deck">
       ${keys.length === 0 ? `
         <div style="padding: 32px; text-align: center; color: var(--text-muted); background: #11131c; border: 1px dashed var(--border-color); border-radius: 8px; font-size: 13px;">
-          No API keys configured yet. Select a provider below to add OpenAI, Anthropic Claude, Gemini, Groq, or other keys!
+          No API keys configured yet. Select a provider below to add OpenAI, Gemini, Groq, or other keys!
         </div>
       ` : keys.map(k => {
         const meta = PROVIDER_METADATA[k.provider] || { name: k.provider, icon: '🔑', tag: k.provider };

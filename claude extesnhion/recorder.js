@@ -1,5 +1,5 @@
 /**
- * Claude in Chrome — Dedicated Workflow Step Recorder Sidebar Script
+ * AutoFill V4 — Dedicated Workflow Step Recorder Sidebar Script
  * Real-time step recording, element picking, AI node selection, and loop control.
  * Matches Autofill V4 workflow creating popup format and syncs directly with content.js.
  */
