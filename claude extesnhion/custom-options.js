@@ -85,25 +85,25 @@ let byokConfig = {
 };
 
 const PROVIDER_METADATA = {
-  openai: { name: 'OpenAI (Official)', icon: '🟢', tag: 'Official GPT & o1/o3', placeholder: 'sk-proj-...', defaultModel: 'gpt-4o' },
-  gemini: { name: 'Google Gemini', icon: '✨', tag: 'Gemini 2.5 & 3.8', placeholder: 'AIzaSy...', defaultModel: 'gemini-3.8-flash-high' },
-  groq: { name: 'Groq (Ultra-Fast)', icon: '⚡', tag: 'LPU Inference', placeholder: 'gsk_...', defaultModel: 'llama-3.3-70b-versatile' },
-  openrouter: { name: 'OpenRouter', icon: '🌐', tag: 'Aggregator 300+', placeholder: 'sk-or-v1-...', defaultModel: 'google/gemini-2.0-flash-001' },
-  mistral: { name: 'Mistral AI', icon: '📝', tag: 'Large & NeMo', placeholder: 'API Key', defaultModel: 'mistral-large-latest' },
-  cohere: { name: 'Cohere', icon: '💬', tag: 'Command R+', placeholder: 'API Key', defaultModel: 'command-r-plus-08-2024' },
-  nvidia: { name: 'Nvidia NIM', icon: '🟢', tag: 'Microservices', placeholder: 'nvapi-...', defaultModel: 'meta/llama-3.3-70b-instruct' },
-  cloudflare: { name: 'Cloudflare Workers AI', icon: '☁️', tag: 'Serverless AI', placeholder: 'API Token', defaultModel: '@cf/meta/llama-3.3-70b-instruct-fp8-fast', needsAccountId: true },
-  huggingface: { name: 'Hugging Face', icon: '🤗', tag: 'Inference API', placeholder: 'hf_...', defaultModel: 'meta-llama/Llama-3.3-70B-Instruct' },
+  omniroute: { name: 'OmniRoute Local Server', icon: '🔴', tag: 'Local Routing', placeholder: 'sk-...', defaultModel: 'antigravity/gemini-3.6-flash-high', needsBaseUrl: true, defaultBaseUrl: 'http://127.0.0.1:20128/v1' },
+  openai: { name: 'OpenAI', icon: '🟢', tag: 'Official GPT & o1/o3', placeholder: 'sk-proj-...', defaultModel: 'gpt-4o', defaultBaseUrl: 'https://api.openai.com/v1' },
+  gemini: { name: 'Google Gemini', icon: '✨', tag: 'Gemini 2.5 & 3.8', placeholder: 'AIzaSy...', defaultModel: 'gemini-2.0-flash', defaultBaseUrl: 'https://generativelanguage.googleapis.com' },
+  openrouter: { name: 'OpenRouter', icon: '🟣', tag: 'Aggregator 300+', placeholder: 'sk-or-v1-...', defaultModel: 'google/gemini-2.0-flash-001', defaultBaseUrl: 'https://openrouter.ai/api/v1' },
+  groq: { name: 'Groq', icon: '⚡', tag: 'LPU Inference', placeholder: 'gsk_...', defaultModel: 'llama-3.3-70b-versatile', defaultBaseUrl: 'https://api.groq.com/openai/v1' },
+  nvidia: { name: 'Nvidia NIM', icon: '🟢', tag: 'Microservices', placeholder: 'nvapi-...', defaultModel: 'meta/llama-3.3-70b-instruct', defaultBaseUrl: 'https://integrate.api.nvidia.com/v1' },
   ollama: { name: 'Ollama (Local URL)', icon: '🦙', tag: 'Local Host', placeholder: 'No key needed', defaultModel: 'llama3:latest', needsBaseUrl: true, defaultBaseUrl: 'http://localhost:11434' },
-  omniroute: { name: 'OmniRoute Local Server', icon: '🔄', tag: 'Local Routing', placeholder: 'sk-...', defaultModel: 'antigravity/gemini-3.6-flash-high', needsBaseUrl: true, defaultBaseUrl: 'http://127.0.0.1:20128/v1' },
+  huggingface: { name: 'Hugging Face', icon: '🤗', tag: 'Inference API', placeholder: 'hf_...', defaultModel: 'meta-llama/Llama-3.3-70B-Instruct', defaultBaseUrl: 'https://api-inference.huggingface.co/v1' },
+  mistral: { name: 'Mistral AI', icon: '📝', tag: 'Large & NeMo', placeholder: 'API Key', defaultModel: 'mistral-large-latest', defaultBaseUrl: 'https://api.mistral.ai/v1' },
+  cohere: { name: 'Cohere', icon: '💬', tag: 'Command R+', placeholder: 'API Key', defaultModel: 'command-r-plus-08-2024', defaultBaseUrl: 'https://api.cohere.ai/v1' },
+  cloudflare: { name: 'Cloudflare Workers AI', icon: '☁️', tag: 'Serverless AI', placeholder: 'API Token', defaultModel: '@cf/meta/llama-3.3-70b-instruct-fp8-fast', needsAccountId: true, defaultBaseUrl: 'https://api.cloudflare.com/client/v4' },
 };
 
 const PRESET_MODELS = {
   openai: [
     { id: 'gpt-4o', name: 'GPT-4o (Omni Flagship)' },
-    { id: 'gpt-4o-mini', name: 'GPT-4o Mini (Fast & Efficient)' },
+    { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
     { id: 'o1', name: 'o1 Reasoning Model' },
-    { id: 'o3-mini', name: 'o3 Mini (High Reasoning)' },
+    { id: 'o3-mini', name: 'o3 Mini' },
     { id: 'chatgpt-4o-latest', name: 'ChatGPT-4o Latest' },
     { id: 'gpt-4-turbo', name: 'GPT-4 Turbo' },
   ],
@@ -166,75 +166,6 @@ const PRESET_MODELS = {
   ],
 };
 
-function calculateIntelligenceScore(modelId, modelName = '') {
-  const mid = String(modelId || '').toLowerCase();
-  const mname = String(modelName || '').toLowerCase();
-  const text = `${mid} ${mname}`;
-
-  if (text.includes('sonnet-3-7') || text.includes('sonnet-3.7') || text.includes('3.7-sonnet')) return { score: 98, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('deepseek-r1') || text.includes('deepseek/deepseek-r1')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('o1') || text.includes('o3-mini')) return { score: 97, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('sonnet-3-5') || text.includes('sonnet-3.5') || text.includes('3.5-sonnet')) return { score: 96, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('gpt-4o') && !text.includes('mini')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('deepseek-v3') || text.includes('deepseek-chat')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('opus-3') || text.includes('3-opus') || text.includes('opus')) return { score: 95, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('gemini-2.5-pro') || text.includes('gemini-1.5-pro') || text.includes('gemini-pro')) return { score: 93, tier: 'Elite Intelligence', badge: '🧠 Elite' };
-  if (text.includes('qwen-2.5-72b') || text.includes('qwen2.5-72b')) return { score: 91, tier: 'High Intelligence', badge: '🔥 High' };
-
-  if (text.includes('gemini-3.8-flash-high') || text.includes('gemini-3.8-flash') || text.includes('gemini 3.8 flash') || text.includes('gemini-2.5-flash')) {
-    return { score: 90, tier: 'High Intelligence', badge: '🔥 High' };
-  }
-  if (text.includes('mistral-large')) return { score: 90, tier: 'High Intelligence', badge: '🔥 High' };
-  if (text.includes('llama-3.3-70b') || text.includes('llama-3.1-70b') || text.includes('70b-instruct')) return { score: 89, tier: 'High Intelligence', badge: '🔥 High' };
-  if (text.includes('nemotron-70b') || text.includes('llama-3.1-nemotron-70b')) return { score: 89, tier: 'High Intelligence', badge: '🔥 High' };
-  if (text.includes('gemini-2.0-flash') && !text.includes('lite')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
-  if (text.includes('command-r-plus') || text.includes('command-r+')) return { score: 88, tier: 'High Intelligence', badge: '🔥 High' };
-
-  if (text.includes('gpt-4o-mini')) return { score: 82, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('haiku-3-5') || text.includes('haiku-3') || text.includes('3.5-haiku')) return { score: 81, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('command-r') && !text.includes('plus')) return { score: 79, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('gemini-1.5-flash')) return { score: 78, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('qwen-2.5-32b') || text.includes('32b')) return { score: 83, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('qwen-2.5-14b') || text.includes('14b')) return { score: 77, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('mistral-small') || text.includes('mistral-nemo') || text.includes('open-mistral-nemo')) return { score: 75, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-  if (text.includes('llama-3.1-8b') || text.includes('llama-3-8b') || text.includes('8b-instant')) return { score: 70, tier: 'Fast & Balanced', badge: '⚡ Fast' };
-
-  if (text.includes('gemini-3.6-light-flash') || text.includes('gemini 3.6 light flash') || text.includes('gemini-3.6-flash-lite') || text.includes('gemini-2.0-flash-lite') || text.includes('flash-lite') || text.includes('flash-light')) {
-    return { score: 50, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
-  }
-  if (text.includes('llama-3.2-3b') || text.includes('3b')) return { score: 52, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
-  if (text.includes('llama-3.2-1b') || text.includes('1b')) return { score: 45, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
-  if (text.includes('mistral-7b') || text.includes('7b')) return { score: 60, tier: 'Lightweight / Fast', badge: '🌱 Lite' };
-
-  let score = 70;
-  if (/405b/i.test(text)) score = 95;
-  else if (/70b|72b/i.test(text)) score = 89;
-  else if (/32b|33b|34b/i.test(text)) score = 82;
-  else if (/14b|13b/i.test(text)) score = 77;
-  else if (/7b|8b/i.test(text)) score = 68;
-  else if (/3b|2b|1b/i.test(text)) score = 48;
-
-  if (/r1|reasoning|thinking/i.test(text)) score = Math.min(99, score + 12);
-  if (/pro|large|plus|high|max/i.test(text)) score = Math.min(99, score + 8);
-  if (/lite|light|nano|micro|mini/i.test(text)) score = Math.max(30, score - 18);
-  if (/turbo|flash|instant|fast/i.test(text)) score = Math.min(90, Math.max(50, score));
-
-  let tier = 'Fast & Balanced';
-  let badge = '⚡ Fast';
-  if (score >= 93) {
-    tier = 'Elite Intelligence';
-    badge = '🧠 Elite';
-  } else if (score >= 85) {
-    tier = 'High Intelligence';
-    badge = '🔥 High';
-  } else if (score < 68) {
-    tier = 'Lightweight / Fast';
-    badge = '🌱 Lite';
-  }
-
-  return { score, tier, badge };
-}
-
 function getProviderLogoSvg(provider, size = 24) {
   const p = String(provider || '').toLowerCase();
   switch (p) {
@@ -260,8 +191,7 @@ function getProviderLogoSvg(provider, size = 24) {
       </svg>`;
     case 'openrouter':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L3.5 7v10L12 22l8.5-5V7L12 2z" stroke="#6366F1" stroke-width="1.8" stroke-linejoin="round" fill="rgba(99, 102, 241, 0.15)"/>
-        <path d="M12 12L3.5 7M12 12v10M12 12l8.5-5" stroke="#6366F1" stroke-width="1.8" stroke-linejoin="round"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 4C5.58 4 2 7.58 2 12C2 16.42 5.58 20 10 20H18C19.1 20 19.8 19 19.3 18.1L17.2 14.5C18.3 13.5 19 12 19 10.5C19 6.9 16.1 4 12.5 4H10ZM10 8C7.79 8 6 9.79 6 12C6 14.21 7.79 16 10 16C12.21 16 14 14.21 14 12C14 9.79 12.21 8 10 8Z" fill="#6B11F4"/>
       </svg>`;
     case 'mistral':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -281,9 +211,15 @@ function getProviderLogoSvg(provider, size = 24) {
         <circle cx="16" cy="12" r="6" fill="#39594C" fill-opacity="0.85"/>
       </svg>`;
     case 'nvidia':
-      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 6.5c-3.1 0-5.6 2.5-5.6 5.5s2.5 5.5 5.6 5.5c2.3 0 4.2-1.4 5.1-3.4-.6.1-1.3.1-1.9.1-1.8 0-3.3-.8-4.4-2.1-.4-.5-.7-1.1-.7-1.8 0-1.7 1.3-3.1 2.9-3.6-.3-.1-.6-.2-1-.2z" fill="#76B900"/>
-        <path d="M12 3C7 3 3 7 3 12s4 9 9 9c4.2 0 7.8-2.9 8.7-6.8h-2.1c-.9 2.8-3.5 4.8-6.6 4.8-3.9 0-7-3.1-7-7s3.1-7 7-7c1.9 0 3.6.7 4.9 2l1.4-1.5C16.9 4 14.6 3 12 3z" fill="#76B900"/>
+      return `<svg width="${size}" height="${size}" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="13" y="3" width="14" height="18" rx="1.5" fill="#76B900"/>
+        <path d="M13 5.2C15.8 5.2 18.6 6.3 20.6 8.2L18.8 9.9C17.2 8.4 15.1 7.5 13 7.5V5.2Z" fill="#FFFFFF"/>
+        <path d="M13 8.8C14.8 8.8 16.5 9.6 17.7 11L16 12.3C15.2 11.3 14.1 10.7 13 10.7V8.8Z" fill="#FFFFFF"/>
+        <path d="M13 12C14.1 12 15.2 12.7 16 13.7L17.7 15C16.5 16.4 14.8 17.2 13 17.2V15.3C14.1 15.3 15.2 14.7 16 13.7" fill="#FFFFFF"/>
+        <path d="M13 16.5C15.1 16.5 17.2 15.6 18.8 14.1L20.6 15.8C18.6 17.7 15.8 18.8 13 18.8V16.5Z" fill="#FFFFFF"/>
+        <path d="M13 5.2V7.5C10.6 7.5 8.4 8.6 6.8 10.5C5.4 12.1 5.4 14.4 6.8 16C8.4 17.9 10.6 19 13 19V21.2C9.8 21.2 6.9 19.8 4.8 17.4C2.8 15.1 2.8 11.9 4.8 9.6C6.9 7.2 9.8 5.2 13 5.2Z" fill="#76B900"/>
+        <path d="M13 8.8V10.7C11.5 10.7 10.2 11.4 9.3 12.6C8.7 13.3 8.7 14.2 9.3 14.9C10.2 16.1 11.5 16.8 13 16.8V18.8C10.8 18.8 8.8 17.8 7.5 16.1C6.4 14.7 6.4 12.8 7.5 11.4C8.8 9.7 10.8 8.8 13 8.8Z" fill="#76B900"/>
+        <circle cx="13" cy="13.7" r="1.5" fill="#76B900"/>
       </svg>`;
     case 'cloudflare':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -291,23 +227,41 @@ function getProviderLogoSvg(provider, size = 24) {
       </svg>`;
     case 'huggingface':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" fill="#FFD21E"/>
-        <path d="M8 9.5a1.5 1.5 0 1 1 0 .01M16 9.5a1.5 1.5 0 1 1 0 .01" stroke="#1F2937" stroke-width="2" stroke-linecap="round"/>
-        <path d="M8.5 14.5c1 1.5 2.3 2 3.5 2s2.5-.5 3.5-2" stroke="#1F2937" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M3.5 11c1 2 2.5 3 4 3M20.5 11c-1 2-2.5 3-4 3" stroke="#E5A900" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12" cy="11.5" r="9.5" fill="#FFD21E" stroke="#FF9D00" stroke-width="0.8"/>
+        <path d="M7.8 9.5C8.2 8.5 9.4 8.5 9.8 9.5" stroke="#2B2D42" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M14.2 9.5C14.6 8.5 15.8 8.5 16.2 9.5" stroke="#2B2D42" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M8.8 12.5C8.8 12.5 9.5 16 12 16C14.5 16 15.2 12.5 15.2 12.5H8.8Z" fill="#2B2D42"/>
+        <path d="M10.2 14.5C10.8 15.4 11.4 15.8 12 15.8C12.6 15.8 13.2 15.4 13.8 14.5C13.2 13.8 12.6 13.5 12 13.5C11.4 13.5 10.8 13.8 10.2 14.5Z" fill="#EF476F"/>
+        <path d="M2.5 18C2.5 15.5 4.5 14 6.5 14.5C7.2 13 8.5 13.5 8.8 15C9.8 14 11 15 10.5 16.8C10.2 18 8.5 20.5 5.5 20.5C3.5 20.5 2.5 19.5 2.5 18Z" fill="#FFD21E" stroke="#FF9D00" stroke-width="0.9"/>
+        <path d="M21.5 18C21.5 15.5 19.5 14 17.5 14.5C16.8 13 15.5 13.5 15.2 15C14.2 14 13 15 13.5 16.8C13.8 18 15.5 20.5 18.5 20.5C20.5 20.5 21.5 19.5 21.5 18Z" fill="#FFD21E" stroke="#FF9D00" stroke-width="0.9"/>
       </svg>`;
     case 'ollama':
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="24" height="24" rx="6" fill="#1E293B"/>
-        <path d="M12 4a3 3 0 0 0-3 3v2a3 3 0 0 0 2 2.8V15h-1a2 2 0 0 0-2 2v3h2v-3h4v3h2v-3a2 2 0 0 0-2-2h-1v-3.2a3 3 0 0 0 2-2.8V7a3 3 0 0 0-3-3zm-1 3a1 1 0 1 1 2 0v2a1 1 0 1 1-2 0V7z" fill="#FFFFFF"/>
+        <path d="M7 6.5C7 4.5 7.8 3 8.8 3C9.8 3 10.5 4.5 10.5 6.5C11 6.2 11.5 6 12 6C12.5 6 13 6.2 13.5 6.5C13.5 4.5 14.2 3 15.2 3C16.2 3 17 4.5 17 6.5C18.5 7.5 19.5 9 19.5 11C19.5 12.5 19 13.5 18.5 14.5C19 16 19.5 17.5 19.5 19.5V21H4.5V19.5C4.5 17.5 5 16 5.5 14.5C5 13.5 4.5 12.5 4.5 11C4.5 9 5.5 7.5 7 6.5Z" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M8.8 4.2C8.5 4.8 8.5 5.8 8.8 6.5" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M15.2 4.2C15.5 4.8 15.5 5.8 15.2 6.5" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="8.5" cy="11.5" r="1.2" fill="#FFFFFF"/>
+        <circle cx="15.5" cy="11.5" r="1.2" fill="#FFFFFF"/>
+        <ellipse cx="12" cy="13.8" rx="2.4" ry="1.8" stroke="#FFFFFF" stroke-width="1.3" fill="none"/>
+        <path d="M11.3 13.2L12 14M12.7 13.2L12 14M12 14V14.8" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
       </svg>`;
     case 'omniroute':
     default:
       return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="24" height="24" rx="6" fill="rgba(56, 189, 248, 0.15)"/>
-        <path d="M4 7h6a3 3 0 0 1 3 3v4a3 3 0 0 0 3 3h4M4 7l3-3M4 7l3 3M20 17l-3-3M20 17l-3 3" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="10" cy="7" r="1.5" fill="#38BDF8"/>
-        <circle cx="14" cy="17" r="1.5" fill="#38BDF8"/>
+        <rect width="24" height="24" rx="5.5" fill="#E5484D"/>
+        <line x1="12" y1="12" x2="12" y2="5.5" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12" y1="11.5" x2="6.2" y2="7.5" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12" y1="11.5" x2="17.8" y2="7.5" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12" y1="12.5" x2="6.2" y2="17" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12" y1="13" x2="12" y2="19.5" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12" y1="12.5" x2="17.8" y2="17" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M12 9.5C13.2 9.5 14 10.5 14 11.8C14 13.5 12 15.5 12 15.5C12 15.5 10 13.5 10 11.8C10 10.5 10.8 9.5 12 9.5Z" fill="#FFFFFF"/>
+        <circle cx="12" cy="5.5" r="1.5" fill="#FFFFFF"/>
+        <circle cx="6.2" cy="7.5" r="1.5" fill="#FFFFFF"/>
+        <circle cx="17.8" cy="7.5" r="1.5" fill="#FFFFFF"/>
+        <circle cx="6.2" cy="17" r="1.5" fill="#FFFFFF"/>
+        <circle cx="12" cy="19.5" r="1.5" fill="#FFFFFF"/>
+        <circle cx="17.8" cy="17" r="1.5" fill="#FFFFFF"/>
       </svg>`;
   }
 }
@@ -1017,20 +971,6 @@ function renderProfileTab() {
 
 // ─── 3. AI Providers & Keys ─────────────────────────────────────────────────
 
-function maskKey(key, baseUrl) {
-  if (baseUrl) return baseUrl;
-  if (!key) return '(No key specified)';
-  if (key.length <= 10) return '••••••••';
-  return key.slice(0, 8) + '••••' + key.slice(-4);
-}
-
-function getScoreClass(score) {
-  if (score >= 93) return 'score-elite';
-  if (score >= 85) return 'score-high';
-  if (score >= 68) return 'score-balanced';
-  return 'score-lite';
-}
-
 function renderApiKeysTab() {
   const keys = Array.isArray(byokConfig.apiKeys) ? byokConfig.apiKeys : [];
   const activeCount = keys.filter(k => k.enabled !== false).length;
@@ -1038,228 +978,131 @@ function renderApiKeysTab() {
   return `
     <div class="heading-row">
       <div class="title-box">
-        <h3>🔑 Multi-Provider & AI Models Studio</h3>
-        <p>Configure OpenAI, Gemini, Groq, OpenRouter, Mistral, Cohere, Nvidia NIM, Cloudflare, Hugging Face, Ollama, and OmniRoute with original provider logos, live testing, and Intelligence Scoring.</p>
+        <h3>🔑 AI & API Keys</h3>
+        <p>Configure OmniRoute, OpenAI, Google Gemini, and other providers in compact short rectangle boxes.</p>
       </div>
-      <button class="btn-primary-blue" id="btn-save-all-keys">Save All</button>
+      <button class="btn-primary-blue" id="btn-save-all-keys">💾 Save All Keys</button>
+    </div>
+
+    <!-- Provider Dropdown Bar: Select provider & Add -->
+    <div class="provider-dropdown-bar">
+      <div class="provider-dropdown-left">
+        <label for="sel-add-provider" class="provider-bar-label">Provider:</label>
+        <div class="provider-select-wrapper">
+          <span id="selected-provider-logo" class="provider-bar-icon">
+            ${getProviderLogoSvg(selectedAddProvider, 22)}
+          </span>
+          <select id="sel-add-provider" class="dark-select provider-bar-select">
+            ${Object.entries(PROVIDER_METADATA).map(([id, meta]) => `
+              <option value="${id}" ${selectedAddProvider === id ? 'selected' : ''}>${escapeHtml(meta.name)}</option>
+            `).join('')}
+          </select>
+        </div>
+      </div>
+      <button type="button" class="btn-primary-blue" id="btn-quick-add-provider">+ Add Provider</button>
     </div>
 
     <!-- Status Banner -->
-    <div class="status-banner" style="background: ${activeCount > 0 ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border-color: ${activeCount > 0 ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}; color: ${activeCount > 0 ? '#4ade80' : '#f87171'};">
+    <div class="status-banner" style="margin-bottom: 14px; background: ${activeCount > 0 ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)'}; border-color: ${activeCount > 0 ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)'}; color: ${activeCount > 0 ? '#4ade80' : '#f87171'};">
       <div>
-        <strong>${activeCount > 0 ? `✅ ${activeCount} Active API Key(s)` : '⚠️ No Active API Keys'}</strong>
-        <span style="font-size: 11px; margin-left: 8px; color: var(--text-muted);">${activeCount > 0 ? 'All AI workflow steps and auto-fill will use your active keys.' : 'Add and enable an API key below to power AI workflows.'}</span>
+        <strong>${activeCount > 0 ? `✅ ${activeCount} Provider(s) Configured` : '⚠️ No Providers Configured'}</strong>
+        <span style="font-size: 11px; margin-left: 8px; color: var(--text-muted);">${activeCount > 0 ? 'Workflows and auto-fill will use your active providers.' : 'Choose a provider from the dropdown above to add keys.'}</span>
       </div>
       <div style="font-size: 11px; color: var(--text-muted);">
-        Primary Provider: <strong style="color: #38bdf8;">${(keys.find(k => k.id === byokConfig.activeKeyId)?.label || byokConfig.activeProvider || 'None')}</strong>
+        Primary: <strong style="color: #38bdf8;">${(keys.find(k => k.id === byokConfig.activeKeyId)?.label || byokConfig.activeProvider || 'None')}</strong>
       </div>
     </div>
 
-    <!-- Existing Configured Keys Deck (Spacious Modern High-Gap Layout) -->
-    <div class="provider-card-deck">
+    <!-- Configured Providers: Compact Short Rectangle Boxes -->
+    <div class="provider-compact-list">
       ${keys.length === 0 ? `
-        <div style="padding: 32px; text-align: center; color: var(--text-muted); background: #11131c; border: 1px dashed var(--border-color); border-radius: 8px; font-size: 13px;">
-          No API keys configured yet. Select a provider below to add OpenAI, Gemini, Groq, or other keys!
+        <div style="padding: 24px; text-align: center; color: var(--text-muted); background: #11131c; border: 1px dashed var(--border-color); border-radius: 8px; font-size: 13px;">
+          No API keys configured yet. Select a provider from the dropdown above to add one!
         </div>
       ` : keys.map(k => {
         const meta = PROVIDER_METADATA[k.provider] || { name: k.provider, icon: '🔑', tag: k.provider };
         const currentModelId = k.model || meta.defaultModel || 'default';
-        const intel = calculateIntelligenceScore(currentModelId);
         const fetched = keyFetchedModels[k.id];
         const presets = PRESET_MODELS[k.provider] || [{ id: currentModelId, name: currentModelId }];
         const rawList = Array.isArray(fetched) && fetched.length > 0 ? fetched : presets;
         
-        // Ensure current model is in list
-        const modelsList = rawList.map(m => {
-          const sc = calculateIntelligenceScore(m.id, m.name);
-          return { id: m.id, name: m.name || m.id, score: sc.score, tier: sc.tier, badge: sc.badge };
-        });
+        const modelsList = rawList.map(m => ({ id: m.id, name: m.name || m.id }));
         if (!modelsList.some(m => m.id === currentModelId)) {
-          modelsList.unshift({ id: currentModelId, name: currentModelId, score: intel.score, tier: intel.tier, badge: intel.badge });
+          modelsList.unshift({ id: currentModelId, name: currentModelId });
         }
-        modelsList.sort((a, b) => b.score - a.score);
 
         const testRes = testResults[k.id];
         const isPrimary = byokConfig.activeKeyId === k.id;
+        const currentBaseUrl = k.baseUrl !== undefined ? k.baseUrl : (meta.defaultBaseUrl || '');
 
         return `
-          <div class="key-card-modern ${k.enabled !== false ? 'active-key' : 'disabled-key'}" id="card-key-${k.id}">
-            <!-- Top Row: Identity & Status -->
-            <div class="key-card-top-row">
-              <div class="key-card-identity">
-                <div class="provider-logo-box">
-                  ${getProviderLogoSvg(k.provider, 28)}
+          <div class="provider-box-compact ${k.enabled !== false ? 'active-key' : 'disabled-key'}" id="card-key-${k.id}">
+            <!-- Header Row: Logo, Title, Status, Quick Actions -->
+            <div class="provider-box-header">
+              <div class="provider-box-title">
+                <div class="provider-logo-compact">
+                  ${getProviderLogoSvg(k.provider, 22)}
                 </div>
-                <div class="key-card-title-group">
-                  <span class="key-card-name">${escapeHtml(k.label || meta.name)}</span>
-                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                    <span class="provider-pill-badge">${escapeHtml(meta.name)}</span>
-                    <span class="status-pill ${k.enabled !== false ? 'status-pill-active' : 'status-pill-disabled'}">${k.enabled !== false ? (isPrimary ? '★ PRIMARY ACTIVE' : 'ACTIVE') : 'DISABLED'}</span>
-                  </div>
-                </div>
+                <strong class="provider-name-text">${escapeHtml(k.label || meta.name)}</strong>
+                ${isPrimary 
+                  ? '<span class="status-pill status-pill-primary">★ PRIMARY</span>' 
+                  : (k.enabled !== false 
+                      ? '<span class="status-pill status-pill-active">ACTIVE</span>' 
+                      : '<span class="status-pill status-pill-disabled">DISABLED</span>')}
               </div>
-              <div class="key-card-actions">
-                ${!isPrimary && k.enabled !== false ? `<button class="btn-secondary-gray btn-set-primary-key" data-id="${k.id}" style="padding: 6px 12px; font-size: 11px;">★ Set Primary</button>` : ''}
-                <button class="btn-secondary-gray btn-toggle-key" data-id="${k.id}" style="padding: 6px 12px; font-size: 11px;">${k.enabled !== false ? 'Disable' : 'Enable'}</button>
-                <button class="btn-danger-outline btn-del-key" data-id="${k.id}" style="padding: 6px 10px; font-size: 11px;" title="Delete this key">🗑️ Delete</button>
+              <div class="provider-box-actions">
+                ${!isPrimary && k.enabled !== false ? `<button type="button" class="btn-secondary-gray btn-set-primary-key" data-id="${k.id}" style="padding: 4px 10px; font-size: 11px;">★ Primary</button>` : ''}
+                <button type="button" class="btn-secondary-gray btn-test-key" data-id="${k.id}" style="padding: 4px 10px; font-size: 11px;">⚡ Test</button>
+                <button type="button" class="btn-secondary-gray btn-toggle-key" data-id="${k.id}" style="padding: 4px 10px; font-size: 11px;">${k.enabled !== false ? 'Disable' : 'Enable'}</button>
+                <button type="button" class="btn-danger-outline btn-del-key" data-id="${k.id}" style="padding: 4px 8px; font-size: 11px;" title="Delete this provider">🗑️</button>
               </div>
             </div>
 
-            <!-- Spacious Parameters Grid (High Gap) -->
-            <div class="key-details-grid-spacious">
-              <div class="key-detail-block">
-                <span class="detail-label">API Key / Endpoint</span>
-                <div class="detail-value-box">
-                  <span class="key-masked-text">${maskKey(k.key, k.baseUrl)}</span>
+            <!-- Compact 3-Column Small Rectangle Row: Base URL | API Key | Model -->
+            <div class="provider-box-fields ${k.provider === 'cloudflare' ? 'has-account-id' : ''}">
+              <div class="compact-field">
+                <label class="compact-label">Base URL</label>
+                <input type="text" class="dark-input key-field-baseurl" data-id="${k.id}" value="${escapeHtml(currentBaseUrl)}" placeholder="${escapeHtml(meta.defaultBaseUrl || 'Base URL')}" />
+              </div>
+
+              <div class="compact-field">
+                <label class="compact-label">API Key / Token</label>
+                <div class="compact-input-eye">
+                  <input type="password" class="dark-input key-field-key" id="input-key-${k.id}" data-id="${k.id}" value="${escapeHtml(k.key || '')}" placeholder="${escapeHtml(meta.placeholder || 'Enter API Key')}" />
+                  <button type="button" class="btn-toggle-eye" data-id="${k.id}" title="Show / Hide Key">👁️</button>
                 </div>
               </div>
-              <div class="key-detail-block">
-                <span class="detail-label">Intelligence Capability Index</span>
-                <div class="detail-value-box">
-                  <span class="score-badge ${getScoreClass(intel.score)}">${intel.badge} Score: ${intel.score}/100 (${intel.tier})</span>
+
+              <div class="compact-field">
+                <label class="compact-label">Selected Model</label>
+                <div class="compact-model-wrap">
+                  <select class="dark-select key-model-select" data-id="${k.id}">
+                    ${modelsList.map(m => `
+                      <option value="${m.id}" ${m.id === currentModelId ? 'selected' : ''}>${escapeHtml(m.name || m.id)}</option>
+                    `).join('')}
+                  </select>
+                  <button type="button" class="btn-secondary-gray btn-fetch-models" data-id="${k.id}" title="Discover models">🔄</button>
                 </div>
               </div>
-              ${k.baseUrl ? `
-                <div class="key-detail-block">
-                  <span class="detail-label">Base Server URL</span>
-                  <div class="detail-value-box">
-                    <code style="color: #38bdf8; font-size: 11px;">${escapeHtml(k.baseUrl)}</code>
-                  </div>
+
+              ${k.provider === 'cloudflare' ? `
+                <div class="compact-field">
+                  <label class="compact-label">Account ID</label>
+                  <input type="text" class="dark-input key-field-accountid" data-id="${k.id}" value="${escapeHtml(k.accountId || '')}" placeholder="Cloudflare Account ID" />
                 </div>
               ` : ''}
-              ${k.accountId ? `
-                <div class="key-detail-block">
-                  <span class="detail-label">Cloudflare Account ID</span>
-                  <div class="detail-value-box">
-                    <code style="color: #e2e8f0; font-size: 11px;">${escapeHtml(k.accountId)}</code>
-                  </div>
-                </div>
-              ` : ''}
             </div>
 
-            <!-- Model Selection & Quick Actions Row -->
-            <div class="key-model-action-row">
-              <div class="model-select-group">
-                <span class="detail-label">Selected Model (With Live Capability Score):</span>
-                <select class="dark-select key-model-select" data-id="${k.id}" style="width: 100%; font-size: 12px; padding: 8px 10px;">
-                  ${modelsList.map(m => `
-                    <option value="${m.id}" ${m.id === currentModelId ? 'selected' : ''}>
-                      [Score: ${m.score}/100 ${m.badge}] ${escapeHtml(m.name || m.id)}
-                    </option>
-                  `).join('')}
-                </select>
-              </div>
-              <div class="model-buttons-group">
-                <button class="btn-secondary-gray btn-fetch-models" data-id="${k.id}" style="padding: 8px 14px; font-size: 11px;" title="Discover all live models for this key">🔄 Fetch Models</button>
-                <button class="btn-secondary-gray btn-test-key" data-id="${k.id}" style="padding: 8px 14px; font-size: 11px;" title="Test this API key live">🧪 Test Key</button>
-              </div>
-            </div>
-
-            <!-- Test Feedback Result Banner -->
+            <!-- Inline Test Result (if test ran) -->
             ${testRes ? `
-              <div class="test-result-banner ${testRes.ok ? 'success' : 'error'}">
+              <div class="test-result-inline ${testRes.ok ? 'success' : 'error'}">
                 <span>${testRes.ok ? '✅' : '❌'}</span>
-                <span>${testRes.ok ? testRes.message : (testRes.error || 'Test failed')}</span>
+                <span>${escapeHtml(testRes.ok ? testRes.message : (testRes.error || 'Test failed'))}</span>
               </div>
             ` : ''}
           </div>
         `;
       }).join('')}
-    </div>
-
-    <!-- ➕ Add New Provider & API Key (Interactive Visual Grid with Original Company Logos) -->
-    <div style="background: #11131c; border: 1px solid var(--border-color); border-radius: 10px; padding: 22px; margin-top: 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
-        <strong style="color: #fff; font-size: 14px;">➕ Add New Provider & API Key (Supports Multiple Keys per Provider)</strong>
-        <span style="font-size: 11px; color: #38bdf8;">Configure keys for rotation or backup</span>
-      </div>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-        Click on an authentic company logo below to select the provider, then enter your API key:
-      </p>
-
-      <!-- Interactive Visual Provider Grid -->
-      <div class="provider-selection-grid">
-        ${Object.entries(PROVIDER_METADATA).map(([id, meta]) => `
-          <div class="provider-select-card ${selectedAddProvider === id ? 'selected' : ''}" data-provider="${id}" title="Select ${escapeHtml(meta.name)}">
-            <div class="provider-card-logo-wrap">
-              ${getProviderLogoSvg(id, 28)}
-            </div>
-            <span class="provider-card-name">${escapeHtml(meta.name.replace(/\s*\(.*?\)/, ''))}</span>
-            <span class="provider-card-tag">${escapeHtml(meta.tag || id)}</span>
-          </div>
-        `).join('')}
-      </div>
-
-      <!-- Synchronized Provider Dropdown (for accessibility) -->
-      <div style="display: none;">
-        <select id="new-key-provider" class="dark-select">
-          ${Object.entries(PROVIDER_METADATA).map(([id, meta]) => `
-            <option value="${id}" ${selectedAddProvider === id ? 'selected' : ''}>${meta.name}</option>
-          `).join('')}
-        </select>
-      </div>
-
-      <!-- Spacious Input Grid -->
-      <div class="form-grid-3" style="gap: 16px; margin-top: 14px;">
-        <div class="form-group">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Active Provider Selection</label>
-          <div style="display: flex; align-items: center; gap: 10px; background: #0c0e16; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 9px 12px;">
-            ${getProviderLogoSvg(selectedAddProvider, 22)}
-            <strong style="color: #ffffff; font-size: 13px;">${(PROVIDER_METADATA[selectedAddProvider]?.name || selectedAddProvider)}</strong>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Key Custom Label</label>
-          <input type="text" id="new-key-label" class="dark-input" placeholder="e.g. My ${(PROVIDER_METADATA[selectedAddProvider]?.name || 'API')} Key" style="padding: 10px 12px;" />
-        </div>
-
-        <div class="form-group">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">API Key / Secret Token</label>
-          <div style="display: flex; gap: 6px;">
-            <input type="password" id="new-key-val" class="dark-input" placeholder="${(PROVIDER_METADATA[selectedAddProvider]?.placeholder || 'Enter API Key')}" style="padding: 10px 12px; flex: 1;" />
-            <button type="button" class="btn-secondary-gray" id="btn-toggle-new-key-vis" style="padding: 0 12px;" title="Show/Hide Key">👁️</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contextual Inputs (Base URL or Account ID) -->
-      <div id="new-key-extra-fields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
-        <div class="form-group" id="group-new-baseurl" style="display: ${['ollama', 'omniroute'].includes(selectedAddProvider) ? 'flex' : 'none'};">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Base Server URL</label>
-          <input type="text" id="new-key-baseurl" class="dark-input" value="${selectedAddProvider === 'omniroute' ? 'http://127.0.0.1:20128/v1' : 'http://localhost:11434'}" style="padding: 10px 12px;" />
-        </div>
-        <div class="form-group" id="group-new-accountid" style="display: ${selectedAddProvider === 'cloudflare' ? 'flex' : 'none'};">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Cloudflare Account ID</label>
-          <input type="text" id="new-key-accountid" class="dark-input" placeholder="Enter 32-char Cloudflare Account ID" style="padding: 10px 12px;" />
-        </div>
-      </div>
-
-      <!-- Model Preview & Actions -->
-      <div style="display: flex; align-items: flex-end; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
-        <div class="form-group" style="flex: 1; min-width: 280px;">
-          <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8;">Select Initial Model (With Intelligence Rating):</label>
-          <select id="new-key-model" class="dark-select" style="padding: 9px 12px; font-size: 12px;">
-            ${(() => {
-              const presets = addFormFetchedModels.length > 0 ? addFormFetchedModels : (PRESET_MODELS[selectedAddProvider] || []);
-              const scored = presets.map(m => {
-                const sc = calculateIntelligenceScore(m.id, m.name);
-                return { ...m, score: sc.score, badge: sc.badge, tier: sc.tier };
-              }).sort((a, b) => b.score - a.score);
-              return scored.map(m => `
-                <option value="${m.id}">[Score: ${m.score}/100 ${m.badge}] ${escapeHtml(m.name || m.id)}</option>
-              `).join('');
-            })()}
-          </select>
-        </div>
-
-        <button type="button" class="btn-secondary-gray" id="btn-fetch-models-addform" style="padding: 9px 16px; font-size: 11px;">🔄 Fetch Models</button>
-        <button type="button" class="btn-secondary-gray" id="btn-test-key-addform" style="padding: 9px 16px; font-size: 11px;">🧪 Test Key</button>
-        <button type="button" class="btn-primary-blue" id="btn-add-key-confirm" style="padding: 9px 20px; font-size: 12px; font-weight: 700;">+ Add Key & Activate</button>
-      </div>
-
-      <!-- Add Form Test Feedback Banner -->
-      <div id="add-form-test-feedback" style="display: none; margin-top: 12px; font-size: 12px; font-weight: 600; padding: 10px 14px; border-radius: 6px;"></div>
     </div>
   `;
 }
@@ -2090,35 +1933,84 @@ function attachEvents() {
   });
 
   // ── Multi-Provider & API Key Studio Events ──
-  // Save All Keys
-  document.getElementById('btn-save-all-keys')?.addEventListener('click', async () => {
-    await persist(STORAGE_KEYS.BYOK_CONFIG, byokConfig, 'All API keys saved successfully!');
-    await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
+
+  // Switch Provider in Dropdown
+  document.getElementById('sel-add-provider')?.addEventListener('change', (e) => {
+    selectedAddProvider = e.target.value;
+    const logoEl = document.getElementById('selected-provider-logo');
+    if (logoEl) logoEl.innerHTML = getProviderLogoSvg(selectedAddProvider, 22);
   });
 
-  // Switch Provider in Add Key form
-  document.getElementById('new-key-provider')?.addEventListener('change', (e) => {
-    selectedAddProvider = e.target.value;
-    addFormFetchedModels = [];
+  // Quick Add Provider Button
+  document.getElementById('btn-quick-add-provider')?.addEventListener('click', async () => {
+    const p = selectedAddProvider || 'omniroute';
+    const meta = PROVIDER_METADATA[p] || { name: p, defaultModel: '', defaultBaseUrl: '' };
+    const newKeyObj = {
+      id: `${p}_${Date.now()}`,
+      provider: p,
+      label: meta.name,
+      baseUrl: meta.defaultBaseUrl || '',
+      key: '',
+      model: meta.defaultModel || '',
+      accountId: '',
+      enabled: true,
+      usedToday: 0,
+      dailyLimit: 1000,
+      createdAt: Date.now(),
+    };
+
+    if (!Array.isArray(byokConfig.apiKeys)) byokConfig.apiKeys = [];
+    byokConfig.apiKeys.push(newKeyObj);
+    if (!byokConfig.activeKeyId) {
+      byokConfig.activeKeyId = newKeyObj.id;
+      byokConfig.activeProvider = p;
+    }
+
+    await persist(STORAGE_KEYS.BYOK_CONFIG, byokConfig, `Added ${meta.name}!`);
+    await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
     renderAppHub();
   });
 
-  // Interactive Provider Selection Cards
-  document.querySelectorAll('.provider-select-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const p = card.getAttribute('data-provider');
-      if (p && p !== selectedAddProvider) {
-        selectedAddProvider = p;
-        addFormFetchedModels = [];
-        renderAppHub();
+  // Save All Keys
+  document.getElementById('btn-save-all-keys')?.addEventListener('click', async () => {
+    document.querySelectorAll('.provider-box-compact').forEach(card => {
+      const id = card.id.replace('card-key-', '');
+      const keyObj = (byokConfig.apiKeys || []).find(k => k.id === id);
+      if (!keyObj) return;
+
+      const urlInput = card.querySelector('.key-field-baseurl');
+      const keyInput = card.querySelector('.key-field-key');
+      const modelSelect = card.querySelector('.key-model-select');
+      const accountInput = card.querySelector('.key-field-accountid');
+
+      if (urlInput) keyObj.baseUrl = urlInput.value.trim();
+      if (keyInput) keyObj.key = keyInput.value.trim();
+      if (modelSelect) keyObj.model = modelSelect.value;
+      if (accountInput) keyObj.accountId = accountInput.value.trim();
+
+      if (keyObj.provider === 'omniroute') {
+        byokConfig.omniroute = { baseUrl: keyObj.baseUrl, apiKey: keyObj.key, model: keyObj.model };
+      } else if (keyObj.provider === 'gemini') {
+        byokConfig.gemini = { apiKey: keyObj.key, model: keyObj.model };
+      } else if (keyObj.provider === 'openai') {
+        byokConfig.openai = { apiKey: keyObj.key, model: keyObj.model };
       }
     });
+
+    await persist(STORAGE_KEYS.BYOK_CONFIG, byokConfig, '✅ All API keys saved successfully!');
+    await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
+    renderAppHub();
   });
 
-  // Toggle Password Visibility in Add Key form
-  document.getElementById('btn-toggle-new-key-vis')?.addEventListener('click', () => {
-    const input = document.getElementById('new-key-val');
-    if (input) input.type = input.type === 'password' ? 'text' : 'password';
+  // Toggle Password Visibility in Key Input
+  document.querySelectorAll('.btn-toggle-eye').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const input = document.getElementById(`input-key-${id}`);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    });
   });
 
   // Test Key on Individual Card
@@ -2128,6 +2020,17 @@ function attachEvents() {
       const keyObj = (byokConfig.apiKeys || []).find(k => k.id === id);
       if (!keyObj) return;
 
+      const card = document.getElementById(`card-key-${id}`);
+      const urlInput = card?.querySelector('.key-field-baseurl');
+      const keyInput = card?.querySelector('.key-field-key');
+      const modelSelect = card?.querySelector('.key-model-select');
+      const accountInput = card?.querySelector('.key-field-accountid');
+
+      const currentKey = keyInput ? keyInput.value.trim() : keyObj.key;
+      const currentUrl = urlInput ? urlInput.value.trim() : keyObj.baseUrl;
+      const currentModel = modelSelect ? modelSelect.value : keyObj.model;
+      const currentAccount = accountInput ? accountInput.value.trim() : keyObj.accountId;
+
       btn.textContent = '🔄 Testing...';
       btn.disabled = true;
 
@@ -2136,10 +2039,10 @@ function attachEvents() {
           action: 'TEST_API_KEY',
           payload: {
             provider: keyObj.provider,
-            key: keyObj.key,
-            baseUrl: keyObj.baseUrl,
-            accountId: keyObj.accountId,
-            model: keyObj.model,
+            key: currentKey,
+            baseUrl: currentUrl,
+            accountId: currentAccount,
+            model: currentModel,
           },
         });
 
@@ -2149,7 +2052,7 @@ function attachEvents() {
         testResults[id] = { ok: false, error: err.message };
         showToast(`Test error: ${err.message}`, true);
       } finally {
-        btn.textContent = '🧪 Test Key';
+        btn.textContent = '⚡ Test';
         btn.disabled = false;
         renderAppHub();
       }
@@ -2163,7 +2066,16 @@ function attachEvents() {
       const keyObj = (byokConfig.apiKeys || []).find(k => k.id === id);
       if (!keyObj) return;
 
-      btn.textContent = '⏳ Fetching...';
+      const card = document.getElementById(`card-key-${id}`);
+      const urlInput = card?.querySelector('.key-field-baseurl');
+      const keyInput = card?.querySelector('.key-field-key');
+      const accountInput = card?.querySelector('.key-field-accountid');
+
+      const currentKey = keyInput ? keyInput.value.trim() : keyObj.key;
+      const currentUrl = urlInput ? urlInput.value.trim() : keyObj.baseUrl;
+      const currentAccount = accountInput ? accountInput.value.trim() : keyObj.accountId;
+
+      btn.textContent = '⏳';
       btn.disabled = true;
 
       try {
@@ -2171,9 +2083,9 @@ function attachEvents() {
           action: 'FETCH_PROVIDER_MODELS',
           payload: {
             provider: keyObj.provider,
-            key: keyObj.key,
-            baseUrl: keyObj.baseUrl,
-            accountId: keyObj.accountId,
+            key: currentKey,
+            baseUrl: currentUrl,
+            accountId: currentAccount,
           },
         });
 
@@ -2186,7 +2098,7 @@ function attachEvents() {
       } catch (err) {
         showToast(`Fetch error: ${err.message}`, true);
       } finally {
-        btn.textContent = '🔄 Fetch Models';
+        btn.textContent = '🔄';
         btn.disabled = false;
         renderAppHub();
       }
@@ -2202,7 +2114,6 @@ function attachEvents() {
         keyObj.model = e.target.value;
         await persist(STORAGE_KEYS.BYOK_CONFIG, byokConfig, `Model updated to ${keyObj.model}`);
         await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
-        renderAppHub();
       }
     });
   });
@@ -2252,118 +2163,6 @@ function attachEvents() {
       await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
       renderAppHub();
     });
-  });
-
-  // Test Key in Add Form
-  document.getElementById('btn-test-key-addform')?.addEventListener('click', async () => {
-    const provider = document.getElementById('new-key-provider')?.value || 'openrouter';
-    const key = document.getElementById('new-key-val')?.value.trim() || '';
-    const baseUrl = document.getElementById('new-key-baseurl')?.value.trim() || '';
-    const accountId = document.getElementById('new-key-accountid')?.value.trim() || '';
-    const model = document.getElementById('new-key-model')?.value || '';
-
-    const feedback = document.getElementById('add-form-test-feedback');
-    if (feedback) {
-      feedback.style.display = 'block';
-      feedback.style.background = 'rgba(56, 189, 248, 0.15)';
-      feedback.style.color = '#38bdf8';
-      feedback.textContent = '🔄 Testing API key live...';
-    }
-
-    try {
-      const res = await chrome.runtime.sendMessage({
-        action: 'TEST_API_KEY',
-        payload: { provider, key, baseUrl, accountId, model },
-      });
-
-      if (feedback) {
-        feedback.style.display = 'block';
-        feedback.style.background = res.ok ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)';
-        feedback.style.color = res.ok ? '#4ade80' : '#f87171';
-        feedback.style.border = `1px solid ${res.ok ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`;
-        feedback.textContent = res.ok ? res.message : `❌ Test Failed: ${res.error || 'Unknown error'}`;
-      }
-    } catch (err) {
-      if (feedback) {
-        feedback.style.display = 'block';
-        feedback.style.background = 'rgba(239, 68, 68, 0.15)';
-        feedback.style.color = '#f87171';
-        feedback.textContent = `❌ Test Error: ${err.message}`;
-      }
-    }
-  });
-
-  // Fetch Models in Add Form
-  document.getElementById('btn-fetch-models-addform')?.addEventListener('click', async () => {
-    const provider = document.getElementById('new-key-provider')?.value || 'openrouter';
-    const key = document.getElementById('new-key-val')?.value.trim() || '';
-    const baseUrl = document.getElementById('new-key-baseurl')?.value.trim() || '';
-    const accountId = document.getElementById('new-key-accountid')?.value.trim() || '';
-
-    const btn = document.getElementById('btn-fetch-models-addform');
-    if (btn) btn.textContent = '⏳ Fetching...';
-
-    try {
-      const res = await chrome.runtime.sendMessage({
-        action: 'FETCH_PROVIDER_MODELS',
-        payload: { provider, key, baseUrl, accountId },
-      });
-
-      if (res?.ok && Array.isArray(res.models)) {
-        addFormFetchedModels = res.models;
-        showToast(`✅ Loaded ${res.models.length} live models with Intelligence Scores!`);
-        renderAppHub();
-      } else {
-        showToast(`Fetch models failed: ${res?.error || 'Unknown error'}`, true);
-      }
-    } catch (err) {
-      showToast(`Fetch error: ${err.message}`, true);
-    } finally {
-      if (btn) btn.textContent = '🔄 Fetch Models';
-    }
-  });
-
-  // Add Key Confirm
-  document.getElementById('btn-add-key-confirm')?.addEventListener('click', async () => {
-    const provider = document.getElementById('new-key-provider')?.value || 'openrouter';
-    const label = document.getElementById('new-key-label')?.value.trim() || `${(PROVIDER_METADATA[provider]?.name || provider)} Key`;
-    const key = document.getElementById('new-key-val')?.value.trim() || '';
-    const baseUrl = document.getElementById('new-key-baseurl')?.value.trim() || '';
-    const accountId = document.getElementById('new-key-accountid')?.value.trim() || '';
-    const model = document.getElementById('new-key-model')?.value || PROVIDER_METADATA[provider]?.defaultModel || '';
-
-    if (!['ollama'].includes(provider) && !key) {
-      return alert('Please enter an API Key / Token.');
-    }
-    if (provider === 'cloudflare' && !accountId) {
-      return alert('Please enter your Cloudflare Account ID.');
-    }
-
-    const newKeyObj = {
-      id: `${provider}_${Date.now()}`,
-      provider,
-      key,
-      label,
-      model,
-      baseUrl: baseUrl || (provider === 'omniroute' ? 'http://127.0.0.1:20128/v1' : (provider === 'ollama' ? 'http://localhost:11434' : '')),
-      accountId,
-      enabled: true,
-      usedToday: 0,
-      dailyLimit: PROVIDER_METADATA[provider]?.dailyLimit || 1000,
-      createdAt: Date.now(),
-    };
-
-    if (!Array.isArray(byokConfig.apiKeys)) byokConfig.apiKeys = [];
-    byokConfig.apiKeys.push(newKeyObj);
-    if (!byokConfig.activeKeyId) {
-      byokConfig.activeKeyId = newKeyObj.id;
-      byokConfig.activeProvider = provider;
-    }
-
-    addFormFetchedModels = [];
-    await persist(STORAGE_KEYS.BYOK_CONFIG, byokConfig, `✅ Added ${newKeyObj.label}!`);
-    await persist(STORAGE_KEYS.API_KEYS, byokConfig.apiKeys);
-    renderAppHub();
   });
 
   // Master Prompt Save & Reset

@@ -1741,20 +1741,14 @@ async function fetchProviderModelsBackend({ provider, key, baseUrl, accountId })
       }
     }
 
-    // Attach Intelligence Scores and Sort Descending
-    const scoredModels = rawModels.map(m => {
-      const intel = calculateIntelligenceScore(m.id, m.name);
-      return {
-        id: m.id,
-        name: m.name || m.id,
-        score: intel.score,
-        tier: intel.tier,
-        badge: intel.badge,
-        label: `[Score: ${intel.score} ${intel.badge}] ${m.name || m.id}`,
-      };
-    }).sort((a, b) => b.score - a.score);
+    // Clean Model List
+    const cleanModels = rawModels.map(m => ({
+      id: m.id,
+      name: m.name || m.id,
+      label: m.name || m.id,
+    }));
 
-    return { ok: true, models: scoredModels };
+    return { ok: true, models: cleanModels };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
