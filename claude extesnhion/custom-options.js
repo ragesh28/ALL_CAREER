@@ -987,16 +987,35 @@ function renderApiKeysTab() {
     <!-- Provider Dropdown Bar: Select provider & Add -->
     <div class="provider-dropdown-bar">
       <div class="provider-dropdown-left">
-        <label for="sel-add-provider" class="provider-bar-label">Provider:</label>
-        <div class="provider-select-wrapper">
-          <span id="selected-provider-logo" class="provider-bar-icon">
-            ${getProviderLogoSvg(selectedAddProvider, 22)}
-          </span>
-          <select id="sel-add-provider" class="dark-select provider-bar-select">
+        <span class="provider-bar-label">Provider:</span>
+        <div class="custom-dropdown-container" id="provider-custom-dropdown">
+          <button type="button" class="custom-dropdown-trigger" id="btn-provider-dropdown" aria-haspopup="listbox" aria-expanded="false">
+            <span class="custom-dropdown-left-info">
+              <span id="selected-provider-logo" class="provider-bar-icon">
+                ${getProviderLogoSvg(selectedAddProvider, 22)}
+              </span>
+              <span id="selected-provider-name" class="provider-bar-name">
+                ${escapeHtml(PROVIDER_METADATA[selectedAddProvider]?.name || selectedAddProvider)}
+              </span>
+            </span>
+            <svg class="custom-dropdown-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <div class="custom-dropdown-menu" id="provider-dropdown-menu" role="listbox">
             ${Object.entries(PROVIDER_METADATA).map(([id, meta]) => `
-              <option value="${id}" ${selectedAddProvider === id ? 'selected' : ''}>${escapeHtml(meta.name)}</option>
+              <div class="custom-dropdown-item ${selectedAddProvider === id ? 'selected' : ''}" data-value="${id}" role="option">
+                <span class="custom-dropdown-item-left">
+                  <span class="dropdown-item-icon">${getProviderLogoSvg(id, 20)}</span>
+                  <span class="dropdown-item-name">${escapeHtml(meta.name)}</span>
+                </span>
+                ${selectedAddProvider === id ? '<span class="dropdown-item-check">✓</span>' : ''}
+              </div>
             `).join('')}
-          </select>
+          </div>
+
+          <input type="hidden" id="sel-add-provider" value="${selectedAddProvider}" />
         </div>
       </div>
       <button type="button" class="btn-primary-blue" id="btn-quick-add-provider">+ Add Provider</button>
@@ -1076,11 +1095,29 @@ function renderApiKeysTab() {
               <div class="compact-field">
                 <label class="compact-label">Selected Model</label>
                 <div class="compact-model-wrap">
-                  <select class="dark-select key-model-select" data-id="${k.id}">
-                    ${modelsList.map(m => `
-                      <option value="${m.id}" ${m.id === currentModelId ? 'selected' : ''}>${escapeHtml(m.name || m.id)}</option>
-                    `).join('')}
-                  </select>
+                  <div class="custom-dropdown-container custom-model-dropdown" data-id="${k.id}">
+                    <button type="button" class="custom-dropdown-trigger model-dropdown-trigger" data-id="${k.id}">
+                      <span class="model-dropdown-selected-name" data-id="${k.id}">
+                        ${escapeHtml((modelsList.find(m => m.id === currentModelId) || {}).name || currentModelId)}
+                      </span>
+                      <svg class="custom-dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+                    <div class="custom-dropdown-menu model-dropdown-menu" data-id="${k.id}">
+                      ${modelsList.map(m => `
+                        <div class="custom-dropdown-item ${m.id === currentModelId ? 'selected' : ''}" data-model-id="${m.id}" data-id="${k.id}">
+                          <span class="dropdown-item-name">${escapeHtml(m.name || m.id)}</span>
+                          ${m.id === currentModelId ? '<span class="dropdown-item-check">✓</span>' : ''}
+                        </div>
+                      `).join('')}
+                    </div>
+                    <select class="dark-select key-model-select" data-id="${k.id}" style="display: none;">
+                      ${modelsList.map(m => `
+                        <option value="${m.id}" ${m.id === currentModelId ? 'selected' : ''}>${escapeHtml(m.name || m.id)}</option>
+                      `).join('')}
+                    </select>
+                  </div>
                   <button type="button" class="btn-secondary-gray btn-fetch-models" data-id="${k.id}" title="Discover models">🔄</button>
                 </div>
               </div>
@@ -1934,12 +1971,129 @@ function attachEvents() {
 
   // ── Multi-Provider & API Key Studio Events ──
 
-  // Switch Provider in Dropdown
-  document.getElementById('sel-add-provider')?.addEventListener('change', (e) => {
-    selectedAddProvider = e.target.value;
-    const logoEl = document.getElementById('selected-provider-logo');
-    if (logoEl) logoEl.innerHTML = getProviderLogoSvg(selectedAddProvider, 22);
+  // Custom Provider Dropdown Toggle & Selection
+  const providerTrigger = document.getElementById('btn-provider-dropdown');
+  const providerDropdownContainer = document.getElementById('provider-custom-dropdown');
+  const providerMenu = document.getElementById('provider-dropdown-menu');
+
+  providerTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = providerDropdownContainer?.classList.contains('open');
+    document.querySelectorAll('.custom-dropdown-container.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) {
+      providerDropdownContainer?.classList.add('open');
+      providerTrigger.setAttribute('aria-expanded', 'true');
+    } else {
+      providerTrigger.setAttribute('aria-expanded', 'false');
+    }
   });
+
+  providerMenu?.querySelectorAll('.custom-dropdown-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const val = item.getAttribute('data-value');
+      if (!val) return;
+      selectedAddProvider = val;
+
+      const logoEl = document.getElementById('selected-provider-logo');
+      if (logoEl) logoEl.innerHTML = getProviderLogoSvg(selectedAddProvider, 22);
+
+      const nameEl = document.getElementById('selected-provider-name');
+      if (nameEl) nameEl.textContent = PROVIDER_METADATA[val]?.name || val;
+
+      const hiddenInput = document.getElementById('sel-add-provider');
+      if (hiddenInput) {
+        hiddenInput.value = val;
+        hiddenInput.dispatchEvent(new Event('change'));
+      }
+
+      providerMenu.querySelectorAll('.custom-dropdown-item').forEach(it => {
+        const isSel = it.getAttribute('data-value') === val;
+        it.classList.toggle('selected', isSel);
+        let checkEl = it.querySelector('.dropdown-item-check');
+        if (isSel && !checkEl) {
+          checkEl = document.createElement('span');
+          checkEl.className = 'dropdown-item-check';
+          checkEl.textContent = '✓';
+          it.appendChild(checkEl);
+        } else if (!isSel && checkEl) {
+          checkEl.remove();
+        }
+      });
+
+      providerDropdownContainer?.classList.remove('open');
+      providerTrigger?.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Custom Model Dropdown Toggle & Selection
+  document.querySelectorAll('.model-dropdown-trigger').forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const container = trigger.closest('.custom-model-dropdown');
+      const isOpen = container?.classList.contains('open');
+      document.querySelectorAll('.custom-dropdown-container.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) {
+        container?.classList.add('open');
+      }
+    });
+  });
+
+  document.querySelectorAll('.model-dropdown-menu .custom-dropdown-item').forEach(item => {
+    item.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const modelId = item.getAttribute('data-model-id');
+      const keyId = item.getAttribute('data-id');
+      const container = item.closest('.custom-model-dropdown');
+      if (!container) return;
+
+      const nameEl = container.querySelector('.model-dropdown-selected-name');
+      if (nameEl) nameEl.textContent = item.querySelector('.dropdown-item-name')?.textContent || modelId;
+
+      const hiddenSelect = container.querySelector('.key-model-select');
+      if (hiddenSelect) {
+        hiddenSelect.value = modelId;
+        hiddenSelect.dispatchEvent(new Event('change'));
+      }
+
+      container.querySelectorAll('.custom-dropdown-item').forEach(it => {
+        const isSel = it.getAttribute('data-model-id') === modelId;
+        it.classList.toggle('selected', isSel);
+        let checkEl = it.querySelector('.dropdown-item-check');
+        if (isSel && !checkEl) {
+          checkEl = document.createElement('span');
+          checkEl.className = 'dropdown-item-check';
+          checkEl.textContent = '✓';
+          it.appendChild(checkEl);
+        } else if (!isSel && checkEl) {
+          checkEl.remove();
+        }
+      });
+
+      container.classList.remove('open');
+    });
+  });
+
+  // Global Outside Click & Escape Handlers (registered once)
+  if (!window.__customDropdownHandlersBound) {
+    window.__customDropdownHandlersBound = true;
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.custom-dropdown-container.open').forEach(el => {
+        el.classList.remove('open');
+        const trigger = el.querySelector('.custom-dropdown-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.custom-dropdown-container.open').forEach(el => {
+          el.classList.remove('open');
+          const trigger = el.querySelector('.custom-dropdown-trigger');
+          if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  }
 
   // Quick Add Provider Button
   document.getElementById('btn-quick-add-provider')?.addEventListener('click', async () => {
