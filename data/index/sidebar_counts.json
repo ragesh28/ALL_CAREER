@@ -1,5 +1,5 @@
 {
-  "total_jobs": 732740,
+  "total_jobs": 732775,
   "sources": {
     "naukri": 270396,
     "linkedin": 180910,
@@ -41,27 +41,27 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 47,
-    "telegram_message": 83
+    "telegram_post": 60,
+    "telegram_message": 105
   },
   "locations": {
-    "bangalore": 161556,
-    "mumbai": 97248,
+    "bangalore": 161566,
+    "mumbai": 97250,
     "delhi": 78485,
-    "chennai": 75911,
+    "chennai": 75912,
     "hyderabad": 68568,
-    "pune": 55459,
+    "pune": 55461,
     "noida": 35336,
     "ahmedabad": 29406,
     "kolkata": 24056,
-    "all_india": 22093,
-    "coimbatore": 14133,
+    "all_india": 22105,
+    "coimbatore": 14135,
     "kochi": 11340,
-    "remote": 6748,
+    "remote": 6751,
     "jaipur": 5208,
     "maharashtra": 4740,
     "indore": 4140,
-    "chandigarh": 3981,
+    "chandigarh": 3982,
     "kerala": 2147,
     "rajasthan": 1897,
     "kl": 1467,
@@ -180,14 +180,15 @@
     "salem": 1,
     "sas_nagar": 1,
     "angola": 1,
-    "mysore": 1,
+    "mysore": 2,
     "hybrid_hybrid": 1,
     "rakanpur": 1,
     "hardoisandila": 1,
     "patiala": 1,
     "kumbakonam": 1,
     "tirunelveli": 1,
-    "sofia": 1
+    "sofia": 1,
+    "tumakuru": 1
   },
-  "generated_at": "2026-09-23T11:51:37.540687"
+  "generated_at": "2026-09-23T12:08:13.668975"
 }
