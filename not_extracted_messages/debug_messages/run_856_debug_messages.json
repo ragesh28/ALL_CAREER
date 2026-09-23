@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "856",
+  "workflow_run_id": "35893821463",
+  "timestamp": "2026-09-23T17:23:08.612780",
+  "runtime_minutes": 10.07,
+  "messages_processed": 37,
+  "new_jobs_stored": 14,
+  "skipped_jobs_count": 10,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259431,
+      "text": "Urgent hiring (all over bengaluru)🚨\nSee)\n0m00%00L)\ne3)\n:\n3\ne\n(Only Male Candidates)\nendssenagava aane\nGEZ ZAO3: QG9 nOE3T)\n:15,000/-\n3: 18 to 30 Age\nmARA\n100% even\nRmSion\nNSE3: ZF 233\nZ3: e \na: 304Qnb\n(0 23a 03\n(PG) De)s\n( gd da ad)\nL2OHGE2L\n93530390229844439022\nEOWAd-WenZOE\nURGENTLY HIRING - APPLY NOW\nA",
+      "timestamp": "2026-09-23T12:14:09+00:00"
+    }
+  ]
+}
