@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "858",
+  "workflow_run_id": "35935176619",
+  "timestamp": "2026-09-23T23:49:22.155511",
+  "runtime_minutes": 1.49,
+  "messages_processed": 3,
+  "new_jobs_stored": 6,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6368,
+      "text": "If you want to learn how AWS bills you, check this for FREE: https://fandf.co/4xFweUy",
+      "timestamp": "2026-09-23T20:36:32+00:00"
+    }
+  ]
+}
