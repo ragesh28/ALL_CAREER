@@ -2787,7 +2787,7 @@
         function isWalkinJob(job) {
             if (!job) return false;
             const src = String(job.source || '').toLowerCase();
-            if (src === 'google_images' || src.includes('flyer')) return true;
+            if (src === 'google_images' || src.includes('google') || src.includes('flyer')) return true;
 
             const title = String(job.title || job.role || '');
             const desc = String(job.description || job.other_details || '');
@@ -2796,7 +2796,7 @@
             if (walkKwRegex.test(title) || walkKwRegex.test(desc)) {
                 return true;
             }
-            if (job.is_walkin === true && (walkKwRegex.test(title) || walkKwRegex.test(desc) || src === 'google_images')) {
+            if (job.is_walkin === true && (walkKwRegex.test(title) || walkKwRegex.test(desc) || src === 'google_images' || src.includes('google'))) {
                 return true;
             }
             return false;
@@ -3867,7 +3867,7 @@
                 
                 const isWalkin = isWalkinJob(job);
                 const upcomingWalkinDates = getNormalizedWalkinDates(job);
-                let walkinDisplayDate = 'Upcoming Walk-in';
+                let walkinDisplayDate = 'Upcoming';
                 if (selectedWalkinDates.size > 0) {
                     const matched = upcomingWalkinDates.filter(d => selectedWalkinDates.has(d));
                     if (matched.length === 1) {
@@ -3875,7 +3875,7 @@
                     } else if (matched.length > 1) {
                         walkinDisplayDate = `${matched[0]} – ${matched[matched.length - 1]}`;
                     } else {
-                        walkinDisplayDate = upcomingWalkinDates[0] || job.walkin_date || 'Upcoming Walk-in';
+                        walkinDisplayDate = upcomingWalkinDates[0] || job.walkin_date || 'Upcoming';
                     }
                 } else if (upcomingWalkinDates.length > 0) {
                     if (upcomingWalkinDates.length === 1) {
@@ -3887,6 +3887,9 @@
                     walkinDisplayDate = job.walkin_date;
                 }
                 walkinDisplayDate = formatShortMonthDate(walkinDisplayDate);
+                if (walkinDisplayDate) {
+                    walkinDisplayDate = walkinDisplayDate.replace(/\bupcoming\s+walk-?ins?\b/gi, 'Upcoming').trim();
+                }
                 const cleanTitle = isWalkin ? cleanJobTitle(job.title || job.role || '', job) : cleanJobTitle(job.title || 'Position', job);
 
                 const actionButtons = [];
