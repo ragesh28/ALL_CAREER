@@ -859,7 +859,7 @@
             display: grid;
             gap: 14px;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            grid-auto-rows: 1fr;
+            grid-auto-rows: auto;
         }
 
         /* ── Job Card ── */
@@ -867,18 +867,18 @@
             background: var(--bg-card);
             backdrop-filter: blur(8px);
             border: 1px solid var(--border);
-            padding: 11px 14px 9px;
+            padding: 12px 16px 10px;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             transform: translateY(12px);
             animation: cardIn 0.45s forwards;
             width: 100%;
-            min-height: 156px;
-            height: 100%;
+            min-height: 130px;
+            height: auto;
             box-sizing: border-box;
             position: relative;
         }
@@ -946,18 +946,23 @@
 
         .card-top {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: flex-start;
             position: relative;
+            margin-bottom: 2px;
+            padding-right: 0;
+        }
+
+        .job-card.has-top-badge .card-top {
             padding-right: 88px; /* Leaves clear space so long company names finish with dots before post button */
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
+            border-radius: 11px;
             padding: 3px;
             position: relative;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -969,8 +974,8 @@
         }
 
         .company-logo {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
             position: absolute;
             top: 3px;
@@ -998,21 +1003,21 @@
 
         .company-name {
             color: var(--text-muted);
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
             max-width: 100%;
             display: block;
         }
 
         .job-title {
-            font-size: 0.88rem;
-            line-height: 1.32;
+            font-size: 0.94rem;
+            line-height: 1.36;
             color: var(--text-main);
             font-weight: 700;
             white-space: nowrap;
@@ -1025,40 +1030,50 @@
         .job-meta {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
+            margin-top: 1px;
         }
 
         .meta-row {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             overflow: hidden;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
 
+        /* ── Unified Badges (Location, Experience, Posted Date, Source: Exact same big size for all jobs) ── */
         .meta-badge {
-            font-size: 0.76rem;
-            padding: 3.5px 8px;
-            border-radius: 6px;
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-muted);
             border: 1px solid rgba(255, 255, 255, 0.06);
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             white-space: nowrap;
-            font-weight: 500;
-            max-width: 145px;
+            font-weight: 600;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1;
         }
 
+        /* ── All Icons: Exact same 18px big uniform size for location, exp, date, and source ── */
         .meta-icon {
-            font-size: 0.84rem;
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
             line-height: 1;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             flex-shrink: 0;
+            text-align: center;
         }
 
         .meta-badge.loc {
@@ -1079,15 +1094,15 @@
         .walkin-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 3px 8px;
-            border-radius: 6px;
+            gap: 6px;
+            padding: 4px 11px;
+            border-radius: 8px;
             background: rgba(234, 179, 8, 0.12);
             border: 1px solid rgba(234, 179, 8, 0.35);
             color: #fbbf24;
-            font-size: 0.72rem;
+            font-size: 0.80rem;
             font-weight: 700;
-            margin: 2px 0 2px 0;
+            margin: 1px 0 2px 0;
             width: fit-content;
             letter-spacing: 0.2px;
             align-self: flex-start;
@@ -1096,8 +1111,8 @@
         .walkin-badge::before {
             content: '';
             display: inline-block;
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #fbbf24;
             box-shadow: 0 0 8px #fbbf24;
@@ -1112,22 +1127,30 @@
         .portal-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 3.5px 8px;
-            border-radius: 6px;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.72rem;
+            font-size: 0.84rem;
             color: var(--text-muted);
             flex-shrink: 0;
-            font-weight: 500;
+            font-weight: 600;
+            height: 29px;
+            box-sizing: border-box;
+            max-width: 175px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1;
         }
 
         .portal-logo {
-            width: 15px;
-            height: 15px;
+            width: 18px;
+            height: 18px;
             object-fit: contain;
-            border-radius: 2px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
         }
 
         .card-footer {
@@ -1136,28 +1159,30 @@
             align-items: center;
             padding-top: 6px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: auto;
+            margin-top: 4px;
         }
 
         .card-role {
             color: var(--text-dim);
-            font-size: 0.70rem;
+            font-size: 0.76rem;
             font-weight: 500;
-            max-width: 95px;
+            max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .apply-btn {
-            padding: 5px 10px;
+            padding: 7.5px 18px;
             background: transparent;
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
-            border-radius: 7px;
-            font-size: 0.74rem;
-            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 8px;
+            font-size: 0.86rem;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.2px;
             transition: all 0.25s;
             position: relative;
             overflow: hidden;
@@ -1165,22 +1190,29 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
         }
 
         .apply-btn:hover {
             background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
+            color: #ffffff;
             border-color: transparent;
-            box-shadow: 0 4px 18px rgba(52, 211, 153, 0.3);
-            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
         }
 
-        /* ── Normal Job Card (No Walk-in, No Phone, No Email) ── */
+        .card-footer .apply-btn:not(:only-child) {
+            padding: 6px 11px;
+            font-size: 0.78rem;
+            gap: 4px;
+        }
+
+        /* ── Specific Overrides for Consistency across all card types ── */
         .job-card.normal-job {
-            padding: 16px 18px 14px;
-            gap: 10px;
-            min-height: 184px;
+            padding: 12px 16px 10px;
+            gap: 6px;
+            min-height: 130px;
+            height: auto;
         }
 
         .job-card.normal-job .card-top {
@@ -1216,16 +1248,15 @@
         }
 
         .job-card.normal-job .job-meta {
-            gap: 7px;
-            margin-top: 2px;
+            gap: 5px;
+            margin-top: 1px;
         }
 
         .job-card.normal-job .meta-row {
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
-        /* Increased Location, Experience, Posted Date, Source sizes */
         .job-card.normal-job .meta-badge {
             font-size: 0.84rem;
             padding: 5px 11px;
@@ -1233,28 +1264,44 @@
             font-weight: 600;
             gap: 6px;
             max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
         }
 
         .job-card.normal-job .meta-icon {
-            font-size: 0.96rem;
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         .job-card.normal-job .portal-badge {
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             padding: 5px 11px;
             border-radius: 8px;
             font-weight: 600;
             gap: 6px;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
         }
 
         .job-card.normal-job .portal-logo {
-            width: 17px;
-            height: 17px;
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
         }
 
         .job-card.normal-job .card-footer {
-            padding-top: 12px;
-            margin-top: auto;
+            padding-top: 6px;
+            margin-top: 4px;
         }
 
         .job-card.normal-job .card-role {
@@ -1262,7 +1309,6 @@
             max-width: 120px;
         }
 
-        /* Increased Apply Button size */
         .job-card.normal-job .apply-btn {
             padding: 7.5px 18px;
             font-size: 0.86rem;
@@ -1875,9 +1921,9 @@
             { id: 'foundit', label: 'Foundit', logo: 'logos/portals/foundit.png' },
             { id: 'apna', label: 'Apna', logo: 'logos/portals/apna.png' },
             { id: 'freshersworld', label: 'FreshersWorld', logo: 'logos/portals/freshersworld.ico' },
-            { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
-            { id: 'telegram_post', label: 'Telegram Post', logo: 'logos/portals/telegram.svg' },
-            { id: 'google_images', label: 'Google Images', logo: 'https://www.google.com/favicon.ico' },
+            { id: 'telegram_message', label: 'Messages', logo: 'logos/portals/telegram.svg' },
+            { id: 'telegram_post', label: 'Post', logo: 'logos/portals/telegram.svg' },
+            { id: 'google_images', label: 'Images', logo: 'https://www.google.com/favicon.ico' },
             { id: 'other', label: 'Other Sources', logo: '' },
         ];
 
@@ -3055,6 +3101,10 @@
             let sourceVal = String(job.platform || job.source || sourceHint || '').toLowerCase().trim();
             if (sourceVal.includes('google')) {
                 sourceVal = 'google_images';
+            } else if (sourceVal === 'telegram' || sourceVal === 'telegram_message' || (sourceVal.includes('telegram') && !sourceVal.includes('post'))) {
+                sourceVal = 'telegram_message';
+            } else if (sourceVal === 'telegram_post' || (sourceVal.includes('telegram') && sourceVal.includes('post'))) {
+                sourceVal = 'telegram_post';
             } else if (!sourceVal || !knownPortals.has(sourceVal) || sourceVal === 'other') {
                 if (uLow.includes('linkedin.com') || job.linkedin_url) sourceVal = 'linkedin';
                 else if (uLow.includes('naukri.com')) sourceVal = 'naukri';
@@ -3783,7 +3833,14 @@
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
             grid.innerHTML = jobs.map((job, i) => {
-                const source = (job.source || '').toLowerCase();
+                let source = (job.source || '').toLowerCase().trim();
+                if (source.includes('google')) {
+                    source = 'google_images';
+                } else if (source === 'telegram' || source === 'telegram_message' || (source.includes('telegram') && !source.includes('post'))) {
+                    source = 'telegram_message';
+                } else if (source === 'telegram_post' || (source.includes('telegram') && source.includes('post'))) {
+                    source = 'telegram_post';
+                }
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const url = job.url || '';
@@ -3797,8 +3854,8 @@
                 if (source.includes('telegram') || telegramUrl) {
                     const tgLink = telegramUrl || (url.includes('t.me') ? url : '');
                     if (tgLink) {
-                        const tgLabel = (source === 'telegram_post') ? '📲 Post' : '📲 Telegram';
-                        topSourceBadgeHtml = `<a href="${esc(tgLink)}" target="_blank" rel="noopener" class="top-source-badge-btn telegram-source-btn" title="View original Telegram post / message">${tgLabel}</a>`;
+                        const tgLabel = (source === 'telegram_post') ? '📲 Post' : '📲 Messages';
+                        topSourceBadgeHtml = `<a href="${esc(tgLink)}" target="_blank" rel="noopener" class="top-source-badge-btn telegram-source-btn" title="View original post / message">${tgLabel}</a>`;
                     }
                 }
                 
@@ -3886,7 +3943,7 @@
                     </div>
                     <div class="meta-row">
                         ${date ? `<div class="meta-badge date" title="Posted: ${date}"><span class="meta-icon">🕒</span> ${date}</div>` : ''}
-                        ${sourceLabel ? `<div class="portal-badge" title="Source: ${esc(sourceLabel)}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" onerror="this.style.display='none'">` : '<span class="meta-icon">🌐</span>'}<span>${esc(sourceLabel)}</span></div>` : ''}
+                        ${sourceLabel ? `<div class="portal-badge" title="Source: ${esc(sourceLabel)}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';"><span class="meta-icon" style="display:none">🌐</span>` : '<span class="meta-icon">🌐</span>'}<span>${esc(sourceLabel)}</span></div>` : ''}
                     </div>
                 </div>
                 <div class="card-footer">
