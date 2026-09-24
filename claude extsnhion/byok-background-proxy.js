@@ -845,6 +845,15 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
     sendResponse({ success: true });
     return true;
   }
+
+  // 20. Reload Extension Service Worker
+  if (message?.action === 'RELOAD_EXTENSION') {
+    sendResponse({ success: true });
+    setTimeout(() => {
+      try { chrome.runtime.reload(); } catch (_) {}
+    }, 150);
+    return true;
+  }
 });
 
 // Automatically track child tabs opened from the recorded tab (e.g. redirect links or job cards opened in new tab)
@@ -1206,6 +1215,21 @@ async function callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages) 
     const data = JSON.parse(rawText);
     return data.choices?.[0]?.message?.content || rawText;
   } catch (e) {
+    if (rawText.includes('data:')) {
+      const chunks = [];
+      const lines = rawText.split('\n');
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('data:') && !trimmed.includes('[DONE]')) {
+          try {
+            const parsed = JSON.parse(trimmed.replace(/^data:\s*/, ''));
+            const delta = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.message?.content;
+            if (delta) chunks.push(delta);
+          } catch (_) {}
+        }
+      }
+      if (chunks.length > 0) return chunks.join('');
+    }
     return rawText;
   }
 }
@@ -1695,18 +1719,31 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
       }
       case 'omniroute': {
         const cleanUrl = (baseUrl || 'http://127.0.0.1:20128/v1').replace(/\/+$/, '');
+        const rootUrl = cleanUrl.replace(/\/v1$/, '') || 'http://127.0.0.1:20128';
         const headers = { 'Content-Type': 'application/json' };
         if (key) headers['Authorization'] = `Bearer ${key}`;
 
-        // 1. Fast probe: check /models endpoint first (responds in ~20ms when OmniRoute is running)
+        // 1. Fast probe: check HEAD on /models or root first (takes ~20-50ms, skips 190KB body)
         let modelsOk = false;
         try {
           const ctrl = new AbortController();
-          const tId = setTimeout(() => ctrl.abort(), 3500);
-          const mResp = await fetch(`${cleanUrl}/models`, { signal: ctrl.signal, headers });
+          const tId = setTimeout(() => ctrl.abort(), 2000);
+          const mResp = await fetch(`${cleanUrl}/models`, { method: 'HEAD', signal: ctrl.signal, headers }).catch(() => null);
           clearTimeout(tId);
-          if (mResp.ok) modelsOk = true;
-        } catch (_) {
+          if (mResp && mResp.status >= 200 && mResp.status < 400) modelsOk = true;
+        } catch (_) {}
+
+        if (!modelsOk) {
+          try {
+            const ctrlRoot = new AbortController();
+            const tIdRoot = setTimeout(() => ctrlRoot.abort(), 2000);
+            const rResp = await fetch(rootUrl, { method: 'HEAD', redirect: 'manual', signal: ctrlRoot.signal, headers }).catch(() => null);
+            clearTimeout(tIdRoot);
+            if (rResp && rResp.status >= 200 && rResp.status < 400) modelsOk = true;
+          } catch (_) {}
+        }
+
+        if (!modelsOk) {
           // Try localhost <-> 127.0.0.1 fallback
           try {
             const altUrl = cleanUrl.includes('127.0.0.1')
@@ -1714,9 +1751,9 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
               : cleanUrl.replace('localhost', '127.0.0.1');
             const ctrlAlt = new AbortController();
             const tIdAlt = setTimeout(() => ctrlAlt.abort(), 2000);
-            const mRespAlt = await fetch(`${altUrl}/models`, { signal: ctrlAlt.signal, headers });
+            const mRespAlt = await fetch(`${altUrl}/models`, { method: 'HEAD', signal: ctrlAlt.signal, headers }).catch(() => null);
             clearTimeout(tIdAlt);
-            if (mRespAlt.ok) modelsOk = true;
+            if (mRespAlt && mRespAlt.status >= 200 && mRespAlt.status < 400) modelsOk = true;
           } catch (_) {}
         }
 
@@ -1725,15 +1762,15 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
           return { ok: true, status: 200, latencyMs, message: `✅ OmniRoute Active & Connected (${latencyMs}ms)!` };
         }
 
-        // 2. Fallback: try chat/completions with 25s timeout
+        // 2. Fallback: try chat/completions with 15s timeout
         let resp;
         try {
           const ctrlChat = new AbortController();
-          const tIdChat = setTimeout(() => ctrlChat.abort(), 25000);
+          const tIdChat = setTimeout(() => ctrlChat.abort(), 15000);
           resp = await fetch(`${cleanUrl}/chat/completions`, {
             method: 'POST',
             headers,
-            body: JSON.stringify({ model: model || 'antigravity/gemini-3.6-flash-high', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2 }),
+            body: JSON.stringify({ model: model || 'antigravity/gemini-3.6-flash-high', messages: [{ role: 'user', content: 'OK' }], max_tokens: 2, stream: false }),
             signal: ctrlChat.signal,
           });
           clearTimeout(tIdChat);
@@ -1928,13 +1965,19 @@ async function fetchProviderModelsBackend({ provider, key, baseUrl, accountId })
 
 async function callActiveAIModel(config, systemPrompt, messages) {
   // 1. Resolve key config: check if there is an active key configured in apiKeys list
+  let apiKeys = Array.isArray(config?.apiKeys) ? config.apiKeys : [];
+  if (apiKeys.length === 0) {
+    try {
+      const topStore = await chrome.storage.local.get('apiKeys');
+      if (Array.isArray(topStore?.apiKeys)) apiKeys = topStore.apiKeys;
+    } catch (_) {}
+  }
   const activeKeyId = config?.activeKeyId;
-  const apiKeys = Array.isArray(config?.apiKeys) ? config.apiKeys : [];
   const keyConfig = apiKeys.find(k => k.id === activeKeyId && k.enabled !== false) ||
     apiKeys.find(k => k.enabled !== false) || null;
 
   const provider = keyConfig?.provider || config?.activeProvider || 'omniroute';
-  const apiKey = keyConfig?.key || config?.[provider]?.apiKey || '';
+  const apiKey = keyConfig?.key || config?.[provider]?.apiKey || config?.[provider]?.key || '';
   const model = keyConfig?.model || config?.[provider]?.model || '';
   const baseUrl = keyConfig?.baseUrl || config?.[provider]?.baseUrl || '';
   const accountId = keyConfig?.accountId || config?.[provider]?.accountId || '';
@@ -2411,29 +2454,6 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           runState.logs.push(`[AI Loop] 🤖 Dropdown has ${options.length} options: ${JSON.stringify(options.slice(0, 10))}. Asking AI to choose...`);
           await chrome.storage.local.set({ workflowRunState: runState });
 
-          // Live health check AI first!
-          const aiCheckDropdown = await verifyActiveAIWorking();
-          if (!aiCheckDropdown.ok) {
-            const errMsg = aiCheckDropdown.reason || 'AI is offline or not configured.';
-            runState.logs.push(`[AI Loop] ❌ AI Health Check Failed: ${errMsg}`);
-            runState.status = 'error';
-            runState.error = errMsg;
-            await chrome.storage.local.set({ workflowRunState: runState });
-            await updateTabHud(activeTabId, {
-              workflowName: runState.workflowName,
-              stepIndex: runState.stepIndex || 0,
-              totalSteps: runState.stepCount || 1,
-              stepName: step.name || 'AI Chat Step',
-              status: 'error',
-              elementIndex: elemNumber,
-              totalElements: total,
-              actionTaken: `⚠️ ${errMsg}`,
-              aiUnavailable: true,
-              aiErrorText: errMsg,
-            });
-            throw new Error(errMsg);
-          }
-
           const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
 
 Candidate Profile:
@@ -2516,30 +2536,7 @@ Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exac
             reasoning: `⚡ Reused saved answer for "${targetQuestion || targetName}": "${smartMatch.answer}" (source: ${smartMatch.source})`
           };
           runState.logs.push(`[AI Loop] ⚡ Question already asked/known ("${targetQuestion || targetName}"). Bypassing AI and directly typing: "${smartMatch.answer}"`);
-        } else {
-          // Unknown question: Live health check AI first!
-          const aiCheckText = await verifyActiveAIWorking();
-          if (!aiCheckText.ok) {
-            const errMsg = aiCheckText.reason || 'AI is offline or not configured.';
-            runState.logs.push(`[AI Loop] ❌ AI Health Check Failed: ${errMsg}`);
-            runState.status = 'error';
-            runState.error = errMsg;
-            await chrome.storage.local.set({ workflowRunState: runState });
-            await updateTabHud(activeTabId, {
-              workflowName: runState.workflowName,
-              stepIndex: runState.stepIndex || 0,
-              totalSteps: runState.stepCount || 1,
-              stepName: step.name || 'AI Chat Step',
-              status: 'error',
-              elementIndex: elemNumber,
-              totalElements: total,
-              actionTaken: `⚠️ ${errMsg}`,
-              aiUnavailable: true,
-              aiErrorText: errMsg,
-            });
-            throw new Error(errMsg);
-          }
-
+          // Unknown question: Ask AI to answer
           const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
 
 Candidate Profile:
@@ -3400,36 +3397,39 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
 
           // If still failed or element was not found: Check AI fallback!
           if (!execRes) {
-            const aiCheck = await verifyActiveAIWorking();
-            if (!aiCheck.ok) {
-              // NO AI AVAILABLE: Display warning on top HUD with Stop button, do not crash silently
-              const msg = `Element "${step.name || step.type}" not found. ${aiCheck.reason}`;
-              runState.logs.push(`[Workflow] ⚠️ ${msg}`);
-              runState.error = msg;
-              runState.status = 'error';
-              await chrome.storage.local.set({ workflowRunState: runState });
-              await updateTabHud(activeTabId, {
-                workflowName: runState.workflowName,
-                stepIndex: i,
-                totalSteps: steps.length,
-                stepName: step.name || step.type,
-                status: 'error',
-                actionTaken: `⚠️ ${msg}`,
-                aiUnavailable: true,
-                aiErrorText: aiCheck.reason,
-              });
-              throw new Error(msg);
-            } else {
-              // AI KEY IS AVAILABLE: Attempt AI fallback
-              const aiFallbackRes = await executeAIStepForMissingElement(activeTabId, step, runState);
-              if (aiFallbackRes?.success) {
-                runState.logs.push(`[Workflow] ✅ Step ${i + 1} resolved via AI fallback.`);
-                await chrome.storage.local.set({ workflowRunState: runState });
-                continue;
-              } else {
-                throw new Error(aiFallbackRes?.reason || stepErr.message || 'Element not found.');
-              }
+            // Directly attempt AI fallback first!
+            let aiFallbackRes = null;
+            try {
+              aiFallbackRes = await executeAIStepForMissingElement(activeTabId, step, runState);
+            } catch (fallbackErr) {
+              console.warn('[Workflow] AI fallback attempt caught:', fallbackErr);
             }
+
+            if (aiFallbackRes?.success) {
+              runState.logs.push(`[Workflow] ✅ Step ${i + 1} resolved via AI fallback.`);
+              await chrome.storage.local.set({ workflowRunState: runState });
+              continue;
+            }
+
+            // If AI fallback failed, verify AI status to produce an accurate, helpful message
+            const aiCheck = await verifyActiveAIWorking();
+            const reason = !aiCheck.ok ? aiCheck.reason : (aiFallbackRes?.reason || stepErr?.message || 'Element not found on page.');
+            const msg = `Element "${step.name || step.type}" not found. ${reason}`;
+            runState.logs.push(`[Workflow] ⚠️ ${msg}`);
+            runState.error = msg;
+            runState.status = 'error';
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: i,
+              totalSteps: steps.length,
+              stepName: step.name || step.type,
+              status: 'error',
+              actionTaken: `⚠️ ${msg}`,
+              aiUnavailable: !aiCheck.ok,
+              aiErrorText: !aiCheck.ok ? aiCheck.reason : undefined,
+            });
+            throw new Error(msg);
           }
         }
 
@@ -3629,43 +3629,89 @@ async function verifyActiveAIWorking() {
       };
     }
 
-    // ── SPECIFIC FAST CHECK FOR OMNIROUTE ──
+    // ── SPECIFIC FAST CHECK FOR OMNIROUTE (HEAD REQUEST ~50ms, NO 190KB DOWNLOAD) ──
     if (provider === 'omniroute') {
       const cleanUrl = (baseUrl || 'http://127.0.0.1:20128/v1').replace(/\/+$/, '');
-      const modelsUrl = `${cleanUrl}/models`;
+      const rootUrl = cleanUrl.replace(/\/v1$/, '') || 'http://127.0.0.1:20128';
       const headers = {};
       if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
 
+      // 1. Probe /models with HEAD (skips 190KB body, finishes in ~50ms)
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
-        const probeResp = await fetch(modelsUrl, { signal: controller.signal, headers });
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        const probeResp = await fetch(`${cleanUrl}/models`, {
+          method: 'HEAD',
+          signal: controller.signal,
+          headers,
+        }).catch(() => null);
         clearTimeout(timeoutId);
-        if (probeResp.ok) {
+        if (probeResp && probeResp.status >= 200 && probeResp.status < 400) {
           return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
         }
-      } catch (probeErr) {
-        // Try fallback between 127.0.0.1 and localhost
-        try {
-          const fallbackUrl = cleanUrl.includes('127.0.0.1')
-            ? cleanUrl.replace('127.0.0.1', 'localhost') + '/models'
-            : cleanUrl.replace('localhost', '127.0.0.1') + '/models';
-          const controller2 = new AbortController();
-          const timeoutId2 = setTimeout(() => controller2.abort(), 2000);
-          const probeResp2 = await fetch(fallbackUrl, { signal: controller2.signal, headers });
-          clearTimeout(timeoutId2);
-          if (probeResp2.ok) {
-            return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
-          }
-        } catch (_) {}
+      } catch (_) {}
 
-        return {
-          ok: false,
-          provider: 'omniroute',
-          reason: 'OmniRoute local server is not running on http://127.0.0.1:20128. Please start the OmniRoute server, or add an AI API key (Gemini, OpenAI, Groq) in Extension Settings (⚙️).',
-          needKey: true,
-        };
-      }
+      // 2. Probe root URL with HEAD (returns 307 or 200 in ~50ms)
+      try {
+        const controllerRoot = new AbortController();
+        const timeoutIdRoot = setTimeout(() => controllerRoot.abort(), 2000);
+        const probeRoot = await fetch(rootUrl, {
+          method: 'HEAD',
+          redirect: 'manual',
+          signal: controllerRoot.signal,
+          headers,
+        }).catch(() => null);
+        clearTimeout(timeoutIdRoot);
+        if (probeRoot && probeRoot.status >= 200 && probeRoot.status < 400) {
+          return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
+        }
+      } catch (_) {}
+
+      // 3. Fallback between 127.0.0.1 and localhost
+      try {
+        const altUrl = cleanUrl.includes('127.0.0.1')
+          ? cleanUrl.replace('127.0.0.1', 'localhost')
+          : cleanUrl.replace('localhost', '127.0.0.1');
+        const controllerAlt = new AbortController();
+        const timeoutIdAlt = setTimeout(() => controllerAlt.abort(), 2000);
+        const probeAlt = await fetch(`${altUrl}/models`, {
+          method: 'HEAD',
+          signal: controllerAlt.signal,
+          headers,
+        }).catch(() => null);
+        clearTimeout(timeoutIdAlt);
+        if (probeAlt && probeAlt.status >= 200 && probeAlt.status < 400) {
+          return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
+        }
+      } catch (_) {}
+
+      // 4. Fast 1-token POST completion probe
+      try {
+        const controllerPost = new AbortController();
+        const timeoutIdPost = setTimeout(() => controllerPost.abort(), 3000);
+        const testPost = await fetch(`${cleanUrl}/chat/completions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...headers },
+          body: JSON.stringify({
+            model: model || 'antigravity/gemini-3.6-flash-high',
+            messages: [{ role: 'user', content: 'hi' }],
+            max_tokens: 1,
+            stream: false,
+          }),
+          signal: controllerPost.signal,
+        }).catch(() => null);
+        clearTimeout(timeoutIdPost);
+        if (testPost && testPost.ok) {
+          return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
+        }
+      } catch (_) {}
+
+      return {
+        ok: false,
+        provider: 'omniroute',
+        reason: 'OmniRoute local server is not running on http://127.0.0.1:20128. Please start the OmniRoute server, or add an AI API key (Gemini, OpenAI, Groq) in Extension Settings (⚙️).',
+        needKey: true,
+      };
     }
 
     // ── GENERAL CHECK FOR CLOUD PROVIDERS WITH 15s TIMEOUT ──
@@ -3700,8 +3746,20 @@ async function verifyActiveAIWorking() {
 }
 
 async function checkHasConfiguredAIKey() {
-  const res = await verifyActiveAIWorking();
-  return res.ok;
+  try {
+    const store = await chrome.storage.local.get(['byok_config', 'apiKeys']);
+    const config = store.byok_config || {};
+    const apiKeys = Array.isArray(store.apiKeys) ? store.apiKeys : (Array.isArray(config.apiKeys) ? config.apiKeys : []);
+    const activeKeyId = config?.activeKeyId;
+    const keyConfig = apiKeys.find(k => k.id === activeKeyId && k.enabled !== false) ||
+      apiKeys.find(k => k.enabled !== false) || null;
+    const provider = keyConfig?.provider || config?.activeProvider || 'omniroute';
+    if (provider === 'omniroute' || provider === 'ollama') return true;
+    const apiKey = keyConfig?.key || config?.[provider]?.apiKey || config?.[provider]?.key || '';
+    return typeof apiKey === 'string' && apiKey.trim().length >= 4;
+  } catch (_) {
+    return false;
+  }
 }
 
 function detectJobPortal(job) {
