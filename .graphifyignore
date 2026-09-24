@@ -1,0 +1,65 @@
+# Secrets and credentials
+.env
+.env.*
+*.session
+base64_session.txt
+config_keys.json
+config_gemini.json
+config_telegram.json
+*.pem
+*.key
+*.crt
+
+# Git and OS
+.git/
+.github/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies and caches
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+venv/
+.venv/
+__pycache__/
+**/.wrangler/
+.cache/
+tmp/
+temp/
+*.log
+
+# Large scraped data files & databases (hundreds of MBs)
+all_jobs_*.json
+big_jobs.json
+big_jobs_data.js
+scraped_image_walkin_jobs.json
+scraped_jobs_output.json
+seen_job_ids.json
+seed_leetcode.sql
+jobs.json
+jobs_data.js
+data/*.db
+backup_jobs_before_cleanup/
+downloaded_walkin_images/
+not_extracted_messages/
+logos/
+
+# Debug dump HTML/images
+debug_*.html
+debug_*.py
+test_*.html
+test_*.json
+google_blocked.*
+google_jobs_blocked.*
+output*.txt
+screenshot_*.png
+String_Theory.png
+
+# Assets / Media in extensions
+**/assets/
+**/sounds/
+**/i18n/
+**/public/

@@ -102,3 +102,6 @@ data/*.db
 !data/company_names_chunks/*
 data/mca_download_progress.json
 downloaded_walkin_images/
+
+# Graphify cache
+graphify-out/cache/

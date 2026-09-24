@@ -1,0 +1,51 @@
+{
+  "Technical": [
+    "software", "developer", "engineer", "full stack", "frontend", "backend", "java", "python", "react", "node",
+    "sql", "dba", "devops", "cloud", "aws", "azure", "tester", "testing", "qa", "quality assurance", "sdet",
+    "automation", "aem", "tech lead", "sap", "iics", "informatica", "data analyst", "data engineer", "data scientist",
+    "machine learning", "ai", "ml", "network engineer", "system admin", "server admin", "administrator", "cyber",
+    "security", "programmer", "ui/ux", "web developer", "mobile app", "android", "ios", "scrum master",
+    "architect", "dlp", "symantec", "oracle", "salesforce", ".net", "c++", "packaging", "application packaging",
+    "structures", "it support", "database", "hardware", "graphic designer", "animator",
+    "technical", "it consultant", "network", "technologist", "systems engineer"
+  ],
+  "Electrical": [
+    "electrical", "electrician", "electronics", "ece", "eee", "embedded", "vlsi", "panel design", "plc", "scada",
+    "pcb", "mechatronics", "instrumentation", "mechanical", "mechanical engineer", "civil engineer", "civil",
+    "autocad", "cad", "bim", "hvac", "solar", "substation", "transformer", "switchgear", "circuit", "microcontroller",
+    "technician", "assembly", "hardware engineer", "maintenance engineer", "field engineer", "service engineer"
+  ],
+  "Non-Technical": [
+    "voice", "semi voice", "non voice", "chat", "chat support", "chat process", "customer support", "customer care",
+    "customer service", "customer services", "bpo", "kpo", "bpm", "call center", "teleperformance", "client experience",
+    "front desk", "receptionist", "back office", "data entry", "executive", "operations", "order management", "spe",
+    "sme", "service desk", "process associate", "process executive", "associate", "inbound", "outbound", "helpdesk",
+    "clerk", "admin", "freshers", "fresher", "graduate", "field officer", "field executive", "collection", "delivery",
+    "driver", "office assistant", "assistant", "trainee", "apprentice", "operator", "retail", "store assistant",
+    "support executive", "support associate"
+  ],
+  "Pharma": [
+    "pharma", "pharmacy", "pharmacist", "healthcare", "health care", "medical", "clinical", "nursing", "nurse",
+    "biotech", "biotechnology", "microbiology", "biology", "doctor", "hospital", "us healthcare", "patient care",
+    "lifesciences", "life science", "mbbs", "b.pharm", "m.pharm", "ar caller", "medical coder", "medical billing",
+    "formulation", "osd", "medicines", "drug safety", "physician", "paramedical", "dental", "dentist",
+    "lab technician", "chemist", "chemistry", "chemical", "chemical engineer", "pathology", "biochemistry",
+    "therapeutics", "pharmacovigilance", "clinical research", "quality control pharma", "qc pharma", "qa pharma"
+  ],
+  "Banking & Finance": [
+    "banker", "banking", "bank", "accountant", "accounts", "finance", "financial", "audit", "chartered accountant",
+    "ca", "tally", "tax", "taxation", "credit", "loan", "equity", "investment", "pr to po", "p2p", "r2r", "gl",
+    "billing", "insurance", "wealth", "underwriter", "mortgage", "mutual fund", "icici", "hdfc", "axis", "cashier",
+    "invoice", "otc", "order to cash", "financial analyst", "risk analyst", "credit analyst", "portfolio manager"
+  ],
+  "Sales & Marketing": [
+    "sales", "marketing", "bde", "business development", "inside sales", "tele sales", "telesales", "direct sales",
+    "field sales", "lead generation", "digital marketing", "seo", "sem", "social media", "rm", "relationship manager",
+    "relationship officer", "agency manager", "client partner", "key account", "telecaller", "telecalling",
+    "counsellor", "counselor", "store manager", "retail manager", "counter sales", "sales executive", "brand manager"
+  ],
+  "HR & Staffing": [
+    "hr", "human resources", "recruiter", "recruitment", "talent acquisition", "hrbp", "sourcer", "talent partner",
+    "staffing", "onboarding", "payroll", "hr executive", "hr generalist"
+  ]
+}
