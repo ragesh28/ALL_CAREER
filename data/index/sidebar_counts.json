@@ -1,5 +1,5 @@
 {
-  "total_jobs": 738387,
+  "total_jobs": 738399,
   "sources": {
     "naukri": 270396,
     "linkedin": 180910,
@@ -41,20 +41,20 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 69,
-    "telegram_message": 124
+    "telegram_post": 73,
+    "telegram_message": 132
   },
   "locations": {
-    "bangalore": 162764,
+    "bangalore": 162767,
     "mumbai": 97853,
-    "delhi": 78988,
-    "chennai": 76557,
+    "delhi": 78989,
+    "chennai": 76558,
     "hyderabad": 69221,
-    "pune": 56029,
-    "noida": 35568,
+    "pune": 56030,
+    "noida": 35569,
     "ahmedabad": 29548,
     "kolkata": 24236,
-    "all_india": 22123,
+    "all_india": 22128,
     "coimbatore": 14225,
     "kochi": 11343,
     "remote": 6752,
@@ -207,5 +207,5 @@
     "boisar": 2,
     "indi": 1
   },
-  "generated_at": "2026-09-23T23:49:30.961405"
+  "generated_at": "2026-09-24T05:12:10.769089"
 }
