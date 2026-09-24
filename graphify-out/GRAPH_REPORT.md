@@ -1,17 +1,17 @@
 # Graph Report - ALL_CAREER_3  (2026-09-24)
 
 ## Corpus Check
-- 14200 files · ~90,380,647 words
+- 14200 files · ~90,381,571 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 26 file(s) not represented in the graph (top: .css 8, (none) 7, .bat 1)
 
 ## Summary
-- 5985 nodes · 15236 edges · 331 communities (180 shown, 151 thin omitted)
+- 5985 nodes · 15237 edges · 329 communities (181 shown, 148 thin omitted)
 - Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 1984 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `41d9afdf`
+- Built from commit: `d6979ffb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,18 +36,18 @@
 - byok-background-proxy.js
 - getHue
 - scrape_google_walkin_images.py
-- ac
+- r
 - scrape_alljobs2.py
 - bind
 - storage.py
 - wd
-- step2_get_links.py
+- time
 - Event
 - locs
-- EventTarget
-- xs
+- ServiceWorkerGlobalScope
+- scrape_daily_jobs.py
 - wi
-- bc
+- add
 - custom-options.js
 - package.json
 - ImageToJobPipeline
@@ -63,21 +63,21 @@
 - startDrawing
 - t
 - GIF
-- Zr
+- xs
 - re
 - qr_scanner.py
-- r
-- bl
+- paste
+- ur
 - Pe
 - scrape_all_companies_v2.py
 - render
 - ul
 - download_mca_companies.py
-- add
+- t
 - deserialize
 - step
 - scrape_job_portals.py
-- setupMessageHandler
+- Zr
 - scrape_google_jobs.py
 - all_career_auto_apply.js
 - locs
@@ -101,27 +101,27 @@
 - n
 - TransformStream
 - CompanyDatabase
-- datetime
+- store_to_turso.py
 - constructor
 - URL
 - compilerOptions
 - test_glassdoor_methods.py
 - of
 - updateProperties
-- getPattern
+- ac
 - setGState
 - app.js
-- step3_big_company_scrape.py
+- datetime
 - rebuild
-- commit
+- ui
 - URLSearchParams
-- ur
-- paste
+- bl
+- fill
 - DurableObjectStorage
 - addEditToolbar
-- fill
-- drawPattern
-- transform
+- U
+- axialAlignedBoundingBox
+- y
 - Element
 - Headers
 - SubtleCrypto
@@ -135,10 +135,10 @@
 - URLPattern
 - scrape_jobs_with_permanent_indeed.py
 - Job API Calls — Working Endpoints Reference
-- a
+- s
 - validate
 - commitOrRemove
-- toSVGPath
+- ac
 - signal_detector.py
 - DurableObjectState
 - o
@@ -147,27 +147,27 @@
 - index/manifest.json
 - destroy
 - vo
-- delete
+- addButton
 - _pumpOperatorList
-- u
+- bc
 - WorkerEntrypoint
-- ac
-- ui
 - restore
+- getPattern
+- delete
 - s
 - Container
 - R2ObjectBody
 - c
-- U
+- transform
 - highlightSelection
-- y
+- createElement
 - ByteLengthQueuingStrategy
 - WritableStream
 - DurableObjectTransaction
 - ReadableStream
 - Socket
 - WritableStreamDefaultWriter
-- s
+- drawPattern
 - TestCompanyResolver
 - popup.js
 - get
@@ -177,7 +177,7 @@
 - Vectorize
 - TestCompanyDatabase
 - company_names_chunks/manifest.json
-- axialAlignedBoundingBox
+- commit
 - ALL_CAREER
 - test/tsconfig.json
 - Ai
@@ -185,12 +185,12 @@
 - HostedImagesBinding
 - ReadableStreamBYOBReader
 - VectorizeIndex
-- addButton
+- toSVGPath
 - logo3d.js
 - Be
-- t
-- toString
-- mv
+- u
+- a
+- setupMessageHandler
 - recordShowTextOperation
 - D1Database
 - D1PreparedStatement
@@ -199,11 +199,11 @@
 - ReadableStreamDefaultReader
 - TextDecoder
 - split_company_db.py
-- createElement
+- mv
 - EventSource
-- ServiceWorkerGlobalScope
+- toString
 - api-worker/package.json
-- post
+- xg
 - .test_connection
 - AiGateway
 - Comment
@@ -221,7 +221,7 @@
 - addHighlightHCMFilter
 - ct
 - mlGuessAltText
-- toggleComment
+- post
 - drag
 - r
 - AbortController
@@ -245,21 +245,21 @@
 - index.js
 - Cloudflare Workers
 - endMarkedContent
-- bh
-- cg
+- ho
+- processDrawnLines
 - CMYK_HTML
-- AbortSignal
+- toggleComment
 - createAltText
 - isDeleted
-- extractPages
-- isEditorHandlingKeyboard
+- bh
+- cg
 - getBrightness
-- getColorN_Pattern
-- sz
+- extractPages
+- ny
 - qx
 - setCommentData
-- setVisibility
-- xg
+- isEditorHandlingKeyboard
+- getColorN_Pattern
 - env.d.ts
 - BasicImageTransformations
 - StubBase
@@ -282,19 +282,19 @@
 - WritableStreamDefaultController
 - all_jobs_data.js
 - companies.js
+- sz
+- Iz
+- setVisibility
 - addChangedExistingAnnotation
 - applyInverseTransform
 - beginText
 - capPixels
 - removePopup
+- getRangeReader
 - dh
 - removeEditor
 - getClientDimensions
-- getRangeReader
-- recordSimpleData
-- removeChangedExistingAnnotation
-- reset
-- Sm
+- _keyboardManager
 - AnalyticsEngineDataset
 - CacheStorage
 - CompileError
@@ -327,22 +327,20 @@
 - logos.js
 - top150.js
 - top_companys.js
-- WebSocket
-- ho
+- recordSimpleData
+- removeChangedExistingAnnotation
 - __DURABLE_OBJECT_BRAND
 - onRequest
 - __RPC_STUB_BRAND
 - __RPC_TARGET_BRAND
 - __WORKER_ENTRYPOINT_BRAND
 - __WORKFLOW_ENTRYPOINT_BRAND
-- processDrawnLines
+- reset
 - 20. NatWest Group (Playwright / Browser) ⚠️ Slow
-- ny
-- Iz
-- _keyboardManager
-- 47. BrowserStack (Workday) ✅
+- Sm
 - altTextFinish
 - focusin
+- 47. BrowserStack (Workday) ✅
 - getFullReader
 - env
 
@@ -373,7 +371,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (331 total, 151 thin omitted)
+## Communities (329 total, 148 thin omitted)
 
 ### Community 0 - "worker-configuration.d.ts"
 Cohesion: 0.00
@@ -400,8 +398,8 @@ Cohesion: 0.06
 Nodes (122): Ce(), Aa(), ad(), ai(), as(), Au(), Be(), bu() (+114 more)
 
 ### Community 6 - "json"
-Cohesion: 0.03
-Nodes (49): bs4, Download job portal logos and save to logos/portals/ directory., json, main(), run_cmd(), os, playwright_sync_api, random (+41 more)
+Cohesion: 0.04
+Nodes (35): bs4, Download job portal logos and save to logos/portals/ directory., json, main(), run_cmd(), os, playwright_sync_api, requests (+27 more)
 
 ### Community 7 - "get"
 Cohesion: 0.09
@@ -455,9 +453,9 @@ Nodes (16): darken(), getHSLSaturation(), getHSVSaturation(), getHue(), getLight
 Cohesion: 0.06
 Nodes (49): aiohttp, ClientSession, check_and_reset_monthly_cycle(), download_flyer_buffer(), fetch_flyer_items_via_hasdata_sync(), get_hasdata_keys(), get_next_hasdata_key(), init_not_extracted_files() (+41 more)
 
-### Community 20 - "ac"
-Cohesion: 0.32
-Nodes (12): ac(), ge(), te(), jc(), jd(), kc(), ki(), mc() (+4 more)
+### Community 20 - "r"
+Cohesion: 0.09
+Nodes (38): mt(), bA(), bf(), bt(), a(), clone(), createDrawingOptions(), Ct() (+30 more)
 
 ### Community 21 - "scrape_alljobs2.py"
 Cohesion: 0.08
@@ -469,15 +467,15 @@ Nodes (43): addNativeFontFace(), Aj(), ak(), bb(), bind(), ck(), createFontFaceR
 
 ### Community 23 - "storage.py"
 Cohesion: 0.08
-Nodes (43): # NOTE: Previously removed LinkedIn/Naukri/Shine/Indeed jobs here., run_pipeline(), cleanup_walking_field(), Cleanup script: Remove walking_interview field from all stored job JSON files.…, Remove walking_interview key from every job in all_jobs_*.json and…, collections, glob, Remove LinkedIn Jobs — strips all LinkedIn-sourced jobs from all_jobs_*.json… (+35 more)
+Nodes (45): # NOTE: Previously removed LinkedIn/Naukri/Shine/Indeed jobs here., run_pipeline(), cleanup_walking_field(), Cleanup script: Remove walking_interview field from all stored job JSON files.…, Remove walking_interview key from every job in all_jobs_*.json and…, collections, glob, Remove LinkedIn Jobs — strips all LinkedIn-sourced jobs from all_jobs_*.json… (+37 more)
 
 ### Community 24 - "wd"
 Cohesion: 0.09
 Nodes (41): Wt(), an(), ar(), at(), Bn(), cn(), dn(), dt() (+33 more)
 
-### Community 25 - "step2_get_links.py"
-Cohesion: 0.09
-Nodes (27): csv, jobspy, pandas, generate_html(), main(), Scrape 100 software jobs from LinkedIn + Indeed via JobSpy → Store in Turso →…, Generate premium styled HTML page., Execute SQL via Turso HTTP API. (+19 more)
+### Community 25 - "time"
+Cohesion: 0.07
+Nodes (33): csv, jobspy, pandas, cleanup_old_jobs(), get_total_jobs(), is_linkedin_block(), DIRECT LINKS SCRAPER — GitHub Actions Version Scrapes 150 top companies via…, Check if error indicates LinkedIn block. (+25 more)
 
 ### Community 26 - "Event"
 Cohesion: 0.04
@@ -487,21 +485,21 @@ Nodes (12): CloseEvent, CustomEvent, EmailEvent, ErrorEvent, Event, ExtendableEv
 Cohesion: 0.04
 Nodes (45): locs, acharapakkam, akurdi, amaravati, ambala, amritsar, banur, belagavi (+37 more)
 
-### Community 28 - "EventTarget"
-Cohesion: 0.18
-Nodes (3): EventTarget, MessagePort, WorkerGlobalScope
+### Community 28 - "ServiceWorkerGlobalScope"
+Cohesion: 0.06
+Nodes (6): AbortSignal, EventTarget, MessagePort, ServiceWorkerGlobalScope, WebSocket, WorkerGlobalScope
 
-### Community 29 - "xs"
-Cohesion: 0.08
-Nodes (31): Aa(), cs(), cv(), dd(), du(), es(), gv(), He() (+23 more)
+### Community 29 - "scrape_daily_jobs.py"
+Cohesion: 0.26
+Nodes (11): generate_html(), main(), Scrape 100 software jobs from LinkedIn + Indeed via JobSpy → Store in Turso →…, Generate premium styled HTML page., Execute SQL via Turso HTTP API., Create daily_jobs table., Scrape 100 software jobs from LinkedIn + Indeed., scrape_jobs_data() (+3 more)
 
 ### Community 30 - "wi"
 Cohesion: 0.16
 Nodes (27): Ae(), at(), D(), E(), Ei(), er(), gi(), _i() (+19 more)
 
-### Community 31 - "bc"
-Cohesion: 0.23
-Nodes (10): Am(), ap(), bc(), fp(), t(), kp(), op(), Qs() (+2 more)
+### Community 31 - "add"
+Cohesion: 0.09
+Nodes (35): add(), addContainer(), attach(), C(), changeParent(), commentForegroundColor(), deleteId(), detach() (+27 more)
 
 ### Community 32 - "custom-options.js"
 Cohesion: 0.11
@@ -536,8 +534,8 @@ Cohesion: 0.07
 Nodes (19): DateTimeDetector, Any, Deterministic Date and Time Detector for Walk-in & Recruitment Posters.…, Check if flyer is from a previous year (e.g. 2025, 2024, 2023). Returns:…, Detect both date and time from text., Extract start and end time window., Extract start date and optional end date. Returns: (start_date_str,…, LocationDetector (+11 more)
 
 ### Community 40 - "scrape_telegram_jobs.py"
-Cohesion: 0.08
-Nodes (33): extract_job_data(), get_mime_type(), load_gemini_keys(), load_keys_from_env(), Unified AI Extraction Engine for Job Scraping Pipeline Supports: 1. Mistral API…, Unified extraction calling Mistral -> Gemini Native -> OpenRouter. Returns:…, repair_json(), asyncio (+25 more)
+Cohesion: 0.09
+Nodes (31): extract_job_data(), get_mime_type(), load_gemini_keys(), load_keys_from_env(), Unified AI Extraction Engine for Job Scraping Pipeline Supports: 1. Mistral API…, Unified extraction calling Mistral -> Gemini Native -> OpenRouter. Returns:…, repair_json(), asyncio (+23 more)
 
 ### Community 41 - "o"
 Cohesion: 0.05
@@ -563,9 +561,9 @@ Nodes (87): W(), Ai(), A(), o(), b(), bd(), C(), cf() (+79 more)
 Cohesion: 0.16
 Nodes (7): EventEmitter(), GIF(), isFunction(), isNumber(), isObject(), isUndefined(), s()
 
-### Community 47 - "Zr"
-Cohesion: 0.13
-Nodes (19): bc(), br(), Cm(), dr(), gr(), ji(), lc(), p() (+11 more)
+### Community 47 - "xs"
+Cohesion: 0.08
+Nodes (31): Aa(), cs(), cv(), dd(), du(), es(), gv(), He() (+23 more)
 
 ### Community 48 - "re"
 Cohesion: 0.11
@@ -575,13 +573,13 @@ Nodes (17): Location detector for Indian job flyers. Extracts canonical city, st
 Cohesion: 0.08
 Nodes (24): cv2, OCRMerger, Spatial Bounding Box Merger and Deduplication. Merges detections across multi-…, Calculate IoU of two bounding boxes [x1, y1, x2, y2]., Merge overlapping detections from different passes. Preserves higher confidence…, get_ocr_engine(), OCREngine, ndarray (+16 more)
 
-### Community 50 - "r"
+### Community 50 - "paste"
 Cohesion: 0.09
-Nodes (38): mt(), bA(), bf(), bt(), a(), clone(), createDrawingOptions(), Ct() (+30 more)
+Nodes (23): addEditListeners(), addFakeAnnotation(), commentButtonPositionInPage(), commentData(), createOrUpdatePopup(), _createPopup(), disableUserSelect(), dragOver() (+15 more)
 
-### Community 51 - "bl"
+### Community 51 - "ur"
 Cohesion: 0.14
-Nodes (14): bl(), fetch(), gl(), Hz(), ip(), isVisible(), qN(), Rz() (+6 more)
+Nodes (20): bn(), ci(), fr(), gn(), hn(), ii(), ke(), kn() (+12 more)
 
 ### Community 52 - "Pe"
 Cohesion: 0.11
@@ -603,9 +601,9 @@ Nodes (27): Av(), Bi(), bl(), El(), fl(), gl(), Hf(), hi() (+19 more)
 Cohesion: 0.14
 Nodes (17): DataGovMCAClient, Official data.gov.in MCA Company Master Data API Client. Handles pagination,…, get_api_key(), Retrieve data.gov.in API key from environment. Never logs or exposes the key…, load_progress(), main(), Full Paginated Downloader for MCA Company Master Data. Stores records in local…, Load download progress from checkpoint file. (+9 more)
 
-### Community 57 - "add"
-Cohesion: 0.09
-Nodes (35): add(), addContainer(), attach(), C(), changeParent(), commentForegroundColor(), deleteId(), detach() (+27 more)
+### Community 57 - "t"
+Cohesion: 0.17
+Nodes (20): at(), dg(), dt(), ei(), Eo(), gs(), jt(), Mt() (+12 more)
 
 ### Community 58 - "deserialize"
 Cohesion: 0.17
@@ -619,13 +617,13 @@ Nodes (22): actionText(), chooseAndAdvance(), chooseCandidate(), clickAndWaitFor
 Cohesion: 0.12
 Nodes (21): curl_cffi, cleanup_old_jobs(), _get_scraperapi_key(), load_progress(), main(), _parse_foundit_items(), Parse Foundit middleware API items into job dicts., Try middleware API: plain requests first, then curl_cffi fallback. (+13 more)
 
-### Community 61 - "setupMessageHandler"
-Cohesion: 0.22
-Nodes (10): clearData(), Cn(), getIR(), on(), t(), pointBoundingBox(), rn(), sendWithPromise() (+2 more)
+### Community 61 - "Zr"
+Cohesion: 0.13
+Nodes (19): bc(), br(), Cm(), dr(), gr(), ji(), lc(), p() (+11 more)
 
 ### Community 62 - "scrape_google_jobs.py"
-Cohesion: 0.10
-Nodes (22): cleanup_old_jobs(), get_total_jobs(), is_linkedin_block(), DIRECT LINKS SCRAPER — GitHub Actions Version Scrapes 150 top companies via…, Check if error indicates LinkedIn block., Scrape one company across all locations. Returns (direct_jobs, was_blocked)., run(), scrape_company() (+14 more)
+Cohesion: 0.08
+Nodes (19): random, generate_js_file(), _get_scraperapi_key(), load_progress(), ALL JOBS Aggregator Scraper via JobSpy → Turso + JS file Scrapes ALL portals…, Generate all_jobs_data.js from jobs list., save_progress(), scrape_all_jobs() (+11 more)
 
 ### Community 63 - "all_career_auto_apply.js"
 Cohesion: 0.19
@@ -711,9 +709,9 @@ Nodes (7): CompressionStream, DecompressionStream, FixedLengthStream, IdentityTr
 Cohesion: 0.17
 Nodes (11): CompanyDatabase, Any, Path, Batch upsert records into companies table within a single transaction. Uses CIN…, Ultra-fast O(1) indexed B-Tree lookup for exact normalized company name., Check if query matches a curated brand alias (e.g. 'TCS' -> 'Tata Consultancy…, Query SQLite FTS5 index using prefix matching on normalized tokens. Example:…, Return database statistics (total records, file size, last update). (+3 more)
 
-### Community 85 - "datetime"
-Cohesion: 0.14
-Nodes (17): datetime, clean_location(), scripts/rebuild_index_files.py Scans all granular JSON shards in data/jobs/ and…, rebuild_all(), slugify(), create_table(), get_google_jobs(), main() (+9 more)
+### Community 85 - "store_to_turso.py"
+Cohesion: 0.24
+Nodes (12): create_table(), get_google_jobs(), main(), Scrape Google jobs with direct apply links and store in Turso database. Uses…, Store jobs in Turso database., Query Turso to verify stored data., Execute SQL statements via Turso HTTP API pipeline., Create the jobs table in Turso if it doesn't exist. (+4 more)
 
 ### Community 86 - "constructor"
 Cohesion: 0.14
@@ -735,9 +733,9 @@ Nodes (22): af(), closePath(), df(), ef(), Et(), If(), jf(), kf() (+14 more)
 Cohesion: 0.12
 Nodes (28): addCommands(), _addOutlines(), addSignature(), endDragSession(), finalizeDraw(), getDefaultDrawingOptions(), _mergeSVGProperties(), _onResized() (+20 more)
 
-### Community 92 - "getPattern"
-Cohesion: 0.26
-Nodes (12): applyTransform(), areConic(), convertToViewportPoint(), _createGradient(), _createReversedGradient(), getClippedPathBoundingBox(), getPathBoundingBox(), getPattern() (+4 more)
+### Community 92 - "ac"
+Cohesion: 0.20
+Nodes (19): ac(), Di(), gc(), hc(), Ii(), jc(), kc(), ki() (+11 more)
 
 ### Community 93 - "setGState"
 Cohesion: 0.18
@@ -747,41 +745,41 @@ Nodes (13): beginSMaskMode(), checkSMaskState(), _ensurePreparedSMask(), recordS
 Cohesion: 0.22
 Nodes (16): allJobs, createJobCard(), escapeHtml(), extractCity(), fetchJobs(), filteredJobs, filterJobs(), formatDate() (+8 more)
 
-### Community 95 - "step3_big_company_scrape.py"
-Cohesion: 0.22
-Nodes (13): clean_old_jobs(), get_date_stamp(), is_blocked(), is_time_limit_approaching(), load_progress(), STEP 3: Big Company Job Scraper (150 Top Companies) Uses JobSpy to scrape…, Remove jobs older than KEEP_DAYS days., Save jobs directly to local workday_scraper/big_company_jobs.json file. (+5 more)
+### Community 95 - "datetime"
+Cohesion: 0.13
+Nodes (18): datetime, clean_location(), scripts/rebuild_index_files.py Scans all granular JSON shards in data/jobs/ and…, rebuild_all(), slugify(), clean_old_jobs(), get_date_stamp(), is_blocked() (+10 more)
 
 ### Community 96 - "rebuild"
 Cohesion: 0.15
 Nodes (13): addEditor(), addOrRebuild(), addToAnnotationStorage(), addUndoableEditor(), clonePage(), deleteAnnotationElement(), deletePage(), findClonesForPage() (+5 more)
 
-### Community 97 - "commit"
-Cohesion: 0.22
-Nodes (11): center(), commit(), dblclick(), disableEditing(), disableEditMode(), enableEditMode(), enterInEditMode(), isInEditMode() (+3 more)
+### Community 97 - "ui"
+Cohesion: 0.18
+Nodes (17): bi(), de(), di(), dt(), Fe(), ft(), ge(), It() (+9 more)
 
-### Community 99 - "ur"
+### Community 99 - "bl"
 Cohesion: 0.14
-Nodes (20): bn(), ci(), fr(), gn(), hn(), ii(), ke(), kn() (+12 more)
+Nodes (14): bl(), fetch(), gl(), Hz(), ip(), isVisible(), qN(), Rz() (+6 more)
 
-### Community 100 - "paste"
-Cohesion: 0.09
-Nodes (23): addEditListeners(), addFakeAnnotation(), commentButtonPositionInPage(), commentData(), createOrUpdatePopup(), _createPopup(), disableUserSelect(), dragOver() (+15 more)
+### Community 100 - "fill"
+Cohesion: 0.14
+Nodes (17): canSkipPatternCanvas(), closeEOFillStroke(), closeFillStroke(), closeStroke(), consumePath(), endText(), eoFill(), eoFillStroke() (+9 more)
 
 ### Community 102 - "addEditToolbar"
 Cohesion: 0.14
 Nodes (14): addCommentButton(), addCommentButtonInToolbar(), addEditToolbar(), addStandaloneCommentButton(), comment(), commentButtonColor(), convert(), description() (+6 more)
 
-### Community 103 - "fill"
-Cohesion: 0.14
-Nodes (17): canSkipPatternCanvas(), closeEOFillStroke(), closeFillStroke(), closeStroke(), consumePath(), endText(), eoFill(), eoFillStroke() (+9 more)
+### Community 103 - "U"
+Cohesion: 0.20
+Nodes (15): Be(), ee(), Fi(), getCommentDialogElement(), hasCommentManager(), Ee(), Hd(), ka() (+7 more)
 
-### Community 104 - "drawPattern"
-Cohesion: 0.26
-Nodes (12): clipBbox(), create(), _createCanvas(), _createMeshCanvas(), createPatternCanvas(), _createSVG(), drawPattern(), _getCombinedScales() (+4 more)
+### Community 104 - "axialAlignedBoundingBox"
+Cohesion: 0.20
+Nodes (14): axialAlignedBoundingBox(), constructPath(), endGroup(), intersect(), multiplyByDOMMatrix(), pushBaseTransform(), record(), recordBBox() (+6 more)
 
-### Community 105 - "transform"
-Cohesion: 0.24
-Nodes (12): beginAnnotation(), endPath(), getSinglePixelWidth(), inverseTransform(), isFontSubpixelAAEnabled(), paintChar(), paintFormXObjectBegin(), resetBBox() (+4 more)
+### Community 105 - "y"
+Cohesion: 0.18
+Nodes (12): Bm(), de(), Ge(), hp(), me(), Qy(), ue(), Vm() (+4 more)
 
 ### Community 109 - "CompanyResolver"
 Cohesion: 0.21
@@ -811,9 +809,9 @@ Nodes (11): extract_indeed_jk(), generate_html(), get_total_jobs(), LinkedIn + I
 Cohesion: 0.04
 Nodes (49): 10. Wipro (SAP SuccessFactors) ✅, 11. Arcesium (Greenhouse) ✅, 12. Juniper Networks / HPE (Phenom) ⚠️ Count only (SSR jobs), 13. Mastercard (Phenom) ⚠️ Count only (SSR jobs), 14. Barclays (SSR HTML) ✅, 15. Fidelity Investments (SSR HTML) ✅, 16. BNY (Oracle HCM) ✅, 17. American Express (Oracle HCM) ✅ (+41 more)
 
-### Community 119 - "a"
-Cohesion: 0.22
-Nodes (10): a(), ca(), fromRgbString(), mix(), onBackground(), setA(), shade(), tint() (+2 more)
+### Community 119 - "s"
+Cohesion: 0.15
+Nodes (13): bezierBoundingBox(), draw(), editorDivInput(), end(), finish(), hasData(), isEmpty(), loadMeshShader() (+5 more)
 
 ### Community 120 - "validate"
 Cohesion: 0.26
@@ -823,9 +821,9 @@ Nodes (11): ah(), getType(), getValidationMethod(), lh(), messages(), tg(), uh()
 Cohesion: 0.20
 Nodes (10): commitOrRemove(), enableTextSelection(), endCurrentEditing(), focusout(), onRotationChanging(), pointerdown(), startDrawingSession(), translateInPage() (+2 more)
 
-### Community 122 - "toSVGPath"
-Cohesion: 0.27
-Nodes (11): defaultProperties(), defaultSVGProperties(), getPathResizedSVGProperties(), getPathResizingSVGProperties(), getPathTranslatedSVGProperties(), oz(), _rescale(), rotationTransform() (+3 more)
+### Community 122 - "ac"
+Cohesion: 0.32
+Nodes (12): ac(), ge(), te(), jc(), jd(), kc(), ki(), mc() (+4 more)
 
 ### Community 123 - "signal_detector.py"
 Cohesion: 0.27
@@ -855,29 +853,29 @@ Nodes (11): abort(), _abortOperatorList(), _abortRequest(), cancel(), cancelAllR
 Cohesion: 0.24
 Nodes (12): Ew(), iv(), c(), r(), s(), nv(), Sw(), Tw() (+4 more)
 
-### Community 131 - "delete"
-Cohesion: 0.18
-Nodes (12): Ax(), clear(), copy(), cut(), delete(), deleteByPath(), getPathGenerator(), _next() (+4 more)
+### Community 131 - "addButton"
+Cohesion: 0.17
+Nodes (12): addAltText(), addButton(), addButtonBefore(), addColorPicker(), addComment(), addDeleteButton(), addEditSignatureButton(), _bakeSMaskCanvas() (+4 more)
 
 ### Community 132 - "_pumpOperatorList"
 Cohesion: 0.13
 Nodes (16): _callOnProgress(), _continue(), getOperatorList(), getTextContent(), getXfa(), growOperationsCount(), operatorListChanged(), _pumpOperatorList() (+8 more)
 
-### Community 133 - "u"
-Cohesion: 0.27
-Nodes (11): Dw(), u(), hasTextLayer(), ji(), pi(), Q(), Qi(), Si() (+3 more)
+### Community 133 - "bc"
+Cohesion: 0.23
+Nodes (10): Am(), ap(), bc(), fp(), t(), kp(), op(), Qs() (+2 more)
 
-### Community 135 - "ac"
-Cohesion: 0.20
-Nodes (19): ac(), Di(), gc(), hc(), Ii(), jc(), kc(), ki() (+11 more)
-
-### Community 136 - "ui"
-Cohesion: 0.18
-Nodes (17): bi(), de(), di(), dt(), Fe(), ft(), ge(), It() (+9 more)
-
-### Community 137 - "restore"
+### Community 135 - "restore"
 Cohesion: 0.33
 Nodes (12): _applySMaskOOBAlpha(), beginGroup(), clip(), composeSMask(), endSMaskMode(), genericComposeSMask(), getScaleForStroking(), paintFormXObjectEnd() (+4 more)
+
+### Community 136 - "getPattern"
+Cohesion: 0.26
+Nodes (12): applyTransform(), areConic(), convertToViewportPoint(), _createGradient(), _createReversedGradient(), getClippedPathBoundingBox(), getPathBoundingBox(), getPattern() (+4 more)
+
+### Community 137 - "delete"
+Cohesion: 0.18
+Nodes (12): Ax(), clear(), copy(), cut(), delete(), deleteByPath(), getPathGenerator(), _next() (+4 more)
 
 ### Community 138 - "s"
 Cohesion: 0.16
@@ -887,25 +885,25 @@ Nodes (17): an(), Dt(), E(), Et(), s(), gn(), i(), jn() (+9 more)
 Cohesion: 0.23
 Nodes (16): bn(), cn(), dn(), fn(), g(), hn(), In(), kn() (+8 more)
 
-### Community 142 - "U"
-Cohesion: 0.20
-Nodes (15): Be(), ee(), Fi(), getCommentDialogElement(), hasCommentManager(), Ee(), Hd(), ka() (+7 more)
+### Community 142 - "transform"
+Cohesion: 0.24
+Nodes (12): beginAnnotation(), endPath(), getSinglePixelWidth(), inverseTransform(), isFontSubpixelAAEnabled(), paintChar(), paintFormXObjectBegin(), resetBBox() (+4 more)
 
 ### Community 143 - "highlightSelection"
 Cohesion: 0.18
 Nodes (12): addNewEditor(), commentSelection(), createAndAddNewEditor(), edit(), editComment(), getSelectionBoxes(), highlightSelection(), onEditingAction() (+4 more)
 
-### Community 144 - "y"
-Cohesion: 0.18
-Nodes (12): Bm(), de(), Ge(), hp(), me(), Qy(), ue(), Vm() (+4 more)
+### Community 144 - "createElement"
+Cohesion: 0.17
+Nodes (12): bx(), createElement(), ff(), Ft(), isAlphaColorInputSupported(), isCanvasFilterSupported(), jv(), mM() (+4 more)
 
 ### Community 145 - "ByteLengthQueuingStrategy"
 Cohesion: 0.22
 Nodes (3): ByteLengthQueuingStrategy, CountQueuingStrategy, QueuingStrategy
 
-### Community 151 - "s"
-Cohesion: 0.15
-Nodes (13): bezierBoundingBox(), draw(), editorDivInput(), end(), finish(), hasData(), isEmpty(), loadMeshShader() (+5 more)
+### Community 151 - "drawPattern"
+Cohesion: 0.26
+Nodes (12): clipBbox(), create(), _createCanvas(), _createMeshCanvas(), createPatternCanvas(), _createSVG(), drawPattern(), _getCombinedScales() (+4 more)
 
 ### Community 153 - "popup.js"
 Cohesion: 0.29
@@ -919,9 +917,9 @@ Nodes (26): an(), bn(), computeTelemetryFinalData(), editorStats(), executeOpera
 Cohesion: 0.29
 Nodes (6): chunk_count, chunk_size_bytes, chunks, sha256, source_filename, total_size_bytes
 
-### Community 161 - "axialAlignedBoundingBox"
-Cohesion: 0.20
-Nodes (14): axialAlignedBoundingBox(), constructPath(), endGroup(), intersect(), multiplyByDOMMatrix(), pushBaseTransform(), record(), recordBBox() (+6 more)
+### Community 161 - "commit"
+Cohesion: 0.22
+Nodes (11): center(), commit(), dblclick(), disableEditing(), disableEditMode(), enableEditMode(), enterInEditMode(), isInEditMode() (+3 more)
 
 ### Community 162 - "ALL_CAREER"
 Cohesion: 0.15
@@ -931,9 +929,9 @@ Nodes (12): A focused job-discovery hub for direct-company, portal, and communit
 Cohesion: 0.29
 Nodes (6): compilerOptions, types, exclude, extends, include, ../tsconfig.json
 
-### Community 169 - "addButton"
-Cohesion: 0.17
-Nodes (12): addAltText(), addButton(), addButtonBefore(), addColorPicker(), addComment(), addDeleteButton(), addEditSignatureButton(), _bakeSMaskCanvas() (+4 more)
+### Community 169 - "toSVGPath"
+Cohesion: 0.27
+Nodes (11): defaultProperties(), defaultSVGProperties(), getPathResizedSVGProperties(), getPathResizingSVGProperties(), getPathTranslatedSVGProperties(), oz(), _rescale(), rotationTransform() (+3 more)
 
 ### Community 170 - "logo3d.js"
 Cohesion: 0.48
@@ -943,17 +941,17 @@ Nodes (5): buildLobedGeometry(), buildLogo(), createLogoShell(), hasWebGL(), mou
 Cohesion: 0.24
 Nodes (10): ai(), Be(), C(), ct(), hi(), In(), Oi(), P() (+2 more)
 
-### Community 172 - "t"
-Cohesion: 0.17
-Nodes (20): at(), dg(), dt(), ei(), Eo(), gs(), jt(), Mt() (+12 more)
+### Community 172 - "u"
+Cohesion: 0.27
+Nodes (11): Dw(), u(), hasTextLayer(), ji(), pi(), Q(), Qi(), Si() (+3 more)
 
-### Community 173 - "toString"
-Cohesion: 0.43
-Nodes (7): cy(), gi(), hexNums(), hi(), i(), mi(), toString()
+### Community 173 - "a"
+Cohesion: 0.22
+Nodes (10): a(), ca(), fromRgbString(), mix(), onBackground(), setA(), shade(), tint() (+2 more)
 
-### Community 174 - "mv"
-Cohesion: 0.29
-Nodes (7): av(), lv(), mv(), e(), t(), ov(), sv()
+### Community 174 - "setupMessageHandler"
+Cohesion: 0.22
+Nodes (10): clearData(), Cn(), getIR(), on(), t(), pointBoundingBox(), rn(), sendWithPromise() (+2 more)
 
 ### Community 175 - "recordShowTextOperation"
 Cohesion: 0.33
@@ -963,17 +961,21 @@ Nodes (6): moveText(), nextLine(), recordIncrementalData(), recordShowTextOperat
 Cohesion: 0.60
 Nodes (5): calculate_sha256(), Path, Split large company database file into < 45MB chunks for GitHub compatibility,…, reassemble_database(), split_database()
 
-### Community 183 - "createElement"
-Cohesion: 0.17
-Nodes (12): bx(), createElement(), ff(), Ft(), isAlphaColorInputSupported(), isCanvasFilterSupported(), jv(), mM() (+4 more)
+### Community 183 - "mv"
+Cohesion: 0.29
+Nodes (7): av(), lv(), mv(), e(), t(), ov(), sv()
+
+### Community 185 - "toString"
+Cohesion: 0.43
+Nodes (7): cy(), gi(), hexNums(), hi(), i(), mi(), toString()
 
 ### Community 186 - "api-worker/package.json"
 Cohesion: 0.20
 Nodes (9): devDependencies, wrangler, wrangler, name, private, scripts, deploy, logout (+1 more)
 
-### Community 187 - "post"
-Cohesion: 0.33
-Nodes (6): Fj(), Nj(), Pj(), post(), _request(), send()
+### Community 187 - "xg"
+Cohesion: 0.47
+Nodes (6): ag(), bg(), hg(), rh(), xg(), th()
 
 ### Community 188 - ".test_connection"
 Cohesion: 0.31
@@ -995,9 +997,9 @@ Nodes (9): ct(), it(), Je(), lt(), qe(), rt(), sr(), st() (+1 more)
 Cohesion: 0.50
 Nodes (4): copyCanvas(), hasAltTextData(), mlGuessAltText(), setGuessedAltText()
 
-### Community 205 - "toggleComment"
-Cohesion: 0.50
-Nodes (4): deleteComment(), getEditorByUID(), selectComment(), toggleComment()
+### Community 205 - "post"
+Cohesion: 0.33
+Nodes (6): Fj(), Nj(), Pj(), post(), _request(), send()
 
 ### Community 206 - "drag"
 Cohesion: 0.50
@@ -1015,17 +1017,21 @@ Nodes (6): Cloudflare Workers, Commands, Docs, Errors, Node.js Compatibility, Pr
 Cohesion: 0.67
 Nodes (3): beginMarkedContentProps(), endMarkedContent(), isContentVisible()
 
-### Community 229 - "bh"
-Cohesion: 0.67
-Nodes (3): bh(), vh(), yh()
+### Community 229 - "ho"
+Cohesion: 0.40
+Nodes (5): Bi(), ho(), mo(), toRgb(), toRgbString()
 
-### Community 230 - "cg"
-Cohesion: 0.67
-Nodes (3): cg(), doBatch(), notify()
+### Community 230 - "processDrawnLines"
+Cohesion: 0.50
+Nodes (4): createBezierPoints(), extractContoursFromText(), process(), processDrawnLines()
 
 ### Community 231 - "CMYK_HTML"
 Cohesion: 0.67
 Nodes (3): CMYK_HTML(), CMYK_RGB(), RGB_HTML()
+
+### Community 232 - "toggleComment"
+Cohesion: 0.50
+Nodes (4): deleteComment(), getEditorByUID(), selectComment(), toggleComment()
 
 ### Community 233 - "createAltText"
 Cohesion: 0.67
@@ -1035,25 +1041,25 @@ Nodes (3): createAltText(), initialize(), toolbarButtons()
 Cohesion: 0.67
 Nodes (3): data(), hasBeenEdited(), isDeleted()
 
-### Community 235 - "extractPages"
+### Community 235 - "bh"
 Cohesion: 0.67
-Nodes (3): extractPages(), getPageId(), getPageMappingForSaving()
+Nodes (3): bh(), vh(), yh()
 
-### Community 236 - "isEditorHandlingKeyboard"
+### Community 236 - "cg"
 Cohesion: 0.67
-Nodes (3): getActive(), isEditorHandlingKeyboard(), shouldGetKeyboardEvents()
+Nodes (3): cg(), doBatch(), notify()
 
 ### Community 237 - "getBrightness"
 Cohesion: 0.67
 Nodes (3): getBrightness(), isDark(), isLight()
 
-### Community 238 - "getColorN_Pattern"
+### Community 238 - "extractPages"
 Cohesion: 0.67
-Nodes (3): getColorN_Pattern(), setFillColorN(), setStrokeColorN()
+Nodes (3): extractPages(), getPageId(), getPageMappingForSaving()
 
-### Community 239 - "sz"
+### Community 239 - "ny"
 Cohesion: 0.67
-Nodes (3): getFocusSVGProperties(), _rotateBox(), sz()
+Nodes (3): ey(), Fv(), ny()
 
 ### Community 240 - "qx"
 Cohesion: 0.67
@@ -1063,51 +1069,47 @@ Nodes (3): qx(), Ux(), Vx()
 Cohesion: 0.67
 Nodes (3): setCommentData(), updateEditor(), updateFromAnnotationLayer()
 
-### Community 242 - "setVisibility"
+### Community 242 - "isEditorHandlingKeyboard"
 Cohesion: 0.67
-Nodes (3): setOCGState(), setVisibility(), _setVisible()
+Nodes (3): getActive(), isEditorHandlingKeyboard(), shouldGetKeyboardEvents()
 
-### Community 243 - "xg"
-Cohesion: 0.47
-Nodes (6): ag(), bg(), hg(), rh(), xg(), th()
+### Community 243 - "getColorN_Pattern"
+Cohesion: 0.67
+Nodes (3): getColorN_Pattern(), setFillColorN(), setStrokeColorN()
 
 ### Community 245 - "BasicImageTransformations"
 Cohesion: 0.67
 Nodes (3): BasicImageTransformations, RequestInitCfPropertiesImage, RequestInitCfPropertiesImageDraw
 
-### Community 312 - "ho"
-Cohesion: 0.40
-Nodes (5): Bi(), ho(), mo(), toRgb(), toRgbString()
+### Community 266 - "sz"
+Cohesion: 0.67
+Nodes (3): getFocusSVGProperties(), _rotateBox(), sz()
 
-### Community 321 - "processDrawnLines"
-Cohesion: 0.50
-Nodes (4): createBezierPoints(), extractContoursFromText(), process(), processDrawnLines()
+### Community 267 - "Iz"
+Cohesion: 0.67
+Nodes (3): getPage(), getViewport(), Iz()
+
+### Community 268 - "setVisibility"
+Cohesion: 0.67
+Nodes (3): setOCGState(), setVisibility(), _setVisible()
 
 ### Community 322 - "20. NatWest Group (Playwright / Browser) ⚠️ Slow"
 Cohesion: 0.50
 Nodes (4): 20. NatWest Group (Playwright / Browser) ⚠️ Slow, Blocked Sites Mitigation Notes:, Global API Rules Updated:, HTML Parsing Selectors Reference (SSR-Locked Sites):
 
-### Community 323 - "ny"
-Cohesion: 0.67
-Nodes (3): ey(), Fv(), ny()
-
-### Community 324 - "Iz"
-Cohesion: 0.67
-Nodes (3): getPage(), getViewport(), Iz()
-
 ## Knowledge Gaps
 - **1019 isolated node(s):** `default_title`, `service_worker`, `required`, `id`, `content_scripts` (+1014 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2571 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **151 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **148 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `URL` connect `URL` to `worker-configuration.d.ts`, `bl`?**
   _High betweenness centrality (0.188) - this node is a cross-community bridge._
-- **Why does `Ai()` connect `t` to `sidepanel-BsfCUvXP.js`, `content-scripts/content.js`, `toString`, `bl`, `ac`?**
+- **Why does `Ai()` connect `t` to `sidepanel-BsfCUvXP.js`, `content-scripts/content.js`, `bl`, `toString`, `ac`?**
   _High betweenness centrality (0.077) - this node is a cross-community bridge._
-- **Why does `Yn()` connect `Hr` to `sidepanel-BsfCUvXP.js`, `background.js`, `e`, `t`, `e`, `r`, `n`, `bl`, `createElement`, `wd`?**
+- **Why does `Yn()` connect `Hr` to `sidepanel-BsfCUvXP.js`, `background.js`, `bl`, `e`, `createElement`, `e`, `n`, `r`, `wd`, `t`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 123 inferred relationships involving `n()` (e.g. with `Ab()` and `ac()`) actually correct?**
   _`n()` has 123 INFERRED edges - model-reasoned connections that need verification._

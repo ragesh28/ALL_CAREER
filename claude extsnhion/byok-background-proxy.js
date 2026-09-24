@@ -718,7 +718,12 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         }
 
         executeWorkflowRun(wf, targetTabId, stopAfterIndex, variables).catch(err => {
-          console.error('[BYOK] executeWorkflowRun error:', err);
+          const isAi = /omniroute|api key|ai health|ai not working|127\.0\.0\.1:20128/i.test(err?.message || '');
+          if (isAi) {
+            console.warn('[BYOK] executeWorkflowRun AI notice:', err?.message || String(err));
+          } else {
+            console.error('[BYOK] executeWorkflowRun error:', err);
+          }
         });
 
         sendResponse({ success: true, started: true, tabId: targetTabId, workflowId: wf.id });
@@ -934,16 +939,16 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // Automatically stop and clean up recording when the target tab or creator tab is closed
 chrome.tabs.onRemoved.addListener(async (closedTabId) => {
   try {
-    // Stop batch auto apply immediately if the main All Career tab is closed
+    // Stop batch auto apply immediately ONLY if the main All Career portal tab is closed
     if (currentBatchController && currentBatchController.running && currentBatchController.mainTabId === closedTabId) {
       console.log('[BYOK] Main All Career tab was closed. Terminating batch auto apply immediately.');
       stopBatchAutoApply('Main All Career tab was closed.');
+      return;
     }
-    // Stop batch auto apply immediately if the user closes the active job tab while applying
-    if (currentBatchController && currentBatchController.running && currentBatchController.currentJobTabId === closedTabId) {
-      console.log(`[BYOK] Active job tab ${closedTabId} was closed by user. Halting batch auto-apply.`);
-      stopBatchAutoApply('Job application tab was closed by user.');
-    } else if (currentBatchController && currentBatchController.currentJobTabId === closedTabId) {
+
+    // If an individual job tab was closed, just clear the reference so batch can proceed to the next job
+    if (currentBatchController && currentBatchController.currentJobTabId === closedTabId) {
+      console.log(`[BYOK] Job tab ${closedTabId} was closed. Batch auto apply will continue with next job.`);
       currentBatchController.currentJobTabId = null;
     }
 
@@ -3233,21 +3238,23 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         const aiCheck = await verifyActiveAIWorking();
         if (!aiCheck.ok) {
           const errMsg = aiCheck.reason || 'AI is not configured or offline. Please configure your AI settings.';
-          runState.logs.push(`[Workflow] ❌ AI Health Check Failed: ${errMsg}`);
+          runState.logs.push(`[Workflow] ❌ AI Health Check: ${errMsg}`);
           runState.status = 'error';
           runState.error = errMsg;
+          runState.finishedAt = Date.now();
           await chrome.storage.local.set({ workflowRunState: runState });
           await updateTabHud(activeTabId, {
             workflowName: runState.workflowName,
             stepIndex: i,
             totalSteps: steps.length,
-            stepName: step.name || 'AI Step',
+            stepName: 'AI Config Required',
             status: 'error',
             actionTaken: `⚠️ ${errMsg}`,
             aiUnavailable: true,
             aiErrorText: errMsg,
           });
-          throw new Error(errMsg);
+          console.warn('[BYOK] AI Configuration Required:', errMsg);
+          return;
         }
 
         const aiResult = await executeAIStepOneByOne(activeTabId, step, runState);
@@ -3414,21 +3421,26 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             // If AI fallback failed, verify AI status to produce an accurate, helpful message
             const aiCheck = await verifyActiveAIWorking();
             const reason = !aiCheck.ok ? aiCheck.reason : (aiFallbackRes?.reason || stepErr?.message || 'Element not found on page.');
-            const msg = `Element "${step.name || step.type}" not found. ${reason}`;
+            const msg = !aiCheck.ok ? aiCheck.reason : `Element "${step.name || step.type}" not found. ${reason}`;
             runState.logs.push(`[Workflow] ⚠️ ${msg}`);
             runState.error = msg;
             runState.status = 'error';
+            runState.finishedAt = Date.now();
             await chrome.storage.local.set({ workflowRunState: runState });
             await updateTabHud(activeTabId, {
               workflowName: runState.workflowName,
               stepIndex: i,
               totalSteps: steps.length,
-              stepName: step.name || step.type,
+              stepName: !aiCheck.ok ? 'AI Config Required' : (step.name || step.type),
               status: 'error',
               actionTaken: `⚠️ ${msg}`,
               aiUnavailable: !aiCheck.ok,
               aiErrorText: !aiCheck.ok ? aiCheck.reason : undefined,
             });
+            if (!aiCheck.ok) {
+              console.warn('[BYOK] AI Configuration Required:', msg);
+              return;
+            }
             throw new Error(msg);
           }
         }
@@ -3444,8 +3456,12 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             runState.logs.push(`[Naukri] Job tab opened via click: tab ${check.destination.id}`);
             activeTabId = check.destination.id;
             runState.tabId = activeTabId;
+            if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
             await waitForTabReady(activeTabId);
             await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+            try {
+              await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+            } catch (_) {}
             await chrome.storage.local.set({ workflowRunState: runState });
           } else {
             // Fallback: create tab directly with expectedUrl if native popup/target=_blank was suppressed
@@ -3460,29 +3476,75 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             if (fallbackTab?.id) {
               activeTabId = fallbackTab.id;
               runState.tabId = activeTabId;
+              if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
               await waitForTabReady(activeTabId);
               await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              try {
+                await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+              } catch (_) {}
               await chrome.storage.local.set({ workflowRunState: runState });
             }
           }
-        } else {
-          const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
-          await new Promise(r => setTimeout(r, waitMs));
+        } else if (step.type === 'click') {
+          // Responsive check if click (e.g. Apply / Apply on Company Site button) opened a new tab
+          const waitLimit = (execRes?.opensNewTab || execRes?.href) ? 3500 : 2200;
+          let newTab = null;
+          const pollStart = Date.now();
 
-          // Check if action opened a new tab
-          const afterTabs = await chrome.tabs.query({}).catch(() => []);
-          const newTab = afterTabs.find(t => !beforeTabs.has(t.id) && t.id && /^https?:/i.test(t.url || ''));
+          while (Date.now() - pollStart < waitLimit) {
+            if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) break;
+            const currentTabs = await chrome.tabs.query({}).catch(() => []);
+            newTab = currentTabs.find(t =>
+              t.id &&
+              !beforeTabs.has(t.id) &&
+              !isAllCareerPageTab(t) &&
+              !t.url?.startsWith('chrome-extension://')
+            );
+            if (newTab) break;
+            await new Promise(r => setTimeout(r, 200));
+          }
+
           if (newTab?.id) {
-            console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url);
+            console.log('[BYOK] Action opened new tab:', newTab.id, newTab.url || newTab.pendingUrl);
+            runState.logs.push(`[Workflow] 🔀 Switched to newly opened tab ${newTab.id}`);
             activeTabId = newTab.id;
             runState.tabId = activeTabId;
+            if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
             await waitForTabReady(activeTabId);
             await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+            try {
+              await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+            } catch (_) {}
             await chrome.storage.local.set({ workflowRunState: runState });
+          } else if (execRes?.href && /^https?:/i.test(execRes.href)) {
+            // If click has an href and no tab opened automatically (e.g. popup blocked), open destination
+            console.log('[BYOK] Opening click destination link in new tab:', execRes.href);
+            const curTab = await getValidTab(activeTabId);
+            const fallbackTab = await chrome.tabs.create({
+              url: execRes.href,
+              active: true,
+              ...(curTab?.id ? { openerTabId: curTab.id } : {}),
+              ...(typeof curTab?.windowId === 'number' ? { windowId: curTab.windowId } : {}),
+            }).catch(() => null);
+            if (fallbackTab?.id) {
+              activeTabId = fallbackTab.id;
+              runState.tabId = activeTabId;
+              if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
+              await waitForTabReady(activeTabId);
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              try {
+                await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+              } catch (_) {}
+              await chrome.storage.local.set({ workflowRunState: runState });
+            }
           } else {
             // Re-verify that activeTabId is still alive after action
             activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
           }
+        } else {
+          const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
+          await new Promise(r => setTimeout(r, waitMs));
+          activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
         }
       }
 
@@ -3529,7 +3591,12 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       return;
     }
 
-    console.error('[BYOK] Workflow execution error:', err);
+    const isAiErr = /omniroute|api key|ai health|ai not working|127\.0\.0\.1:20128/i.test(err?.message || String(err) || runState.error || '');
+    if (isAiErr) {
+      console.warn('[BYOK] AI Configuration Notice:', err?.message || String(err));
+    } else {
+      console.error('[BYOK] Workflow execution error:', err);
+    }
     runState.status = 'error';
     runState.error = err instanceof Error ? err.message : String(err);
     runState.finishedAt = Date.now();
@@ -3541,7 +3608,6 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       await chrome.storage.local.set({ workflowRunState: runState });
     }
 
-    const isAiErr = /omniroute|api key|ai health|ai not working|127\.0\.0\.1:20128/i.test(runState.error);
     await updateTabHud(activeTabId, {
       workflowName: runState.workflowName,
       stepIndex: runState.stepIndex || 0,
@@ -4137,6 +4203,21 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           mode = 'workflow';
           console.log(`[BatchApply] [${i+1}/${jobsList.length}] Found recorded workflow "${matchedWorkflow.name}" for portal "${portal.name}". Executing...`);
           jobResult = await runWorkflowForJob(matchedWorkflow, rawTargetUrl, job);
+
+          // IF WORKFLOW FAILED (e.g. page layout is different, redirected to company site, or unmapped form fields):
+          // GIVE CONTROL TO AI FORM ORCHESTRATOR INSTEAD OF SKIPPING THE JOB!
+          if (!jobResult.success && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
+            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Checking AI availability for fallback apply...`);
+            const aiCheck = await verifyActiveAIWorking();
+            if (aiCheck.ok) {
+              console.log(`[BatchApply] [${i+1}/${jobsList.length}] 🤖 Handing control over to AI Form Orchestrator to complete application...`);
+              mode = 'ai';
+              const activeTabId = currentBatchController?.currentJobTabId;
+              jobResult = await runAIOrchestratorForJob(rawTargetUrl, job, activeTabId);
+            } else {
+              console.warn(`[BatchApply] AI handover not possible: ${aiCheck.reason}`);
+            }
+          }
         } else {
           mode = 'ai';
           console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Testing AI availability...`);
@@ -4151,10 +4232,9 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           }
         }
 
-        // Break immediately if cancelled during job run
-        if (controller.cancelled || !controller.running || (currentBatchController && currentBatchController.cancelled) ||
-            /stopped by user|cancelled/i.test(jobResult.reason || '')) {
-          console.log('[BatchApply] Process stopped during application of job', i + 1);
+        // Break immediately ONLY if batch was explicitly cancelled or stopped by user
+        if (controller.cancelled || !controller.running || (currentBatchController && currentBatchController.cancelled)) {
+          console.log('[BatchApply] Execution stopped by user.');
           break;
         }
 
@@ -4185,6 +4265,13 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
 
         broadcastBatchStatus(controller, historyItem);
 
+        // Clean up any remaining job tab before moving to next job
+        if (controller.currentJobTabId) {
+          const tabToClose = controller.currentJobTabId;
+          controller.currentJobTabId = null;
+          chrome.tabs.remove(tabToClose).catch(() => {});
+        }
+
         // Pause briefly between applications for stability (interruptible every 100ms)
         if (i < jobsList.length - 1 && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
           for (let s = 0; s < 18; s++) {
@@ -4196,7 +4283,12 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
         }
       }
     } catch (err) {
-      console.error('[BatchApply] Error during batch auto apply:', err);
+      const isAi = /omniroute|api key|ai health|ai not working|127\.0\.0\.1:20128/i.test(err?.message || '');
+      if (isAi) {
+        console.warn('[BatchApply] AI Configuration Notice during batch auto apply:', err?.message || String(err));
+      } else {
+        console.error('[BatchApply] Error during batch auto apply:', err);
+      }
     } finally {
       controller.running = false;
       controller.currentJobTabId = null;
@@ -4256,7 +4348,7 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
 
     const stateRes = await chrome.storage.local.get('workflowRunState');
     const runState = stateRes.workflowRunState;
-    if (runState?.status === 'cancelled' || (currentBatchController && currentBatchController.cancelled)) {
+    if (currentBatchController && currentBatchController.cancelled) {
       if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => {});
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
@@ -4269,10 +4361,9 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
     // Close tab on success after a short delay
     if (isSuccess && createdTab?.id) {
       setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 2000);
-    }
-
-    if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
-      currentBatchController.currentJobTabId = null;
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
     }
 
     return { success: isSuccess, reason };
@@ -4284,34 +4375,52 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
   }
 }
 
-async function runAIOrchestratorForJob(targetUrl, job) {
+async function runAIOrchestratorForJob(targetUrl, job, existingTabId = null) {
   let createdTab = null;
+  let tabId = null;
   try {
     if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
-    createdTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
-    if (!createdTab?.id) {
-      return { success: false, reason: 'Failed to open browser tab for this job.' };
+    // Check if an existing open tab can be reused (e.g. newly opened external company portal)
+    if (existingTabId) {
+      const valid = await getValidTab(existingTabId);
+      if (valid && !isAllCareerPageTab(valid)) {
+        tabId = valid.id;
+        console.log(`[AI Orchestrator] Reusing currently open job tab ${tabId} (${valid.url || ''})`);
+      }
     }
 
-    const tabId = createdTab.id;
+    if (!tabId) {
+      createdTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
+      if (!createdTab?.id) {
+        return { success: false, reason: 'Failed to open browser tab for this job.' };
+      }
+      tabId = createdTab.id;
+    }
+
     if (currentBatchController) {
       currentBatchController.currentJobTabId = tabId;
     }
 
     await waitForTabReady(tabId);
+    await chrome.tabs.update(tabId, { active: true }).catch(() => {});
+
+    // Ensure content script is injected on this tab
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+    } catch (_) {}
 
     if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-      chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
-    // Interruptible 2.0s delay
-    for (let s = 0; s < 20; s++) {
+    // Interruptible 1.5s delay
+    for (let s = 0; s < 15; s++) {
       if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-        chrome.tabs.remove(tabId).catch(() => {});
+        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
         return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
       await new Promise(r => setTimeout(r, 100));
@@ -4348,7 +4457,7 @@ async function runAIOrchestratorForJob(targetUrl, job) {
       });
     });
 
-    if (outcome.success && createdTab?.id) {
+    if (outcome.success && tabId) {
       setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 2500);
     }
 
@@ -4358,7 +4467,7 @@ async function runAIOrchestratorForJob(targetUrl, job) {
 
     return outcome;
   } catch (err) {
-    if (createdTab?.id && currentBatchController?.currentJobTabId === createdTab.id) {
+    if (tabId && currentBatchController?.currentJobTabId === tabId) {
       currentBatchController.currentJobTabId = null;
     }
     return { success: false, reason: `AI application error: ${err instanceof Error ? err.message : String(err)}` };

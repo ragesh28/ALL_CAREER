@@ -84,16 +84,16 @@
     "semantic_hash": "a983c0c062b6aa94eb3b290ecc2b2bdf"
   },
   "claude extsnhion/byok-background-proxy.js": {
-    "mtime": 1790247684.6705873,
-    "seen": 1790248202.1924412,
-    "ast_hash": "c215dd7c8e92fe07a9a767538b6b7e93",
+    "mtime": 1790257250.3458495,
+    "seen": 1790257470.5171306,
+    "ast_hash": "8b21a6a2ed1f90144aa50f91475222b5",
     "semantic_hash": ""
   },
   "claude extsnhion/content.js": {
-    "mtime": 1790232310.4692302,
-    "seen": 1790237719.857971,
-    "ast_hash": "1e38646322f7b660decb68d3c0664ebf",
-    "semantic_hash": "1e38646322f7b660decb68d3c0664ebf"
+    "mtime": 1790252987.6267955,
+    "seen": 1790256012.079939,
+    "ast_hash": "ae8160c5c730e9260163beafa5d8bf44",
+    "semantic_hash": ""
   },
   "claude extsnhion/custom-options.js": {
     "mtime": 1790159854.593489,
