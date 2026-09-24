@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "860",
+  "workflow_run_id": "35985415647",
+  "timestamp": "2026-09-24T10:25:07.531942",
+  "runtime_minutes": 15.24,
+  "messages_processed": 36,
+  "new_jobs_stored": 14,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30294,
+      "text": "Free Gen AI Claude Workshop – FREE! 🚀\n\n💸 ₹10,000 → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\nFor Freelancers, Working Professionals, Self Employed Personals\n \nRegister Free: https://link.outskill.com/A-11\n\n⚡ Limited Seats!",
+      "timestamp": "2026-09-24T09:09:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43148,
+      "text": "**🚨 Claude Just Got a Major Upgrade! 🤖**\n\nNew capabilities for coding, knowledge work and productivity. So if you've been thinking about learning Claude, now is a great time to start! 🚀\n\n🎓 Gen AI Claude Certification - For FREE!\n\n👉 Get Your FREE Certification: \n\n💰 Cost: ~~₹10,000~~  → ₹0\n\nWhat you’ll learn:\n✅ 25+ Powerful AI Tools\n✅ Automate tasks & create content faster\n✅ Master AI prompts for work\n✅ Use Gen AI more effectively\n\n**Enroll Now (Free)**: https://link.outskill.com/A-13\n\n🔥 Get certified while AI is moving this fast!\n\n⏰ Limited-Time Offer",
+      "timestamp": "2026-09-24T09:25:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 19925,
+      "text": "Company Name:  Kaleris\nPost Name:  CloudOps Intern\nExpected Salary:  up to ₹18k/ Month*\nJob Location:  Chennai\nJobType:  Freshers\n\n✅Apply Link: https://job4freshers.co.in/kaleris-cloudops-internship/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nFor Daily Government Jobs Subscribe to👇🏻\nhttps://yt.openinapp.co/Job4Governmen\n\nTelegram\nhttps://telegram.me/job4fresherss\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nJOB4FRESHERS\nKALERIS\nOff Campus Recruitment Drive\nAPPLY NOW\n@job4freshers.co.in\nimage source google",
+      "timestamp": "2026-09-24T06:54:24+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14898,
+      "text": "*🚨 Weekend Deal: Get Certified for FREE!*\n\nGot plans for the weekend? Add one more thing - a new AI skill! 🤖💻\n\nGen AI Claude Certification - FREE ✅\n\n👉 Claim Your FREE Certification 🔥: https://link.outskill.com/A-12\n\n₹10,000 → ₹0\n\n⏰ Weekend Offer: Valid till Sunday, 11:59 PM\n\nWhat you’ll learn:\n✅ 25+ Powerful AI Tools\n✅ Automate repetitive tasks\n✅ Create content faster with AI\n✅ Master AI prompts for work\n\n🚨 ₹10,000 Certification → FREE for the weekend!\n\nUse your weekend to build a skill that can actually help you at work. 💯",
+      "timestamp": "2026-09-24T08:50:32+00:00"
+    }
+  ]
+}
