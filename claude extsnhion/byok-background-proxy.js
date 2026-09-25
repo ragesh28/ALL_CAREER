@@ -2332,37 +2332,66 @@ function findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAns
 }
 
 function isKnownActionButton(elemInfo, target, learnedButtons = []) {
+  // CRITICAL RULE 1: If there are 2 or more options/choices, this is a MULTIPLE CHOICE question, NEVER an action button!
+  if (elemInfo?.options && elemInfo.options.length >= 2) {
+    return { isButton: false, reason: 'Element contains multiple options (choices)' };
+  }
+
+  // CRITICAL RULE 2: If there is an explicit question and choices or inputs are present, it is an active question!
+  if (elemInfo?.question && (elemInfo?.options?.length > 0 || elemInfo?.hasInnerInput || elemInfo?.isContentEditable)) {
+    return { isButton: false, reason: 'Element is an active question' };
+  }
+
+  // CRITICAL RULE 3: Never treat text inputs or contenteditable as an action button!
+  if (elemInfo?.hasInnerInput || elemInfo?.isContentEditable || ['input', 'textarea', 'select'].includes((elemInfo?.tag || '').toLowerCase())) {
+    return { isButton: false, reason: 'Element is an input field' };
+  }
+
   const tag = (elemInfo?.tag || '').toLowerCase();
   const targetName = (elemInfo?.targetName || target.text || '').toLowerCase().trim();
   const selector = (target.selector || '').toLowerCase();
   const isButtonFlag = Boolean(elemInfo?.isButton);
   const text = (elemInfo?.text || '').toLowerCase().trim();
 
+  // CRITICAL RULE 4: Radio containers, choice containers, or chat lists are NEVER action buttons!
+  const isChoiceOrContainer = /radio|check|option|select|ssrc|singleselect|choice|chatlist|messages|footer/i.test(selector)
+    || /radio|check|option|select|ssrc|singleselect/i.test(targetName);
+  if (isChoiceOrContainer) {
+    return { isButton: false, reason: 'Selector or name indicates choice/radio/container' };
+  }
+
+  // CRITICAL RULE 5: Non-button containers (div, ul, li, etc.) are NEVER action buttons unless explicitly flagged isButton by content script!
+  const containerTags = ['div', 'ul', 'ol', 'li', 'form', 'section', 'span', 'p', 'main', 'article', 'body'];
+  if (containerTags.includes(tag) && !isButtonFlag) {
+    return { isButton: false, reason: `Container tag <${tag}> without isButton flag is not an action button` };
+  }
+
   const ACTION_REGEX = /\b(save|submit|next|continue|apply|send|confirm|done|finish|proceed|ok|agree|accept|verify|start|post)\b/i;
 
-  // 1. Check learnedButtons
+  // 1. Check learnedButtons - ONLY for pure short action words, NEVER for selectors or questions!
   for (const lb of learnedButtons) {
     const l = (lb || '').toLowerCase().trim();
-    if (!l) continue;
-    if (targetName === l || targetName.includes(l) || l.includes(targetName) || selector.includes(l) || text.includes(l)) {
+    if (!l || l.length > 25 || /^[#\.\[_]|>|\/|\||\?/.test(l)) continue;
+    if (targetName === l || text === l) {
       return { isButton: true, reason: `Matches learned button: "${lb}"` };
     }
   }
 
-  // 2. Check Action Keywords
-  if (ACTION_REGEX.test(targetName)) {
-    return { isButton: true, reason: `Action button keyword matched in name ("${targetName}")` };
-  }
-  if (ACTION_REGEX.test(selector)) {
-    return { isButton: true, reason: `Action button keyword matched in selector ("${selector}")` };
-  }
-  if (text.length <= 40 && ACTION_REGEX.test(text)) {
-    return { isButton: true, reason: `Action button keyword matched in text ("${text}")` };
-  }
-
-  // 3. Native Button elements
-  if (isButtonFlag || ['button', 'a'].includes(tag) || selector.includes('button') || selector.includes('.btn') || selector.includes('.send')) {
-    return { isButton: true, reason: `Element is a button (<${tag}>)` };
+  // 2. Check Action Keywords on real button elements (<button>, <a>, <input type="button|submit">, [role="button"])
+  const isRealButtonElement = isButtonFlag || ['button', 'a'].includes(tag) || (tag === 'input' && ['button', 'submit'].includes(elemInfo?.type));
+  if (isRealButtonElement) {
+    if (ACTION_REGEX.test(targetName)) {
+      return { isButton: true, reason: `Action button keyword matched in name ("${targetName}")` };
+    }
+    if (text.length <= 40 && ACTION_REGEX.test(text)) {
+      return { isButton: true, reason: `Action button keyword matched in text ("${text}")` };
+    }
+    if (ACTION_REGEX.test(selector)) {
+      return { isButton: true, reason: `Action button keyword matched in selector ("${selector}")` };
+    }
+    if (tag === 'button' && text.length <= 25 && ACTION_REGEX.test(text)) {
+      return { isButton: true, reason: `Action button keyword in <button>` };
+    }
   }
 
   return { isButton: false };
@@ -2400,7 +2429,9 @@ async function saveLearnedAnswer(customAnswers, question, answer) {
 
 async function saveLearnedButton(learnedButtons, btnIdentifier) {
   const clean = (btnIdentifier || '').trim().toLowerCase();
-  if (!clean || clean.length < 2) return;
+  if (!clean || clean.length < 2 || clean.length > 25) return;
+  // NEVER save CSS selectors, dynamic IDs, or questions as buttons!
+  if (/^[#\.\[_]|>|\/|\||\?|\s{3,}/.test(clean)) return;
   if (!learnedButtons.includes(clean)) {
     learnedButtons.push(clean);
     try {
@@ -2434,13 +2465,17 @@ async function executeAIStepOneByOne(tabId, step, runState) {
   };
   const profile = storeData.userProfile || {};
   const customAnswers = Array.isArray(storeData.customAnswers) ? storeData.customAnswers : [];
-  const learnedButtons = Array.isArray(storeData.learnedButtons) ? storeData.learnedButtons : [];
+  const rawLearnedButtons = Array.isArray(storeData.learnedButtons) ? storeData.learnedButtons : [];
+  const learnedButtons = rawLearnedButtons.filter(b => {
+    const s = String(b || '').trim().toLowerCase();
+    return s && s.length >= 2 && s.length <= 25 && !/^[#\.\[_]|>|\/|\||\?/.test(s);
+  });
   const aiDecisionMode = storeData.aiDecisionMode || 'ask_human';
   const actionHistory = [];
   const consecutiveButtonClicks = new Map(); // Tracks consecutive identical button clicks to prevent infinite loops (max 3)
 
-  // Multi-round conversational loop: can handle up to 20 question rounds in a chatbot
-  const MAX_ROUNDS = step.isAiLoop === false && !step.loopId && total <= 1 ? 1 : Math.max(1, Math.min(25, step.maxQuestions || 15));
+  // Multi-round conversational loop: can handle up to 25 question rounds in a recruiter chatbot
+  const MAX_ROUNDS = typeof step.maxQuestions === 'number' ? Math.max(1, Math.min(25, step.maxQuestions)) : 15;
   let lastRecordedQuestion = '';
 
   runState.logs.push(`[AI Loop] 🚀 Starting conversational AI execution (${total} element(s) per round, max ${MAX_ROUNDS} rounds)...`);
@@ -2497,7 +2532,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
       const targetName = elemInfo?.targetName || target.text || '';
       const visibleText = elemInfo?.text || '';
       const extractedQuestion = elemInfo?.question || '';
-      const targetQuestion = extractedQuestion || (tag === 'div' && visibleText.length > 5 ? visibleText : '') || targetName;
+      const targetQuestion = extractedQuestion || (tag === 'div' && visibleText.length > 5 && visibleText.length < 300 ? visibleText : '') || targetName;
       const options = Array.isArray(elemInfo?.options) ? elemInfo.options : [];
       const hasInnerInput = Boolean(elemInfo?.hasInnerInput);
       const isButton = Boolean(elemInfo?.isButton);
@@ -2534,7 +2569,9 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           reasoning: `⚡ Auto-detected button: ${buttonCheck.reason} (bypassed AI)`
         };
         runState.logs.push(`[AI Loop] ⚡ Button detected: "${targetName || target.selector}" (${buttonCheck.reason}). Bypassing AI and directly clicking.`);
-        await saveLearnedButton(learnedButtons, targetName || target.selector);
+        if (targetName) {
+          await saveLearnedButton(learnedButtons, targetName);
+        }
       }
       // B. DROPDOWN / CHOICE WITH ONLY 1 OPTION?
       // -> Bypass AI! Auto-select that single choice directly and memorize!
@@ -2545,14 +2582,14 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           value: singleOption,
           reasoning: `⚡ Single option available: "${singleOption}" (auto-selected without AI)`
         };
-        runState.logs.push(`[AI Loop] ⚡ Dropdown has only 1 option ("${singleOption}"). Auto-selecting without AI.`);
+        runState.logs.push(`[AI Loop] ⚡ Choice has only 1 option ("${singleOption}"). Auto-selecting without AI.`);
         if (targetQuestion) {
           await saveLearnedAnswer(customAnswers, targetQuestion, singleOption);
         }
       }
-      // C. DROPDOWN WITH 2 OR MORE OPTIONS: Check customAnswers first; if none, ask AI!
+      // C. DROPDOWN / RADIO BUTTONS WITH 2 OR MORE OPTIONS: Check customAnswers first; if none, ask AI!
       else if (options.length >= 2) {
-        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAnswers, profile);
+        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, '', customAnswers, profile);
         let matchedOption = null;
         if (smartMatch && smartMatch.answer) {
           const val = smartMatch.answer.toLowerCase().trim();
@@ -2566,12 +2603,12 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           aiDecision = {
             action: 'select_option',
             value: matchedOption,
-            reasoning: `⚡ Reused saved answer for dropdown: "${matchedOption}" (source: ${smartMatch.source})`
+            reasoning: `⚡ Reused saved answer for choice: "${matchedOption}" (source: ${smartMatch.source})`
           };
-          runState.logs.push(`[AI Loop] ⚡ Dropdown has ${options.length} options, but question was already answered ("${matchedOption}"). Bypassing AI.`);
+          runState.logs.push(`[AI Loop] ⚡ Question "${targetQuestion}" has ${options.length} options, matched saved answer ("${matchedOption}"). Reusing without AI.`);
         } else {
-          // Ask AI what to do for this 2+ option dropdown!
-          runState.logs.push(`[AI Loop] 🤖 Dropdown has ${options.length} options: ${JSON.stringify(options.slice(0, 10))}. Asking AI to choose...`);
+          // Ask AI what to do for this 2+ option multiple-choice / dropdown!
+          runState.logs.push(`[AI Loop] 🤖 Question "${targetQuestion}" has ${options.length} options: ${JSON.stringify(options.slice(0, 10))}. Asking AI to choose...`);
           await chrome.storage.local.set({ workflowRunState: runState });
 
           const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
@@ -2590,10 +2627,10 @@ ${actionHistory.length > 0 ? actionHistory.map(h => `- Step ${h.elementNumber}: 
           const choiceUserPrompt = `Element ${elemNumber} of ${total}:
 Question / Label: "${targetQuestion || targetName}"
 Visible Text / Context: "${visibleText.slice(0, 300)}"
-Available Dropdown Options (${options.length} choices):
+Available Options (${options.length} choices):
 ${JSON.stringify(options.slice(0, 30))}
 
-INSTRUCTION: You must pick EXACTLY ONE option from the Available Dropdown Options list that best fits the candidate profile.
+INSTRUCTION: You must pick EXACTLY ONE option from the Available Options list that best fits the candidate profile.
 Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exact option text>"}
 `;
           try {
@@ -2609,13 +2646,13 @@ Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exac
             }
             aiDecision.action = 'select_option';
 
-            // Auto-save AI's choice to customAnswers so future dropdowns don't need AI!
+            // Auto-save AI's choice to customAnswers so future applications don't need AI!
             if (targetQuestion && aiDecision.value) {
               await saveLearnedAnswer(customAnswers, targetQuestion, aiDecision.value);
-              runState.logs.push(`[AI Loop] 💾 Auto-memorized dropdown answer for "${targetQuestion}" ➔ "${aiDecision.value}" for future jobs.`);
+              runState.logs.push(`[AI Loop] 💾 Auto-memorized answer for "${targetQuestion}" ➔ "${aiDecision.value}" for future jobs.`);
             }
           } catch (aiErr) {
-            console.warn(`[AI Loop] AI dropdown call failed:`, aiErr);
+            console.warn(`[AI Loop] AI choice call failed:`, aiErr);
             const errMsg = aiErr.message || String(aiErr);
             if (isProcessStopped()) throw aiErr;
             if (/omniroute|api key|failed to fetch|health check|connection refused|127\.0\.0\.1:20128/i.test(errMsg)) {
@@ -2648,7 +2685,7 @@ Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exac
       // D. TEXT QUESTION / INPUT FIELD / CHAT INPUT CONTAINER
       else {
         // Check if question was already answered previously or is in candidate profile!
-        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, targetName, customAnswers, profile);
+        const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, '', customAnswers, profile);
         if (smartMatch && smartMatch.answer && (['input', 'textarea'].includes(tag) || hasInnerInput || tag === 'div')) {
           aiDecision = {
             action: 'fill',
@@ -2656,6 +2693,7 @@ Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exac
             reasoning: `⚡ Reused saved answer for "${targetQuestion || targetName}": "${smartMatch.answer}" (source: ${smartMatch.source})`
           };
           runState.logs.push(`[AI Loop] ⚡ Question already asked/known ("${targetQuestion || targetName}"). Bypassing AI and directly typing: "${smartMatch.answer}"`);
+        } else {
           // Unknown question: Ask AI to answer
           const systemPrompt = `${UNIVERSAL_WORKFLOW_AI_SYSTEM_PROMPT}
 
@@ -2690,9 +2728,8 @@ HTML: ${htmlSnippet}`;
             if (aiDecision.action === 'fill' && aiDecision.value && targetQuestion) {
               await saveLearnedAnswer(customAnswers, targetQuestion, aiDecision.value);
               runState.logs.push(`[AI Loop] 💾 Auto-memorized answer for "${targetQuestion}" ➔ "${aiDecision.value}" for all future jobs.`);
-            } else if (aiDecision.action === 'click') {
-              // If AI told us to click, memorize this button!
-              await saveLearnedButton(learnedButtons, targetName || target.selector);
+            } else if (aiDecision.action === 'click' && targetName) {
+              await saveLearnedButton(learnedButtons, targetName);
             }
           } catch (aiErr) {
             console.warn(`[AI Loop] AI call failed for Element ${elemNumber}:`, aiErr);
@@ -2723,7 +2760,7 @@ HTML: ${htmlSnippet}`;
             }
             if (isButton || ['button', 'a'].includes(tag) || /button|submit|save|continue|next/i.test(targetName)) {
               aiDecision = { action: 'click', value: '', reasoning: 'Fallback: button detected' };
-              await saveLearnedButton(learnedButtons, targetName || target.selector);
+              if (targetName) await saveLearnedButton(learnedButtons, targetName);
             } else if (options.length > 0) {
               aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
             } else {
@@ -4396,36 +4433,52 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
         controller.currentJob = job;
         broadcastBatchStatus(controller);
 
-        const portal = detectJobPortal(job);
-        const matchedWorkflow = findMatchingWorkflow(workflows, portal, job);
         let jobResult = { success: false, reason: 'Pending' };
         let mode = 'workflow';
-
+        const portal = detectJobPortal(job);
         const rawTargetUrl = String(job.apply_url || job.url || job.link || '').trim();
-        if (!rawTargetUrl || !rawTargetUrl.startsWith('http')) {
+        let matchedWorkflow = null;
+
+        try {
+          matchedWorkflow = findMatchingWorkflow(workflows, portal, job);
+          if (!rawTargetUrl || !rawTargetUrl.startsWith('http')) {
+            jobResult = {
+              success: false,
+              reason: 'No direct web application link found (email/phone only or missing URL).',
+            };
+          } else if (matchedWorkflow) {
+            mode = 'workflow';
+            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Found recorded workflow "${matchedWorkflow.name}" for portal "${portal.name}". Executing...`);
+            jobResult = await runWorkflowForJob(matchedWorkflow, rawTargetUrl, job);
+
+            // IF WORKFLOW FAILED (e.g. page layout is different, redirected to company site, or unmapped form fields):
+            // GIVE CONTROL TO AI CONTROL INSTEAD OF SKIPPING THE JOB!
+            const isJobSkipped = jobResult.skipped || controller.skipRequested || /skipped|clicked 3 times/i.test(jobResult.reason || '');
+            const isJobAlreadyDone = jobResult.success || jobResult.alreadyApplied;
+            if (!isJobAlreadyDone && !isJobSkipped && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
+              console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Handing control over to AI Control...`);
+              mode = 'ai';
+              const activeTabId = currentBatchController?.currentJobTabId;
+              jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job, activeTabId);
+            }
+          } else {
+            mode = 'ai';
+            console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Handing control over to AI Control...`);
+            jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job);
+          }
+        } catch (jobErr) {
+          console.warn(`[BatchApply] [${i+1}/${jobsList.length}] Error processing job "${job.title || 'Job'}":`, jobErr);
           jobResult = {
             success: false,
-            reason: 'No direct web application link found (email/phone only or missing URL).',
+            reason: jobErr?.message || String(jobErr),
           };
-        } else if (matchedWorkflow) {
-          mode = 'workflow';
-          console.log(`[BatchApply] [${i+1}/${jobsList.length}] Found recorded workflow "${matchedWorkflow.name}" for portal "${portal.name}". Executing...`);
-          jobResult = await runWorkflowForJob(matchedWorkflow, rawTargetUrl, job);
-
-          // IF WORKFLOW FAILED (e.g. page layout is different, redirected to company site, or unmapped form fields):
-          // GIVE CONTROL TO AI CONTROL INSTEAD OF SKIPPING THE JOB!
-          const isJobSkipped = jobResult.skipped || controller.skipRequested || /skipped|clicked 3 times/i.test(jobResult.reason || '');
-          const isJobAlreadyDone = jobResult.success || jobResult.alreadyApplied;
-          if (!isJobAlreadyDone && !isJobSkipped && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
-            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Handing control over to AI Control...`);
-            mode = 'ai';
-            const activeTabId = currentBatchController?.currentJobTabId;
-            jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job, activeTabId);
+        } finally {
+          // Clean up any remaining job tab before moving to next job
+          if (controller.currentJobTabId) {
+            const tabToClose = controller.currentJobTabId;
+            controller.currentJobTabId = null;
+            chrome.tabs.remove(tabToClose).catch(() => {});
           }
-        } else {
-          mode = 'ai';
-          console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Handing control over to AI Control...`);
-          jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job);
         }
 
         // Break immediately ONLY if batch was explicitly cancelled or stopped by user
