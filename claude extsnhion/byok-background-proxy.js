@@ -808,6 +808,31 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
     return true;
   }
 
+  // 15b. Skip Current Job in Batch Auto Apply
+  if (message?.action === 'SKIP_CURRENT_JOB' || message?.action === 'SKIP_THIS_JOB') {
+    (async () => {
+      console.log('[BYOK] User requested SKIP_CURRENT_JOB.');
+      if (currentBatchController) {
+        currentBatchController.skipRequested = true;
+        if (currentBatchController.currentJobTabId) {
+          const tabToClose = currentBatchController.currentJobTabId;
+          currentBatchController.currentJobTabId = null;
+          chrome.tabs.remove(tabToClose).catch(() => {});
+        }
+      }
+      try {
+        const stored = await chrome.storage.local.get('workflowRunState');
+        if (stored?.workflowRunState) {
+          stored.workflowRunState.status = 'skipped';
+          stored.workflowRunState.error = 'Job skipped by user.';
+          await chrome.storage.local.set({ workflowRunState: stored.workflowRunState });
+        }
+      } catch (_) {}
+      sendResponse({ success: true, skipped: true });
+    })();
+    return true;
+  }
+
   // 16. Get Batch Status
   if (message?.action === 'GET_BATCH_STATUS') {
     sendResponse({ success: true, status: currentBatchController || { running: false } });
@@ -848,6 +873,50 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
       chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
     }
     sendResponse({ success: true });
+    return true;
+  }
+
+  // 20b. Evaluate Page State via AI / Fast Regex
+  if (message?.action === 'PAGE_EVALUATE') {
+    (async () => {
+      try {
+        const text = String(message.pageText || '').slice(0, 3000);
+        if (/already\s*applied|you\s*(have\s*)?already\s*applied|applied\s*\d+\s*(days?|hours?|months?|weeks?|mins?|minutes?)\s*ago|applied\s*on\s*[a-z0-9, ]+|you\s*applied\s*(on|to|for)?/i.test(text)) {
+          sendResponse({ success: true, decision: 'fully job applied', reason: 'Detected already applied on page' });
+          return;
+        }
+        if (/thank\s*you\s*for\s*(submitting|applying)|application\s*(has\s*been\s*)?(submitted|received)|submitted\s*successfully/i.test(text)) {
+          sendResponse({ success: true, decision: 'fully job applied', reason: 'Detected confirmation text on page' });
+          return;
+        }
+        if (/this\s*job\s*(is\s*)?(no\s*longer\s*available|expired|closed)|no\s*longer\s*accepting\s*applications/i.test(text)) {
+          sendResponse({ success: true, decision: 'not job application', reason: 'Job posting is expired or closed' });
+          return;
+        }
+
+        const aiCheck = await verifyActiveAIWorking();
+        if (aiCheck.ok) {
+          const configRes = await chrome.storage.local.get(null);
+          const prompt = `Analyze this page text from a job application website:
+"${text}"
+Determine if the application is:
+1. "fully job applied" (candidate already applied or application completed)
+2. "not job application" (posting is closed, expired, login wall, or not a job)
+3. "continue monitoring" (application form or buttons are still in progress)
+Respond strictly with JSON: { "decision": "fully job applied" | "not job application" | "continue monitoring", "reason": "brief explanation" }`;
+          const resp = await callActiveAIModel(configRes, 'You evaluate job application web pages.', [{ role: 'user', content: prompt }]);
+          const jsonMatch = resp.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || resp.match(/\{[\s\S]*?\}/);
+          if (jsonMatch) {
+            const parsed = JSON.parse((jsonMatch[1] || jsonMatch[0]).trim());
+            sendResponse({ success: true, decision: parsed.decision || 'continue monitoring', reason: parsed.reason || '' });
+            return;
+          }
+        }
+        sendResponse({ success: true, decision: 'continue monitoring', reason: 'Deterministic checks passed' });
+      } catch (err) {
+        sendResponse({ success: false, error: err.message, decision: 'continue monitoring' });
+      }
+    })();
     return true;
   }
 
@@ -1043,6 +1112,48 @@ function isAllCareerPageTab(t) {
          normUrl.includes('career_explorer') ||
          normTitle.includes('all career') ||
          normTitle.includes('career portal');
+}
+
+async function isAnyAllCareerTabOpen(mainTabId = null) {
+  if (mainTabId) {
+    const tab = await getValidTab(mainTabId);
+    if (tab && isAllCareerPageTab(tab)) return tab;
+  }
+  const allTabs = await chrome.tabs.query({}).catch(() => []);
+  const found = (allTabs || []).find(t => isAllCareerPageTab(t));
+  return found || null;
+}
+
+async function checkJobPageStatus(tabId) {
+  if (!tabId) return { status: 'open' };
+  try {
+    const res = await chrome.tabs.sendMessage(tabId, { action: 'CHECK_JOB_PAGE_STATUS' });
+    if (res && res.status) {
+      return res;
+    }
+  } catch (_) {
+    try {
+      const results = await chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => {
+          const appliedRegex = /\b(already\s*applied|you\s*(have\s*)?already\s*applied|applied\s*\d+\s*(days?|hours?|months?|weeks?|mins?|minutes?)\s*ago|applied\s*on\s*[a-z0-9, ]+|you\s*applied\s*(on|to|for)?|application\s*(has\s*been\s*)?(already\s*)?submitted|already\s*submitted\s*(an?\s*)?application)\b/i;
+          const closedRegex = /\b(this\s*job\s*(is\s*)?(no\s*longer\s*available|expired|closed)|no\s*longer\s*accepting\s*applications|job\s*(posting\s*)?(has\s*been\s*)?(closed|expired|removed)|applications\s*(are\s*)?closed)\b/i;
+          const bodyText = (document.body.innerText || document.body.textContent || '').slice(0, 10000);
+          if (appliedRegex.test(bodyText) || document.querySelector('.already-applied, span.already-applied, [class*="already-applied"], [data-testid="applied-badge"], .ia-AppliedBadge')) {
+            return { status: 'already_applied', reason: 'Detected already applied on page' };
+          }
+          if (closedRegex.test(bodyText) || document.querySelector('[class*="job-expired"], [class*="job-closed"], .expired-tag')) {
+            return { status: 'closed', reason: 'Detected job is closed/expired' };
+          }
+          return { status: 'open' };
+        },
+      });
+      if (results && results[0] && results[0].result) {
+        return results[0].result;
+      }
+    } catch (_) {}
+  }
+  return { status: 'open' };
 }
 
 async function ensureActiveTab(currentTabId, fallbackUrl, runState = null) {
@@ -2304,10 +2415,13 @@ async function executeAIStepOneByOne(tabId, step, runState) {
   const total = targets.length;
 
   const isProcessStopped = () => {
-    return currentBatchController && (currentBatchController.cancelled || !currentBatchController.running);
+    return currentBatchController && (currentBatchController.cancelled || !currentBatchController.running || currentBatchController.skipRequested);
   };
 
   if (isProcessStopped()) {
+    if (currentBatchController?.skipRequested) {
+      throw new Error('Job skipped by user.');
+    }
     throw new Error('Auto Apply was stopped by user.');
   }
 
@@ -2323,6 +2437,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
   const learnedButtons = Array.isArray(storeData.learnedButtons) ? storeData.learnedButtons : [];
   const aiDecisionMode = storeData.aiDecisionMode || 'ask_human';
   const actionHistory = [];
+  const consecutiveButtonClicks = new Map(); // Tracks consecutive identical button clicks to prevent infinite loops (max 3)
 
   // Multi-round conversational loop: can handle up to 20 question rounds in a chatbot
   const MAX_ROUNDS = step.isAiLoop === false && !step.loopId && total <= 1 ? 1 : Math.max(1, Math.min(25, step.maxQuestions || 15));
@@ -2683,6 +2798,34 @@ HTML: ${htmlSnippet}`;
         actionTaken: aiDecision.action === 'fill' ? 'Typing answer into chat...' : 'Clicking button...',
       });
 
+      // 3b. Anti-Infinite Loop Guard: If a button is clicked 3 times with no progress/change, skip this job!
+      if (aiDecision.action === 'click') {
+        const btnKey = (targetName || target.selector || target.text || `elem_${elemNumber}`).toLowerCase().trim();
+        const prevClicks = consecutiveButtonClicks.get(btnKey) || 0;
+        const newClicks = prevClicks + 1;
+        consecutiveButtonClicks.set(btnKey, newClicks);
+
+        if (newClicks >= 3) {
+          const skipMsg = `Button "${targetName || 'Action'}" was clicked 3 times without page change. Skipping this job to prevent an infinite loop.`;
+          runState.logs.push(`[AI Loop] 🛑 ${skipMsg}`);
+          runState.status = 'skipped';
+          runState.error = skipMsg;
+          await chrome.storage.local.set({ workflowRunState: runState });
+          await updateTabHud(activeTabId, {
+            workflowName: runState.workflowName,
+            stepIndex: runState.stepIndex || 0,
+            totalSteps: runState.stepCount || 1,
+            stepName: step.name || 'AI Chat Step',
+            status: 'error',
+            actionTaken: `⏭ ${skipMsg}`,
+          });
+          throw new Error(skipMsg);
+        }
+      } else {
+        // Reset button clicks if a fill, select_option, or check happened
+        consecutiveButtonClicks.clear();
+      }
+
       // 4. Execute the chosen action with 3-ATTEMPT RETRY MECHANISM & DIAGNOSTIC HUD
       const MAX_ATTEMPTS = 3;
       let actionSuccess = false;
@@ -2690,6 +2833,9 @@ HTML: ${htmlSnippet}`;
 
       for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
         if (isProcessStopped()) {
+          if (currentBatchController?.skipRequested) {
+            throw new Error('Job skipped by user.');
+          }
           throw new Error('Auto Apply was stopped by user.');
         }
 
@@ -3404,6 +3550,42 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
 
           // If still failed or element was not found: Check AI fallback!
           if (!execRes) {
+            // Check if page indicates already applied or closed before failing!
+            const midStatus = await checkJobPageStatus(activeTabId);
+            if (midStatus.status === 'already_applied') {
+              runState.logs.push(`[Workflow] ℹ️ Job already applied: ${midStatus.reason}`);
+              runState.status = 'completed';
+              runState.alreadyApplied = true;
+              runState.message = 'Job was already applied previously on this portal.';
+              runState.finishedAt = Date.now();
+              await chrome.storage.local.set({ workflowRunState: runState });
+              await updateTabHud(activeTabId, {
+                workflowName: runState.workflowName,
+                stepIndex: i,
+                totalSteps: steps.length,
+                stepName: 'Already Applied',
+                status: 'completed',
+                actionTaken: '✅ Job already applied previously. Moving to next job...',
+              });
+              return;
+            }
+            if (midStatus.status === 'closed') {
+              runState.logs.push(`[Workflow] ⚠️ Job is closed: ${midStatus.reason}`);
+              runState.status = 'skipped';
+              runState.error = 'Job posting is expired or closed.';
+              runState.finishedAt = Date.now();
+              await chrome.storage.local.set({ workflowRunState: runState });
+              await updateTabHud(activeTabId, {
+                workflowName: runState.workflowName,
+                stepIndex: i,
+                totalSteps: steps.length,
+                stepName: 'Job Closed',
+                status: 'skipped',
+                actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
+              });
+              return;
+            }
+
             // Directly attempt AI fallback first!
             let aiFallbackRes = null;
             try {
@@ -3580,6 +3762,17 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       removeTabHud(activeTabId);
     }, 5000);
   } catch (err) {
+    const isSkipped = currentBatchController?.skipRequested ||
+      /skipped|clicked 3 times|infinite loop/i.test(err?.message || '');
+    if (isSkipped) {
+      console.log('[BYOK] Workflow execution skipped for this job:', err?.message || '');
+      runState.status = 'skipped';
+      runState.error = err?.message || 'Job skipped.';
+      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+      removeTabHud(activeTabId);
+      return;
+    }
+
     const isCancelled = currentBatchController?.cancelled ||
       /stopped by user|cancelled by user|closed by user/i.test(err?.message || '');
     if (isCancelled) {
@@ -4056,6 +4249,21 @@ INSTRUCTIONS:
       return { success: false, reason: 'AI could not identify a replacement element on the page.' };
     }
 
+    if (!runState.aiMissingElementClicks) {
+      runState.aiMissingElementClicks = {};
+    }
+    if (parsed.action === 'click' && refId) {
+      runState.aiMissingElementClicks[refId] = (runState.aiMissingElementClicks[refId] || 0) + 1;
+      if (runState.aiMissingElementClicks[refId] >= 3) {
+        const skipMsg = `AI repeatedly clicked button [${refId}] 3 times without page progress. Skipping this job.`;
+        runState.logs.push(`[AI Fallback] 🛑 ${skipMsg}`);
+        runState.status = 'skipped';
+        runState.error = skipMsg;
+        await chrome.storage.local.set({ workflowRunState: runState });
+        return { success: false, skipped: true, reason: skipMsg };
+      }
+    }
+
     runState.logs.push(`[AI Fallback] ⚡ AI chose replacement action: ${parsed.action.toUpperCase()} on [${refId}] (${parsed.reasoning || ''})`);
     await updateTabHud(tabId, {
       workflowName: runState.workflowName,
@@ -4172,15 +4380,15 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           break;
         }
 
-        // Verify if main tab is still alive
-        if (controller.mainTabId) {
-          const mainTab = await getValidTab(controller.mainTabId);
-          if (!mainTab) {
-            console.log('[BatchApply] Main All Career tab closed. Halting batch execution.');
-            controller.cancelled = true;
-            controller.running = false;
-            break;
-          }
+        // Verify if main All Career tab or any All Career tab is still alive
+        const anyCareerTab = await isAnyAllCareerTabOpen(controller.mainTabId);
+        if (!anyCareerTab) {
+          console.log('[BatchApply] All Career tab closed. Halting batch execution.');
+          controller.cancelled = true;
+          controller.running = false;
+          break;
+        } else {
+          controller.mainTabId = anyCareerTab.id;
         }
 
         const job = jobsList[i];
@@ -4205,31 +4413,19 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           jobResult = await runWorkflowForJob(matchedWorkflow, rawTargetUrl, job);
 
           // IF WORKFLOW FAILED (e.g. page layout is different, redirected to company site, or unmapped form fields):
-          // GIVE CONTROL TO AI FORM ORCHESTRATOR INSTEAD OF SKIPPING THE JOB!
-          if (!jobResult.success && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
-            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Checking AI availability for fallback apply...`);
-            const aiCheck = await verifyActiveAIWorking();
-            if (aiCheck.ok) {
-              console.log(`[BatchApply] [${i+1}/${jobsList.length}] 🤖 Handing control over to AI Form Orchestrator to complete application...`);
-              mode = 'ai';
-              const activeTabId = currentBatchController?.currentJobTabId;
-              jobResult = await runAIOrchestratorForJob(rawTargetUrl, job, activeTabId);
-            } else {
-              console.warn(`[BatchApply] AI handover not possible: ${aiCheck.reason}`);
-            }
+          // GIVE CONTROL TO AI CONTROL INSTEAD OF SKIPPING THE JOB!
+          const isJobSkipped = jobResult.skipped || controller.skipRequested || /skipped|clicked 3 times/i.test(jobResult.reason || '');
+          const isJobAlreadyDone = jobResult.success || jobResult.alreadyApplied;
+          if (!isJobAlreadyDone && !isJobSkipped && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
+            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Handing control over to AI Control...`);
+            mode = 'ai';
+            const activeTabId = currentBatchController?.currentJobTabId;
+            jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job, activeTabId);
           }
         } else {
           mode = 'ai';
-          console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Testing AI availability...`);
-          const aiCheck = await verifyActiveAIWorking();
-          if (!aiCheck.ok) {
-            jobResult = {
-              success: false,
-              reason: `No recorded workflow found for "${portal.name}", and AI is not working: ${aiCheck.reason}`,
-            };
-          } else {
-            jobResult = await runAIOrchestratorForJob(rawTargetUrl, job);
-          }
+          console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Handing control over to AI Control...`);
+          jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job);
         }
 
         // Break immediately ONLY if batch was explicitly cancelled or stopped by user
@@ -4238,12 +4434,21 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           break;
         }
 
-        if (jobResult.success) {
+        if (controller.skipRequested) {
+          controller.skipRequested = false;
+          jobResult.success = false;
+          jobResult.skipped = true;
+          jobResult.reason = 'Job skipped by user.';
+        }
+
+        const isAlreadyApplied = jobResult.alreadyApplied || /already applied/i.test(jobResult.reason || '');
+        if (jobResult.success || isAlreadyApplied) {
           controller.appliedCount++;
         } else {
           controller.failedCount++;
         }
 
+        const isSkippedEntry = jobResult.skipped || /skipped|closed|expired|clicked 3 times/i.test(jobResult.reason || '');
         const historyItem = {
           id: job.id || `app_${Date.now()}_${i}`,
           jobId: job.id || '',
@@ -4251,8 +4456,8 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           company: job.company || 'Company',
           portal: portal.name,
           url: rawTargetUrl,
-          status: jobResult.success ? 'applied' : 'not_applied',
-          reason: jobResult.reason || (jobResult.success ? `Successfully submitted via ${mode === 'workflow' ? matchedWorkflow.name : 'AI Orchestrator'}` : 'Application not completed'),
+          status: (jobResult.success || isAlreadyApplied) ? 'applied' : (isSkippedEntry ? 'skipped' : 'not_applied'),
+          reason: jobResult.reason || ((jobResult.success || isAlreadyApplied) ? (isAlreadyApplied ? 'Already applied previously on this portal.' : `Successfully submitted via ${mode === 'workflow' ? matchedWorkflow.name : 'AI Control'}`) : 'Application not completed'),
           mode: mode,
           workflowName: matchedWorkflow ? matchedWorkflow.name : null,
           timestamp: Date.now(),
@@ -4323,6 +4528,44 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
+    // Early deterministic check: Is the job already applied or closed?
+    const preCheckStatus = await checkJobPageStatus(tabId);
+    if (preCheckStatus.status === 'already_applied') {
+      console.log(`[Workflow] ℹ️ Job already applied on "${workflow.name}":`, preCheckStatus.reason);
+      await updateTabHud(tabId, {
+        workflowName: workflow.name,
+        stepIndex: 1,
+        totalSteps: 1,
+        stepName: 'Already Applied',
+        status: 'completed',
+        actionTaken: '✅ Job was already applied previously on this portal. Moving to next job...',
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return { success: true, alreadyApplied: true, reason: 'Already applied previously on this portal.' };
+    }
+
+    if (preCheckStatus.status === 'closed') {
+      console.log(`[Workflow] ⚠️ Job closed on "${workflow.name}":`, preCheckStatus.reason);
+      await updateTabHud(tabId, {
+        workflowName: workflow.name,
+        stepIndex: 1,
+        totalSteps: 1,
+        stepName: 'Job Closed',
+        status: 'skipped',
+        actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return { success: false, skipped: true, reason: 'Job posting is expired or closed.' };
+    }
+
     // Interruptible 1.5s delay
     for (let s = 0; s < 15; s++) {
       if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
@@ -4353,20 +4596,26 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
+    if (currentBatchController?.skipRequested || runState?.status === 'skipped' || /skipped|clicked 3 times/i.test(runState?.error || '')) {
+      if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => {});
+      return { success: false, skipped: true, reason: runState?.error || 'Job skipped.' };
+    }
+
     const isSuccess = runState?.status === 'completed';
-    const reason = isSuccess
-      ? `Successfully applied via "${workflow.name}" workflow!`
+    const isAlreadyApplied = runState?.alreadyApplied || /already applied/i.test(runState?.message || '');
+    const reason = (isSuccess || isAlreadyApplied)
+      ? (isAlreadyApplied ? 'Already applied previously on this portal.' : `Successfully applied via "${workflow.name}" workflow!`)
       : (runState?.error || 'Workflow steps could not complete on this job listing.');
 
-    // Close tab on success after a short delay
-    if (isSuccess && createdTab?.id) {
-      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 2000);
+    // Close tab on completion or already applied
+    if ((isSuccess || isAlreadyApplied) && createdTab?.id) {
+      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 1500);
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
     }
 
-    return { success: isSuccess, reason };
+    return { success: isSuccess || isAlreadyApplied, alreadyApplied: isAlreadyApplied, reason };
   } catch (err) {
     if (createdTab?.id && currentBatchController?.currentJobTabId === createdTab.id) {
       currentBatchController.currentJobTabId = null;
@@ -4457,8 +4706,8 @@ async function runAIOrchestratorForJob(targetUrl, job, existingTabId = null) {
       });
     });
 
-    if (outcome.success && tabId) {
-      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 2500);
+    if (tabId && !isAllCareerPageTab({ id: tabId })) {
+      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), outcome.success ? 2000 : 1000);
     }
 
     if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
@@ -4476,3 +4725,289 @@ async function runAIOrchestratorForJob(targetUrl, job, existingTabId = null) {
 
 
 
+
+async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
+  let createdTab = null;
+  let tabId = existingTabId;
+
+  try {
+    if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
+      return { success: false, reason: 'Batch auto-apply was stopped by user.' };
+    }
+
+    if (!tabId) {
+      createdTab = await chrome.tabs.create({ url: targetUrl, active: true }).catch(() => null);
+      if (!createdTab?.id) {
+        return { success: false, reason: 'Failed to open browser tab for this job.' };
+      }
+      tabId = createdTab.id;
+    }
+
+    if (currentBatchController) {
+      currentBatchController.currentJobTabId = tabId;
+    }
+
+    await waitForTabReady(tabId);
+    await chrome.tabs.update(tabId, { active: true }).catch(() => {});
+
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+    } catch (_) {}
+
+    // Allow page to settle (interruptible 1.2s delay)
+    for (let s = 0; s < 12; s++) {
+      if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
+        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+        return { success: false, reason: 'Batch auto-apply was stopped by user.' };
+      }
+      await new Promise(r => setTimeout(r, 100));
+    }
+
+    // 1. FAST DETERMINISTIC PAGE STATUS CHECK
+    const pageStatus = await checkJobPageStatus(tabId);
+    if (pageStatus.status === 'already_applied') {
+      console.log(`[AI Control] Page indicates job already applied (${pageStatus.reason}).`);
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 1,
+        totalSteps: 1,
+        stepName: 'Already Applied',
+        status: 'completed',
+        actionTaken: '✅ Job was already applied previously on this portal. Moving to next job...',
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return {
+        success: true,
+        alreadyApplied: true,
+        reason: pageStatus.reason || 'Job already applied previously on this portal.',
+      };
+    }
+
+    if (pageStatus.status === 'closed') {
+      console.log(`[AI Control] Job posting is closed or expired (${pageStatus.reason}).`);
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 1,
+        totalSteps: 1,
+        stepName: 'Job Closed',
+        status: 'skipped',
+        actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return {
+        success: false,
+        skipped: true,
+        reason: pageStatus.reason || 'Job posting is no longer accepting applications.',
+      };
+    }
+
+    // 2. CHECK AI HEALTH
+    const aiCheck = await verifyActiveAIWorking();
+    if (!aiCheck.ok) {
+      console.warn(`[AI Control] AI is offline (${aiCheck.reason}). Falling back to form orchestrator...`);
+      return await runAIOrchestratorForJob(targetUrl, job, tabId);
+    }
+
+    // 3. RETRIEVE PAGE SNAPSHOT & ACCESSIBILITY TREE FOR AI CONTROL
+    await updateTabHud(tabId, {
+      workflowName: 'AI Control',
+      stepIndex: 1,
+      totalSteps: 2,
+      stepName: 'AI Analyzing Page',
+      status: 'running',
+      actionTaken: '🤖 AI inspecting page structure, buttons, and status to decide next action...',
+    });
+
+    let snapshot = null;
+    try {
+      snapshot = await chrome.tabs.sendMessage(tabId, {
+        action: 'GET_ACCESSIBILITY_SNAPSHOT',
+        filter: 'interactive',
+        maxDepth: 10,
+        maxChars: 15000,
+      });
+    } catch (_) {}
+
+    let pageTextRes = null;
+    try {
+      pageTextRes = await chrome.tabs.sendMessage(tabId, {
+        action: 'GET_FULL_PAGE_CONTENT',
+        maxCharacters: 5000,
+      });
+    } catch (_) {}
+
+    const pageText = (pageTextRes?.content || '').slice(0, 3000);
+    const elementsTree = snapshot?.tree || 'No accessibility tree available.';
+
+    // 4. PROMPT AI TO DECIDE ACTION
+    const configRes = await chrome.storage.local.get(null);
+    const systemPrompt = `You are an elite browser automation engine for job applications.
+You inspect job portal web pages and decide the exact action to apply or navigate.
+
+Available decisions:
+- "already_applied": The page indicates the user/candidate has already applied to this position (e.g. "Already Applied", "Applied on [date]", "Application submitted").
+- "closed": The job listing is closed, expired, filled, or no longer accepting applications.
+- "click": There is a clear "Apply", "Easy Apply", "Apply Now", "Apply on Company Site", or "Continue" button/link. Provide its "ref_id".
+- "fill_form": An application form is currently visible on the page with input fields (name, email, resume, questions).
+- "skip": The page is a login wall, captcha, paywall, 404, or non-job page that cannot be automated.
+
+Output strictly valid JSON with this schema:
+{
+  "decision": "already_applied" | "closed" | "click" | "fill_form" | "skip",
+  "ref_id": number or null,
+  "reason": "Brief 1-sentence reason for this decision"
+}`;
+
+    const userMessage = `Job to apply for:
+Title: "${job.title || ''}"
+Company: "${job.company || ''}"
+Current URL: "${targetUrl}"
+
+Page Content Preview:
+${pageText}
+
+Interactive Elements Snapshot (Accessibility Tree):
+${elementsTree}
+
+Analyze the page and determine the next action.`;
+
+    console.log(`[AI Control] Querying AI to decide workflow action for job "${job.title || ''}"...`);
+    let aiResponseText = '';
+    try {
+      aiResponseText = await callActiveAIModel(configRes, systemPrompt, [{ role: 'user', content: userMessage }]);
+    } catch (aiErr) {
+      console.warn(`[AI Control] AI call failed (${aiErr.message}), falling back to form orchestrator...`);
+      return await runAIOrchestratorForJob(targetUrl, job, tabId);
+    }
+
+    // 5. PARSE AI DECISION
+    let aiDecision = { decision: 'fill_form', ref_id: null, reason: 'Defaulting to form fill' };
+    try {
+      const jsonMatch = aiResponseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || aiResponseText.match(/\{[\s\S]*?\}/);
+      if (jsonMatch) {
+        aiDecision = JSON.parse((jsonMatch[1] || jsonMatch[0]).trim());
+      }
+    } catch (parseErr) {
+      console.warn('[AI Control] Could not parse AI response JSON:', aiResponseText);
+    }
+
+    console.log(`[AI Control] 🤖 AI Decision: "${aiDecision.decision}" - Reason: "${aiDecision.reason || ''}"`);
+
+    // 6. EXECUTE THE AI DECISION
+    if (aiDecision.decision === 'already_applied') {
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 2,
+        totalSteps: 2,
+        stepName: 'Already Applied',
+        status: 'completed',
+        actionTaken: `✅ AI detected: Job already applied previously. (${aiDecision.reason || ''})`,
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return {
+        success: true,
+        alreadyApplied: true,
+        reason: aiDecision.reason || 'AI confirmed job was already applied previously.',
+      };
+    }
+
+    if (aiDecision.decision === 'closed') {
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 2,
+        totalSteps: 2,
+        stepName: 'Job Closed',
+        status: 'skipped',
+        actionTaken: `⚠️ AI detected: Job closed/expired. (${aiDecision.reason || ''})`,
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return {
+        success: false,
+        skipped: true,
+        reason: aiDecision.reason || 'Job posting is expired or closed.',
+      };
+    }
+
+    if (aiDecision.decision === 'skip') {
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 2,
+        totalSteps: 2,
+        stepName: 'Skipped by AI',
+        status: 'skipped',
+        actionTaken: `⏭️ AI skipped this job: ${aiDecision.reason || 'Unfillable layout'}`,
+      });
+      await new Promise(r => setTimeout(r, 1200));
+      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+        currentBatchController.currentJobTabId = null;
+      }
+      return {
+        success: false,
+        skipped: true,
+        reason: aiDecision.reason || 'Skipped by AI decision.',
+      };
+    }
+
+    if (aiDecision.decision === 'click' && aiDecision.ref_id !== null && aiDecision.ref_id !== undefined) {
+      await updateTabHud(tabId, {
+        workflowName: 'AI Control',
+        stepIndex: 2,
+        totalSteps: 3,
+        stepName: 'Clicking Apply',
+        status: 'running',
+        actionTaken: `🖱️ AI clicking element [${aiDecision.ref_id}]...`,
+      });
+
+      const clickRes = await chrome.tabs.sendMessage(tabId, {
+        action: 'EXECUTE_AGENT_ACTION',
+        agentAction: 'click',
+        ref_id: Number(aiDecision.ref_id),
+      }).catch(() => null);
+
+      console.log('[AI Control] Click result:', clickRes);
+      // Wait 2.5s for page transition or modal popup
+      await new Promise(r => setTimeout(r, 2500));
+
+      // Re-check page status
+      const postClickStatus = await checkJobPageStatus(tabId);
+      if (postClickStatus.status === 'already_applied') {
+        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+        if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+          currentBatchController.currentJobTabId = null;
+        }
+        return { success: true, alreadyApplied: true, reason: 'Applied successfully after click.' };
+      }
+
+      // If page now has form fields, run orchestrator to fill them
+      return await runAIOrchestratorForJob(targetUrl, job, tabId);
+    }
+
+    // Default: run AI form orchestrator
+    return await runAIOrchestratorForJob(targetUrl, job, tabId);
+
+  } catch (err) {
+    console.error('[AI Control] Exception during AI decision:', err);
+    if (tabId && currentBatchController?.currentJobTabId === tabId) {
+      currentBatchController.currentJobTabId = null;
+      chrome.tabs.remove(tabId).catch(() => {});
+    }
+    return { success: false, reason: `AI Control error: ${err.message}` };
+  }
+}
