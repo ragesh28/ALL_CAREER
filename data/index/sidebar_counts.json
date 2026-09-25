@@ -1,5 +1,5 @@
 {
-  "total_jobs": 772720,
+  "total_jobs": 772743,
   "sources": {
     "naukri": 285303,
     "linkedin": 185455,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 133,
-    "telegram_message": 188
+    "telegram_post": 149,
+    "telegram_message": 195
   },
   "locations": {
-    "bangalore": 169214,
-    "mumbai": 101628,
-    "delhi": 82413,
-    "chennai": 80914,
+    "bangalore": 169220,
+    "mumbai": 101629,
+    "delhi": 82414,
+    "chennai": 80916,
     "hyderabad": 72317,
     "pune": 59112,
     "noida": 37636,
     "ahmedabad": 30851,
     "kolkata": 25746,
-    "all_india": 22451,
+    "all_india": 22453,
     "coimbatore": 15286,
     "kochi": 12177,
-    "remote": 7129,
+    "remote": 7132,
     "jaipur": 5574,
     "maharashtra": 5563,
     "indore": 4293,
@@ -68,7 +68,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 1909,
+    "karnataka": 1910,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -163,7 +163,7 @@
     "sharjah": 1,
     "jabalpur": 4,
     "pan_india": 1,
-    "mangalore": 17,
+    "mangalore": 20,
     "athani": 1,
     "zirakpur": 20,
     "kanpur": 43,
@@ -180,7 +180,7 @@
     "salem": 2,
     "sas_nagar": 1,
     "angola": 1,
-    "mysore": 4,
+    "mysore": 6,
     "hybrid_hybrid": 3,
     "rakanpur": 1,
     "hardoisandila": 1,
@@ -247,7 +247,8 @@
     "borivali_tarf_rahur": 1,
     "aluva": 1,
     "alwar": 1,
-    "talegaon": 1
+    "talegaon": 1,
+    "work_from_home": 2
   },
-  "generated_at": "2026-09-25T12:21:27.310972"
+  "generated_at": "2026-09-25T14:21:39.750988"
 }
