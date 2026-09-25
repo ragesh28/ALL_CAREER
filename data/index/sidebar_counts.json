@@ -1,5 +1,5 @@
 {
-  "total_jobs": 765969,
+  "total_jobs": 765998,
   "sources": {
     "naukri": 282026,
     "linkedin": 185445,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 120,
-    "telegram_message": 172
+    "telegram_post": 133,
+    "telegram_message": 188
   },
   "locations": {
-    "bangalore": 168287,
+    "bangalore": 168293,
     "mumbai": 100794,
-    "delhi": 81650,
-    "chennai": 80172,
-    "hyderabad": 71915,
-    "pune": 58598,
-    "noida": 37140,
+    "delhi": 81651,
+    "chennai": 80173,
+    "hyderabad": 71919,
+    "pune": 58600,
+    "noida": 37141,
     "ahmedabad": 30465,
     "kolkata": 25258,
-    "all_india": 22441,
-    "coimbatore": 14982,
+    "all_india": 22451,
+    "coimbatore": 14984,
     "kochi": 12102,
-    "remote": 7091,
+    "remote": 7092,
     "jaipur": 5438,
     "maharashtra": 5392,
     "indore": 4232,
@@ -84,7 +84,7 @@
     "bhopal": 372,
     "haryana": 429,
     "vadodara": 337,
-    "gujarat": 356,
+    "gujarat": 357,
     "panchkula": 264,
     "gandhinagar": 243,
     "tn": 236,
@@ -237,5 +237,5 @@
     "rajampet": 9,
     "balangir": 1
   },
-  "generated_at": "2026-09-25T06:31:29.750120"
+  "generated_at": "2026-09-25T08:15:37.733412"
 }

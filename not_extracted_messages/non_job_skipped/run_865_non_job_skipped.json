@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "865",
+  "workflow_run_id": "36110188561",
+  "timestamp": "2026-09-25T08:15:25.279376",
+  "runtime_minutes": 15.4,
+  "messages_processed": 42,
+  "new_jobs_stored": 29,
+  "skipped_jobs_count": 6,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Internshipsworld",
+      "msg_id": 6120,
+      "text": "𝗦𝗰𝗵𝗻𝗲𝗶𝗱𝗲𝗿 𝗘𝗹𝗲𝗰𝘁𝗿𝗶𝗰 𝗢𝗳𝗳-𝗖𝗮𝗺𝗽𝘂𝘀 𝗗𝗿𝗶𝘃𝗲 𝟮𝟬𝟮𝟲 – 𝗗𝗮𝘁𝗮 𝗘𝗻𝗴𝗶𝗻𝗲𝗲𝗿 𝗜𝗜 💻🚀\n\n🔹 𝗝𝗼𝗯 𝗥𝗼𝗹𝗲: Data Engineer II\n📍 𝗟𝗼𝗰𝗮𝘁𝗶𝗼𝗻: Bangalore, Karnataka\n🎓 𝗤𝘂𝗮𝗹𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻: Bachelor’s or Master’s Degree\n💰 𝗘𝘀𝘁𝗶𝗺𝗮𝘁𝗲𝗱 𝗦𝗮𝗹𝗮𝗿𝘆: ₹12–₹20 LPA\n\n🔗 𝗔𝗽𝗽𝗹𝘆 𝗟𝗶𝗻𝗸:\nhttps://pdlink.in/4xFLTCL\n\n📢 𝗦𝗵𝗮𝗿𝗲 𝘁𝗵𝗶𝘀 𝗼𝗽𝗽𝗼𝗿𝘁𝘂𝗻𝗶𝘁𝘆 𝘄𝗶𝘁𝗵 𝗳𝗿𝗶𝗲𝗻𝗱𝘀 𝘄𝗵𝗼 𝘄𝗲𝗿𝗲 𝗹𝗼𝗼𝗸𝗶𝗻𝗴 𝗳𝗼𝗿 𝗷𝗼𝗯𝘀. ❤️✨",
+      "timestamp": "2026-09-25T06:06:17+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30306,
+      "text": "🚨__ Weekend Deal: Get Certified for FREE!__\n\nGot plans for the weekend? Add one more thing - a new AI skill! 🤖💻\n\nGen AI Claude Certification - FREE ✅\n\n👉 Claim Your FREE Certification 🔥:  https://link.outskill.com/A-11\n\n₹10,000 → ₹0\n\n⏰ Weekend Offer: Valid till Sunday, 11:59 PM\n\nWhat you’ll learn: \n✅ 25+ Powerful AI Tools \n✅ Automate repetitive tasks \n✅ Create content faster with AI \n✅ Master AI prompts for work\n\n🚨 ₹10,000 Certification → FREE for the weekend!\n\nUse your weekend to build a skill that can actually help you at work. 💯",
+      "timestamp": "2026-09-25T04:50:49+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43166,
+      "text": "**🚨Free Gen AI Claude Workshop - FREE (Today Only) 🚀**\n\n💸 Cost: ~~₹10,000~~ ₹0 (FREE!)\n\nDeadline: 25th September 2026\n\nWhat You Will Learn:\n✅ Learn 25+ AI tools\n✅ Master practical AI workflows and automate tasks\n✅ Automate assignments, content & research\n✅ Stand out in internships & placements\n\n⏰ Limited to 100 seats — Fill before they're gone!\n\n**Enroll Now (Free)**: https://link.outskill.com/A-13",
+      "timestamp": "2026-09-25T05:25:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18791,
+      "text": "TRY IT\nANYWAY.\nThe art of \"I'll try it anyway\"\nis choosing to begin\neven when you are not fully ready,\neven when you are scared,\nand even when you don't know\nhow it will end.\nThrivingStudio",
+      "timestamp": "2026-09-25T02:19:08+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18793,
+      "text": "Most freshers don’t lack talent — they lack a clear, personalised roadmap.\n\nThat’s exactly what Career Pulse by Way2Fresher solves.\n\n👉 Take the free Career Pulse check now: https://way2fresher.com/?page_id=16\nWAY2FRESHER\n简\nMost freshers don't lack\ntalent — they lack a clear,\npersonalised roadmap.\nThat's exactly what Career Pulse\nby Way2Fresher solves.\nTake the free Career Pulse check now!\nwww.way2fresher.com",
+      "timestamp": "2026-09-25T05:04:41+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8315,
+      "text": "https://www.instagram.com/reel/Ddssi_sTfpi/",
+      "timestamp": "2026-09-25T07:13:38+00:00"
+    }
+  ]
+}
