@@ -1,0 +1,68 @@
+{
+  "workflow_run_number": "869",
+  "workflow_run_id": "36209114269",
+  "timestamp": "2026-09-26T01:47:54.267508",
+  "runtime_minutes": 5.32,
+  "messages_processed": 23,
+  "new_jobs_stored": 14,
+  "skipped_jobs_count": 8,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259496,
+      "text": "Hewlett Packard Enterprise IS HIRING!\n\nIf you are dreaming of starting your career at HPE, here's your chance!\n\nRole: Software Engineer - I (Full stack developer) \n\nExperience : 1-3 years \n\nLocation : Bangalore, India \n\nApply link :\nhttps://careers.hpe.com/us/en/job/1210369/Fullstack-Developer?utm_source=linkedin",
+      "timestamp": "2026-09-26T01:28:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259497,
+      "text": "🚨 WE ARE HIRING | STRESS ENGINEER | AEROSPACE\n📍 Job Location: Bangalore\n💼 Role: Stress Engineer\n🏢 Industry: Aerospace\n📧 Apply: reena.kumari@saracasolutions.com\n🔹 Role Overview\nWe are looking for an experienced Stress Engineer to perform structural and stress analysis of aircraft components and assemblies. The candidate will work closely with cross-functional engineering teams to support structural integrity, certification, and aerospace programs.\n🔹 Key Responsibilities\n• Perform stress and structural analysis of aircraft components and assemblies.\n• Conduct static, fatigue, and damage tolerance analysis.\n• Perform analysis using Finite Element Analysis (FEA) methods.\n• Evaluate metallic and composite aerospace structures for structural integrity.\n• Prepare detailed technical reports and documentation to support certification.\n• Support engineering teams in resolving structural issues and providing technical solutions.\n• Review engineering drawings, loads, materials, and manufacturing requirements.\n• Work with cross-functional teams to deliver analysis activities within project timelines.\n🔹 Required Skills\n✅ Strong experience in Stress/Structural Analysis.\n✅ Experience in the Aerospace/Aviation domain.\n✅ Hands-on experience with MSC Patran/Nastran, HyperMesh or similar FEA tools.\n✅ Knowledge of static, fatigue, buckling, and damage tolerance analysis.\n✅ Strong understanding of Strength of Materials, engineering fundamentals, loads and material properties.\n✅ Ability to interpret engineering drawings and technical specifications.\n✅ Strong analytical, problem-solving, and communication skills.\n📩 How to Apply\nInterested candidates can share their updated resume at:\nreena.kumari@saracasolutions.com\nSubject: Application – Stress Engineer | Bangalore",
+      "timestamp": "2026-09-26T01:29:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259501,
+      "text": "Robosoft Technologies is hiring freshers for a 1-year Apprenticeship under the NATS (National Apprenticeship Training Scheme) in the System Administration role.\n\nLocation: Robosoft, Udupi – Work from Office\nApprenticeship: 1 Year\nStipend: As per NATS standards\n\nWho can apply?\n\nDiploma holders or Graduates with a relevant qualification/course in Computer Hardware & System Administration\nFreshers only\nCandidates from Udupi–Mangalore region\nShould be willing to work in rotational shifts\nIf you are a fresher looking to start your career in IT Infrastructure and System Administration, this could be a good opportunity to gain hands-on industry experience.\n\nInterested candidates can share their profiles/apply: campusrecruitment@robosoftin.com\nRobosoft Technologies\nEMOTION ENGINEERING & DESIGN\nWe are Hiring\npprentice- System Administration\nApply Now",
+      "timestamp": "2026-09-26T01:34:55+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259502,
+      "text": "🚨 WE’RE HIRING | MANUFACTURING ENGINEER - SHOULD COSTING 🚨\n📍 Location: Bangalore\n💼 Experience: 5+ Years\n🏭 Industry: Aerospace / Automotive / Manufacturing\n🔹 Position Summary\nWe are looking for an experienced Manufacturing Engineer to develop manufacturing process plans, should-cost models, and manufacturing documentation for Machining, Sheetmetal, Forging, and Casting processes. The role will support manufacturability, cost optimization, manufacturing readiness, NPI, and continuous improvement initiatives.\n🔹 Key Responsibilities\n• Develop manufacturing process plans and should-cost estimates using engineering drawings, specifications, and GD&T.\n• Evaluate manufacturability, process selection, tooling, cycle times, and production methods.\n• Prepare and maintain PFDs, PFMEAs, Manufacturing Routers, SOPs, and Work Instructions.\n• Maintain manufacturing data in SAP and MES (Solumina or equivalent).\n• Analyze supplier quotations and validate tooling/NRE costs.\n• Develop cost models, work-center rates, labor standards, and cost databases.\n• Support NPI, Value Engineering, DFM/DFC, and cost-reduction initiatives.\n🔹 Basic Qualifications\n• Bachelor’s/Master’s degree in Mechanical, Production, Industrial, or Manufacturing Engineering.\n• Minimum 5 years of experience in Manufacturing Engineering and Should-Cost Analysis.\n• Hands-on shop-floor experience in Aerospace, Automotive, or similar manufacturing industries.\n🔹 Preferred Skills\n• Strong knowledge of Machining, Sheetmetal, Forging, Casting, and Assembly processes.\n• Experience in process planning, tooling, production optimization, and secondary processes.\n• Proficiency in PFD, PFMEA, Routers, SOPs, and Work Instructions.\n• Experience with SAP, MES/Solumina, and should-costing tools such as aPriori.\n• Knowledge of Siemens NX, Creo, CATIA, or SolidWorks.\n• Strong analytical, problem-solving, and cross-functional collaboration skills.\n📩 Interested candidates can share their updated resume at:\nreena.kumari@saracasolutions.com",
+      "timestamp": "2026-09-26T01:36:34+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259506,
+      "text": "Primetrace is hiring a Junior DevOps Engineer (SDE-1).\n📍HSR, Bangalore (WFO)\nTick 3 or more?\n👉 Apply Here -\nhttps://primetrace.keka.com/careers/jobdetails/89788",
+      "timestamp": "2026-09-26T01:39:12+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259507,
+      "text": "📢 Hiring: Python Developer | Bangalore\nWe are looking for Python Developers to join our team in Bangalore.\nExperience: 0-1 years (Freshers are welcome to apply)\nLocation: Bangalore\nInterview Mode: Face-to-Face\nIf you are interested, please share your resume at priya.gusain@ust.com.",
+      "timestamp": "2026-09-26T01:39:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259508,
+      "text": "Immediate Hiring | Windows Active Directory L2/L3 Support Engineer| PKI | 4+ Years Experience 🔥\n\n🔔 Notice Period: Only Immediate Joiners will be considered.\nExperience - 3 to 11 Years.\n\nWe are seeking skilled professionals with hands-on expertise in enterprise identity and Windows infrastructure technologies.\n🎯 Must-Have Skills ✔ Active Directory\n✔ Group Policies (GPO)\n✔ Kerberos\n✔ MS PKI Certificate Management\n✔ AD Replication\n✔ ADFS\n✔ Azure AD Connect\n✔ DFS Management\n✔ DNS & DHCP\n✔ PowerShell\n✔ FSMO Roles\n🎯 Additional Requirements ✔ Windows Server Administration\n✔ Patch Management & Performance Tuning\n✔ Customer Support Experience\n✔ Strong Communication Skills\n✔ Experience in Complex AD Environments\n🌙 Mandatory Night Shift Role Please apply only if you are comfortable working in:\nUS EST Time Zone\nRotational Night Shifts\nShift rotation every 3 months\n📨 Interested professionals can comment \"Interested\" or share their updated profile directly on Kiran.Deshmukh@ltm.com\n\nhttps://ltimindtree.ripplehire.com/candidate/?token=5SrOurjgLSri9kUzhyc6&ref=LI03&lang=en&trk=feed__main-feed-card__feed-article-content#detail",
+      "timestamp": "2026-09-26T01:41:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "mohancareers",
+      "msg_id": 3185,
+      "text": "Deloitte hiring freshers 2026\n\n📢 Company: Deloitte \n💼 Job Role: Associate service \n💰 Salary: 3 - 4 LPA\n🎓 Qualification: Any Graduate \n\n🔗 Apply Here:\nhttps://mohancareers.com/deloitte-hiring-for-freshers-2026-5/\nDeloitte.",
+      "timestamp": "2026-09-26T00:33:01+00:00"
+    }
+  ]
+}
