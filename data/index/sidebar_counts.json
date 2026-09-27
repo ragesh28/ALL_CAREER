@@ -1,5 +1,5 @@
 {
-  "total_jobs": 791758,
+  "total_jobs": 791791,
   "sources": {
     "naukri": 286387,
     "linkedin": 189313,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 214,
-    "telegram_message": 266
+    "telegram_post": 232,
+    "telegram_message": 281
   },
   "locations": {
-    "bangalore": 172990,
-    "mumbai": 104055,
-    "delhi": 84127,
-    "chennai": 83805,
-    "hyderabad": 74500,
-    "pune": 60214,
-    "noida": 38266,
+    "bangalore": 172995,
+    "mumbai": 104058,
+    "delhi": 84128,
+    "chennai": 83810,
+    "hyderabad": 74504,
+    "pune": 60215,
+    "noida": 38268,
     "ahmedabad": 31579,
     "kolkata": 26305,
-    "all_india": 22717,
+    "all_india": 22726,
     "coimbatore": 15593,
     "kochi": 12290,
-    "remote": 7244,
+    "remote": 7245,
     "jaipur": 5799,
     "maharashtra": 6153,
     "indore": 4463,
@@ -145,7 +145,7 @@
     "pollachi": 53,
     "kurla": 52,
     "kollam": 72,
-    "trivandrum": 45,
+    "trivandrum": 46,
     "thanjavur": 1,
     "panipat": 1,
     "perundurai": 1,
@@ -221,7 +221,7 @@
     "ahemdabad": 1,
     "agrasanjay_place": 1,
     "united_kingdom": 1,
-    "across_india": 3,
+    "across_india": 4,
     "malappuram": 1,
     "nandyal": 1,
     "shahdara": 3,
@@ -286,5 +286,5 @@
     "jhansi": 3,
     "karjat": 1
   },
-  "generated_at": "2026-09-27T06:38:10.772839"
+  "generated_at": "2026-09-27T08:32:33.520556"
 }
