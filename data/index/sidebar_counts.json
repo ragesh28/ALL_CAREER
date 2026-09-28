@@ -1,5 +1,5 @@
 {
-  "total_jobs": 806820,
+  "total_jobs": 806859,
   "sources": {
     "naukri": 290348,
     "linkedin": 189321,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 268,
-    "telegram_message": 334
+    "telegram_post": 290,
+    "telegram_message": 351
   },
   "locations": {
-    "bangalore": 176436,
-    "mumbai": 105927,
+    "bangalore": 176453,
+    "mumbai": 105928,
     "delhi": 85288,
-    "chennai": 85872,
-    "hyderabad": 76053,
+    "chennai": 85873,
+    "hyderabad": 76056,
     "pune": 61126,
     "noida": 39043,
-    "ahmedabad": 32095,
-    "kolkata": 26751,
-    "all_india": 22765,
+    "ahmedabad": 32096,
+    "kolkata": 26752,
+    "all_india": 22777,
     "coimbatore": 15851,
     "kochi": 12332,
-    "remote": 7364,
+    "remote": 7365,
     "jaipur": 5926,
     "maharashtra": 6769,
     "indore": 4599,
@@ -162,7 +162,7 @@
     "kotputli": 1,
     "sharjah": 1,
     "jabalpur": 6,
-    "pan_india": 3,
+    "pan_india": 4,
     "mangalore": 27,
     "athani": 1,
     "zirakpur": 22,
@@ -335,7 +335,7 @@
     "valsad": 3,
     "cheyyar": 1,
     "nigeria": 1,
-    "jodhpur": 1,
+    "jodhpur": 2,
     "hubballi": 1,
     "naya_raipur": 13,
     "multiple": 1,
@@ -361,5 +361,5 @@
     "doha": 1,
     "bihar": 1
   },
-  "generated_at": "2026-09-28T16:20:13.500020"
+  "generated_at": "2026-09-28T18:12:35.371937"
 }
