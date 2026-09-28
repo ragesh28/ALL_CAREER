@@ -1,5 +1,5 @@
 {
-  "total_jobs": 799555,
+  "total_jobs": 799556,
   "sources": {
     "naukri": 288036,
     "linkedin": 189318,
@@ -41,7 +41,7 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 245,
+    "telegram_post": 246,
     "telegram_message": 316
   },
   "locations": {
@@ -57,7 +57,7 @@
     "all_india": 22748,
     "coimbatore": 15690,
     "kochi": 12304,
-    "remote": 7288,
+    "remote": 7289,
     "jaipur": 5841,
     "maharashtra": 6376,
     "indore": 4508,
@@ -331,5 +331,5 @@
     "kudlu": 1,
     "thoothukudi": 1
   },
-  "generated_at": "2026-09-28T00:00:04.712824"
+  "generated_at": "2026-09-28T01:47:11.760872"
 }
