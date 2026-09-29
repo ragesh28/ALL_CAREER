@@ -1,5 +1,5 @@
 {
-  "total_jobs": 815819,
+  "total_jobs": 815847,
   "sources": {
     "naukri": 297755,
     "linkedin": 189330,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 293,
-    "telegram_message": 368
+    "telegram_post": 309,
+    "telegram_message": 380
   },
   "locations": {
-    "bangalore": 178062,
-    "mumbai": 107092,
-    "delhi": 86402,
-    "chennai": 86954,
+    "bangalore": 178068,
+    "mumbai": 107094,
+    "delhi": 86403,
+    "chennai": 86955,
     "hyderabad": 76572,
-    "pune": 61872,
-    "noida": 39775,
-    "ahmedabad": 32644,
+    "pune": 61873,
+    "noida": 39778,
+    "ahmedabad": 32645,
     "kolkata": 27166,
-    "all_india": 22789,
-    "coimbatore": 16214,
-    "kochi": 12584,
-    "remote": 7501,
+    "all_india": 22794,
+    "coimbatore": 16215,
+    "kochi": 12585,
+    "remote": 7504,
     "jaipur": 5953,
     "maharashtra": 6840,
     "indore": 4624,
@@ -75,7 +75,7 @@
     "nanakramguda": 557,
     "message_all_india": 530,
     "tamil_nadu": 1558,
-    "telangana": 1568,
+    "telangana": 1569,
     "ka": 505,
     "message_bangalore": 475,
     "mh": 406,
@@ -90,7 +90,7 @@
     "tn": 236,
     "ernakulam": 238,
     "ts": 222,
-    "lucknow": 314,
+    "lucknow": 315,
     "surat": 248,
     "uttar_pradesh": 424,
     "post_all_india": 173,
@@ -221,7 +221,7 @@
     "ahemdabad": 1,
     "agrasanjay_place": 1,
     "united_kingdom": 1,
-    "across_india": 6,
+    "across_india": 7,
     "malappuram": 2,
     "nandyal": 1,
     "shahdara": 5,
@@ -368,5 +368,5 @@
     "vile_parle": 1,
     "jabalpurbargi_hills": 1
   },
-  "generated_at": "2026-09-29T12:48:59.862555"
+  "generated_at": "2026-09-29T13:22:07.216822"
 }

@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "885",
+  "workflow_run_id": "36572168856",
+  "timestamp": "2026-09-29T13:21:49.679371",
+  "runtime_minutes": 17.58,
+  "messages_processed": 58,
+  "new_jobs_stored": 28,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Internshipsworld",
+      "msg_id": 6164,
+      "text": "𝗙𝗥𝗘𝗘 𝗥𝗲𝘀𝗼𝘂𝗿𝗰𝗲𝘀 𝗧𝗼 𝗟𝗲𝗮𝗿𝗻 𝗔𝗜 𝗶𝗻 𝟮𝟬𝟮𝟲🚀\n​\nExplore 6 free resources covering AI fundamentals, tools, deep learning, research and real-world applications. \n\n✅ 100% Free Learning\n✅ Beginner-Friendly\n✅ AI • ML • Deep Learning\n✅ Real-World Applications\n\n🔗 𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗙𝗥𝗘𝗘 𝗖𝗼𝘂𝗿𝘀𝗲𝘀 👇\n\nhttps://pdlink.in/4AFHq5R\n\n📢 Share this valuable opportunity with your friends and classmates!\nWant to\nMaster Al\nLearn Al\nfor Free\nforFREE?\nHere's How\nArtificial Intelligence\nMachine Learning\nGood\nIdeas\nDeep Learning\nBetter\nSkills\nGenerative Al",
+      "timestamp": "2026-09-29T12:27:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "placementdriveofficial",
+      "msg_id": 13173,
+      "text": "𝗙𝗥𝗘𝗘 𝗥𝗲𝘀𝗼𝘂𝗿𝗰𝗲𝘀 𝗧𝗼 𝗟𝗲𝗮𝗿𝗻 𝗔𝗜 𝗶𝗻 𝟮𝟬𝟮𝟲🚀\n​\nExplore 6 free resources covering AI fundamentals, tools, deep learning, research and real-world applications. \n\n✅ 100% Free Learning\n✅ Beginner-Friendly\n✅ AI • ML • Deep Learning\n✅ Real-World Applications\n\n🔗 𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗙𝗥𝗘𝗘 𝗖𝗼𝘂𝗿𝘀𝗲𝘀 👇\n\nhttps://pdlink.in/4AFHq5R\n\n📢 Share this valuable opportunity with your friends and classmates!\nWant to\nMaster Al\nLearn Al\nfor Free\nforFREE?\nHere's How\nArtificial Intelligence\nMachine Learning\nGood\nIdeas\nDeep Learning\nBetter\nSkills\nGenerative Al",
+      "timestamp": "2026-09-29T12:27:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16484,
+      "text": "Announcing our partnership with India Blockchain Week 2026: hashtagweb3.com/ibw\n\nSpeakers include the co-founders of Monad, StarkWare, Avail, RedStone Oracles, and more.\n\nGet 10% off your IBW passes (that also unlocks a Devcon ticket just for $99) with our exclusive code: IBW26HASHTAG\nCOMMUNITY PARTNER\nINDIA\nHASHTAG\nBLOCKCHAIN\nWEB3\nWEEK 2026\nNOV 1 - 2, 2026\nFAIRMONT,MUMBAI\nN\nBLO\nWE\nUSE CODE\n10% OFF\nIBW26HASHTAG\nON CONFERENCE PASSES",
+      "timestamp": "2026-09-29T12:46:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6376,
+      "text": "How to book the cheapest flights?\n\nEngineering behind that: https://lnkd.in/p/dP3Vz7_g",
+      "timestamp": "2026-09-29T11:52:29+00:00"
+    }
+  ]
+}
