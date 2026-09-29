@@ -1,5 +1,5 @@
 {
-  "total_jobs": 822351,
+  "total_jobs": 822359,
   "sources": {
     "naukri": 297755,
     "linkedin": 191759,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 309,
-    "telegram_message": 380
+    "telegram_message": 388
   },
   "locations": {
     "bangalore": 179185,
@@ -54,7 +54,7 @@
     "noida": 40034,
     "ahmedabad": 32941,
     "kolkata": 27354,
-    "all_india": 22901,
+    "all_india": 22909,
     "coimbatore": 16316,
     "kochi": 12651,
     "remote": 7533,
@@ -368,5 +368,5 @@
     "vile_parle": 1,
     "jabalpurbargi_hills": 1
   },
-  "generated_at": "2026-09-29T16:56:30.515419"
+  "generated_at": "2026-09-29T18:44:38.748016"
 }
