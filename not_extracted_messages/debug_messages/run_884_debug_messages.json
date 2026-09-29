@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "884",
+  "workflow_run_id": "36528050200",
+  "timestamp": "2026-09-29T06:03:10.943291",
+  "runtime_minutes": 10.92,
+  "messages_processed": 35,
+  "new_jobs_stored": 10,
+  "skipped_jobs_count": 16,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 30373,
+      "text": "🚨 While You Scrolled This Weekend, 1000s Got Claude Certified 🤖\n\nRecruiters are now filtering resumes by AI skills. Freshers with a Gen AI certificate are getting shortlisted first. 📈\n\n🎓 Gen AI Claude Certification – FREE for a Limited Time\n\n👉 Grab Your FREE Seat: https://link.outskill.com/A-11\n\n💰 Worth ₹10,000 → ₹0 today\n\nWhat you'll learn:\n✅ 25+ Powerful AI Tools\n✅ Build AI Agents with Claude\n✅ Automate boring, repetitive work\n✅ Prompts that actually work at your job\n\n⏰ Don't start another week behind. Register now.",
+      "timestamp": "2026-09-29T04:35:46+00:00"
+    }
+  ]
+}
