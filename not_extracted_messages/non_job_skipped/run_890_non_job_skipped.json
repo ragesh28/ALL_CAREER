@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "890",
+  "workflow_run_id": "36740657170",
+  "timestamp": "2026-09-30T16:19:45.821334",
+  "runtime_minutes": 19.56,
+  "messages_processed": 72,
+  "new_jobs_stored": 60,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30401,
+      "text": "Claude Gen AI Certification - FREE for today!🚀\n\n💸 Cost: ₹~~10,000~~ ₹0 (FREE!)\n\nDeadline: 11:59 PM, 30th Sept 2026\n\nWhat you’ll learn:\n✅ 25+ Powerful AI Tools\n✅ Become an Excel Pro \n✅ Build Websites in seconds \n✅ Crack Exams & Interviews faster\n\n⚡ Only Limited Seats Left!\n\nEnroll Now (Free): https://link.outskill.com/A-11",
+      "timestamp": "2026-09-30T14:30:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259698,
+      "text": "Alaan is hiring - Fullstack Intern\n\n💼 Experience: Fresher (2027 Graduate)\n📍 Location: Bangalore\n\nRequirement:\n• Currently pursuing or recently completed a Bachelor’s degree in Computer Science, Engineering, or a related field\n• Good understanding of JavaScript/TypeScript and programming fundamentals\nHands-on exposure to Node.js through internships, projects, coursework, or personal development\n• Familiarity with Node.js frameworks such as Express.js or NestJS\n• Basic understanding of REST APIs and backend application development\n• Familiarity with SQL and relational databases such as PostgreSQL or MySQL.\nSome exposure to React.js and/or Next.js for frontend development\n• Familiarity with Git and version control.\nStrong problem-solving fundamentals and willingness to learn unfamiliar technologies\n• Comfortable working in a fast-paced environment, asking questions, receiving feedback, and taking ownership\n• Previous internships, meaningful personal projects, open-source contributions, or experience building and deploying applications would be a strong plus\n\n🔗 Apply Here: \nhttps://ats.rippling.com/alaan-careers/jobs/5a84497e-6c95-4e99-8e42-279fef26e85c",
+      "timestamp": "2026-09-30T14:50:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6379,
+      "text": "did you check this?",
+      "timestamp": "2026-09-30T14:05:53+00:00"
+    }
+  ]
+}

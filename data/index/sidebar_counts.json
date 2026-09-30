@@ -1,5 +1,5 @@
 {
-  "total_jobs": 838047,
+  "total_jobs": 838107,
   "sources": {
     "naukri": 303660,
     "linkedin": 195081,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 327,
-    "telegram_message": 412
+    "telegram_post": 342,
+    "telegram_message": 457
   },
   "locations": {
-    "bangalore": 182201,
+    "bangalore": 182225,
     "mumbai": 109566,
-    "delhi": 88909,
-    "chennai": 89615,
+    "delhi": 88911,
+    "chennai": 89620,
     "hyderabad": 78498,
-    "pune": 63934,
+    "pune": 63937,
     "noida": 40936,
     "ahmedabad": 33528,
     "kolkata": 27829,
-    "all_india": 23064,
-    "coimbatore": 16763,
+    "all_india": 23084,
+    "coimbatore": 16764,
     "kochi": 12907,
-    "remote": 7744,
+    "remote": 7747,
     "jaipur": 6211,
     "maharashtra": 7468,
     "indore": 4654,
@@ -68,7 +68,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2843,
+    "karnataka": 2844,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -156,7 +156,7 @@
     "panchkulaindustrial_area_phase_1": 1,
     "sonipatkharkhoda": 1,
     "modinagar": 1,
-    "nashik": 19,
+    "nashik": 20,
     "siliguri": 3,
     "hansi": 1,
     "kotputli": 1,
@@ -394,5 +394,5 @@
     "dombivili": 4,
     "north": 4
   },
-  "generated_at": "2026-09-30T15:59:55.942717"
+  "generated_at": "2026-09-30T16:20:07.884775"
 }
