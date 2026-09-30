@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "891",
+  "workflow_run_id": "36775472541",
+  "timestamp": "2026-09-30T20:54:26.823741",
+  "runtime_minutes": 1.52,
+  "messages_processed": 5,
+  "new_jobs_stored": 10,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16489,
+      "text": "Daily feed of global web3 events: https://t.me/eventsweb3",
+      "timestamp": "2026-09-30T20:08:45+00:00"
+    }
+  ]
+}
