@@ -78,10 +78,16 @@
       "credits_used": 100,
       "jobs_extracted": 420,
       "cities_processed": 20
+    },
+    {
+      "date": "2026-09-30",
+      "credits_used": 100,
+      "jobs_extracted": 372,
+      "cities_processed": 20
     }
   ],
   "cycle_history": [],
   "cycle_month": "2026-09",
   "cycle_start_date": "2026-09-18",
-  "cycle_used_credits": 1200
+  "cycle_used_credits": 1300
 }
