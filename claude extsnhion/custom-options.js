@@ -466,6 +466,68 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
+let activeBranchRecordingSession = null;
+
+// Listener for picked element when recording a branch node from the tab
+chrome.runtime.onMessage.addListener(async (msg) => {
+  if (msg?.action === 'PICKER_RESULT_FORWARD' && activeBranchRecordingSession) {
+    const session = activeBranchRecordingSession;
+    activeBranchRecordingSession = null;
+
+    const curWf = workflows.find(w => w.id === session.workflowId) || workflows[selectedWfIndex];
+    if (!curWf) return;
+
+    const pickedText = String(msg.text || '').trim();
+    const pickedTag = String(msg.tag || 'button').toUpperCase();
+    const cleanLabel = pickedText ? `Click "${pickedText.substring(0, 24)}"` : `Click <${pickedTag}>`;
+
+    const newBranchStep = {
+      id: 's_' + Date.now(),
+      type: 'click',
+      name: `Branch Step ${session.stepNumber}: ${cleanLabel}`,
+      target: {
+        selector: msg.selector,
+        selectors: [msg.selector],
+        text: pickedText,
+        tag: msg.tag,
+        rect: msg.rect,
+      },
+      value: pickedText,
+      waitMs: 500,
+      color: '#10b981',
+      badge: 'CLK',
+      disabled: false,
+      stopAfter: false,
+      finalSubmit: false,
+      branchParentId: session.forkStepId,
+      branchSlot: session.targetSlot,
+    };
+
+    // Connect fork step
+    const forkStep = curWf.steps.find(s => s.id === session.forkStepId);
+    if (forkStep) {
+      forkStep.onError = 'branch';
+      if (!forkStep.branchStepId) forkStep.branchStepId = newBranchStep.id;
+    }
+
+    curWf.steps.push(newBranchStep);
+    curWf.updatedAt = Date.now();
+    await persist(STORAGE_KEYS.WORKFLOWS, workflows, `🌿 Branch Step ${session.stepNumber} recorded and saved!`);
+    selectedStepIndex = curWf.steps.length - 1;
+    renderAppHub();
+
+    if (session.tabId) {
+      chrome.tabs.sendMessage(session.tabId, { action: 'WORKFLOW_REMOVE_HUD' }).catch(() => {});
+    }
+  } else if (msg?.action === 'PICKER_CANCELLED_FORWARD' && activeBranchRecordingSession) {
+    showToast('Branch element selection cancelled.');
+    if (activeBranchRecordingSession.tabId) {
+      chrome.tabs.sendMessage(activeBranchRecordingSession.tabId, { action: 'WORKFLOW_REMOVE_HUD' }).catch(() => {});
+    }
+    activeBranchRecordingSession = null;
+  }
+});
+
 async function loadAllData() {
   try {
     const data = await chrome.storage.local.get([
@@ -644,6 +706,51 @@ function renderActiveTabBody() {
   }
 }
 
+function renderNodeCardHtml(step, idx, isBranch = false, parentStepNum = null) {
+  const stepType = (step?.type || 'action');
+  const badgeColor = step.color || (stepType === 'open_url' ? '#22c55e' : stepType === 'click' ? '#38bdf8' : stepType === 'ai_fallback' ? '#14b8a6' : stepType === 'skip_job' ? '#eab308' : '#a855f7');
+  const typeLabel = stepType === 'open_url' ? 'Open page' : (stepType === 'click' ? 'Click element' : (stepType === 'ai_fallback' ? (step.isAiLoop ? '🔄 AI Loop' : 'Ask AI') : (stepType === 'skip_job' ? 'Skip Job' : 'Action')));
+
+  let previewText = '';
+  if (typeof step.value === 'string' && step.value.trim()) {
+    previewText = step.value.trim();
+  } else if (step.target) {
+    if (typeof step.target === 'string') {
+      previewText = step.target;
+    } else if (typeof step.target === 'object') {
+      previewText = step.target.selector || step.target.text || (step.target.tag ? `<${step.target.tag}>` : '') || JSON.stringify(step.target);
+    }
+  } else if (step.value) {
+    previewText = String(step.value);
+  }
+  if (previewText.length > 55) {
+    previewText = previewText.substring(0, 52) + '...';
+  }
+
+  const isStopNode = step.type === 'stop';
+  const branchNotice = isBranch
+    ? `<div style="font-size: 10px; color: #6ee7b7; margin-top: 3px; font-weight: 700;">🌿 Branch (from Step ${parentStepNum || '?'})</div>`
+    : (isStopNode
+      ? `<div style="font-size: 10px; color: #ef4444; margin-top: 3px; font-weight: 700;">🛑 Stop Workflow</div>`
+      : (step.onError === 'branch' && step.branchStepId
+        ? `<div style="font-size: 10px; color: #6ee7b7; margin-top: 3px;">🌿 Has Branch ↓</div>`
+        : (step.onError === 'check_expired_skip' ? '<div style="font-size: 10px; color: #fde047; margin-top: 3px;">⚡ Skip if Expired/Applied</div>' : '')));
+
+  return `
+    <div class="wf-node-block ${isBranch ? 'branch-node' : ''} ${isStopNode ? 'stop-node' : ''} ${idx === selectedStepIndex ? 'selected' : ''}" style="border-left-color: ${badgeColor};" data-sidx="${idx}">
+      <div class="wf-node-head">
+        <span class="wf-badge" style="background: ${badgeColor};">${step.badge || (isStopNode ? 'STOP' : (step.isAiLoop ? 'AI LOOP' : String(stepType).toUpperCase().substring(0, 3)))}</span>
+        <div class="wf-node-title">${escapeHtml(step.name || 'Step ' + (idx + 1))}</div>
+        <button class="node-card-del-btn" data-del-sidx="${idx}" title="Delete step or branch">✕</button>
+      </div>
+      <div class="wf-node-sub">
+        ${isBranch ? `🌿 Branch Node | Step ${idx + 1}` : (isStopNode ? `🛑 Stop Node | Step ${idx + 1}` : `${typeLabel} | Step ${idx + 1}`)}<br />
+        <span style="opacity: 0.85;">${escapeHtml(previewText || '')}</span>
+        ${branchNotice}
+      </div>
+    </div>
+  `;
+}
 
 // ─── 1. Exact 3-Column Workflow Studio (Image 1 Layout) ──────────────────────
 
@@ -758,27 +865,131 @@ function renderWorkflowsTab() {
         <div class="prop-buttons-row">
           <button class="btn-ai-teal" id="btn-add-ai-node-btn">Add AI node</button>
           <button class="btn-danger-outline" id="btn-add-stop-node-btn">Add stop node</button>
+          <button class="btn-secondary-gray" id="btn-add-skip-node-btn" style="border-color: #eab308; color: #fde047;">Add skip job node</button>
+          <div style="flex: 1;"></div>
+          <button class="btn-success-green" id="btn-wf-save-main" style="padding: 6px 14px; font-weight: 700;">💾 Save Workflow</button>
         </div>
 
         <!-- Dot Grid Flow Canvas -->
         <div class="dot-canvas">
-          ${(currentWf.steps || []).map((step, idx) => {
-            const stepType = (step?.type || 'action');
-            const badgeColor = step.color || (stepType === 'open_url' ? '#22c55e' : stepType === 'click' ? '#38bdf8' : stepType === 'ai_fallback' ? '#14b8a6' : '#a855f7');
-            return `
-              <div class="wf-node-block ${idx === selectedStepIndex ? 'selected' : ''}" style="border-left-color: ${badgeColor};" data-sidx="${idx}">
-                <div class="wf-node-head">
-                  <span class="wf-badge" style="background: ${badgeColor};">${step.badge || (step.isAiLoop ? 'AI LOOP' : String(stepType).toUpperCase().substring(0, 3))}</span>
-                  <div class="wf-node-title">${escapeHtml(step.name || 'Step ' + (idx + 1))}</div>
+          ${(() => {
+            const allSteps = currentWf.steps || [];
+            if (allSteps.length === 0) {
+              return '<div style="color: #64748b; font-size: 13px; margin: auto;">No steps recorded yet. Click "Open and record" above to create steps.</div>';
+            }
+
+            // Identify branch steps: steps having branchParentId or referenced by another step's branchStepId
+            const branchMap = new Map(); // parentStepId -> Array of branch steps
+            const isBranchStep = new Set();
+
+            allSteps.forEach((s) => {
+              if (s.branchParentId) {
+                isBranchStep.add(s.id);
+                if (!branchMap.has(s.branchParentId)) branchMap.set(s.branchParentId, []);
+                branchMap.get(s.branchParentId).push(s);
+              }
+            });
+
+            // Also check steps where parent has onError === 'branch'
+            allSteps.forEach((s) => {
+              if (s.onError === 'branch' && s.branchStepId && !isBranchStep.has(s.branchStepId)) {
+                const target = allSteps.find(st => st.id === s.branchStepId);
+                if (target) {
+                  isBranchStep.add(target.id);
+                  if (!branchMap.has(s.id)) branchMap.set(s.id, []);
+                  if (!branchMap.get(s.id).includes(target)) {
+                    branchMap.get(s.id).push(target);
+                  }
+                }
+              }
+            });
+
+            // Main sequence: steps that are not child branch steps
+            const mainSteps = allSteps.filter(s => !isBranchStep.has(s.id));
+
+            // Find first fork node that has branches
+            const forkStep = mainSteps.find(s => branchMap.has(s.id));
+            if (!forkStep) {
+              // Linear sequence if no branch exists yet
+              return `
+                <div class="n8n-flow-container">
+                  <div class="n8n-prefix-track">
+                    ${mainSteps.map((step, mIdx) => {
+                      const globalIdx = allSteps.indexOf(step);
+                      return `
+                        ${renderNodeCardHtml(step, globalIdx, false, null)}
+                        ${mIdx < mainSteps.length - 1 ? '<div class="wf-connector-line">➔</div>' : ''}
+                      `;
+                    }).join('')}
+                  </div>
                 </div>
-                <div class="wf-node-sub">
-                  ${stepType === 'open_url' ? 'Open page' : stepType === 'click' ? 'Click element' : stepType === 'ai_fallback' ? (step.isAiLoop ? '🔄 AI Loop' : 'Ask AI') : 'Action'} | Step ${idx + 1}<br />
-                  ${escapeHtml(step.value || step.target || '')}
+              `;
+            }
+
+            const forkIdx = mainSteps.indexOf(forkStep);
+            const prefixSteps = mainSteps.slice(0, forkIdx + 1);
+            const postMainSteps = mainSteps.slice(forkIdx + 1);
+            const branchSteps = branchMap.get(forkStep.id) || [];
+
+            return `
+              <div class="n8n-flow-container">
+                <!-- 1. Prefix track leading up to and including the fork node -->
+                <div class="n8n-prefix-track">
+                  ${prefixSteps.map((step, pIdx) => {
+                    const gIdx = allSteps.indexOf(step);
+                    return `
+                      ${renderNodeCardHtml(step, gIdx, false, null)}
+                      ${pIdx < prefixSteps.length - 1 ? '<div class="wf-connector-line">➔</div>' : ''}
+                    `;
+                  }).join('')}
+                </div>
+
+                <!-- 2. The Bifurcation Fork Connector (Splits into Upper & Lower Lanes matching Image 2) -->
+                <div class="n8n-bifurcation-connector">
+                  <svg class="n8n-bifurcation-svg" viewBox="0 0 100 230" fill="none">
+                    <!-- Upper Path (Main) -->
+                    <path d="M 0 115 C 50 115, 50 40, 100 40" stroke="#38bdf8" stroke-width="2.5" />
+                    <polygon points="94,36 100,40 94,44" fill="#38bdf8" />
+
+                    <!-- Lower Path (Branch) -->
+                    <path d="M 0 115 C 50 115, 50 190, 100 190" stroke="#10b981" stroke-width="2.5" stroke-dasharray="5 3" />
+                    <polygon points="94,186 100,190 94,194" fill="#10b981" />
+                  </svg>
+                </div>
+
+                <!-- 3. Parallel Lanes Matrix (Image 2 n8n Format) -->
+                <div class="n8n-lanes-matrix">
+                  <!-- Upper Main Lane (Step 3, Step 4, ...) -->
+                  <div class="n8n-lane-row">
+                    <span class="n8n-lane-badge main-badge">Main Track</span>
+                    ${postMainSteps.length > 0 ? postMainSteps.map((step, mIdx) => {
+                      const gIdx = allSteps.indexOf(step);
+                      return `
+                        ${renderNodeCardHtml(step, gIdx, false, null)}
+                        ${mIdx < postMainSteps.length - 1 ? '<div class="wf-connector-line">➔</div>' : ''}
+                      `;
+                    }).join('') : '<div style="color: #64748b; font-size: 11px; padding: 20px;">No further main steps</div>'}
+                  </div>
+
+                  <!-- Lower Branch Lane (Branch Step 3, Branch Step 4, ...) -->
+                  <div class="n8n-lane-row">
+                    <span class="n8n-lane-badge branch-badge">Branch Track</span>
+                    ${branchSteps.map((bStep, bIdx) => {
+                      const bgIdx = allSteps.indexOf(bStep);
+                      return `
+                        ${renderNodeCardHtml(bStep, bgIdx, true, forkIdx + 1)}
+                        ${bIdx < branchSteps.length - 1 ? '<div class="wf-connector-line" style="color: #10b981;">➔</div>' : ''}
+                      `;
+                    }).join('')}
+                    <div class="n8n-empty-branch-slot" id="btn-canvas-add-branch-step" data-parentid="${forkStep.id}" data-slot="${forkIdx + 1 + branchSteps.length}" title="Click to record/add next step on this branch">
+                      <span>+ Add Branch Step ${forkIdx + 1 + branchSteps.length + 1}</span>
+                      <span style="font-size: 9px; opacity: 0.7;">Click to record step</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              ${idx < currentWf.steps.length - 1 ? '<div class="wf-connector-line">➔</div>' : ''}
             `;
-          }).join('')}
+          })()}
         </div>
 
         <!-- Bottom Branch Actions Bar -->
@@ -796,7 +1007,7 @@ function renderWorkflowsTab() {
       <aside class="wf-inspector">
         <div class="inspector-header" style="border-bottom-color: ${activeStep.color || '#22c55e'};">
           <span class="wf-badge" style="background: ${activeStep.color || '#22c55e'};">${activeStep.badge || String(activeStep.type || 'ACT').toUpperCase().substring(0, 3)}</span>
-          <div class="inspector-title">${activeStep.type === 'open_url' ? 'Open page' : activeStep.type === 'click' ? 'Click element' : activeStep.type === 'ai_fallback' ? 'Ask AI' : 'Action'} Step ${selectedStepIndex + 1}</div>
+          <div class="inspector-title">${activeStep.type === 'open_url' ? 'Open page' : activeStep.type === 'click' ? 'Click element' : activeStep.type === 'ai_fallback' ? 'Ask AI' : (activeStep.type === 'skip_job' ? 'Skip Job' : 'Action')} Step ${selectedStepIndex + 1}</div>
         </div>
 
         <div class="form-group">
@@ -818,18 +1029,31 @@ function renderWorkflowsTab() {
           <label>Connect to</label>
           <select id="insp-connect" class="dark-select">
             <option value="">Next node</option>
-            ${(currentWf.steps || []).map((s, i) => i !== selectedStepIndex ? `<option value="${s.id}">Step ${i + 1}: ${escapeHtml(s.name)}</option>` : '').join('')}
+            ${(currentWf.steps || []).map((s, i) => i !== selectedStepIndex ? `<option value="${s.id}" ${activeStep.connectTo === s.id ? 'selected' : ''}>Step ${i + 1}: ${escapeHtml(s.name)}</option>` : '').join('')}
           </select>
         </div>
 
         <div class="form-group">
           <label>If this node fails</label>
           <select id="insp-onerror" class="dark-select">
-            <option value="stop">Stop with error</option>
-            <option value="ask_ai">Ask AI to recover</option>
-            <option value="skip">Skip to next step</option>
+            <option value="stop" ${activeStep.onError === 'stop' || !activeStep.onError ? 'selected' : ''}>Stop with error</option>
+            <option value="ask_ai" ${activeStep.onError === 'ask_ai' ? 'selected' : ''}>Ask AI to recover</option>
+            <option value="skip" ${activeStep.onError === 'skip' ? 'selected' : ''}>Skip to next step</option>
+            <option value="check_expired_skip" ${activeStep.onError === 'check_expired_skip' ? 'selected' : ''}>⚡ Check Expired / Already Applied &amp; Skip</option>
+            <option value="branch" ${activeStep.onError === 'branch' ? 'selected' : ''}>🌿 Jump to Branch Node</option>
           </select>
         </div>
+
+        <div class="form-group" id="insp-branch-group" style="${activeStep.onError === 'branch' ? '' : 'display: none;'}">
+          <label>Branch target node</label>
+          <select id="insp-branch-target" class="dark-select">
+            <option value="">Select branch node...</option>
+            ${(currentWf.steps || []).map((s, i) => i !== selectedStepIndex ? `<option value="${s.id}" ${activeStep.branchStepId === s.id ? 'selected' : ''}>Step ${i + 1}: ${escapeHtml(s.name)}</option>` : '').join('')}
+          </select>
+        </div>
+
+        <button class="btn-success-green" id="btn-save-node-edits" style="width: 100%; margin: 10px 0 6px 0; padding: 8px 10px; font-weight: 700; font-size: 12px; justify-content: center;" title="Save changes made to this node">💾 Save Node Changes</button>
+        <button class="btn-secondary-gray" id="btn-run-and-record-branch" style="width: 100%; margin-bottom: 10px; padding: 8px 10px; font-size: 11px; border-color: #6366f1; color: #a5b4fc; justify-content: center; font-weight: 700;" title="Run prior steps in the tab and open the workflow creating side bar to record this branch">🎬 Run to Step &amp; Record on Branch</button>
 
         <label class="toggle-row">
           <input type="checkbox" id="insp-chk-disable" ${activeStep.disabled ? 'checked' : ''} />
@@ -840,6 +1064,7 @@ function renderWorkflowsTab() {
           <input type="checkbox" id="insp-chk-stop" ${activeStep.stopAfter ? 'checked' : ''} />
           <span>Stop after this node</span>
         </label>
+
 
         <label class="toggle-row">
           <input type="checkbox" id="insp-chk-final" ${activeStep.finalSubmit ? 'checked' : ''} />
@@ -855,13 +1080,23 @@ function renderWorkflowsTab() {
             <div style="font-size:11px;color:#94a3b8;margin-top:6px;">
               Elements in this loop: ${activeStep.elementCount || (Array.isArray(activeStep.targets) ? activeStep.targets.length : 1)}
             </div>
+            <label class="toggle-row" style="margin-top:8px;margin-bottom:0;color:#a5b4fc;font-weight:700;">
+              <input type="checkbox" id="insp-chk-chat-ai-mode" ${activeStep.chatAiMode !== false ? 'checked' : ''} />
+              <span>💬 Chat AI Mode (Multi-choice &amp; Checkbox resolver)</span>
+            </label>
+            <div style="font-size:10px;color:#94a3b8;margin-top:4px;">
+              Automatically selects radio options, dropdown choices, and checkboxes, then clicks Save.
+            </div>
           </div>
         ` : ''}
 
-        <textarea id="insp-target-code" class="dark-textarea" readonly>${escapeHtml(activeStep.target || activeStep.value || '')}</textarea>
+        <textarea id="insp-target-code" class="dark-textarea" readonly style="font-family: monospace; font-size: 11px;">${escapeHtml(typeof activeStep.target === 'object' && activeStep.target !== null ? JSON.stringify(activeStep.target, null, 2) : (activeStep.target || activeStep.value || ''))}</textarea>
 
-        <button class="btn-primary-blue" id="btn-test-node-btn" style="width: 100%; margin-top: 4px;">Test to this node</button>
-        <button class="btn-danger-outline" id="btn-del-node-btn" style="width: 100%;">Delete node</button>
+        <button class="btn-primary-blue" id="btn-test-node-btn" style="width: 100%; margin-top: 4px;">⚡ Test to this node</button>
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button class="btn-danger-outline" id="btn-del-node-btn" style="flex: 1; padding: 7px 6px; font-size: 11px; justify-content: center;" title="Delete only this single node">🗑️ Delete node only</button>
+          <button class="btn-danger-outline" id="btn-del-branch-cascade-btn" style="flex: 1; padding: 7px 6px; font-size: 11px; border-color: #ef4444; color: #fca5a5; background: rgba(239, 68, 68, 0.12); font-weight: 700; justify-content: center;" title="Delete this node and all subsequent steps in this branch track">🔥 Delete branch &amp; connected steps</button>
+        </div>
       </aside>
     </div>
   `;
@@ -1583,31 +1818,377 @@ function attachEvents() {
     });
   });
 
-  // Inspector updates
+  // Quick delete button on node cards
+  document.querySelectorAll('.node-card-del-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.getAttribute('data-del-sidx'), 10);
+      if (isNaN(idx) || !curWf || !curWf.steps?.[idx]) return;
+      const targetStep = curWf.steps[idx];
+      const downstream = getConnectedDownstreamStepIds(curWf, targetStep.id);
+      if (downstream.length > 1) {
+        const ok = confirm(`Delete "${targetStep.name || 'Step ' + (idx + 1)}" and its ${downstream.length - 1} connected downstream step(s)?\n\nClick OK to delete this entire branch track, or Cancel to abort.`);
+        if (ok) {
+          deleteStepByIndex(idx, true);
+        }
+      } else {
+        if (confirm(`Delete "${targetStep.name || 'Step ' + (idx + 1)}"?`)) {
+          deleteStepByIndex(idx, false);
+        }
+      }
+    });
+  });
+
+  // Inspector updates & node saving
   const curWf = workflows[selectedWfIndex];
+
+  const saveActiveStepEdits = async (showNotification = true) => {
+    if (!curWf || !curWf.steps?.[selectedStepIndex]) return;
+    const activeStep = curWf.steps[selectedStepIndex];
+    const nameInput = document.getElementById('insp-name');
+    if (nameInput) activeStep.name = nameInput.value;
+    const valInput = document.getElementById('insp-val');
+    if (valInput) activeStep.value = valInput.value;
+    const waitInput = document.getElementById('insp-wait');
+    if (waitInput) activeStep.waitMs = parseInt(waitInput.value, 10) || 400;
+    const connSelect = document.getElementById('insp-connect');
+    if (connSelect) activeStep.connectTo = connSelect.value || '';
+    const onErrSelect = document.getElementById('insp-onerror');
+    if (onErrSelect) activeStep.onError = onErrSelect.value;
+    const branchSelect = document.getElementById('insp-branch-target');
+    if (branchSelect) activeStep.branchStepId = branchSelect.value || '';
+    const disChk = document.getElementById('insp-chk-disable');
+    if (disChk) activeStep.disabled = disChk.checked;
+    const stopChk = document.getElementById('insp-chk-stop');
+    if (stopChk) activeStep.stopAfter = stopChk.checked;
+    delete activeStep.stopOnSuccess;
+    const finalChk = document.getElementById('insp-chk-final');
+    if (finalChk) activeStep.finalSubmit = finalChk.checked;
+    const chatAiChk = document.getElementById('insp-chk-chat-ai-mode');
+    if (chatAiChk) activeStep.chatAiMode = chatAiChk.checked;
+
+    // If Step 1 open_url, sync with workflow startUrl
+    if (selectedStepIndex === 0 && activeStep.type === 'open_url' && activeStep.value) {
+      curWf.startUrl = normalizeUrl(activeStep.value);
+      const propUrlEl = document.getElementById('wf-prop-url');
+      if (propUrlEl) propUrlEl.value = curWf.startUrl;
+    }
+    curWf.updatedAt = Date.now();
+    await persist(STORAGE_KEYS.WORKFLOWS, workflows, showNotification ? '💾 Node changes saved successfully!' : undefined);
+    renderAppHub();
+  };
+
   if (curWf && curWf.steps?.[selectedStepIndex]) {
     const activeStep = curWf.steps[selectedStepIndex];
     document.getElementById('insp-name')?.addEventListener('input', (e) => { activeStep.name = e.target.value; });
-    document.getElementById('insp-val')?.addEventListener('input', (e) => { activeStep.value = e.target.value; });
+    document.getElementById('insp-name')?.addEventListener('change', () => saveActiveStepEdits(false));
+    document.getElementById('insp-val')?.addEventListener('input', (e) => {
+      activeStep.value = e.target.value;
+      if (selectedStepIndex === 0 && activeStep.type === 'open_url') {
+        curWf.startUrl = normalizeUrl(e.target.value);
+        const propUrlEl = document.getElementById('wf-prop-url');
+        if (propUrlEl) propUrlEl.value = curWf.startUrl;
+      }
+    });
+    document.getElementById('insp-val')?.addEventListener('change', () => saveActiveStepEdits(false));
+    document.getElementById('insp-val')?.addEventListener('blur', () => saveActiveStepEdits(false));
     document.getElementById('insp-wait')?.addEventListener('input', (e) => { activeStep.waitMs = parseInt(e.target.value, 10) || 400; });
-    document.getElementById('insp-chk-disable')?.addEventListener('change', (e) => { activeStep.disabled = e.target.checked; });
-    document.getElementById('insp-chk-stop')?.addEventListener('change', (e) => { activeStep.stopAfter = e.target.checked; });
-    document.getElementById('insp-chk-final')?.addEventListener('change', (e) => { activeStep.finalSubmit = e.target.checked; });
+    document.getElementById('insp-wait')?.addEventListener('change', () => saveActiveStepEdits(false));
+    document.getElementById('insp-connect')?.addEventListener('change', (e) => {
+      activeStep.connectTo = e.target.value;
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-onerror')?.addEventListener('change', (e) => {
+      activeStep.onError = e.target.value;
+      const grp = document.getElementById('insp-branch-group');
+      if (grp) grp.style.display = e.target.value === 'branch' ? 'block' : 'none';
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-branch-target')?.addEventListener('change', (e) => {
+      activeStep.branchStepId = e.target.value;
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-chk-disable')?.addEventListener('change', (e) => {
+      activeStep.disabled = e.target.checked;
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-chk-stop')?.addEventListener('change', (e) => {
+      activeStep.stopAfter = e.target.checked;
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-chk-final')?.addEventListener('change', (e) => {
+      activeStep.finalSubmit = e.target.checked;
+      saveActiveStepEdits(false);
+    });
+    document.getElementById('insp-chk-chat-ai-mode')?.addEventListener('change', (e) => {
+      activeStep.chatAiMode = e.target.checked;
+      persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Updated Chat AI mode.');
+    });
     document.getElementById('insp-chk-ai-loop')?.addEventListener('change', (e) => {
       activeStep.isAiLoop = e.target.checked;
       activeStep.badge = activeStep.isAiLoop ? 'AI LOOP' : 'AI';
       persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Updated AI Loop mode.');
       renderAppHub();
     });
+
+    // Save Node Button
+    document.getElementById('btn-save-node-edits')?.addEventListener('click', () => saveActiveStepEdits(true));
+
+    // Helpers for Branch & Node Cascade Deletion
+    function isExcludedTabUrl(url) {
+      if (!url) return true;
+      return /all_jobs|big_company_jobs|all-career|chrome-extension:\/\/|options\.html|recorder\.html|sidepanel\.html/i.test(url);
+    }
+
+    function getConnectedDownstreamStepIds(wf, rootStepId) {
+      if (!wf || !wf.steps || !rootStepId) return rootStepId ? [rootStepId] : [];
+      const allSteps = wf.steps;
+      const targetStep = allSteps.find(st => st.id === rootStepId);
+      if (!targetStep) return [rootStepId];
+
+      const toDelete = new Set([rootStepId]);
+
+      // 1. Transitive traversal via explicit branch and connection links
+      let expanded = true;
+      while (expanded) {
+        expanded = false;
+        for (const s of allSteps) {
+          if (toDelete.has(s.id)) continue;
+          if (s.branchParentId && toDelete.has(s.branchParentId)) {
+            toDelete.add(s.id);
+            expanded = true;
+            continue;
+          }
+          for (const delId of Array.from(toDelete)) {
+            const delStep = allSteps.find(st => st.id === delId);
+            if (delStep) {
+              if (delStep.branchStepId === s.id || delStep.connectTo === s.id) {
+                toDelete.add(s.id);
+                expanded = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      // 2. Branch track group cascade:
+      // If targetStep is part of a branch track, delete all subsequent steps in this branch track
+      const parentForkId = targetStep.branchParentId || allSteps.find(st => st.branchStepId === targetStep.id)?.id;
+      if (parentForkId) {
+        const branchTrackSteps = allSteps.filter(st => st.branchParentId === parentForkId || st.id === targetStep.id);
+        const targetIdxInTrack = branchTrackSteps.findIndex(st => st.id === rootStepId);
+        if (targetIdxInTrack !== -1) {
+          for (let k = targetIdxInTrack; k < branchTrackSteps.length; k++) {
+            toDelete.add(branchTrackSteps[k].id);
+          }
+        }
+      }
+
+      return Array.from(toDelete);
+    }
+
+    async function deleteStepByIndex(stepIdx, cascade = false) {
+      if (!curWf || !curWf.steps || curWf.steps.length <= 1) {
+        alert('Workflow must have at least one node.');
+        return;
+      }
+
+      const targetStep = curWf.steps[stepIdx];
+      if (!targetStep) return;
+
+      const idsToDelete = cascade ? getConnectedDownstreamStepIds(curWf, targetStep.id) : [targetStep.id];
+      const idSet = new Set(idsToDelete);
+
+      if (idSet.size >= curWf.steps.length) {
+        if (!confirm('This will delete all steps in this workflow. Reset to default initial step?')) return;
+        curWf.steps = [{
+          id: 's1',
+          type: 'open_url',
+          name: 'Open ' + (curWf.startUrl || 'https://www.naukri.com/'),
+          value: curWf.startUrl || 'https://www.naukri.com/',
+          waitMs: 400,
+          color: '#22c55e',
+          badge: 'URL',
+          target: curWf.startUrl || 'https://www.naukri.com/',
+          disabled: false,
+          stopAfter: false,
+          finalSubmit: false,
+        }];
+        selectedStepIndex = 0;
+        await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Workflow reset to initial step.');
+        renderAppHub();
+        return;
+      }
+
+      // Clean up parent fork and connection references in remaining steps
+      curWf.steps.forEach(s => {
+        if (idSet.has(s.branchStepId)) {
+          s.branchStepId = '';
+          if (s.onError === 'branch') s.onError = 'stop';
+        }
+        if (idSet.has(s.connectTo)) {
+          s.connectTo = '';
+        }
+      });
+
+      // Remove the collected steps
+      curWf.steps = curWf.steps.filter(s => !idSet.has(s.id));
+
+      // If a branch head was deleted without cascade, connect remaining branch child if any
+      curWf.steps.forEach(s => {
+        if (s.onError === 'branch' && !s.branchStepId) {
+          const remainingChild = curWf.steps.find(st => st.branchParentId === s.id);
+          if (remainingChild) {
+            s.branchStepId = remainingChild.id;
+          } else {
+            s.onError = 'stop';
+          }
+        }
+      });
+
+      selectedStepIndex = Math.max(0, Math.min(selectedStepIndex, curWf.steps.length - 1));
+      curWf.updatedAt = Date.now();
+      await persist(
+        STORAGE_KEYS.WORKFLOWS,
+        workflows,
+        cascade && idsToDelete.length > 1
+          ? `Deleted Step ${stepIdx + 1} and ${idsToDelete.length - 1} connected downstream step(s).`
+          : `Step ${stepIdx + 1} deleted.`
+      );
+      renderAppHub();
+    }
+
+    // Interactive Branch Recording Runner
+    async function runAndRecordOnBranch(targetIdx) {
+      if (!curWf || !curWf.steps || curWf.steps.length === 0) return;
+      await saveActiveStepEdits(false);
+
+      const forkStepIdx = Math.max(0, targetIdx - 1);
+      const forkStep = curWf.steps[forkStepIdx] || curWf.steps[0];
+      const stepNumToRecord = targetIdx + 1;
+
+      showToast(`🎬 Running Steps 1 to ${forkStepIdx + 1}... Browser tab will pause in Picker Mode for Branch Step ${stepNumToRecord}.`);
+
+      try {
+        const targetUrl = normalizeUrl(curWf.startUrl || 'https://www.naukri.com/');
+        const allTabs = await chrome.tabs.query({});
+        // Explicitly search for a real external job tab, NOT an All Career tab and NOT an extension tab
+        let targetTab = allTabs.find(t => t.id && t.url && /^https?:/i.test(t.url) && !isExcludedTabUrl(t.url));
+
+        if (!targetTab) {
+          targetTab = await chrome.tabs.create({ url: targetUrl, active: true });
+        } else {
+          // Focus and update tab url to startUrl so Step 1 actually runs cleanly
+          await chrome.tabs.update(targetTab.id, { url: targetUrl, active: true });
+        }
+
+        // Configure Side Panel for this tab right away
+        if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function' && targetTab?.id) {
+          await chrome.sidePanel.setOptions({
+            tabId: targetTab.id,
+            path: `recorder.html?tabId=${targetTab.id}&wf=${curWf.id}`,
+            enabled: true,
+          }).catch(() => {});
+        }
+
+        // Wait for tab navigation to fully complete
+        await new Promise(r => {
+          let done = false;
+          const finish = () => { if (!done) { done = true; r(); } };
+          const onUpd = (tid, changeInfo) => {
+            if (tid === targetTab.id && changeInfo.status === 'complete') {
+              chrome.tabs.onUpdated.removeListener(onUpd);
+              finish();
+            }
+          };
+          chrome.tabs.onUpdated.addListener(onUpd);
+          setTimeout(() => { chrome.tabs.onUpdated.removeListener(onUpd); finish(); }, 15000);
+        });
+        await new Promise(r => setTimeout(r, 1200));
+
+        // Inject content.js script
+        try {
+          await chrome.scripting.executeScript({ target: { tabId: targetTab.id }, files: ['content.js'] });
+        } catch (_) {}
+        await new Promise(r => setTimeout(r, 400));
+
+        // Execute prior steps up to forkStepIdx in the tab with keepTabOpen
+        await chrome.runtime.sendMessage({
+          action: 'WORKFLOW_RUN',
+          workflowId: curWf.id,
+          workflow: curWf,
+          stopAfterIndex: forkStepIdx,
+          tabId: targetTab.id,
+          keepTabOpen: true,
+        });
+
+        // Wait until workflow finishes executing prior steps
+        for (let wait = 0; wait < 45; wait++) {
+          await new Promise(r => setTimeout(r, 650));
+          const st = await chrome.runtime.sendMessage({ action: 'WORKFLOW_STATUS' }).catch(() => null);
+          if (st?.state?.status === 'completed' || st?.state?.status === 'idle') {
+            if (st.state.tabId) targetTab = { id: st.state.tabId };
+            break;
+          }
+          if (st?.state?.status === 'error' || st?.state?.status === 'cancelled') {
+            showToast(`Prior steps stopped: ${st?.state?.error || 'Execution halted'}`, true);
+            break;
+          }
+        }
+
+        // Ensure tab is active and focused
+        await chrome.tabs.update(targetTab.id, { active: true });
+
+        // CLEANLY REMOVE the top running HUD banner immediately so it never shows or gets hovered
+        await chrome.tabs.sendMessage(targetTab.id, { action: 'WORKFLOW_REMOVE_HUD' }).catch(() => {});
+
+        // Ensure Side Panel has recorder options for targetTab
+        await openSidePanelForTab(targetTab.id, curWf.id, 'record');
+
+        // Start the workflow recording session on this tab for the branch
+        await chrome.runtime.sendMessage({
+          action: 'WORKFLOW_RECORD_START',
+          tabId: targetTab.id,
+          workflowId: curWf.id,
+          workflow: curWf,
+          name: curWf.name,
+          startUrl: curWf.startUrl,
+          branchParentId: forkStep.id,
+          branchSlot: targetIdx + 1,
+        }).catch(() => {});
+
+        showToast(`🌿 Workflow Creating Side Panel opened! Record Branch Step ${stepNumToRecord} directly on the page.`);
+      } catch (err) {
+        showToast('Error preparing branch recording: ' + err.message, true);
+      }
+    }
+
+    // Run to Step & Record Branch Button (Runs prior steps and opens workflow creating side bar)
+    document.getElementById('btn-run-and-record-branch')?.addEventListener('click', async () => {
+      // Immediately open Side Panel in the current window during the user gesture!
+      await ensureSidePanelOpenForWorkflow(curWf?.id);
+      runAndRecordOnBranch(selectedStepIndex);
+    });
   }
 
-  // Node deletion
+  // Click on canvas '+ Add Branch Step' slot
+  document.getElementById('btn-canvas-add-branch-step')?.addEventListener('click', async (e) => {
+    const slot = parseInt(e.currentTarget.getAttribute('data-slot'), 10) || selectedStepIndex;
+    if (typeof runAndRecordOnBranch === 'function') {
+      await ensureSidePanelOpenForWorkflow(curWf?.id);
+      runAndRecordOnBranch(slot);
+    }
+  });
+
+  // Node deletion (Single node only)
   document.getElementById('btn-del-node-btn')?.addEventListener('click', () => {
-    if (!curWf || curWf.steps.length <= 1) return alert('Workflow must have at least one node.');
-    curWf.steps.splice(selectedStepIndex, 1);
-    if (selectedStepIndex >= curWf.steps.length) selectedStepIndex = curWf.steps.length - 1;
-    persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Node deleted.');
-    renderAppHub();
+    deleteStepByIndex(selectedStepIndex, false);
+  });
+
+  // Branch cascade deletion (Node & all connected downstream steps)
+  document.getElementById('btn-del-branch-cascade-btn')?.addEventListener('click', () => {
+    deleteStepByIndex(selectedStepIndex, true);
   });
 
   // Add AI Node
@@ -1639,18 +2220,54 @@ function attachEvents() {
     curWf.steps.push({
       id: 's_' + Date.now(),
       type: 'stop',
-      name: 'Stop workflow',
-      value: '',
-      waitMs: 400,
+      name: 'Stop Workflow',
+      value: 'Workflow completed',
+      waitMs: 500,
       color: '#ef4444',
       badge: 'STOP',
-      target: 'button[type="submit"]',
+      target: '',
       disabled: false,
       stopAfter: true,
-      finalSubmit: true,
+      finalSubmit: false,
     });
     selectedStepIndex = curWf.steps.length - 1;
     persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Stop Node added.');
+    renderAppHub();
+  });
+
+  // Add Skip Job Node
+  document.getElementById('btn-add-skip-node-btn')?.addEventListener('click', async () => {
+    if (!curWf) return;
+    curWf.steps.push({
+      id: 's_' + Date.now(),
+      type: 'skip_job',
+      name: 'Skip this job',
+      value: 'Job is expired or already applied. Skipped cleanly.',
+      waitMs: 400,
+      color: '#eab308',
+      badge: 'SKIP',
+      target: 'Job Status Check',
+      disabled: false,
+      stopAfter: true,
+      finalSubmit: false,
+    });
+    selectedStepIndex = curWf.steps.length - 1;
+    await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Skip Job Node added.');
+    renderAppHub();
+  });
+
+  // Start URL top input change listener
+  document.getElementById('wf-prop-url')?.addEventListener('change', async (e) => {
+    if (!curWf) return;
+    const newUrl = normalizeUrl(e.target.value);
+    curWf.startUrl = newUrl;
+    if (curWf.steps?.[0]?.type === 'open_url') {
+      curWf.steps[0].value = newUrl;
+      curWf.steps[0].target = newUrl;
+      curWf.steps[0].name = 'Open ' + newUrl;
+    }
+    curWf.updatedAt = Date.now();
+    await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Start URL updated and saved.');
     renderAppHub();
   });
 
@@ -1658,13 +2275,19 @@ function attachEvents() {
   const saveWfHandler = async () => {
     if (curWf) {
       curWf.name = document.getElementById('wf-prop-name')?.value || curWf.name;
-      curWf.startUrl = document.getElementById('wf-prop-url')?.value || curWf.startUrl;
+      curWf.startUrl = normalizeUrl(document.getElementById('wf-prop-url')?.value || curWf.startUrl);
       curWf.resumeId = document.getElementById('wf-prop-resume')?.value || '';
       curWf.variables = {
         role: document.getElementById('wf-prop-role')?.value || '',
         location: document.getElementById('wf-prop-loc')?.value || '',
       };
+      if (curWf.steps?.[0]?.type === 'open_url' && curWf.startUrl) {
+        curWf.steps[0].value = curWf.startUrl;
+        curWf.steps[0].target = curWf.startUrl;
+      }
+      curWf.updatedAt = Date.now();
       await persist(STORAGE_KEYS.WORKFLOWS, workflows, 'Workflow saved successfully!');
+      renderAppHub();
     }
   };
   document.getElementById('btn-wf-save-main')?.addEventListener('click', saveWfHandler);
@@ -1683,31 +2306,87 @@ function attachEvents() {
     return u;
   }
 
-  // Open side panel for target tab with recording mode
+  // Helper to ensure Side Panel opens immediately in response to a user click gesture
+  async function ensureSidePanelOpenForWorkflow(wfId, tabId) {
+    if (!chrome.sidePanel) return false;
+    try {
+      await chrome.storage.local.set({
+        activeSidepanelView: 'recorder',
+        currentRecordingWorkflowId: wfId || '',
+      });
+      const panelPath = `recorder.html?${tabId ? `tabId=${tabId}&` : ''}wf=${wfId || ''}`;
+      if (typeof chrome.sidePanel.setOptions === 'function') {
+        if (tabId) {
+          await chrome.sidePanel.setOptions({ tabId, path: panelPath, enabled: true }).catch(() => {});
+        }
+        await chrome.sidePanel.setOptions({ path: panelPath, enabled: true }).catch(() => {});
+      }
+      if (typeof chrome.sidePanel.open === 'function') {
+        if (tabId) {
+          try {
+            await chrome.sidePanel.open({ tabId });
+            return true;
+          } catch (_) {}
+        }
+        const win = await chrome.windows.getCurrent().catch(() => null);
+        if (win?.id) {
+          try {
+            await chrome.sidePanel.open({ windowId: win.id });
+            return true;
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  // Open side panel for target tab with recording mode (strictly stays in sidebar, never popup)
   async function openSidePanelForTab(tabId, wfId, mode = 'record') {
     try {
       await chrome.storage.local.set({
         activeSidepanelView: mode === 'record' ? 'recorder' : 'chat',
-        currentRecordingWorkflowId: wfId,
+        currentRecordingWorkflowId: wfId || '',
       });
-      if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function' && tabId) {
+      const panelPath = mode === 'record'
+        ? `recorder.html?${tabId ? `tabId=${tabId}&` : ''}wf=${wfId || ''}`
+        : `sidepanel.html?${tabId ? `tabId=${tabId}` : ''}`;
+
+      if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function') {
+        if (tabId) {
+          await chrome.sidePanel.setOptions({
+            tabId,
+            path: panelPath,
+            enabled: true,
+          }).catch(() => {});
+        }
         await chrome.sidePanel.setOptions({
-          tabId,
-          path: mode === 'record' ? `recorder.html?tabId=${tabId}&wf=${wfId}` : `sidepanel.html?tabId=${tabId}`,
+          path: panelPath,
           enabled: true,
-        });
+        }).catch(() => {});
       }
-      if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function' && tabId) {
-        await chrome.sidePanel.open({ tabId });
-        return;
+      if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function') {
+        if (tabId) {
+          try {
+            await chrome.sidePanel.open({ tabId });
+            return;
+          } catch (_) {}
+        }
+        const win = await chrome.windows.getCurrent().catch(() => null);
+        if (win?.id) {
+          try {
+            await chrome.sidePanel.open({ windowId: win.id });
+            return;
+          } catch (_) {}
+        }
       }
-    } catch (e) {
-      console.warn('sidePanel.open error:', e);
-    }
+    } catch (_) {}
   }
 
   // Manual create & record
   document.getElementById('btn-manual-open-record')?.addEventListener('click', async () => {
+    // Immediately open side panel in user gesture
+    await ensureSidePanelOpenForWorkflow();
+
     const rawName = document.getElementById('manual-wf-name')?.value.trim();
     const name = rawName || getNextDefaultWorkflowName(workflows);
     const rawUrl = document.getElementById('manual-wf-url')?.value.trim() || 'https://www.naukri.com/';
@@ -1841,18 +2520,134 @@ function attachEvents() {
     renderAppHub();
   });
 
-  // Status button
-  document.getElementById('btn-wf-status')?.addEventListener('click', async () => {
-    try {
-      const res = await chrome.runtime.sendMessage({ action: 'WORKFLOW_STATUS' });
-      if (res?.state && res.state.status) {
-        showToast(`Status: ${res.state.status.toUpperCase()} (${res.state.stepIndex + 1}/${res.state.stepCount} nodes)`);
-      } else {
-        showToast(`Workflow "${curWf?.name || 'Main'}" has ${curWf?.steps?.length || 0} nodes.`);
-      }
-    } catch {
-      showToast(`Workflow "${curWf?.name || 'Main'}" has ${curWf?.steps?.length || 0} nodes.`);
+  // ── Autofill V4 Style Workflow Status Modal ────────────────────────────────
+  let wfStatusPollInterval = null;
+
+  async function openWorkflowStatusModal() {
+    let overlay = document.getElementById('wf-status-modal-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'wf-status-modal-overlay';
+      overlay.className = 'wf-status-modal-overlay';
+      document.body.appendChild(overlay);
     }
+
+    const closeStatusModal = () => {
+      if (wfStatusPollInterval) {
+        clearInterval(wfStatusPollInterval);
+        wfStatusPollInterval = null;
+      }
+      overlay?.remove();
+    };
+
+    overlay.onclick = (e) => {
+      if (e.target === overlay) {
+        closeStatusModal();
+      }
+    };
+
+    const updateModalContent = async () => {
+      let state = null;
+      try {
+        const res = await chrome.runtime.sendMessage({ action: 'WORKFLOW_STATUS' });
+        state = res?.state || null;
+      } catch (_) {}
+
+      const curWf = workflows[selectedWfIndex] || workflows[0];
+      const status = (state?.status || 'idle').toLowerCase();
+      const statusUpper = status.toUpperCase();
+      const stepCount = Number(state?.stepCount || curWf?.steps?.length || 1);
+      const stepIndex = Number(state?.stepIndex !== undefined ? state.stepIndex : 0);
+      const displayStep = Math.min(stepIndex + 1, stepCount);
+      const progressPercent = Math.min(100, Math.round((displayStep / Math.max(1, stepCount)) * 100));
+      const activeWorkflowName = state?.workflowName || curWf?.name || 'Workflow';
+      const messageOrAction = state?.message || state?.error || (status === 'running' ? 'Executing node sequence...' : (status === 'completed' ? 'All workflow steps finished successfully.' : 'No active run.'));
+      const isRunning = status === 'running';
+      const logs = Array.isArray(state?.logs) ? state.logs : [];
+
+      overlay.innerHTML = `
+        <div class="wf-status-card" id="wf-status-card">
+          <div class="wf-status-header">
+            <div class="wf-status-header-title">
+              <span style="font-size: 18px;">📊</span>
+              <span>Workflow Run Status</span>
+            </div>
+            <button class="wf-status-close-btn" id="btn-close-status-modal" title="Close status">✕</button>
+          </div>
+
+          <div class="wf-status-body">
+            <div class="wf-status-summary-row">
+              <div>
+                <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Active Workflow</div>
+                <div class="wf-status-name">${escapeHtml(activeWorkflowName)}</div>
+              </div>
+              <span class="wf-status-badge ${status}">${statusUpper}</span>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; color: #cbd5e1;">
+                <span>Progress</span>
+                <span>Step ${displayStep} of ${stepCount} (${progressPercent}%)</span>
+              </div>
+              <div class="wf-status-progress-track">
+                <div class="wf-status-progress-bar" style="width: ${progressPercent}%;"></div>
+              </div>
+            </div>
+
+            <div class="wf-status-current-box">
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px; font-weight: 600;">Current State & Action:</div>
+              <div style="color: #e2e8f0; font-weight: 500;">${escapeHtml(messageOrAction)}</div>
+            </div>
+
+            <div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">Execution Logs (${logs.length} entries):</div>
+              <div class="wf-status-log-box" id="wf-status-log-box">
+                ${logs.length > 0 ? logs.map(l => `<div class="wf-status-log-line">${escapeHtml(l)}</div>`).join('') : '<div style="color: #64748b; font-style: italic;">No logs recorded yet.</div>'}
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-status-actions">
+            ${isRunning ? `<button class="btn-danger-outline" id="btn-status-stop-wf" style="padding: 6px 14px; font-weight: 700; border-color: #ef4444; color: #f87171;">⏹️ Stop Workflow</button>` : ''}
+            <button class="btn-secondary-gray" id="btn-status-refresh" style="padding: 6px 14px;">🔄 Refresh</button>
+            <button class="btn-primary-blue" id="btn-status-done" style="padding: 6px 16px;">Done</button>
+          </div>
+        </div>
+      `;
+
+      const logBox = document.getElementById('wf-status-log-box');
+      if (logBox) logBox.scrollTop = logBox.scrollHeight;
+
+      document.getElementById('btn-close-status-modal')?.addEventListener('click', closeStatusModal);
+      document.getElementById('btn-status-done')?.addEventListener('click', closeStatusModal);
+      document.getElementById('btn-status-refresh')?.addEventListener('click', updateModalContent);
+      document.getElementById('btn-status-stop-wf')?.addEventListener('click', async () => {
+        await chrome.runtime.sendMessage({ action: 'WORKFLOW_RUN_STOP' }).catch(() => {});
+        await chrome.runtime.sendMessage({ action: 'STOP_BATCH_APPLY' }).catch(() => {});
+        showToast('Workflow cancelled.');
+        setTimeout(updateModalContent, 400);
+      });
+    };
+
+    await updateModalContent();
+
+    if (wfStatusPollInterval) clearInterval(wfStatusPollInterval);
+    wfStatusPollInterval = setInterval(async () => {
+      if (!document.body.contains(overlay)) {
+        clearInterval(wfStatusPollInterval);
+        wfStatusPollInterval = null;
+        return;
+      }
+      const res = await chrome.runtime.sendMessage({ action: 'WORKFLOW_STATUS' }).catch(() => null);
+      if (res?.state?.status === 'running') {
+        updateModalContent();
+      }
+    }, 1200);
+  }
+
+  // Status button: Opens modern Autofill V4 style interactive status modal
+  document.getElementById('btn-wf-status')?.addEventListener('click', () => {
+    openWorkflowStatusModal();
   });
 
   // Delete Current Workflow (Allowed even if only 1 workflow remains)

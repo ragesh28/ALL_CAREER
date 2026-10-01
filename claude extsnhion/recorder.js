@@ -99,6 +99,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupCrossTabSync();
   renderStepsList();
   populateRecorderResumes();
+
+  // If this recording session is for a branch, update status banner
+  try {
+    const sessionData = await chrome.storage.session.get(RECORDING_KEY);
+    const recSession = sessionData?.[RECORDING_KEY];
+    if (recSession?.branchParentId) {
+      showStatus(`🌿 Recording Branch Path. Click elements on the webpage to record branch steps.`);
+    }
+  } catch (_) {}
 });
 
 async function populateRecorderResumes() {
@@ -888,13 +897,15 @@ function renderStepsList() {
   previousStepCount = steps.length;
 
   container.innerHTML = steps.map((step, idx) => {
-    const badgeColor = step.color || ACTION_COLORS[step.type] || '#38bdf8';
-    const badgeText = step.badge || ACTION_BADGES[step.type] || 'ACT';
+    const isBranch = Boolean(step.branchParentId);
+    const badgeColor = step.color || (isBranch ? '#10b981' : (ACTION_COLORS[step.type] || '#38bdf8'));
+    const badgeText = step.badge || (isBranch ? 'BRN' : (ACTION_BADGES[step.type] || 'ACT'));
+    const branchLabel = isBranch ? '<span style="font-size:10px;color:#10b981;margin-left:4px;font-weight:700;">🌿 Branch</span>' : '';
     return `
       <div class="step-item" style="border-left: 3px solid ${badgeColor};">
         <div style="display:flex;align-items:center;min-width:0;flex:1;">
           <span class="step-badge" style="background:${badgeColor};">${badgeText}</span>
-          <span class="step-title">${idx + 1}. ${escapeHtml(step.name || 'Step ' + (idx + 1))}</span>
+          <span class="step-title">${idx + 1}. ${escapeHtml(step.name || 'Step ' + (idx + 1))}${branchLabel}</span>
         </div>
         <button class="step-del btn-del-step" data-idx="${idx}" title="Delete step">✕</button>
       </div>

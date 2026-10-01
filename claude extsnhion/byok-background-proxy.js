@@ -130,13 +130,13 @@ Return ONLY valid JSON matching this schema:
 
         const userMsg = `Here is the candidate resume / profile content to extract:\n\n${rawContent.slice(0, 15000)}`;
         const rawAiRes = await callActiveAIModel(config, sysPrompt, [{ role: 'user', content: userMsg }]);
-        
+
         let extracted = {};
         const jsonMatch = rawAiRes.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || rawAiRes.match(/\{[\s\S]*?\}/);
         if (jsonMatch) {
           try {
             extracted = JSON.parse((jsonMatch[1] || jsonMatch[0]).trim());
-          } catch (_) {}
+          } catch (_) { }
         }
 
         // Merge with existing profile
@@ -195,6 +195,29 @@ Return ONLY valid JSON matching this schema:
           urlObj = new URL('https://www.naukri.com/');
         }
 
+        const existingWf = message.workflow || (message.workflowId ? list.find(w => w.id === message.workflowId) : null);
+        const initialWorkflow = existingWf ? existingWf : {
+          id: message.workflowId || ('wf_' + Date.now()),
+          name: workflowName,
+          origin: urlObj.origin,
+          startUrl: urlObj.href,
+          variables: { role: '', location: '' },
+          steps: [
+            {
+              id: 's1',
+              type: 'open_url',
+              target: {},
+              name: `Open ${urlObj.hostname}`,
+              value: urlObj.href,
+              waitMs: 400,
+              color: '#22c55e',
+              badge: 'URL',
+            }
+          ],
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        };
+
         const recording = {
           tabId,
           rootTabId: tabId,
@@ -204,27 +227,9 @@ Return ONLY valid JSON matching this schema:
           paused: false,
           loopStack: [],
           lastClickAt: Date.now(),
-          workflow: {
-            id: message.workflowId || ('wf_' + Date.now()),
-            name: workflowName,
-            origin: urlObj.origin,
-            startUrl: urlObj.href,
-            variables: { role: '', location: '' },
-            steps: [
-              {
-                id: 's1',
-                type: 'open_url',
-                target: {},
-                name: `Open ${urlObj.hostname}`,
-                value: urlObj.href,
-                waitMs: 400,
-                color: '#22c55e',
-                badge: 'URL',
-              }
-            ],
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-          },
+          branchParentId: message.branchParentId || null,
+          branchSlot: typeof message.branchSlot === 'number' ? message.branchSlot : null,
+          workflow: initialWorkflow,
         };
 
         await chrome.storage.session.set({ [RECORDING_KEY]: recording });
@@ -249,24 +254,22 @@ Return ONLY valid JSON matching this schema:
           try {
             await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
             await chrome.tabs.sendMessage(tabId, startMsg);
-          } catch (err) {}
+          } catch (err) { }
         }
 
-        // Configure dedicated recorder side panel for this tab and open it
+        // Configure dedicated recorder side panel for this tab
         try {
           if (chrome.sidePanel && typeof chrome.sidePanel.setOptions === 'function') {
             await chrome.sidePanel.setOptions({
               tabId: tabId,
               path: `recorder.html?tabId=${tabId}&wf=${recording.workflow.id}`,
               enabled: true,
-            });
+            }).catch(() => {});
           }
           if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function') {
-            await chrome.sidePanel.open({ tabId });
+            await chrome.sidePanel.open({ tabId }).catch(() => {});
           }
-        } catch (err) {
-          console.warn('[BYOK] Could not open recorder sidePanel:', err);
-        }
+        } catch (_) { }
 
         sendResponse({ success: true, recording: true, workflowId: recording.workflow.id, tabId });
       } catch (err) {
@@ -349,11 +352,25 @@ Return ONLY valid JSON matching this schema:
           return;
         }
 
-const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NQo+PgpzdHJlYW0KQlQgL0YxIDEyIFRmIDcyIDcwOCBUZCAoUmVzdW1lIERvY3VtZW50IC0gQXV0b0ZpbGwpIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDUKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE4IDAwMDAwIG4gCjAwMDAwMDAwNjggMDAwMDAgbiAKMDAwMDAwMDEyNSAwMDAwMCBuIAowMDAwMDAwMjE4IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgNQovUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKMzEzCiUlRU9G';
+        const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NQo+PgpzdHJlYW0KQlQgL0YxIDEyIFRmIDcyIDcwOCBUZCAoUmVzdW1lIERvY3VtZW50IC0gQXV0b0ZpbGwpIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDUKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE4IDAwMDAwIG4gCjAwMDAwMDAwNjggMDAwMDAgbiAKMDAwMDAwMDEyNSAwMDAwMCBuIAowMDAwMDAwMjE4IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgNQovUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKMzEzCiUlRU9G';
 
         step.id = step.id || ('s_' + Date.now());
         if (sender.tab?.url && !step.pageUrl) {
           step.pageUrl = sender.tab.url;
+        }
+
+        if (recording.branchParentId) {
+          step.branchParentId = recording.branchParentId;
+          step.color = step.color || '#10b981';
+          step.badge = step.badge || 'BRN';
+          if (typeof recording.branchSlot === 'number') {
+            step.branchSlot = recording.branchSlot++;
+          }
+          const parentStep = recording.workflow.steps.find(s => s.id === recording.branchParentId);
+          if (parentStep && !parentStep.branchStepId) {
+            parentStep.onError = 'branch';
+            parentStep.branchStepId = step.id;
+          }
         }
 
         // Give step proper color badge for graph canvas
@@ -424,13 +441,13 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
           if (frame) {
             const currentTabId = sender.tab?.id || recording.tabId;
             if (currentTabId && frame.tabId && currentTabId !== frame.tabId) {
-              await chrome.tabs.sendMessage(currentTabId, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+              await chrome.tabs.sendMessage(currentTabId, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => { });
               recording.tabId = frame.tabId;
               await chrome.storage.session.set({ [RECORDING_KEY]: recording });
               const listTab = await chrome.tabs.get(frame.tabId).catch(() => null);
               const restoreUrl = listTab?.url !== frame.url ? frame.url : undefined;
-              await chrome.tabs.update(frame.tabId, { active: true, ...(restoreUrl ? { url: restoreUrl } : {}) }).catch(() => {});
-              await chrome.tabs.remove(currentTabId).catch(() => {});
+              await chrome.tabs.update(frame.tabId, { active: true, ...(restoreUrl ? { url: restoreUrl } : {}) }).catch(() => { });
+              await chrome.tabs.remove(currentTabId).catch(() => { });
               await chrome.tabs.sendMessage(frame.tabId, {
                 action: 'WORKFLOW_RECORD_START',
                 manual: true,
@@ -438,7 +455,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
                 loopDepth: recording.loopStack.length,
                 workflowName: recording.workflow.name,
                 paused: recording.paused === true,
-              }).catch(() => {});
+              }).catch(() => { });
             }
           }
         }
@@ -502,8 +519,8 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
             recording.childTabIds = recording.childTabIds.filter(id => id !== childToClose);
           }
           await chrome.storage.session.set({ [RECORDING_KEY]: recording });
-          await chrome.tabs.update(rootTabId, { active: true }).catch(() => {});
-          await chrome.tabs.remove(childToClose).catch(() => {});
+          await chrome.tabs.update(rootTabId, { active: true }).catch(() => { });
+          await chrome.tabs.remove(childToClose).catch(() => { });
         } else if (activeTabId) {
           // Check if page navigated or changed URL on the same tab
           const tab = await chrome.tabs.get(activeTabId).catch(() => null);
@@ -515,7 +532,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
               await chrome.tabs.goBack(activeTabId);
             } catch {
               if (targetUrl) {
-                await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => {});
+                await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => { });
               }
             }
           }
@@ -536,7 +553,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
             loopDepth: recording.loopStack.length,
             workflowName: recording.workflow.name,
             paused: recording.paused === true,
-          }).catch(() => {});
+          }).catch(() => { });
         }
 
         sendResponse({
@@ -573,9 +590,9 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         try {
           const allTabs = await chrome.tabs.query({});
           for (const t of allTabs) {
-            if (t.id) chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+            if (t.id) chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => { });
           }
-        } catch (_) {}
+        } catch (_) { }
 
         if (isCancel) {
           console.log('[BYOK] Workflow recording was cancelled/exited. Discarding without saving.');
@@ -655,20 +672,20 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
 
   if (message?.action === 'CANCEL_PICKER') {
     if (message.targetTabId) {
-      chrome.tabs.sendMessage(message.targetTabId, { action: 'EXIT_PICKER_MODE' }).catch(() => {});
+      chrome.tabs.sendMessage(message.targetTabId, { action: 'EXIT_PICKER_MODE' }).catch(() => { });
     }
     sendResponse({ success: true });
     return true;
   }
 
   if (message?.action === 'PICKER_RESULT') {
-    chrome.runtime.sendMessage({ action: 'PICKER_RESULT_FORWARD', ...message }).catch(() => {});
+    chrome.runtime.sendMessage({ action: 'PICKER_RESULT_FORWARD', ...message }).catch(() => { });
     sendResponse({ success: true });
     return true;
   }
 
   if (message?.action === 'PICKER_CANCELLED') {
-    chrome.runtime.sendMessage({ action: 'PICKER_CANCELLED_FORWARD' }).catch(() => {});
+    chrome.runtime.sendMessage({ action: 'PICKER_CANCELLED_FORWARD' }).catch(() => { });
     sendResponse({ success: true });
     return true;
   }
@@ -677,7 +694,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
   if (message?.action === 'WORKFLOW_RUN') {
     (async () => {
       try {
-        const { workflowId, workflow: passedWf, stopAfterIndex, variables, tabId: requestedTabId } = message;
+        const { workflowId, workflow: passedWf, stopAfterIndex, variables, tabId: requestedTabId, keepTabOpen } = message;
         let wf = passedWf;
         if (!wf && workflowId) {
           const stored = await chrome.storage.local.get(WORKFLOWS_KEY);
@@ -717,7 +734,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
           return;
         }
 
-        executeWorkflowRun(wf, targetTabId, stopAfterIndex, variables).catch(err => {
+        executeWorkflowRun(wf, targetTabId, stopAfterIndex, variables, keepTabOpen).catch(err => {
           const isAi = /omniroute|api key|ai health|ai not working|127\.0\.0\.1:20128/i.test(err?.message || '');
           if (isAi) {
             console.warn('[BYOK] executeWorkflowRun AI notice:', err?.message || String(err));
@@ -801,7 +818,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
           stored.workflowRunState.error = 'Process stopped by user.';
           await chrome.storage.local.set({ workflowRunState: stored.workflowRunState });
         }
-      } catch (_) {}
+      } catch (_) { }
       const res = stopBatchAutoApply();
       sendResponse(res);
     })();
@@ -817,7 +834,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
         if (currentBatchController.currentJobTabId) {
           const tabToClose = currentBatchController.currentJobTabId;
           currentBatchController.currentJobTabId = null;
-          chrome.tabs.remove(tabToClose).catch(() => {});
+          chrome.tabs.remove(tabToClose).catch(() => { });
         }
       }
       try {
@@ -827,7 +844,7 @@ const DEFAULT_FALLBACK_PDF_BASE64 = 'JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWx
           stored.workflowRunState.error = 'Job skipped by user.';
           await chrome.storage.local.set({ workflowRunState: stored.workflowRunState });
         }
-      } catch (_) {}
+      } catch (_) { }
       sendResponse({ success: true, skipped: true });
     })();
     return true;
@@ -924,7 +941,7 @@ Respond strictly with JSON: { "decision": "fully job applied" | "not job applica
   if (message?.action === 'RELOAD_EXTENSION') {
     sendResponse({ success: true });
     setTimeout(() => {
-      try { chrome.runtime.reload(); } catch (_) {}
+      try { chrome.runtime.reload(); } catch (_) { }
     }, 150);
     return true;
   }
@@ -962,9 +979,9 @@ chrome.tabs.onCreated.addListener(async (newTab) => {
             enabled: true,
           });
         }
-      } catch (_) {}
+      } catch (_) { }
     }
-  } catch (e) {}
+  } catch (e) { }
 });
 
 // Re-arm recording and side panel when recorded tabs update or navigate (redirect links in same or child tabs)
@@ -990,7 +1007,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
             enabled: true,
           });
         }
-      } catch (_) {}
+      } catch (_) { }
 
       const startMsg = {
         action: 'WORKFLOW_RECORD_START',
@@ -1000,9 +1017,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         loopDepth: recording.loopStack?.length || 0,
         workflowName: recording.workflow.name,
       };
-      chrome.tabs.sendMessage(tabId, startMsg).catch(() => {});
+      chrome.tabs.sendMessage(tabId, startMsg).catch(() => { });
     }
-  } catch (e) {}
+  } catch (e) { }
 });
 
 // Automatically stop and clean up recording when the target tab or creator tab is closed
@@ -1034,10 +1051,10 @@ chrome.tabs.onRemoved.addListener(async (closedTabId) => {
         const allTabs = await chrome.tabs.query({});
         for (const t of allTabs) {
           if (t.id && t.id !== closedTabId) {
-            chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+            chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => { });
           }
         }
-      } catch (_) {}
+      } catch (_) { }
       return;
     }
 
@@ -1072,12 +1089,12 @@ chrome.tabs.onRemoved.addListener(async (closedTabId) => {
         const allTabs = await chrome.tabs.query({});
         for (const t of allTabs) {
           if (t.id && t.id !== closedTabId) {
-            chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => {});
+            chrome.tabs.sendMessage(t.id, { action: 'WORKFLOW_RECORD_STOP' }).catch(() => { });
           }
         }
-      } catch (_) {}
+      } catch (_) { }
     }
-  } catch (e) {}
+  } catch (e) { }
 });
 
 // ─── Workflow Runner Helpers ──────────────────────────────────────────────────
@@ -1106,18 +1123,18 @@ function isAllCareerPageTab(t) {
   const normUrl = String(t.url || '').toLowerCase();
   const normTitle = String(t.title || '').toLowerCase();
   return normUrl.includes('all_jobs') ||
-         normUrl.includes('big_company_jobs') ||
-         normUrl.includes('allcareer') ||
-         normUrl.includes('all_career') ||
-         normUrl.includes('career_explorer') ||
-         normTitle.includes('all career') ||
-         normTitle.includes('career portal');
+    normUrl.includes('big_company_jobs') ||
+    normUrl.includes('allcareer') ||
+    normUrl.includes('all_career') ||
+    normUrl.includes('career_explorer') ||
+    normTitle.includes('all career') ||
+    normTitle.includes('career portal');
 }
 
 async function isAnyAllCareerTabOpen(mainTabId = null) {
   if (mainTabId) {
     const tab = await getValidTab(mainTabId);
-    if (tab && isAllCareerPageTab(tab)) return tab;
+    if (tab?.id) return tab;
   }
   const allTabs = await chrome.tabs.query({}).catch(() => []);
   const found = (allTabs || []).find(t => isAllCareerPageTab(t));
@@ -1139,10 +1156,27 @@ async function checkJobPageStatus(tabId) {
           const appliedRegex = /\b(already\s*applied|you\s*(have\s*)?already\s*applied|applied\s*\d+\s*(days?|hours?|months?|weeks?|mins?|minutes?)\s*ago|applied\s*on\s*[a-z0-9, ]+|you\s*applied\s*(on|to|for)?|application\s*(has\s*been\s*)?(already\s*)?submitted|already\s*submitted\s*(an?\s*)?application)\b/i;
           const closedRegex = /\b(this\s*job\s*(is\s*)?(no\s*longer\s*available|expired|closed)|no\s*longer\s*accepting\s*applications|job\s*(posting\s*)?(has\s*been\s*)?(closed|expired|removed)|applications\s*(are\s*)?closed)\b/i;
           const bodyText = (document.body.innerText || document.body.textContent || '').slice(0, 10000);
-          if (appliedRegex.test(bodyText) || document.querySelector('.already-applied, span.already-applied, [class*="already-applied"], [data-testid="applied-badge"], .ia-AppliedBadge')) {
-            return { status: 'already_applied', reason: 'Detected already applied on page' };
+          const alreadyAppliedEl = document.querySelector(
+            '#already-applied, span#already-applied, [id*="already-applied"], .styles_already-applied__4KDhw, [class*="styles_already-applied"], .already-applied, span.already-applied, [class*="already-applied"], [class*="alreadyApplied"], [class*="AlreadyApplied"], [data-testid="applied-badge"], .ia-AppliedBadge, [class*="applied-badge"], [class*="applied-status"]'
+          );
+          if (alreadyAppliedEl) {
+            return { status: 'already_applied', reason: `Detected already applied badge (${(alreadyAppliedEl.innerText || alreadyAppliedEl.textContent || 'Applied').trim()})` };
           }
-          if (closedRegex.test(bodyText) || document.querySelector('[class*="job-expired"], [class*="job-closed"], .expired-tag')) {
+          const buttonsAndSpans = document.querySelectorAll('button, span, div, a');
+          for (let i = 0; i < Math.min(buttonsAndSpans.length, 250); i++) {
+            const el = buttonsAndSpans[i];
+            const txt = (el.innerText || el.textContent || '').trim().toLowerCase();
+            if (txt === 'applied' || txt === 'already applied' || txt === 'applied!') {
+              const rect = el.getBoundingClientRect();
+              if (rect.width > 0 && rect.height > 0) {
+                return { status: 'already_applied', reason: `Detected badge with text "${(el.innerText || 'Applied').trim()}"` };
+              }
+            }
+          }
+          if (appliedRegex.test(bodyText)) {
+            return { status: 'already_applied', reason: 'Detected already applied text on page' };
+          }
+          if (closedRegex.test(bodyText) || document.querySelector('[class*="job-expired"], [class*="job-closed"], .expired-tag, .closed-tag, [data-testid="job-expired"]')) {
             return { status: 'closed', reason: 'Detected job is closed/expired' };
           }
           return { status: 'open' };
@@ -1151,7 +1185,7 @@ async function checkJobPageStatus(tabId) {
       if (results && results[0] && results[0].result) {
         return results[0].result;
       }
-    } catch (_) {}
+    } catch (_) { }
   }
   return { status: 'open' };
 }
@@ -1187,26 +1221,26 @@ async function ensureActiveTab(currentTabId, fallbackUrl, runState = null) {
       if (runState) {
         runState.tabId = validActive.id;
         runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Resumed on active tab ${validActive.id} (${validActive.url || ''})`);
-        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
       }
       return validActive.id;
     }
-  } catch (_) {}
+  } catch (_) { }
 
   // 3. Search for ANY web tab currently open (EXCLUDING All Career tab)
   try {
     const allTabs = await chrome.tabs.query({});
     const validWeb = allTabs.find(t => t.id && t.url && /^https?:/i.test(t.url) && !t.url.startsWith('chrome-extension://') && !isAllCareerPageTab(t));
     if (validWeb?.id) {
-      await chrome.tabs.update(validWeb.id, { active: true }).catch(() => {});
+      await chrome.tabs.update(validWeb.id, { active: true }).catch(() => { });
       if (runState) {
         runState.tabId = validWeb.id;
         runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Switched to open tab ${validWeb.id} (${validWeb.url || ''})`);
-        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+        await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
       }
       return validWeb.id;
     }
-  } catch (_) {}
+  } catch (_) { }
 
   // 4. If no living external web tab exists, create a new one
   const targetUrl = normalizeUrl(fallbackUrl || 'https://www.naukri.com/');
@@ -1216,7 +1250,7 @@ async function ensureActiveTab(currentTabId, fallbackUrl, runState = null) {
     if (runState) {
       runState.tabId = newTab.id;
       runState.logs.push(`[BYOK] Tab ${currentTabId} was unavailable. Created replacement tab ${newTab.id} (${targetUrl})`);
-      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
+      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
     }
     return newTab.id;
   }
@@ -1224,21 +1258,29 @@ async function ensureActiveTab(currentTabId, fallbackUrl, runState = null) {
   throw new Error(`Unable to find or create a valid browser tab for workflow execution.`);
 }
 
-async function waitForTabReady(tabId, timeoutMs = 35000) {
+async function waitForTabReady(tabId, timeoutMs = 35000, settleMs = 1500) {
   const deadline = Date.now() + timeoutMs;
+  let isComplete = false;
   while (Date.now() < deadline) {
     if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
       return null;
     }
     try {
       const tab = await chrome.tabs.get(tabId);
-      if (tab?.status === 'complete') return tab;
+      if (tab?.status === 'complete') {
+        isComplete = true;
+        break;
+      }
     } catch {
       return null;
     }
     await new Promise(r => setTimeout(r, 250));
   }
-  return null;
+  if (isComplete && settleMs > 0) {
+    // Settle delay for SPA frameworks (Naukri, Workday, Indeed) to render initial DOM
+    await new Promise(r => setTimeout(r, settleMs));
+  }
+  return isComplete ? await chrome.tabs.get(tabId).catch(() => null) : null;
 }
 
 function isNaukriJobClick(step) {
@@ -1341,7 +1383,7 @@ async function callOmniRouteAPI(apiKey, baseUrl, model, systemPrompt, messages) 
             const parsed = JSON.parse(trimmed.replace(/^data:\s*/, ''));
             const delta = parsed.choices?.[0]?.delta?.content || parsed.choices?.[0]?.message?.content;
             if (delta) chunks.push(delta);
-          } catch (_) {}
+          } catch (_) { }
         }
       }
       if (chunks.length > 0) return chunks.join('');
@@ -1847,7 +1889,7 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
           const mResp = await fetch(`${cleanUrl}/models`, { method: 'HEAD', signal: ctrl.signal, headers }).catch(() => null);
           clearTimeout(tId);
           if (mResp && mResp.status >= 200 && mResp.status < 400) modelsOk = true;
-        } catch (_) {}
+        } catch (_) { }
 
         if (!modelsOk) {
           try {
@@ -1856,7 +1898,7 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
             const rResp = await fetch(rootUrl, { method: 'HEAD', redirect: 'manual', signal: ctrlRoot.signal, headers }).catch(() => null);
             clearTimeout(tIdRoot);
             if (rResp && rResp.status >= 200 && rResp.status < 400) modelsOk = true;
-          } catch (_) {}
+          } catch (_) { }
         }
 
         if (!modelsOk) {
@@ -1870,7 +1912,7 @@ async function testApiKeyBackend({ provider, key, baseUrl, accountId, model }) {
             const mRespAlt = await fetch(`${altUrl}/models`, { method: 'HEAD', signal: ctrlAlt.signal, headers }).catch(() => null);
             clearTimeout(tIdAlt);
             if (mRespAlt && mRespAlt.status >= 200 && mRespAlt.status < 400) modelsOk = true;
-          } catch (_) {}
+          } catch (_) { }
         }
 
         if (modelsOk) {
@@ -2086,7 +2128,7 @@ async function callActiveAIModel(config, systemPrompt, messages) {
     try {
       const topStore = await chrome.storage.local.get('apiKeys');
       if (Array.isArray(topStore?.apiKeys)) apiKeys = topStore.apiKeys;
-    } catch (_) {}
+    } catch (_) { }
   }
   const activeKeyId = config?.activeKeyId;
   const keyConfig = apiKeys.find(k => k.id === activeKeyId && k.enabled !== false) ||
@@ -2153,7 +2195,7 @@ function parseAiActionJson(text) {
         value: typeof parsed.value === 'string' ? parsed.value : (parsed.value !== undefined ? String(parsed.value) : ''),
         reasoning: parsed.reasoning || parsed.thought || '',
       };
-    } catch (_) {}
+    } catch (_) { }
   }
 
   const lower = text.toLowerCase();
@@ -2218,7 +2260,7 @@ async function updateTabHud(tabId, hudData) {
     if (tab && isAllCareerPageTab(tab)) {
       return;
     }
-  } catch (_) {}
+  } catch (_) { }
 
   try {
     await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_UPDATE_HUD', data: hudData });
@@ -2227,14 +2269,14 @@ async function updateTabHud(tabId, hudData) {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
       await new Promise(r => setTimeout(r, 200));
       await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_UPDATE_HUD', data: hudData });
-    } catch (_) {}
+    } catch (_) { }
   }
 }
 
 async function removeTabHud(tabId) {
   try {
     await chrome.tabs.sendMessage(tabId, { action: 'WORKFLOW_REMOVE_HUD' });
-  } catch (_) {}
+  } catch (_) { }
 }
 
 function normalizeWorkflowText(str) {
@@ -2424,7 +2466,7 @@ async function saveLearnedAnswer(customAnswers, question, answer) {
 
   try {
     await chrome.storage.local.set({ customAnswers });
-  } catch (_) {}
+  } catch (_) { }
 }
 
 async function saveLearnedButton(learnedButtons, btnIdentifier) {
@@ -2436,7 +2478,7 @@ async function saveLearnedButton(learnedButtons, btnIdentifier) {
     learnedButtons.push(clean);
     try {
       await chrome.storage.local.set({ learnedButtons });
-    } catch (_) {}
+    } catch (_) { }
   }
 }
 
@@ -2513,7 +2555,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
           await new Promise(r => setTimeout(r, 400));
           elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
-        } catch (_) {}
+        } catch (_) { }
       }
 
       // Wait up to 3.5s if element not yet rendered
@@ -2524,7 +2566,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           try {
             elemInfo = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
             if (elemInfo?.success) break;
-          } catch (_) {}
+          } catch (_) { }
         }
       }
 
@@ -2556,26 +2598,13 @@ async function executeAIStepOneByOne(tabId, step, runState) {
         actionTaken: isButton ? `Detected button: "${targetName}" (${isDisabled ? 'Disabled - requires typing first' : 'Active'})` : 'Analyzing question context...',
       });
 
-      // 2. Intelligent Decision Logic: Memorized Button vs 1-Option vs 2+ Options vs Known Question vs AI
+      // 2. Intelligent Decision Logic: Choices/Options vs Memorized Button vs Known Question vs AI
       let aiDecision = null;
       const buttonCheck = isKnownActionButton(elemInfo, target, learnedButtons);
 
-      // A. IS THIS A BUTTON? (Save, Submit, Next, Send, or in learnedButtons)
-      // -> Bypass AI completely! Click directly and memorize for future jobs!
-      if (buttonCheck.isButton) {
-        aiDecision = {
-          action: 'click',
-          value: '',
-          reasoning: `⚡ Auto-detected button: ${buttonCheck.reason} (bypassed AI)`
-        };
-        runState.logs.push(`[AI Loop] ⚡ Button detected: "${targetName || target.selector}" (${buttonCheck.reason}). Bypassing AI and directly clicking.`);
-        if (targetName) {
-          await saveLearnedButton(learnedButtons, targetName);
-        }
-      }
-      // B. DROPDOWN / CHOICE WITH ONLY 1 OPTION?
+      // A. DROPDOWN / CHOICE WITH ONLY 1 OPTION?
       // -> Bypass AI! Auto-select that single choice directly and memorize!
-      else if (options.length === 1) {
+      if (options.length === 1) {
         const singleOption = options[0];
         aiDecision = {
           action: 'select_option',
@@ -2587,7 +2616,7 @@ async function executeAIStepOneByOne(tabId, step, runState) {
           await saveLearnedAnswer(customAnswers, targetQuestion, singleOption);
         }
       }
-      // C. DROPDOWN / RADIO BUTTONS WITH 2 OR MORE OPTIONS: Check customAnswers first; if none, ask AI!
+      // B. DROPDOWN / RADIO BUTTONS WITH 2 OR MORE OPTIONS: Check customAnswers first; if none, ask AI!
       else if (options.length >= 2) {
         const smartMatch = findSmartAnswerMatch(targetQuestion, visibleText, '', customAnswers, profile);
         let matchedOption = null;
@@ -2680,6 +2709,18 @@ Return valid JSON: {"thought": "...", "action": "select_option", "value": "<exac
             }
             aiDecision = { action: 'select_option', value: options[0], reasoning: 'Fallback: first option selected' };
           }
+        }
+      }
+      // C. IS THIS A BUTTON? (Save, Submit, Next, Send, or in learnedButtons) - ONLY IF NO PENDING OPTIONS!
+      else if (buttonCheck.isButton) {
+        aiDecision = {
+          action: 'click',
+          value: '',
+          reasoning: `⚡ Auto-detected button: ${buttonCheck.reason} (bypassed AI)`
+        };
+        runState.logs.push(`[AI Loop] ⚡ Button detected: "${targetName || target.selector}" (${buttonCheck.reason}). Bypassing AI and directly clicking.`);
+        if (targetName) {
+          await saveLearnedButton(learnedButtons, targetName);
         }
       }
       // D. TEXT QUESTION / INPUT FIELD / CHAT INPUT CONTAINER
@@ -2880,7 +2921,7 @@ HTML: ${htmlSnippet}`;
         let check = null;
         try {
           check = await chrome.tabs.sendMessage(activeTabId, { action: 'WORKFLOW_READ_TARGET', target });
-        } catch (_) {}
+        } catch (_) { }
 
         if (!check?.success) {
           lastFailureReason = `Target element "${targetName || target.selector || 'element'}" not visible on page`;
@@ -2999,6 +3040,15 @@ HTML: ${htmlSnippet}`;
 
             if (selRes?.success !== false && !selRes?.error) {
               actionSuccess = true;
+              // If chatbot has a Save button below the radio/dropdown options, auto-click it!
+              await new Promise(r => setTimeout(r, 400));
+              const autoSaveRes = await chrome.tabs.sendMessage(activeTabId, {
+                action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
+                target,
+              }).catch(() => null);
+              if (autoSaveRes?.clicked) {
+                runState.logs.push(`[AI Loop] 💾 Auto-triggered Save button ("${autoSaveRes.buttonText || 'Save'}") after selecting option.`);
+              }
             } else {
               lastFailureReason = selRes?.error || 'Option not found in dropdown';
             }
@@ -3012,6 +3062,14 @@ HTML: ${htmlSnippet}`;
 
             if (chkRes?.success !== false) {
               actionSuccess = true;
+              await new Promise(r => setTimeout(r, 400));
+              const autoSaveRes = await chrome.tabs.sendMessage(activeTabId, {
+                action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
+                target,
+              }).catch(() => null);
+              if (autoSaveRes?.clicked) {
+                runState.logs.push(`[AI Loop] 💾 Auto-triggered Save button ("${autoSaveRes.buttonText || 'Save'}") after checkbox.`);
+              }
             } else {
               lastFailureReason = chkRes?.error || 'Checkbox could not be checked';
             }
@@ -3148,7 +3206,7 @@ HTML: ${htmlSnippet}`;
       await chrome.tabs.sendMessage(activeTabId, {
         action: 'WORKFLOW_CLICK_CONTAINER_SAVE',
         target: lastTarget,
-      }).catch(() => {});
+      }).catch(() => { });
 
       await new Promise(r => setTimeout(r, 2000));
 
@@ -3170,7 +3228,7 @@ HTML: ${htmlSnippet}`;
 }
 
 
-async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'dom') {
+async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'dom', maxRetries = 3) {
   const msg = {
     action: 'WORKFLOW_EXECUTE_STEP',
     step,
@@ -3186,27 +3244,47 @@ async function sendWorkflowStepToTab(tabId, step, loopIndex = 0, clickMode = 'do
     throw new Error(`Cannot execute workflow step on the All Career page tab.`);
   }
 
-  try {
-    return await chrome.tabs.sendMessage(tabId, msg);
-  } catch (err) {
-    // If receiving end does not exist, verify tab is still alive before executeScript
-    const recheck = await getValidTab(tabId);
-    if (!recheck) {
-      throw new Error(`No tab with id: ${tabId}`);
+  let lastRes = null;
+  let lastErr = null;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
+      throw new Error('Process stopped by user.');
     }
 
     try {
-      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
-      await new Promise(r => setTimeout(r, 600));
-      return await chrome.tabs.sendMessage(tabId, msg);
-    } catch (injectErr) {
-      console.warn(`[BYOK] sendWorkflowStepToTab failed on tab ${tabId}:`, injectErr);
-      throw injectErr;
+      lastRes = await chrome.tabs.sendMessage(tabId, msg);
+      if (lastRes && lastRes.success !== false) {
+        return lastRes;
+      }
+    } catch (err) {
+      lastErr = err;
+      try {
+        await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+        await new Promise(r => setTimeout(r, 600));
+        lastRes = await chrome.tabs.sendMessage(tabId, msg);
+        if (lastRes && lastRes.success !== false) {
+          return lastRes;
+        }
+      } catch (injectErr) {
+        lastErr = injectErr;
+      }
+    }
+
+    const hasTarget = step?.target && (step.target.selector || step.target.text || (Array.isArray(step.target.selectors) && step.target.selectors.length > 0));
+    if (!hasTarget) break;
+
+    if (attempt < maxRetries) {
+      await new Promise(r => setTimeout(r, 650));
     }
   }
+
+  if (lastRes) return lastRes;
+  if (lastErr) throw lastErr;
+  return { success: false, error: 'Element not found after retry.' };
 }
 
-async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variables = {}) {
+async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variables = {}, keepTabOpen = false) {
   let activeTabId = initialTabId;
   const steps = Array.isArray(workflow.steps) ? workflow.steps : [];
   const loopFrames = [];
@@ -3299,17 +3377,63 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         actionTaken: stepDesc,
       });
 
+      // 0. Handle skip_job step or action
+      if (step.action === 'skip_job' || step.type === 'skip_job') {
+        const reason = step.value || step.name || 'Job skipped by workflow step.';
+        runState.logs.push(`[Workflow] ⏭️ Skip job step reached: ${reason}`);
+        runState.status = 'skipped';
+        runState.error = reason;
+        runState.finishedAt = Date.now();
+        await chrome.storage.local.set({ workflowRunState: runState });
+        await updateTabHud(activeTabId, {
+          workflowName: runState.workflowName,
+          stepIndex: i,
+          totalSteps: steps.length,
+          stepName: step.name || 'Job Skipped',
+          status: 'skipped',
+          actionTaken: `⏭️ Job skipped by workflow: ${reason}`,
+        });
+        await new Promise(r => setTimeout(r, 2000));
+        return;
+      }
+
+      // 0b. Handle Stop Step
+      if (step.type === 'stop' || step.action === 'stop') {
+        runState.logs.push(`[Workflow] 🛑 Step ${i + 1}: Stop workflow.`);
+        runState.status = 'completed';
+        runState.applied = true;
+        runState.message = `Workflow stopped cleanly at Step ${i + 1}: ${step.name || 'Stop'}`;
+        runState.finishedAt = Date.now();
+        await chrome.storage.local.set({ workflowRunState: runState });
+        await updateTabHud(activeTabId, {
+          workflowName: runState.workflowName,
+          stepIndex: i,
+          totalSteps: steps.length,
+          stepName: step.name || 'Workflow Stopped',
+          status: 'completed',
+          actionTaken: 'Workflow stopped cleanly.',
+        });
+        await new Promise(r => setTimeout(r, 600));
+        if (activeTabId && !isAllCareerPageTab({ id: activeTabId }) && !keepTabOpen && typeof stopAfterIndex !== 'number') {
+          chrome.tabs.remove(activeTabId).catch(() => {});
+          if (currentBatchController && currentBatchController.currentJobTabId === activeTabId) {
+            currentBatchController.currentJobTabId = null;
+          }
+        }
+        return;
+      }
+
       // 1. Handle open_url step
       if (step.type === 'open_url') {
         const rawTarget = step.value || (typeof step.target === 'string' ? step.target : step.target?.selector) || workflow.startUrl;
         const targetUrl = normalizeUrl(rawTarget);
         activeTabId = await ensureActiveTab(activeTabId, targetUrl, runState);
-        const curTab = await getValidTab(activeTabId);
-        if (curTab && curTab.url !== targetUrl) {
-          await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => {});
-          await waitForTabReady(activeTabId);
-          await new Promise(r => setTimeout(r, 800));
-        }
+        await chrome.tabs.update(activeTabId, { url: targetUrl }).catch(() => { });
+        await waitForTabReady(activeTabId, 35000, 1500);
+        try {
+          await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+        } catch (_) { }
+        await new Promise(r => setTimeout(r, 600));
         if (step.stopAfter || (typeof stopAfterIndex === 'number' && i === stopAfterIndex)) {
           runState.status = 'completed';
           runState.message = `Test stopped after Step ${i + 1}: ${step.name || step.type}`;
@@ -3329,7 +3453,7 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         try {
           const countRes = await sendWorkflowStepToTab(activeTabId, { action: 'WORKFLOW_COUNT_TARGETS', target: step.target });
           detectedCount = Number(countRes?.count ?? 0);
-        } catch (_) {}
+        } catch (_) { }
         const count = Math.min(200, detectedCount || step.loopCount || 10);
         const curTab = await getValidTab(activeTabId);
         const frame = {
@@ -3354,18 +3478,18 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
           if (frame.current + 1 < frame.count) {
             // Restore list tab and close child tab if one was opened
             if (activeTabId !== frame.listTabId) {
-              await chrome.tabs.remove(activeTabId).catch(() => {});
+              await chrome.tabs.remove(activeTabId).catch(() => { });
               activeTabId = await ensureActiveTab(frame.listTabId, frame.listUrl || workflow.startUrl, runState);
               frame.listTabId = activeTabId;
               runState.tabId = activeTabId;
-              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
               await waitForTabReady(activeTabId);
             } else {
               activeTabId = await ensureActiveTab(activeTabId, frame.listUrl || workflow.startUrl, runState);
             }
             const cur = await getValidTab(activeTabId);
             if (frame.listUrl && cur?.url !== frame.listUrl) {
-              await chrome.tabs.update(activeTabId, { url: frame.listUrl }).catch(() => {});
+              await chrome.tabs.update(activeTabId, { url: frame.listUrl }).catch(() => { });
               await waitForTabReady(activeTabId);
             }
             frame.current += 1;
@@ -3376,10 +3500,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
           } else {
             // Loop finished
             if (activeTabId !== frame.listTabId) {
-              await chrome.tabs.remove(activeTabId).catch(() => {});
+              await chrome.tabs.remove(activeTabId).catch(() => { });
               activeTabId = await ensureActiveTab(frame.listTabId, frame.listUrl || workflow.startUrl, runState);
               runState.tabId = activeTabId;
-              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
             }
             loopFrames.pop();
             runState.logs.push(`Loop completed successfully (${frame.count} items).`);
@@ -3559,109 +3683,200 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
         activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
 
         let execRes = null;
+        let stepErr = null;
         try {
           execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
-        } catch (stepErr) {
-          if (currentBatchController && currentBatchController.cancelled) {
-            runState.status = 'cancelled';
-            runState.error = 'Process stopped by user.';
-            await chrome.storage.local.set({ workflowRunState: runState });
-            return;
+        } catch (err) {
+          stepErr = err;
+        }
+
+        if (currentBatchController && currentBatchController.cancelled) {
+          runState.status = 'cancelled';
+          runState.error = 'Process stopped by user.';
+          await chrome.storage.local.set({ workflowRunState: runState });
+          return;
+        }
+
+        if (stepErr && /no tab with id|receiving end does not exist|closed/i.test(stepErr?.message || '')) {
+          runState.logs.push(`[BYOK] Connection to tab ${activeTabId} lost. Re-establishing connection...`);
+          await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
+          activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
+          await waitForTabReady(activeTabId);
+          try {
+            await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
+            await new Promise(r => setTimeout(r, 500));
+          } catch (_) { }
+          try {
+            execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
+            stepErr = null;
+          } catch (retryErr) {
+            stepErr = retryErr;
+          }
+        }
+
+        // Check if step execution failed (either exception or execRes.success === false)
+        const stepFailed = Boolean(stepErr || (execRes && execRes.success === false));
+
+        if (stepFailed) {
+          console.warn(`[Workflow] Step ${i + 1} ("${step.name || step.type}") execution failed:`, stepErr?.message || execRes?.error || 'Element not found.');
+
+          // 1. Run 3-attempt deterministic check for Already Applied or Job Closed
+          let jobStatus = { status: 'open' };
+          for (let att = 1; att <= 3; att++) {
+            if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) break;
+            jobStatus = await checkJobPageStatus(activeTabId);
+            if (jobStatus.status === 'already_applied' || jobStatus.status === 'closed') {
+              break;
+            }
+            if (att < 3) await new Promise(r => setTimeout(r, 450));
           }
 
-          if (/no tab with id|receiving end does not exist|closed/i.test(stepErr?.message || '')) {
-            runState.logs.push(`[BYOK] Connection to tab ${activeTabId} lost. Re-establishing connection...`);
-            await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
-            activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
-            await waitForTabReady(activeTabId);
-            try {
-              await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-              await new Promise(r => setTimeout(r, 500));
-            } catch (_) {}
-            try {
-              execRes = await sendWorkflowStepToTab(activeTabId, step, activeLoopIndex, isNaukri ? 'mouse' : 'dom');
-            } catch (retryErr) {
-              stepErr = retryErr;
-            }
-          }
-
-          // If still failed or element was not found: Check AI fallback!
-          if (!execRes) {
-            // Check if page indicates already applied or closed before failing!
-            const midStatus = await checkJobPageStatus(activeTabId);
-            if (midStatus.status === 'already_applied') {
-              runState.logs.push(`[Workflow] ℹ️ Job already applied: ${midStatus.reason}`);
-              runState.status = 'completed';
-              runState.alreadyApplied = true;
-              runState.message = 'Job was already applied previously on this portal.';
-              runState.finishedAt = Date.now();
-              await chrome.storage.local.set({ workflowRunState: runState });
-              await updateTabHud(activeTabId, {
-                workflowName: runState.workflowName,
-                stepIndex: i,
-                totalSteps: steps.length,
-                stepName: 'Already Applied',
-                status: 'completed',
-                actionTaken: '✅ Job already applied previously. Moving to next job...',
-              });
-              return;
-            }
-            if (midStatus.status === 'closed') {
-              runState.logs.push(`[Workflow] ⚠️ Job is closed: ${midStatus.reason}`);
-              runState.status = 'skipped';
-              runState.error = 'Job posting is expired or closed.';
-              runState.finishedAt = Date.now();
-              await chrome.storage.local.set({ workflowRunState: runState });
-              await updateTabHud(activeTabId, {
-                workflowName: runState.workflowName,
-                stepIndex: i,
-                totalSteps: steps.length,
-                stepName: 'Job Closed',
-                status: 'skipped',
-                actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
-              });
-              return;
-            }
-
-            // Directly attempt AI fallback first!
-            let aiFallbackRes = null;
-            try {
-              aiFallbackRes = await executeAIStepForMissingElement(activeTabId, step, runState);
-            } catch (fallbackErr) {
-              console.warn('[Workflow] AI fallback attempt caught:', fallbackErr);
-            }
-
-            if (aiFallbackRes?.success) {
-              runState.logs.push(`[Workflow] ✅ Step ${i + 1} resolved via AI fallback.`);
-              await chrome.storage.local.set({ workflowRunState: runState });
-              continue;
-            }
-
-            // If AI fallback failed, verify AI status to produce an accurate, helpful message
-            const aiCheck = await verifyActiveAIWorking();
-            const reason = !aiCheck.ok ? aiCheck.reason : (aiFallbackRes?.reason || stepErr?.message || 'Element not found on page.');
-            const msg = !aiCheck.ok ? aiCheck.reason : `Element "${step.name || step.type}" not found. ${reason}`;
-            runState.logs.push(`[Workflow] ⚠️ ${msg}`);
-            runState.error = msg;
-            runState.status = 'error';
+          if (jobStatus.status === 'already_applied') {
+            runState.logs.push(`[Workflow] ℹ️ Job already applied: ${jobStatus.reason}`);
+            runState.status = 'completed';
+            runState.alreadyApplied = true;
+            runState.message = 'Job was already applied previously on this portal.';
             runState.finishedAt = Date.now();
             await chrome.storage.local.set({ workflowRunState: runState });
             await updateTabHud(activeTabId, {
               workflowName: runState.workflowName,
               stepIndex: i,
               totalSteps: steps.length,
-              stepName: !aiCheck.ok ? 'AI Config Required' : (step.name || step.type),
-              status: 'error',
-              actionTaken: `⚠️ ${msg}`,
-              aiUnavailable: !aiCheck.ok,
-              aiErrorText: !aiCheck.ok ? aiCheck.reason : undefined,
+              stepName: 'Already Applied',
+              status: 'completed',
+              actionTaken: '✅ Already applied: "<span id="already-applied">Applied</span>" detected. Skipping to next job...',
             });
-            if (!aiCheck.ok) {
-              console.warn('[BYOK] AI Configuration Required:', msg);
-              return;
-            }
-            throw new Error(msg);
+            await new Promise(r => setTimeout(r, 2000));
+            return;
           }
+
+          if (jobStatus.status === 'closed') {
+            runState.logs.push(`[Workflow] ⚠️ Job is closed: ${jobStatus.reason}`);
+            runState.status = 'skipped';
+            runState.error = 'Job posting is expired or closed.';
+            runState.finishedAt = Date.now();
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: i,
+              totalSteps: steps.length,
+              stepName: 'Job Closed',
+              status: 'skipped',
+              actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
+            });
+            await new Promise(r => setTimeout(r, 2000));
+            return;
+          }
+
+          // 2. Check if node failure policy is "check_expired_skip"
+          if (step.onError === 'check_expired_skip') {
+            runState.logs.push(`[Workflow] ⚡ Node failure policy: Element not found and check_expired_skip set. Skipping this job cleanly.`);
+            runState.status = 'skipped';
+            runState.error = 'Job expired or apply button unavailable.';
+            runState.finishedAt = Date.now();
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: i,
+              totalSteps: steps.length,
+              stepName: 'Job Skipped',
+              status: 'skipped',
+              actionTaken: '⚡ Apply button not available / job expired. Skipping to next job...',
+            });
+            await new Promise(r => setTimeout(r, 2000));
+            return;
+          }
+
+          // 3. Check if node failure policy is "branch" or if an alternative branch node is configured
+          let branchIdx = -1;
+          if (step.onError === 'branch' && step.branchStepId) {
+            branchIdx = steps.findIndex(s => s.id === step.branchStepId);
+          }
+          if (branchIdx === -1) {
+            const parentForkId = i > 0 ? steps[i - 1].id : null;
+            const altBranch = steps.find(s =>
+              s.id !== step.id && (
+                s.branchForStepId === step.id ||
+                (s.branchParentId && s.branchParentId === parentForkId) ||
+                (s.branchSlot !== undefined && s.branchSlot === i)
+              )
+            );
+            if (altBranch) {
+              branchIdx = steps.indexOf(altBranch);
+            }
+          }
+
+          if (branchIdx !== -1) {
+            const branchStep = steps[branchIdx];
+            runState.logs.push(`[Workflow] 🌿 If-Else Switch: Element for Step ${i + 1} ("${step.name || step.type}") not found. Branching to Step ${branchIdx + 1} ("${branchStep.name || branchStep.type}").`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: i,
+              totalSteps: steps.length,
+              stepName: 'Branch Taken',
+              status: 'running',
+              actionTaken: `🌿 Main element missing ➔ Taking branch: Step ${branchIdx + 1} ("${branchStep.name || branchStep.type}")...`,
+            });
+            await new Promise(r => setTimeout(r, 600));
+            i = branchIdx - 1; // Will advance to branchIdx on next loop
+            continue;
+          }
+
+          // 4. Check if node failure policy is "skip"
+          if (step.onError === 'skip') {
+            runState.logs.push(`[Workflow] ⏭️ Skipping Step ${i + 1} per node failure policy.`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            await updateTabHud(activeTabId, {
+              workflowName: runState.workflowName,
+              stepIndex: i,
+              totalSteps: steps.length,
+              stepName: step.name || step.type,
+              status: 'running',
+              actionTaken: `⏭️ Step ${i + 1} element missing; skipping to next step...`,
+            });
+            await new Promise(r => setTimeout(r, 500));
+            continue;
+          }
+
+          // 5. Attempt AI fallback
+          let aiFallbackRes = null;
+          try {
+            aiFallbackRes = await executeAIStepForMissingElement(activeTabId, step, runState);
+          } catch (fallbackErr) {
+            console.warn('[Workflow] AI fallback attempt caught:', fallbackErr);
+          }
+
+          if (aiFallbackRes?.success) {
+            runState.logs.push(`[Workflow] ✅ Step ${i + 1} resolved via AI fallback.`);
+            await chrome.storage.local.set({ workflowRunState: runState });
+            continue;
+          }
+
+          // 6. Fail with clear diagnostics
+          const aiCheck = await verifyActiveAIWorking();
+          const reason = !aiCheck.ok ? aiCheck.reason : (aiFallbackRes?.reason || stepErr?.message || execRes?.error || 'Element not found on page.');
+          const msg = !aiCheck.ok ? aiCheck.reason : `Element "${step.name || step.type}" not found. ${reason}`;
+          runState.logs.push(`[Workflow] ⚠️ ${msg}`);
+          runState.error = msg;
+          runState.status = 'error';
+          runState.finishedAt = Date.now();
+          await chrome.storage.local.set({ workflowRunState: runState });
+          await updateTabHud(activeTabId, {
+            workflowName: runState.workflowName,
+            stepIndex: i,
+            totalSteps: steps.length,
+            stepName: !aiCheck.ok ? 'AI Config Required' : (step.name || step.type),
+            status: 'error',
+            actionTaken: `⚠️ ${msg}`,
+            aiUnavailable: !aiCheck.ok,
+            aiErrorText: !aiCheck.ok ? aiCheck.reason : undefined,
+          });
+          if (!aiCheck.ok) {
+            console.warn('[BYOK] AI Configuration Required:', msg);
+            return;
+          }
+          throw new Error(msg);
         }
 
         const isNaukriExec = execRes?.siteHandler === 'naukri-job-card' || isNaukri;
@@ -3677,10 +3892,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             runState.tabId = activeTabId;
             if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
             await waitForTabReady(activeTabId);
-            await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+            await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
             try {
               await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-            } catch (_) {}
+            } catch (_) { }
             await chrome.storage.local.set({ workflowRunState: runState });
           } else {
             // Fallback: create tab directly with expectedUrl if native popup/target=_blank was suppressed
@@ -3697,10 +3912,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
               runState.tabId = activeTabId;
               if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
               await waitForTabReady(activeTabId);
-              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
               try {
                 await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-              } catch (_) {}
+              } catch (_) { }
               await chrome.storage.local.set({ workflowRunState: runState });
             }
           }
@@ -3730,10 +3945,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
             runState.tabId = activeTabId;
             if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
             await waitForTabReady(activeTabId);
-            await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+            await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
             try {
               await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-            } catch (_) {}
+            } catch (_) { }
             await chrome.storage.local.set({ workflowRunState: runState });
           } else if (execRes?.href && /^https?:/i.test(execRes.href)) {
             // If click has an href and no tab opened automatically (e.g. popup blocked), open destination
@@ -3750,10 +3965,10 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
               runState.tabId = activeTabId;
               if (currentBatchController) currentBatchController.currentJobTabId = activeTabId;
               await waitForTabReady(activeTabId);
-              await chrome.tabs.update(activeTabId, { active: true }).catch(() => {});
+              await chrome.tabs.update(activeTabId, { active: true }).catch(() => { });
               try {
                 await chrome.scripting.executeScript({ target: { tabId: activeTabId }, files: ['content.js'] });
-              } catch (_) {}
+              } catch (_) { }
               await chrome.storage.local.set({ workflowRunState: runState });
             }
           } else {
@@ -3764,6 +3979,17 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
           const waitMs = Math.max(350, Math.min(5000, step.waitMs || 500));
           await new Promise(r => setTimeout(r, waitMs));
           activeTabId = await ensureActiveTab(activeTabId, workflow.startUrl, runState);
+        }
+      }
+
+      // Check for success connection jumping (step.connectTo)
+      if (step.connectTo && step.connectTo !== '') {
+        const targetIdx = steps.findIndex(s => s.id === step.connectTo);
+        if (targetIdx !== -1) {
+          runState.logs.push(`[Workflow] 🔀 Connecting from Step ${i + 1} to Step ${targetIdx + 1}: ${steps[targetIdx].name || steps[targetIdx].type}`);
+          await chrome.storage.local.set({ workflowRunState: runState });
+          i = targetIdx - 1; // Will advance to targetIdx on next loop iteration
+          continue;
         }
       }
 
@@ -3805,8 +4031,8 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       console.log('[BYOK] Workflow execution skipped for this job:', err?.message || '');
       runState.status = 'skipped';
       runState.error = err?.message || 'Job skipped.';
-      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
-      removeTabHud(activeTabId);
+      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
+      setTimeout(() => removeTabHud(activeTabId), 3500);
       return;
     }
 
@@ -3816,8 +4042,8 @@ async function executeWorkflowRun(workflow, initialTabId, stopAfterIndex, variab
       console.log('[BYOK] Workflow execution stopped/cancelled cleanly.');
       runState.status = 'cancelled';
       runState.error = 'Process stopped by user.';
-      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => {});
-      removeTabHud(activeTabId);
+      await chrome.storage.local.set({ workflowRunState: runState }).catch(() => { });
+      setTimeout(() => removeTabHud(activeTabId), 1500);
       return;
     }
 
@@ -3862,7 +4088,7 @@ function normalizeSearchText(input) {
   let str = String(input);
   try {
     str = decodeURIComponent(str);
-  } catch (_) {}
+  } catch (_) { }
   return str.toLowerCase().replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
@@ -3945,7 +4171,7 @@ async function verifyActiveAIWorking() {
         if (probeResp && probeResp.status >= 200 && probeResp.status < 400) {
           return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
         }
-      } catch (_) {}
+      } catch (_) { }
 
       // 2. Probe root URL with HEAD (returns 307 or 200 in ~50ms)
       try {
@@ -3961,7 +4187,7 @@ async function verifyActiveAIWorking() {
         if (probeRoot && probeRoot.status >= 200 && probeRoot.status < 400) {
           return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
         }
-      } catch (_) {}
+      } catch (_) { }
 
       // 3. Fallback between 127.0.0.1 and localhost
       try {
@@ -3979,7 +4205,7 @@ async function verifyActiveAIWorking() {
         if (probeAlt && probeAlt.status >= 200 && probeAlt.status < 400) {
           return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
         }
-      } catch (_) {}
+      } catch (_) { }
 
       // 4. Fast 1-token POST completion probe
       try {
@@ -4000,7 +4226,7 @@ async function verifyActiveAIWorking() {
         if (testPost && testPost.ok) {
           return { ok: true, provider: 'omniroute', model: model || 'antigravity/gemini-3.6-flash-high' };
         }
-      } catch (_) {}
+      } catch (_) { }
 
       return {
         ok: false,
@@ -4350,7 +4576,7 @@ function broadcastBatchStatus(controller, latestItem = null) {
   chrome.tabs.query({}, (tabs) => {
     (tabs || []).forEach(t => {
       if (t?.id) {
-        chrome.tabs.sendMessage(t.id, payload).catch(() => {});
+        chrome.tabs.sendMessage(t.id, payload).catch(() => { });
       }
     });
   });
@@ -4361,13 +4587,13 @@ function stopBatchAutoApply(reason = 'Process stopped by user.') {
     currentBatchController.cancelled = true;
     currentBatchController.running = false;
     if (currentBatchController.currentJobTabId) {
-      chrome.tabs.remove(currentBatchController.currentJobTabId).catch(() => {});
+      chrome.tabs.remove(currentBatchController.currentJobTabId).catch(() => { });
       currentBatchController.currentJobTabId = null;
     }
     broadcastBatchStatus(currentBatchController);
   }
   // Clear workflowRunState in storage
-  chrome.storage.local.set({ workflowRunState: null }).catch(() => {});
+  chrome.storage.local.set({ workflowRunState: null }).catch(() => { });
   // Remove HUD across all tabs immediately
   chrome.tabs.query({}, (tabs) => {
     (tabs || []).forEach(t => {
@@ -4448,7 +4674,7 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
             };
           } else if (matchedWorkflow) {
             mode = 'workflow';
-            console.log(`[BatchApply] [${i+1}/${jobsList.length}] Found recorded workflow "${matchedWorkflow.name}" for portal "${portal.name}". Executing...`);
+            console.log(`[BatchApply] [${i + 1}/${jobsList.length}] Found recorded workflow "${matchedWorkflow.name}" for portal "${portal.name}". Executing...`);
             jobResult = await runWorkflowForJob(matchedWorkflow, rawTargetUrl, job);
 
             // IF WORKFLOW FAILED (e.g. page layout is different, redirected to company site, or unmapped form fields):
@@ -4456,18 +4682,18 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
             const isJobSkipped = jobResult.skipped || controller.skipRequested || /skipped|clicked 3 times/i.test(jobResult.reason || '');
             const isJobAlreadyDone = jobResult.success || jobResult.alreadyApplied;
             if (!isJobAlreadyDone && !isJobSkipped && !controller.cancelled && controller.running && (!currentBatchController || !currentBatchController.cancelled)) {
-              console.log(`[BatchApply] [${i+1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Handing control over to AI Control...`);
+              console.log(`[BatchApply] [${i + 1}/${jobsList.length}] Workflow "${matchedWorkflow.name}" could not complete (${jobResult.reason || 'different page structure'}). Handing control over to AI Control...`);
               mode = 'ai';
               const activeTabId = currentBatchController?.currentJobTabId;
               jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job, activeTabId);
             }
           } else {
             mode = 'ai';
-            console.log(`[BatchApply] [${i+1}/${jobsList.length}] No recorded workflow for "${portal.name}". Handing control over to AI Control...`);
+            console.log(`[BatchApply] [${i + 1}/${jobsList.length}] No recorded workflow for "${portal.name}". Handing control over to AI Control...`);
             jobResult = await aiDecideAndExecuteJob(rawTargetUrl, job);
           }
         } catch (jobErr) {
-          console.warn(`[BatchApply] [${i+1}/${jobsList.length}] Error processing job "${job.title || 'Job'}":`, jobErr);
+          console.warn(`[BatchApply] [${i + 1}/${jobsList.length}] Error processing job "${job.title || 'Job'}":`, jobErr);
           jobResult = {
             success: false,
             reason: jobErr?.message || String(jobErr),
@@ -4477,7 +4703,7 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           if (controller.currentJobTabId) {
             const tabToClose = controller.currentJobTabId;
             controller.currentJobTabId = null;
-            chrome.tabs.remove(tabToClose).catch(() => {});
+            chrome.tabs.remove(tabToClose).catch(() => { });
           }
         }
 
@@ -4494,14 +4720,14 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           jobResult.reason = 'Job skipped by user.';
         }
 
-        const isAlreadyApplied = jobResult.alreadyApplied || /already applied/i.test(jobResult.reason || '');
-        if (jobResult.success || isAlreadyApplied) {
+        const isJobApplied = jobResult.applied === true || (jobResult.success && !jobResult.skipped) || (jobResult.alreadyApplied && !jobResult.skipped);
+        if (isJobApplied) {
           controller.appliedCount++;
         } else {
           controller.failedCount++;
         }
 
-        const isSkippedEntry = jobResult.skipped || /skipped|closed|expired|clicked 3 times/i.test(jobResult.reason || '');
+        const isSkippedEntry = !isJobApplied && (jobResult.skipped || /skipped|closed|expired|clicked 3 times/i.test(jobResult.reason || ''));
         const historyItem = {
           id: job.id || `app_${Date.now()}_${i}`,
           jobId: job.id || '',
@@ -4509,8 +4735,8 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
           company: job.company || 'Company',
           portal: portal.name,
           url: rawTargetUrl,
-          status: (jobResult.success || isAlreadyApplied) ? 'applied' : (isSkippedEntry ? 'skipped' : 'not_applied'),
-          reason: jobResult.reason || ((jobResult.success || isAlreadyApplied) ? (isAlreadyApplied ? 'Already applied previously on this portal.' : `Successfully submitted via ${mode === 'workflow' ? matchedWorkflow.name : 'AI Control'}`) : 'Application not completed'),
+          status: isJobApplied ? 'applied' : (isSkippedEntry ? 'skipped' : 'not_applied'),
+          reason: jobResult.reason || (isJobApplied ? (jobResult.alreadyApplied ? 'Already applied previously on this portal.' : `Successfully submitted via ${mode === 'workflow' ? matchedWorkflow.name : 'AI Control'}`) : 'Application not completed'),
           mode: mode,
           workflowName: matchedWorkflow ? matchedWorkflow.name : null,
           timestamp: Date.now(),
@@ -4527,7 +4753,7 @@ async function startBatchAutoApply(jobsList, mainTabId = null) {
         if (controller.currentJobTabId) {
           const tabToClose = controller.currentJobTabId;
           controller.currentJobTabId = null;
-          chrome.tabs.remove(tabToClose).catch(() => {});
+          chrome.tabs.remove(tabToClose).catch(() => { });
         }
 
         // Pause briefly between applications for stability (interruptible every 100ms)
@@ -4574,55 +4800,86 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
       currentBatchController.currentJobTabId = tabId;
     }
 
-    await waitForTabReady(tabId);
+    await waitForTabReady(tabId, 35000, 2000);
+
+    // Reinforce content script injection
+    try {
+      await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
+    } catch (_) { }
 
     if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-      chrome.tabs.remove(tabId).catch(() => {});
+      chrome.tabs.remove(tabId).catch(() => { });
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
-    // Early deterministic check: Is the job already applied or closed?
-    const preCheckStatus = await checkJobPageStatus(tabId);
-    if (preCheckStatus.status === 'already_applied') {
-      console.log(`[Workflow] ℹ️ Job already applied on "${workflow.name}":`, preCheckStatus.reason);
-      await updateTabHud(tabId, {
-        workflowName: workflow.name,
-        stepIndex: 1,
-        totalSteps: 1,
-        stepName: 'Already Applied',
-        status: 'completed',
-        actionTaken: '✅ Job was already applied previously on this portal. Moving to next job...',
-      });
-      await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
-      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
-        currentBatchController.currentJobTabId = null;
+    // Generous settling delay for dynamic single-page applications (Naukri, Workday)
+    for (let s = 0; s < 18; s++) {
+      if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
+        chrome.tabs.remove(tabId).catch(() => { });
+        return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
-      return { success: true, alreadyApplied: true, reason: 'Already applied previously on this portal.' };
+      await new Promise(r => setTimeout(r, 100));
     }
 
-    if (preCheckStatus.status === 'closed') {
-      console.log(`[Workflow] ⚠️ Job closed on "${workflow.name}":`, preCheckStatus.reason);
-      await updateTabHud(tabId, {
-        workflowName: workflow.name,
-        stepIndex: 1,
-        totalSteps: 1,
-        stepName: 'Job Closed',
-        status: 'skipped',
-        actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
-      });
-      await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
-      if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
-        currentBatchController.currentJobTabId = null;
+    // 3-check deterministic verification for Already Applied / Expired job
+    let preCheckStatus = { status: 'open' };
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
+        chrome.tabs.remove(tabId).catch(() => { });
+        return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
-      return { success: false, skipped: true, reason: 'Job posting is expired or closed.' };
+      preCheckStatus = await checkJobPageStatus(tabId);
+      if (preCheckStatus.status === 'already_applied') {
+        console.log(`[Workflow] ℹ️ Job already applied on "${workflow.name}" (detected on check ${attempt}/3):`, preCheckStatus.reason);
+        await updateTabHud(tabId, {
+          workflowName: workflow.name,
+          stepIndex: 0,
+          totalSteps: 1,
+          stepName: 'Already Applied',
+          status: 'completed',
+          actionTaken: `✅ Already applied: "<span id="already-applied">Applied</span>" detected (check ${attempt}/3). Skipping to next job...`,
+        });
+        await new Promise(r => setTimeout(r, 1200));
+        if (tabId) chrome.tabs.remove(tabId).catch(() => { });
+        if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+          currentBatchController.currentJobTabId = null;
+        }
+        return { success: true, applied: true, alreadyApplied: true, skipped: false, status: 'applied', reason: 'Already applied previously on this portal.' };
+      }
+      if (preCheckStatus.status === 'closed') {
+        console.log(`[Workflow] ⚠️ Job closed on "${workflow.name}" (detected on check ${attempt}/3):`, preCheckStatus.reason);
+        await updateTabHud(tabId, {
+          workflowName: workflow.name,
+          stepIndex: 0,
+          totalSteps: 1,
+          stepName: 'Job Closed',
+          status: 'skipped',
+          actionTaken: `⚠️ Job is closed/expired (check ${attempt}/3). Skipping to next job...`,
+        });
+        await new Promise(r => setTimeout(r, 1200));
+        if (tabId) chrome.tabs.remove(tabId).catch(() => { });
+        if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
+          currentBatchController.currentJobTabId = null;
+        }
+        return { success: false, skipped: true, reason: 'Job posting is expired or closed.' };
+      }
+      if (attempt < 3) {
+        await updateTabHud(tabId, {
+          workflowName: workflow.name,
+          stepIndex: 0,
+          totalSteps: 1,
+          stepName: 'Checking Status',
+          status: 'running',
+          actionTaken: `🔍 Checking job status & apply button (check ${attempt} of 3)...`,
+        });
+        await new Promise(r => setTimeout(r, 800));
+      }
     }
 
     // Interruptible 1.5s delay
     for (let s = 0; s < 15; s++) {
       if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-        chrome.tabs.remove(tabId).catch(() => {});
+        chrome.tabs.remove(tabId).catch(() => { });
         return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
       await new Promise(r => setTimeout(r, 100));
@@ -4645,30 +4902,31 @@ async function runWorkflowForJob(workflow, targetUrl, job) {
     const stateRes = await chrome.storage.local.get('workflowRunState');
     const runState = stateRes.workflowRunState;
     if (currentBatchController && currentBatchController.cancelled) {
-      if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => {});
+      if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => { });
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
     if (currentBatchController?.skipRequested || runState?.status === 'skipped' || /skipped|clicked 3 times/i.test(runState?.error || '')) {
-      if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => {});
+      if (createdTab?.id) chrome.tabs.remove(tabId).catch(() => { });
       return { success: false, skipped: true, reason: runState?.error || 'Job skipped.' };
     }
 
-    const isSuccess = runState?.status === 'completed';
+    const isSuccess = runState?.status === 'completed' || runState?.applied === true;
     const isAlreadyApplied = runState?.alreadyApplied || /already applied/i.test(runState?.message || '');
-    const reason = (isSuccess || isAlreadyApplied)
+    const wasApplied = isSuccess || isAlreadyApplied;
+    const reason = wasApplied
       ? (isAlreadyApplied ? 'Already applied previously on this portal.' : `Successfully applied via "${workflow.name}" workflow!`)
       : (runState?.error || 'Workflow steps could not complete on this job listing.');
 
     // Close tab on completion or already applied
-    if ((isSuccess || isAlreadyApplied) && createdTab?.id) {
-      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), 1500);
+    if (wasApplied && createdTab?.id) {
+      setTimeout(() => chrome.tabs.remove(tabId).catch(() => { }), 1500);
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
     }
 
-    return { success: isSuccess || isAlreadyApplied, alreadyApplied: isAlreadyApplied, reason };
+    return { success: wasApplied, applied: wasApplied, alreadyApplied: isAlreadyApplied, status: wasApplied ? 'applied' : 'failed', reason };
   } catch (err) {
     if (createdTab?.id && currentBatchController?.currentJobTabId === createdTab.id) {
       currentBatchController.currentJobTabId = null;
@@ -4707,22 +4965,22 @@ async function runAIOrchestratorForJob(targetUrl, job, existingTabId = null) {
     }
 
     await waitForTabReady(tabId);
-    await chrome.tabs.update(tabId, { active: true }).catch(() => {});
+    await chrome.tabs.update(tabId, { active: true }).catch(() => { });
 
     // Ensure content script is injected on this tab
     try {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
-    } catch (_) {}
+    } catch (_) { }
 
     if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       return { success: false, reason: 'Batch auto-apply was stopped by user.' };
     }
 
     // Interruptible 1.5s delay
     for (let s = 0; s < 15; s++) {
       if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+        if (tabId) chrome.tabs.remove(tabId).catch(() => { });
         return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
       await new Promise(r => setTimeout(r, 100));
@@ -4760,7 +5018,7 @@ async function runAIOrchestratorForJob(targetUrl, job, existingTabId = null) {
     });
 
     if (tabId && !isAllCareerPageTab({ id: tabId })) {
-      setTimeout(() => chrome.tabs.remove(tabId).catch(() => {}), outcome.success ? 2000 : 1000);
+      setTimeout(() => chrome.tabs.remove(tabId).catch(() => { }), outcome.success ? 2000 : 1000);
     }
 
     if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
@@ -4801,16 +5059,16 @@ async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
     }
 
     await waitForTabReady(tabId);
-    await chrome.tabs.update(tabId, { active: true }).catch(() => {});
+    await chrome.tabs.update(tabId, { active: true }).catch(() => { });
 
     try {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content.js'] });
-    } catch (_) {}
+    } catch (_) { }
 
     // Allow page to settle (interruptible 1.2s delay)
     for (let s = 0; s < 12; s++) {
       if (currentBatchController && (currentBatchController.cancelled || !currentBatchController.running)) {
-        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+        if (tabId) chrome.tabs.remove(tabId).catch(() => { });
         return { success: false, reason: 'Batch auto-apply was stopped by user.' };
       }
       await new Promise(r => setTimeout(r, 100));
@@ -4829,7 +5087,7 @@ async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
         actionTaken: '✅ Job was already applied previously on this portal. Moving to next job...',
       });
       await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
@@ -4851,7 +5109,7 @@ async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
         actionTaken: '⚠️ Job posting is closed or expired. Moving to next job...',
       });
       await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
@@ -4887,7 +5145,7 @@ async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
         maxDepth: 10,
         maxChars: 15000,
       });
-    } catch (_) {}
+    } catch (_) { }
 
     let pageTextRes = null;
     try {
@@ -4895,7 +5153,7 @@ async function aiDecideAndExecuteJob(targetUrl, job, existingTabId = null) {
         action: 'GET_FULL_PAGE_CONTENT',
         maxCharacters: 5000,
       });
-    } catch (_) {}
+    } catch (_) { }
 
     const pageText = (pageTextRes?.content || '').slice(0, 3000);
     const elementsTree = snapshot?.tree || 'No accessibility tree available.';
@@ -4965,7 +5223,7 @@ Analyze the page and determine the next action.`;
         actionTaken: `✅ AI detected: Job already applied previously. (${aiDecision.reason || ''})`,
       });
       await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
@@ -4986,7 +5244,7 @@ Analyze the page and determine the next action.`;
         actionTaken: `⚠️ AI detected: Job closed/expired. (${aiDecision.reason || ''})`,
       });
       await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
@@ -5007,7 +5265,7 @@ Analyze the page and determine the next action.`;
         actionTaken: `⏭️ AI skipped this job: ${aiDecision.reason || 'Unfillable layout'}`,
       });
       await new Promise(r => setTimeout(r, 1200));
-      if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+      if (tabId) chrome.tabs.remove(tabId).catch(() => { });
       if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
         currentBatchController.currentJobTabId = null;
       }
@@ -5041,7 +5299,7 @@ Analyze the page and determine the next action.`;
       // Re-check page status
       const postClickStatus = await checkJobPageStatus(tabId);
       if (postClickStatus.status === 'already_applied') {
-        if (tabId) chrome.tabs.remove(tabId).catch(() => {});
+        if (tabId) chrome.tabs.remove(tabId).catch(() => { });
         if (currentBatchController && currentBatchController.currentJobTabId === tabId) {
           currentBatchController.currentJobTabId = null;
         }
@@ -5059,7 +5317,7 @@ Analyze the page and determine the next action.`;
     console.error('[AI Control] Exception during AI decision:', err);
     if (tabId && currentBatchController?.currentJobTabId === tabId) {
       currentBatchController.currentJobTabId = null;
-      chrome.tabs.remove(tabId).catch(() => {});
+      chrome.tabs.remove(tabId).catch(() => { });
     }
     return { success: false, reason: `AI Control error: ${err.message}` };
   }
