@@ -289,8 +289,16 @@
             }
 
             if (modeBadge) {
-                modeBadge.textContent = '⚡ Checking Workflow Studio...';
-                modeBadge.className = 'hud-badge mode-workflow';
+                if (ctrl.latestItem?.workflowName) {
+                    modeBadge.textContent = `⚡ ${ctrl.latestItem.workflowName}`;
+                    modeBadge.className = 'hud-badge mode-workflow';
+                } else if (ctrl.latestItem?.mode === 'ai') {
+                    modeBadge.textContent = '🤖 AI Control';
+                    modeBadge.className = 'hud-badge mode-ai';
+                } else {
+                    modeBadge.textContent = '⚡ Checking Workflow Studio...';
+                    modeBadge.className = 'hud-badge mode-workflow';
+                }
             }
         } else if (!ctrl.running) {
             if (jobTitleEl) jobTitleEl.textContent = `Batch finished. ${ctrl.appliedCount} applied, ${ctrl.failedCount} skipped.`;
