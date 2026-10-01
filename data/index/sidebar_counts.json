@@ -1,5 +1,5 @@
 {
-  "total_jobs": 854925,
+  "total_jobs": 854938,
   "sources": {
     "naukri": 309968,
     "linkedin": 202448,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 413,
-    "telegram_message": 482
+    "telegram_post": 418,
+    "telegram_message": 490
   },
   "locations": {
-    "bangalore": 185412,
+    "bangalore": 185414,
     "mumbai": 111517,
     "delhi": 90756,
-    "chennai": 91488,
-    "hyderabad": 80093,
-    "pune": 65313,
+    "chennai": 91490,
+    "hyderabad": 80095,
+    "pune": 65314,
     "noida": 41841,
     "ahmedabad": 34181,
     "kolkata": 28472,
     "all_india": 23620,
-    "coimbatore": 17285,
+    "coimbatore": 17286,
     "kochi": 13285,
-    "remote": 8011,
+    "remote": 8012,
     "jaipur": 6145,
     "maharashtra": 7697,
     "indore": 4658,
@@ -145,7 +145,7 @@
     "pollachi": 53,
     "kurla": 52,
     "kollam": 74,
-    "trivandrum": 63,
+    "trivandrum": 64,
     "thanjavur": 1,
     "panipat": 1,
     "perundurai": 1,
@@ -221,7 +221,7 @@
     "ahemdabad": 1,
     "agrasanjay_place": 1,
     "united_kingdom": 1,
-    "across_india": 8,
+    "across_india": 9,
     "malappuram": 2,
     "nandyal": 1,
     "shahdara": 5,
@@ -248,7 +248,7 @@
     "aluva": 33,
     "alwar": 4,
     "talegaon": 16,
-    "work_from_home": 2,
+    "work_from_home": 3,
     "vashi": 1,
     "attingal": 1,
     "hubli": 3,
@@ -403,7 +403,8 @@
     "hassan": 1,
     "satara": 1,
     "tada": 1,
-    "palakkad": 1
+    "palakkad": 1,
+    "india_multiple_cities": 1
   },
-  "generated_at": "2026-10-01T14:40:33.754972"
+  "generated_at": "2026-10-01T15:03:05.940537"
 }
