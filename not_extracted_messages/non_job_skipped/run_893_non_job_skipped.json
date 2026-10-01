@@ -1,0 +1,68 @@
+{
+  "workflow_run_number": "893",
+  "workflow_run_id": "36829061087",
+  "timestamp": "2026-10-01T07:56:20.167160",
+  "runtime_minutes": 41.1,
+  "messages_processed": 99,
+  "new_jobs_stored": 86,
+  "skipped_jobs_count": 8,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43306,
+      "text": "**🤖 Build AI Agents with Claude — FOR FREE!\n**\nLearn to build AI agents, automate repetitive tasks, and create smarter AI-powered workflows using **Claude + 25+ powerful AI tools .**\n\n🎓 Get a FREE Gen AI Claude Certification\n\n**👉 Register Now:** https://link.outskill.com/A-13\n\n⏰ Limited-time FREE offer: Get started now!",
+      "timestamp": "2026-10-01T05:25:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18836,
+      "text": "uii you win, so win.\nO",
+      "timestamp": "2026-10-01T01:45:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259739,
+      "text": "Tumkur\nBed\nmoe\nWFAO\n3\nZO:20,000/-8R\nYeNGnuu\ncuaao\nZOUM2\n8073047630",
+      "timestamp": "2026-10-01T02:45:55+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259742,
+      "text": "Shivamogga\nMENSWEAR\nFASHION\nSTYLE\nTREND\nGeG\nWeAwed\n(E  R)\n ee\n  3\nD3\nU\nBaRp8 2EGRRR BR GSR 832\n \n3esgnab\nO\nQ\n\n\n2EE\n7892778714\nñ, o ,\naon-577201",
+      "timestamp": "2026-10-01T04:11:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259766,
+      "text": "Madikeri\nweangd\nuuaaeoau smege\naCU UGC Ueaug\nqqu\naa) ueynga.\n  \nBaqg.\nGJA2OOM2:\n23\n7337683376",
+      "timestamp": "2026-10-01T05:00:48+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8339,
+      "text": "Agentic AI Skills Git Repos ♥️ \n\nhttps://x.com/imarun_chauhan/status/2105544490756780284\nGenAl Agent Implementations\nBelow is a comprehensive overview of our GenAl agent implementations, organized by category and functionality.\nEach implementation is designed to showcase different aspects of Al agent development, from basic\nconversational agents to complex multi-agent systems.\n#\nCategory\nAgent Name\nFramework\nKey Features\nBeginner\nSimple Conversational\nLangChain/PydanticAl\nContext-aware conversations,\n1\nAgent\nhistory management\n2\nBeginner\nSimple Question\nLangChain\nQuery understanding, concise\nAnswering\nanswers\nBeginner\nSimple Data Analysis\nLangChain/PydanticAl\nDataset interpretation, natural\n3\nlanguage queries\nIntroduction to\nFramework\nLangGraph\nModular Al workflows, state\n4\nLangGraph\nmanagement\nFramework\nModel Context\nMCP\nAl-external resource\n5\nProtocol (MCP)\nintegration\nATLAS: Academic\nLangGraph\nMulti-agent academic\n6\nEducational\nTask System\nplanning, note-taking\n7\nEducational\nScientific Paper Agent\nLangGraph\nLiterature review automation\nChiron - Feynman\nAdaptive learning, checkpoint\n8\nEducational\nLangGraph\nLearning\nsystem\nBusiness\nCustomer Support\nLangGraph\nQuery categorization,\n9\nAgent\nsentiment analysis\n10\nEssay Grading Agent\nLangGraph\nAutomated grading, multiple\nBusiness\ncriteria\n11\nBusiness\nTravel Planning Agent\nLangGraph\nPersonalized itineraries\n12\nBusiness\nGenAl Career\nLangGraph\nCareer guidance, learning\nAssistant\npaths\n13\nProject Manager\nLangGraph\nTask generation, risk\nBusiness\nAssistant\nassessment\n14\nContract Analysis\nLangGraph\nClause analysis, compliance\nBusiness\nAssistant\nchecking\n15\nE2E Testing Agent\nLangGraph\nTest automation, browser\nBusiness\ncontrol",
+      "timestamp": "2026-10-01T07:13:37+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16491,
+      "text": "Global Web3 Events: https://t.me/eventsweb3\nHASHTAG\nWEB3",
+      "timestamp": "2026-10-01T04:09:14+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14941,
+      "text": "🚨 FRESHERS HIRING | SOFTWARE DEVELOPER | 10 LPA PPO\n\nDon’t wait for your resume to get shortlisted. Prove your skills first.\n\nAccioJob is conducting an offline hiring drive with ThoughtSpot at its Chennai campus.\n\n💻 Role: Software Developer\n🎓 Eligibility: B.E./B.Tech | CSE & IT-related Branches | 2025 & 2026 Graduates\n🧠 Skills: DSA • SQL • HTML • CSS • React JS\n📍 Work Location: Trivandrum | Hybrid\n🚀 PPO: ₹10 LPA\n\n👉 Apply for the Hiring Drive: https://go.acciojob.com/E2XcdW\nAccioJob\nThoughtSpot\nFREE\nJOB DRIVE\nSDE-1\nCTC: Up to\nOffline assessment at\n7-10LPA\nAccioJob Skill Centre, Chennai\nApply Now",
+      "timestamp": "2026-10-01T04:10:23+00:00"
+    }
+  ]
+}
