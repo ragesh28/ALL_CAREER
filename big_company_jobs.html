@@ -7,6 +7,7 @@
     <title>All_Career - Big Company Jobs</title>
     <link rel="icon" href="String_Theory.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="all_career_auto_apply.css">
     <style>
         :root {
             --bg-deep: #06080f;
@@ -579,6 +580,19 @@
         </div>
 
         <div class="topnav-right">
+            <!-- ⚡ Auto Apply & Application History (Between Search and Showing Count) -->
+            <div class="topnav-auto-apply-group">
+                <button class="auto-apply-nav-btn" id="autoApplyBtn" onclick="window.AllCareerAutoApply.startBatch()" title="Auto Apply to visible jobs on this page via Workflow Studio or AI">
+                    <span class="auto-apply-icon">⚡</span>
+                    <span class="auto-apply-text">Auto Apply</span>
+                </button>
+                <button class="history-nav-btn" id="historyNavBtn" onclick="window.AllCareerAutoApply.openHistory()" title="View Application History">
+                    <span class="history-icon">📋</span>
+                    <span class="history-text">History</span>
+                    <span class="history-badge" id="historyNavBadge">0</span>
+                </button>
+            </div>
+
             <div class="topnav-count">Showing <span id="jobCount">0</span> jobs</div>
             <button class="clear-all-btn" id="clearAllBtn" onclick="clearAllFilters()">✕ Clear All</button>
         </div>
@@ -1225,7 +1239,12 @@
         const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
         if (currentPage > totalPages) currentPage = totalPages;
         const start = (currentPage - 1) * JOBS_PER_PAGE;
-        renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+        const pageJobs = filteredJobs.slice(start, start + JOBS_PER_PAGE);
+        window.__allCareerCurrentPageJobs = pageJobs;
+        if (window.AllCareerAutoApply) {
+            window.AllCareerAutoApply.updateCountBadge(pageJobs.length);
+        }
+        renderJobs(pageJobs);
         renderPagination(totalPages);
         document.getElementById('jobCount').textContent = filteredJobs.length;
     }
@@ -1305,6 +1324,7 @@
 
     init();
     </script>
+    <script src="all_career_auto_apply.js"></script>
 </body>
 
 </html>

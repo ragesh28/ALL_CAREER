@@ -9,6 +9,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="all_career_auto_apply.css">
     <style>
         :root {
             --bg-deep: #06080f;
@@ -86,25 +87,27 @@
         }
 
         .topnav-left {
-            flex: 1;
+            flex: 0 0 auto;
             display: flex;
-            justify-content: flex-start;
+            align-items: center;
+            min-width: 170px;
         }
 
         .topnav-center {
-            flex: 0 0 auto;
+            flex: 1;
+            max-width: 420px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .topnav-right {
-            flex: 1;
+            flex: 0 0 auto;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 16px;
-            padding-right: 175px;
+            gap: 12px;
+            position: relative;
         }
 
         .topnav-logo {
@@ -112,12 +115,14 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
+            flex-shrink: 0;
         }
 
         .topnav-logo img {
             width: 32px;
             height: 32px;
             border-radius: 8px;
+            flex-shrink: 0;
         }
 
         .topnav-logo span {
@@ -126,6 +131,7 @@
             font-size: 1.2rem;
             color: #fff;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .topnav-search {
@@ -168,15 +174,209 @@
             color: var(--text-muted);
         }
 
-        .topnav-count {
-            font-size: 0.82rem;
+        /* ── Showing Count Button with Popover ── */
+        .topnav-count-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .topnav-count-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 13px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
             white-space: nowrap;
         }
 
-        .topnav-count span {
+        .topnav-count-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(52, 211, 153, 0.4);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .topnav-count-btn span#jobCount {
             color: var(--primary);
             font-weight: 800;
+        }
+
+        .count-cat-arrow {
+            font-size: 0.70rem;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: rgba(56, 189, 248, 0.14);
+            color: #38bdf8;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .category-dropdown-popover {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 250px;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 12px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            padding: 12px 14px;
+            display: none;
+            z-index: 1050;
+            animation: fadeInPop 0.2s ease-out;
+        }
+
+        .category-dropdown-popover.open,
+        .topnav-count-container:hover .category-dropdown-popover {
+            display: block;
+        }
+
+        @keyframes fadeInPop {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .popover-header {
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .popover-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .popover-cat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.76rem;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.15s;
+        }
+
+        .popover-cat-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .popover-cat-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .popover-cat-name {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .popover-cat-num {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* ── Category Breakdown Pills ── */
+        .walkin-cat-breakdown {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .wcat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .wcat-pill:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        .wcat-pill.active {
+            outline: 2px solid currentColor;
+            background: rgba(255, 255, 255, 0.16) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+        }
+
+        .wcat-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .wcat-pill.technical { border-color: rgba(56, 189, 248, 0.35); color: #7dd3fc; }
+        .wcat-pill.technical .wcat-dot, .wcat-dot.technical { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+
+        .wcat-pill.electrical { border-color: rgba(245, 158, 11, 0.35); color: #fcd34d; }
+        .wcat-pill.electrical .wcat-dot, .wcat-dot.electrical { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+
+        .wcat-pill.non-technical { border-color: rgba(52, 211, 153, 0.35); color: #6ee7b7; }
+        .wcat-pill.non-technical .wcat-dot, .wcat-dot.non-technical { background: #34d399; box-shadow: 0 0 6px #34d399; }
+
+        .wcat-pill.pharma { border-color: rgba(244, 63, 94, 0.35); color: #fda4af; }
+        .wcat-pill.pharma .wcat-dot, .wcat-dot.pharma { background: #f43f5e; box-shadow: 0 0 6px #f43f5e; }
+
+        .wcat-pill.banking---finance, .wcat-pill.banking-finance { border-color: rgba(251, 191, 36, 0.35); color: #fde047; }
+        .wcat-pill.banking---finance .wcat-dot, .wcat-pill.banking-finance .wcat-dot, .wcat-dot.banking---finance, .wcat-dot.banking-finance { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+
+        .wcat-pill.sales---marketing, .wcat-pill.sales-marketing { border-color: rgba(168, 85, 247, 0.35); color: #d8b4fe; }
+        .wcat-pill.sales---marketing .wcat-dot, .wcat-pill.sales-marketing .wcat-dot, .wcat-dot.sales---marketing, .wcat-dot.sales-marketing { background: #a855f7; box-shadow: 0 0 6px #a855f7; }
+
+        .wcat-pill.hr---staffing, .wcat-pill.hr-staffing { border-color: rgba(236, 72, 153, 0.35); color: #f472b6; }
+        .wcat-pill.hr---staffing .wcat-dot, .wcat-pill.hr-staffing .wcat-dot, .wcat-dot.hr---staffing, .wcat-dot.hr-staffing { background: #ec4899; box-shadow: 0 0 6px #ec4899; }
+
+        .wcat-pill.others, .wcat-pill.other { border-color: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+        .wcat-pill.others .wcat-dot, .wcat-pill.other .wcat-dot, .wcat-dot.others, .wcat-dot.other { background: #94a3b8; box-shadow: 0 0 4px #94a3b8; }
+
+        .wcat-name {
+            font-weight: 600;
+        }
+
+        .wcat-num {
+            font-weight: 700;
+            opacity: 0.95;
         }
 
         .clear-all-btn {
@@ -660,6 +860,7 @@
             display: grid;
             gap: 14px;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            grid-auto-rows: auto;
         }
 
         /* ── Job Card ── */
@@ -667,19 +868,19 @@
             background: var(--bg-card);
             backdrop-filter: blur(8px);
             border: 1px solid var(--border);
-            padding: 18px 20px;
-            border-radius: 14px;
+            padding: 12px 16px 10px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             transform: translateY(12px);
             animation: cardIn 0.45s forwards;
             width: 100%;
-            height: 210px;
+            min-height: 130px;
+            height: auto;
             box-sizing: border-box;
-            overflow: hidden;
             position: relative;
         }
 
@@ -700,11 +901,10 @@
         }
 
         .top-source-badge-btn,
-        .flyer-source-btn,
         .telegram-source-btn {
             position: absolute;
-            top: 12px;
-            right: 14px;
+            top: 10px;
+            right: 12px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -715,20 +915,7 @@
             text-decoration: none;
             transition: all 0.2s ease;
             z-index: 2;
-        }
-
-        .flyer-source-btn {
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .flyer-source-btn:hover {
-            background: rgba(56, 189, 248, 0.25);
-            border-color: #38bdf8;
-            color: #fff;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35);
+            white-space: nowrap;
         }
 
         .telegram-source-btn {
@@ -762,14 +949,21 @@
             display: flex;
             gap: 12px;
             align-items: flex-start;
+            position: relative;
+            margin-bottom: 2px;
+            padding-right: 0;
+        }
+
+        .job-card.has-top-badge .card-top {
+            padding-right: 88px; /* Leaves clear space so long company names finish with dots before post button */
         }
 
         .logo-box {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
+            border-radius: 11px;
             padding: 3px;
             position: relative;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -781,8 +975,8 @@
         }
 
         .company-logo {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             object-fit: contain;
             position: absolute;
             top: 3px;
@@ -805,97 +999,121 @@
         .card-info {
             flex: 1;
             min-width: 0;
+            overflow: hidden;
         }
 
         .company-name {
             color: var(--text-muted);
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 600;
             margin-bottom: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
+            max-width: 100%;
+            display: block;
         }
 
         .job-title {
-            font-size: 0.92rem;
-            line-height: 1.35;
+            font-size: 0.94rem;
+            line-height: 1.36;
             color: var(--text-main);
             font-weight: 700;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            max-width: 100%;
         }
 
         .job-meta {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
+            margin-top: 1px;
         }
 
         .meta-row {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             overflow: hidden;
+            flex-wrap: wrap;
         }
 
+        /* ── Unified Badges (Location, Experience, Posted Date, Source: Exact same big size for all jobs) ── */
         .meta-badge {
-            font-size: 0.7rem;
-            padding: 4px 9px;
-            border-radius: 7px;
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-muted);
             border: 1px solid rgba(255, 255, 255, 0.06);
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             white-space: nowrap;
-            font-weight: 500;
-            max-width: 120px;
+            font-weight: 600;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 1;
+        }
+
+        /* ── All Icons: Exact same 18px big uniform size for location, exp, date, and source ── */
+        .meta-icon {
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
         }
 
         .meta-badge.loc {
             color: var(--accent-blue);
-            border-color: rgba(96, 165, 250, 0.15);
+            border-color: rgba(96, 165, 250, 0.18);
         }
 
         .meta-badge.exp {
             color: var(--accent-amber);
-            border-color: rgba(251, 191, 36, 0.15);
+            border-color: rgba(251, 191, 36, 0.18);
         }
 
         .meta-badge.date {
             color: var(--primary);
-            border-color: rgba(52, 211, 153, 0.15);
+            border-color: rgba(52, 211, 153, 0.18);
         }
 
         .walkin-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 3px 8px;
-            border-radius: 6px;
+            gap: 6px;
+            padding: 4px 11px;
+            border-radius: 8px;
             background: rgba(234, 179, 8, 0.12);
             border: 1px solid rgba(234, 179, 8, 0.35);
             color: #fbbf24;
-            font-size: 0.72rem;
+            font-size: 0.80rem;
             font-weight: 700;
-            margin-top: 6px;
+            margin: 1px 0 2px 0;
             width: fit-content;
             letter-spacing: 0.2px;
+            align-self: flex-start;
         }
 
         .walkin-badge::before {
             content: '';
             display: inline-block;
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #fbbf24;
             box-shadow: 0 0 8px #fbbf24;
@@ -910,82 +1128,205 @@
         .portal-badge {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 9px;
-            border-radius: 7px;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.68rem;
+            font-size: 0.84rem;
             color: var(--text-muted);
             flex-shrink: 0;
-            font-weight: 500;
+            font-weight: 600;
+            height: 29px;
+            box-sizing: border-box;
+            max-width: 175px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1;
         }
 
         .portal-logo {
-            width: 13px;
-            height: 13px;
+            width: 18px;
+            height: 18px;
             object-fit: contain;
-            border-radius: 2px;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
         }
 
         .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 10px;
+            padding-top: 6px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: auto;
+            margin-top: 4px;
         }
 
         .card-role {
             color: var(--text-dim);
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 500;
-            max-width: 140px;
+            max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .apply-btn {
-            padding: 7px 18px;
+            padding: 7.5px 18px;
             background: transparent;
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
-            border-radius: 9px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 8px;
+            font-size: 0.86rem;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.2px;
             transition: all 0.25s;
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .apply-btn:hover {
             background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
+            color: #ffffff;
             border-color: transparent;
-            box-shadow: 0 4px 18px rgba(52, 211, 153, 0.3);
-            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
         }
 
-        .auto-apply-btn {
-            padding: 7px 14px;
-            background: linear-gradient(135deg, #4f46e5, #a855f7);
-            color: white;
-            font-weight: 700;
-            border-radius: 9px;
+        .card-footer .apply-btn:not(:only-child) {
+            padding: 6px 11px;
             font-size: 0.78rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s;
-            margin-left: 8px;
-            font-family: inherit;
+            gap: 4px;
         }
 
-        .auto-apply-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 18px rgba(168, 85, 247, 0.35);
+        /* ── Specific Overrides for Consistency across all card types ── */
+        .job-card.normal-job {
+            padding: 12px 16px 10px;
+            gap: 6px;
+            min-height: 130px;
+            height: auto;
+        }
+
+        .job-card.normal-job .card-top {
+            gap: 12px;
+            margin-bottom: 2px;
+            padding-right: 0;
+        }
+
+        .job-card.normal-job.has-top-badge .card-top {
+            padding-right: 88px;
+        }
+
+        .job-card.normal-job .logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 11px;
+        }
+
+        .job-card.normal-job .company-logo {
+            width: 42px;
+            height: 42px;
+        }
+
+        .job-card.normal-job .company-name {
+            font-size: 0.76rem;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
+        }
+
+        .job-card.normal-job .job-title {
+            font-size: 0.94rem;
+            line-height: 1.36;
+        }
+
+        .job-card.normal-job .job-meta {
+            gap: 5px;
+            margin-top: 1px;
+        }
+
+        .job-card.normal-job .meta-row {
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .job-card.normal-job .meta-badge {
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-weight: 600;
+            gap: 6px;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
+        }
+
+        .job-card.normal-job .meta-icon {
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .job-card.normal-job .portal-badge {
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-weight: 600;
+            gap: 6px;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
+        }
+
+        .job-card.normal-job .portal-logo {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .job-card.normal-job .card-footer {
+            padding-top: 6px;
+            margin-top: 4px;
+        }
+
+        .job-card.normal-job .card-role {
+            font-size: 0.76rem;
+            max-width: 120px;
+        }
+
+        .job-card.normal-job .apply-btn {
+            padding: 7.5px 18px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            border-radius: 8px;
+            gap: 6px;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.2px;
+        }
+
+        .job-card.normal-job .apply-btn:hover {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
         }
 
         /* ── Pagination ── */
@@ -1230,7 +1571,31 @@
         </div>
 
         <div class="topnav-right">
-            <div class="topnav-count">Showing <span id="jobCount">0</span> jobs</div>
+            <!-- ⚡ Auto Apply & Application History (Between Search and Showing Count) -->
+            <div class="topnav-auto-apply-group">
+                <button class="auto-apply-nav-btn" id="autoApplyBtn" onclick="window.AllCareerAutoApply.startBatch()" title="Auto Apply to visible jobs on this page via Workflow Studio or AI">
+                    <span class="auto-apply-icon">⚡</span>
+                    <span class="auto-apply-text">Auto Apply</span>
+                </button>
+                <button class="history-nav-btn" id="historyNavBtn" onclick="window.AllCareerAutoApply.openHistory()" title="View Application History">
+                    <span class="history-icon">📋</span>
+                    <span class="history-text">History</span>
+                    <span class="history-badge" id="historyNavBadge">0</span>
+                </button>
+            </div>
+
+            <div class="topnav-count-container" id="topnavCountContainer">
+                <button class="topnav-count-btn" id="showingCountBtn" onclick="toggleCategoryDropdown(event)" title="Click to view category breakdown">
+                    Showing <span id="jobCount">0</span> jobs <span class="count-cat-arrow">📊 Breakdown ▾</span>
+                </button>
+                <div class="category-dropdown-popover" id="categoryDropdownPopover">
+                    <div class="popover-header">
+                        <span>This Page Categories</span>
+                        <span id="popoverTotalBadge" style="color:var(--primary);font-weight:700;"></span>
+                    </div>
+                    <div class="popover-body" id="popoverCategoryList"></div>
+                </div>
+            </div>
             <button class="clear-all-btn" id="clearAllBtn" onclick="clearAllFilters()">✕ Clear All</button>
         </div>
     </nav>
@@ -1490,11 +1855,14 @@
         <!-- ══ MAIN CONTENT ══ -->
         <main class="main-content">
             <div class="sort-bar">
-                <div class="sort-label">Sort by:</div>
-                <select class="sort-select" id="sortSelect" onchange="applyFilters()">
-                    <option value="date">Latest First</option>
-                    <option value="company">Company A–Z</option>
-                </select>
+                <div class="sort-left-group" style="display:flex;align-items:center;gap:8px;">
+                    <div class="sort-label">Sort by:</div>
+                    <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+                        <option value="date">Latest First</option>
+                        <option value="company">Company A–Z</option>
+                    </select>
+                </div>
+                <div class="walkin-cat-breakdown" id="sortBarCategories"></div>
             </div>
 
             <!-- Active filter chips -->
@@ -1567,9 +1935,9 @@
             { id: 'foundit', label: 'Foundit', logo: 'logos/portals/foundit.png' },
             { id: 'apna', label: 'Apna', logo: 'logos/portals/apna.png' },
             { id: 'freshersworld', label: 'FreshersWorld', logo: 'logos/portals/freshersworld.ico' },
-            { id: 'telegram_message', label: 'Telegram Message', logo: 'logos/portals/telegram.svg' },
-            { id: 'telegram_post', label: 'Telegram Post', logo: 'logos/portals/telegram.svg' },
-            { id: 'google_images', label: 'Google Images', logo: 'https://www.google.com/favicon.ico' },
+            { id: 'telegram_message', label: 'Messages', logo: 'logos/portals/telegram.svg' },
+            { id: 'telegram_post', label: 'Post', logo: 'logos/portals/telegram.svg' },
+            { id: 'google_images', label: 'Images', logo: 'https://www.google.com/favicon.ico' },
             { id: 'other', label: 'Other Sources', logo: '' },
         ];
 
@@ -2222,7 +2590,8 @@
 
             const total = selectedPortals.size + (activeDateRange !== 'all' ? 1 : 0) +
                 selectedLocations.size + selectedRoles.size + (activeExp >= 0 ? 1 : 0) +
-                selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedWalkinDates.size + selectedSkills.size;
+                selectedCompanies.size + (walkinOnly ? 1 : 0) + selectedWalkinDates.size + selectedSkills.size +
+                (selectedRoleCategory ? 1 : 0);
 
             const badge = document.getElementById('appliedBadge');
             const clearBtn = document.getElementById('clearAllBtn');
@@ -2248,6 +2617,9 @@
         function renderChips() {
             const container = document.getElementById('activeChips');
             const chips = [];
+            if (selectedRoleCategory) {
+                chips.push({ label: '🏷️ ' + selectedRoleCategory, remove: () => { selectedRoleCategory = null; applyFilters(); refreshChips(); } });
+            }
             selectedPortals.forEach(p => {
                 const info = PORTALS.find(x => x.id === p);
                 chips.push({ label: info ? info.label : p, remove: () => { selectedPortals.delete(p); document.getElementById('src-' + p)?.classList.remove('checked'); refreshChips(); } });
@@ -2293,7 +2665,90 @@
             applyFilters();
         }
 
+        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        function formatShortMonthDate(dateStr) {
+            if (!dateStr) return '';
+            return String(dateStr)
+                .replace(/\bJanuary\b/gi, 'Jan')
+                .replace(/\bFebruary\b/gi, 'Feb')
+                .replace(/\bMarch\b/gi, 'Mar')
+                .replace(/\bApril\b/gi, 'Apr')
+                .replace(/\bMay\b/gi, 'May')
+                .replace(/\bJune\b/gi, 'Jun')
+                .replace(/\bJuly\b/gi, 'Jul')
+                .replace(/\bAugust\b/gi, 'Aug')
+                .replace(/\bSeptember\b/gi, 'Sep')
+                .replace(/\bOctober\b/gi, 'Oct')
+                .replace(/\bNovember\b/gi, 'Nov')
+                .replace(/\bDecember\b/gi, 'Dec');
+        }
+
+        const COMMON_CITIES_LIST = [
+            'bangalore', 'bengaluru', 'chennai', 'hyderabad', 'mumbai', 'pune', 
+            'noida', 'gurgaon', 'gurugram', 'delhi', 'kolkata', 'ahmedabad', 
+            'coimbatore', 'kochi', 'chandigarh', 'indore', 'jaipur', 'navallur', 
+            'navalur', 'kadubeesanahalli', 'all india'
+        ];
+
+        function cleanJobTitle(rawTitle, job = {}) {
+            if (!rawTitle) {
+                const fb = job.role_search || job.role_category;
+                return fb ? fb.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Open Position';
+            }
+            let t = String(rawTitle).trim();
+
+            // 1. Strip Walk-in phrases (e.g. "Walk-in ||", "Mega Walk-in Drive -", "Walkin:")
+            t = t.replace(/\b(?:mega\s+|urgent\s+|exclusive\s+|direct\s+)?walk[- ]?in(?:\s+(?:drive|interview|event|hiring|alert|openings?))?\b/gi, '');
+
+            // 2. Strip "Company is conducting Walk In interview for"
+            t = t.replace(/\b[A-Za-z0-9]+\s+is\s+conducting\s+(?:walk[- ]?in\s+)?(?:interview\s+)?(?:for\s+)?/gi, '');
+
+            // 3. Strip dates like "19-Sep-26", "24 September 26", "23rd & 24th Sep", "on 24th Sep'26"
+            t = t.replace(/\b\d{1,2}(?:st|nd|rd|th)?[-/\s]+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*(?:[-/\s]+\d{2,4})?[-/\s]*/gi, '');
+            t = t.replace(/\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]+\d{1,2}(?:st|nd|rd|th)?(?:[-/\s]+\d{2,4})?[-/\s]*/gi, '');
+            t = t.replace(/\bon\s+\d{1,2}[-/][a-z0-9]+[-/]\d{2,4}\b/gi, '');
+            t = t.replace(/\b(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, '');
+
+            // 4. Strip interview tails e.g. "- Interview on ...", "- Interview (Thursday)", etc.
+            t = t.replace(/\s*[-|–—:]\s*interview(?:\s+on\s+.*|\s+for\s+.*|\s*\(.*\))?$/gi, '');
+
+            // 5. Strip city mentions
+            for (const c of COMMON_CITIES_LIST) {
+                const reg = new RegExp(`\\b(?:in|at|for)?\\s*${c}(?:\\s+location)?\\b`, 'gi');
+                t = t.replace(reg, '');
+            }
+
+            // 6. Strip company mentions if preceded by at/in (e.g. "at HCL Tech", "in TCS")
+            t = t.replace(/\b(?:at|in)\s+(?:hcl(?:\s+tech)?|tcs|infosys|wipro|cognizant|accenture|firstsource|sutherland)\b/gi, '');
+
+            // 7. Strip leading "For", "Hiring for", "Interview for", "Spot offers"
+            t = t.replace(/^\s*(?:for|hiring\s+for|interview\s+for|looking\s+for|spot\s+offers?|openings?\s+for)\s+/gi, '');
+
+            // 8. Clean empty brackets () or []
+            t = t.replace(/\(\s*\)|\[\s*\]/g, '');
+
+            // 9. Clean stray separators and whitespace
+            t = t.replace(/^[\|\-\:\–\—\/\,\.\s]+|[\|\-\:\–\—\/\,\.\s]+$/g, '');
+            t = t.replace(/\s*[\|\-\–\—\/]\s*[\|\-\–\—\/]+\s*/g, ' - ');
+            t = t.replace(/\s{2,}/g, ' ').replace(/^[-|:,\s]+|[-|:,\s]+$/g, '').trim();
+
+            // 10. Fallback if result is too short or generic
+            const low = t.toLowerCase();
+            if (t.length < 3 || ['drive', 'interview', 'freshers', 'urgent', 'hiring', 'tcs', 'walkin', 'walk-in', 'voice'].includes(low)) {
+                const fallback = job.role_search || job.role_category;
+                if (fallback) {
+                    return fallback.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+                return rawTitle;
+            }
+
+            return t;
+        }
+
         function clearAllFilters() {
+            selectedRoleCategory = null;
             selectedPortals.clear();
             selectedLocations.clear();
             selectedRoles.clear();
@@ -2326,9 +2781,6 @@
             applyFilters();
         }
 
-        const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const MONTH_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
         function cleanTimeAndNoise(text) {
             if (!text) return "";
             let s = text;
@@ -2349,7 +2801,7 @@
         function isWalkinJob(job) {
             if (!job) return false;
             const src = String(job.source || '').toLowerCase();
-            if (src === 'google_images' || src.includes('flyer')) return true;
+            if (src === 'google_images' || src.includes('google') || src.includes('flyer')) return true;
 
             const title = String(job.title || job.role || '');
             const desc = String(job.description || job.other_details || '');
@@ -2358,7 +2810,7 @@
             if (walkKwRegex.test(title) || walkKwRegex.test(desc)) {
                 return true;
             }
-            if (job.is_walkin === true && (walkKwRegex.test(title) || walkKwRegex.test(desc) || src === 'google_images')) {
+            if (job.is_walkin === true && (walkKwRegex.test(title) || walkKwRegex.test(desc) || src === 'google_images' || src.includes('google'))) {
                 return true;
             }
             return false;
@@ -2379,17 +2831,17 @@
             const rangeBothMonths = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
             if (rangeBothMonths) return rangeBothMonths[1].trim();
 
-            // 2. Single month range: "10th - 11th September" or "10 to 11 September"
-            const rangeMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?(?:\s*,\s*\d{1,2}(?:st|nd|rd|th)?)*\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
-            if (rangeMatch) return rangeMatch[1].trim();
+            // 2. Same month range: "10th - 12th September" or "10 to 12 Sep"
+            const rangeSameMonth = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s*(?:-|–|—|to|&)\s*\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
+            if (rangeSameMonth) return rangeSameMonth[1].trim();
 
-            // 3. Single Date with Month Name: "4th September 2026", "7th September"
-            const singleMatch = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s*,?\s*\d{4})?|\d{1,2}-(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*-\d{2,4})\b/i);
-            if (singleMatch) return singleMatch[1].trim();
+            // 3. Single date: "10th September 2026" or "10 Sep"
+            const singleDate = text.match(/\b(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}(?:\s*,?\s*\d{4})?)\b/i);
+            if (singleDate) return singleDate[1].trim();
 
-            // 4. Numeric Date: "10/09/2026"
-            const numMatch = text.match(/\b(\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4}(?:\s*(?:-|–|to)\s*\d{1,2}[-/.](?:\d{1,2}|[A-Za-z]{3})[-/.]\d{2,4})?)\b/);
-            if (numMatch) return numMatch[1].trim();
+            // 4. ISO or standard format: "2026-09-10" or "10-09-2026"
+            const stdDate = text.match(/\b(\d{4}[-/.]\d{1,2}[-/.]\d{1,2}|\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4})\b/);
+            if (stdDate) return stdDate[1].trim();
 
             return null;
         }
@@ -2420,7 +2872,7 @@
                     dObj.setHours(0, 0, 0, 0);
                     if (dObj >= now && dObj <= maxFuture) {
                         resultDates.push({
-                            label: MONTH_NAMES[m] + ' ' + d,
+                            label: MONTH_SHORT[m] + ' ' + d,
                             dateObj: dObj
                         });
                     }
@@ -2663,6 +3115,10 @@
             let sourceVal = String(job.platform || job.source || sourceHint || '').toLowerCase().trim();
             if (sourceVal.includes('google')) {
                 sourceVal = 'google_images';
+            } else if (sourceVal === 'telegram' || sourceVal === 'telegram_message' || (sourceVal.includes('telegram') && !sourceVal.includes('post'))) {
+                sourceVal = 'telegram_message';
+            } else if (sourceVal === 'telegram_post' || (sourceVal.includes('telegram') && sourceVal.includes('post'))) {
+                sourceVal = 'telegram_post';
             } else if (!sourceVal || !knownPortals.has(sourceVal) || sourceVal === 'other') {
                 if (uLow.includes('linkedin.com') || job.linkedin_url) sourceVal = 'linkedin';
                 else if (uLow.includes('naukri.com')) sourceVal = 'naukri';
@@ -2749,14 +3205,26 @@
         async function fetchJobsFromTurso() {
             // Step 1: Fetch metadata indexes + initial 100 latest preview jobs (< 60ms)
             try {
-                const [mRes, scRes, prevRes] = await Promise.allSettled([
+                const [mRes, scRes, prevRes, rcRes] = await Promise.allSettled([
                     fetch('data/index/manifest.json'),
                     fetch('data/index/sidebar_counts.json'),
-                    fetch('data/index/latest_preview_100.json')
+                    fetch('data/index/latest_preview_100.json'),
+                    fetch('data/index/role_categories.json')
                 ]);
 
                 if (mRes.status === 'fulfilled' && mRes.value.ok) manifestData = await mRes.value.json();
                 if (scRes.status === 'fulfilled' && scRes.value.ok) sidebarCountsData = await scRes.value.json();
+                if (rcRes.status === 'fulfilled' && rcRes.value.ok) {
+                    try {
+                        const fetchedCategories = await rcRes.value.json();
+                        if (fetchedCategories && typeof fetchedCategories === 'object') {
+                            ROLE_CATEGORIES_DICT = fetchedCategories;
+                            COMPILED_ROLE_PATTERNS = buildCompiledRolePatterns(ROLE_CATEGORIES_DICT);
+                        }
+                    } catch (e) {
+                        console.warn("Using default embedded role dictionary:", e);
+                    }
+                }
                 if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
                     const previewRows = await prevRes.value.json();
                     ingestJobs(previewRows);
@@ -3047,6 +3515,12 @@
                 }
             }
 
+            // Role Category filter (Technical, Electrical, Non-Technical, Pharma, etc.)
+            if (selectedRoleCategory) {
+                const cCat = classifyJobCategory(j);
+                if (cCat !== selectedRoleCategory) return false;
+            }
+
             return true;
         }
 
@@ -3075,7 +3549,7 @@
             const activeSources = [...selectedPortals];
             const activeLocs = [...selectedLocations].map(cityToLocSlug).filter(Boolean);
             const searchVal = (document.getElementById('searchInput')?.value || '').trim();
-            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0;
+            const hasOtherFilters = activeDateRange !== 'all' || activeExp >= 0 || selectedCompanies.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || searchVal.length > 0 || Boolean(selectedRoleCategory);
 
             if (hasOtherFilters) {
                 return filteredJobs.length;
@@ -3112,18 +3586,240 @@
             return total > 0 ? total : filteredJobs.length;
         }
 
+        let selectedRoleCategory = null;
+
+        function toggleRoleCategoryFilter(catName) {
+            if (selectedRoleCategory === catName) {
+                selectedRoleCategory = null;
+            } else {
+                selectedRoleCategory = catName;
+            }
+            applyFilters();
+            refreshChips();
+        }
+
+        let ROLE_CATEGORIES_DICT = {
+            "Technical": [
+                "software", "developer", "engineer", "full stack", "frontend", "backend", "java", "python", "react", "node",
+                "sql", "dba", "devops", "cloud", "aws", "azure", "tester", "testing", "qa", "quality assurance", "sdet",
+                "automation", "aem", "tech lead", "sap", "iics", "informatica", "data analyst", "data engineer", "data scientist",
+                "machine learning", "ai", "ml", "network engineer", "system admin", "server admin", "administrator", "cyber",
+                "security", "programmer", "ui/ux", "web developer", "mobile app", "android", "ios", "scrum master",
+                "architect", "dlp", "symantec", "oracle", "salesforce", ".net", "c++", "packaging", "application packaging",
+                "structures", "it support", "database", "hardware", "graphic designer", "animator",
+                "technical", "it consultant", "network", "technologist", "systems engineer"
+            ],
+            "Electrical": [
+                "electrical", "electrician", "electronics", "ece", "eee", "embedded", "vlsi", "panel design", "plc", "scada",
+                "pcb", "mechatronics", "instrumentation", "mechanical", "mechanical engineer", "civil engineer", "civil",
+                "autocad", "cad", "bim", "hvac", "solar", "substation", "transformer", "switchgear", "circuit", "microcontroller",
+                "technician", "assembly", "hardware engineer", "maintenance engineer", "field engineer", "service engineer"
+            ],
+            "Non-Technical": [
+                "voice", "semi voice", "non voice", "chat", "chat support", "chat process", "customer support", "customer care",
+                "customer service", "customer services", "bpo", "kpo", "bpm", "call center", "teleperformance", "client experience",
+                "front desk", "receptionist", "back office", "data entry", "executive", "operations", "order management", "spe",
+                "sme", "service desk", "process associate", "process executive", "associate", "inbound", "outbound", "helpdesk",
+                "clerk", "admin", "freshers", "fresher", "graduate", "field officer", "field executive", "collection", "delivery",
+                "driver", "office assistant", "assistant", "trainee", "apprentice", "operator", "retail", "store assistant",
+                "support executive", "support associate"
+            ],
+            "Pharma": [
+                "pharma", "pharmacy", "pharmacist", "healthcare", "health care", "medical", "clinical", "nursing", "nurse",
+                "biotech", "biotechnology", "microbiology", "biology", "doctor", "hospital", "us healthcare", "patient care",
+                "lifesciences", "life science", "mbbs", "b.pharm", "m.pharm", "ar caller", "medical coder", "medical billing",
+                "formulation", "osd", "medicines", "drug safety", "physician", "paramedical", "dental", "dentist",
+                "lab technician", "chemist", "chemistry", "chemical", "chemical engineer", "pathology", "biochemistry",
+                "therapeutics", "pharmacovigilance", "clinical research", "quality control pharma", "qc pharma", "qa pharma"
+            ],
+            "Banking & Finance": [
+                "banker", "banking", "bank", "accountant", "accounts", "finance", "financial", "audit", "chartered accountant",
+                "ca", "tally", "tax", "taxation", "credit", "loan", "equity", "investment", "pr to po", "p2p", "r2r", "gl",
+                "billing", "insurance", "wealth", "underwriter", "mortgage", "mutual fund", "icici", "hdfc", "axis", "cashier",
+                "invoice", "otc", "order to cash", "financial analyst", "risk analyst", "credit analyst", "portfolio manager"
+            ],
+            "Sales & Marketing": [
+                "sales", "marketing", "bde", "business development", "inside sales", "tele sales", "telesales", "direct sales",
+                "field sales", "lead generation", "digital marketing", "seo", "sem", "social media", "rm", "relationship manager",
+                "relationship officer", "agency manager", "client partner", "key account", "telecaller", "telecalling",
+                "counsellor", "counselor", "store manager", "retail manager", "counter sales", "sales executive", "brand manager"
+            ],
+            "HR & Staffing": [
+                "hr", "human resources", "recruiter", "recruitment", "talent acquisition", "hrbp", "sourcer", "talent partner",
+                "staffing", "onboarding", "payroll", "hr executive", "hr generalist"
+            ]
+        };
+
+        function escapeRegexChar(s) {
+            return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+        }
+
+        function buildCompiledRolePatterns(dict) {
+            const patterns = {};
+            for (const [cat, words] of Object.entries(dict)) {
+                const sorted = words.slice().sort((a, b) => b.length - a.length).map(escapeRegexChar);
+                patterns[cat] = new RegExp('(?:^|[^a-zA-Z0-9])(?:' + sorted.join('|') + ')(?:$|[^a-zA-Z0-9])', 'i');
+            }
+            return patterns;
+        }
+
+        let COMPILED_ROLE_PATTERNS = buildCompiledRolePatterns(ROLE_CATEGORIES_DICT);
+
+        const ROLE_CATEGORY_PRIORITY = ['Pharma', 'Electrical', 'Banking & Finance', 'Sales & Marketing', 'HR & Staffing', 'Technical', 'Non-Technical'];
+
+        function classifyJobCategory(job) {
+            if (!job) return 'Others';
+            // High-precision check on job title first
+            const titleText = ' ' + (job.title || '').toLowerCase() + ' ';
+            for (const cat of ROLE_CATEGORY_PRIORITY) {
+                const regex = COMPILED_ROLE_PATTERNS[cat];
+                if (regex && regex.test(titleText)) {
+                    return cat;
+                }
+            }
+
+            // Fallback: check full context (title, role_category, sector, company, description, role_search)
+            const fullText = ' ' + ((job.title || '') + ' ' + (job.role_category || '') + ' ' + (job.sector || '') + ' ' + (job.company || '') + ' ' + (job.description || '') + ' ' + (job.role_search || '')).toLowerCase() + ' ';
+            for (const cat of ROLE_CATEGORY_PRIORITY) {
+                const regex = COMPILED_ROLE_PATTERNS[cat];
+                if (regex && regex.test(fullText)) {
+                    return cat;
+                }
+            }
+            return 'Others';
+        }
+
+        function getWalkinCategoryBreakdown(jobs) {
+            if (!jobs || jobs.length === 0) return [];
+            const counts = {};
+            for (let i = 0; i < jobs.length; i++) {
+                const cat = classifyJobCategory(jobs[i]);
+                counts[cat] = (counts[cat] || 0) + 1;
+            }
+
+            const otherCount = counts['Others'] || counts['Other'] || 0;
+            delete counts['Others'];
+            delete counts['Other'];
+
+            const sorted = Object.entries(counts)
+                .filter(([_, cnt]) => cnt > 0)
+                .sort((a, b) => b[1] - a[1]);
+
+            const result = sorted.map(([name, count]) => ({ name, count }));
+            if (otherCount > 0) {
+                result.push({ name: 'Others', count: otherCount });
+            }
+            return result;
+        }
+
+        function toggleCategoryDropdown(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            const pop = document.getElementById('categoryDropdownPopover');
+            if (pop) {
+                pop.classList.toggle('open');
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('topnavCountContainer');
+            const pop = document.getElementById('categoryDropdownPopover');
+            if (container && pop && !container.contains(e.target)) {
+                pop.classList.remove('open');
+            }
+        });
+
         function renderPage() {
             const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
             if (currentPage > totalPages) currentPage = totalPages;
             const start = (currentPage - 1) * JOBS_PER_PAGE;
-            renderJobs(filteredJobs.slice(start, start + JOBS_PER_PAGE));
+            const pageJobs = filteredJobs.slice(start, start + JOBS_PER_PAGE);
+            window.__allCareerCurrentPageJobs = pageJobs;
+            if (window.AllCareerAutoApply) {
+                window.AllCareerAutoApply.updateCountBadge(pageJobs.length);
+            }
+            renderJobs(pageJobs);
             renderPagination(totalPages);
 
             const displayTotal = getActiveFilterTotal();
             const jobCountEl = document.getElementById('jobCount');
-            const topnavCountEl = document.querySelector('.topnav-count');
+            const showingCountBtn = document.getElementById('showingCountBtn');
+            const popoverCatList = document.getElementById('popoverCategoryList');
+            const popoverTotalBadge = document.getElementById('popoverTotalBadge');
+            const sortBarCategories = document.getElementById('sortBarCategories');
 
-            if (topnavCountEl) {
+            if (jobCountEl) {
+                jobCountEl.textContent = displayTotal.toLocaleString();
+            }
+
+            // CRITICAL: Compute categories ONLY for the jobs showing on THIS PAGE (100 jobs or page count)
+            const cats = getWalkinCategoryBreakdown(pageJobs);
+            const pageTotal = pageJobs.length;
+
+            if (popoverTotalBadge) {
+                popoverTotalBadge.textContent = `${pageTotal} on this page (${displayTotal.toLocaleString()} total)`;
+            }
+
+            // Populate Sort-bar category pills for the current page
+            if (sortBarCategories) {
+                if (cats.length > 0 && pageTotal > 0) {
+                    sortBarCategories.innerHTML = `
+                        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);display:inline-flex;align-items:center;margin-right:4px;">
+                            This Page (${pageTotal}):
+                        </span>
+                    ` + cats.map(c => {
+                        const slug = c.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                        const isSelected = selectedRoleCategory === c.name;
+                        return `
+                            <span class="wcat-pill ${slug} ${isSelected ? 'active' : ''}" 
+                                  onclick="toggleRoleCategoryFilter('${esc(c.name)}')" 
+                                  title="${esc(c.name)}: ${c.count} of ${pageTotal} jobs on this page. Click to filter.">
+                                <span class="wcat-dot"></span>
+                                <span class="wcat-name">${esc(c.name)}:</span>
+                                <span class="wcat-num">${c.count}</span>
+                            </span>
+                        `;
+                    }).join('');
+                    sortBarCategories.style.display = 'inline-flex';
+                } else {
+                    sortBarCategories.innerHTML = '';
+                    sortBarCategories.style.display = 'none';
+                }
+            }
+
+            // Populate Showing Count Button Popover
+            if (popoverCatList) {
+                if (cats.length > 0 && pageTotal > 0) {
+                    popoverCatList.innerHTML = cats.map(c => {
+                        const slug = c.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                        const pct = pageTotal > 0 ? Math.round((c.count / pageTotal) * 100) : 0;
+                        const isSelected = selectedRoleCategory === c.name;
+                        return `
+                            <div class="popover-cat-item ${isSelected ? 'active' : ''}" 
+                                 onclick="toggleRoleCategoryFilter('${esc(c.name)}')" 
+                                 style="cursor:pointer;" 
+                                 title="Click to filter by ${esc(c.name)}">
+                                <div class="popover-cat-left">
+                                    <span class="wcat-dot ${slug}"></span>
+                                    <span class="popover-cat-name" style="${isSelected ? 'font-weight:700;color:#38bdf8;' : ''}">${esc(c.name)}</span>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <span class="popover-cat-num" style="font-weight:700;">${c.count}</span>
+                                    <span style="font-size:0.68rem;color:var(--text-dim);">(${pct}%)</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    popoverCatList.innerHTML = '<div style="font-size:0.75rem;color:var(--text-dim);text-align:center;padding:8px 0;">No category data</div>';
+                }
+            }
+
+            // Multi-day indicator in Showing Count button if applicable
+            if (showingCountBtn) {
+                let multiDayNote = '';
                 if (selectedWalkinDates.size > 1) {
                     let sumDates = 0;
                     selectedWalkinDates.forEach(d => {
@@ -3131,15 +3827,10 @@
                     });
                     const overlap = sumDates - displayTotal;
                     if (overlap > 0) {
-                        topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> unique jobs <span style="font-size:0.75rem; color:#38bdf8; font-weight:normal; margin-left:4px;" title="${selectedWalkinDates.size} dates selected with ${sumDates} total date listings. ${overlap} multi-day drives appear on multiple selected dates.">(${overlap} multi-day drives)</span>`;
-                    } else {
-                        topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> jobs`;
+                        multiDayNote = `<span style="font-size:0.72rem;color:#38bdf8;font-weight:600;margin-left:2px;" title="${selectedWalkinDates.size} dates selected with ${sumDates} total date listings.">(${overlap} multi-day)</span>`;
                     }
-                } else {
-                    topnavCountEl.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> jobs`;
                 }
-            } else if (jobCountEl) {
-                jobCountEl.textContent = displayTotal.toLocaleString();
+                showingCountBtn.innerHTML = `Showing <span id="jobCount">${displayTotal.toLocaleString()}</span> jobs ${multiDayNote} <span class="count-cat-arrow">📊 Breakdown ▾</span>`;
             }
         }
 
@@ -3160,7 +3851,14 @@
             if (jobs.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
             noRes.style.display = 'none';
             grid.innerHTML = jobs.map((job, i) => {
-                const source = (job.source || '').toLowerCase();
+                let source = (job.source || '').toLowerCase().trim();
+                if (source.includes('google')) {
+                    source = 'google_images';
+                } else if (source === 'telegram' || source === 'telegram_message' || (source.includes('telegram') && !source.includes('post'))) {
+                    source = 'telegram_message';
+                } else if (source === 'telegram_post' || (source.includes('telegram') && source.includes('post'))) {
+                    source = 'telegram_post';
+                }
                 const logo = getLogoData(job.company || '');
                 const date = formatDate(job.date || job.fetchedAt);
                 const url = job.url || '';
@@ -3174,11 +3872,9 @@
                 if (source.includes('telegram') || telegramUrl) {
                     const tgLink = telegramUrl || (url.includes('t.me') ? url : '');
                     if (tgLink) {
-                        const tgLabel = (source === 'telegram_post') ? '📲 Post Source' : (source === 'telegram_message' ? '💬 Msg Source' : '📲 Source');
-                        topSourceBadgeHtml = `<a href="${esc(tgLink)}" target="_blank" rel="noopener" class="top-source-badge-btn telegram-source-btn" title="View original Telegram post / message">${tgLabel}</a>`;
+                        const tgLabel = (source === 'telegram_post') ? '📲 Post' : '📲 Messages';
+                        topSourceBadgeHtml = `<a href="${esc(tgLink)}" target="_blank" rel="noopener" class="top-source-badge-btn telegram-source-btn" title="View original post / message">${tgLabel}</a>`;
                     }
-                } else if (flyerUrl) {
-                    topSourceBadgeHtml = `<a href="${esc(flyerUrl)}" target="_blank" rel="noopener" class="top-source-badge-btn flyer-source-btn" title="View original walk-in flyer image">🖼️ Source</a>`;
                 }
                 
                 const sourceLabel = PORTALS.find(p => p.id === source)?.label || (source ? source.charAt(0).toUpperCase() + source.slice(1) : '');
@@ -3189,7 +3885,7 @@
                 
                 const isWalkin = isWalkinJob(job);
                 const upcomingWalkinDates = getNormalizedWalkinDates(job);
-                let walkinDisplayDate = 'Upcoming Walk-in';
+                let walkinDisplayDate = 'Upcoming';
                 if (selectedWalkinDates.size > 0) {
                     const matched = upcomingWalkinDates.filter(d => selectedWalkinDates.has(d));
                     if (matched.length === 1) {
@@ -3197,7 +3893,7 @@
                     } else if (matched.length > 1) {
                         walkinDisplayDate = `${matched[0]} – ${matched[matched.length - 1]}`;
                     } else {
-                        walkinDisplayDate = upcomingWalkinDates[0] || job.walkin_date || 'Upcoming Walk-in';
+                        walkinDisplayDate = upcomingWalkinDates[0] || job.walkin_date || 'Upcoming';
                     }
                 } else if (upcomingWalkinDates.length > 0) {
                     if (upcomingWalkinDates.length === 1) {
@@ -3208,36 +3904,45 @@
                 } else if (job.walkin_date) {
                     walkinDisplayDate = job.walkin_date;
                 }
-
-                let applyButtonsHtml = '';
-                if (url && url.startsWith('http')) {
-                    applyButtonsHtml += `<a href="${esc(url)}" target="_blank" class="apply-btn">Apply →</a>`;
-                    applyButtonsHtml += `<button class="auto-apply-btn" data-apply-url="${esc(url)}" data-title="${esc(job.title || '')}" data-company="${esc(job.company || '')}">⚡ Apply</button>`;
+                walkinDisplayDate = formatShortMonthDate(walkinDisplayDate);
+                if (walkinDisplayDate) {
+                    walkinDisplayDate = walkinDisplayDate.replace(/\bupcoming\s+walk-?ins?\b/gi, 'Upcoming').trim();
                 }
-                
-                if (contactEmail || isMailto) {
-                    const mailAddr = contactEmail || url.replace('mailto:', '');
-                    applyButtonsHtml += `<a href="mailto:${esc(mailAddr)}" class="apply-btn" style="background:linear-gradient(135deg, #0ea5e9, #0284c7)">✉️ Email</a>`;
+                const cleanTitle = isWalkin ? cleanJobTitle(job.title || job.role || '', job) : cleanJobTitle(job.title || 'Position', job);
+
+                const actionButtons = [];
+
+                // 1. Normal button opening original page
+                const origPageUrl = (url && url.startsWith('http')) 
+                    ? url 
+                    : (telegramUrl && telegramUrl.startsWith('http') 
+                        ? telegramUrl 
+                        : (flyerUrl && flyerUrl.startsWith('http') ? flyerUrl : ''));
+
+                if (origPageUrl) {
+                    actionButtons.push(`<a href="${esc(origPageUrl)}" target="_blank" rel="noopener" class="apply-btn">Apply →</a>`);
                 }
 
+                // 2. Email button if email is mentioned
+                const mailAddress = contactEmail || (url.startsWith('mailto:') ? url.replace('mailto:', '') : '');
+                if (mailAddress) {
+                    actionButtons.push(`<a href="mailto:${esc(mailAddress)}" class="apply-btn" style="background:linear-gradient(135deg, #0ea5e9, #0284c7)" title="Send Email">✉️ Email</a>`);
+                }
+
+                // 3. Mobile number button if phone is mentioned
                 if (phone) {
                     const cleanTel = phone.replace(/[^\d+]/g, '');
-                    applyButtonsHtml += `<a href="tel:${esc(cleanTel)}" class="apply-btn" style="background:linear-gradient(135deg, #10b981, #059669)">📞 Call / WA</a>`;
-                }
-
-                if (telegramUrl || source.includes('telegram')) {
-                    const tgLink = telegramUrl || (url.includes('t.me') ? url : '');
-                    if (tgLink) {
-                        applyButtonsHtml += `<a href="${esc(tgLink)}" target="_blank" class="apply-btn" style="background:linear-gradient(135deg, #229ED9, #1b84b8)" title="View Original Telegram Post">📲 Post</a>`;
+                    if (cleanTel) {
+                        actionButtons.push(`<a href="tel:${esc(cleanTel)}" class="apply-btn" style="background:linear-gradient(135deg, #10b981, #059669)" title="Call or WhatsApp">📞 Call / WA</a>`);
                     }
                 }
 
-                if (flyerUrl) {
-                    applyButtonsHtml += `<a href="${esc(flyerUrl)}" target="_blank" class="apply-btn" style="background:linear-gradient(135deg, #0284c7, #0369a1)" title="View Original Image Flyer">🖼️ Flyer</a>`;
-                }
+                // Strictly maximum 3 buttons
+                const applyButtonsHtml = actionButtons.slice(0, 3).join('');
+                const isNormalJob = !isWalkin && !mailAddress && !phone;
 
                 return `
-            <div class="job-card" style="animation-delay:${i * 0.025}s">
+            <div class="job-card ${isNormalJob ? 'normal-job' : ''} ${topSourceBadgeHtml ? 'has-top-badge' : ''}" style="animation-delay:${i * 0.025}s">
                 ${topSourceBadgeHtml}
                 <div class="card-top">
                     <div class="logo-box">
@@ -3248,42 +3953,27 @@
                     </div>
                     <div class="card-info">
                         <div class="company-name">${esc(job.company)}</div>
-                        <div class="job-title">${esc(job.title || 'Position')}</div>
-                        ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDisplayDate)}</div>` : ''}
+                        <div class="job-title" title="${esc(cleanTitle)}">${esc(cleanTitle)}</div>
                     </div>
                 </div>
+                ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDisplayDate)}</div>` : ''}
                 <div class="job-meta">
                     <div class="meta-row">
-                        ${cityLoc ? `<div class="meta-badge loc" title="${esc(rawLocStr)}">${esc(cityLoc)}</div>` : ''}
-                        ${job.experience ? `<div class="meta-badge exp" title="Experience">${esc(job.experience)}</div>` : ''}
+                        ${cityLoc ? `<div class="meta-badge loc" title="${esc(rawLocStr)}"><span class="meta-icon">📍</span> ${esc(cityLoc)}</div>` : ''}
+                        ${job.experience ? `<div class="meta-badge exp" title="Experience: ${esc(job.experience)}"><span class="meta-icon">💼</span> ${esc(job.experience)}</div>` : ''}
                     </div>
                     <div class="meta-row">
-                        ${date ? `<div class="meta-badge date">${date}</div>` : ''}
-                        ${sourceLabel ? `<div class="portal-badge">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" onerror="this.style.display='none'">` : ''}<span style="font-size:0.68rem">${esc(sourceLabel)}</span></div>` : ''}
+                        ${date ? `<div class="meta-badge date" title="Posted: ${date}"><span class="meta-icon">🕒</span> ${date}</div>` : ''}
+                        ${sourceLabel ? `<div class="portal-badge" title="Source: ${esc(sourceLabel)}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';"><span class="meta-icon" style="display:none">🌐</span>` : '<span class="meta-icon">🌐</span>'}<span>${esc(sourceLabel)}</span></div>` : ''}
                     </div>
                 </div>
                 <div class="card-footer">
                     <span class="card-role">${esc(job.role_search || '')}</span>
-                    <span style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">${applyButtonsHtml}</span>
+                    <span style="display:flex;align-items:center;gap:4px;flex-wrap:nowrap;">${applyButtonsHtml}</span>
                 </div>
             </div>`;
             }).join('');
         }
-
-        // ⚡ Auto Apply bridge — relays to the AI Auto Fill V4 extension (if installed)
-        document.getElementById('jobsGrid').addEventListener('click', (e) => {
-            const btn = e.target.closest('.auto-apply-btn');
-            if (!btn) return;
-            e.preventDefault();
-            window.postMessage({
-                type: 'ALL_CAREER_APPLY',
-                applyUrl: btn.dataset.applyUrl,
-                jobTitle: btn.dataset.title,
-                company: btn.dataset.company
-            }, window.location.origin);
-            btn.textContent = '⏳ Opening...';
-            setTimeout(() => { btn.textContent = '⚡ Apply'; }, 2500);
-        });
 
         function renderPagination(totalPages) {
             const c = document.getElementById('pagination');
@@ -3515,6 +4205,7 @@
 
         init();
     </script>
+    <script src="all_career_auto_apply.js"></script>
 </body>
 
 </html>

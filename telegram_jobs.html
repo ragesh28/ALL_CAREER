@@ -930,7 +930,7 @@
                 const telegramUrl = job.telegram_url || (url.includes('t.me') ? url : '');
                 const sourceUrl = telegramUrl || url || '';
                 const isTg = source.includes('telegram') || Boolean(telegramUrl);
-                const sourceDisplayLabel = source === 'telegram_post' ? 'Telegram Post' : (source === 'telegram_message' ? 'Telegram Msg' : (sourceName || 'Source'));
+                const sourceDisplayLabel = source === 'telegram_post' ? 'Post' : (source === 'telegram_message' || source === 'telegram' ? 'Messages' : (sourceName || 'Source'));
 
                 return `
             <div class="job-card ${isWalkin ? 'walkin-card' : ''}" style="animation-delay:${i * 0.02}s">
