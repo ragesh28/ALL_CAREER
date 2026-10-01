@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>AutoFill Studio</title>
-  <defs><linearGradient id="autofill-gradient" x1="8" y1="6" x2="57" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#8AF2FF"/><stop offset=".47" stop-color="#22D3EE"/><stop offset="1" stop-color="#4F46E5"/></linearGradient></defs>
-  <path d="M12 11.5 25.5 4l13 7.5v15L25.5 34 12 26.5v-15Z" fill="url(#autofill-gradient)"/>
-  <path d="m25.5 4 13 7.5-13 7.4L12 11.5 25.5 4Z" fill="#C8FAFF" fill-opacity=".55"/>
-  <path d="M11.5 29 25.5 37l14-8v15.5L25.5 53 11.5 44.5V29Z" fill="url(#autofill-gradient)"/>
-  <path d="m20.5 42 4 4 8-10" fill="none" stroke="#E8FDFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="m17 17 8.5 4.8 8.5-4.8M25.5 21.8v8" fill="none" stroke="#08344A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

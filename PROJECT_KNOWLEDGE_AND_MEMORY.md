@@ -14,7 +14,7 @@
 1. **All Career Web Portal** (`all_jobs.html`, `big_company_jobs.html`, `all_career_auto_apply.js`):
    - Aggregates jobs across multiple portals (Naukri, LinkedIn, Indeed, Internshala, Hirist, Foundit, company career sites, etc.).
    - Provides filtering (date posted, keywords, job types), batch selection, and a one-click **"Start Batch Auto Apply"** engine.
-2. **Chrome Extension (Workflow Studio & Auto Applier)** (`claude extsnhion/` & `autofill-v4/`):
+2. **Chrome Extension (Workflow Studio & Auto Applier)** (`Auto-Fill-V5/` & `autofill-v4/`):
    - Injects automation engines and HUDs into job application pages.
    - Supports recorded deterministic workflows (`Workflow Studio`) as well as AI-powered dynamic question answering and form completion.
    - Operates with Bring-Your-Own-Key (BYOK) APIs (OpenAI, Gemini, Groq, Anthropic) or local AI routers (OmniRoute `127.0.0.1:20128`).
@@ -64,7 +64,7 @@ These rules have been explicitly specified by the user and must **never** be vio
 
 ## 3. Architecture & Key Files
 
-### 3.1 Chrome Extension (`claude extsnhion/`)
+### 3.1 Chrome Extension (`Auto-Fill-V5/`)
 
 - [`byok-background-proxy.js`](file:///c:/Users/lrage/OneDrive/Documents/VS_CODE/ALL_CAREER_3/claude%20extsnhion/byok-background-proxy.js):
   - **Central Background Service Worker**.
