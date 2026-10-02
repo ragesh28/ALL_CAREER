@@ -1,5 +1,5 @@
 {
-  "total_jobs": 880375,
+  "total_jobs": 880380,
   "sources": {
     "naukri": 315892,
     "linkedin": 208538,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 454,
-    "telegram_message": 526
+    "telegram_message": 531
   },
   "locations": {
     "bangalore": 189499,
@@ -54,7 +54,7 @@
     "noida": 43021,
     "ahmedabad": 35344,
     "kolkata": 29916,
-    "all_india": 23648,
+    "all_india": 23653,
     "coimbatore": 17737,
     "kochi": 13626,
     "remote": 8180,
@@ -424,5 +424,5 @@
     "dewas": 2,
     "mathura": 1
   },
-  "generated_at": "2026-10-02T19:29:18.997250"
+  "generated_at": "2026-10-02T23:55:26.716191"
 }
