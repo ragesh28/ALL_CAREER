@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "897",
+  "workflow_run_id": "36976571182",
+  "timestamp": "2026-10-02T07:24:07.028693",
+  "runtime_minutes": 17.65,
+  "messages_processed": 55,
+  "new_jobs_stored": 38,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30427,
+      "text": "4.8⭐ Rated & 100% FREE\n\n10M+ learners trust us with their growth. Join them for free! 💡\n\nRegister Now: https://link.outskill.com/A-11\n\nRated 4.8⭐ and available at no cost, this 2-hour workshop helps you unlock Claude's true capabilities:\n✅ Learn to choose the right AI tool for every task\n✅ Witness live outputs: a deck, data analysis, and more\n✅ Seamlessly integrate Claude into your daily routine\n#1 AI TOOL\nLEARN CLAUDE\nIN JUST 2 HOURS\nFREE WORKSHOP\nJOIN 10 MILLION+ LEARNERS\nFREE\nAI PLAYBOOK\nTHE CLAUDE GUIDE\nREGISTER NOW",
+      "timestamp": "2026-10-02T04:34:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43329,
+      "text": "**🚨Many Have Applied and Got Claude Certified**\n**\nDon't Miss | Free Gen AI Claude Certification – FREE! 🚀**\n\n💸 ₹10,000 → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\n**Eligibility: **Students/Freshers/Experienced\n \n**Register Free:** https://link.outskill.com/A-13\n\n⚡️ Limited Seats!",
+      "timestamp": "2026-10-02T05:25:07+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18845,
+      "text": "Next time you're feeling low,\nremember this:\nYou're blessed to be alive.\nYou're breathing, walking,\nseeing the world, drinking\nclean water, eating food,\nand having a roof over\nyour head.\nLife may not be perfect,\nbut there's always something\nto be grateful for.",
+      "timestamp": "2026-10-02T01:45:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6382,
+      "text": "Hacktober is here!!\n\nI am hosting a challenge called Kestra Hactober in which you can win prizes like:\n- 2 Macbook Neos\n- 2 IPads\n- Amazon Gift Vouchers and more.\n\nWho can participate?\n- all beginners - college students + professionals\n\nTwo tracks:\n- Good-First Issue Pull Request\n- Building Ready-to-use flow\n\nParticipate and submit between 1st and 31st October for a chance to win.\n\nLink: https://fandf.co/3VxYXNb\nRegister here: https://fandf.co/4rtfgH3",
+      "timestamp": "2026-10-02T04:02:28+00:00"
+    }
+  ]
+}

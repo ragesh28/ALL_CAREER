@@ -1,5 +1,5 @@
 {
-  "total_jobs": 859267,
+  "total_jobs": 859305,
   "sources": {
     "naukri": 313361,
     "linkedin": 202448,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 419,
-    "telegram_message": 502
+    "telegram_post": 446,
+    "telegram_message": 513
   },
   "locations": {
-    "bangalore": 186269,
+    "bangalore": 186279,
     "mumbai": 112029,
     "delhi": 91241,
-    "chennai": 92053,
-    "hyderabad": 80353,
-    "pune": 65801,
+    "chennai": 92057,
+    "hyderabad": 80357,
+    "pune": 65802,
     "noida": 42196,
     "ahmedabad": 34408,
     "kolkata": 28689,
-    "all_india": 23631,
+    "all_india": 23640,
     "coimbatore": 17367,
     "kochi": 13362,
-    "remote": 8086,
+    "remote": 8088,
     "jaipur": 6176,
     "maharashtra": 7732,
     "indore": 4663,
@@ -92,7 +92,7 @@
     "ts": 222,
     "lucknow": 336,
     "surat": 256,
-    "uttar_pradesh": 568,
+    "uttar_pradesh": 569,
     "post_all_india": 173,
     "serilingampalli": 155,
     "nagpur": 238,
@@ -163,7 +163,7 @@
     "sharjah": 1,
     "jabalpur": 6,
     "pan_india": 5,
-    "mangalore": 40,
+    "mangalore": 43,
     "athani": 1,
     "zirakpur": 22,
     "kanpur": 53,
@@ -411,7 +411,11 @@
     "cuddalore": 1,
     "hybrid_south_goaverna": 1,
     "raigarh": 1,
-    "bhiwadi": 1
+    "bhiwadi": 1,
+    "krishnagiri": 1,
+    "pudukkottai": 1,
+    "tirupattur": 1,
+    "muktainagar": 1
   },
-  "generated_at": "2026-10-02T07:07:52.669904"
+  "generated_at": "2026-10-02T07:24:34.291430"
 }
