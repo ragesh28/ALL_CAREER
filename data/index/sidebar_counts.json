@@ -1,5 +1,5 @@
 {
-  "total_jobs": 855873,
+  "total_jobs": 855874,
   "sources": {
     "naukri": 309968,
     "linkedin": 202448,
@@ -41,7 +41,7 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 418,
+    "telegram_post": 419,
     "telegram_message": 502
   },
   "locations": {
@@ -57,7 +57,7 @@
     "all_india": 23628,
     "coimbatore": 17297,
     "kochi": 13285,
-    "remote": 8014,
+    "remote": 8015,
     "jaipur": 6174,
     "maharashtra": 7732,
     "indore": 4662,
@@ -407,5 +407,5 @@
     "india_multiple_cities": 1,
     "jalgaon": 2
   },
-  "generated_at": "2026-10-01T20:27:10.743627"
+  "generated_at": "2026-10-02T00:56:36.569981"
 }
