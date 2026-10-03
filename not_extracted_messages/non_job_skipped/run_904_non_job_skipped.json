@@ -1,0 +1,47 @@
+{
+  "workflow_run_number": "904",
+  "workflow_run_id": "37149865012",
+  "timestamp": "2026-10-03T20:05:58.410584",
+  "runtime_minutes": 2.55,
+  "messages_processed": 8,
+  "new_jobs_stored": 6,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8245,
+      "text": "**Flex**\nPosition: Associate Software Engineer\nQualification:  Bachelor's Degree\nExperienc﻿e: Freshers/ Experienced\nLocation: Chennai, India\n\n📌Apply Now: https://flextronics.wd1.myworkdayjobs.com/en-US/Careers/job/Associate-Software-Engineer_WD230588\n\n👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
+      "timestamp": "2026-10-03T19:49:22+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8246,
+      "text": "**Optum**\nPosition: Full Stack Engineer - Java\nQualifications: B.Tech/ MCA/ M.Sc./ M.Tech\nExperience: Freshers/ Experienced\nLocation: Hyderabad, India\n\n📌Apply Now: https://careers.unitedhealthgroup.com/job/hyderabad/full-stack-engineer-java/34088/101293195232",
+      "timestamp": "2026-10-03T19:49:22+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8247,
+      "text": "**NTT DATA**\nPosition: Associate DevOps Engineer\nQualification: Bachelor’s Degree\nExperienc﻿e: Entry Level\nLocation: Bangalore, India\n\n📌Apply Now: https://careers.nttdata.com/global/en/job/R-147043/Associate-DevOps-Engineer\n\n👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
+      "timestamp": "2026-10-03T19:49:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8248,
+      "text": "**GlobalLogic**\nPosition: Technical Support Engineer - AI/ML\nQualifications: Bachelor’s Degree\nExperience: Freshers/ Experienced\nLocation: Gurgaon, India\n\n📌Apply Now: https://www.globallogic.com/careers/technical-support-engineer-aiml-gurugram-irc300786/\n\n👉WhatsApp Channel: https://whatsapp.com/channel/0029VaI5CV93AzNUiZ5Tt226\n\n👉Telegram Link: https://t.me/addlist/4q2PYC0pH_VjZDk5\n\nLike for more job opportunities ❤️",
+      "timestamp": "2026-10-03T19:49:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16499,
+      "text": "• Rain is hiring [Software Engineer](https://hashtagweb3.com/engineer941?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• WhiteBIT is hiring [Middle Financial BI Analyst](https://hashtagweb3.com/analyst160?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Tether is hiring [Engagement Manager](https://hashtagweb3.com/manager327?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Robinhood is hiring [Brokerage Communications Specialist](https://hashtagweb3.com/bcs2?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n• Binance is hiring [Binance Accelerator Program](https://hashtagweb3.com/binance2?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)",
+      "timestamp": "2026-10-03T19:32:08+00:00"
+    }
+  ]
+}
