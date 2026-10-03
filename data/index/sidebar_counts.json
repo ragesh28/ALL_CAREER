@@ -1,5 +1,5 @@
 {
-  "total_jobs": 897209,
+  "total_jobs": 897238,
   "sources": {
     "naukri": 318197,
     "linkedin": 215467,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 480,
-    "telegram_message": 563
+    "telegram_post": 491,
+    "telegram_message": 581
   },
   "locations": {
-    "bangalore": 192707,
-    "mumbai": 116753,
-    "delhi": 95612,
-    "chennai": 96227,
-    "hyderabad": 84929,
-    "pune": 70001,
-    "noida": 43776,
+    "bangalore": 192717,
+    "mumbai": 116754,
+    "delhi": 95614,
+    "chennai": 96229,
+    "hyderabad": 84931,
+    "pune": 70002,
+    "noida": 43777,
     "ahmedabad": 35922,
     "kolkata": 30332,
-    "all_india": 23673,
-    "coimbatore": 17976,
+    "all_india": 23675,
+    "coimbatore": 17980,
     "kochi": 13791,
-    "remote": 8299,
+    "remote": 8300,
     "jaipur": 6725,
     "maharashtra": 8107,
     "indore": 4879,
@@ -486,7 +486,9 @@
     "zambia": 1,
     "tinsukia": 1,
     "kiphire": 1,
-    "bellandur_amanikere": 2
+    "bellandur_amanikere": 2,
+    "attibele": 2,
+    "devanahalli_sez": 1
   },
-  "generated_at": "2026-10-03T16:17:50.195467"
+  "generated_at": "2026-10-03T16:47:04.848187"
 }

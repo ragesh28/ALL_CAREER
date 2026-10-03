@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "903",
+  "workflow_run_id": "37136956671",
+  "timestamp": "2026-10-03T16:46:44.491942",
+  "runtime_minutes": 14.27,
+  "messages_processed": 41,
+  "new_jobs_stored": 29,
+  "skipped_jobs_count": 6,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43363,
+      "text": "**FREE 3 hour AI workshop happening today!**\n\nMaster 25+ AI tools live. ChatGPT, Claude, Canva AI, Suno, Grok, Notebook LM, Kimi, Stitch and more.\n\n3 hours. Zero payment. Zero prior knowledge needed.\n\nSeats are limited. \n\n**Register now:** https://link.outskill.com/A-13\nEE!\n3 HOUR\nAIWORKSHOP\n25+ TOOLS\nREGISTER NOW\nK\nStitchSUNC",
+      "timestamp": "2026-10-03T13:15:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259888,
+      "text": "Cisco IS HIRING!\n\n💼 Role: Software Engineer\n🏢 Company: Cisco\n📍 Location: Bangalore, India\n🔄 Work Mode: Hybrid\n🆔 Job ID: 2022199\n\n🔹 Opportunity to work on software engineering projects at Cisco.\n\n🔗 Apply Now:\nhttps://careers.cisco.com/global/en/job/2022199/Software-Engineer",
+      "timestamp": "2026-10-03T15:48:13+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259889,
+      "text": "Now Hiring:Restaurant Manager \n\nTrainee Restaurant Manager \n\nLocations:📍 Delhi | Punjab | Mumbai | Pune | Ahemdabad | Bangalore | Hyderabad \n\nWhat We Are Looking For:\nExperience: Minimum 4–5 years in the QSR (KFC ,McDonald's , Etc) or  Coffee industry \nEducation: IHM graduates will have an added advantage \nSkillset: Strong operational command over SOPs, P&;L management, and brand audits \n\nWhy Tim Hortons?\n📈 High-Impact Growth Opportunities \n📚 Continuous Learning amp; Leadership Development \n🤝 People-First, Supportive Culture \n🏆 Merit-Driven Recognition & Rewards \n\nHow to Apply: Ready to fuel your career? \nDrop your updated \nCV directly to:📩 careers@timhortonsindia.com cc: sunny.magoo@timhortonsindia.com\nTim Hortons\nM\nWE ARE\nHIRING\nJoin our growth journey\nand be a part of something bigger!\nCURRENT OPENINGS\nRestaurant Manager\nTim\nTim\nTrainee Restaurant\nHortons\nManager\nHortony\nTim\nREQUIREMENTS\nHortons\nMinimum Exp 4-5 Years in\nQSR & Coffee Industry\nIHM Graduate will be advantage\nMust be good with SOP's | P&L |\nAudits\nGROW YOUR\nCAREER.\nBUILD THE\nLOCATION\nINTERESTED?\nFUTURE.\nDelhi\nPunjab\nAhemdabad\nSend your resume at\nMumbai Pune\nHyderabad\nBangalore\ncareers@timhortonsindia.com\nsunny.magoo@timhortonsindia.com",
+      "timestamp": "2026-10-03T15:49:54+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Fresherjobsadda",
+      "msg_id": 4981,
+      "text": "𝗔𝗺𝗮𝘇𝗼𝗻 𝗥𝗲𝗰𝗿𝘂𝗶𝘁𝗺𝗲𝗻𝘁 𝟮𝟬𝟮𝟲\n\n𝗣𝗼𝘀𝗶𝘁𝗶𝗼𝗻: Data Engineer I\n𝗖𝗼𝗺𝗽𝗮𝗻𝘆: Amazon\n𝗟𝗼𝗰𝗮𝘁𝗶𝗼𝗻: Bangalore\n𝗘𝘅𝗽𝗲𝗿𝗶𝗲𝗻𝗰𝗲: 1+ Years\n𝗤𝘂𝗮𝗹𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻: Bachelor’s Degree / Relevant Degree\n𝗞𝗲𝘆 𝗦𝗸𝗶𝗹𝗹𝘀:\nSQL | Data Modeling | Data Warehousing | ETL | Python | AWS | Spark | Hive\n\n𝗝𝗼𝗯 𝗗𝗲𝘁𝗮𝗶𝗹𝘀 & 𝗛𝗼𝘄 𝘁𝗼 𝗔𝗽𝗽𝗹𝘆:\n[https://jobs.dailypharmajobs.in/amazon-recruitment-2026-data-engineer-i-bangalore/](https://jobs.dailypharmajobs.in/amazon-recruitment-2026-data-engineer-i-bangalore/)",
+      "timestamp": "2026-10-03T14:58:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "internfreak",
+      "msg_id": 5368,
+      "text": "Workiy Is Hiring For GenAI Engineer \nLocation: Remote\n\nLink: https://workiy.zohorecruit.com/jobs/Workiy-Careers/574222000024500104",
+      "timestamp": "2026-10-03T16:04:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "internfreak",
+      "msg_id": 5369,
+      "text": "Amazon Is Hiring For SDE-I\nBatch: 2027, 2026, 2025\n⁠Location: Gurugram\n\nLink: https://www.amazon.jobs/en/jobs/10555910/sde-i-rewards",
+      "timestamp": "2026-10-03T16:05:19+00:00"
+    }
+  ]
+}
