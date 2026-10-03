@@ -1,0 +1,68 @@
+{
+  "workflow_run_number": "902",
+  "workflow_run_id": "37120757848",
+  "timestamp": "2026-10-03T12:16:50.024935",
+  "runtime_minutes": 25.36,
+  "messages_processed": 55,
+  "new_jobs_stored": 46,
+  "skipped_jobs_count": 8,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "seekeras",
+      "msg_id": 18441,
+      "text": "The meeting lobby is full right now. Please try again in a few minutes.\nDismiss",
+      "timestamp": "2026-10-03T05:32:44+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30449,
+      "text": "https://www.instagram.com/reel/DeBlza7p9j_/?stkn=MXdtNTh6MGM1c2IzZw==",
+      "timestamp": "2026-10-03T08:16:39+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4softwaree",
+      "msg_id": 13417,
+      "text": "🔥 Hiring Alert | Barclays 🔥\n\n🏢 Company: Barclays\n💼 Role: AI Engineer \n🎓 Qualification: Bachelor’s Degree\n👨‍💻 Experience: Experienced\n📍 Location: Pune, India\n\n📲 Apply Here:\nhttps://piohindi.com/web-stories/barclays-company-hiring-for-data-analyst-engineering-apply-now/\n\n🔗 Join WhatsApp Channel (Daily Hiring Updates):\nhttps://whatsapp.com/channel/0029VaFCc7y6GcG5RErmai3h\n\n🇮🇳 Join Arattai – Made in India messaging app\nSupport Made in India & grow together 🤝\nJoin Now: https://aratt.ai/@job4software",
+      "timestamp": "2026-10-03T06:43:03+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4softwaree",
+      "msg_id": 13418,
+      "text": "🚨 **HIRING ALERT – Associate** DevOps Engineer 🚨\n🏢 **Company:** NTT DATA\n💼 **Job Role:** Associate DevOps Engineer\n🎓 **Qualification:** Bachelor’s Degree or Equivalent\n📍 **Location:** Bangalore, India\n\n📲 Apply Here: \nhttps://piohindi.com/web-stories/full-stack-developer-java-react-angular-ntt-data/\n\n🔗 Join Our WhatsApp Channel:\nhttps://whatsapp.com/channel/0029VaFCc7y6GcG5RErmai3h\n\n  🇮🇳Join our Arattai Channel – India’s own messaging app\nLet’s support Made in India and grow together\nJoin Now: https://aratt.ai/@job4software",
+      "timestamp": "2026-10-03T10:17:29+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43355,
+      "text": "**🚨 HCL Mega Virtual Drive for Process Associate\n**\nDrive Date: 5th Oct (Fill Form to Join)\nExperience: Freshers\nEducation: Any Bachelor's Degree\nSalary: Rs 3-4 LPA (Expected)\n\n**Apply**: https://kickcharm.com/hcl-recruitment-hiring-any-graduates/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-03T07:14:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43356,
+      "text": "🚨**Infosys Off Campus Hiring Freshers Across India**\n\nRole: System Engineer\nQualification  B.E/B.Tech/M.E/M.Tech/M.Sc/MCA\nExperience:  Freshers\nSalary/CTC:  Rs. 6.25 – 21 LPA\n\nApply: https://kickcharm.com/infosys-recruitment-hiring-graduates-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-03T08:05:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18856,
+      "text": "Everything\ncomes to you\nat the right\ntime.\nBe patient.",
+      "timestamp": "2026-10-03T10:31:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 14949,
+      "text": "FREE 3 hour AI workshop happening today!\n\nMaster 25+ AI tools live. ChatGPT, Claude, Canva AI, Suno, Grok, Notebook LM, Kimi, Stitch and more.\n\n3 hours. Zero payment. Zero prior knowledge needed.\n\nSeats are limited. \n\nRegister now: https://link.outskill.com/A-12\nEE!\n3 HOUR\nAI WORKSHOP\n25+ TOOLS\nREGISTER NOW\nK\nStitchSUNC",
+      "timestamp": "2026-10-03T07:46:23+00:00"
+    }
+  ]
+}
