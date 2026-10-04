@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "907",
+  "workflow_run_id": "37193623596",
+  "timestamp": "2026-10-04T10:06:33.772765",
+  "runtime_minutes": 10.02,
+  "messages_processed": 43,
+  "new_jobs_stored": 28,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "web3hiring",
+      "msg_id": 16502,
+      "text": "Web3 jobs channel https://t.me/jobsweb3\nWeb3\nJobs",
+      "timestamp": "2026-10-04T07:52:27+00:00"
+    }
+  ]
+}

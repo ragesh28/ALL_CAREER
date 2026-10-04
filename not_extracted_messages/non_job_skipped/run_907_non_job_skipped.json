@@ -1,0 +1,40 @@
+{
+  "workflow_run_number": "907",
+  "workflow_run_id": "37193623596",
+  "timestamp": "2026-10-04T10:06:33.772765",
+  "runtime_minutes": 10.02,
+  "messages_processed": 43,
+  "new_jobs_stored": 28,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30459,
+      "text": "FREE 3 hour AI workshop happening today!\n\nMaster 25+ AI tools live. ChatGPT, Claude, Canva AI, Suno, Grok, Notebook LM, Kimi, Stitch and more.\n\n3 hours. Zero payment. Zero prior knowledge needed.\n\nSeats are limited. \n\nRegister now:  https://link.outskill.com/A-11\nEE!\n3 HOUR\nAI WORKSHOP\n25+ TOOLS\nREGISTER NOW\nK\nStitchSUNO",
+      "timestamp": "2026-10-04T06:16:28+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43377,
+      "text": "**🚨GlobalLogic Latest Hiring for Associate Analyst**\n\nExperience: Freshers (0-1 Years)\nEducation: Any Graduate\nSalary: Rs 4-6 LPA (Expected)\n\nApply: https://kickcharm.com/globallogic-recruitment-hiring-any-graduates-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-04T07:10:11+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43378,
+      "text": "🚨**TCS Free Digital Certification Program**\n\nEducation: Any Degree\nLocation: Online\nBatch: Any\n\nApply: https://kickcharm.com/tcs-ion-offers-15-day-free-digital-certification-program/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-04T08:02:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43380,
+      "text": "**🚨 FRESHERS HIRING | ASSOCIATE SOLUTIONS ENGINEER | 4.5 LPA**\n\nAccioJob is conducting an offline hiring drive with FarEye at its Noida Skill Centre.\n\n💼 Role: Associate Solutions Engineer\n🎓 Eligibility: B.Tech / B.E / MCA\n📅 Graduation: 2026 & 2027\n📍 Location: Noida | Work From Office\n💰 CTC: 4.5 LPA\n\n👉 **Apply for the Hiring Drive**: https://go.acciojob.com/K2xm4T\nAccioJob\nFarEye\nFree Walk-In\nHIRING DRIVE\nCTC Up to\nOffline assessment at\nAssociate Solutions\n4.5LPA\nAccioJob Skill Centre, Noida\nEngineer\nApply Now",
+      "timestamp": "2026-10-04T09:20:11+00:00"
+    }
+  ]
+}
