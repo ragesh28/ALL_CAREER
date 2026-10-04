@@ -1,10 +1,10 @@
 {
-  "total_jobs": 906930,
+  "total_jobs": 907221,
   "sources": {
     "naukri": 319757,
-    "linkedin": 221093,
+    "linkedin": 221380,
     "timesjobs": 98613,
-    "indeed": 78403,
+    "indeed": 78407,
     "internshala": 82674,
     "shine": 47436,
     "workindia": 15876,
@@ -45,21 +45,21 @@
     "telegram_message": 605
   },
   "locations": {
-    "bangalore": 194820,
-    "mumbai": 118070,
-    "delhi": 96543,
-    "chennai": 97397,
-    "hyderabad": 86455,
-    "pune": 70922,
-    "noida": 44206,
-    "ahmedabad": 36149,
-    "kolkata": 30627,
+    "bangalore": 194880,
+    "mumbai": 118120,
+    "delhi": 96584,
+    "chennai": 97412,
+    "hyderabad": 86491,
+    "pune": 70941,
+    "noida": 44215,
+    "ahmedabad": 36169,
+    "kolkata": 30645,
     "all_india": 23694,
-    "coimbatore": 18062,
-    "kochi": 13954,
+    "coimbatore": 18066,
+    "kochi": 13969,
     "remote": 8330,
     "jaipur": 6741,
-    "maharashtra": 8184,
+    "maharashtra": 8187,
     "indore": 4895,
     "chandigarh": 5184,
     "kerala": 3220,
@@ -75,7 +75,7 @@
     "nanakramguda": 557,
     "message_all_india": 530,
     "tamil_nadu": 2048,
-    "telangana": 2049,
+    "telangana": 2050,
     "ka": 505,
     "message_bangalore": 475,
     "mh": 406,
@@ -524,5 +524,5 @@
     "online": 1,
     "as_per_infosys_recruitment_allocation": 1
   },
-  "generated_at": "2026-10-04T12:49:02.066255"
+  "generated_at": "2026-10-04T13:10:12.223510"
 }
