@@ -10,15 +10,22 @@ import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory } from
 
 interface AllJobsViewProps {
   onGoHub: () => void;
+  initialSearch?: string;
 }
 
-export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
+export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [sidebarCounts, setSidebarCounts] = useState<SidebarCounts | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Filters State
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialSearch || '');
+
+  useEffect(() => {
+    if (initialSearch) {
+      setSearchTerm(initialSearch);
+    }
+  }, [initialSearch]);
   const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
   const [selectedLocations, setSelectedLocations] = useState<Set<string>>(new Set());
@@ -365,7 +372,12 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
           ) : (
             <div className="jobs-grid">
               {filteredJobs.slice(0, 100).map((job, idx) => (
-                <JobCard key={`${job.id || job._id || idx}-${job.company}`} job={job} index={idx} />
+                <JobCard
+                  key={`${job.id || job._id || idx}-${job.company}`}
+                  job={job}
+                  index={idx}
+                  onSelectCompany={(comp) => setSearchTerm(comp)}
+                />
               ))}
             </div>
           )}

@@ -1,38 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
 import { PracticeContent } from './PracticeContent';
 
-interface PracticeViewProps {
-  onGoHub: () => void;
+interface CompanyEntry {
+  name: string;
+  count: number;
 }
 
-export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub }) => {
+interface PracticeViewProps {
+  onGoHub: () => void;
+  onNavigateToJobs?: (company: string) => void;
+}
+
+const DEFAULT_COMPANIES: CompanyEntry[] = [
+  { name: 'Google', count: 2361 },
+  { name: 'Amazon', count: 2045 },
+  { name: 'Microsoft', count: 1423 },
+  { name: 'Meta', count: 1420 },
+  { name: 'Bloomberg', count: 1257 },
+  { name: 'Apple', count: 890 },
+  { name: 'Uber', count: 680 },
+  { name: 'Adobe', count: 520 },
+  { name: 'Goldman Sachs', count: 480 },
+  { name: 'TCS', count: 320 },
+  { name: 'Infosys', count: 290 },
+  { name: 'Wipro', count: 210 },
+  { name: 'Accenture', count: 310 },
+  { name: 'Flipkart', count: 240 },
+  { name: 'Oracle', count: 380 },
+  { name: 'Cisco', count: 260 },
+  { name: 'Atlassian', count: 190 },
+  { name: 'LinkedIn', count: 340 }
+];
+
+export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateToJobs }) => {
   const [selectedMode, setSelectedMode] = useState<string>('welcome');
   const [selectedCompany, setSelectedCompany] = useState<string>('');
+  const [companies, setCompanies] = useState<CompanyEntry[]>(DEFAULT_COMPANIES);
 
-  // Sample company list matching Screenshot 4
-  const sampleCompanies = [
-    { name: '1kosmos', count: 1 },
-    { name: '1Kosmos', count: 1 },
-    { name: '6sense', count: 7 },
-    { name: 'Accelya', count: 1 },
-    { name: 'Accenture', count: 169 },
-    { name: 'Accenture (India)', count: 156 },
-    { name: 'Accolite', count: 23 },
-    { name: 'Acko', count: 4 },
-    { name: 'Adobe', count: 142 },
-    { name: 'Amazon', count: 412 },
-    { name: 'Apple', count: 185 },
-    { name: 'Atlassian', count: 94 },
-    { name: 'Cisco', count: 68 },
-    { name: 'Flipkart', count: 86 },
-    { name: 'Google', count: 520 },
-    { name: 'Goldman Sachs', count: 112 },
-    { name: 'Microsoft', count: 390 },
-    { name: 'Oracle', count: 88 },
-    { name: 'Uber', count: 154 }
-  ];
+  // Load complete deduplicated company list from JSON
+  useEffect(() => {
+    fetch('/data/leetcode_companies.json')
+      .then(res => res.json())
+      .then((data: CompanyEntry[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCompanies(data);
+        }
+      })
+      .catch(err => {
+        console.warn('Could not load /data/leetcode_companies.json, using default list:', err);
+      });
+  }, []);
 
   const handleSelectMode = (mode: string) => {
     setSelectedMode(mode);
@@ -61,19 +80,18 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub }) => {
       </div>
 
       <div className="practice-layout">
-        {/* Screenshot 4 Sidebar */}
         <PracticeSidebar
           selectedMode={selectedMode}
           onSelectMode={handleSelectMode}
           selectedCompany={selectedCompany}
           onSelectCompany={handleSelectCompany}
-          companiesList={sampleCompanies}
+          companiesList={companies}
         />
 
-        {/* Screenshot 4 Content */}
         <PracticeContent
           selectedMode={selectedMode}
           selectedCompany={selectedCompany}
+          onNavigateToJobs={onNavigateToJobs}
         />
       </div>
     </div>

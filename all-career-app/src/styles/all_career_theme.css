@@ -1481,6 +1481,299 @@ body {
 .diff-Medium { color: #ffc01e; background: rgba(255, 192, 30, 0.1); border: 1px solid rgba(255, 192, 30, 0.2); }
 .diff-Hard { color: #ff375f; background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2); }
 
+/* --- TOPIC FILTER BAR (All Questions) --- */
+.topic-wrapper {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.topic-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.topic-label {
+  font-weight: 700;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+  color: #60a5fa;
+}
+
+.topic-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 42px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.topic-grid.expanded {
+  max-height: 1200px;
+}
+
+.topic-btn {
+  background: rgba(0, 0, 0, 0.3);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.topic-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.topic-btn.active {
+  background: #3b82f6;
+  color: #020617;
+  border-color: #3b82f6;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+/* --- PROBLEM TABLE --- */
+.practice-table-container {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.problem-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.problem-table th {
+  text-align: left;
+  padding: 14px 18px;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.problem-table td {
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+.problem-table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.problem-link {
+  color: #f1f5f9;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s, transform 0.2s;
+  display: inline-block;
+}
+
+.problem-link:hover {
+  color: #38bdf8;
+  transform: translateX(2px);
+}
+
+.topic-tag {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.freq-bar-container {
+  width: 100%;
+  max-width: 110px;
+  height: 6px;
+  background: #262626;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.freq-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* --- PAGINATION --- */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0 40px;
+}
+
+.page-btn {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: #38bdf8;
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.page-btn.active {
+  background: #3b82f6;
+  color: #020617;
+  border-color: #3b82f6;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- COMPANY VIEW HEADER BAR --- */
+.company-header-bar {
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.company-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.company-name-large {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.filter-select:hover, .filter-select:focus {
+  border-color: #38bdf8;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filter-select option {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.btn-view-company-jobs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-view-company-jobs:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.3));
+  border-color: #34d399;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+
 /* ══════════════════════════════════════
    SCREENSHOT 5: BIG COMPANY JOBS / DIRECTORY
 ══════════════════════════════════════ */

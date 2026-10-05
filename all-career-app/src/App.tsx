@@ -9,6 +9,7 @@ export type ViewType = 'hub' | 'all_jobs' | 'practice' | 'big_company_jobs' | 'c
 
 export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('hub');
+  const [allJobsSearch, setAllJobsSearch] = useState<string>('');
 
   // Handle URL hash navigation if user refreshes or shares URL
   useEffect(() => {
@@ -29,6 +30,11 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateToCompanyJobs = (companyName: string) => {
+    setAllJobsSearch(companyName);
+    navigateTo('all_jobs');
+  };
+
   return (
     <div className="all-career-root">
       {/* 1. Hub / Landing Scene (Screenshots 1 & 2) */}
@@ -38,12 +44,21 @@ export const App: React.FC = () => {
 
       {/* 2. All Jobs Portal (Screenshot 3) */}
       {currentView === 'all_jobs' && (
-        <AllJobsView onGoHub={() => navigateTo('hub')} />
+        <AllJobsView
+          onGoHub={() => {
+            setAllJobsSearch('');
+            navigateTo('hub');
+          }}
+          initialSearch={allJobsSearch}
+        />
       )}
 
       {/* 3. Learn Coding / Practice (Screenshot 4) */}
       {currentView === 'practice' && (
-        <PracticeView onGoHub={() => navigateTo('hub')} />
+        <PracticeView
+          onGoHub={() => navigateTo('hub')}
+          onNavigateToJobs={handleNavigateToCompanyJobs}
+        />
       )}
 
       {/* 4. Big Company Jobs / Name List (Screenshot 5) */}

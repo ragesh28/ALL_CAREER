@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CompanyLogo } from '../common/CompanyLogo';
 
 interface PracticeSidebarProps {
   selectedMode: string;
@@ -69,7 +70,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
           </span>
         </div>
 
-        {/* 3. Companies List from Screenshot 4 */}
+        {/* 3. Companies List with Authentic Logos */}
         {filteredCompanies.map(c => {
           const isSelected = selectedMode === 'company' && selectedCompany.toLowerCase() === c.name.toLowerCase();
           return (
@@ -79,10 +80,10 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
               onClick={() => onSelectCompany(c.name)}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '20px', height: '20px', borderRadius: '4px', background: '#334155', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.7rem' }}>
-                  {c.name.charAt(0).toUpperCase()}
-                </div>
-                <span>{c.name}</span>
+                <CompanyLogo name={c.name} size={20} />
+                <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '170px' }}>
+                  {c.name}
+                </span>
               </div>
               <span className="practice-count-tag">{c.count}</span>
             </div>

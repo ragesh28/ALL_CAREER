@@ -5,9 +5,10 @@ import { getCompanyLogoData } from '../../utils/companyLogos';
 interface JobCardProps {
   job: Job;
   index?: number;
+  onSelectCompany?: (comp: string) => void;
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job }) => {
+export const JobCard: React.FC<JobCardProps> = ({ job, onSelectCompany }) => {
   const [logoStage, setLogoStage] = useState<number>(0);
   const companyName = job.company || 'DIRECT RECRUITER';
   const logo = getCompanyLogoData(companyName);
@@ -63,7 +64,14 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
 
         {/* Company & Title info */}
         <div className="card-info">
-          <div className="company-name">{companyName}</div>
+          <div 
+            className="company-name"
+            onClick={() => onSelectCompany && onSelectCompany(companyName)}
+            style={{ cursor: onSelectCompany ? 'pointer' : 'default', transition: 'color 0.2s' }}
+            title={`Filter jobs by ${companyName}`}
+          >
+            {companyName}
+          </div>
           <div className="job-title" title={cleanTitle}>{cleanTitle}</div>
         </div>
       </div>
