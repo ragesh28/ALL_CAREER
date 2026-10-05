@@ -1,5 +1,5 @@
 {
-  "total_jobs": 909376,
+  "total_jobs": 909383,
   "sources": {
     "naukri": 319757,
     "linkedin": 221380,
@@ -41,20 +41,20 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 510,
-    "telegram_message": 637
+    "telegram_post": 516,
+    "telegram_message": 638
   },
   "locations": {
-    "bangalore": 195550,
+    "bangalore": 195552,
     "mumbai": 118450,
     "delhi": 96741,
-    "chennai": 97512,
+    "chennai": 97513,
     "hyderabad": 86798,
     "pune": 71204,
     "noida": 44286,
     "ahmedabad": 36238,
     "kolkata": 30719,
-    "all_india": 23713,
+    "all_india": 23714,
     "coimbatore": 18080,
     "kochi": 13970,
     "remote": 8333,
@@ -263,7 +263,7 @@
     "belgaum": 5,
     "tumkur": 5,
     "belagavi": 9,
-    "shivamogga": 5,
+    "shivamogga": 6,
     "sagara": 2,
     "malta": 1,
     "sweden": 1,
@@ -400,7 +400,7 @@
     "aavalahalli": 1,
     "bambarge_belagavi": 1,
     "chikkamagaluru": 1,
-    "hassan": 1,
+    "hassan": 2,
     "satara": 1,
     "tada": 1,
     "palakkad": 3,
@@ -523,7 +523,8 @@
     "hajipur": 1,
     "online": 1,
     "as_per_infosys_recruitment_allocation": 1,
-    "permanent_wah": 1
+    "permanent_wah": 1,
+    "multiple_locations": 1
   },
-  "generated_at": "2026-10-04T19:45:48.645094"
+  "generated_at": "2026-10-05T02:22:11.213296"
 }
