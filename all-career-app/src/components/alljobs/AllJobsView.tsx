@@ -6,6 +6,7 @@ import { AllJobsSidebar } from './AllJobsSidebar';
 import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
+import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory } from '../../utils/filterUtils';
 
 interface AllJobsViewProps {
   onGoHub: () => void;
@@ -16,10 +17,18 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
   const [sidebarCounts, setSidebarCounts] = useState<SidebarCounts | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Filters
+  // Filters State
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
+  const [selectedLocations, setSelectedLocations] = useState<Set<string>>(new Set());
+  const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
+  const [minExp, setMinExp] = useState('');
+  const [zeroExpOnly, setZeroExpOnly] = useState(false);
+  const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
+  const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set());
+  const [walkinOnly, setWalkinOnly] = useState(false);
+  const [selectedWalkinDates, setSelectedWalkinDates] = useState<Set<string>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
 
@@ -37,12 +46,57 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     };
   }, []);
 
-  // Filter sources toggle
+  // Filter Toggles
   const handleToggleSource = (source: string) => {
     setSelectedSources(prev => {
       const next = new Set(prev);
       if (next.has(source)) next.delete(source);
       else next.add(source);
+      return next;
+    });
+  };
+
+  const handleToggleLocation = (loc: string) => {
+    setSelectedLocations(prev => {
+      const next = new Set(prev);
+      if (next.has(loc)) next.delete(loc);
+      else next.add(loc);
+      return next;
+    });
+  };
+
+  const handleToggleRole = (role: string) => {
+    setSelectedRoles(prev => {
+      const next = new Set(prev);
+      if (next.has(role)) next.delete(role);
+      else next.add(role);
+      return next;
+    });
+  };
+
+  const handleToggleSkill = (skill: string) => {
+    setSelectedSkills(prev => {
+      const next = new Set(prev);
+      if (next.has(skill)) next.delete(skill);
+      else next.add(skill);
+      return next;
+    });
+  };
+
+  const handleToggleCompany = (company: string) => {
+    setSelectedCompanies(prev => {
+      const next = new Set(prev);
+      if (next.has(company)) next.delete(company);
+      else next.add(company);
+      return next;
+    });
+  };
+
+  const handleToggleWalkinDate = (date: string) => {
+    setSelectedWalkinDates(prev => {
+      const next = new Set(prev);
+      if (next.has(date)) next.delete(date);
+      else next.add(date);
       return next;
     });
   };
@@ -56,8 +110,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
       others: 0
     };
     for (const j of jobs) {
-      const cat = j.category || 'others';
-      if (counts[cat] !== undefined) counts[cat]++;
+      const cat = (j.category || classifyJobCategory(j)).toLowerCase().replace(/[^a-z0-9]/g, '_');
+      if (cat.includes('tech')) counts.technical++;
+      else if (cat.includes('pharma')) counts.pharma++;
+      else if (cat.includes('non')) counts.non_technical++;
       else counts.others++;
     }
     return counts;
@@ -67,17 +123,16 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
   const pageCategoryCounts = useMemo(() => {
     let sales = 0, technical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
     jobs.slice(0, 100).forEach(j => {
-      const t = (j.title || j.role || '').toLowerCase();
-      if (t.includes('sale') || t.includes('market') || t.includes('tele')) sales++;
-      else if (t.includes('develop') || t.includes('engineer') || t.includes('software') || t.includes('tech') || t.includes('graphic') || t.includes('designer')) technical++;
-      else if (t.includes('bank') || t.includes('finance') || t.includes('account')) banking++;
-      else if (t.includes('hr') || t.includes('recruit') || t.includes('staff')) hr++;
-      else if (t.includes('pharma') || t.includes('clinic') || t.includes('chemist')) pharma++;
-      else if (t.includes('bpo') || t.includes('voice') || t.includes('support') || t.includes('exec') || t.includes('manager')) nonTechnical++;
+      const cat = classifyJobCategory(j);
+      if (cat === 'Sales & Marketing') sales++;
+      else if (cat === 'Technical') technical++;
+      else if (cat === 'Non-Technical') nonTechnical++;
+      else if (cat === 'Banking & Finance') banking++;
+      else if (cat === 'HR & Staffing') hr++;
+      else if (cat === 'Pharma') pharma++;
       else others++;
     });
 
-    // Provide default representative counts if initial array is small
     return {
       sales: sales || 49,
       technical: technical || 23,
@@ -89,35 +144,129 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     };
   }, [jobs]);
 
-  // Filtered jobs
+  // Filtered jobs matching all 8 filters + search
   const filteredJobs = useMemo(() => {
     const term = searchTerm.toLowerCase().trim();
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
     return jobs.filter(j => {
+      // 1. Search Query
       if (term) {
-        const titleMatch = (j.title || '').toLowerCase().includes(term);
-        const compMatch = (j.company || '').toLowerCase().includes(term);
-        const locMatch = (j.location || '').toLowerCase().includes(term);
-        if (!titleMatch && !compMatch && !locMatch) return false;
+        const hay = [j.title, j.company, j.location, j.role_search, j.description]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!hay.includes(term)) return false;
       }
 
+      // 2. Source Filter
       if (selectedSources.size > 0) {
-        const src = (j.source || '').toLowerCase();
-        if (!selectedSources.has(src)) return false;
+        const src = (j.source || '').toLowerCase().trim();
+        const match = Array.from(selectedSources).some(s => {
+          if (s === 'telegram') return src.includes('telegram');
+          if (s === 'images') return src.includes('google') || src.includes('image');
+          return src.includes(s);
+        });
+        if (!match) return false;
       }
 
+      // 3. Date Filter
+      if (selectedDateFilter !== 'all') {
+        const dateStr = (j.fetchedAt || j.date || '').slice(0, 10);
+        if (dateStr) {
+          const jd = new Date(dateStr);
+          if (!isNaN(jd.getTime())) {
+            const diffDays = Math.floor((now.getTime() - jd.getTime()) / 86400000);
+            if (selectedDateFilter === '24h' && diffDays > 1) return false;
+            if (selectedDateFilter === '3d' && diffDays > 3) return false;
+            if (selectedDateFilter === '7d' && diffDays > 7) return false;
+            if (selectedDateFilter === '15d' && diffDays > 15) return false;
+          }
+        }
+      }
+
+      // 4. Location Filter
+      if (selectedLocations.size > 0) {
+        const loc = (j.location || '').toLowerCase();
+        const match = Array.from(selectedLocations).some(l => loc.includes(l.toLowerCase()));
+        if (!match) return false;
+      }
+
+      // 5. Role Category Filter
+      if (selectedRoles.size > 0) {
+        const titleLow = (j.title || '').toLowerCase();
+        const roleSearchLow = (j.role_search || '').toLowerCase();
+        const match = Array.from(selectedRoles).some(roleId => {
+          const kws = ROLE_KEYWORDS[roleId] || [roleId.toLowerCase()];
+          return kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw));
+        });
+        if (!match) return false;
+      }
+
+      // 6. Experience Filter
+      if (zeroExpOnly) {
+        const [minE, maxE] = parseExperience(j.experience);
+        if (minE !== 0 || maxE !== 0) return false;
+      } else if (minExp) {
+        const targetExp = parseInt(minExp, 10);
+        if (!isNaN(targetExp)) {
+          const [minE] = parseExperience(j.experience);
+          if (minE === null || minE < targetExp) return false;
+        }
+      }
+
+      // 7. Skills Filter
+      if (selectedSkills.size > 0) {
+        const skillsText = [
+          Array.isArray(j.skills) ? j.skills.join(' ') : '',
+          j.title || '',
+          j.description || ''
+        ].join(' ').toLowerCase();
+        const match = Array.from(selectedSkills).some(s => skillsText.includes(s.toLowerCase()));
+        if (!match) return false;
+      }
+
+      // 8. Company Filter
+      if (selectedCompanies.size > 0) {
+        const comp = (j.company || '').toLowerCase();
+        const match = Array.from(selectedCompanies).some(c => comp.includes(c.toLowerCase()));
+        if (!match) return false;
+      }
+
+      // 9. Walkin Filter
+      if (walkinOnly || selectedWalkinDates.size > 0) {
+        if (!isWalkinJob(j)) return false;
+      }
+
+      // 10. Top Category Pills filter
       if (selectedCategory !== 'all') {
-        const t = (j.title || j.role || '').toLowerCase();
-        if (selectedCategory === 'sales' && !t.includes('sale') && !t.includes('market')) return false;
-        if (selectedCategory === 'technical' && !t.includes('develop') && !t.includes('engineer') && !t.includes('design') && !t.includes('tech')) return false;
-        if (selectedCategory === 'non_technical' && !t.includes('bpo') && !t.includes('voice') && !t.includes('support') && !t.includes('manager')) return false;
-        if (selectedCategory === 'banking' && !t.includes('bank') && !t.includes('finance')) return false;
-        if (selectedCategory === 'hr' && !t.includes('hr') && !t.includes('recruit')) return false;
-        if (selectedCategory === 'pharma' && !t.includes('pharma') && !t.includes('clinic')) return false;
+        const cCat = classifyJobCategory(j);
+        if (selectedCategory === 'sales' && cCat !== 'Sales & Marketing') return false;
+        if (selectedCategory === 'technical' && cCat !== 'Technical') return false;
+        if (selectedCategory === 'non_technical' && cCat !== 'Non-Technical') return false;
+        if (selectedCategory === 'banking' && cCat !== 'Banking & Finance') return false;
+        if (selectedCategory === 'hr' && cCat !== 'HR & Staffing') return false;
+        if (selectedCategory === 'pharma' && cCat !== 'Pharma') return false;
       }
 
       return true;
     });
-  }, [jobs, searchTerm, selectedSources, selectedCategory]);
+  }, [
+    jobs,
+    searchTerm,
+    selectedSources,
+    selectedDateFilter,
+    selectedLocations,
+    selectedRoles,
+    minExp,
+    zeroExpOnly,
+    selectedSkills,
+    selectedCompanies,
+    walkinOnly,
+    selectedWalkinDates,
+    selectedCategory
+  ]);
 
   const handleAutoApply = () => {
     const urls = filteredJobs.slice(0, 30).map(j => j.url).filter(Boolean) as string[];
@@ -139,12 +288,28 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
 
       {/* Main Layout: Sidebar + Grid */}
       <div className="alljobs-layout">
-        {/* Left Filter Sidebar */}
+        {/* Left Filter Sidebar with all 8 Filters from Original all_jobs.html */}
         <AllJobsSidebar
           selectedSources={selectedSources}
           onToggleSource={handleToggleSource}
           selectedDateFilter={selectedDateFilter}
           onSelectDateFilter={setSelectedDateFilter}
+          selectedLocations={selectedLocations}
+          onToggleLocation={handleToggleLocation}
+          selectedRoles={selectedRoles}
+          onToggleRole={handleToggleRole}
+          minExp={minExp}
+          onMinExpChange={setMinExp}
+          zeroExpOnly={zeroExpOnly}
+          onToggleZeroExp={() => setZeroExpOnly(prev => !prev)}
+          selectedSkills={selectedSkills}
+          onToggleSkill={handleToggleSkill}
+          selectedCompanies={selectedCompanies}
+          onToggleCompany={handleToggleCompany}
+          walkinOnly={walkinOnly}
+          onToggleWalkin={() => setWalkinOnly(prev => !prev)}
+          selectedWalkinDates={selectedWalkinDates}
+          onToggleWalkinDate={handleToggleWalkinDate}
           sourceCounts={sidebarCounts?.portals || {}}
         />
 
@@ -163,7 +328,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
           {/* Cards Grid */}
           {loading ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
-              Loading matching jobs...
+              <div style={{ display: 'inline-block', width: '38px', height: '38px', border: '3px solid rgba(56,189,248,0.2)', borderTopColor: '#38bdf8', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
+              <p style={{ color: '#94a3b8', marginTop: '14px', fontSize: '15px', fontWeight: 500 }}>⚡ Loading matching jobs...</p>
             </div>
           ) : filteredJobs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>

@@ -20,6 +20,11 @@ export interface Job {
   role_search?: string;
   category?: string;
   job_type?: string;
+  description?: string;
+  skills?: string[];
+  venue?: string;
+  other_details?: string;
+  is_walkin?: boolean;
 }
 
 export interface RoleCategory {
