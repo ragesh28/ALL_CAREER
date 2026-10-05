@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "912",
+  "workflow_run_id": "37288417600",
+  "timestamp": "2026-10-05T09:39:49.321261",
+  "runtime_minutes": 22.87,
+  "messages_processed": 81,
+  "new_jobs_stored": 47,
+  "skipped_jobs_count": 8,
+  "failed_extractions_count": 2,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "seekeras",
+      "msg_id": 18469,
+      "text": "24*7 AI Online Interview today from 4 to 4:30 PM mass hiring freshers witrh 100+opening good salary upto 25,000 PM Comment anything to get the link in dm \n\nhttps://www.instagram.com/reel/DeG2kwuiePq/?stkn=MXdsMjV5eWZzMWI1cQ==",
+      "timestamp": "2026-10-05T09:12:46+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "Bangalore_jobs",
+      "msg_id": 259940,
+      "text": "89 383\nw  dvara\nca dáe dbóaorad\nBexcbor mdded ddseor\nztct ral cd sa zgpd aaria daeanad wenal.\ndescda cactartd dnesise des\nvaded. dga dgusspa  cacmrid.\nsmrus seand\n\n23036\n\n —,    \n6 6 — BCA, MCA, BE, B.Tech — 18,000\nSe: €24,000 + 03\n3  — PUC 3 O  — 13,000\n3086—18,000+\n203: 9902118105\n20: 8970011661\n\n\n2\n \n66666\n: ,  , \n  —    \ne: 25,000 + 03a\ne: 13,000\n0:9986508286\n0:8951587670\n()\n033:18-35\n  —    \ne:20,000 8030,000 +\n3e:85\n0: 9900757003\n33\nQ\nQEnnZOoE\n.\n7\nZOULEZ ZNOEN LE\neen  e,2e ,.51,\nano3ea,dmea,.g.,and\nm\n3\n@dnrohhe",
+      "timestamp": "2026-10-05T03:32:00+00:00"
+    }
+  ]
+}
