@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCompanyLogoData } from '../../utils/companyLogos';
 
 interface CompanyLogoProps {
@@ -14,8 +14,14 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
   className = '',
   style = {}
 }) => {
+  // Stage 0: Clearbit -> Stage 1: Google Favicon (128px) -> Stage 2: DuckDuckGo -> Stage 3: Monogram
   const [stage, setStage] = useState<number>(0);
   const logo = getCompanyLogoData(name);
+
+  // Reset stage whenever company name changes
+  useEffect(() => {
+    setStage(0);
+  }, [name]);
 
   // Compute pixel dimensions
   let dim = 20;
@@ -43,40 +49,38 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
         height: `${dim}px`,
         borderRadius: dim > 24 ? '8px' : '4px',
         background: '#ffffff',
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
         overflow: 'hidden',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+        verticalAlign: 'middle',
         ...style
       }}
     >
-      {stage === 0 && (
+      {stage === 0 ? (
         <img
           src={logo.clearbit}
           alt={name}
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
           onError={() => setStage(1)}
         />
-      )}
-      {stage === 1 && (
+      ) : stage === 1 ? (
         <img
           src={logo.google}
           alt={name}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
           onError={() => setStage(2)}
         />
-      )}
-      {stage === 2 && (
+      ) : stage === 2 ? (
         <img
-          src={logo.ddg}
+          src={logo.duckduckgo}
           alt={name}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
           onError={() => setStage(3)}
         />
-      )}
-      {stage >= 3 && (
+      ) : (
         <div
           style={{
             width: '100%',

@@ -35,6 +35,15 @@ export class ExtensionBridgeService {
     }, '*');
     console.log(`[All Career Bridge] Dispatched ${urls.length} urls to Auto-Fill extension.`);
   }
+
+  openHistory() {
+    if (typeof window === 'undefined') return;
+    if ((window as any).AllCareerAutoApply && (window as any).AllCareerAutoApply.openHistory) {
+      (window as any).AllCareerAutoApply.openHistory();
+    } else {
+      window.postMessage({ type: 'OPEN_HISTORY', source: 'ALL_CAREER_WEB' }, '*');
+    }
+  }
 }
 
 export const bridgeService = new ExtensionBridgeService();

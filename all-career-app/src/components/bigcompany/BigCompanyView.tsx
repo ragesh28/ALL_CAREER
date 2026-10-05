@@ -5,9 +5,10 @@ import { bigCompaniesData } from '../../data/bigCompaniesData';
 
 interface BigCompanyViewProps {
   onGoHub: () => void;
+  title?: string;
 }
 
-export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub }) => {
+export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title = 'Big Company Name List' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -39,9 +40,9 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub }) => {
       {/* Top-left Global Logo Pill */}
       <GlobalLogoPill onGoHome={onGoHub} />
 
-      {/* Screenshot 5: Glowing Header */}
+      {/* Glowing Header */}
       <div className="bigcompany-header">
-        <h1 onClick={onGoHub}>ALL_CAREER</h1>
+        <h1 onClick={onGoHub}>{title}</h1>
       </div>
 
       {/* Screenshot 5: Sticky Glass Bar */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Job } from '../../types/jobs';
-import { getCompanyLogoData } from '../../utils/companyLogos';
+import { getCompanyLogoData, getPortalLogo } from '../../utils/companyLogos';
 
 interface JobCardProps {
   job: Job;
@@ -10,6 +10,7 @@ interface JobCardProps {
 export const JobCard: React.FC<JobCardProps> = ({ job, index = 0 }) => {
   const [logoStage, setLogoStage] = useState<number>(0);
   const logo = getCompanyLogoData(job.company || 'Job');
+  const portalLogo = getPortalLogo(job.source);
 
   const rawLoc = (job.location || '').trim();
   const hasLoc = rawLoc && !['nan', 'none', 'null'].includes(rawLoc.toLowerCase());
@@ -94,33 +95,16 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index = 0 }) => {
       style={{ animationDelay: `${Math.min(index * 0.02, 0.4)}s` }}
     >
       <div className="card-top">
-        {/* Company Logo with 4-stage fallback */}
+        {/* Company Logo with fallback */}
         <div className="logo-box">
-          {logoStage === 0 && (
+          {logoStage === 0 ? (
             <img 
               src={logo.clearbit} 
               alt={job.company} 
               className="company-logo" 
               onError={handleLogoError} 
             />
-          )}
-          {logoStage === 1 && (
-            <img 
-              src={logo.google} 
-              alt={job.company} 
-              className="company-logo" 
-              onError={handleLogoError} 
-            />
-          )}
-          {logoStage === 2 && (
-            <img 
-              src={logo.ddg} 
-              alt={job.company} 
-              className="company-logo" 
-              onError={handleLogoError} 
-            />
-          )}
-          {logoStage >= 3 && (
+          ) : (
             <div className="logo-fallback" style={{ display: 'flex' }}>
               {logo.initial}
             </div>
@@ -167,7 +151,19 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index = 0 }) => {
           )}
           {source && (
             <div className="portal-badge" title={`Source: ${source}`}>
-              <span className="meta-icon">🌐</span>
+              {portalLogo ? (
+                <img
+                  src={portalLogo}
+                  alt={source}
+                  className="portal-logo"
+                  style={{ width: 14, height: 14, objectFit: 'contain', borderRadius: 2 }}
+                  onError={e => {
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <span style={{ fontSize: '0.72rem', color: '#38bdf8' }}>⚡</span>
+              )}
               <span className="capitalize">{source}</span>
             </div>
           )}

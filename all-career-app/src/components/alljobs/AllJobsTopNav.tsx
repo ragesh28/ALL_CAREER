@@ -102,11 +102,6 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
             ✕ Clear All
           </button>
         )}
-
-        {/* Hub Button */}
-        <button className="btn-hub-nav" onClick={onGoHub}>
-          🏠 Hub
-        </button>
       </div>
     </header>
   );

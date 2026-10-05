@@ -1,266 +1,169 @@
-/**
- * Comprehensive Company Domain & Logo Resolution Utility
- * Ported from logos.js with 150+ tech, IT, banking, and unicorn domain mappings.
- */
+// companyLogos.ts - Comprehensive Domain Map & Multi-tier Logo Fallback (Clearbit -> Google Favicon -> DuckDuckGo -> Monogram)
 
-export const COMPANY_DOMAIN_MAP: Record<string, string> = {
-  // FAANG / Big Tech
-  'google': 'google.com',
-  'microsoft': 'microsoft.com',
-  'amazon': 'amazon.com',
-  'apple': 'apple.com',
-  'netflix': 'netflix.com',
-  'meta': 'meta.com',
-  'facebook': 'meta.com',
-  'adobe': 'adobe.com',
-  'salesforce': 'salesforce.com',
-  'oracle': 'oracle.com',
-  'cisco': 'cisco.com',
-  'ibm': 'ibm.com',
-  'intel': 'intel.com',
-  'nvidia': 'nvidia.com',
-  'samsung': 'samsung.com',
-  'uber': 'uber.com',
-  'lyft': 'lyft.com',
-  'airbnb': 'airbnb.com',
-  'twitter': 'twitter.com',
-  'x': 'twitter.com',
-  'linkedin': 'linkedin.com',
-  'spotify': 'spotify.com',
-  'paypal': 'paypal.com',
-  'intuit': 'intuit.com',
-  'sap': 'sap.com',
-  'vmware': 'vmware.com',
-  'broadcom': 'broadcom.com',
-  'qualcomm': 'qualcomm.com',
-  'servicenow': 'servicenow.com',
-  'workday': 'workday.com',
-  'atlassian': 'atlassian.com',
-  'autodesk': 'autodesk.com',
-  'dell': 'dell.com',
-  'hp': 'hp.com',
-  'amd': 'amd.com',
-  'texas instruments': 'ti.com',
+export const DOMAIN_MAP: Record<string, string> = {
+  // --- FAANG / BIG TECH ---
+  "Google": "google.com", "Microsoft": "microsoft.com", "Amazon": "amazon.com",
+  "Apple": "apple.com", "Netflix": "netflix.com", "Meta": "meta.com",
+  "Facebook": "meta.com", "Adobe": "adobe.com", "Salesforce": "salesforce.com",
+  "Oracle": "oracle.com", "Cisco": "cisco.com", "IBM": "ibm.com",
+  "Intel": "intel.com", "Nvidia": "nvidia.com", "Samsung": "samsung.com",
+  "Samsung Electronics": "samsung.com", "Bloomberg": "bloomberg.com",
+  "TikTok": "tiktok.com", "ByteDance": "bytedance.com",
+  "Uber": "uber.com", "Lyft": "lyft.com", "Airbnb": "airbnb.com",
+  "Twitter": "x.com", "X": "x.com", "LinkedIn": "linkedin.com",
+  "Spotify": "spotify.com", "PayPal": "paypal.com", "Intuit": "intuit.com",
+  "SAP": "sap.com", "VMware": "vmware.com", "Broadcom": "broadcom.com",
+  "Qualcomm": "qualcomm.com", "ServiceNow": "servicenow.com", "Workday": "workday.com",
+  "Atlassian": "atlassian.com", "Autodesk": "autodesk.com", "Dell": "dell.com",
+  "HP": "hp.com", "AMD": "amd.com", "Texas Instruments": "ti.com",
+  "Ericsson": "ericsson.com", "Cloudera": "cloudera.com", "Rubrik": "rubrik.com",
+  "Baker Hughes": "bakerhughes.com", "NatWest Group": "natwestgroup.com",
+  "PwC": "pwc.com", "Mercedes-Benz Group": "mercedes-benz.com", "Sony Music Global Job Board": "sonymusic.com",
+  "Subex": "subex.com",
+  "Palantir": "palantir.com", "Databricks": "databricks.com", "Snowflake": "snowflake.com",
 
-  // Indian IT Giants
-  'tcs': 'tcs.com',
-  'tata consultancy services': 'tcs.com',
-  'infosys': 'infosys.com',
-  'wipro': 'wipro.com',
-  'hcl': 'hcltech.com',
-  'hcl tech': 'hcltech.com',
-  'hcl technologies': 'hcltech.com',
-  'tech mahindra': 'techmahindra.com',
-  'ltimindtree': 'ltimindtree.com',
-  'cognizant': 'cognizant.com',
-  'capgemini': 'capgemini.com',
-  'accenture': 'accenture.com',
-  'mindtree': 'ltimindtree.com',
-  'persistent': 'persistent.com',
-  'persistent systems': 'persistent.com',
-  'mphasis': 'mphasis.com',
-  'hexaware': 'hexaware.com',
-  'kpit': 'kpit.com',
-  'l&t': 'ltts.com',
-  'lt technology services': 'ltts.com',
+  // --- INDIAN IT GIANTS (WITCH & TOP TIER) ---
+  "TCS": "tcs.com", "Tata Consultancy Services": "tcs.com",
+  "Infosys": "infosys.com", "Wipro": "wipro.com", "HCL": "hcltech.com", "HCLTech": "hcltech.com",
+  "Tech Mahindra": "techmahindra.com", "LTIMindtree": "ltimindtree.com",
+  "Cognizant": "cognizant.com", "Capgemini": "capgemini.com",
+  "Accenture": "accenture.com", "Mindtree": "ltimindtree.com",
+  "Persistent": "persistent.com", "Persistent Systems": "persistent.com",
+  "Mphasis": "mphasis.com", "Hexaware": "hexaware.com", "KPIT": "kpit.com",
+  "L&T": "ltts.com", "L&T Technology Services": "ltts.com",
 
-  // Startups & Unicorns
-  'flipkart': 'flipkart.com',
-  'myntra': 'myntra.com',
-  'meesho': 'meesho.io',
-  'swiggy': 'swiggy.com',
-  'zomato': 'zomato.com',
-  'zepto': 'zeptonow.com',
-  'blinkit': 'blinkit.com',
-  'bigbasket': 'bigbasket.com',
-  'dunzo': 'dunzo.com',
-  'ola': 'olacabs.com',
-  'ola cabs': 'olacabs.com',
-  'ola electric': 'olaelectric.com',
-  'rapido': 'rapido.bike',
-  'cred': 'cred.club',
-  'paytm': 'paytm.com',
-  'phonepe': 'phonepe.com',
-  'razorpay': 'razorpay.com',
-  'groww': 'groww.in',
-  'zerodha': 'zerodha.com',
-  'upstox': 'upstox.com',
-  'bharatpe': 'bharatpe.com',
-  'pine labs': 'pinelabs.com',
-  'billdesk': 'billdesk.com',
-  'policybazaar': 'policybazaar.com',
-  'digit insurance': 'godigit.com',
-  'acko': 'acko.com',
-  'navi': 'navi.com',
-  'lenskart': 'lenskart.com',
-  'nykaa': 'nykaa.com',
-  'mamaearth': 'mamaearth.in',
-  'purplle': 'purplle.com',
-  'urban company': 'urbancompany.com',
-  'nobroker': 'nobroker.in',
-  'magicbricks': 'magicbricks.com',
-  'housing.com': 'housing.com',
-  'sharechat': 'sharechat.com',
-  'dailyhunt': 'dailyhunt.in',
-  'inmobi': 'inmobi.com',
-  'glance': 'glance.com',
-  'dream11': 'dream11.com',
-  'mpl': 'mpl.live',
-  'games24x7': 'games24x7.com',
-  'nazara': 'nazara.com',
-  'physicswallah': 'pw.live',
-  'unacademy': 'unacademy.com',
-  'byju\'s': 'byjus.com',
-  'vedantu': 'vedantu.com',
-  'upgrad': 'upgrad.com',
-  'scaler': 'scaler.com',
-  'oyo': 'oyorooms.com',
-  'makemytrip': 'makemytrip.com',
-  'goibibo': 'goibibo.com',
-  'yatra': 'yatra.com',
-  'cleartrip': 'cleartrip.com',
-  'easemytrip': 'easemytrip.com',
-  'ixigo': 'ixigo.com',
-  'redbus': 'redbus.in',
-  'udaan': 'udaan.com',
-  'moglix': 'moglix.com',
-  'ofbusiness': 'ofbusiness.com',
-  'zetwerk': 'zetwerk.com',
-  'delhivery': 'delhivery.com',
-  'xpressbees': 'xpressbees.com',
-  'shadowfax': 'shadowfax.in',
-  'porter': 'porter.in',
-  'zoho': 'zoho.com',
-  'freshworks': 'freshworks.com',
-  'postman': 'postman.com',
-  'browserstack': 'browserstack.com',
-  'hasura': 'hasura.io',
-  'chargebee': 'chargebee.com',
-  'druva': 'druva.com',
-  'icertis': 'icertis.com',
-  'highradius': 'highradius.com',
-  'zenoti': 'zenoti.com',
-  'amagi': 'amagi.com',
-  'gupshup': 'gupshup.io',
-  'clevertap': 'clevertap.com',
-  'whatfix': 'whatfix.com',
-  'moengage': 'moengage.com',
-  'webengage': 'webengage.com',
-  'leadsquared': 'leadsquared.com',
-  'fareye': 'getfareye.com',
-  'polygon': 'polygon.technology',
-  'coindcx': 'coindcx.com',
-  'coinswitch': 'coinswitch.co',
-  'wazirx': 'wazirx.com',
+  // --- INDIAN STARTUPS & UNICORNS ---
+  "Flipkart": "flipkart.com", "Myntra": "myntra.com", "Meesho": "meesho.io",
+  "Swiggy": "swiggy.com", "Zomato": "zomato.com", "Zepto": "zeptonow.com",
+  "Blinkit": "blinkit.com", "BigBasket": "bigbasket.com", "Dunzo": "dunzo.com",
+  "Ola": "olacabs.com", "Ola Electric": "olaelectric.com", "Rapido": "rapido.bike",
+  "Uber India": "uber.com", "Cred": "cred.club", "Paytm": "paytm.com",
+  "PhonePe": "phonepe.com", "Razorpay": "razorpay.com", "Groww": "groww.in",
+  "Zerodha": "zerodha.com", "Upstox": "upstox.com", "BharatPe": "bharatpe.com",
+  "Pine Labs": "pinelabs.com", "BillDesk": "billdesk.com", "PolicyBazaar": "policybazaar.com",
+  "Digit Insurance": "godigit.com", "Acko": "acko.com", "Navi": "navi.com",
+  "Lenskart": "lenskart.com", "Nykaa": "nykaa.com", "Mamaearth": "mamaearth.in",
+  "Purplle": "purplle.com", "Urban Company": "urbancompany.com",
+  "NoBroker": "nobroker.in", "MagicBricks": "magicbricks.com",
+  "Housing.com": "housing.com", "ShareChat": "sharechat.com",
+  "Dailyhunt": "dailyhunt.in", "InMobi": "inmobi.com", "Glance": "glance.com",
+  "Dream11": "dream11.com", "MPL": "mpl.live", "Games24x7": "games24x7.com",
+  "Nazara": "nazara.com", "PhysicsWallah": "pw.live", "Unacademy": "unacademy.com",
+  "Byju's": "byjus.com", "Vedantu": "vedantu.com", "UpGrad": "upgrad.com",
+  "Great Learning": "greatlearning.in", "Eruditus": "eruditus.com",
+  "Simplilearn": "simplilearn.com", "Scaler": "scaler.com",
+  "Oyo": "oyorooms.com", "MakeMyTrip": "makemytrip.com", "Goibibo": "goibibo.com",
+  "Yatra": "yatra.com", "Cleartrip": "cleartrip.com", "EaseMyTrip": "easemytrip.com",
+  "Ixigo": "ixigo.com", "RedBus": "redbus.in", "Udaan": "udaan.com",
+  "Moglix": "moglix.com", "OfBusiness": "ofbusiness.com", "Zetwerk": "zetwerk.com",
+  "Infra.Market": "infra.market", "Delhivery": "delhivery.com",
+  "Xpressbees": "xpressbees.com", "Shadowfax": "shadowfax.in",
+  "Rivigo": "rivigo.com", "BlackBuck": "blackbuck.com", "Porter": "porter.in",
+  "Zoho": "zoho.com", "Freshworks": "freshworks.com", "Postman": "postman.com",
+  "BrowserStack": "browserstack.com", "Hasura": "hasura.io",
+  "Chargebee": "chargebee.com", "Druva": "druva.com", "Icertis": "icertis.com",
+  "HighRadius": "highradius.com", "Zenoti": "zenoti.com", "Amagi": "amagi.com",
+  "Gupshup": "gupshup.io", "CleverTap": "clevertap.com", "Whatfix": "whatfix.com",
+  "MoEngage": "moengage.com", "WebEngage": "webengage.com", "LeadSquared": "leadsquared.com",
 
-  // Global Financial & FinTech
-  'jpmorgan': 'jpmorganchase.com',
-  'jpmorgan chase': 'jpmorganchase.com',
-  'goldman sachs': 'goldmansachs.com',
-  'morgan stanley': 'morganstanley.com',
-  'wells fargo': 'wellsfargo.com',
-  'bank of america': 'bankofamerica.com',
-  'citi': 'citi.com',
-  'citigroup': 'citi.com',
-  'american express': 'americanexpress.com',
-  'mastercard': 'mastercard.us',
-  'visa': 'visa.com',
-  'barclays': 'barclays.com',
-  'deutsche bank': 'db.com',
-  'ubs': 'ubs.com',
-  'hsbc': 'hsbc.com',
-  'standard chartered': 'sc.com',
-  'natwest': 'natwestgroup.com',
-  'bny mellon': 'bnymellon.com',
-  'blackrock': 'blackrock.com',
-  'two sigma': 'twosigma.com',
-  'jane street': 'janestreet.com',
-  'citadel': 'citadel.com',
-  'hudson river trading': 'hudsonrivertrading.com',
-  'tower research': 'tower-research.com',
-  'de shaw': 'deshaw.com',
-  'arcesium': 'arcesium.com',
-  'worldquant': 'worldquant.com',
-  'fidelity': 'fidelity.com',
-  'capital one': 'capitalone.com',
-  'stripe': 'stripe.com',
-  'square': 'squareup.com',
-  'block': 'block.xyz',
-  'robinhood': 'robinhood.com',
-  'coinbase': 'coinbase.com',
-  'revolut': 'revolut.com',
-  'wise': 'wise.com',
-  'monzo': 'monzo.com',
-  'klarna': 'klarna.com',
+  // --- GLOBAL BANKS / FINTECH / QUANT ---
+  "JPMorgan Chase": "jpmorganchase.com", "JPMorgan": "jpmorgan.com", "JP Morgan": "jpmorgan.com",
+  "Goldman Sachs": "goldmansachs.com", "Morgan Stanley": "morganstanley.com",
+  "Wells Fargo": "wellsfargo.com", "Bank of America": "bankofamerica.com",
+  "Citi": "citi.com", "Citigroup": "citi.com", "American Express": "americanexpress.com",
+  "Mastercard": "mastercard.com", "Visa": "visa.com", "Barclays": "barclays.com",
+  "Deutsche Bank": "db.com", "UBS": "ubs.com", "Credit Suisse": "credit-suisse.com",
+  "HSBC": "hsbc.com", "Standard Chartered": "sc.com", "NatWest": "natwestgroup.com",
+  "BNY Mellon": "bnymellon.com", "BlackRock": "blackrock.com",
+  "Two Sigma": "twosigma.com", "Jane Street": "janestreet.com",
+  "Citadel": "citadel.com", "Hudson River Trading": "hudsonrivertrading.com",
+  "Tower Research": "tower-research.com", "DE Shaw": "deshaw.com", "D. E. Shaw": "deshaw.com",
+  "Arcesium": "arcesium.com", "WorldQuant": "worldquant.com",
+  "Fidelity": "fidelity.com", "Capital One": "capitalone.com",
+  "Stripe": "stripe.com", "Square": "squareup.com", "Block": "block.xyz",
+  "Robinhood": "robinhood.com", "Coinbase": "coinbase.com", "Affirm": "affirm.com",
+  "SoFi": "sofi.com", "Chime": "chime.com", "Revolut": "revolut.com", "Wise": "wise.com",
+  "Monzo": "monzo.com", "Klarna": "klarna.com", "Adyen": "adyen.com",
+  "Walmart": "walmart.com", "Walmart Labs": "walmart.com", "Target": "target.com",
 
-  // Auto / Engineering / Others
-  'siemens': 'siemens.com',
-  'bosch': 'bosch.com',
-  'ge': 'ge.com',
-  'honeywell': 'honeywell.com',
-  'philips': 'philips.com',
-  'schneider electric': 'se.com',
-  'abb': 'abb.com',
-  'tesla': 'tesla.com',
-  'rivian': 'rivian.com',
-  'ford': 'ford.com',
-  'general motors': 'gm.com',
-  'bmw': 'bmw.com',
-  'mercedes': 'mercedes-benz.com',
-  'audi': 'audi.com',
-  'volkswagen': 'vw.com',
-  'toyota': 'toyota.com',
-  'honda': 'honda.com',
-  'volvo': 'volvocars.com',
-  'tatamotors': 'tatamotors.com',
-  'tata motors': 'tatamotors.com',
-  'mahindra': 'mahindra.com',
-  'ather': 'atherenergy.com',
-  'boeing': 'boeing.com',
-  'airbus': 'airbus.com',
-  'spacex': 'spacex.com',
-  'walmart': 'walmart.com',
-  'walmart labs': 'walmart.com',
-  'bloomberg': 'bloomberg.com',
-  'bytedance': 'bytedance.com',
-  'tiktok': 'tiktok.com',
-  'epamsystems': 'epam.com',
-  'epam systems': 'epam.com',
-  'deloitte': 'deloitte.com',
-  'ey': 'ey.com',
-  'pwc': 'pwc.com',
-  'kpmg': 'kpmg.com',
-  'juspay': 'juspay.in',
-  'databricks': 'databricks.com',
-  'snowflake': 'snowflake.com'
+  // --- AUTOMOTIVE / AEROSPACE / HARDWARE ---
+  "Tesla": "tesla.com", "Siemens": "siemens.com", "Philips": "philips.com",
+  "Honeywell": "honeywell.com", "Schneider Electric": "se.com", "ABB": "abb.com",
+  "General Electric": "ge.com", "GE": "ge.com", "Ford": "ford.com", "GM": "gm.com",
+  "Mercedes-Benz": "mercedes-benz.com", "BMW": "bmw.com", "Audi": "audi.com",
+  "Boeing": "boeing.com", "Airbus": "airbus.com", "SpaceX": "spacex.com"
 };
 
-export interface LogoInfo {
-  cleanName: string;
-  domain: string;
+export interface LogoData {
   clearbit: string;
   google: string;
-  ddg: string;
+  duckduckgo: string;
   initial: string;
+  domain: string;
 }
 
-export function getCompanyLogoData(name: string): LogoInfo {
-  const clean = (name || '').replace(/\(.*\)/, '').replace(/ India/i, '').trim();
-  const key = clean.toLowerCase();
-  const initial = (clean.charAt(0) || 'C').toUpperCase();
+export const PORTAL_LOGOS_MAP: Record<string, string> = {
+  naukri: '/logos/portals/naukri.png',
+  linkedin: '/logos/portals/linkedin.png',
+  indeed: '/logos/portals/indeed.png',
+  internshala: '/logos/portals/internshala.png',
+  glassdoor: '/logos/portals/glassdoor.ico',
+  shine: '/logos/portals/shine.ico',
+  timesjobs: '/logos/portals/timesjobs.svg',
+  hirist: '/logos/portals/hirist.ico',
+  workindia: '/logos/portals/workindia.png',
+  foundit: '/logos/portals/foundit.png',
+  apna: '/logos/portals/apna.png',
+  freshersworld: '/logos/portals/freshersworld.ico',
+  telegram: '/logos/portals/telegram.svg',
+  telegram_message: '/logos/portals/telegram.svg',
+  telegram_post: '/logos/portals/telegram.svg',
+  google: '/logos/portals/google.svg',
+  google_images: '/logos/portals/google.svg',
+  images: '/logos/portals/google.svg',
+  walkin: '/logos/portals/google.svg'
+};
 
-  let domain = COMPANY_DOMAIN_MAP[key];
+export function getPortalLogo(source: string | undefined): string {
+  if (!source) return '';
+  const s = source.toLowerCase().trim();
+  if (PORTAL_LOGOS_MAP[s]) return PORTAL_LOGOS_MAP[s];
+  for (const [key, val] of Object.entries(PORTAL_LOGOS_MAP)) {
+    if (s.includes(key)) return val;
+  }
+  return '';
+}
+
+export function getCompanyLogo(name: string): LogoData {
+  const clean = (name || '').replace(/\(.*\)/, '').replace(/\b(inc|corp|corporation|llc|pvt|ltd|limited|india)\b/gi, '').trim();
+  
+  // 1. Direct match in DOMAIN_MAP
+  let domain = DOMAIN_MAP[name] || DOMAIN_MAP[clean];
+
+  // 2. Case-insensitive search in DOMAIN_MAP
   if (!domain) {
-    const slug = key.replace(/[^a-z0-9]/g, '');
-    domain = `${slug || 'company'}.com`;
+    const low = clean.toLowerCase();
+    for (const [k, v] of Object.entries(DOMAIN_MAP)) {
+      if (k.toLowerCase() === low) {
+        domain = v;
+        break;
+      }
+    }
+  }
+
+  // 3. Fallback sanitized domain
+  if (!domain) {
+    const slug = clean.toLowerCase().replace(/\s+/g, '').replace(/[^\w]/g, '');
+    domain = slug ? `${slug}.com` : 'direct.com';
   }
 
   return {
-    cleanName: clean,
-    domain,
     clearbit: `https://logo.clearbit.com/${domain}`,
     google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-    ddg: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-    initial
+    duckduckgo: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    initial: (clean.charAt(0) || 'C').toUpperCase(),
+    domain
   };
 }
+
+export const getCompanyLogoData = getCompanyLogo;

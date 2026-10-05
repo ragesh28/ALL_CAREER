@@ -14,11 +14,12 @@ export class JobService {
 
   async initCatalog(): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
     try {
-      const [mRes, scRes, prevRes, rcRes] = await Promise.allSettled([
+      const [mRes, scRes, prevRes, rcRes, initRes] = await Promise.allSettled([
         fetch('/data/index/manifest.json'),
         fetch('/data/index/sidebar_counts.json'),
         fetch('/data/index/latest_preview_100.json'),
-        fetch('/data/index/role_categories.json')
+        fetch('/data/index/role_categories.json'),
+        fetch('/data/initial_jobs.json')
       ]);
 
       if (mRes.status === 'fulfilled' && mRes.value.ok) {
@@ -34,15 +35,16 @@ export class JobService {
         } catch {}
       }
 
-      let previewList: Job[] = [];
-      if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
+      if (initRes.status === 'fulfilled' && initRes.value.ok) {
+        const fullRows: Job[] = await initRes.value.json();
+        this.ingestJobs(fullRows);
+      } else if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
         const rows: Job[] = await prevRes.value.json();
         this.ingestJobs(rows);
-        previewList = rows;
       }
 
-      // Also fetch walkins in parallel
-      this.fetchWalkinJobs();
+      // Always ensure walkin jobs are ingested
+      await this.fetchWalkinJobs();
 
       return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
     } catch (err) {
@@ -53,8 +55,10 @@ export class JobService {
 
   async fetchWalkinJobs(): Promise<Job[]> {
     try {
-      const res = await fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() =>
-        fetch('/scraped_image_walkin_jobs.json?t=' + Date.now())
+      const res = await fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() =>
+        fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() =>
+          fetch('/data/scraped_image_walkin_jobs.json?t=' + Date.now())
+        )
       );
       if (res.ok) {
         const walkins: Job[] = await res.json();

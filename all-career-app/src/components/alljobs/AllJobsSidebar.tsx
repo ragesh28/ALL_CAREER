@@ -13,11 +13,11 @@ interface AllJobsSidebarProps {
   // Role
   selectedRoles: Set<string>;
   onToggleRole: (role: string) => void;
-  // Experience
-  minExp: string;
-  onMinExpChange: (exp: string) => void;
-  zeroExpOnly: boolean;
-  onToggleZeroExp: () => void;
+  // Experience Moving Bar Slider (-1 = Everything, 0 to 30 Yrs)
+  expValue: number;
+  onExpChange: (val: number) => void;
+  exactExp: boolean;
+  onToggleExactExp: () => void;
   // Skills
   selectedSkills: Set<string>;
   onToggleSkill: (skill: string) => void;
@@ -28,6 +28,12 @@ interface AllJobsSidebarProps {
   onToggleWalkinDate: (date: string) => void;
   // Dynamic counts
   sourceCounts: Record<string, number>;
+  locationCounts?: Record<string, number>;
+  roleCounts?: Record<string, number>;
+  skillCounts?: Record<string, number>;
+  walkinCount?: number;
+  walkinDateCounts?: Record<string, number>;
+  walkinDateOptions?: { id: string; label: string; count: number }[];
 }
 
 export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
@@ -39,17 +45,23 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   onToggleLocation,
   selectedRoles,
   onToggleRole,
-  minExp,
-  onMinExpChange,
-  zeroExpOnly,
-  onToggleZeroExp,
+  expValue,
+  onExpChange,
+  exactExp,
+  onToggleExactExp,
   selectedSkills,
   onToggleSkill,
   walkinOnly,
   onToggleWalkin,
   selectedWalkinDates,
   onToggleWalkinDate,
-  sourceCounts
+  sourceCounts,
+  locationCounts,
+  roleCounts,
+  skillCounts,
+  walkinCount,
+  walkinDateCounts,
+  walkinDateOptions
 }) => {
   // Section toggle state matching original all_jobs.html (source, date, location open by default)
   const [openSections, setOpenSections] = useState({
@@ -57,9 +69,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     date: true,
     location: true,
     roles: false,
-    exp: false,
+    exp: true,
     skills: false,
-    walkin: false
+    walkin: true
   });
 
   const toggleSection = (section: keyof typeof openSections) => {
@@ -90,7 +102,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: 'freshersworld', label: 'FreshersWorld', logo: '/logos/portals/freshersworld.ico', defaultCount: 4065 },
     { id: 'telegram_message', label: 'Messages', logo: '/logos/portals/telegram.svg', defaultCount: 681 },
     { id: 'telegram_post', label: 'Post', logo: '/logos/portals/telegram.svg', defaultCount: 540 },
-    { id: 'google_images', label: 'Images', logo: 'https://www.google.com/favicon.ico', defaultCount: 120 },
+    { id: 'google_images', label: 'Images', logo: '/logos/portals/google.svg', defaultCount: 3519 },
     { id: 'other', label: 'Other Sources', logo: '', defaultCount: 0 }
   ];
 
@@ -117,26 +129,106 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: 'Remote', label: 'Remote', count: 13400 }
   ];
 
-  // 4. Role Categories matching original all_jobs.html
+  // 4. Role Categories matching original all_jobs.html (all 87 roles)
   const allRolesList = [
-    { id: 'software-engineer', label: 'Software Engineer', count: 4520 },
-    { id: 'software-developer', label: 'Software Developer', count: 3890 },
-    { id: 'full-stack', label: 'Full Stack Developer', count: 2810 },
-    { id: 'frontend', label: 'Frontend Developer', count: 1940 },
-    { id: 'backend', label: 'Backend Developer', count: 2150 },
-    { id: 'react-developer', label: 'React Developer', count: 1230 },
-    { id: 'java', label: 'Java Developer', count: 2240 },
-    { id: 'python', label: 'Python Developer', count: 1630 },
-    { id: 'node-developer', label: 'Node.js Developer', count: 980 },
-    { id: 'android-developer', label: 'Android Developer', count: 640 },
-    { id: 'ios-developer', label: 'iOS Developer', count: 580 },
-    { id: 'devops', label: 'DevOps Engineer', count: 980 },
-    { id: 'data-analyst', label: 'Data Analyst', count: 1840 },
-    { id: 'data-science', label: 'Data Scientist', count: 1420 },
-    { id: 'sales-marketing', label: 'Sales Executive', count: 3200 },
-    { id: 'customer-support', label: 'Customer Support', count: 2100 },
-    { id: 'hr', label: 'HR Executive', count: 890 },
-    { id: 'qa-tester', label: 'QA Engineer', count: 1120 }
+    // --- Tech Roles (High Popularity) ---
+    { id: 'Software Engineer', label: 'Software Engineer', count: 52547 },
+    { id: 'Software Developer', label: 'Software Developer', count: 48230 },
+    { id: 'Full Stack Developer', label: 'Full Stack Developer', count: 17170 },
+    { id: 'Frontend Developer', label: 'Frontend Developer', count: 12154 },
+    { id: 'Backend Developer', label: 'Backend Developer', count: 12132 },
+    { id: 'React Developer', label: 'React Developer', count: 18450 },
+    { id: 'Java Developer', label: 'Java Developer', count: 24680 },
+    { id: 'Python Developer', label: 'Python Developer', count: 21390 },
+    { id: 'Node.js Developer', label: 'Node.js Developer', count: 14210 },
+    { id: 'Android Developer', label: 'Android Developer', count: 8420 },
+    { id: 'iOS Developer', label: 'iOS Developer', count: 6890 },
+    { id: 'Mobile App Developer', label: 'Mobile App Developer', count: 9483 },
+    { id: 'Data Analyst', label: 'Data Analyst', count: 25964 },
+    { id: 'Data Scientist', label: 'Data Scientist', count: 10849 },
+    { id: 'Data Engineer', label: 'Data Engineer', count: 17003 },
+    { id: 'DevOps Engineer', label: 'DevOps Engineer', count: 14153 },
+    { id: 'UI UX Designer', label: 'UI UX Designer', count: 23346 },
+    { id: 'QA Engineer', label: 'QA Engineer', count: 11896 },
+    { id: 'QA Analyst', label: 'QA Analyst', count: 9450 },
+    { id: 'QA Automation Engineer', label: 'QA Automation Engineer', count: 8720 },
+    { id: 'Test Automation Engineer', label: 'Test Automation Engineer', count: 7640 },
+    { id: 'SDET', label: 'SDET', count: 9714 },
+    { id: 'AI Engineer', label: 'AI Engineer', count: 14372 },
+    { id: 'Machine Learning Engineer', label: 'Machine Learning Engineer', count: 16831 },
+
+    // --- Business & Management ---
+    { id: 'Product Manager', label: 'Product Manager', count: 14973 },
+    { id: 'Project Manager', label: 'Project Manager', count: 22357 },
+    { id: 'Technical Project Manager', label: 'Technical Project Manager', count: 12480 },
+    { id: 'Business Development Executive', label: 'Business Development Executive', count: 92937 },
+    { id: 'Business Development Manager', label: 'Business Development Manager', count: 34510 },
+    { id: 'Sales Executive', label: 'Sales Executive', count: 78420 },
+    { id: 'Sales Manager', label: 'Sales Manager', count: 26890 },
+
+    // --- Non-Tech, Marketing & Design ---
+    { id: 'HR Executive', label: 'HR Executive', count: 21137 },
+    { id: 'HR Manager', label: 'HR Manager', count: 14820 },
+    { id: 'Technical Recruiter', label: 'Technical Recruiter', count: 22345 },
+    { id: 'Talent Acquisition Specialist', label: 'Talent Acquisition Specialist', count: 16730 },
+    { id: 'HR Business Partner', label: 'HR Business Partner', count: 12450 },
+    { id: 'Customer Support Executive', label: 'Customer Support Executive', count: 18940 },
+    { id: 'Customer Success Manager', label: 'Customer Success Manager', count: 13972 },
+    { id: 'Digital Marketer', label: 'Digital Marketer', count: 36971 },
+    { id: 'Digital Marketing Manager', label: 'Digital Marketing Manager', count: 12480 },
+    { id: 'Product Marketing Manager', label: 'Product Marketing Manager', count: 8750 },
+    { id: 'SEO Specialist', label: 'SEO Specialist', count: 9640 },
+    { id: 'Content Writer', label: 'Content Writer', count: 11320 },
+    { id: 'Graphic Designer', label: 'Graphic Designer', count: 14250 },
+
+    // --- Cloud, Network & Security ---
+    { id: 'Cloud Engineer', label: 'Cloud Engineer', count: 16149 },
+    { id: 'Cloud Architect', label: 'Cloud Architect', count: 12380 },
+    { id: 'AWS Engineer', label: 'AWS Engineer', count: 14260 },
+    { id: 'Azure Engineer', label: 'Azure Engineer', count: 11850 },
+    { id: 'Systems Administrator', label: 'Systems Administrator', count: 2080 },
+    { id: 'System Administrator', label: 'System Administrator', count: 4820 },
+    { id: 'Network Engineer', label: 'Network Engineer', count: 10821 },
+    { id: 'Cybersecurity Analyst', label: 'Cybersecurity Analyst', count: 13739 },
+    { id: 'Cybersecurity Engineer', label: 'Cybersecurity Engineer', count: 11450 },
+    { id: 'Security Analyst', label: 'Security Analyst', count: 9870 },
+    { id: 'Penetration Tester', label: 'Penetration Tester', count: 2438 },
+    { id: 'Database Administrator', label: 'Database Administrator', count: 7575 },
+
+    // --- Specialized Tech ---
+    { id: 'Flutter Developer', label: 'Flutter Developer', count: 6840 },
+    { id: 'React Native Developer', label: 'React Native Developer', count: 5920 },
+    { id: 'Angular Developer', label: 'Angular Developer', count: 8430 },
+    { id: 'Salesforce Developer', label: 'Salesforce Developer', count: 9850 },
+    { id: 'SAP Consultant', label: 'SAP Consultant', count: 7640 },
+    { id: 'Blockchain Developer', label: 'Blockchain Developer', count: 3420 },
+    { id: 'Game Developer', label: 'Game Developer', count: 4150 },
+    { id: 'Embedded Systems Engineer', label: 'Embedded Systems Engineer', count: 5680 },
+    { id: 'VLSI Engineer', label: 'VLSI Engineer', count: 3890 },
+    { id: 'Hardware Engineer', label: 'Hardware Engineer', count: 4720 },
+    { id: 'ETL Developer', label: 'ETL Developer', count: 6340 },
+    { id: 'Business Intelligence Analyst', label: 'Business Intelligence Analyst', count: 8920 },
+    { id: 'Deep Learning Engineer', label: 'Deep Learning Engineer', count: 7850 },
+    { id: 'NLP Engineer', label: 'NLP Engineer', count: 5430 },
+    { id: 'Site Reliability Engineer', label: 'Site Reliability Engineer', count: 8620 },
+    { id: 'Software Architect', label: 'Software Architect', count: 9335 },
+
+    // --- Operations, Finance & Specialized Non-Tech ---
+    { id: 'Operations Manager', label: 'Operations Manager', count: 18332 },
+    { id: 'Financial Analyst', label: 'Financial Analyst', count: 45790 },
+    { id: 'Accountant', label: 'Accountant', count: 18460 },
+    { id: 'Finance Executive', label: 'Finance Executive', count: 14230 },
+    { id: 'Supply Chain Analyst', label: 'Supply Chain Analyst', count: 6780 },
+    { id: 'Supply Chain Manager', label: 'Supply Chain Manager', count: 7940 },
+    { id: 'Logistics Executive', label: 'Logistics Executive', count: 8350 },
+    { id: 'Legal Counsel', label: 'Legal Counsel', count: 7498 },
+    { id: 'Scrum Master', label: 'Scrum Master', count: 4261 },
+    { id: 'UX Researcher', label: 'UX Researcher', count: 3450 },
+    { id: 'Technical Writer', label: 'Technical Writer', count: 11187 },
+    { id: 'Video Editor', label: 'Video Editor', count: 6940 },
+    { id: 'Social Media Manager', label: 'Social Media Manager', count: 11850 },
+    { id: 'Pre-Sales Consultant', label: 'Pre-Sales Consultant', count: 8161 },
+    { id: 'IT Support Specialist', label: 'IT Support Specialist', count: 5119 }
   ];
 
   const filteredRoles = allRolesList.filter(r =>
@@ -167,23 +259,38 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   );
   const visibleSkills = showMoreSkills || skillSearch ? filteredSkills : filteredSkills.slice(0, 8);
 
-  // 6. Walk-in Dates
-  const walkinDates = [
-    { id: 'today', label: 'Today (Live Drive)', count: 42 },
-    { id: 'tomorrow', label: 'Tomorrow', count: 38 },
-    { id: 'this-week', label: 'This Week', count: 124 },
-    { id: 'upcoming', label: 'Upcoming Weekend', count: 86 }
+  // 6. Walk-in Dates matching Screenshot 1
+  const WALKIN_DATES = [
+    { id: 'Oct 5', label: 'Oct 5', count: 699 },
+    { id: 'Oct 6', label: 'Oct 6', count: 682 },
+    { id: 'Oct 7', label: 'Oct 7', count: 659 },
+    { id: 'Oct 8', label: 'Oct 8', count: 598 },
+    { id: 'Oct 9', label: 'Oct 9', count: 579 },
+    { id: 'Oct 10', label: 'Oct 10', count: 556 },
+    { id: 'Oct 11', label: 'Oct 11', count: 355 },
+    { id: 'Oct 12', label: 'Oct 12', count: 342 },
+    { id: 'Oct 13', label: 'Oct 13', count: 334 },
+    { id: 'Oct 14', label: 'Oct 14', count: 295 },
+    { id: 'Oct 15', label: 'Oct 15', count: 240 },
+    { id: 'Oct 16', label: 'Oct 16', count: 190 }
   ];
+
+  const displayWalkinDates = walkinDateOptions && walkinDateOptions.length > 0 
+    ? walkinDateOptions 
+    : WALKIN_DATES;
 
   const totalApplied =
     selectedSources.size +
     (selectedDateFilter !== 'all' ? 1 : 0) +
     selectedLocations.size +
     selectedRoles.size +
-    (minExp || zeroExpOnly ? 1 : 0) +
+    (expValue >= 0 ? 1 : 0) +
     selectedSkills.size +
     (walkinOnly ? 1 : 0) +
     selectedWalkinDates.size;
+
+  // Percentage for experience bubble position: -1 to 30 => 31 steps
+  const expPercent = Math.min(100, Math.max(0, ((expValue + 1) / 31) * 100));
 
   return (
     <aside className="sidebar">
@@ -303,6 +410,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="location-options">
               {locationsList.map(item => {
                 const isSelected = selectedLocations.has(item.id);
+                const count = locationCounts ? (locationCounts[item.id] ?? 0) : item.count;
                 return (
                   <div
                     key={item.id}
@@ -315,7 +423,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({item.count.toLocaleString()})</span>
+                    <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );
               })}
@@ -356,6 +464,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="roles-options">
               {visibleRoles.map(item => {
                 const isSelected = selectedRoles.has(item.id);
+                const count = roleCounts ? (roleCounts[item.id] ?? 0) : item.count;
                 return (
                   <div
                     key={item.id}
@@ -368,7 +477,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({item.count.toLocaleString()})</span>
+                    <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );
               })}
@@ -382,46 +491,73 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
       </div>
 
-      {/* ── 5. Experience (Min Year) ── */}
+      {/* ── 5. Experience Moving Bar Format ── */}
       <div className={`filter-section ${openSections.exp ? 'open' : ''}`} id="sec-exp">
         <div className="filter-section-header" onClick={() => toggleSection('exp')}>
           <span className="filter-section-label">
             Experience
-            {(minExp || zeroExpOnly) && <span className="filter-count show">1</span>}
+            {expValue >= 0 && (
+              <span className="filter-count show">
+                {exactExp ? `Exactly ${expValue} Yrs` : `${expValue} Yrs`}
+              </span>
+            )}
           </span>
           <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
         <div className="filter-body">
-          <div className="filter-body-inner" style={{ padding: '16px 4px 20px 4px' }}>
-            <div className="exp-input-container">
-              <label htmlFor="expMinInput">Min Year</label>
+          <div className="filter-body-inner">
+            <div className="exp-slider-wrap">
+              {/* Floating Bubble Pin (Pill for 'Everything', Teardrop for numbers) */}
+              <div
+                className={`exp-slider-bubble ${expValue === -1 ? 'is-everything' : ''}`}
+                style={{
+                  left: `calc(${expPercent}% + ${(16 - expPercent * 0.32)}px)`
+                }}
+              >
+                <span>{expValue === -1 ? 'Everything' : expValue}</span>
+              </div>
+
+              {/* Slider Track: starts at -1 (Everything), next step is 0, up to 30 */}
               <input
-                type="number"
-                min="0"
+                type="range"
+                min="-1"
                 max="30"
-                value={minExp}
-                placeholder="None"
-                className="exp-input"
-                id="expMinInput"
-                onChange={e => onMinExpChange(e.target.value)}
+                step="1"
+                value={expValue}
+                onChange={e => onExpChange(parseInt(e.target.value, 10))}
+                className="exp-range-slider"
+                aria-label="Experience slider in years"
               />
-              <span className="exp-input-suffix">Yrs</span>
-            </div>
-            <div
-              className={`exp-zero-checkbox ${zeroExpOnly ? 'active' : ''}`}
-              id="expZeroCheckboxWrap"
-              style={{ display: 'flex' }}
-              onClick={onToggleZeroExp}
-            >
-              <input
-                type="checkbox"
-                id="expExactlyZero"
-                checked={zeroExpOnly}
-                onChange={onToggleZeroExp}
-              />
-              <label htmlFor="expExactlyZero">Exactly 0 years only</label>
+
+              {/* Labels below slider */}
+              <div className="exp-slider-labels">
+                <span>Everything</span>
+                <span>30 Yrs</span>
+              </div>
+
+              {/* Small Checkbox: Disappears at 'Everything', appears at 0 or 1-30 */}
+              {expValue >= 0 && (
+                <div
+                  className={`exp-exact-checkbox ${exactExp ? 'active' : ''}`}
+                  onClick={onToggleExactExp}
+                  id="expExactCheckboxWrap"
+                >
+                  <div className="custom-checkbox">
+                    {exactExp && (
+                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="option-label">
+                    {expValue === 0
+                      ? 'Exactly 0 years only'
+                      : `Exactly ${expValue} year${expValue === 1 ? '' : 's'} only`}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -459,6 +595,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="skills-options">
               {visibleSkills.map(item => {
                 const isSelected = selectedSkills.has(item.id);
+                const count = skillCounts ? (skillCounts[item.id] ?? 0) : item.count;
                 return (
                   <div
                     key={item.id}
@@ -471,7 +608,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({item.count.toLocaleString()})</span>
+                    <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );
               })}
@@ -485,7 +622,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
       </div>
 
-      {/* ── 7. Walk-in Interview ── */}
+      {/* ── 7. Walk-in Interview (Matching Screenshot 1) ── */}
       <div className={`filter-section ${openSections.walkin ? 'open' : ''}`} id="sec-walkin">
         <div className="filter-section-header" onClick={() => toggleSection('walkin')}>
           <span className="filter-section-label">
@@ -502,6 +639,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
+            {/* Top Option: All Walk-ins with dynamic count */}
             <div
               className={`filter-option ${walkinOnly ? 'checked' : ''}`}
               id="walkinOpt"
@@ -513,25 +651,30 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 </svg>
               </div>
               <span className="option-label">🚶 All Walk-ins</span>
-              <span className="source-count">(290)</span>
+              <span className="source-count">({(walkinCount !== undefined ? walkinCount : 7365).toLocaleString()})</span>
             </div>
+
+            {/* Subheader: INTERVIEW DATES matching Screenshot 1 */}
             <div
               style={{
                 fontSize: '0.73rem',
                 fontWeight: 700,
-                color: 'var(--text-dim)',
-                margin: '12px 0 6px 4px',
+                color: '#64748b',
+                margin: '14px 0 8px 4px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
-                borderTop: '1px solid var(--border)',
+                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
                 paddingTop: '10px'
               }}
             >
-              Interview Dates
+              INTERVIEW DATES
             </div>
-            <div id="walkin-dates-options">
-              {walkinDates.map(item => {
+
+            {/* Scrollable list with authentic calendar dates dynamically populated */}
+            <div id="walkin-dates-options" style={{ maxHeight: '240px', overflowY: 'auto' }}>
+              {displayWalkinDates.map(item => {
                 const isSelected = selectedWalkinDates.has(item.id);
+                const count = walkinDateCounts ? (walkinDateCounts[item.id] ?? item.count) : item.count;
                 return (
                   <div
                     key={item.id}
@@ -544,7 +687,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({item.count})</span>
+                    <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );
               })}

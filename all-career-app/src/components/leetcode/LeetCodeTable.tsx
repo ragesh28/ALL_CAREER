@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LeetCodeProblem } from '../../types/leetcode';
 import { Search, ExternalLink, Flame, Building2, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CompanyLogo } from '../common/CompanyLogo';
 
 interface LeetCodeTableProps {
   problems: LeetCodeProblem[];
@@ -91,20 +92,21 @@ export const LeetCodeTable: React.FC<LeetCodeTableProps> = ({ problems }) => {
         </div>
       </div>
 
-      {/* Top Company Chips */}
+      {/* Top Company Chips with Logos */}
       <div className="flex flex-wrap items-center gap-1.5 mb-4">
         <span className="text-[11px] font-bold text-slate-500 uppercase mr-1">Companies:</span>
         {topCompanies.map(c => (
           <button
             key={c}
             onClick={() => { setSelectedCompany(c); setCurrentPage(1); }}
-            className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
               selectedCompany === c
-                ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
+                ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-sm'
                 : 'bg-white/5 text-slate-400 hover:text-slate-200 border border-white/5'
             }`}
           >
-            {c === 'all' ? 'All Companies' : c}
+            {c !== 'all' && <CompanyLogo name={c} size={15} />}
+            <span>{c === 'all' ? 'All Companies' : c}</span>
           </button>
         ))}
       </div>
@@ -142,6 +144,7 @@ export const LeetCodeTable: React.FC<LeetCodeTableProps> = ({ problems }) => {
               <th className="py-3 px-3">Title</th>
               <th className="py-3 px-3">Difficulty</th>
               <th className="py-3 px-3">Frequency</th>
+              <th className="py-3 px-3">Companies</th>
               <th className="py-3 px-3">Topics</th>
               <th className="py-3 px-3 text-right">Action</th>
             </tr>
@@ -151,6 +154,7 @@ export const LeetCodeTable: React.FC<LeetCodeTableProps> = ({ problems }) => {
               const problemSlug = p.slug || p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
               const url = p.url || `https://leetcode.com/problems/${problemSlug}/`;
               const freq = p.max_frequency_pct ? `${p.max_frequency_pct}%` : 'High';
+              const comps = p.companies && p.companies.length > 0 ? p.companies : [];
 
               return (
                 <tr key={p.id} className="hover:bg-white/[0.02] transition-colors group">
@@ -175,6 +179,25 @@ export const LeetCodeTable: React.FC<LeetCodeTableProps> = ({ problems }) => {
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-400">
                       <Flame className="w-3.5 h-3.5" />
                       <span>{freq}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-3">
+                    <div className="flex flex-wrap items-center gap-1 max-w-[220px]">
+                      {comps.slice(0, 3).map((comp, ci) => (
+                        <span
+                          key={ci}
+                          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/5 border border-white/5 text-[11px] text-slate-300"
+                          title={comp}
+                        >
+                          <CompanyLogo name={comp} size={13} />
+                          <span>{comp}</span>
+                        </span>
+                      ))}
+                      {comps.length > 3 && (
+                        <span className="text-[10px] text-slate-500 font-semibold" title={comps.slice(3).join(', ')}>
+                          +{comps.length - 3}
+                        </span>
+                      )}
                     </div>
                   </td>
                   <td className="py-3 px-3">

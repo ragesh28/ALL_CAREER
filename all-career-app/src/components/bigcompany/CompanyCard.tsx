@@ -1,14 +1,12 @@
 import React from 'react';
 import { BigCompanyItem } from '../../data/bigCompaniesData';
-import { getCompanyLogoData } from '../../utils/companyLogos';
+import { CompanyLogo } from '../common/CompanyLogo';
 
 interface CompanyCardProps {
   company: BigCompanyItem;
 }
 
 export const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
-  const logo = getCompanyLogoData(company.name);
-
   // Badge class by type
   const typeLower = (company.type || '').toLowerCase();
   let tagClass = 'tag-product';
@@ -21,14 +19,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
     <div className="bigcompany-card">
       <div className="bigcompany-top">
         {/* Logo */}
-        <img
-          src={logo.google}
-          alt={company.name}
-          className="bigcompany-logo"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = logo.clearbit;
-          }}
-        />
+        <CompanyLogo name={company.name} size={44} style={{ borderRadius: 10, background: '#1e293b' }} />
 
         <div className="bigcompany-title-row">
           <div className="bigcompany-name">{company.name}</div>

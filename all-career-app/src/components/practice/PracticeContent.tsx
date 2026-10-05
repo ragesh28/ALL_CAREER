@@ -398,10 +398,11 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                 <tr>
                   <th style={{ width: '70px' }}>ID</th>
                   <th>Problem Name</th>
-                  <th style={{ width: '280px' }}>Topics</th>
-                  <th style={{ width: '110px' }}>Acceptance</th>
-                  <th style={{ width: '100px' }}>Difficulty</th>
-                  <th style={{ width: '120px' }}>Frequency</th>
+                  <th style={{ width: '220px' }}>Companies</th>
+                  <th style={{ width: '220px' }}>Topics</th>
+                  <th style={{ width: '100px' }}>Acceptance</th>
+                  <th style={{ width: '90px' }}>Difficulty</th>
+                  <th style={{ width: '110px' }}>Frequency</th>
                 </tr>
               </thead>
               <tbody>
@@ -409,6 +410,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                   const freq = p.frequency || (p.company_count ? Math.min(100, Math.floor((p.company_count / 250) * 100)) : 15);
                   let barColor = freq > 70 ? '#2cbb5d' : (freq > 40 ? '#fbbf24' : '#94a3b8');
                   const topicList = Array.isArray(p.topics) ? p.topics : [];
+                  const compList = Array.isArray(p.companies) ? p.companies : [];
 
                   return (
                     <tr key={p.id}>
@@ -417,6 +419,25 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                         <a href={p.url} target="_blank" rel="noopener noreferrer" className="problem-link">
                           {p.title}
                         </a>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center', maxWidth: '220px' }}>
+                          {compList.slice(0, 3).map((comp, ci) => (
+                            <span
+                              key={ci}
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.72rem', color: '#cbd5e1' }}
+                              title={comp}
+                            >
+                              <CompanyLogo name={comp} size={13} />
+                              <span>{comp}</span>
+                            </span>
+                          ))}
+                          {compList.length > 3 && (
+                            <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
+                              +{compList.length - 3}
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td>
                         {topicList.slice(0, 3).map(t => (

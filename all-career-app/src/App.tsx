@@ -3,6 +3,7 @@ import { HubView } from './components/hub/HubView';
 import { AllJobsView } from './components/alljobs/AllJobsView';
 import { PracticeView } from './components/practice/PracticeView';
 import { BigCompanyView } from './components/bigcompany/BigCompanyView';
+import { BigCompanyJobsView } from './components/bigcompany/BigCompanyJobsView';
 import './styles/all_career_theme.css';
 
 export type ViewType = 'hub' | 'all_jobs' | 'practice' | 'big_company_jobs' | 'career_explorer';
@@ -61,9 +62,19 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* 4. Big Company Jobs / Name List (Screenshot 5) */}
-      {(currentView === 'big_company_jobs' || currentView === 'career_explorer') && (
-        <BigCompanyView onGoHub={() => navigateTo('hub')} />
+      {/* 4. Big Company Name List (Card 1: 150+ Companies Directory) */}
+      {currentView === 'career_explorer' && (
+        <BigCompanyView
+          onGoHub={() => navigateTo('hub')}
+          title="Big Company Name List"
+        />
+      )}
+
+      {/* 5. Big Company Jobs (Card 2: Real Jobs from 180+ Big Companies) */}
+      {currentView === 'big_company_jobs' && (
+        <BigCompanyJobsView
+          onGoHub={() => navigateTo('hub')}
+        />
       )}
     </div>
   );
