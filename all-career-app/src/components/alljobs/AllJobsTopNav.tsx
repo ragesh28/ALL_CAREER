@@ -7,6 +7,8 @@ interface AllJobsTopNavProps {
   categoryCounts: Record<string, number>;
   onGoHub: () => void;
   onAutoApply: () => void;
+  onClearAll?: () => void;
+  hasActiveFilters?: boolean;
 }
 
 export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
@@ -15,7 +17,9 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
   totalJobsCount,
   categoryCounts,
   onGoHub,
-  onAutoApply
+  onAutoApply,
+  onClearAll,
+  hasActiveFilters
 }) => {
   const [showPopover, setShowPopover] = useState(false);
 
@@ -31,8 +35,8 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
 
       {/* Center: Search Box */}
       <div className="topnav-center">
-        <div className="topnav-search">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#7c8db5', flexShrink: 0 }}>
+        <div className="topnav-search colored-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
@@ -91,6 +95,13 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
             </div>
           )}
         </div>
+
+        {/* Clear All button matching line 1599 of original all_jobs.html */}
+        {hasActiveFilters && (
+          <button className="clear-all-btn" onClick={onClearAll} title="Clear all active filters">
+            ✕ Clear All
+          </button>
+        )}
 
         {/* Hub Button */}
         <button className="btn-hub-nav" onClick={onGoHub}>

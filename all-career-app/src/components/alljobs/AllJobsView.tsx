@@ -268,6 +268,33 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     selectedCategory
   ]);
 
+  const hasActiveFilters =
+    selectedSources.size > 0 ||
+    selectedDateFilter !== 'all' ||
+    selectedLocations.size > 0 ||
+    selectedRoles.size > 0 ||
+    Boolean(minExp) ||
+    zeroExpOnly ||
+    selectedSkills.size > 0 ||
+    walkinOnly ||
+    selectedWalkinDates.size > 0 ||
+    selectedCategory !== 'all' ||
+    Boolean(searchTerm);
+
+  const clearAllFilters = () => {
+    setSelectedSources(new Set());
+    setSelectedDateFilter('all');
+    setSelectedLocations(new Set());
+    setSelectedRoles(new Set());
+    setMinExp('');
+    setZeroExpOnly(false);
+    setSelectedSkills(new Set());
+    setWalkinOnly(false);
+    setSelectedWalkinDates(new Set());
+    setSelectedCategory('all');
+    setSearchTerm('');
+  };
+
   const handleAutoApply = () => {
     const urls = filteredJobs.slice(0, 30).map(j => j.url).filter(Boolean) as string[];
     bridgeService.sendBatchJobsToExtension(urls);
@@ -284,11 +311,13 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
         categoryCounts={categoryCounts}
         onGoHub={onGoHub}
         onAutoApply={handleAutoApply}
+        onClearAll={clearAllFilters}
+        hasActiveFilters={hasActiveFilters}
       />
 
       {/* Main Layout: Sidebar + Grid */}
       <div className="alljobs-layout">
-        {/* Left Filter Sidebar with all 8 Filters from Original all_jobs.html */}
+        {/* Left Filter Sidebar with original layout & independent scroll */}
         <AllJobsSidebar
           selectedSources={selectedSources}
           onToggleSource={handleToggleSource}
@@ -304,8 +333,6 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
           onToggleZeroExp={() => setZeroExpOnly(prev => !prev)}
           selectedSkills={selectedSkills}
           onToggleSkill={handleToggleSkill}
-          selectedCompanies={selectedCompanies}
-          onToggleCompany={handleToggleCompany}
           walkinOnly={walkinOnly}
           onToggleWalkin={() => setWalkinOnly(prev => !prev)}
           selectedWalkinDates={selectedWalkinDates}

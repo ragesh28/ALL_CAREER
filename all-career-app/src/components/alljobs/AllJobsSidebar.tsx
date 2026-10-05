@@ -21,9 +21,6 @@ interface AllJobsSidebarProps {
   // Skills
   selectedSkills: Set<string>;
   onToggleSkill: (skill: string) => void;
-  // Company
-  selectedCompanies: Set<string>;
-  onToggleCompany: (company: string) => void;
   // Walkin
   walkinOnly: boolean;
   onToggleWalkin: () => void;
@@ -48,15 +45,13 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   onToggleZeroExp,
   selectedSkills,
   onToggleSkill,
-  selectedCompanies,
-  onToggleCompany,
   walkinOnly,
   onToggleWalkin,
   selectedWalkinDates,
   onToggleWalkinDate,
   sourceCounts
 }) => {
-  // Section toggle state (Source and Date open by default)
+  // Section toggle state matching original all_jobs.html (source, date, location open by default)
   const [openSections, setOpenSections] = useState({
     source: true,
     date: true,
@@ -64,7 +59,6 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     roles: false,
     exp: false,
     skills: false,
-    company: false,
     walkin: false
   });
 
@@ -72,33 +66,35 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  // Search inside filters
-  const [locSearch, setLocSearch] = useState('');
+  // Search inside filters (Only Role and Skills have search bars as requested!)
   const [roleSearch, setRoleSearch] = useState('');
   const [skillSearch, setSkillSearch] = useState('');
-  const [compSearch, setCompSearch] = useState('');
 
-  // 1. Sources List
-  const sourcesList = [
-    { id: 'linkedin', label: 'LinkedIn', icon: '💼', count: sourceCounts.linkedin ?? 221380 },
-    { id: 'naukri', label: 'Naukri', icon: '🌐', count: sourceCounts.naukri ?? 322160 },
-    { id: 'indeed', label: 'Indeed', icon: '🔍', count: sourceCounts.indeed ?? 78407 },
-    { id: 'internshala', label: 'Internshala', icon: 'IS', count: sourceCounts.internshala ?? 83161 },
-    { id: 'glassdoor', label: 'Glassdoor', icon: '🟢', count: sourceCounts.glassdoor ?? 4786 },
-    { id: 'shine', label: 'Shine', icon: '⭐', count: sourceCounts.shine ?? 47436 },
-    { id: 'timesjobs', label: 'TimesJobs', icon: '⏳', count: sourceCounts.timesjobs ?? 101057 },
-    { id: 'hirist', label: 'Hirist', icon: 'h', count: sourceCounts.hirist ?? 10355 },
-    { id: 'workindia', label: 'WorkIndia', icon: 'W', count: sourceCounts.workindia ?? 15876 },
-    { id: 'foundit', label: 'Foundit', icon: '🎯', count: sourceCounts.foundit ?? 20644 },
-    { id: 'apna', label: 'Apna', icon: 'A', count: sourceCounts.apna ?? 7409 },
-    { id: 'freshersworld', label: 'FreshersWorld', icon: 'FW', count: sourceCounts.freshersworld ?? 4065 },
-    { id: 'telegram', label: 'Messages', icon: '✉️', count: sourceCounts.telegram ?? 681 },
-    { id: 'post', label: 'Post', icon: '📌', count: sourceCounts.post ?? 540 },
-    { id: 'images', label: 'Images', icon: '🖼️', count: 0 },
-    { id: 'others', label: 'Other Sources', icon: '⚙️', count: 0 }
+  // Show more toggles
+  const [showMoreRoles, setShowMoreRoles] = useState(false);
+  const [showMoreSkills, setShowMoreSkills] = useState(false);
+
+  // 1. Sources List with authentic logos from logos/portals/
+  const PORTALS = [
+    { id: 'linkedin', label: 'LinkedIn', logo: '/logos/portals/linkedin.png', defaultCount: 221380 },
+    { id: 'naukri', label: 'Naukri', logo: '/logos/portals/naukri.png', defaultCount: 322160 },
+    { id: 'indeed', label: 'Indeed', logo: '/logos/portals/indeed.png', defaultCount: 78407 },
+    { id: 'internshala', label: 'Internshala', logo: '/logos/portals/internshala.png', defaultCount: 83161 },
+    { id: 'glassdoor', label: 'Glassdoor', logo: '/logos/portals/glassdoor.ico', defaultCount: 4786 },
+    { id: 'shine', label: 'Shine', logo: '/logos/portals/shine.ico', defaultCount: 47436 },
+    { id: 'timesjobs', label: 'TimesJobs', logo: '/logos/portals/timesjobs.svg', defaultCount: 101057 },
+    { id: 'hirist', label: 'Hirist', logo: '/logos/portals/hirist.ico', defaultCount: 10355 },
+    { id: 'workindia', label: 'WorkIndia', logo: '/logos/portals/workindia.png', defaultCount: 15876 },
+    { id: 'foundit', label: 'Foundit', logo: '/logos/portals/foundit.png', defaultCount: 20644 },
+    { id: 'apna', label: 'Apna', logo: '/logos/portals/apna.png', defaultCount: 7409 },
+    { id: 'freshersworld', label: 'FreshersWorld', logo: '/logos/portals/freshersworld.ico', defaultCount: 4065 },
+    { id: 'telegram_message', label: 'Messages', logo: '/logos/portals/telegram.svg', defaultCount: 681 },
+    { id: 'telegram_post', label: 'Post', logo: '/logos/portals/telegram.svg', defaultCount: 540 },
+    { id: 'google_images', label: 'Images', logo: 'https://www.google.com/favicon.ico', defaultCount: 120 },
+    { id: 'other', label: 'Other Sources', logo: '', defaultCount: 0 }
   ];
 
-  // 2. Date Options
+  // 2. Date Options matching original all_jobs.html
   const dateOptions = [
     { id: 'all', label: 'All Time' },
     { id: '24h', label: 'Last 24 Hours' },
@@ -107,39 +103,49 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: '15d', label: 'Last 15 Days' }
   ];
 
-  // 3. Locations List
+  // 3. Locations List with real counts (NO search bar as requested)
   const locationsList = [
-    { id: 'bengaluru', label: 'Bengaluru', count: 3240 },
-    { id: 'delhi', label: 'Delhi / NCR', count: 2890 },
-    { id: 'mumbai', label: 'Mumbai', count: 1950 },
-    { id: 'hyderabad', label: 'Hyderabad', count: 2120 },
-    { id: 'pune', label: 'Pune', count: 1480 },
-    { id: 'chennai', label: 'Chennai', count: 1150 },
-    { id: 'noida', label: 'Noida', count: 890 },
-    { id: 'gurgaon', label: 'Gurgaon', count: 950 },
-    { id: 'kolkata', label: 'Kolkata', count: 620 },
-    { id: 'ahmedabad', label: 'Ahmedabad', count: 480 },
-    { id: 'remote', label: 'Remote', count: 1340 }
-  ].filter(l => l.label.toLowerCase().includes(locSearch.toLowerCase()));
+    { id: 'Bangalore', label: 'Bangalore', count: 32450 },
+    { id: 'Chennai', label: 'Chennai', count: 14280 },
+    { id: 'Hyderabad', label: 'Hyderabad', count: 21120 },
+    { id: 'Mumbai', label: 'Mumbai', count: 19450 },
+    { id: 'Delhi', label: 'Delhi', count: 28900 },
+    { id: 'Pune', label: 'Pune', count: 16480 },
+    { id: 'Noida', label: 'Noida', count: 8950 },
+    { id: 'Kolkata', label: 'Kolkata', count: 6240 },
+    { id: 'Ahmedabad', label: 'Ahmedabad', count: 4820 },
+    { id: 'Remote', label: 'Remote', count: 13400 }
+  ];
 
-  // 4. Role Categories
-  const rolesList = [
+  // 4. Role Categories matching original all_jobs.html
+  const allRolesList = [
     { id: 'software-engineer', label: 'Software Engineer', count: 4520 },
+    { id: 'software-developer', label: 'Software Developer', count: 3890 },
     { id: 'full-stack', label: 'Full Stack Developer', count: 2810 },
     { id: 'frontend', label: 'Frontend Developer', count: 1940 },
     { id: 'backend', label: 'Backend Developer', count: 2150 },
-    { id: 'python', label: 'Python Developer', count: 1630 },
+    { id: 'react-developer', label: 'React Developer', count: 1230 },
     { id: 'java', label: 'Java Developer', count: 2240 },
+    { id: 'python', label: 'Python Developer', count: 1630 },
+    { id: 'node-developer', label: 'Node.js Developer', count: 980 },
+    { id: 'android-developer', label: 'Android Developer', count: 640 },
+    { id: 'ios-developer', label: 'iOS Developer', count: 580 },
     { id: 'devops', label: 'DevOps Engineer', count: 980 },
-    { id: 'data-science', label: 'Data Scientist / AI', count: 1420 },
-    { id: 'sales-marketing', label: 'Sales & Marketing', count: 3200 },
-    { id: 'customer-support', label: 'Customer Support / BPO', count: 2100 },
-    { id: 'hr', label: 'Human Resources (HR)', count: 890 },
-    { id: 'qa-tester', label: 'QA / Test Engineer', count: 1120 }
-  ].filter(r => r.label.toLowerCase().includes(roleSearch.toLowerCase()));
+    { id: 'data-analyst', label: 'Data Analyst', count: 1840 },
+    { id: 'data-science', label: 'Data Scientist', count: 1420 },
+    { id: 'sales-marketing', label: 'Sales Executive', count: 3200 },
+    { id: 'customer-support', label: 'Customer Support', count: 2100 },
+    { id: 'hr', label: 'HR Executive', count: 890 },
+    { id: 'qa-tester', label: 'QA Engineer', count: 1120 }
+  ];
 
-  // 6. Skills List
-  const skillsList = [
+  const filteredRoles = allRolesList.filter(r =>
+    r.label.toLowerCase().includes(roleSearch.toLowerCase())
+  );
+  const visibleRoles = showMoreRoles || roleSearch ? filteredRoles : filteredRoles.slice(0, 8);
+
+  // 5. Skills List matching original all_jobs.html
+  const allSkillsList = [
     { id: 'python', label: 'Python', count: 3420 },
     { id: 'react', label: 'React.js', count: 2810 },
     { id: 'java', label: 'Java', count: 2950 },
@@ -148,29 +154,20 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: 'node', label: 'Node.js', count: 1920 },
     { id: 'aws', label: 'AWS / Cloud', count: 2100 },
     { id: 'docker', label: 'Docker / Kubernetes', count: 1140 },
-    { id: 'ml', label: 'Machine Learning', count: 1230 },
+    { id: 'machine-learning', label: 'Machine Learning', count: 1230 },
     { id: 'cpp', label: 'C++ / C', count: 1450 },
-    { id: 'html-css', label: 'HTML/CSS', count: 2400 }
-  ].filter(s => s.label.toLowerCase().includes(skillSearch.toLowerCase()));
+    { id: 'html-css', label: 'HTML/CSS', count: 2400 },
+    { id: 'git', label: 'Git', count: 1850 },
+    { id: 'mongodb', label: 'MongoDB', count: 920 },
+    { id: 'spring-boot', label: 'Spring Boot', count: 840 }
+  ];
 
-  // 7. Companies List
-  const companiesList = [
-    { id: 'amazon', label: 'Amazon', count: 420 },
-    { id: 'google', label: 'Google', count: 310 },
-    { id: 'microsoft', label: 'Microsoft', count: 380 },
-    { id: 'tcs', label: 'TCS', count: 680 },
-    { id: 'infosys', label: 'Infosys', count: 590 },
-    { id: 'wipro', label: 'Wipro', count: 510 },
-    { id: 'cognizant', label: 'Cognizant', count: 470 },
-    { id: 'accenture', label: 'Accenture', count: 620 },
-    { id: 'capgemini', label: 'Capgemini', count: 430 },
-    { id: 'flipkart', label: 'Flipkart', count: 210 },
-    { id: 'swiggy', label: 'Swiggy', count: 180 },
-    { id: 'zomato', label: 'Zomato', count: 190 },
-    { id: 'zoho', label: 'Zoho', count: 240 }
-  ].filter(c => c.label.toLowerCase().includes(compSearch.toLowerCase()));
+  const filteredSkills = allSkillsList.filter(s =>
+    s.label.toLowerCase().includes(skillSearch.toLowerCase())
+  );
+  const visibleSkills = showMoreSkills || skillSearch ? filteredSkills : filteredSkills.slice(0, 8);
 
-  // 8. Walkin Dates
+  // 6. Walk-in Dates
   const walkinDates = [
     { id: 'today', label: 'Today (Live Drive)', count: 42 },
     { id: 'tomorrow', label: 'Tomorrow', count: 38 },
@@ -178,15 +175,23 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: 'upcoming', label: 'Upcoming Weekend', count: 86 }
   ];
 
-  const totalApplied = selectedSources.size + (selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (minExp || zeroExpOnly ? 1 : 0) + selectedSkills.size + selectedCompanies.size + (walkinOnly ? 1 : 0);
+  const totalApplied =
+    selectedSources.size +
+    (selectedDateFilter !== 'all' ? 1 : 0) +
+    selectedLocations.size +
+    selectedRoles.size +
+    (minExp || zeroExpOnly ? 1 : 0) +
+    selectedSkills.size +
+    (walkinOnly ? 1 : 0) +
+    selectedWalkinDates.size;
 
   return (
     <aside className="sidebar">
       {/* Sidebar Header */}
-      <div className="sidebar-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '12px', borderBottom: '1px solid var(--border)' }}>
+      <div className="sidebar-header">
         <span className="sidebar-title">All Filters</span>
         {totalApplied > 0 && (
-          <span className="applied-badge visible" style={{ display: 'inline-block' }}>
+          <span className="applied-badge visible">
             Applied ({totalApplied})
           </span>
         )}
@@ -206,24 +211,38 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
           </svg>
         </div>
         <div className="filter-body">
-          <div className="filter-body-inner">
-            {sourcesList.map(item => {
+          <div className="filter-body-inner" id="source-options">
+            {PORTALS.map(item => {
               const isSelected = selectedSources.has(item.id);
+              const count = sourceCounts[item.id] ?? item.defaultCount;
               return (
                 <div
                   key={item.id}
                   className={`filter-option ${isSelected ? 'checked' : ''}`}
+                  id={`src-${item.id}`}
                   onClick={() => onToggleSource(item.id)}
                 >
                   <div className="custom-checkbox">
-                    {isSelected && (
-                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
-                    )}
+                    <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
                   </div>
-                  <span className="option-label">{item.icon} {item.label}</span>
-                  <span className="source-count">({item.count.toLocaleString()})</span>
+                  {item.logo ? (
+                    <img
+                      src={item.logo}
+                      className="option-img"
+                      alt={item.label}
+                      onError={e => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <span className="meta-icon" style={{ fontSize: '13px' }}>🌐</span>
+                  )}
+                  <span className="option-label">{item.label}</span>
+                  <span className="source-count" id={`cnt-src-${item.id}`}>
+                    ({count.toLocaleString()})
+                  </span>
                 </div>
               );
             })}
@@ -246,18 +265,19 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            {dateOptions.map(opt => {
-              const isSelected = selectedDateFilter === opt.id;
+            {dateOptions.map(item => {
+              const isSelected = selectedDateFilter === item.id;
               return (
                 <div
-                  key={opt.id}
+                  key={item.id}
                   className={`filter-radio ${isSelected ? 'selected' : ''}`}
-                  onClick={() => onSelectDateFilter(opt.id)}
+                  data-range={item.id}
+                  onClick={() => onSelectDateFilter(item.id)}
                 >
                   <div className="custom-radio">
                     <div className="radio-dot"></div>
                   </div>
-                  <span className="option-label">{opt.label}</span>
+                  <span className="option-label">{item.label}</span>
                 </div>
               );
             })}
@@ -265,7 +285,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
       </div>
 
-      {/* ── 3. Location ── */}
+      {/* ── 3. Location (NO SEARCH BAR as requested, with count) ── */}
       <div className={`filter-section ${openSections.location ? 'open' : ''}`} id="sec-location">
         <div className="filter-section-header" onClick={() => toggleSection('location')}>
           <span className="filter-section-label">
@@ -280,36 +300,22 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            <div className="filter-search">
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search location..."
-                value={locSearch}
-                onChange={e => setLocSearch(e.target.value)}
-              />
-            </div>
             <div id="location-options">
-              {locationsList.map(loc => {
-                const isSelected = selectedLocations.has(loc.id);
+              {locationsList.map(item => {
+                const isSelected = selectedLocations.has(item.id);
                 return (
                   <div
-                    key={loc.id}
+                    key={item.id}
                     className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleLocation(loc.id)}
+                    onClick={() => onToggleLocation(item.id)}
                   >
                     <div className="custom-checkbox">
-                      {isSelected && (
-                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                      )}
+                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
                     </div>
-                    <span className="option-label">{loc.label}</span>
-                    <span className="source-count">({loc.count.toLocaleString()})</span>
+                    <span className="option-label">{item.label}</span>
+                    <span className="source-count">({item.count.toLocaleString()})</span>
                   </div>
                 );
               })}
@@ -318,7 +324,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
       </div>
 
-      {/* ── 4. Role Category ── */}
+      {/* ── 4. Role Category (With Colorful Search Bar) ── */}
       <div className={`filter-section ${openSections.roles ? 'open' : ''}`} id="sec-roles">
         <div className="filter-section-header" onClick={() => toggleSection('roles')}>
           <span className="filter-section-label">
@@ -333,40 +339,45 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            <div className="filter-search">
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            {/* Colorful Search Bar */}
+            <div className="filter-search colored-search">
+              <svg width="13" height="13" fill="none" stroke="#38bdf8" strokeWidth="2" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35" />
               </svg>
               <input
                 type="text"
+                id="roleSearch"
                 placeholder="Search roles..."
                 value={roleSearch}
                 onChange={e => setRoleSearch(e.target.value)}
               />
             </div>
             <div id="roles-options">
-              {rolesList.map(r => {
-                const isSelected = selectedRoles.has(r.id);
+              {visibleRoles.map(item => {
+                const isSelected = selectedRoles.has(item.id);
                 return (
                   <div
-                    key={r.id}
+                    key={item.id}
                     className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleRole(r.id)}
+                    onClick={() => onToggleRole(item.id)}
                   >
                     <div className="custom-checkbox">
-                      {isSelected && (
-                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                      )}
+                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
                     </div>
-                    <span className="option-label">{r.label}</span>
-                    <span className="source-count">({r.count.toLocaleString()})</span>
+                    <span className="option-label">{item.label}</span>
+                    <span className="source-count">({item.count.toLocaleString()})</span>
                   </div>
                 );
               })}
             </div>
+            {!roleSearch && (
+              <span className="show-more-btn" onClick={() => setShowMoreRoles(prev => !prev)}>
+                {showMoreRoles ? '− Show less' : `+ ${allRolesList.length - 8} more`}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -376,16 +387,14 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         <div className="filter-section-header" onClick={() => toggleSection('exp')}>
           <span className="filter-section-label">
             Experience
-            {(minExp || zeroExpOnly) && (
-              <span className="filter-count show">1</span>
-            )}
+            {(minExp || zeroExpOnly) && <span className="filter-count show">1</span>}
           </span>
           <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
         <div className="filter-body">
-          <div className="filter-body-inner" style={{ padding: '16px 4px 24px 4px' }}>
+          <div className="filter-body-inner" style={{ padding: '16px 4px 20px 4px' }}>
             <div className="exp-input-container">
               <label htmlFor="expMinInput">Min Year</label>
               <input
@@ -398,22 +407,27 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 id="expMinInput"
                 onChange={e => onMinExpChange(e.target.value)}
               />
-              <span className="exp-input-suffix" style={{ fontSize: '13px', color: '#94a3b8' }}>Yrs</span>
+              <span className="exp-input-suffix">Yrs</span>
             </div>
-            <div className="exp-zero-checkbox" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
+            <div
+              className={`exp-zero-checkbox ${zeroExpOnly ? 'active' : ''}`}
+              id="expZeroCheckboxWrap"
+              style={{ display: 'flex' }}
+              onClick={onToggleZeroExp}
+            >
               <input
                 type="checkbox"
                 id="expExactlyZero"
                 checked={zeroExpOnly}
                 onChange={onToggleZeroExp}
               />
-              <label htmlFor="expExactlyZero" style={{ cursor: 'pointer' }}>Exactly 0 years only (Freshers)</label>
+              <label htmlFor="expExactlyZero">Exactly 0 years only</label>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── 6. Skills ── */}
+      {/* ── 6. Skills (With Colorful Search Bar) ── */}
       <div className={`filter-section ${openSections.skills ? 'open' : ''}`} id="sec-skills">
         <div className="filter-section-header" onClick={() => toggleSection('skills')}>
           <span className="filter-section-label">
@@ -428,98 +442,50 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            <div className="filter-search">
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            {/* Colorful Search Bar */}
+            <div className="filter-search colored-search">
+              <svg width="13" height="13" fill="none" stroke="#22d3ee" strokeWidth="2" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.35-4.35" />
               </svg>
               <input
                 type="text"
+                id="skillSearch"
                 placeholder="Search skills..."
                 value={skillSearch}
                 onChange={e => setSkillSearch(e.target.value)}
               />
             </div>
             <div id="skills-options">
-              {skillsList.map(s => {
-                const isSelected = selectedSkills.has(s.id);
+              {visibleSkills.map(item => {
+                const isSelected = selectedSkills.has(item.id);
                 return (
                   <div
-                    key={s.id}
+                    key={item.id}
                     className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleSkill(s.id)}
+                    onClick={() => onToggleSkill(item.id)}
                   >
                     <div className="custom-checkbox">
-                      {isSelected && (
-                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                      )}
+                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
                     </div>
-                    <span className="option-label">{s.label}</span>
-                    <span className="source-count">({s.count.toLocaleString()})</span>
+                    <span className="option-label">{item.label}</span>
+                    <span className="source-count">({item.count.toLocaleString()})</span>
                   </div>
                 );
               })}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── 7. Company ── */}
-      <div className={`filter-section ${openSections.company ? 'open' : ''}`} id="sec-company">
-        <div className="filter-section-header" onClick={() => toggleSection('company')}>
-          <span className="filter-section-label">
-            Company
-            {selectedCompanies.size > 0 && (
-              <span className="filter-count show">{selectedCompanies.size}</span>
+            {!skillSearch && (
+              <span className="show-more-btn" onClick={() => setShowMoreSkills(prev => !prev)}>
+                {showMoreSkills ? '− Show less' : `+ ${allSkillsList.length - 8} more`}
+              </span>
             )}
-          </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div>
-        <div className="filter-body">
-          <div className="filter-body-inner">
-            <div className="filter-search">
-              <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search company..."
-                value={compSearch}
-                onChange={e => setCompSearch(e.target.value)}
-              />
-            </div>
-            <div id="company-options">
-              {companiesList.map(comp => {
-                const isSelected = selectedCompanies.has(comp.id);
-                return (
-                  <div
-                    key={comp.id}
-                    className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleCompany(comp.id)}
-                  >
-                    <div className="custom-checkbox">
-                      {isSelected && (
-                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="option-label">{comp.label}</span>
-                    <span className="source-count">({comp.count.toLocaleString()})</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>
 
-      {/* ── 8. Walk-in Interview ── */}
+      {/* ── 7. Walk-in Interview ── */}
       <div className={`filter-section ${openSections.walkin ? 'open' : ''}`} id="sec-walkin">
         <div className="filter-section-header" onClick={() => toggleSection('walkin')}>
           <span className="filter-section-label">
@@ -538,41 +504,47 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
           <div className="filter-body-inner">
             <div
               className={`filter-option ${walkinOnly ? 'checked' : ''}`}
+              id="walkinOpt"
               onClick={onToggleWalkin}
             >
               <div className="custom-checkbox">
-                {walkinOnly && (
-                  <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                )}
+                <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
               </div>
               <span className="option-label">🚶 All Walk-ins</span>
-              <span className="source-count">(620)</span>
+              <span className="source-count">(290)</span>
             </div>
-
-            <div style={{ fontSize: '0.73rem', fontWeight: 700, color: 'var(--text-dim)', margin: '12px 0 6px 4px', textTransform: 'uppercase', letterSpacing: '0.5px', borderTop: '1px solid var(--border)', paddingTop: '10px' }}>
+            <div
+              style={{
+                fontSize: '0.73rem',
+                fontWeight: 700,
+                color: 'var(--text-dim)',
+                margin: '12px 0 6px 4px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                borderTop: '1px solid var(--border)',
+                paddingTop: '10px'
+              }}
+            >
               Interview Dates
             </div>
-
             <div id="walkin-dates-options">
-              {walkinDates.map(d => {
-                const isSelected = selectedWalkinDates.has(d.id);
+              {walkinDates.map(item => {
+                const isSelected = selectedWalkinDates.has(item.id);
                 return (
                   <div
-                    key={d.id}
+                    key={item.id}
                     className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleWalkinDate(d.id)}
+                    onClick={() => onToggleWalkinDate(item.id)}
                   >
                     <div className="custom-checkbox">
-                      {isSelected && (
-                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" />
-                        </svg>
-                      )}
+                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
                     </div>
-                    <span className="option-label">{d.label}</span>
-                    <span className="source-count">({d.count})</span>
+                    <span className="option-label">{item.label}</span>
+                    <span className="source-count">({item.count})</span>
                   </div>
                 );
               })}
