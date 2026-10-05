@@ -1,0 +1,72 @@
+export interface BigCompanyItem {
+  id: number;
+  name: string;
+  salary: string;
+  location: string;
+  role: string;
+  type: string;
+  url: string;
+}
+
+export const bigCompaniesData: BigCompanyItem[] = [
+  { "id": 1, "name": "Google", "salary": "₹22 - 40 LPA", "location": "Bengaluru", "role": "Software Engineer", "type": "Product", "url": "https://www.google.com/about/careers/" },
+  { "id": 2, "name": "Microsoft", "salary": "₹22 - 45 LPA", "location": "Bengaluru", "role": "Software Engineer", "type": "Product", "url": "https://careers.microsoft.com/" },
+  { "id": 3, "name": "Zoho", "salary": "₹8 - 12 LPA", "location": "Chennai", "role": "Member Tech Staff", "type": "Product", "url": "https://www.zoho.com/careers/" },
+  { "id": 4, "name": "Freshworks", "salary": "₹10 - 14 LPA", "location": "Chennai", "role": "Software Engineer", "type": "Product", "url": "https://www.freshworks.com/company/careers/" },
+  { "id": 5, "name": "Flipkart", "salary": "₹26 - 32 LPA", "location": "Bengaluru", "role": "Data Scientist, SDE-1", "type": "Product", "url": "https://www.flipkartcareers.com/" },
+  { "id": 6, "name": "PayPal", "salary": "₹15 - 24 LPA", "location": "Chennai / Bengaluru", "role": "Risk AI, Data Science", "type": "Fintech", "url": "https://careers.pypl.com/home/" },
+  { "id": 7, "name": "Amazon", "salary": "₹25 - 45 LPA", "location": "Bengaluru / Chennai", "role": "SDE - I", "type": "Product", "url": "https://www.amazon.jobs/" },
+  { "id": 8, "name": "TCS (Prime/Digital)", "salary": "₹7 - 11.5 LPA", "location": "Pan-India", "role": "System Engineer", "type": "Service", "url": "https://www.tcs.com/careers" },
+  { "id": 9, "name": "Infosys (SP/DSE)", "salary": "₹6.5 - 12 LPA", "location": "Pan-India", "role": "Specialist Programmer", "type": "Service", "url": "https://www.infosys.com/careers/" },
+  { "id": 10, "name": "KLA Tencor", "salary": "₹18 - 22 LPA", "location": "Chennai", "role": "Deep Tech, AI/HPC", "type": "DeepTech", "url": "https://www.kla.com/careers" },
+  { "id": 11, "name": "Chargebee", "salary": "₹16 - 20 LPA", "location": "Chennai", "role": "Product Dev", "type": "SaaS", "url": "https://careers.chargebee.com/" },
+  { "id": 12, "name": "Cred", "salary": "₹20 - 30 LPA", "location": "Bengaluru", "role": "Backend", "type": "Fintech", "url": "https://careers.cred.club/" },
+  { "id": 13, "name": "Swiggy", "salary": "₹18 - 24 LPA", "location": "Bengaluru", "role": "SDE - I", "type": "Product", "url": "https://careers.swiggy.com/" },
+  { "id": 14, "name": "Zomato", "salary": "₹20 - 28 LPA", "location": "Bengaluru", "role": "SDE - I", "type": "Product", "url": "https://www.zomato.com/careers" },
+  { "id": 15, "name": "Uber", "salary": "₹35 - 40 LPA", "location": "Bengaluru", "role": "SDE - I", "type": "Product", "url": "https://www.uber.com/us/en/careers/" },
+  { "id": 16, "name": "Samsung R&D", "salary": "₹16 - 22 LPA", "location": "Bengaluru / Chennai", "role": "AI, On-Device ML", "type": "DeepTech", "url": "https://research.samsung.com/sri-b" },
+  { "id": 17, "name": "Salesforce", "salary": "₹25 - 35 LPA", "location": "Bengaluru", "role": "MTS", "type": "SaaS", "url": "https://www.salesforce.com/company/careers/" },
+  { "id": 18, "name": "Atlassian", "salary": "₹25 - 50 LPA", "location": "Bengaluru (Remote)", "role": "SDE - I", "type": "SaaS", "url": "https://www.atlassian.com/company/careers" },
+  { "id": 19, "name": "Rocketlane", "salary": "₹14 - 18 LPA", "location": "Chennai", "role": "SaaS Product Dev", "type": "SaaS", "url": "https://careers.kula.ai/rocketlane" },
+  { "id": 20, "name": "Mad Street Den", "salary": "₹12 - 15 LPA", "location": "Chennai", "role": "Computer Vision", "type": "AI", "url": "https://www.madstreetden.com/careers/" },
+  { "id": 21, "name": "Uniphore", "salary": "₹12 - 18 LPA", "location": "Chennai", "role": "Conversational AI", "type": "AI", "url": "https://www.uniphore.com/careers/" },
+  { "id": 22, "name": "Yubi", "salary": "₹12 - 16 LPA", "location": "Chennai", "role": "Fintech SDE", "type": "Fintech", "url": "https://www.go-yubi.com/careers" },
+  { "id": 23, "name": "Kissflow", "salary": "₹8 - 12 LPA", "location": "Chennai", "role": "Product Engineer", "type": "SaaS", "url": "https://kissflow.com/careers/" },
+  { "id": 24, "name": "Walmart Global Tech", "salary": "₹18 - 26 LPA", "location": "Bengaluru / Chennai", "role": "SDE - III", "type": "Product", "url": "https://careers.walmart.com/technology" },
+  { "id": 25, "name": "Cisco", "salary": "₹14 - 18 LPA", "location": "Bengaluru / Chennai", "role": "Software Engineer", "type": "DeepTech", "url": "https://jobs.cisco.com/" },
+  { "id": 26, "name": "JPMorgan Chase", "salary": "₹12 - 18 LPA", "location": "Bengaluru", "role": "Software Engineer", "type": "Fintech", "url": "https://careers.jpmorgan.com/" },
+  { "id": 27, "name": "Wells Fargo", "salary": "₹10 - 14 LPA", "location": "Bengaluru / Chennai", "role": "Program Associate", "type": "Fintech", "url": "https://www.wellsfargojobs.com/" },
+  { "id": 28, "name": "Citi", "salary": "₹10 - 15 LPA", "location": "Chennai / Bengaluru", "role": "Tech Analyst", "type": "Fintech", "url": "https://jobs.citi.com/" },
+  { "id": 29, "name": "Standard Chartered", "salary": "₹8 - 12 LPA", "location": "Chennai / Bengaluru", "role": "Developer", "type": "Fintech", "url": "https://www.sc.com/en/global-careers/" },
+  { "id": 30, "name": "LatentView Analytics", "salary": "₹8 - 11 LPA", "location": "Chennai", "role": "Data Analyst", "type": "Data", "url": "https://www.latentview.com/career/" },
+  { "id": 31, "name": "Tiger Analytics", "salary": "₹8 - 12 LPA", "location": "Chennai", "role": "Data Scientist", "type": "Data", "url": "https://www.tigeranalytics.com/about-us/current-openings/" },
+  { "id": 32, "name": "Renault Nissan", "salary": "₹5 - 7 LPA", "location": "Chennai", "role": "GET (Software)", "type": "AutoTech", "url": "https://www.nissanmotor.jobs/careerarea" },
+  { "id": 33, "name": "Ford Motors", "salary": "₹6 - 8 LPA", "location": "Chennai", "role": "IT Engineer", "type": "AutoTech", "url": "https://corporate.ford.com/careers.html" },
+  { "id": 34, "name": "Verizon", "salary": "₹6 - 9 LPA", "location": "Chennai", "role": "Software Engineer", "type": "Service", "url": "https://www.verizon.com/about/careers" },
+  { "id": 35, "name": "Comcast", "salary": "₹7 - 10 LPA", "location": "Chennai", "role": "Engineer 1", "type": "Service", "url": "https://jobs.comcast.com/" },
+  { "id": 36, "name": "Fireflies.ai", "salary": "₹33 - 41 LPA", "location": "Remote", "role": "AI Engineer", "type": "AI", "url": "https://fireflies.ai/careers" },
+  { "id": 37, "name": "Automattic", "salary": "₹35 - 45 LPA", "location": "Remote", "role": "Code Wrangler", "type": "Product", "url": "https://automattic.com/work-with-us/" },
+  { "id": 38, "name": "Turing", "salary": "₹16 - 33 LPA", "location": "Remote", "role": "AI/ML Engineer", "type": "Platform", "url": "https://www.turing.com/jobs" },
+  { "id": 39, "name": "Accenture", "salary": "₹6 - 12 LPA", "location": "Pan-India", "role": "Packaged App Dev", "type": "Service", "url": "https://www.accenture.com/in-en/careers" },
+  { "id": 40, "name": "Wipro", "salary": "₹6 - 10 LPA", "location": "Pan-India", "role": "Project Engineer", "type": "Service", "url": "https://careers.wipro.com/" },
+  { "id": 41, "name": "LTIMindtree", "salary": "₹5 - 8 LPA", "location": "Bengaluru / Chennai", "role": "Graduate Engineer", "type": "Service", "url": "https://www.ltimindtree.com/careers/" },
+  { "id": 42, "name": "Capgemini", "salary": "₹5.75 - 7.5 LPA", "location": "Bengaluru / Chennai", "role": "Analyst", "type": "Service", "url": "https://www.capgemini.com/careers/" },
+  { "id": 43, "name": "Virtusa", "salary": "₹5 - 7 LPA", "location": "Chennai / Bengaluru", "role": "Full Stack Engineer", "type": "Service", "url": "https://www.virtusa.com/careers" },
+  { "id": 44, "name": "HCLTech", "salary": "₹6 - 10 LPA", "location": "Chennai / Noida", "role": "Product Role", "type": "Service", "url": "https://www.hcltech.com/careers" },
+  { "id": 45, "name": "Hexaware", "salary": "₹5 - 6 LPA", "location": "Chennai", "role": "PGET (Mavericks)", "type": "Service", "url": "https://jobs.hexaware.com/" },
+  { "id": 46, "name": "Mr. Cooper", "salary": "₹6 - 9 LPA", "location": "Chennai", "role": "Software Engineer", "type": "Fintech", "url": "https://www.mrcooper.com/careers" },
+  { "id": 47, "name": "Caterpillar", "salary": "₹6 - 9 LPA", "location": "Chennai", "role": "IT Analyst", "type": "AutoTech", "url": "https://www.caterpillar.com/en/careers.html" },
+  { "id": 48, "name": "Athenahealth", "salary": "₹7 - 10 LPA", "location": "Chennai / Bengaluru", "role": "Software Engineer", "type": "HealthTech", "url": "https://www.athenahealth.com/careers" },
+  { "id": 49, "name": "Temenos", "salary": "₹6 - 9 LPA", "location": "Chennai / Bengaluru", "role": "Product Developer", "type": "Fintech", "url": "https://www.temenos.com/careers/" },
+  { "id": 50, "name": "Kaar Tech", "salary": "₹6 - 8 LPA", "location": "Chennai", "role": "SAP Consultant", "type": "Service", "url": "https://www.kaartech.com/career/" },
+  { "id": 51, "name": "Ramco Systems", "salary": "₹5 - 7 LPA", "location": "Chennai", "role": "Product Developer", "type": "SaaS", "url": "https://www.ramco.com/careers" },
+  { "id": 52, "name": "Intellect Design", "salary": "₹5 - 8 LPA", "location": "Chennai", "role": "Product Engineer", "type": "Fintech", "url": "https://www.intellectdesign.com/careers/" },
+  { "id": 53, "name": "Sify Tech", "salary": "₹5 - 7 LPA", "location": "Chennai", "role": "Network Engineer", "type": "Service", "url": "https://www.sifytechnologies.com/careers/" },
+  { "id": 54, "name": "Tata Elxsi", "salary": "₹5 - 7 LPA", "location": "Bengaluru / Chennai", "role": "Embedded Engineer", "type": "DeepTech", "url": "https://www.tataelxsi.com/careers" },
+  { "id": 55, "name": "PhonePe", "salary": "₹22 - 32 LPA", "location": "Bengaluru", "role": "SDE", "type": "Fintech", "url": "https://www.phonepe.com/careers/" },
+  { "id": 56, "name": "Razorpay", "salary": "₹20 - 26 LPA", "location": "Bengaluru", "role": "SDE", "type": "Fintech", "url": "https://razorpay.com/jobs/" },
+  { "id": 57, "name": "Postman", "salary": "₹20 - 28 LPA", "location": "Bengaluru", "role": "SDE", "type": "Product", "url": "https://www.postman.com/careers/" },
+  { "id": 58, "name": "InMobi / Glance", "salary": "₹18 - 24 LPA", "location": "Bengaluru", "role": "Data Scientist", "type": "AdTech", "url": "https://www.inmobi.com/company/careers/" },
+  { "id": 59, "name": "Zeta Suite", "salary": "₹22 - 28 LPA", "location": "Bengaluru", "role": "SDE", "type": "Fintech", "url": "https://www.zeta.tech/careers/" },
+  { "id": 60, "name": "Groww", "salary": "₹18 - 25 LPA", "location": "Bengaluru", "role": "Software Engineer", "type": "Fintech", "url": "https://groww.in/careers" }
+];

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/String_Theory.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Career | Next-Gen Job Ecosystem & LeetCode Explorer</title>
+    <meta name="description" content="All Career - Aggregated multi-portal job ecosystem, verified walk-ins, big tech careers, and LeetCode interview question frequency explorer." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#34d399',
+              'primary-dim': 'rgba(52, 211, 153, 0.15)',
+              'bg-deep': '#06080f',
+              'bg-sidebar': '#0b1120',
+              'bg-surface': '#0e1424',
+              'bg-card': 'rgba(16, 24, 48, 0.7)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Outfit', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-[#06080f] text-slate-100 font-sans min-h-screen antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
