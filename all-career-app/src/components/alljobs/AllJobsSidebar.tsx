@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BriefcaseBusiness, CalendarDays, ChevronDown, Globe2, MapPin, Route, Search, SlidersHorizontal, Tag } from 'lucide-react';
 import { formatWalkinDate } from '../../utils/companyLogos';
 
@@ -15,7 +15,7 @@ interface AllJobsSidebarProps {
   // Role
   selectedRoles: Set<string>;
   onToggleRole: (role: string) => void;
-  // Experience Moving Bar Slider (-1 = Everything, 0 to 30 Yrs)
+  // Experience Moving Bar Slider (-1 = Everything, 0 to 10 Yrs)
   expValue: number;
   onExpChange: (val: number) => void;
   exactExp: boolean;
@@ -87,6 +87,36 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   // Show more toggles
   const [showMoreRoles, setShowMoreRoles] = useState(false);
   const [showMoreSkills, setShowMoreSkills] = useState(false);
+
+  // Optimistic local state for walk-in filters for instant 0ms color feedback
+  const [localWalkinOnly, setLocalWalkinOnly] = useState(walkinOnly);
+  useEffect(() => {
+    setLocalWalkinOnly(walkinOnly);
+  }, [walkinOnly]);
+
+  const [localWalkinDates, setLocalWalkinDates] = useState<Set<string>>(selectedWalkinDates);
+  useEffect(() => {
+    setLocalWalkinDates(selectedWalkinDates);
+  }, [selectedWalkinDates]);
+
+  const handleWalkinClick = () => {
+    setLocalWalkinOnly(prev => !prev);
+    setTimeout(() => {
+      onToggleWalkin();
+    }, 0);
+  };
+
+  const handleWalkinDateClick = (dateId: string) => {
+    setLocalWalkinDates(prev => {
+      const next = new Set(prev);
+      if (next.has(dateId)) next.delete(dateId);
+      else next.add(dateId);
+      return next;
+    });
+    setTimeout(() => {
+      onToggleWalkinDate(dateId);
+    }, 0);
+  };
 
   // 1. Sources List with authentic logos from logos/portals/
   const PORTALS = [
@@ -291,8 +321,8 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     (walkinOnly ? 1 : 0) +
     selectedWalkinDates.size;
 
-  // Percentage for experience bubble position: -1 to 30 => 31 steps
-  const expPercent = Math.min(100, Math.max(0, ((expValue + 1) / 31) * 100));
+  // Percentage for experience bubble position: -1 to 10 => 11 steps
+  const expPercent = Math.min(100, Math.max(0, ((expValue + 1) / 11) * 100));
 
   return (
     <aside className="sidebar">
@@ -485,14 +515,18 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
       </div>
 
-      {/* ── 5. Experience Moving Bar Format ── */}
+      {/* ── 5. Experience Moving Bar Format (0 to 10 Yrs with 10+ for senior/executive) ── */}
       <div className={`filter-section ${openSections.exp ? 'open' : ''}`} id="sec-exp">
         <div className="filter-section-header" onClick={() => toggleSection('exp')}>
           <span className="filter-section-label">
             <BriefcaseBusiness size={14} aria-hidden="true" /> Experience
             {expValue >= 0 && (
               <span className="filter-count show">
-                {exactExp ? `Exactly ${expValue} Yrs` : `${expValue} Yrs`}
+                {expValue >= 10
+                  ? '10+ Yrs'
+                  : exactExp
+                  ? `Exactly ${expValue} Yrs`
+                  : `${expValue} Yrs`}
               </span>
             )}
           </span>
@@ -501,21 +535,21 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         <div className="filter-body">
           <div className="filter-body-inner">
             <div className="exp-slider-wrap">
-              {/* Floating Bubble Pin (Pill for 'Everything', Teardrop for numbers) */}
+              {/* Floating Bubble Pin (Pill for 'Everything', Teardrop for numbers, '10+' for max) */}
               <div
-                className={`exp-slider-bubble ${expValue === -1 ? 'is-everything' : ''}`}
+                className={`exp-slider-bubble ${expValue === -1 ? 'is-everything' : expValue >= 10 ? 'is-ten-plus' : ''}`}
                 style={{
                   left: `calc(${expPercent}% + ${(16 - expPercent * 0.32)}px)`
                 }}
               >
-                <span>{expValue === -1 ? 'Everything' : expValue}</span>
+                <span>{expValue === -1 ? 'Everything' : expValue >= 10 ? '10+' : expValue}</span>
               </div>
 
-              {/* Slider Track: starts at -1 (Everything), next step is 0, up to 30 */}
+              {/* Slider Track: starts at -1 (Everything), next step is 0, up to 10 */}
               <input
                 type="range"
                 min="-1"
-                max="30"
+                max="10"
                 step="1"
                 value={expValue}
                 onChange={e => onExpChange(parseInt(e.target.value, 10))}
@@ -523,13 +557,34 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 aria-label="Experience slider in years"
               />
 
+              {/* Number scale with big gap between every number */}
+              <div className="exp-number-scale">
+                <span
+                  className={expValue === -1 ? 'active' : ''}
+                  onClick={() => onExpChange(-1)}
+                  title="Show all experience levels"
+                >
+                  All
+                </span>
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
+                  <span
+                    key={n}
+                    className={expValue === n ? 'active' : ''}
+                    onClick={() => onExpChange(n)}
+                    title={n === 10 ? '10+ Years (shows 10, 15, 30+ yrs)' : `${n} Yrs`}
+                  >
+                    {n === 10 ? '10+' : n}
+                  </span>
+                ))}
+              </div>
+
               {/* Labels below slider */}
               <div className="exp-slider-labels">
                 <span>Everything</span>
-                <span>30 Yrs</span>
+                <span>10+ Yrs</span>
               </div>
 
-              {/* Small Checkbox: Disappears at 'Everything', appears at 0 or 1-30 */}
+              {/* Small Checkbox: Disappears at 'Everything', appears at 0 or 1-10 */}
               {expValue >= 0 && (
                 <div
                   className={`exp-exact-checkbox ${exactExp ? 'active' : ''}`}
@@ -546,6 +601,8 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                   <span className="option-label">
                     {expValue === 0
                       ? 'Exactly 0 years only'
+                      : expValue >= 10
+                      ? '10+ years & above (15, 30+ Yrs)'
                       : `Exactly ${expValue} year${expValue === 1 ? '' : 's'} only`}
                   </span>
                 </div>
@@ -616,36 +673,25 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.walkin ? 'open' : ''}`} id="sec-walkin">
         <div
           className="filter-section-header"
-          onClick={() => {
-            setOpenSections(prev => ({ ...prev, walkin: true }));
-            onToggleWalkin();
-          }}
+          onClick={() => toggleSection('walkin')}
         >
           <span className="filter-section-label">
             <Route size={14} aria-hidden="true" /> Walk-in Interview
-            {(walkinOnly || selectedWalkinDates.size > 0) && (
+            {(localWalkinOnly || localWalkinDates.size > 0) && (
               <span className="filter-count show">
-                {(walkinOnly ? 1 : 0) + selectedWalkinDates.size}
+                {(localWalkinOnly ? 1 : 0) + localWalkinDates.size}
               </span>
             )}
           </span>
-          <ChevronDown
-            className="chevron"
-            size={16}
-            aria-hidden="true"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSection('walkin');
-            }}
-          />
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            {/* Top Option: All Walk-ins with dynamic count */}
+            {/* Top Option: All Walk-ins with dynamic count & instant color feedback */}
             <div
-              className={`filter-option ${walkinOnly ? 'checked' : ''}`}
+              className={`filter-option ${localWalkinOnly ? 'checked' : ''}`}
               id="walkinOpt"
-              onClick={onToggleWalkin}
+              onClick={handleWalkinClick}
             >
               <div className="custom-checkbox">
                 <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -675,13 +721,13 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             {/* Scrollable list with authentic calendar dates dynamically populated */}
             <div id="walkin-dates-options" style={{ maxHeight: '240px', overflowY: 'auto' }}>
               {displayWalkinDates.map(item => {
-                const isSelected = selectedWalkinDates.has(item.id);
+                const isSelected = localWalkinDates.has(item.id);
                 const count = walkinDateCounts ? (walkinDateCounts[item.id] ?? item.count) : item.count;
                 return (
                   <div
                     key={item.id}
                     className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => onToggleWalkinDate(item.id)}
+                    onClick={() => handleWalkinDateClick(item.id)}
                   >
                     <div className="custom-checkbox">
                       <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">

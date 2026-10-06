@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, startTransition } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Job, SidebarCounts } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
@@ -100,14 +100,18 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   };
 
   const handleExpChange = (val: number) => {
-    setExpValue(val);
-    if (val === -1) {
-      setExactExp(false);
-    }
+    startTransition(() => {
+      setExpValue(val);
+      if (val === -1) {
+        setExactExp(false);
+      }
+    });
   };
 
   const handleToggleExactExp = () => {
-    setExactExp(prev => !prev);
+    startTransition(() => {
+      setExactExp(prev => !prev);
+    });
   };
 
   const handleToggleCompany = (company: string) => {
@@ -120,21 +124,25 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   };
 
   const handleToggleWalkin = () => {
-    setWalkinOnly(prev => {
-      const next = !prev;
-      if (next && selectedCategory !== 'all') {
-        setSelectedCategory('all');
-      }
-      return next;
+    startTransition(() => {
+      setWalkinOnly(prev => {
+        const next = !prev;
+        if (next && selectedCategory !== 'all') {
+          setSelectedCategory('all');
+        }
+        return next;
+      });
     });
   };
 
   const handleToggleWalkinDate = (date: string) => {
-    setSelectedWalkinDates(prev => {
-      const next = new Set(prev);
-      if (next.has(date)) next.delete(date);
-      else next.add(date);
-      return next;
+    startTransition(() => {
+      setSelectedWalkinDates(prev => {
+        const next = new Set(prev);
+        if (next.has(date)) next.delete(date);
+        else next.add(date);
+        return next;
+      });
     });
   };
 
@@ -242,7 +250,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       if (!match) return false;
     }
 
-    // 6. Experience Filter (Moving Bar: -1 = Everything, 0 to 30)
+    // 6. Experience Filter (Moving Bar: -1 = Everything, 0 to 10 Yrs)
     if (expValue >= 0) {
       const [minE, maxE] = parseExperience(j.experience);
       if (minE === null) return false;
@@ -250,12 +258,20 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       if (exactExp) {
         if (expValue === 0) {
           if (minE !== 0 || (maxE !== null && maxE !== 0)) return false;
+        } else if (expValue >= 10) {
+          // If 10+, show all above 10 year experience like 15 or 30 or more
+          const has10Plus = (minE >= 10) || (maxE !== null && maxE >= 10);
+          if (!has10Plus) return false;
         } else {
           if (minE !== expValue || (maxE !== null && maxE !== expValue)) return false;
         }
       } else {
         if (expValue === 0) {
           if (minE !== 0) return false;
+        } else if (expValue >= 10) {
+          // If 10+, show all above 10 year experience like 15 or 30 or more
+          const has10Plus = (minE >= 10) || (maxE !== null && maxE >= 10);
+          if (!has10Plus) return false;
         } else {
           if (minE > expValue) return false;
           if (maxE !== null && expValue > maxE) return false;
