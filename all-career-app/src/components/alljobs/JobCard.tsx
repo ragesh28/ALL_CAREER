@@ -65,6 +65,12 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
   const cleanTitle = job.title || job.role || 'Position';
   const applyUrl = job.url || (job as any).apply_url || job.telegram_url || job.flyer_image_url || '';
 
+  const isDirectSpecialSource =
+    portalInfo.id === 'telegram_message' ||
+    portalInfo.id === 'telegram_post' ||
+    portalInfo.id === 'telegram' ||
+    portalInfo.id === 'google_images';
+
   return (
     <div className="job-card" style={index !== undefined ? { animationDelay: `${(index % 30) * 0.03}s` } : undefined}>
       <div className="card-top">
@@ -83,15 +89,19 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
           </div>
         </div>
 
-        {/* Top Source Badge Option with real official logo (NO emoji), agency-grade pill */}
-        {portalInfo.logo ? (
+        {/* Top Source Badge: ONLY for Telegram Messages (unique direct URL viewable without login) and Google Images (flyer link) */}
+        {isDirectSpecialSource && portalInfo.logo ? (
           portalInfo.url ? (
             <a
               href={portalInfo.url}
               target="_blank"
               rel="noopener noreferrer"
               className={`top-source-badge src-${portalInfo.id}`}
-              title={`View on ${portalInfo.label}`}
+              title={
+                portalInfo.id.includes('telegram')
+                  ? 'View original Telegram message (no login required)'
+                  : 'View original Flyer / Image link'
+              }
               onClick={e => e.stopPropagation()}
             >
               <img
