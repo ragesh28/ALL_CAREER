@@ -21,6 +21,8 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
           src={logo.clearbit}
           alt={company}
           className="company-logo"
+          loading="lazy"
+          decoding="async"
           onError={() => setStage(1)}
         />
       )}
@@ -29,6 +31,8 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
           src={logo.google}
           alt={company}
           className="company-logo"
+          loading="lazy"
+          decoding="async"
           onError={() => setStage(2)}
         />
       )}
@@ -37,6 +41,8 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
           src={logo.duckduckgo}
           alt={company}
           className="company-logo"
+          loading="lazy"
+          decoding="async"
           onError={() => setStage(3)}
         />
       )}
@@ -49,7 +55,7 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
   );
 };
 
-export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany }) => {
+export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }) => {
   const companyName = job.company || 'DIRECT RECRUITER';
   const portalInfo = detectPortalInfo(job);
 
@@ -108,6 +114,8 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
                 src={portalInfo.logo}
                 alt={portalInfo.label}
                 className="top-source-logo"
+                loading="lazy"
+                decoding="async"
                 onError={e => (e.currentTarget.style.display = 'none')}
               />
               <span className="top-source-name">{portalInfo.label}</span>
@@ -118,6 +126,8 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
                 src={portalInfo.logo}
                 alt={portalInfo.label}
                 className="top-source-logo"
+                loading="lazy"
+                decoding="async"
                 onError={e => (e.currentTarget.style.display = 'none')}
               />
               <span className="top-source-name">{portalInfo.label}</span>
@@ -154,6 +164,8 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
                     src={portalInfo.logo}
                     alt=""
                     className="portal-logo"
+                    loading="lazy"
+                    decoding="async"
                     onError={e => (e.currentTarget.style.display = 'none')}
                   />
                 )}
@@ -193,4 +205,4 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
       </div>
     </div>
   );
-};
+});

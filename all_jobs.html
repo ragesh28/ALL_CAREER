@@ -876,6 +876,7 @@
             animation: cardIn 0.45s forwards;
             width: 100%; height: 210px; box-sizing: border-box;
             overflow: hidden; position: relative;
+            content-visibility: auto; contain-intrinsic-size: 0 210px;
         }
         .job-card::before {
             content: '';
@@ -1520,7 +1521,7 @@
         let allJobs = [];
         let filteredJobs = [];
         let currentPage = 1;
-        const JOBS_PER_PAGE = 100;
+        const JOBS_PER_PAGE = 50;
 
         // Filter state
         let selectedPortals = new Set();

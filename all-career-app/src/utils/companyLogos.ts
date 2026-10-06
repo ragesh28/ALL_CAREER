@@ -215,11 +215,18 @@ export function detectPortalInfo(job: any): PortalInfo {
   };
 }
 
+const COMPANY_LOGO_MEMO_CACHE = new Map<string, LogoData>();
+
 export function getCompanyLogo(name: string): LogoData {
-  const clean = (name || '').replace(/\(.*\)/, '').replace(/\b(inc|corp|corporation|llc|pvt|ltd|limited|india)\b/gi, '').trim();
+  const rawKey = String(name || 'DIRECT RECRUITER').trim();
+  if (COMPANY_LOGO_MEMO_CACHE.has(rawKey)) {
+    return COMPANY_LOGO_MEMO_CACHE.get(rawKey)!;
+  }
+
+  const clean = rawKey.replace(/\(.*\)/, '').replace(/\b(inc|corp|corporation|llc|pvt|ltd|limited|india)\b/gi, '').trim();
   
   // 1. Direct match in DOMAIN_MAP
-  let domain = DOMAIN_MAP[name] || DOMAIN_MAP[clean];
+  let domain = DOMAIN_MAP[rawKey] || DOMAIN_MAP[clean];
 
   // 2. Case-insensitive search in DOMAIN_MAP
   if (!domain) {
@@ -238,13 +245,16 @@ export function getCompanyLogo(name: string): LogoData {
     domain = slug ? `${slug}.com` : 'direct.com';
   }
 
-  return {
+  const result: LogoData = {
     clearbit: `https://logo.clearbit.com/${domain}`,
     google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
     duckduckgo: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
     initial: (clean.charAt(0) || 'C').toUpperCase(),
     domain
   };
+
+  COMPANY_LOGO_MEMO_CACHE.set(rawKey, result);
+  return result;
 }
 
 export const getCompanyLogoData = getCompanyLogo;

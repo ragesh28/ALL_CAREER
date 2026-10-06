@@ -40,6 +40,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const [selectedWalkinDates, setSelectedWalkinDates] = useState<Set<string>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const JOBS_PER_PAGE = 50;
 
   // Load initial catalog
   useEffect(() => {
@@ -164,30 +166,24 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     return counts;
   }, [jobs]);
 
-  // Compute breakdown for "This Page (100)"
-  const pageCategoryCounts = useMemo(() => {
-    let sales = 0, technical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
-    jobs.slice(0, 100).forEach(j => {
-      const cat = classifyJobCategory(j);
-      if (cat === 'Sales & Marketing') sales++;
-      else if (cat === 'Technical') technical++;
-      else if (cat === 'Non-Technical') nonTechnical++;
-      else if (cat === 'Banking & Finance') banking++;
-      else if (cat === 'HR & Staffing') hr++;
-      else if (cat === 'Pharma') pharma++;
-      else others++;
-    });
-
-    return {
-      sales: sales || 49,
-      technical: technical || 23,
-      nonTechnical: nonTechnical || 14,
-      banking: banking || 6,
-      hr: hr || 3,
-      pharma: pharma || 2,
-      others: others || 3
-    };
-  }, [jobs]);
+  // Reset pagination to page 1 whenever any filter or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    searchTerm,
+    selectedSources,
+    selectedDateFilter,
+    selectedLocations,
+    selectedRoles,
+    expValue,
+    exactExp,
+    selectedSkills,
+    selectedCompanies,
+    walkinOnly,
+    selectedWalkinDates,
+    selectedCategory,
+    sortBy
+  ]);
 
   // Helper function for faceted counting
   const checkJobMatchWithout = (
@@ -327,7 +323,17 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   // Filtered jobs matching all 8 filters + search
   const filteredJobs = useMemo(() => {
     const term = searchTerm.toLowerCase().trim();
-    return jobs.filter(j => checkJobMatchWithout(j, 'none', term));
+    const list = jobs.filter(j => checkJobMatchWithout(j, 'none', term));
+    if (sortBy === 'company') {
+      return list.slice().sort((a, b) => (a.company || '').localeCompare(b.company || ''));
+    } else if (sortBy === 'oldest') {
+      return list.slice().sort((a, b) => {
+        const da = a.fetchedAt || a.date || '';
+        const db = b.fetchedAt || b.date || '';
+        return da.localeCompare(db);
+      });
+    }
+    return list;
   }, [
     jobs,
     searchTerm,
@@ -341,8 +347,42 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     selectedCompanies,
     walkinOnly,
     selectedWalkinDates,
-    selectedCategory
+    selectedCategory,
+    sortBy
   ]);
+
+  // Pagination calculation: 50 jobs per page
+  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * JOBS_PER_PAGE;
+  const currentJobs = useMemo(() => {
+    return filteredJobs.slice(startIdx, startIdx + JOBS_PER_PAGE);
+  }, [filteredJobs, startIdx]);
+
+  // Compute breakdown for "This Page (50)"
+  const pageCategoryCounts = useMemo(() => {
+    let sales = 0, technical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
+    currentJobs.forEach(j => {
+      const cat = classifyJobCategory(j);
+      if (cat === 'Sales & Marketing') sales++;
+      else if (cat === 'Technical') technical++;
+      else if (cat === 'Non-Technical') nonTechnical++;
+      else if (cat === 'Banking & Finance') banking++;
+      else if (cat === 'HR & Staffing') hr++;
+      else if (cat === 'Pharma') pharma++;
+      else others++;
+    });
+
+    return {
+      sales,
+      technical,
+      nonTechnical,
+      banking,
+      hr,
+      pharma,
+      others
+    };
+  }, [currentJobs]);
 
   // Dynamic Faceted Counts for real-time counts across filters
   const dynamicCounts = useMemo(() => {
@@ -483,6 +523,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     setSelectedWalkinDates(new Set());
     setSelectedCategory('all');
     setSearchTerm('');
+    setCurrentPage(1);
   };
 
   const handleAutoApply = () => {
@@ -541,7 +582,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           {/* Category count pills */}
           <CategoryCountPills
             pageCounts={pageCategoryCounts}
-            totalOnPage={Math.min(filteredJobs.length, 100)}
+            totalOnPage={currentJobs.length}
             sortBy={sortBy}
             onSortChange={setSortBy}
             selectedCategory={selectedCategory}
@@ -559,16 +600,79 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
               No jobs found matching your criteria.
             </div>
           ) : (
-            <div className="jobs-grid">
-              {filteredJobs.slice(0, 100).map((job, idx) => (
-                <JobCard
-                  key={`${job.id || job._id || idx}-${job.company}`}
-                  job={job}
-                  index={idx}
-                  onSelectCompany={(comp) => setSearchTerm(comp)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="jobs-grid">
+                {currentJobs.map((job, idx) => (
+                  <JobCard
+                    key={`${job.id || job._id || idx}-${job.company}`}
+                    job={job}
+                    index={idx}
+                    onSelectCompany={(comp) => setSearchTerm(comp)}
+                  />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="pagination-container" role="navigation" aria-label="Pagination">
+                  <button
+                    className="page-btn"
+                    disabled={safePage === 1}
+                    onClick={() => {
+                      setCurrentPage(prev => Math.max(1, prev - 1));
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    aria-label="Previous Page"
+                  >
+                    ←
+                  </button>
+
+                  {(() => {
+                    const pages: (number | string)[] = [];
+                    if (totalPages <= 7) {
+                      for (let i = 1; i <= totalPages; i++) pages.push(i);
+                    } else {
+                      if (safePage <= 4) {
+                        pages.push(1, 2, 3, 4, 5, '...', totalPages);
+                      } else if (safePage >= totalPages - 3) {
+                        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+                      } else {
+                        pages.push(1, '...', safePage - 1, safePage, safePage + 1, '...', totalPages);
+                      }
+                    }
+                    return pages.map((p, pIdx) =>
+                      typeof p === 'number' ? (
+                        <button
+                          key={p}
+                          className={`page-btn ${p === safePage ? 'active' : ''}`}
+                          onClick={() => {
+                            setCurrentPage(p);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                        >
+                          {p}
+                        </button>
+                      ) : (
+                        <span key={`dots-${pIdx}`} style={{ color: 'var(--text-muted)', padding: '0 4px' }}>
+                          ...
+                        </span>
+                      )
+                    );
+                  })()}
+
+                  <button
+                    className="page-btn"
+                    disabled={safePage === totalPages}
+                    onClick={() => {
+                      setCurrentPage(prev => Math.min(totalPages, prev + 1));
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    aria-label="Next Page"
+                  >
+                    →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>
