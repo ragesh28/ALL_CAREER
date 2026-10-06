@@ -1,5 +1,5 @@
 {
-  "total_jobs": 931857,
+  "total_jobs": 931868,
   "sources": {
     "naukri": 322160,
     "linkedin": 231500,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 595,
-    "telegram_message": 707,
+    "telegram_message": 718,
     "cutshort": 8,
     "big_it_jobs": 3,
     "idfc_first_bank": 6,
@@ -215,9 +215,9 @@
     "noida": 45353,
     "ahmedabad": 36994,
     "kolkata": 31640,
-    "all_india": 23753,
+    "all_india": 23763,
     "coimbatore": 18567,
-    "kochi": 14340,
+    "kochi": 14341,
     "remote": 8554,
     "jaipur": 6842,
     "maharashtra": 8534,
@@ -712,5 +712,5 @@
     "nagercoil": 1,
     "jh": 1
   },
-  "generated_at": "2026-10-06T17:43:24.649157"
+  "generated_at": "2026-10-06T20:32:43.662949"
 }
