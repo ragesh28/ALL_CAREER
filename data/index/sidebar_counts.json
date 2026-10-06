@@ -1,5 +1,5 @@
 {
-  "total_jobs": 914654,
+  "total_jobs": 914679,
   "sources": {
     "naukri": 322160,
     "linkedin": 221380,
@@ -41,20 +41,20 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 540,
-    "telegram_message": 661
+    "telegram_post": 560,
+    "telegram_message": 666
   },
   "locations": {
-    "bangalore": 196443,
-    "mumbai": 119219,
+    "bangalore": 196445,
+    "mumbai": 119220,
     "delhi": 97365,
-    "chennai": 98092,
-    "hyderabad": 87169,
+    "chennai": 98094,
+    "hyderabad": 87170,
     "pune": 71729,
     "noida": 44738,
     "ahmedabad": 36496,
     "kolkata": 31028,
-    "all_india": 23725,
+    "all_india": 23734,
     "coimbatore": 18229,
     "kochi": 14049,
     "remote": 8401,
@@ -68,7 +68,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 3593,
+    "karnataka": 3594,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -162,7 +162,7 @@
     "kotputli": 1,
     "sharjah": 1,
     "jabalpur": 11,
-    "pan_india": 9,
+    "pan_india": 12,
     "mangalore": 47,
     "athani": 1,
     "zirakpur": 33,
@@ -230,7 +230,7 @@
     "hassan_campus": 1,
     "manipal": 1,
     "karkala": 6,
-    "udupi": 3,
+    "udupi": 4,
     "gulbarga": 35,
     "muzaffarpur": 1,
     "daman_diu": 4,
@@ -537,7 +537,10 @@
     "dehradundoon_it_park": 1,
     "guwahatimilan_nagar": 1,
     "udaipurchitrakoot_nagar": 1,
-    "kompally": 1
+    "kompally": 1,
+    "baba_nagar": 1,
+    "hsr_24th_main": 1,
+    "tnagarpadi": 3
   },
-  "generated_at": "2026-10-05T15:52:13.116061"
+  "generated_at": "2026-10-06T01:04:45.732083"
 }

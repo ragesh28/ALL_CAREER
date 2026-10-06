@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "914",
+  "workflow_run_id": "37396139993",
+  "timestamp": "2026-10-06T01:04:23.273310",
+  "runtime_minutes": 7.82,
+  "messages_processed": 15,
+  "new_jobs_stored": 25,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260011,
+      "text": "Photo from vikram adithya\nhttps://docs.google.com/forms/d/e/1FAIpQLSf-YIIteRsCK-mckAobLV40duyjnbhUg_DVq9FZiYAQpPjuNQ/viewform\nontrack\nntrack\nWe're Hiring!\nZero\nSecurity\nDeposit\nOffline Marketing\nBike Rentals\nInterns\nentrack\nMonthly Rentals\nMeet riders. Spread the word.\nUnrestricted KM\nentrack\nBring more riders to Ontrack.\nMinimal Documents\nSwiggy\n天\n\nu\n4-6\n8,000-\nBangalore\n1Month\nInternship\nzomato\nOpenings\n12,000/month\n(Indiranagar office)\nStipend\n(Starts 10 October)\nWhat you'll do\nWhat we're looking for\nField areas\nMust speak English,\nKoramangala\nSet up and run promotional activity\nand nearby areas\nHindi and Kannada\nwith standee, demo bike and leaflets\n(all three are required)\nHoodi and\nWhitefield\nTalk to delivery riders and explain\n00\nComfortable talking\nOntrack's plans and pricing\nto strangers\nAbout Ontrack\nHelp interested riders with the booking\nHappy to work outdoors\nOntrack is a Bangalore-based\nprocess and collect their details\nand travel between locations\ntwo-wheeler rental company.\nstarted in 2016. We rent scooters\nReliable, on time and honest\nand motorcycles, petrol and\nDistribute leaflets and answer questions\nwith numbers\nelectric, on a monthly plan.\nNo deposit, unlimited km, and\nStudents, fresh graduates\nonly a few documents. Most of\nReport back daily on your activity and leads\nand others are welcome\nour riders are delivery partners\n(no prior experience needed)\nwho need a reliable bike without\npaying a big upfront cost.\nMinimal\nBe part of\nZero\nUnrestricted\nKM\nDocuments\na growing team!\nSecus",
+      "timestamp": "2026-10-05T20:38:55+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260012,
+      "text": "💫 Persistent Systems Ltd Job Alert💫 \n\nAre you looking for an exciting opportunity to grow your career? We are seeking a Databricks developer to join Us!\n\nLocation: PAN India\nExperience: 6-10 Yrs\nKey Skills: Databricks, Python, SQL\n\nIf you're passionate about developer and eager to make an impact, we'd love to hear from you! Apply now or tag someone who might be a great fit.\nPlease feel free to Contact Us -\nEmail Id - vedali.joshi@persistent.com\n🔗 Apply here:\nhttps://forms.cloud.microsoft/r/6PfCSxENun\nd\nPersent\nae\nPANDIA\n6-0Yr\nskills:\nDatabricks, Python, SQL",
+      "timestamp": "2026-10-05T21:15:30+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260013,
+      "text": "At KPIT, we aren't just building software; we are redefining the cockpit experience. We are looking for expert Android VHAL Developers to bridge the gap between sophisticated Android frameworks \n\n🛠️ The Mission: :-\n✅Develop & Customize: Architect Android Vehicle HAL components for next-gen infotainment.\n✅Integrate: Seamlessly connect VHAL services with vehicle interfaces and Android frameworks.\n✅Debug & Optimize: Tackle platform-level complexities across Android, Linux, and Binder IPC.\n✅Multimedia Mastery: Support high-performance audio, video, camera, and DRM integration.\n\n🎯 Your Profile:\n➡️3–7 years in Android platform development.\n➡️Avilable to join KPIT in Pune or Bangalore\n➡️Mandatory: Deep expertise in Android VHAL and Automotive Infotainment.\n➡️Mandatory: Advanced C++ programming skills.\n➡️Strong grasp of AOSP architecture, Binder IPC, and Linux systems.\n➡️Experience with Git workflows and CI/CD.\n\n📩 Ready to drive innovation? Send your profile directly to Shailesh.Chavan@kpit.com\nKPIT\nHiring for VHAL expert\nAndroid Vehicle HAL\nC++\nAndroid framework, AoSP architecture\nmultimedia components such as\n-> audio, video, camera\nSend your CV to: Shailesh.Chavan@kpi\nWork on VHAL Development with Android\nPune,\nAOSP, C++ for Vehicle Infotainment\nBangalore\nExp – 3 to 7 years\nSystem",
+      "timestamp": "2026-10-05T21:17:45+00:00"
+    }
+  ]
+}
