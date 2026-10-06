@@ -125,6 +125,13 @@ export const PORTAL_LOGOS_MAP: Record<string, string> = {
   walkin: '/logos/portals/google.svg'
 };
 
+export interface PortalInfo {
+  id: string;
+  label: string;
+  logo: string;
+  url?: string;
+}
+
 export function getPortalLogo(source: string | undefined): string {
   if (!source) return '';
   const s = source.toLowerCase().trim();
@@ -133,6 +140,79 @@ export function getPortalLogo(source: string | undefined): string {
     if (s.includes(key)) return val;
   }
   return '';
+}
+
+export function detectPortalInfo(job: any): PortalInfo {
+  if (!job) return { id: 'other', label: 'Direct Apply', logo: '' };
+
+  const rawSrc = String(job.source || job.platform || '').toLowerCase().trim();
+  const url = String(job.url || job.apply_link || job.apply_url || '');
+  const tgUrl = String(job.telegram_url || (url.includes('t.me/') ? url : ''));
+  const flyerUrl = String(job.flyer_image_url || job.raw_flyer_src || '');
+
+  // 1. Google Images (Flyers & Google search images)
+  if (rawSrc.includes('google') || rawSrc === 'images' || flyerUrl || url.includes('google.com') || url.includes('lh3.googleusercontent')) {
+    return {
+      id: 'google_images',
+      label: 'Images',
+      logo: '/logos/portals/google.svg',
+      url: flyerUrl || (url.startsWith('http') ? url : undefined)
+    };
+  }
+
+  // 2. Telegram Messages & Posts
+  if (rawSrc.includes('telegram') || tgUrl || url.includes('t.me/')) {
+    const isPost = rawSrc.includes('post');
+    return {
+      id: isPost ? 'telegram_post' : 'telegram_message',
+      label: isPost ? 'Post' : 'Messages',
+      logo: '/logos/portals/telegram.svg',
+      url: tgUrl || (url.startsWith('http') ? url : undefined)
+    };
+  }
+
+  // 3. Known portals mapping
+  const knownLabels: Record<string, string> = {
+    linkedin: 'LinkedIn',
+    naukri: 'Naukri',
+    indeed: 'Indeed',
+    internshala: 'Internshala',
+    glassdoor: 'Glassdoor',
+    shine: 'Shine',
+    timesjobs: 'TimesJobs',
+    hirist: 'Hirist',
+    workindia: 'WorkIndia',
+    foundit: 'Foundit',
+    apna: 'Apna',
+    freshersworld: 'FreshersWorld'
+  };
+
+  for (const [k, lbl] of Object.entries(knownLabels)) {
+    if (rawSrc === k || rawSrc.includes(k) || url.toLowerCase().includes(k)) {
+      return {
+        id: k,
+        label: lbl,
+        logo: PORTAL_LOGOS_MAP[k] || '',
+        url: url.startsWith('http') ? url : undefined
+      };
+    }
+  }
+
+  if (rawSrc && rawSrc !== 'other' && rawSrc !== 'none') {
+    return {
+      id: rawSrc,
+      label: rawSrc.charAt(0).toUpperCase() + rawSrc.slice(1).replace(/_/g, ' '),
+      logo: getPortalLogo(rawSrc),
+      url: url.startsWith('http') ? url : undefined
+    };
+  }
+
+  return {
+    id: 'other',
+    label: 'Direct Apply',
+    logo: '',
+    url: url.startsWith('http') ? url : undefined
+  };
 }
 
 export function getCompanyLogo(name: string): LogoData {

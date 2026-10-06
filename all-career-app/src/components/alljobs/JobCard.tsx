@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BriefcaseBusiness, CalendarDays, Mail, MapPin, Phone, Route, Send } from 'lucide-react';
 import { Job } from '../../types/jobs';
-import { getCompanyLogoData, getPortalLogo, formatAuthenticDate, formatWalkinDate } from '../../utils/companyLogos';
+import { getCompanyLogoData, getPortalLogo, formatAuthenticDate, formatWalkinDate, detectPortalInfo } from '../../utils/companyLogos';
 import { getJobWalkinDates, isWalkinJob } from '../../utils/filterUtils';
 
 interface JobCardProps {
@@ -51,7 +51,7 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
 
 export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany }) => {
   const companyName = job.company || 'DIRECT RECRUITER';
-  const portalLogo = getPortalLogo(job.source);
+  const portalInfo = detectPortalInfo(job);
 
   const rawLoc = (job.location || '').trim();
   const hasLoc = rawLoc && !['nan', 'none', 'null'].includes(rawLoc.toLowerCase());
@@ -62,7 +62,6 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
   const rawDate = job.date || (job as any).date_posted || (job as any).posted || (job as any).fetchedAt || '';
   const walkinDate = getJobWalkinDates(job)[0] || job.walkin_date || rawDate;
   const dateStr = isWalkin ? formatWalkinDate(walkinDate, rawDate) : formatAuthenticDate(rawDate);
-  const source = job.source || 'Direct Apply';
   const cleanTitle = job.title || job.role || 'Position';
   const applyUrl = job.url || (job as any).apply_url || job.telegram_url || job.flyer_image_url || '';
 
@@ -83,21 +82,72 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
             {cleanTitle}
           </div>
         </div>
+
+        {/* Top Source Badge Option with real official logo (NO emoji), agency-grade pill */}
+        {portalInfo.logo ? (
+          portalInfo.url ? (
+            <a
+              href={portalInfo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`top-source-badge src-${portalInfo.id}`}
+              title={`View on ${portalInfo.label}`}
+              onClick={e => e.stopPropagation()}
+            >
+              <img
+                src={portalInfo.logo}
+                alt={portalInfo.label}
+                className="top-source-logo"
+                onError={e => (e.currentTarget.style.display = 'none')}
+              />
+              <span className="top-source-name">{portalInfo.label}</span>
+            </a>
+          ) : (
+            <div className={`top-source-badge src-${portalInfo.id}`} title={portalInfo.label}>
+              <img
+                src={portalInfo.logo}
+                alt={portalInfo.label}
+                className="top-source-logo"
+                onError={e => (e.currentTarget.style.display = 'none')}
+              />
+              <span className="top-source-name">{portalInfo.label}</span>
+            </div>
+          )
+        ) : null}
       </div>
 
-        <div className="job-meta">
-          <div className="meta-row">
+      <div className="job-meta">
+        <div className="meta-row">
           <div className="meta-badge loc"><MapPin size={13} aria-hidden="true" />{cityLoc}</div>
           {exp && <div className="meta-badge exp"><BriefcaseBusiness size={13} aria-hidden="true" />{exp}</div>}
-          </div>
+        </div>
 
-          <div className="meta-row">
-          {dateStr && <div className="meta-badge date"><CalendarDays size={13} aria-hidden="true" />{dateStr}</div>}
+        <div className="meta-row">
+          {isWalkin ? (
+            <div className="meta-badge walkin-date-badge" title="Walk-in Interview Drive">
+              <Route size={13} aria-hidden="true" />
+              <span>Walk-in: {dateStr}</span>
+            </div>
+          ) : (
+            dateStr && (
+              <div className="meta-badge date" title={`Posted: ${dateStr}`}>
+                <CalendarDays size={13} aria-hidden="true" />
+                <span>{dateStr}</span>
+              </div>
+            )
+          )}
           <div className="meta-badge" style={{ color: 'var(--text-main)', borderColor: 'var(--border)' }}>
-            {source && source !== 'Direct Apply' ? (
+            {portalInfo.label ? (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                {portalLogo && <img src={portalLogo} alt="" className="portal-logo" onError={e => (e.currentTarget.style.display = 'none')} />}
-                <span style={{ textTransform: 'capitalize' }}>{source}</span>
+                {portalInfo.logo && (
+                  <img
+                    src={portalInfo.logo}
+                    alt=""
+                    className="portal-logo"
+                    onError={e => (e.currentTarget.style.display = 'none')}
+                  />
+                )}
+                <span>{portalInfo.label}</span>
               </span>
             ) : (
               'Direct Apply'

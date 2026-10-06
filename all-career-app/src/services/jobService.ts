@@ -96,6 +96,15 @@ export class JobService {
       r.title = titleStr;
       r.location = locStr;
 
+      let srcStr = String(r.source || (r as any).platform || '').toLowerCase().trim();
+      const uStr = String(r.url || (r as any).apply_url || (r as any).telegram_url || '').toLowerCase();
+      if (srcStr.includes('google') || (r as any).flyer_image_url || (r as any).raw_flyer_src || uStr.includes('google.com')) {
+        srcStr = 'google_images';
+      } else if (srcStr.includes('telegram') || (r as any).telegram_url || uStr.includes('t.me/')) {
+        srcStr = srcStr.includes('post') ? 'telegram_post' : 'telegram_message';
+      }
+      if (srcStr) r.source = srcStr;
+
       const key = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
       if (!this.allJobsMap.has(key)) {
         r.category = this.classifyRoleCategory(titleStr || r.role || '');
