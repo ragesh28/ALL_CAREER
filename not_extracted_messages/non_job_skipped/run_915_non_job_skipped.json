@@ -1,0 +1,61 @@
+{
+  "workflow_run_number": "915",
+  "workflow_run_id": "37430798390",
+  "timestamp": "2026-10-06T08:14:49.995713",
+  "runtime_minutes": 32.55,
+  "messages_processed": 71,
+  "new_jobs_stored": 39,
+  "skipped_jobs_count": 7,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30489,
+      "text": "🤔 Never opened Claude before? Perfect. This workshop assumes you're starting from zero.\n\nRegister for FREE: https://link.outskill.com/A-11\n\nIn 3 free hours we go from \"what do I even type\" to building things that save you hours every week ⏰ \n\nWriting, research, documents, data, all of it done live so you can follow along on your own screen.\n\n🚫 No coding\n🚫 No jargon\n🚫 No \"you should already know this\"\n\nJust full, beginner-friendly tutorials that finally make AI click 💡\n\nSpots are free but limited!\nFREE\nSMALL\nSKILLS\nBIG\nLearn AI to:\nCHANG\nIdeas\nMore\nBuild a writing bot\nImpact\nFaster\nin your own tone\nAutomate Linkedln\nLess\nand email with Make.com\nAutomate\nManual\nTurn messy data\nEverything\nWork\nBetter\ninto dashboards\nGood\nIdeas\nPrompts\nFaster\nBrighter\nAI\nAI Tools Workshop\nBuild\nDays\nCreate\nLeverage\nGrow\nPlan\nBuild\nAutomate\nGrow\nRegister Now\nIdeas\ntoda\n4.8/5\ntor\n15M+ Global Learners",
+      "timestamp": "2026-10-06T05:19:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43421,
+      "text": "**🚨 Learn to Build AI Workflows Using Claude & ChatGPT - FOR FREE! 🤖⚡️**\n\nUse AI to automate tasks, streamline your work and get more done in less time with this beginner friendly certification!\n\n**👉 Start Learning FREE:** https://link.outskill.com/A-13\n\n🎓 FREE Gen AI Certification\n\nWhat you'll learn:\n✅ Build AI workflows with Claude & ChatGPT\n✅ Use 25+ Powerful AI Tools\n✅ Automate repetitive tasks\n✅ Master AI prompts\n✅ Create faster, smarter workflows\n\n🔥 Don't just chat with AI. Build workflows that work for you.\n\n⏰ Limited-Time FREE Offer\nChatGPT\nClaude\nThe most useful\nCa\n3 hours of your life.\nGrok\nCa\nand it costs you ₹O.\nSUN\n8\nNotebook LM\nSuno\nMaster 25+ Al tools for FREE\nStitch\nRegister now",
+      "timestamp": "2026-10-06T05:25:11+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18867,
+      "text": "A great future\ndoesn't require a\ngreat past.",
+      "timestamp": "2026-10-06T01:59:51+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18869,
+      "text": "One year from now you'll\nlook back and say, 'I believed\nin myself and it worked.'\nMichael Lovegrove",
+      "timestamp": "2026-10-06T06:14:58+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260019,
+      "text": "Belagavi\nHIRING\nGRAPHIC\nDESIGNER\nMale/Female\nwith minimum 1 or 2 years\nexperience\nFresh May apply\nReguired Skills:\nKannada Typing\n☆\nWork in Corel Draw &\nAdobe Photoshop\nAPPLY\nNOW\nVIBRANTIC\nARTWORKZ\nM:9164520286,9035203286\nPRINT | DESIGN | SIGNAGE\nTalik Chowk, Sheri Galli Corner, Belagavi",
+      "timestamp": "2026-10-06T01:34:56+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260020,
+      "text": "Belagavi\nWe Are\nHIRING\nOPEN POSITIONS\nQUALIFICATION:\n• Maintenance Assistant\n• 1 Year Experience in CNC\nMachine Shop\n• CNC & VMC Operators\n• ITI / PUC Fresher or Experienced\nAre You Ready To Join Our Team\nAPPLY TODAY AT BELOW ADDRESS\nJINA ENGINEERS PVT. LTD.\nAN IATF 16949:2016 CERTIFIED COMPANY\nPLOT - 989, SY NO - 91/15 DEVAGIRI- BAMBARGA\nROAD VILLAGE KADOLI BELAGAVI - 591143\nE-mail: jtecheng@gmail.com\nFor more information : 9741729105",
+      "timestamp": "2026-10-06T01:34:56+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8344,
+      "text": "LEARN AI FOR FREE\nAl Basics\nelementsofai.com\nPython for AI\nkaggle.com/learn/python\nData Science\nkaggle.com/learn\nMachine Learning\nkaggle.com/learn/intro-to-ml\nDeep Learning\nkaggle.com/learn/intro-to-deep-learning\nGenerative AI\nkaggle.com/learn/generative-ai\nLLMs\nhuggingface.co/learn/llm-course\nAl Agents\nhuggingface.co/learn/agents-course\nNatural Language Processing\n→\nhuggingface.co/learn\nComputer Vision\nkaggle.com/learn/computer-vision\nPrompt Engineering\nlearnprompting.org\nOpenAI\nplatform.openai.com/docs\nHugging Face\nhuggingface.co/docs\nLangChain\npython.langchain.com/docs\nVector Databases\nzilliz.com/learn\nRAG\nlearn.microsoft.com/azureai-services\nFine-tuning\nhuggingface.co/docs/transformers\nMLOps\nmlflow.org/docs/latest\nNeural Networks\n3blue1brown.com/topics/neural-networks\nReinforcement Learning\nhuggingface.co/learn/deep-rl-course\nAI Safety\nalignmentforum.org\nAI Projects\nfreecodecamp.org\nFast.ai\ncourse.fast.ai\nStanford ML\ncs229.stanford.edu\nCS50 AI\ncs50.harvard.edu/ai\nGoogle AI\ndevelopers.google.com/machine-learning\nAWS Machine Learning\naws.amazon.com/training/ml\nAzure AI\nlearn.microsoft.com/azure/ai-fundamentals\nGoogle Cloud AI\ncloudskillsboost.google/paths/ai\nKaggle Tutorials\nkaggle.com/learn\nBuild with AI\nbuildwithai.com\nAl for Everyone\ncoursera.org/learn/ai-for-everyone\nArun Chauhan | Sr Software Engineer",
+      "timestamp": "2026-10-06T03:22:30+00:00"
+    }
+  ]
+}
