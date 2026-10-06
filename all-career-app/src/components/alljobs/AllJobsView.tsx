@@ -8,6 +8,7 @@ import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
 import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates } from '../../utils/filterUtils';
+import { formatWalkinDate } from '../../utils/companyLogos';
 
 interface AllJobsViewProps {
   onGoHub: () => void;
@@ -114,6 +115,16 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       const next = new Set(prev);
       if (next.has(company)) next.delete(company);
       else next.add(company);
+      return next;
+    });
+  };
+
+  const handleToggleWalkin = () => {
+    setWalkinOnly(prev => {
+      const next = !prev;
+      if (next && selectedCategory !== 'all') {
+        setSelectedCategory('all');
+      }
       return next;
     });
   };
@@ -275,7 +286,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       if (!isWalkinJob(j)) return false;
       if (selectedWalkinDates.size > 0) {
         const jDates = getJobWalkinDates(j);
-        const matchDate = Array.from(selectedWalkinDates).some(d => jDates.includes(d));
+        const matchDate = Array.from(selectedWalkinDates).some(d => {
+          const normD = formatWalkinDate(d);
+          return jDates.some(jd => formatWalkinDate(jd) === normD || jd === d);
+        });
         if (!matchDate) return false;
       }
     }
@@ -389,13 +403,16 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           walkinTotalCount++;
           const dates = getJobWalkinDates(j);
           for (const d of dates) {
-            walkinDateCounts[d] = (walkinDateCounts[d] || 0) + 1;
+            const normD = formatWalkinDate(d);
+            if (normD) {
+              walkinDateCounts[normD] = (walkinDateCounts[normD] || 0) + 1;
+            }
           }
         }
       }
     }
 
-    // Sort walk-in dates by count descending, ensuring top dates with actual jobs
+    // Sort walk-in dates by count descending, ensuring top dates with actual jobs (no year)
     const walkinDateOptions = Object.entries(walkinDateCounts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 20)
@@ -403,8 +420,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
 
     // Ensure selected dates are always present in the list
     for (const selDate of selectedWalkinDates) {
-      if (!walkinDateOptions.some(o => o.id === selDate)) {
-        walkinDateOptions.push({ id: selDate, label: selDate, count: walkinDateCounts[selDate] || 0 });
+      const normSel = formatWalkinDate(selDate);
+      if (!walkinDateOptions.some(o => o.id === selDate || o.id === normSel)) {
+        walkinDateOptions.push({ id: selDate, label: normSel || selDate, count: walkinDateCounts[normSel] || 0 });
       }
     }
 
@@ -490,7 +508,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           selectedSkills={selectedSkills}
           onToggleSkill={handleToggleSkill}
           walkinOnly={walkinOnly}
-          onToggleWalkin={() => setWalkinOnly(prev => !prev)}
+          onToggleWalkin={handleToggleWalkin}
           selectedWalkinDates={selectedWalkinDates}
           onToggleWalkinDate={handleToggleWalkinDate}
           sourceCounts={dynamicCounts.srcCounts}

@@ -75,6 +75,20 @@ export function parseWalkinDates(rawStr: string | undefined | null): string[] {
     }
   };
 
+  const low = text.toLowerCase();
+  const now = new Date();
+  if (low.includes('today')) {
+    addD(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+  if (low.includes('tomorrow')) {
+    const tom = new Date(Date.now() + 86400000);
+    addD(tom.getFullYear(), tom.getMonth(), tom.getDate());
+  }
+  if (low.includes('yesterday')) {
+    const yest = new Date(Date.now() - 86400000);
+    addD(yest.getFullYear(), yest.getMonth(), yest.getDate());
+  }
+
   // ISO date 2026-09-22
   const iso = text.match(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
   if (iso) {
@@ -142,7 +156,8 @@ export function parseWalkinDates(rawStr: string | undefined | null): string[] {
 
 export function getJobWalkinDates(job: any): string[] {
   if (Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) {
-    return job.walkin_dates;
+    const cleaned = job.walkin_dates.flatMap((d: string) => parseWalkinDates(d)).filter(Boolean);
+    if (cleaned.length > 0) return cleaned;
   }
   let raw = job.walkin_date || '';
   if (!raw) {

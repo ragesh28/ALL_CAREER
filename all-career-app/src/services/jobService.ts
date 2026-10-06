@@ -66,12 +66,14 @@ export class JobService {
 
   async fetchWalkinJobs(): Promise<Job[]> {
     try {
-      const res = await fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() =>
-        fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() =>
-          fetch('/data/scraped_image_walkin_jobs.json?t=' + Date.now())
-        )
-      );
-      if (res.ok) {
+      let res = await fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() => null);
+      if (!res || !res.ok) {
+        res = await fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() => null);
+      }
+      if (!res || !res.ok) {
+        res = await fetch('/data/scraped_image_walkin_jobs.json?t=' + Date.now()).catch(() => null);
+      }
+      if (res && res.ok) {
         const walkins: Job[] = await res.json();
         this.ingestJobs(walkins);
       }

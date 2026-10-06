@@ -263,18 +263,18 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
 
   // 6. Walk-in Dates matching Screenshot 1
   const WALKIN_DATES = [
-    { id: 'Oct 5', label: '05 Oct 2026', count: 699 },
-    { id: 'Oct 6', label: '06 Oct 2026', count: 682 },
-    { id: 'Oct 7', label: '07 Oct 2026', count: 659 },
-    { id: 'Oct 8', label: '08 Oct 2026', count: 598 },
-    { id: 'Oct 9', label: '09 Oct 2026', count: 579 },
-    { id: 'Oct 10', label: '10 Oct 2026', count: 556 },
-    { id: 'Oct 11', label: '11 Oct 2026', count: 355 },
-    { id: 'Oct 12', label: '12 Oct 2026', count: 342 },
-    { id: 'Oct 13', label: '13 Oct 2026', count: 334 },
-    { id: 'Oct 14', label: '14 Oct 2026', count: 295 },
-    { id: 'Oct 15', label: '15 Oct 2026', count: 240 },
-    { id: 'Oct 16', label: '16 Oct 2026', count: 190 }
+    { id: 'Sep 22', label: 'Sep 22', count: 3340 },
+    { id: 'Sep 19', label: 'Sep 19', count: 535 },
+    { id: 'Sep 26', label: 'Sep 26', count: 480 },
+    { id: 'Sep 21', label: 'Sep 21', count: 308 },
+    { id: 'Sep 18', label: 'Sep 18', count: 305 },
+    { id: 'Sep 16', label: 'Sep 16', count: 290 },
+    { id: 'Sep 12', label: 'Sep 12', count: 275 },
+    { id: 'Sep 9', label: 'Sep 9', count: 244 },
+    { id: 'Sep 5', label: 'Sep 5', count: 399 },
+    { id: 'Aug 31', label: 'Aug 31', count: 321 },
+    { id: 'Aug 22', label: 'Aug 22', count: 286 },
+    { id: 'Aug 8', label: 'Aug 8', count: 250 }
   ];
 
   const displayWalkinDates = walkinDateOptions && walkinDateOptions.length > 0 
@@ -614,7 +614,13 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
 
       {/* ── 7. Walk-in Interview (Matching Screenshot 1) ── */}
       <div className={`filter-section ${openSections.walkin ? 'open' : ''}`} id="sec-walkin">
-        <div className="filter-section-header" onClick={() => toggleSection('walkin')}>
+        <div
+          className="filter-section-header"
+          onClick={() => {
+            setOpenSections(prev => ({ ...prev, walkin: true }));
+            onToggleWalkin();
+          }}
+        >
           <span className="filter-section-label">
             <Route size={14} aria-hidden="true" /> Walk-in Interview
             {(walkinOnly || selectedWalkinDates.size > 0) && (
@@ -623,7 +629,15 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
               </span>
             )}
           </span>
-          <ChevronDown className="chevron" size={16} aria-hidden="true" />
+          <ChevronDown
+            className="chevron"
+            size={16}
+            aria-hidden="true"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSection('walkin');
+            }}
+          />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">

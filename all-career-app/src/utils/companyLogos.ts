@@ -186,34 +186,84 @@ export function formatAuthenticDate(dateStr?: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-/** Walk-in dates are scheduled events, so they should never use relative labels. */
-export function formatWalkinDate(dateStr?: string): string {
-  if (!dateStr) return '';
-  const clean = String(dateStr).replace(/[^a-zA-Z0-9\s,/-]/g, '').trim();
-  if (!clean) return '';
+const MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const hasExplicitYear = /\b(?:19|20)\d{2}\b/.test(clean);
-  const parsed = hasExplicitYear ? new Date(clean) : new Date('invalid');
-  if (!Number.isNaN(parsed.getTime())) {
-    return parsed.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    });
+function getMonthIdx(mStr: string): number {
+  if (!mStr) return -1;
+  const s = mStr.toLowerCase().slice(0, 3);
+  return MONTH_SHORT.findIndex(m => m.toLowerCase() === s);
+}
+
+/** Walk-in dates strictly formatted as 3-letter month + day number (e.g. 'Sep 22', 'Oct 6'), never relative terms and never with year */
+export function formatWalkinDate(dateStr?: string, fallbackStr?: string): string {
+  const target = (dateStr || fallbackStr || '').trim();
+  if (!target) return '';
+
+  const clean = target.replace(/[^a-zA-Z0-9\s,/-]/g, ' ').trim();
+  const low = clean.toLowerCase();
+
+  // 1. Convert relative terms "Today" / "Tomorrow" / "Yesterday" to authentic date
+  if (low.includes('today')) {
+    const now = new Date();
+    return `${MONTH_SHORT[now.getMonth()]} ${now.getDate()}`;
+  }
+  if (low.includes('tomorrow')) {
+    const tom = new Date(Date.now() + 86400000);
+    return `${MONTH_SHORT[tom.getMonth()]} ${tom.getDate()}`;
+  }
+  if (low.includes('yesterday')) {
+    const yest = new Date(Date.now() - 86400000);
+    return `${MONTH_SHORT[yest.getMonth()]} ${yest.getDate()}`;
   }
 
-  const monthMatch = clean.match(/\b([a-z]{3,9})\s+(\d{1,2})(?:\s*,?\s*(\d{4}))?\b/i);
-  if (monthMatch) {
-    const fallbackYear = new Date().getFullYear();
-    const monthDate = new Date(`${monthMatch[1]} ${monthMatch[2]}, ${monthMatch[3] || fallbackYear}`);
-    if (!Number.isNaN(monthDate.getTime())) {
-      return monthDate.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      });
+  // 2. Month-Day format: e.g. "Sep 22", "September 22", "Sep-22", "Sep 22, 2026"
+  const mdMatch = clean.match(/\b([A-Za-z]{3,9})[\s,/-]+(\d{1,2})(?:st|nd|rd|th)?\b/i);
+  if (mdMatch) {
+    const mIdx = getMonthIdx(mdMatch[1]);
+    if (mIdx !== -1) {
+      return `${MONTH_SHORT[mIdx]} ${parseInt(mdMatch[2], 10)}`;
     }
   }
 
-  return clean;
+  // 3. Day-Month format: e.g. "22 Sep", "22nd September", "19-Sept-2026", "05th Sep"
+  const dmMatch = clean.match(/\b(\d{1,2})(?:st|nd|rd|th)?[\s,/-]+([A-Za-z]{3,9})\b/i);
+  if (dmMatch) {
+    const mIdx = getMonthIdx(dmMatch[2]);
+    if (mIdx !== -1) {
+      return `${MONTH_SHORT[mIdx]} ${parseInt(dmMatch[1], 10)}`;
+    }
+  }
+
+  // 4. ISO format: "2026-09-22" or "2026/09/22"
+  const isoMatch = clean.match(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+  if (isoMatch) {
+    const m = parseInt(isoMatch[2], 10) - 1;
+    if (m >= 0 && m <= 11) {
+      return `${MONTH_SHORT[m]} ${parseInt(isoMatch[3], 10)}`;
+    }
+  }
+
+  // 5. Day-Month-Year numeric: "22-09-2026" or "22/09/2026"
+  const dmyMatch = clean.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](?:20\d{2}|\d{2})\b/);
+  if (dmyMatch) {
+    const m = parseInt(dmyMatch[2], 10) - 1;
+    if (m >= 0 && m <= 11) {
+      return `${MONTH_SHORT[m]} ${parseInt(dmyMatch[1], 10)}`;
+    }
+  }
+
+  // 6. Check fallback string (e.g. rawDate or date_posted) if initial string was weekday like "Wednesday to Friday"
+  if (fallbackStr && fallbackStr !== dateStr) {
+    const fb = formatWalkinDate(fallbackStr);
+    if (fb) return fb;
+  }
+
+  // 7. General date parse fallback (without year)
+  const parsed = new Date(clean);
+  if (!Number.isNaN(parsed.getTime())) {
+    return `${MONTH_SHORT[parsed.getMonth()]} ${parsed.getDate()}`;
+  }
+
+  const now = new Date();
+  return `${MONTH_SHORT[now.getMonth()]} ${now.getDate()}`;
 }
