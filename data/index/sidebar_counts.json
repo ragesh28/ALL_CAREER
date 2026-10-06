@@ -1,5 +1,5 @@
 {
-  "total_jobs": 926678,
+  "total_jobs": 926715,
   "sources": {
     "naukri": 322160,
     "linkedin": 227996,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 584,
-    "telegram_message": 681,
+    "telegram_post": 595,
+    "telegram_message": 707,
     "cutshort": 8,
     "big_it_jobs": 3,
     "idfc_first_bank": 6,
@@ -206,19 +206,19 @@
     "job_openings_at_godrej_group_godrej_industries": 1
   },
   "locations": {
-    "bangalore": 198595,
+    "bangalore": 198600,
     "mumbai": 120900,
     "delhi": 98428,
-    "chennai": 99771,
-    "hyderabad": 88813,
+    "chennai": 99772,
+    "hyderabad": 88816,
     "pune": 72659,
     "noida": 45138,
     "ahmedabad": 36766,
     "kolkata": 31434,
-    "all_india": 23734,
-    "coimbatore": 18454,
+    "all_india": 23753,
+    "coimbatore": 18458,
     "kochi": 14266,
-    "remote": 8524,
+    "remote": 8526,
     "jaipur": 6830,
     "maharashtra": 8432,
     "indore": 4931,
@@ -539,7 +539,7 @@
     "kadipur": 1,
     "kamrej": 7,
     "sriperumbudur": 14,
-    "kanchipuram": 15,
+    "kanchipuram": 16,
     "stthomas_mount": 13,
     "punjab": 1,
     "udumalpet": 1,
@@ -685,7 +685,7 @@
     "online": 1,
     "as_per_infosys_recruitment_allocation": 1,
     "permanent_wah": 1,
-    "multiple_locations": 1,
+    "multiple_locations": 2,
     "gandhidham": 1,
     "dera_bassi": 1,
     "bharuchdahej": 1,
@@ -708,7 +708,8 @@
     "davanagere": 1,
     "shimoga": 1,
     "maneja": 2,
-    "raman": 1
+    "raman": 1,
+    "nagercoil": 1
   },
-  "generated_at": "2026-10-06T14:09:45.737540"
+  "generated_at": "2026-10-06T15:39:33.294015"
 }
