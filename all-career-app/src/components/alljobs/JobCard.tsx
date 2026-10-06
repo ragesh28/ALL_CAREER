@@ -67,7 +67,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
   const applyUrl = job.url || (job as any).apply_url || job.telegram_url || job.flyer_image_url || '';
 
   return (
-    <div className={`job-card ${isWalkin ? 'walkin-card' : ''}`} style={index !== undefined ? { animationDelay: `${(index % 30) * 0.03}s` } : undefined}>
+    <div className="job-card" style={index !== undefined ? { animationDelay: `${(index % 30) * 0.03}s` } : undefined}>
       <div className="card-top">
         <AuthenticLogoBox company={companyName} />
         <div className="card-info">
@@ -92,7 +92,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index, onSelectCompany })
           </div>
 
           <div className="meta-row">
-          {dateStr && <div className={`meta-badge date ${isWalkin ? 'walkin-date' : ''}`}>{isWalkin ? <Route size={13} aria-hidden="true" /> : <CalendarDays size={13} aria-hidden="true" />}{dateStr}</div>}
+          {dateStr && <div className="meta-badge date"><CalendarDays size={13} aria-hidden="true" />{dateStr}</div>}
           <div className="meta-badge" style={{ color: 'var(--text-main)', borderColor: 'var(--border)' }}>
             {source && source !== 'Direct Apply' ? (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>

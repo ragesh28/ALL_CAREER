@@ -243,12 +243,8 @@ body {
 }
 
 .walkin-card {
-  background: linear-gradient(135deg, rgba(17, 51, 67, .92), rgba(15, 29, 50, .94));
-  border-color: rgba(34, 211, 238, .26);
-}
-
-.walkin-card::before {
-  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, .56), rgba(52, 211, 153, .42), transparent);
+  background: linear-gradient(145deg, rgba(19, 31, 55, .92), rgba(12, 21, 40, .92));
+  border-color: rgba(128, 156, 207, .14);
 }
 
 .meta-badge {
@@ -259,9 +255,9 @@ body {
 }
 
 .walkin-date {
-  color: #67e8f9 !important;
-  border-color: rgba(34, 211, 238, .28) !important;
-  background: rgba(34, 211, 238, .08) !important;
+  color: var(--primary) !important;
+  border-color: rgba(52, 211, 153, 0.15) !important;
+  background: rgba(148, 163, 184, .07) !important;
 }
 
 .contact-action {
@@ -2608,12 +2604,8 @@ select.filter-select option,
 }
 
 .walkin-card {
-  background: linear-gradient(135deg, rgba(17, 51, 67, .94), rgba(15, 29, 50, .96));
-  border-color: rgba(34, 211, 238, .3);
-}
-
-.walkin-card::before {
-  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, .58), rgba(52, 211, 153, .44), transparent);
+  background: linear-gradient(145deg, rgba(19, 31, 55, .94), rgba(12, 21, 40, .96));
+  border-color: rgba(128, 156, 207, .16);
 }
 
 .meta-badge {
@@ -2621,9 +2613,9 @@ select.filter-select option,
 }
 
 .walkin-date {
-  color: #67e8f9 !important;
-  background: rgba(34, 211, 238, .1) !important;
-  border-color: rgba(34, 211, 238, .3) !important;
+  color: var(--primary) !important;
+  background: rgba(148, 163, 184, .07) !important;
+  border-color: rgba(52, 211, 153, 0.15) !important;
 }
 
 .contact-action {
