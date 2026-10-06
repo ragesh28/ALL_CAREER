@@ -25,7 +25,7 @@
   --text-dim: #475775;
   --border: rgba(255, 255, 255, 0.07);
   --border-active: rgba(52, 211, 153, 0.3);
-  --sidebar-width: 240px;
+  --sidebar-width: 252px;
 
   /* Hub Theme variables */
   --hub-bg: #070b19;
@@ -156,9 +156,9 @@ body {
 }
 
 .filter-body-inner {
-  border-left: 1px solid rgba(96, 165, 250, .13);
-  margin-left: 7px;
-  padding-left: 10px;
+  border-left: none;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .meta-icon {
@@ -1031,7 +1031,7 @@ body {
    LEFT SIDEBAR (Sticky + Independent Scroll)
 ══════════════════════════════════════ */
 .sidebar {
-  width: 240px;
+  width: var(--sidebar-width, 252px);
   flex-shrink: 0;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
@@ -1093,7 +1093,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 13px 16px;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s;
@@ -1147,7 +1147,7 @@ body {
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0 16px;
+  padding: 0 8px 0 10px;
 }
 
 .filter-section.open .filter-body {
@@ -1156,6 +1156,9 @@ body {
 
 .filter-body-inner {
   padding: 4px 0 14px;
+  border-left: none;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 /* Search inside filter (With vibrant colors, not plain black & white!) */
@@ -1202,8 +1205,8 @@ body {
 .filter-option {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 4px;
+  gap: 7px;
+  padding: 5px 6px;
   cursor: pointer;
   border-radius: 6px;
   transition: background 0.15s;
@@ -1247,11 +1250,15 @@ body {
   font-size: 0.82rem;
   color: var(--text-muted);
   flex: 1;
+  min-width: 0;
   font-weight: 500;
   transition: color 0.15s;
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filter-option:hover .option-label,
@@ -1264,7 +1271,9 @@ body {
   color: #94a3b8;
   margin-left: auto;
   font-weight: 600;
-  padding-left: 6px;
+  padding-left: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .portal-logo {
@@ -1326,8 +1335,8 @@ body {
 .filter-radio {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 4px;
+  gap: 7px;
+  padding: 5px 6px;
   cursor: pointer;
   border-radius: 6px;
   transition: background 0.15s;
@@ -2505,9 +2514,9 @@ body {
 }
 
 .filter-body-inner {
-  margin-left: 8px;
-  padding-left: 10px;
-  border-left: 2px solid rgba(96, 165, 250, .2);
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
 }
 
 .filter-section-label > svg,
