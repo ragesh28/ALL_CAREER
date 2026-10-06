@@ -1,7 +1,7 @@
 {
-  "total_jobs": 920808,
+  "total_jobs": 920812,
   "sources": {
-    "naukri": 324380,
+    "naukri": 327658,
     "linkedin": 221449,
     "timesjobs": 102411,
     "indeed": 78407,
@@ -328,7 +328,7 @@
     "athani": 1,
     "zirakpur": 34,
     "kanpur": 58,
-    "vijayawada": 18,
+    "vijayawada": 19,
     "dubai": 8,
     "varanasisigra": 2,
     "berhampur": 1,
@@ -622,7 +622,7 @@
     "kondapur": 1,
     "dhanbadbank_more": 1,
     "cuttackgopalpur": 1,
-    "ahmednagar": 3,
+    "ahmednagar": 5,
     "hybrid_purulia": 1,
     "mancherial": 1,
     "ambedkar_nagarjalalpur": 1,
@@ -675,7 +675,7 @@
     "deoria": 1,
     "ahmednagarnewasa": 1,
     "gidam": 1,
-    "bharuch": 1,
+    "bharuch": 2,
     "dehradunrajpur_road": 1,
     "hybrid_sirsakalanwali": 1,
     "tarapur": 1,
@@ -706,7 +706,9 @@
     "saudi_arabia": 1,
     "jagatsinghapur": 1,
     "davanagere": 1,
-    "shimoga": 1
+    "shimoga": 1,
+    "maneja": 2,
+    "raman": 1
   },
-  "generated_at": "2026-10-06T08:17:55.423101"
+  "generated_at": "2026-10-06T12:00:48.524025"
 }
