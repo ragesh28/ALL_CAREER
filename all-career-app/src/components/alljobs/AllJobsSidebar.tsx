@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { BriefcaseBusiness, CalendarDays, ChevronDown, Globe2, MapPin, Route, Search, SlidersHorizontal, Tag } from 'lucide-react';
+import { formatWalkinDate } from '../../utils/companyLogos';
 
 interface AllJobsSidebarProps {
   // Source
@@ -261,18 +263,18 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
 
   // 6. Walk-in Dates matching Screenshot 1
   const WALKIN_DATES = [
-    { id: 'Oct 5', label: 'Oct 5', count: 699 },
-    { id: 'Oct 6', label: 'Oct 6', count: 682 },
-    { id: 'Oct 7', label: 'Oct 7', count: 659 },
-    { id: 'Oct 8', label: 'Oct 8', count: 598 },
-    { id: 'Oct 9', label: 'Oct 9', count: 579 },
-    { id: 'Oct 10', label: 'Oct 10', count: 556 },
-    { id: 'Oct 11', label: 'Oct 11', count: 355 },
-    { id: 'Oct 12', label: 'Oct 12', count: 342 },
-    { id: 'Oct 13', label: 'Oct 13', count: 334 },
-    { id: 'Oct 14', label: 'Oct 14', count: 295 },
-    { id: 'Oct 15', label: 'Oct 15', count: 240 },
-    { id: 'Oct 16', label: 'Oct 16', count: 190 }
+    { id: 'Oct 5', label: '05 Oct 2026', count: 699 },
+    { id: 'Oct 6', label: '06 Oct 2026', count: 682 },
+    { id: 'Oct 7', label: '07 Oct 2026', count: 659 },
+    { id: 'Oct 8', label: '08 Oct 2026', count: 598 },
+    { id: 'Oct 9', label: '09 Oct 2026', count: 579 },
+    { id: 'Oct 10', label: '10 Oct 2026', count: 556 },
+    { id: 'Oct 11', label: '11 Oct 2026', count: 355 },
+    { id: 'Oct 12', label: '12 Oct 2026', count: 342 },
+    { id: 'Oct 13', label: '13 Oct 2026', count: 334 },
+    { id: 'Oct 14', label: '14 Oct 2026', count: 295 },
+    { id: 'Oct 15', label: '15 Oct 2026', count: 240 },
+    { id: 'Oct 16', label: '16 Oct 2026', count: 190 }
   ];
 
   const displayWalkinDates = walkinDateOptions && walkinDateOptions.length > 0 
@@ -296,7 +298,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     <aside className="sidebar">
       {/* Sidebar Header */}
       <div className="sidebar-header">
-        <span className="sidebar-title">All Filters</span>
+        <span className="sidebar-title"><SlidersHorizontal size={15} aria-hidden="true" /> All Filters</span>
         {totalApplied > 0 && (
           <span className="applied-badge visible">
             Applied ({totalApplied})
@@ -308,14 +310,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.source ? 'open' : ''}`} id="sec-source">
         <div className="filter-section-header" onClick={() => toggleSection('source')}>
           <span className="filter-section-label">
-            Source
+            <Tag size={14} aria-hidden="true" /> Source
             {selectedSources.size > 0 && (
               <span className="filter-count show">{selectedSources.size}</span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner" id="source-options">
@@ -344,7 +344,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       }}
                     />
                   ) : (
-                    <span className="meta-icon" style={{ fontSize: '13px' }}>🌐</span>
+                    <Globe2 className="meta-icon" size={14} aria-label="Other source" />
                   )}
                   <span className="option-label">{item.label}</span>
                   <span className="source-count" id={`cnt-src-${item.id}`}>
@@ -361,14 +361,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.date ? 'open' : ''}`} id="sec-date">
         <div className="filter-section-header" onClick={() => toggleSection('date')}>
           <span className="filter-section-label">
-            Posted Date
+            <CalendarDays size={14} aria-hidden="true" /> Posted Date
             {selectedDateFilter !== 'all' && (
               <span className="filter-count show">1</span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -396,14 +394,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.location ? 'open' : ''}`} id="sec-location">
         <div className="filter-section-header" onClick={() => toggleSection('location')}>
           <span className="filter-section-label">
-            Location
+            <MapPin size={14} aria-hidden="true" /> Location
             {selectedLocations.size > 0 && (
               <span className="filter-count show">{selectedLocations.size}</span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -436,14 +432,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.roles ? 'open' : ''}`} id="sec-roles">
         <div className="filter-section-header" onClick={() => toggleSection('roles')}>
           <span className="filter-section-label">
-            Role Category
+            <BriefcaseBusiness size={14} aria-hidden="true" /> Role Category
             {selectedRoles.size > 0 && (
               <span className="filter-count show">{selectedRoles.size}</span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -495,16 +489,14 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.exp ? 'open' : ''}`} id="sec-exp">
         <div className="filter-section-header" onClick={() => toggleSection('exp')}>
           <span className="filter-section-label">
-            Experience
+            <BriefcaseBusiness size={14} aria-hidden="true" /> Experience
             {expValue >= 0 && (
               <span className="filter-count show">
                 {exactExp ? `Exactly ${expValue} Yrs` : `${expValue} Yrs`}
               </span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -567,14 +559,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.skills ? 'open' : ''}`} id="sec-skills">
         <div className="filter-section-header" onClick={() => toggleSection('skills')}>
           <span className="filter-section-label">
-            Skills
+            <Tag size={14} aria-hidden="true" /> Skills
             {selectedSkills.size > 0 && (
               <span className="filter-count show">{selectedSkills.size}</span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -626,16 +616,14 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
       <div className={`filter-section ${openSections.walkin ? 'open' : ''}`} id="sec-walkin">
         <div className="filter-section-header" onClick={() => toggleSection('walkin')}>
           <span className="filter-section-label">
-            Walk-in Interview
+            <Route size={14} aria-hidden="true" /> Walk-in Interview
             {(walkinOnly || selectedWalkinDates.size > 0) && (
               <span className="filter-count show">
                 {(walkinOnly ? 1 : 0) + selectedWalkinDates.size}
               </span>
             )}
           </span>
-          <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+          <ChevronDown className="chevron" size={16} aria-hidden="true" />
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
@@ -650,7 +638,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
               </div>
-              <span className="option-label">🚶 All Walk-ins</span>
+              <span className="option-label"><Route size={14} aria-hidden="true" /> All Walk-ins</span>
               <span className="source-count">({(walkinCount !== undefined ? walkinCount : 7365).toLocaleString()})</span>
             </div>
 
@@ -686,7 +674,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                         <path d="M20 6 9 17l-5-5" />
                       </svg>
                     </div>
-                    <span className="option-label">{item.label}</span>
+                    <span className="option-label">{formatWalkinDate(item.label || item.id)}</span>
                     <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );

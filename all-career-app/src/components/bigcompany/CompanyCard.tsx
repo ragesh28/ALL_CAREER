@@ -1,4 +1,5 @@
 import React from 'react';
+import { BriefcaseBusiness, Building2, Landmark, MapPin, Send } from 'lucide-react';
 import { BigCompanyItem } from '../../data/bigCompaniesData';
 import { CompanyLogo } from '../common/CompanyLogo';
 
@@ -24,26 +25,26 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
         <div className="bigcompany-title-row">
           <div className="bigcompany-name">{company.name}</div>
           <span className={`bigcompany-tag ${tagClass}`}>
-            ⚡ {company.type}
+            <Building2 size={12} aria-hidden="true" /> {company.type}
           </span>
         </div>
       </div>
 
       {/* Role */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e1', fontSize: '0.88rem' }}>
-        <span>💼</span>
+        <BriefcaseBusiness size={15} aria-hidden="true" />
         <span>{company.role}</span>
       </div>
 
       {/* Location */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#94a3b8', fontSize: '0.88rem' }}>
-        <span>📍</span>
+        <MapPin size={15} aria-hidden="true" />
         <span>{company.location}</span>
       </div>
 
       {/* Salary in Gold */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ color: '#fbbf24' }}>💰</span>
+        <Landmark size={15} aria-hidden="true" />
         <span className="bigcompany-salary">{company.salary}</span>
       </div>
 
@@ -54,7 +55,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
         rel="noopener noreferrer"
         className="bigcompany-btn"
       >
-        View & Apply
+        View & Apply <Send size={14} aria-hidden="true" />
       </a>
     </div>
   );

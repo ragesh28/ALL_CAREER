@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { BriefcaseBusiness, Layers3, Star } from 'lucide-react';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
 
@@ -22,6 +23,26 @@ interface PracticeContentProps {
 }
 
 const ITEMS_PER_PAGE = 100;
+
+const topicTone = (topic: string) => {
+  const value = topic.toLowerCase();
+  if (value.includes('dynamic') || value.includes('backtracking')) return 'topic-tag tone-rose';
+  if (value.includes('graph') || value.includes('tree')) return 'topic-tag tone-violet';
+  if (value.includes('array') || value.includes('hash')) return 'topic-tag tone-emerald';
+  if (value.includes('string') || value.includes('sliding')) return 'topic-tag tone-cyan';
+  if (value.includes('math') || value.includes('bit')) return 'topic-tag tone-amber';
+  return 'topic-tag tone-slate';
+};
+
+const acceptanceTone = (value?: string) => {
+  const rate = parseFloat((value || '').replace('%', ''));
+  if (Number.isNaN(rate)) return 'acceptance-rate tone-slate';
+  if (rate < 30) return 'acceptance-rate tone-rose';
+  if (rate < 50) return 'acceptance-rate tone-amber';
+  if (rate < 70) return 'acceptance-rate tone-cyan';
+  if (rate < 90) return 'acceptance-rate tone-emerald';
+  return 'acceptance-rate tone-positive';
+};
 
 export const PracticeContent: React.FC<PracticeContentProps> = ({
   selectedMode,
@@ -210,7 +231,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         <div className="company-header-bar" style={{ background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.2)' }}>
           <div className="company-title-row">
             <div style={{ width: '32px', height: '32px', background: '#fbbf24', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'black', fontWeight: 'bold', fontSize: '1.1rem' }}>
-              ★
+              <Star size={17} aria-hidden="true" />
             </div>
             <div className="company-name-large" style={{ color: '#fbbf24' }}>
               Must Do Questions <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: 500 }}>(Top 150 LeetCode)</span>
@@ -302,7 +323,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         {/* TOPIC FILTER BAR */}
         <div className="topic-wrapper">
           <div className="topic-header-row">
-            <span className="topic-label">Filter by Topic:</span>
+            <span className="topic-label"><Layers3 size={15} aria-hidden="true" /> Filter by Topic</span>
             <button
               className="toggle-btn"
               onClick={() => setTopicsExpanded(prev => !prev)}
@@ -331,8 +352,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
 
         {/* STICKY FILTER BAR */}
         <div className="company-header-bar" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
-          <div style={{ color: '#94a3b8', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.5px' }}>
-            // MASTER LIST
+          <div className="practice-list-title">
+            All questions
           </div>
 
           <div className="toolbar">
@@ -348,19 +369,18 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               }}
             />
 
-            <select
-              className="filter-select"
-              value={diffAll}
-              onChange={e => {
-                setDiffAll(e.target.value);
-                setCurrentPage(1);
-              }}
-            >
-              <option value="All">All Difficulties</option>
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
+            <div className="difficulty-filter-set" aria-label="Filter by difficulty">
+              {(['All', 'Easy', 'Medium', 'Hard'] as const).map(difficulty => (
+                <button
+                  key={difficulty}
+                  type="button"
+                  className={`difficulty-filter difficulty-${difficulty.toLowerCase()} ${diffAll === difficulty ? 'active' : ''}`}
+                  onClick={() => { setDiffAll(difficulty); setCurrentPage(1); }}
+                >
+                  {difficulty === 'All' ? 'All difficulty' : difficulty}
+                </button>
+              ))}
+            </div>
 
             <select
               className="filter-select"
@@ -441,16 +461,16 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                       </td>
                       <td>
                         {topicList.slice(0, 3).map(t => (
-                          <span key={t} className="topic-tag">{t}</span>
+                          <span key={t} className={topicTone(t)}>{t}</span>
                         ))}
                         {topicList.length > 3 && (
                           <span className="topic-tag" style={{ opacity: 0.6 }}>+{topicList.length - 3}</span>
                         )}
                       </td>
-                      <td style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{p.acceptance || '52.4%'}</td>
+                      <td><span className={acceptanceTone(p.acceptance)}>{p.acceptance || 'N/A'}</span></td>
                       <td><span className={`diff-tag diff-${p.difficulty}`}>{p.difficulty}</span></td>
                       <td>
-                        <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '2px' }}>{freq}%</div>
+                      <div className={`frequency-rate ${freq > 70 ? 'tone-emerald' : freq > 40 ? 'tone-amber' : 'tone-slate'}`}>{freq}%</div>
                         <div className="freq-bar-container">
                           <div className="freq-bar-fill" style={{ width: `${freq}%`, background: barColor }}></div>
                         </div>
@@ -528,7 +548,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               onClick={() => onNavigateToJobs(selectedCompany)}
               title={`View active job openings for ${selectedCompany}`}
             >
-              <span>💼 View Open Jobs for {selectedCompany} →</span>
+              <BriefcaseBusiness size={15} aria-hidden="true" /> <span>View Open Jobs for {selectedCompany}</span>
             </button>
           )}
         </div>
@@ -544,16 +564,18 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
             onChange={e => setCompanySearch(e.target.value)}
           />
 
-          <select
-            className="filter-select"
-            value={companyDiff}
-            onChange={e => setCompanyDiff(e.target.value)}
-          >
-            <option value="All">All Difficulties</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
+            <div className="difficulty-filter-set" aria-label="Filter company questions by difficulty">
+              {(['All', 'Easy', 'Medium', 'Hard'] as const).map(difficulty => (
+                <button
+                  key={difficulty}
+                  type="button"
+                  className={`difficulty-filter difficulty-${difficulty.toLowerCase()} ${companyDiff === difficulty ? 'active' : ''}`}
+                  onClick={() => setCompanyDiff(difficulty)}
+                >
+                  {difficulty === 'All' ? 'All difficulty' : difficulty}
+                </button>
+              ))}
+            </div>
 
           <select
             className="filter-select"
@@ -602,7 +624,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                         {p.title}
                       </a>
                     </td>
-                    <td style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{p.acceptance || 'N/A'}</td>
+                    <td><span className={acceptanceTone(p.acceptance)}>{p.acceptance || 'N/A'}</span></td>
                     <td><span className={`diff-tag diff-${p.difficulty || 'Medium'}`}>{p.difficulty || 'Medium'}</span></td>
                     <td>
                       <div className="freq-bar-container">

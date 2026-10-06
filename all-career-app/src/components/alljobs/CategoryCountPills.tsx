@@ -54,7 +54,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-sales"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'sales' ? 0.5 : 1 }}
         >
-          • Sales & Marketing: {pageCounts.sales}
+          <span className="category-mark" aria-hidden="true" />
+          Sales & Marketing <strong>{pageCounts.sales}</strong>
         </button>
 
         <button 
@@ -62,7 +63,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-tech"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'technical' ? 0.5 : 1 }}
         >
-          • Technical: {pageCounts.technical}
+          <span className="category-mark" aria-hidden="true" />
+          Technical <strong>{pageCounts.technical}</strong>
         </button>
 
         <button 
@@ -70,7 +72,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-nontech"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'non_technical' ? 0.5 : 1 }}
         >
-          • Non-Technical: {pageCounts.nonTechnical}
+          <span className="category-mark" aria-hidden="true" />
+          Non-Technical <strong>{pageCounts.nonTechnical}</strong>
         </button>
 
         <button 
@@ -78,7 +81,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-finance"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'banking' ? 0.5 : 1 }}
         >
-          • Banking & Finance: {pageCounts.banking}
+          <span className="category-mark" aria-hidden="true" />
+          Banking & Finance <strong>{pageCounts.banking}</strong>
         </button>
 
         <button 
@@ -86,7 +90,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-hr"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'hr' ? 0.5 : 1 }}
         >
-          • HR & Staffing: {pageCounts.hr}
+          <span className="category-mark" aria-hidden="true" />
+          HR & Staffing <strong>{pageCounts.hr}</strong>
         </button>
 
         <button 
@@ -94,7 +99,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-pharma"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'pharma' ? 0.5 : 1 }}
         >
-          • Pharma: {pageCounts.pharma}
+          <span className="category-mark" aria-hidden="true" />
+          Pharma <strong>{pageCounts.pharma}</strong>
         </button>
 
         <button 
@@ -102,7 +108,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className="pill-tag pill-others"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'others' ? 0.5 : 1 }}
         >
-          • Others: {pageCounts.others}
+          <span className="category-mark" aria-hidden="true" />
+          Others <strong>{pageCounts.others}</strong>
         </button>
       </div>
     </div>

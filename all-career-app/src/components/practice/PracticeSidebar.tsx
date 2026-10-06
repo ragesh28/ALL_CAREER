@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Layers3, Search, Star } from 'lucide-react';
 import { CompanyLogo } from '../common/CompanyLogo';
 
 interface PracticeSidebarProps {
@@ -26,6 +27,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
     <aside className="practice-sidebar">
       {/* Search Box */}
       <div className="practice-search-box">
+        <Search size={15} aria-hidden="true" />
         <input
           type="text"
           placeholder="Search Company..."
@@ -36,7 +38,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
 
       {/* Company & Category List */}
       <div className="practice-company-list">
-        {/* 1. ★ Top 150 Interview Qs (Yellow) */}
+        {/* Top 150 Interview Questions */}
         <div
           className={`practice-company-item ${selectedMode === 'top150' ? 'active' : ''}`}
           style={{ border: '1px solid #fbbf24' }}
@@ -44,7 +46,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ width: '20px', height: '20px', background: '#fbbf24', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'black', fontWeight: 'bold', fontSize: '0.8rem' }}>
-              ★
+              <Star size={14} aria-hidden="true" />
             </div>
             <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>Top 150 Interview Qs</span>
           </div>
@@ -61,7 +63,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ width: '20px', height: '20px', background: '#a855f7', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
-              ∞
+              <Layers3 size={14} aria-hidden="true" />
             </div>
             <span style={{ color: '#a855f7', fontWeight: 'bold' }}>All Questions</span>
           </div>

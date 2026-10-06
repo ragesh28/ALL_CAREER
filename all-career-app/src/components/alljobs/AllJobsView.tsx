@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { LoaderCircle } from 'lucide-react';
 import { Job, SidebarCounts } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
 import { AllJobsTopNav } from './AllJobsTopNav';
@@ -42,10 +43,17 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   // Load initial catalog
   useEffect(() => {
     let isMounted = true;
-    jobService.initCatalog().then(data => {
+    jobService.initCatalog(incoming => {
+      if (isMounted && incoming.length > 0) {
+        setJobs(incoming);
+        setLoading(false);
+      }
+    }).then(data => {
       if (!isMounted) return;
       setJobs(data.previewJobs);
-      setSidebarCounts(data.sidebarCounts);
+      if (data.sidebarCounts) {
+        setSidebarCounts(data.sidebarCounts);
+      }
       setLoading(false);
     });
     return () => {
@@ -510,7 +518,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           {loading ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
               <div style={{ display: 'inline-block', width: '38px', height: '38px', border: '3px solid rgba(56,189,248,0.2)', borderTopColor: '#38bdf8', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
-              <p style={{ color: '#94a3b8', marginTop: '14px', fontSize: '15px', fontWeight: 500 }}>⚡ Loading matching jobs...</p>
+              <p style={{ color: '#94a3b8', marginTop: '14px', fontSize: '15px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}><LoaderCircle size={16} aria-hidden="true" /> Loading matching jobs...</p>
             </div>
           ) : filteredJobs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>

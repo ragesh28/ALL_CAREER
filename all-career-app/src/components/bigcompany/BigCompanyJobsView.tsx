@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { getCompanyLogo } from '../../utils/companyLogos';
-import { CompanyLogo } from '../common/CompanyLogo';
+import { BriefcaseBusiness, CalendarDays, History, Home, MapPin, RotateCcw, Search, Send, X } from 'lucide-react';
+import { AuthenticLogoBox } from '../alljobs/JobCard';
 import { ROLE_KEYWORDS } from '../../utils/filterUtils';
 import { bridgeService } from '../../services/bridgeService';
 
@@ -143,14 +143,6 @@ function formatDate(dateStr?: string) {
   if (diffDays > 1 && diffDays <= 7) return `${diffDays} days ago`;
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
-
-const CompanyLogoBox: React.FC<{ company: string }> = ({ company }) => {
-  return (
-    <div className="logo-box">
-      <CompanyLogo name={company} size={42} style={{ borderRadius: 8, background: '#1e293b' }} />
-    </div>
-  );
-};
 
 export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub }) => {
   const [jobs, setJobs] = useState<BigCompanyJob[]>([]);
@@ -413,10 +405,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
         <div className="topnav-center">
           <div className="topnav-search">
-            <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
+            <Search size={15} aria-hidden="true" />
             <input
               type="text"
               id="searchInput"
@@ -435,7 +424,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
               onClick={handleAutoApply}
               title="Auto Apply to visible jobs on this page"
             >
-              <span className="auto-apply-icon">⚡</span>
+              <Send className="auto-apply-icon" size={15} aria-hidden="true" />
               <span className="auto-apply-text">Auto Apply ({pageJobs.length})</span>
             </button>
             <button
@@ -443,7 +432,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
               onClick={() => bridgeService.openHistory()}
               title="View Application History"
             >
-              <span className="history-icon">📋</span>
+              <History className="history-icon" size={15} aria-hidden="true" />
               <span className="history-text">History</span>
             </button>
           </div>
@@ -454,7 +443,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
           {hasActiveFilters && (
             <button className="clear-all-btn visible" onClick={clearAllFilters}>
-              ✕ Clear All
+              <RotateCcw size={14} aria-hidden="true" /> Reset
             </button>
           )}
 
@@ -463,7 +452,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
             className="btn-hub-nav"
             style={{ borderRadius: '20px', padding: '6px 14px', fontSize: '0.82rem' }}
           >
-            🏠 Hub
+            <Home size={14} aria-hidden="true" /> Hub
           </button>
         </div>
       </nav>
@@ -485,7 +474,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
           <div className={`filter-section ${openSections.date ? 'open' : ''}`} id="sec-date">
             <div className="filter-section-header" onClick={() => toggleSection('date')}>
               <span className="filter-section-label">
-                Posted Date
+                <CalendarDays size={14} aria-hidden="true" /> Posted Date
                 {selectedDateFilter !== 'all' && <span className="filter-count show">1</span>}
               </span>
               <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -512,7 +501,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
           <div className={`filter-section ${openSections.location ? 'open' : ''}`} id="sec-location">
             <div className="filter-section-header" onClick={() => toggleSection('location')}>
               <span className="filter-section-label">
-                Location
+                <MapPin size={14} aria-hidden="true" /> Location
                 {selectedLocations.size > 0 && <span className="filter-count show">{selectedLocations.size}</span>}
               </span>
               <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -578,7 +567,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
           <div className={`filter-section ${openSections.roles ? 'open' : ''}`} id="sec-roles">
             <div className="filter-section-header" onClick={() => toggleSection('roles')}>
               <span className="filter-section-label">
-                Role Category
+                <BriefcaseBusiness size={14} aria-hidden="true" /> Role Category
                 {selectedRoles.size > 0 && <span className="filter-count show">{selectedRoles.size}</span>}
               </span>
               <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -652,7 +641,6 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                 id="sortSelect"
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as any)}
-                style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem' }}
               >
                 <option value="date">Latest First</option>
                 <option value="company">Company A–Z</option>
@@ -665,26 +653,26 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
             <div className="active-chips" id="activeChips" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
               {selectedDateFilter !== 'all' && (
                 <div className="chip">
-                  <span>📅 {dateLabels[selectedDateFilter] || selectedDateFilter}</span>
-                  <span className="chip-x" onClick={() => setSelectedDateFilter('all')}>✕</span>
+                  <CalendarDays size={13} aria-hidden="true" /><span>{dateLabels[selectedDateFilter] || selectedDateFilter}</span>
+                  <span className="chip-x" onClick={() => setSelectedDateFilter('all')}><X size={13} aria-label="Remove date filter" /></span>
                 </div>
               )}
               {Array.from(selectedLocations).map(loc => (
                 <div key={loc} className="chip">
-                  <span>📍 {loc}</span>
-                  <span className="chip-x" onClick={() => setSelectedLocations(prev => { const n = new Set(prev); n.delete(loc); return n; })}>✕</span>
+                  <MapPin size={13} aria-hidden="true" /><span>{loc}</span>
+                  <span className="chip-x" onClick={() => setSelectedLocations(prev => { const n = new Set(prev); n.delete(loc); return n; })}><X size={13} aria-label={`Remove ${loc} filter`} /></span>
                 </div>
               ))}
               {Array.from(selectedRoles).map(role => (
                 <div key={role} className="chip">
-                  <span>💼 {role}</span>
-                  <span className="chip-x" onClick={() => setSelectedRoles(prev => { const n = new Set(prev); n.delete(role); return n; })}>✕</span>
+                  <BriefcaseBusiness size={13} aria-hidden="true" /><span>{role}</span>
+                  <span className="chip-x" onClick={() => setSelectedRoles(prev => { const n = new Set(prev); n.delete(role); return n; })}><X size={13} aria-label={`Remove ${role} filter`} /></span>
                 </div>
               ))}
               {searchTerm && (
                 <div className="chip">
-                  <span>🔍 "{searchTerm}"</span>
-                  <span className="chip-x" onClick={() => setSearchTerm('')}>✕</span>
+                  <Search size={13} aria-hidden="true" /><span>"{searchTerm}"</span>
+                  <span className="chip-x" onClick={() => setSearchTerm('')}><X size={13} aria-label="Clear search" /></span>
                 </div>
               )}
             </div>
@@ -715,9 +703,9 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                 const cityLoc = rawLoc.split(',')[0].trim();
 
                 return (
-                  <div key={`${job.company}-${job.title}-${idx}`} className="job-card">
+                  <div key={`${job.company}-${job.title}-${idx}`} className="job-card" style={{ animationDelay: `${(idx % 30) * 0.03}s` }}>
                     <div className="card-top">
-                      <CompanyLogoBox company={job.company} />
+                      <AuthenticLogoBox company={job.company} />
                       <div className="card-info">
                         <div className="company-name">{job.company}</div>
                         <div className="job-title" title={job.title}>{job.title || 'Open Position'}</div>
@@ -726,13 +714,13 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
                     <div className="job-meta">
                       <div className="meta-row">
-                        <span className="meta-badge loc">📍 {cityLoc}</span>
+                        <div className="meta-badge loc"><MapPin size={13} aria-hidden="true" />{cityLoc}</div>
                       </div>
                       <div className="meta-row">
-                        {date && <span className="meta-badge date">📅 {date}</span>}
-                        <span className="meta-badge" style={{ color: '#f1f5f9', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                        {date && <div className="meta-badge date"><CalendarDays size={13} aria-hidden="true" />{date}</div>}
+                        <div className="meta-badge" style={{ color: 'var(--text-main)', borderColor: 'var(--border)' }}>
                           Direct Apply
-                        </span>
+                        </div>
                       </div>
                     </div>
 
@@ -747,11 +735,9 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                           rel="noopener noreferrer"
                           className="apply-btn"
                         >
-                          Apply →
+                          <Send size={13} aria-hidden="true" /> Apply
                         </a>
-                      ) : (
-                        <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Apply on Portal</span>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                 );

@@ -12,21 +12,20 @@ export class JobService {
     others: []
   };
 
-  async initCatalog(): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
+  async initCatalog(onProgress?: (jobs: Job[]) => void): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
     try {
-      const [mRes, scRes, prevRes, rcRes, initRes] = await Promise.allSettled([
+      const [mRes, scRes, prevRes, rcRes] = await Promise.allSettled([
         fetch('/data/index/manifest.json'),
         fetch('/data/index/sidebar_counts.json'),
         fetch('/data/index/latest_preview_100.json'),
-        fetch('/data/index/role_categories.json'),
-        fetch('/data/initial_jobs.json')
+        fetch('/data/index/role_categories.json')
       ]);
 
       if (mRes.status === 'fulfilled' && mRes.value.ok) {
-        this.manifestData = await mRes.value.json();
+        try { this.manifestData = await mRes.value.json(); } catch {}
       }
       if (scRes.status === 'fulfilled' && scRes.value.ok) {
-        this.sidebarCounts = await scRes.value.json();
+        try { this.sidebarCounts = await scRes.value.json(); } catch {}
       }
       if (rcRes.status === 'fulfilled' && rcRes.value.ok) {
         try {
@@ -35,28 +34,40 @@ export class JobService {
         } catch {}
       }
 
-      if (initRes.status === 'fulfilled' && initRes.value.ok) {
-        const fullRows: Job[] = await initRes.value.json();
-        this.ingestJobs(fullRows);
-      } else if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
-        const rows: Job[] = await prevRes.value.json();
-        this.ingestJobs(rows);
+      if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
+        try {
+          const rows: Job[] = await prevRes.value.json();
+          this.ingestJobs(rows);
+          if (onProgress) onProgress(this.getAllJobs());
+        } catch {}
       }
 
-      // Always ensure walkin jobs are ingested
+      // Load walk-ins immediately
       await this.fetchWalkinJobs();
+      if (onProgress) onProgress(this.getAllJobs());
+
+      // Stream full initial_jobs in background without blocking initial render
+      fetch('/data/initial_jobs.json')
+        .then(res => res.ok ? res.json() : [])
+        .then((fullRows: Job[]) => {
+          if (Array.isArray(fullRows) && fullRows.length > 0) {
+            this.ingestJobs(fullRows);
+            if (onProgress) onProgress(this.getAllJobs());
+          }
+        })
+        .catch(err => console.warn('initial_jobs load note:', err));
 
       return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
     } catch (err) {
       console.warn('Error loading initial job preview:', err);
-      return { previewJobs: [], sidebarCounts: null };
+      return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
     }
   }
 
   async fetchWalkinJobs(): Promise<Job[]> {
     try {
-      const res = await fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() =>
-        fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() =>
+      const res = await fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() =>
+        fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() =>
           fetch('/data/scraped_image_walkin_jobs.json?t=' + Date.now())
         )
       );
@@ -71,11 +82,21 @@ export class JobService {
   }
 
   ingestJobs(rows: Job[]): number {
+    if (!Array.isArray(rows)) return 0;
     let added = 0;
     for (const r of rows) {
-      const key = `${(r.title || '').trim().toLowerCase()}|${(r.company || '').trim().toLowerCase()}|${(r.location || '').trim().toLowerCase()}`;
+      if (!r) continue;
+      const compStr = typeof r.company === 'string' ? r.company : (r.company ? String((r.company as any).name || r.company) : 'DIRECT RECRUITER');
+      const titleStr = typeof r.title === 'string' ? r.title : (r.title ? String(r.title) : 'Position');
+      const locStr = typeof r.location === 'string' ? r.location : (r.location ? String(r.location) : 'India');
+
+      r.company = compStr;
+      r.title = titleStr;
+      r.location = locStr;
+
+      const key = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
       if (!this.allJobsMap.has(key)) {
-        r.category = this.classifyRoleCategory(r.title || r.role || '');
+        r.category = this.classifyRoleCategory(titleStr || r.role || '');
         this.allJobsMap.set(key, r);
         added++;
       }
@@ -95,12 +116,10 @@ export class JobService {
   }
 
   classifyRoleCategory(title: string): string {
-    const t = title.toLowerCase();
+    const t = String(title || '').toLowerCase();
     for (const [cat, keywords] of Object.entries(this.roleCategoriesDict)) {
       if (cat === 'others') continue;
-      for (const kw of keywords) {
-        if (t.includes(kw.toLowerCase())) return cat;
-      }
+      if (keywords.some(k => t.includes(k))) return cat;
     }
     return 'others';
   }

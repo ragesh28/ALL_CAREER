@@ -89,6 +89,7 @@ export const DOMAIN_MAP: Record<string, string> = {
   // --- AUTOMOTIVE / AEROSPACE / HARDWARE ---
   "Tesla": "tesla.com", "Siemens": "siemens.com", "Philips": "philips.com",
   "Honeywell": "honeywell.com", "Schneider Electric": "se.com", "ABB": "abb.com",
+  "Bosch": "bosch.com", "Robert Bosch": "bosch.com", "BOSCH": "bosch.com",
   "General Electric": "ge.com", "GE": "ge.com", "Ford": "ford.com", "GM": "gm.com",
   "Mercedes-Benz": "mercedes-benz.com", "BMW": "bmw.com", "Audi": "audi.com",
   "Boeing": "boeing.com", "Airbus": "airbus.com", "SpaceX": "spacex.com"
@@ -167,3 +168,52 @@ export function getCompanyLogo(name: string): LogoData {
 }
 
 export const getCompanyLogoData = getCompanyLogo;
+
+export function formatAuthenticDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  const clean = String(dateStr).replace(/[^a-zA-Z0-9\s-:,]/g, '').trim();
+  if (!clean || clean.toLowerCase() === 'today') return 'Today';
+  if (clean.toLowerCase() === 'yesterday') return 'Yesterday';
+
+  const d = new Date(clean);
+  if (isNaN(d.getTime())) return clean;
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffDays = Math.floor(diffMs / 86400000);
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays > 1 && diffDays <= 7) return `${diffDays} days ago`;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+/** Walk-in dates are scheduled events, so they should never use relative labels. */
+export function formatWalkinDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  const clean = String(dateStr).replace(/[^a-zA-Z0-9\s,/-]/g, '').trim();
+  if (!clean) return '';
+
+  const hasExplicitYear = /\b(?:19|20)\d{2}\b/.test(clean);
+  const parsed = hasExplicitYear ? new Date(clean) : new Date('invalid');
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  const monthMatch = clean.match(/\b([a-z]{3,9})\s+(\d{1,2})(?:\s*,?\s*(\d{4}))?\b/i);
+  if (monthMatch) {
+    const fallbackYear = new Date().getFullYear();
+    const monthDate = new Date(`${monthMatch[1]} ${monthMatch[2]}, ${monthMatch[3] || fallbackYear}`);
+    if (!Number.isNaN(monthDate.getTime())) {
+      return monthDate.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+  }
+
+  return clean;
+}

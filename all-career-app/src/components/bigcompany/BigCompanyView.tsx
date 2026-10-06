@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Building2, MapPin, SlidersHorizontal } from 'lucide-react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { CompanyCard } from './CompanyCard';
 import { bigCompaniesData } from '../../data/bigCompaniesData';
@@ -15,7 +16,7 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
   const [sortBy, setSortBy] = useState('default');
 
   const filteredCompanies = useMemo(() => {
-    return bigCompaniesData.filter(c => {
+    const companies = bigCompaniesData.filter(c => {
       if (searchTerm) {
         const term = searchTerm.toLowerCase();
         const matchName = c.name.toLowerCase().includes(term);
@@ -32,6 +33,12 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
       }
 
       return true;
+    });
+
+    return [...companies].sort((a, b) => {
+      if (sortBy === 'name') return a.name.localeCompare(b.name);
+      if (sortBy === 'salary') return parseFloat(b.salary.replace(/[^0-9.]/g, '')) - parseFloat(a.salary.replace(/[^0-9.]/g, ''));
+      return 0;
     });
   }, [searchTerm, locationFilter, typeFilter, sortBy]);
 
@@ -57,30 +64,39 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
           />
 
           {/* Location Select */}
-          <select value={locationFilter} onChange={e => setLocationFilter(e.target.value)}>
+          <label className="directory-filter-control">
+            <MapPin size={14} aria-hidden="true" />
+            <select value={locationFilter} onChange={e => setLocationFilter(e.target.value)} aria-label="Filter by location">
             <option value="all">Location: All</option>
             <option value="bengaluru">Bengaluru</option>
             <option value="chennai">Chennai</option>
             <option value="remote">Remote</option>
             <option value="pan-india">Pan-India</option>
-          </select>
+            </select>
+          </label>
 
           {/* Type Select */}
-          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+          <label className="directory-filter-control">
+            <Building2 size={14} aria-hidden="true" />
+            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Filter by company type">
             <option value="all">Type: All</option>
             <option value="product">Product</option>
             <option value="fintech">Fintech</option>
             <option value="saas">SaaS</option>
             <option value="deeptech">DeepTech</option>
             <option value="service">Service</option>
-          </select>
+            </select>
+          </label>
 
           {/* Sort Select */}
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
+          <label className="directory-filter-control">
+            <SlidersHorizontal size={14} aria-hidden="true" />
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)} aria-label="Sort companies">
             <option value="default">Sort: Default</option>
             <option value="salary">Salary: High to Low</option>
             <option value="name">Company Name</option>
-          </select>
+            </select>
+          </label>
 
           {/* Count Badge */}
           <div className="glass-count-badge">

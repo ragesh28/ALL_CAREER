@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Home } from 'lucide-react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
 import { PracticeContent } from './PracticeContent';
@@ -75,7 +76,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateT
           className="btn-hub-nav"
           style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', borderColor: 'rgba(59, 130, 246, 0.3)' }}
         >
-          🏠 Hub
+          <Home size={14} aria-hidden="true" /> Hub
         </button>
       </div>
 
