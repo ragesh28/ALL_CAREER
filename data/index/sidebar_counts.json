@@ -1,5 +1,5 @@
 {
-  "total_jobs": 952581,
+  "total_jobs": 952589,
   "sources": {
     "naukri": 328953,
     "linkedin": 240754,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 632,
-    "telegram_message": 756,
+    "telegram_post": 639,
+    "telegram_message": 757,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,13 +245,13 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 202926,
-    "mumbai": 124222,
-    "delhi": 101650,
-    "chennai": 102344,
-    "hyderabad": 91273,
+    "bangalore": 202928,
+    "mumbai": 124223,
+    "delhi": 101651,
+    "chennai": 102345,
+    "hyderabad": 91275,
     "pune": 75137,
-    "noida": 46649,
+    "noida": 46650,
     "ahmedabad": 37870,
     "kolkata": 32504,
     "all_india": 23776,
@@ -759,5 +759,5 @@
     "mundka_industrial": 1,
     "united_arab_emirates": 2
   },
-  "generated_at": "2026-10-07T15:54:47.993616"
+  "generated_at": "2026-10-07T16:05:57.718700"
 }
