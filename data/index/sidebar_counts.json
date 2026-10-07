@@ -1,5 +1,5 @@
 {
-  "total_jobs": 951385,
+  "total_jobs": 951396,
   "sources": {
     "naukri": 328953,
     "linkedin": 237209,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 639,
-    "telegram_message": 757,
+    "telegram_message": 768,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,7 +245,7 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 203222,
+    "bangalore": 203223,
     "mumbai": 124199,
     "delhi": 101564,
     "chennai": 102222,
@@ -254,7 +254,7 @@
     "noida": 46638,
     "ahmedabad": 37712,
     "kolkata": 32361,
-    "all_india": 23776,
+    "all_india": 23786,
     "coimbatore": 19062,
     "kochi": 14710,
     "remote": 8770,
@@ -759,5 +759,5 @@
     "mundka_industrial": 1,
     "tikamgarh": 9
   },
-  "generated_at": "2026-10-07T17:05:25.619423"
+  "generated_at": "2026-10-07T21:27:43.765912"
 }
