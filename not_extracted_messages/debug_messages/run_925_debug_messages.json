@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "925",
+  "workflow_run_id": "37809938508",
+  "timestamp": "2026-10-08T17:02:21.817366",
+  "runtime_minutes": 21.72,
+  "messages_processed": 83,
+  "new_jobs_stored": 18,
+  "skipped_jobs_count": 55,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "Internshipsworld",
+      "msg_id": 6259,
+      "text": "𝗧𝗢𝗣 𝗙𝗥𝗘𝗘 𝗖𝗢𝗨𝗥𝗦𝗘𝗦 𝗧𝗢 𝗕𝗢𝗢𝗦𝗧 𝗬𝗢𝗨𝗥 𝗦𝗞𝗜𝗟𝗟𝗦 𝗜𝗡 𝟮𝟬𝟮𝟲! \n\nExplore FREE online learning resources to develop in-demand skills and improve your career opportunities!\n\n 🎓 Why Explore These Courses?\n✅ Learn valuable professional skills\n✅ Improve your resume\n✅ Build practical knowledge\n✅ Learn at your own pace\n\n 𝗘𝘅𝗽𝗹𝗼𝗿𝗲 𝗙𝗥𝗘𝗘 𝗖𝗼𝘂𝗿𝘀𝗲𝘀 𝗛𝗲𝗿𝗲👇\n\nhttps://pdlink.in/3VBdt6V\n\n💡 Learn New Skills → Build Confidence → Unlock Career Opportunities!\nFREECOURSES\nTO BOOST YOUR SKILLS IN 2O26\nLearn In-Demand Skills | Get Certified | Build a Better Career\nGoogle\nMicrosoft\ncoursera\nüdemy\nGoogle\nMicrosoft\nCoursera\nUdemy\nCareer Certificates\nLearn\naws\nLinkedin\nedx\nIBM\nLearning\nAWS Training\nIBM SkillsBuild\nand Certification\nLEARN\nGROW\nData Science\nACHIEVE\nArtificial Intelligence\nWeb Development\nLearn\nGet\nImprove\nBoost\nactical Skills\nCertificates\nYour Resume\nCareer Opportunities",
+      "timestamp": "2026-10-08T12:15:06+00:00"
+    }
+  ]
+}

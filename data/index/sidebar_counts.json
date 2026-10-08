@@ -1,5 +1,5 @@
 {
-  "total_jobs": 974119,
+  "total_jobs": 974137,
   "sources": {
     "naukri": 335902,
     "linkedin": 246654,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 715,
-    "telegram_message": 794,
+    "telegram_post": 724,
+    "telegram_message": 803,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,8 +245,8 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 207131,
-    "mumbai": 127220,
+    "bangalore": 207134,
+    "mumbai": 127221,
     "delhi": 104004,
     "chennai": 104641,
     "hyderabad": 93311,
@@ -254,13 +254,13 @@
     "noida": 47705,
     "ahmedabad": 38970,
     "kolkata": 33313,
-    "all_india": 23805,
-    "coimbatore": 19646,
+    "all_india": 23808,
+    "coimbatore": 19649,
     "kochi": 15273,
-    "remote": 9022,
+    "remote": 9023,
     "jaipur": 6916,
     "maharashtra": 9137,
-    "indore": 5018,
+    "indore": 5019,
     "chandigarh": 5283,
     "kerala": 3516,
     "rajasthan": 2381,
@@ -362,7 +362,7 @@
     "kotputli": 1,
     "sharjah": 1,
     "jabalpur": 11,
-    "pan_india": 16,
+    "pan_india": 17,
     "mangalore": 54,
     "athani": 1,
     "zirakpur": 34,
@@ -724,7 +724,7 @@
     "online": 1,
     "as_per_infosys_recruitment_allocation": 1,
     "permanent_wah": 1,
-    "multiple_locations": 2,
+    "multiple_locations": 6,
     "gandhidham": 1,
     "dera_bassi": 1,
     "bharuchdahej": 1,
@@ -781,7 +781,8 @@
     "rajanagaram": 1,
     "malad": 1,
     "lonavala": 1,
-    "ranjangaon": 1
+    "ranjangaon": 1,
+    "mallasandra_near_jalahalli": 1
   },
-  "generated_at": "2026-10-08T16:20:01.856563"
+  "generated_at": "2026-10-08T17:02:43.897945"
 }
