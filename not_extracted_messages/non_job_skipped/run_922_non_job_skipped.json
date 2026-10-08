@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "922",
+  "workflow_run_id": "37715823235",
+  "timestamp": "2026-10-08T02:10:49.957057",
+  "runtime_minutes": 3.59,
+  "messages_processed": 11,
+  "new_jobs_stored": 6,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18883,
+      "text": "It takes:\nDiscipline.\nRoutine.\nEducation.\nAction.\nMentality.\nSacrifices.\nTo turn dreams into\nreality.",
+      "timestamp": "2026-10-08T01:45:09+00:00"
+    }
+  ]
+}

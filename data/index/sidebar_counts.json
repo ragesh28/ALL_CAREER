@@ -1,5 +1,5 @@
 {
-  "total_jobs": 952671,
+  "total_jobs": 952677,
   "sources": {
     "naukri": 328953,
     "linkedin": 237209,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 639,
-    "telegram_message": 768,
+    "telegram_post": 644,
+    "telegram_message": 769,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,16 +245,16 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 203540,
+    "bangalore": 203541,
     "mumbai": 124518,
     "delhi": 101564,
     "chennai": 102540,
-    "hyderabad": 91409,
+    "hyderabad": 91410,
     "pune": 74989,
     "noida": 46638,
     "ahmedabad": 37712,
     "kolkata": 32361,
-    "all_india": 23786,
+    "all_india": 23787,
     "coimbatore": 19062,
     "kochi": 14710,
     "remote": 8770,
@@ -362,7 +362,7 @@
     "kotputli": 1,
     "sharjah": 1,
     "jabalpur": 11,
-    "pan_india": 13,
+    "pan_india": 14,
     "mangalore": 52,
     "athani": 1,
     "zirakpur": 34,
@@ -461,7 +461,7 @@
     "bilaspur": 1,
     "tarikere": 1,
     "belgaum": 5,
-    "tumkur": 7,
+    "tumkur": 9,
     "belagavi": 10,
     "shivamogga": 8,
     "sagara": 2,
@@ -759,5 +759,5 @@
     "mundka_industrial": 1,
     "tikamgarh": 9
   },
-  "generated_at": "2026-10-08T01:20:53.826640"
+  "generated_at": "2026-10-08T02:11:10.117155"
 }
