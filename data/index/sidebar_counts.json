@@ -1,5 +1,5 @@
 {
-  "total_jobs": 974137,
+  "total_jobs": 974142,
   "sources": {
     "naukri": 335902,
     "linkedin": 246654,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 724,
-    "telegram_message": 803,
+    "telegram_message": 808,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,7 +245,7 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 207134,
+    "bangalore": 207135,
     "mumbai": 127221,
     "delhi": 104004,
     "chennai": 104641,
@@ -254,7 +254,7 @@
     "noida": 47705,
     "ahmedabad": 38970,
     "kolkata": 33313,
-    "all_india": 23808,
+    "all_india": 23812,
     "coimbatore": 19649,
     "kochi": 15273,
     "remote": 9023,
@@ -784,5 +784,5 @@
     "ranjangaon": 1,
     "mallasandra_near_jalahalli": 1
   },
-  "generated_at": "2026-10-08T17:02:43.897945"
+  "generated_at": "2026-10-08T22:18:32.913003"
 }
