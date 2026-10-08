@@ -1,5 +1,5 @@
 {
-  "total_jobs": 951396,
+  "total_jobs": 952671,
   "sources": {
     "naukri": 328953,
     "linkedin": 237209,
@@ -8,7 +8,7 @@
     "internshala": 85683,
     "shine": 47523,
     "workindia": 15877,
-    "foundit": 22347,
+    "foundit": 23622,
     "apna": 7409,
     "hirist": 11079,
     "glassdoor": 4831,
@@ -245,11 +245,11 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 203223,
-    "mumbai": 124199,
+    "bangalore": 203540,
+    "mumbai": 124518,
     "delhi": 101564,
-    "chennai": 102222,
-    "hyderabad": 91088,
+    "chennai": 102540,
+    "hyderabad": 91409,
     "pune": 74989,
     "noida": 46638,
     "ahmedabad": 37712,
@@ -759,5 +759,5 @@
     "mundka_industrial": 1,
     "tikamgarh": 9
   },
-  "generated_at": "2026-10-07T21:27:43.765912"
+  "generated_at": "2026-10-08T01:20:53.826640"
 }
