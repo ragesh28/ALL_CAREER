@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Home } from 'lucide-react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
 import { PracticeContent } from './PracticeContent';
@@ -36,7 +35,7 @@ const DEFAULT_COMPANIES: CompanyEntry[] = [
 ];
 
 export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateToJobs }) => {
-  const [selectedMode, setSelectedMode] = useState<string>('welcome');
+  const [selectedMode, setSelectedMode] = useState<string>('all_questions');
   const [selectedCompany, setSelectedCompany] = useState<string>('');
   const [companies, setCompanies] = useState<CompanyEntry[]>(DEFAULT_COMPANIES);
 
@@ -68,17 +67,6 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateT
     <div className="practice-page">
       {/* Top-left Global Logo Pill */}
       <GlobalLogoPill onGoHome={onGoHub} />
-
-      {/* Hub button at top-right */}
-      <div style={{ position: 'absolute', top: '20px', right: '30px', zIndex: 1000 }}>
-        <button 
-          onClick={onGoHub}
-          className="btn-hub-nav"
-          style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#60a5fa', borderColor: 'rgba(59, 130, 246, 0.3)' }}
-        >
-          <Home size={14} aria-hidden="true" /> Hub
-        </button>
-      </div>
 
       <div className="practice-layout">
         <PracticeSidebar

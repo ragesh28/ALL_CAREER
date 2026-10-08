@@ -63,13 +63,6 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
           <span className="count-num">{totalJobsCount.toLocaleString()}</span>
           <span>jobs</span>
         </div>
-
-        {hasActiveFilters && (
-          <button className="clear-all-btn" onClick={onClearAll} title="Reset active filters">
-            <RotateCcw size={14} aria-hidden="true" />
-            Reset
-          </button>
-        )}
       </div>
     </header>
   );

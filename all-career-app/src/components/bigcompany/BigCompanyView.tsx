@@ -1,13 +1,37 @@
 import React, { useState, useMemo } from 'react';
-import { Building2, MapPin, SlidersHorizontal } from 'lucide-react';
+import { Building2, MapPin, Search, SlidersHorizontal } from 'lucide-react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { CompanyCard } from './CompanyCard';
+import { CustomDropdown, DropdownOption } from '../common/CustomDropdown';
 import { bigCompaniesData } from '../../data/bigCompaniesData';
 
 interface BigCompanyViewProps {
   onGoHub: () => void;
   title?: string;
 }
+
+const LOCATION_OPTIONS: DropdownOption[] = [
+  { value: 'all', label: 'All Locations' },
+  { value: 'bengaluru', label: 'Bengaluru' },
+  { value: 'chennai', label: 'Chennai' },
+  { value: 'remote', label: 'Remote' },
+  { value: 'pan-india', label: 'Pan-India' },
+];
+
+const TYPE_OPTIONS: DropdownOption[] = [
+  { value: 'all', label: 'All Types' },
+  { value: 'product', label: 'Product' },
+  { value: 'fintech', label: 'Fintech' },
+  { value: 'saas', label: 'SaaS' },
+  { value: 'deeptech', label: 'DeepTech' },
+  { value: 'service', label: 'Service' },
+];
+
+const SORT_OPTIONS: DropdownOption[] = [
+  { value: 'default', label: 'Default' },
+  { value: 'salary', label: 'Salary: High to Low' },
+  { value: 'name', label: 'Company Name' },
+];
 
 export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title = 'Big Company Name List' }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,65 +76,61 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
         <h1 onClick={onGoHub}>{title}</h1>
       </div>
 
-      {/* Screenshot 5: Sticky Glass Bar */}
+      {/* Sticky Glass Bar with Spacious Responsive Controls */}
       <div className="sticky-container">
         <div className="glass-bar">
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+          {/* Search Input with Integrated Icon */}
+          <div className="directory-search-wrapper">
+            <Search size={15} className="directory-search-icon" aria-hidden="true" />
+            <input
+              type="text"
+              placeholder="Search companies, roles..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              aria-label="Search companies"
+            />
+          </div>
+
+          {/* Location Custom Dropdown */}
+          <CustomDropdown
+            id="filter-location"
+            className="filter-location"
+            value={locationFilter}
+            onChange={setLocationFilter}
+            options={LOCATION_OPTIONS}
+            icon={<MapPin size={14} className="control-icon" aria-hidden="true" />}
+            prefix="Location"
+            ariaLabel="Filter by location"
           />
 
-          {/* Location Select */}
-          <label className="directory-filter-control">
-            <MapPin size={14} aria-hidden="true" />
-            <select value={locationFilter} onChange={e => setLocationFilter(e.target.value)} aria-label="Filter by location">
-            <option value="all">Location: All</option>
-            <option value="bengaluru">Bengaluru</option>
-            <option value="chennai">Chennai</option>
-            <option value="remote">Remote</option>
-            <option value="pan-india">Pan-India</option>
-            </select>
-          </label>
+          {/* Type Custom Dropdown */}
+          <CustomDropdown
+            id="filter-type"
+            className="filter-type"
+            value={typeFilter}
+            onChange={setTypeFilter}
+            options={TYPE_OPTIONS}
+            icon={<Building2 size={14} className="control-icon" aria-hidden="true" />}
+            prefix="Type"
+            ariaLabel="Filter by company type"
+          />
 
-          {/* Type Select */}
-          <label className="directory-filter-control">
-            <Building2 size={14} aria-hidden="true" />
-            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Filter by company type">
-            <option value="all">Type: All</option>
-            <option value="product">Product</option>
-            <option value="fintech">Fintech</option>
-            <option value="saas">SaaS</option>
-            <option value="deeptech">DeepTech</option>
-            <option value="service">Service</option>
-            </select>
-          </label>
-
-          {/* Sort Select */}
-          <label className="directory-filter-control">
-            <SlidersHorizontal size={14} aria-hidden="true" />
-            <select value={sortBy} onChange={e => setSortBy(e.target.value)} aria-label="Sort companies">
-            <option value="default">Sort: Default</option>
-            <option value="salary">Salary: High to Low</option>
-            <option value="name">Company Name</option>
-            </select>
-          </label>
+          {/* Sort Custom Dropdown */}
+          <CustomDropdown
+            id="filter-sort"
+            className="filter-sort"
+            value={sortBy}
+            onChange={setSortBy}
+            options={SORT_OPTIONS}
+            icon={<SlidersHorizontal size={14} className="control-icon" aria-hidden="true" />}
+            prefix="Sort"
+            ariaLabel="Sort companies"
+          />
 
           {/* Count Badge */}
           <div className="glass-count-badge">
             {filteredCompanies.length}
           </div>
-
-          {/* Hub Button */}
-          <button 
-            onClick={onGoHub}
-            className="btn-hub-nav"
-            style={{ borderRadius: '20px', padding: '8px 16px' }}
-          >
-            Hub
-          </button>
         </div>
       </div>
 

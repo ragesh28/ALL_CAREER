@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Comcast Iconic 6-Color Peacock -->
+  <g transform="translate(50, 48)">
+    <!-- Yellow Feather -->
+    <path d="M0,0 C-12,-16 -24,-24 -36,-14 C-44,-6 -40,10 -22,12 Z" fill="#FDB813"/>
+    <!-- Orange Feather -->
+    <path d="M0,0 C-8,-22 -16,-34 -24,-36 C-32,-38 -36,-22 -20,-10 Z" fill="#F37021"/>
+    <!-- Red Feather -->
+    <path d="M0,0 C-2,-26 -4,-40 -10,-44 C-16,-48 -22,-36 -10,-18 Z" fill="#ED1C24"/>
+    <!-- Purple Feather -->
+    <path d="M0,0 C2,-26 4,-40 10,-44 C16,-48 22,-36 10,-18 Z" fill="#90278E"/>
+    <!-- Blue Feather -->
+    <path d="M0,0 C8,-22 16,-34 24,-36 C32,-38 36,-22 20,-10 Z" fill="#0072BC"/>
+    <!-- Green Feather -->
+    <path d="M0,0 C12,-16 24,-24 36,-14 C44,-6 40,10 22,12 Z" fill="#39B54A"/>
+    <!-- Peacock Body White Negative Space Accent -->
+    <circle cx="0" cy="-6" r="4" fill="#ffffff"/>
+    <path d="M0,-2 L-2,14 L2,14 Z" fill="#ffffff"/>
+  </g>
+  <!-- COMCAST Wordmark -->
+  <text x="50" y="88" font-family="'Outfit', 'Plus Jakarta Sans', Arial, sans-serif" font-size="16" font-weight="900" fill="#0f172a" text-anchor="middle" letter-spacing="1.5">COMCAST</text>
+</svg>

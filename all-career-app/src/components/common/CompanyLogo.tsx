@@ -8,20 +8,27 @@ interface CompanyLogoProps {
   style?: React.CSSProperties;
 }
 
+const logoStageCache = new Map<string, number>();
+
 export const CompanyLogo: React.FC<CompanyLogoProps> = ({
   name,
   size = 'sm',
   className = '',
   style = {}
 }) => {
-  // Stage 0: Clearbit -> Stage 1: Google Favicon (128px) -> Stage 2: DuckDuckGo -> Stage 3: Monogram
-  const [stage, setStage] = useState<number>(0);
   const logo = getCompanyLogoData(name);
+  // Stage 0: Unavatar -> Stage 1: DuckDuckGo -> Stage 2: Google -> Stage 3: Clearbit -> Stage 4: Monogram
+  const [stage, setStage] = useState<number>(() => logoStageCache.get(name) ?? 0);
 
-  // Reset stage whenever company name changes
+  // Sync stage if name prop changes
   useEffect(() => {
-    setStage(0);
+    setStage(logoStageCache.get(name) ?? 0);
   }, [name]);
+
+  const handleStageError = (nextStage: number) => {
+    logoStageCache.set(name, nextStage);
+    setStage(nextStage);
+  };
 
   // Compute pixel dimensions
   let dim = 20;
@@ -59,26 +66,50 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
         ...style
       }}
     >
-      {stage === 0 ? (
+      {logo.local ? (
         <img
-          src={logo.clearbit}
+          src={logo.local}
           alt={name}
+          loading="lazy"
+          decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => setStage(1)}
+          onError={() => handleStageError(4)}
+        />
+      ) : stage === 0 ? (
+        <img
+          src={logo.unavatar}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
+          onError={() => handleStageError(1)}
         />
       ) : stage === 1 ? (
         <img
-          src={logo.google}
+          src={logo.duckduckgo}
           alt={name}
+          loading="lazy"
+          decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
-          onError={() => setStage(2)}
+          onError={() => handleStageError(2)}
         />
       ) : stage === 2 ? (
         <img
-          src={logo.duckduckgo}
+          src={logo.google}
           alt={name}
+          loading="lazy"
+          decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
-          onError={() => setStage(3)}
+          onError={() => handleStageError(3)}
+        />
+      ) : stage === 3 ? (
+        <img
+          src={logo.clearbit}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
+          onError={() => handleStageError(4)}
         />
       ) : (
         <div

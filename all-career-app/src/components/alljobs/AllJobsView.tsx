@@ -583,10 +583,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           <CategoryCountPills
             pageCounts={pageCategoryCounts}
             totalOnPage={currentJobs.length}
-            sortBy={sortBy}
-            onSortChange={setSortBy}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
+            hasActiveFilters={hasActiveFilters}
+            onClearAll={clearAllFilters}
           />
 
           {/* Cards Grid */}

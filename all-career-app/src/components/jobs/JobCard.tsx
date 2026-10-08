@@ -99,6 +99,27 @@ export const JobCard: React.FC<JobCardProps> = ({ job, index = 0 }) => {
         <div className="logo-box">
           {logoStage === 0 ? (
             <img 
+              src={logo.local || logo.unavatar} 
+              alt={job.company} 
+              className="company-logo" 
+              onError={handleLogoError} 
+            />
+          ) : logoStage === 1 ? (
+            <img 
+              src={logo.duckduckgo} 
+              alt={job.company} 
+              className="company-logo" 
+              onError={handleLogoError} 
+            />
+          ) : logoStage === 2 ? (
+            <img 
+              src={logo.google} 
+              alt={job.company} 
+              className="company-logo" 
+              onError={handleLogoError} 
+            />
+          ) : logoStage === 3 ? (
+            <img 
               src={logo.clearbit} 
               alt={job.company} 
               className="company-logo" 

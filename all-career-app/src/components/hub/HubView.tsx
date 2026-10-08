@@ -27,7 +27,14 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
     const grid = document.querySelector('.grid-panel') as HTMLElement;
     const cards = Array.from(document.querySelectorAll('.grid-panel .menu-card')) as HTMLElement[];
 
-    if (!stage || !hero || !grid || !cards.length) return;
+    let handleHeroClick: (() => void) | null = null;
+    let heroEl: HTMLElement | null = null;
+
+    if (!stage || !hero || !grid || !cards.length) {
+      return () => {
+        document.documentElement.classList.remove('scroll-motion');
+      };
+    }
 
     if (window.innerWidth < 640) {
       document.documentElement.classList.remove('scroll-motion');
@@ -46,7 +53,10 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
             overwrite: true
           })
       });
-      return;
+      return () => {
+        document.documentElement.classList.remove('scroll-motion');
+        ScrollTrigger.getAll().forEach((st: any) => st.kill());
+      };
     }
 
     // Desktop staggered layout
@@ -99,7 +109,7 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
     timeline.call(syncLayerInteractivity, [], 0.85);
 
     // Hero click to scrub smoothly down
-    const handleHeroClick = () => {
+    handleHeroClick = () => {
       const obj = { y: window.scrollY };
       gsap.to(obj, {
         y: 900,

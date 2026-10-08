@@ -155,7 +155,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
   const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
   const [sortBy, setSortBy] = useState<'date' | 'company'>('date');
   const [currentPage, setCurrentPage] = useState(1);
-  const JOBS_PER_PAGE = 60;
+  const JOBS_PER_PAGE = 50;
 
   // Search inside filter sections
   const [locSearch, setLocSearch] = useState('');
@@ -440,20 +440,6 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
           <div className="topnav-count">
             Showing <span style={{ color: '#34d399', fontWeight: 800 }}>{filteredJobs.length.toLocaleString()}</span> jobs
           </div>
-
-          {hasActiveFilters && (
-            <button className="clear-all-btn visible" onClick={clearAllFilters}>
-              <RotateCcw size={14} aria-hidden="true" /> Reset
-            </button>
-          )}
-
-          <button
-            onClick={onGoHub}
-            className="btn-hub-nav"
-            style={{ borderRadius: '20px', padding: '6px 14px', fontSize: '0.82rem' }}
-          >
-            <Home size={14} aria-hidden="true" /> Hub
-          </button>
         </div>
       </nav>
 
@@ -632,21 +618,20 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
         {/* ══ MAIN CONTENT ══ */}
         <main className="main-content" style={{ flex: 1, padding: '24px 32px', minWidth: 0 }}>
-          {/* Top Sort Bar */}
-          <div className="sort-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="sort-label" style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Sort by:</span>
-              <select
-                className="sort-select"
-                id="sortSelect"
-                value={sortBy}
-                onChange={e => setSortBy(e.target.value as any)}
+          {/* Reset Button (replaces Sort dropdown, shown only when any filter is active) */}
+          {hasActiveFilters && (
+            <div className="filter-reset-bar" style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+              <button
+                type="button"
+                className="reset-filter-action-btn"
+                onClick={clearAllFilters}
+                title="Reset all active filters"
               >
-                <option value="date">Latest First</option>
-                <option value="company">Company A–Z</option>
-              </select>
+                <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
+                <span>Reset Filters</span>
+              </button>
             </div>
-          </div>
+          )}
 
           {/* Active Filter Chips */}
           {hasActiveFilters && (

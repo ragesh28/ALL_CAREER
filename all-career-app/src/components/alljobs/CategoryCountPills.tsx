@@ -1,4 +1,5 @@
 import React from 'react';
+import { RotateCcw } from 'lucide-react';
 
 interface CategoryCountPillsProps {
   pageCounts: {
@@ -11,33 +12,38 @@ interface CategoryCountPillsProps {
     others: number;
   };
   totalOnPage: number;
-  sortBy: string;
-  onSortChange: (sort: string) => void;
   selectedCategory: string;
   onSelectCategory: (cat: string) => void;
+  hasActiveFilters?: boolean;
+  onClearAll?: () => void;
 }
 
 export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
   pageCounts,
   totalOnPage,
-  sortBy,
-  onSortChange,
   selectedCategory,
-  onSelectCategory
+  onSelectCategory,
+  hasActiveFilters,
+  onClearAll
 }) => {
   return (
     <div className="sort-category-bar">
-      {/* Sort Select */}
-      <div className="sort-select-box">
-        <span>Sort by:</span>
-        <select value={sortBy} onChange={e => onSortChange(e.target.value)}>
-          <option value="latest">Latest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="company">Company Name</option>
-        </select>
-      </div>
+      {/* Reset button in place of Sort dropdown (shown only when active filters exist) */}
+      {hasActiveFilters && onClearAll ? (
+        <button
+          type="button"
+          className="reset-filter-action-btn"
+          onClick={onClearAll}
+          title="Reset all active filters"
+        >
+          <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
+          <span>Reset Filters</span>
+        </button>
+      ) : (
+        <div style={{ minWidth: 0 }} />
+      )}
 
-      {/* This Page (100) and Category Pills */}
+      {/* This Page (50) and Category Pills */}
       <div className="page-category-pills">
         <span style={{ color: '#7c8db5', fontWeight: 600 }}>This Page ({totalOnPage}):</span>
 

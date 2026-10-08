@@ -18,7 +18,7 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
     <div className="logo-box">
       {stage === 0 && (
         <img
-          src={logo.clearbit}
+          src={logo.local || logo.unavatar}
           alt={company}
           className="company-logo"
           loading="lazy"
@@ -28,7 +28,7 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
       )}
       {stage === 1 && (
         <img
-          src={logo.google}
+          src={logo.duckduckgo}
           alt={company}
           className="company-logo"
           loading="lazy"
@@ -38,7 +38,7 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
       )}
       {stage === 2 && (
         <img
-          src={logo.duckduckgo}
+          src={logo.google}
           alt={company}
           className="company-logo"
           loading="lazy"
@@ -46,7 +46,17 @@ export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => 
           onError={() => setStage(3)}
         />
       )}
-      {stage >= 3 && (
+      {stage === 3 && (
+        <img
+          src={logo.clearbit}
+          alt={company}
+          className="company-logo"
+          loading="lazy"
+          decoding="async"
+          onError={() => setStage(4)}
+        />
+      )}
+      {stage >= 4 && (
         <div className="logo-fallback" style={{ display: 'flex' }}>
           {logo.initial}
         </div>

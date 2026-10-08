@@ -92,13 +92,54 @@ export const DOMAIN_MAP: Record<string, string> = {
   "Bosch": "bosch.com", "Robert Bosch": "bosch.com", "BOSCH": "bosch.com",
   "General Electric": "ge.com", "GE": "ge.com", "Ford": "ford.com", "GM": "gm.com",
   "Mercedes-Benz": "mercedes-benz.com", "BMW": "bmw.com", "Audi": "audi.com",
-  "Boeing": "boeing.com", "Airbus": "airbus.com", "SpaceX": "spacex.com"
+  "Boeing": "boeing.com", "Airbus": "airbus.com", "SpaceX": "spacex.com",
+
+  // --- BIG COMPANY NAME LIST & CHENNAI/PAN-INDIA HUBS ---
+  "TCS (Prime/Digital)": "tcs.com",
+  "Infosys (SP/DSE)": "infosys.com",
+  "Samsung R&D": "samsung.com",
+  "KLA Tencor": "kla.com", "KLA": "kla.com",
+  "Rocketlane": "rocketlane.com",
+  "Mad Street Den": "madstreetden.com",
+  "Uniphore": "uniphore.com",
+  "Yubi": "go-yubi.com", "CredAvenue": "go-yubi.com",
+  "Kissflow": "kissflow.com",
+  "Walmart Global Tech": "walmart.com",
+  "LatentView Analytics": "latentview.com", "LatentView": "latentview.com",
+  "Tiger Analytics": "tigeranalytics.com",
+  "Renault Nissan": "renaultgroup.com", "Renault": "renault.com", "Nissan": "nissan-global.com",
+  "Ford Motors": "ford.com", "Ford Motor Company": "ford.com",
+  "Verizon": "verizon.com",
+  "Comcast": "corporate.comcast.com", "Comcast Corporation": "corporate.comcast.com",
+  "Fireflies.ai": "fireflies.ai", "Fireflies": "fireflies.ai",
+  "Automattic": "automattic.com",
+  "Turing": "turing.com",
+  "LTIMindtree Service": "ltimindtree.com",
+  "Virtusa": "virtusa.com",
+  "Mr. Cooper": "mrcoopergroup.com", "Mr Cooper": "mrcoopergroup.com",
+  "Caterpillar": "caterpillar.com",
+  "Athenahealth": "athenahealth.com",
+  "Temenos": "temenos.com",
+  "Kaar Tech": "kaartech.com", "Kaar Technologies": "kaartech.com",
+  "Ramco Systems": "ramco.com", "Ramco": "ramco.com",
+  "Intellect Design": "intellectdesign.com", "Intellect Design Arena": "intellectdesign.com",
+  "Sify Tech": "sifytechnologies.com", "Sify": "sifytechnologies.com",
+  "Tata Elxsi": "tataelxsi.com",
+  "InMobi / Glance": "inmobi.com",
+  "Zeta Suite": "zeta.tech", "Zeta": "zeta.tech"
+};
+
+export const LOCAL_COMPANY_LOGOS: Record<string, string> = {
+  "comcast": "/logos/companies/comcast.svg",
+  "comcast corporation": "/logos/companies/comcast.svg"
 };
 
 export interface LogoData {
-  clearbit: string;
-  google: string;
+  local?: string;
+  unavatar: string;
   duckduckgo: string;
+  google: string;
+  clearbit: string;
   initial: string;
   domain: string;
 }
@@ -239,16 +280,35 @@ export function getCompanyLogo(name: string): LogoData {
     }
   }
 
+  // 2b. Word boundary matching (e.g. "TCS Prime" -> "TCS", "Samsung R&D" -> "Samsung", "Ford Motors" -> "Ford")
+  if (!domain) {
+    const low = clean.toLowerCase();
+    for (const [k, v] of Object.entries(DOMAIN_MAP)) {
+      const kLow = k.toLowerCase();
+      if (kLow.length >= 3) {
+        const regex = new RegExp(`(^|\\b)${kLow.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(\\b|$)`, 'i');
+        if (regex.test(low)) {
+          domain = v;
+          break;
+        }
+      }
+    }
+  }
+
   // 3. Fallback sanitized domain
   if (!domain) {
     const slug = clean.toLowerCase().replace(/\s+/g, '').replace(/[^\w]/g, '');
     domain = slug ? `${slug}.com` : 'direct.com';
   }
 
+  const localLogo = LOCAL_COMPANY_LOGOS[rawKey.toLowerCase()] || LOCAL_COMPANY_LOGOS[clean.toLowerCase()];
+
   const result: LogoData = {
-    clearbit: `https://logo.clearbit.com/${domain}`,
-    google: `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-    duckduckgo: `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    local: localLogo,
+    unavatar: localLogo || `https://unavatar.io/${domain}`,
+    duckduckgo: localLogo || `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    google: localLogo || `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+    clearbit: localLogo || `https://logo.clearbit.com/${domain}`,
     initial: (clean.charAt(0) || 'C').toUpperCase(),
     domain
   };

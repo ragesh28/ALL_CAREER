@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { BriefcaseBusiness, Layers3, Star } from 'lucide-react';
+import { ArrowUpDown, BriefcaseBusiness, Layers3, Search, Star, X } from 'lucide-react';
+import { CustomDropdown } from '../common/CustomDropdown';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
 
@@ -351,23 +352,40 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         </div>
 
         {/* STICKY FILTER BAR */}
-        <div className="company-header-bar" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+        <div className="company-header-bar">
           <div className="practice-list-title">
             All questions
           </div>
 
           <div className="toolbar">
-            <input
-              type="text"
-              className="filter-select"
-              style={{ width: '200px' }}
-              placeholder="Search ID or Name..."
-              value={searchAll}
-              onChange={e => {
-                setSearchAll(e.target.value);
-                setCurrentPage(1);
-              }}
-            />
+            <div className="practice-search-input-wrapper">
+              <Search size={15} className="practice-search-icon" aria-hidden="true" />
+              <input
+                type="text"
+                className="practice-search-input"
+                placeholder="Search ID or Name..."
+                value={searchAll}
+                onChange={e => {
+                  setSearchAll(e.target.value);
+                  setCurrentPage(1);
+                }}
+                autoComplete="off"
+                spellCheck={false}
+              />
+              {searchAll && (
+                <button
+                  type="button"
+                  className="practice-search-clear"
+                  onClick={() => {
+                    setSearchAll('');
+                    setCurrentPage(1);
+                  }}
+                  aria-label="Clear search"
+                >
+                  <X size={13} aria-hidden="true" />
+                </button>
+              )}
+            </div>
 
             <div className="difficulty-filter-set" aria-label="Filter by difficulty">
               {(['All', 'Easy', 'Medium', 'Hard'] as const).map(difficulty => (
@@ -382,18 +400,23 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               ))}
             </div>
 
-            <select
-              className="filter-select"
+            <CustomDropdown
+              id="practice-sort-all"
               value={sortAll}
-              onChange={e => {
-                setSortAll(e.target.value);
+              onChange={val => {
+                setSortAll(val);
                 setCurrentPage(1);
               }}
-            >
-              <option value="id">Sort: ID (1-3422)</option>
-              <option value="freq">Sort: Frequency (High-Low)</option>
-              <option value="accept">Sort: Acceptance (High-Low)</option>
-            </select>
+              options={[
+                { value: 'id', label: 'ID (1-3422)' },
+                { value: 'freq', label: 'Frequency (High-Low)' },
+                { value: 'accept', label: 'Acceptance (High-Low)' }
+              ]}
+              icon={<ArrowUpDown size={14} className="control-icon" aria-hidden="true" />}
+              prefix="Sort"
+              ariaLabel="Sort practice problems"
+              className="practice-sort-custom"
+            />
 
             <div style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600 }}>
               Showing <span style={{ color: '#38bdf8' }}>{total > 0 ? `${startIndex + 1}-${endIndex}` : '0'}</span> of {total} problems
@@ -418,11 +441,10 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                 <tr>
                   <th style={{ width: '70px' }}>ID</th>
                   <th>Problem Name</th>
-                  <th style={{ width: '220px' }}>Companies</th>
-                  <th style={{ width: '220px' }}>Topics</th>
-                  <th style={{ width: '100px' }}>Acceptance</th>
-                  <th style={{ width: '90px' }}>Difficulty</th>
-                  <th style={{ width: '110px' }}>Frequency</th>
+                  <th style={{ width: '280px' }}>Topics</th>
+                  <th style={{ width: '110px' }}>Acceptance</th>
+                  <th style={{ width: '100px' }}>Difficulty</th>
+                  <th style={{ width: '120px' }}>Frequency</th>
                 </tr>
               </thead>
               <tbody>
@@ -441,30 +463,11 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                         </a>
                       </td>
                       <td>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', alignItems: 'center', maxWidth: '220px' }}>
-                          {compList.slice(0, 3).map((comp, ci) => (
-                            <span
-                              key={ci}
-                              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.72rem', color: '#cbd5e1' }}
-                              title={comp}
-                            >
-                              <CompanyLogo name={comp} size={13} />
-                              <span>{comp}</span>
-                            </span>
-                          ))}
-                          {compList.length > 3 && (
-                            <span style={{ fontSize: '0.7rem', color: '#64748b' }}>
-                              +{compList.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td>
-                        {topicList.slice(0, 3).map(t => (
+                        {topicList.slice(0, 4).map(t => (
                           <span key={t} className={topicTone(t)}>{t}</span>
                         ))}
-                        {topicList.length > 3 && (
-                          <span className="topic-tag" style={{ opacity: 0.6 }}>+{topicList.length - 3}</span>
+                        {topicList.length > 4 && (
+                          <span className="topic-tag" style={{ opacity: 0.6 }}>+{topicList.length - 4}</span>
                         )}
                       </td>
                       <td><span className={acceptanceTone(p.acceptance)}>{p.acceptance || 'N/A'}</span></td>
@@ -555,14 +558,28 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
 
         {/* TOOLBAR */}
         <div className="toolbar">
-          <input
-            type="text"
-            className="filter-select"
-            style={{ width: '180px' }}
-            placeholder="Search problems..."
-            value={companySearch}
-            onChange={e => setCompanySearch(e.target.value)}
-          />
+          <div className="practice-search-input-wrapper">
+            <Search size={15} className="practice-search-icon" aria-hidden="true" />
+            <input
+              type="text"
+              className="practice-search-input"
+              placeholder="Search problems..."
+              value={companySearch}
+              onChange={e => setCompanySearch(e.target.value)}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {companySearch && (
+              <button
+                type="button"
+                className="practice-search-clear"
+                onClick={() => setCompanySearch('')}
+                aria-label="Clear search"
+              >
+                <X size={13} aria-hidden="true" />
+              </button>
+            )}
+          </div>
 
             <div className="difficulty-filter-set" aria-label="Filter company questions by difficulty">
               {(['All', 'Easy', 'Medium', 'Hard'] as const).map(difficulty => (
@@ -577,15 +594,20 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               ))}
             </div>
 
-          <select
-            className="filter-select"
+          <CustomDropdown
+            id="practice-sort-company"
             value={companySort}
-            onChange={e => setCompanySort(e.target.value)}
-          >
-            <option value="freq">Sort: Frequency</option>
-            <option value="accept">Sort: Acceptance</option>
-            <option value="id">Sort: ID</option>
-          </select>
+            onChange={val => setCompanySort(val)}
+            options={[
+              { value: 'freq', label: 'Frequency' },
+              { value: 'accept', label: 'Acceptance' },
+              { value: 'id', label: 'ID' }
+            ]}
+            icon={<ArrowUpDown size={14} className="control-icon" aria-hidden="true" />}
+            prefix="Sort"
+            ariaLabel="Sort company questions"
+            className="practice-sort-custom"
+          />
         </div>
       </div>
 

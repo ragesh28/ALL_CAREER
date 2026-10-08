@@ -1,5 +1,5 @@
 import React from 'react';
-import { BriefcaseBusiness, Building2, Landmark, MapPin, Send } from 'lucide-react';
+import { ArrowUpRight, BriefcaseBusiness, Building2, Landmark, MapPin } from 'lucide-react';
 import { BigCompanyItem } from '../../data/bigCompaniesData';
 import { CompanyLogo } from '../common/CompanyLogo';
 
@@ -8,54 +8,65 @@ interface CompanyCardProps {
 }
 
 export const CompanyCard: React.FC<CompanyCardProps> = ({ company }) => {
-  // Badge class by type
+  // Refined badge classification by type
   const typeLower = (company.type || '').toLowerCase();
   let tagClass = 'tag-product';
   if (typeLower.includes('fintech')) tagClass = 'tag-fintech';
   else if (typeLower.includes('service')) tagClass = 'tag-service';
   else if (typeLower.includes('saas')) tagClass = 'tag-saas';
   else if (typeLower.includes('deeptech') || typeLower.includes('ai')) tagClass = 'tag-deeptech';
+  else if (typeLower.includes('auto')) tagClass = 'tag-autotech';
 
   return (
     <div className="bigcompany-card">
       <div className="bigcompany-top">
-        {/* Logo */}
-        <CompanyLogo name={company.name} size={44} style={{ borderRadius: 10, background: '#1e293b' }} />
+        {/* Logo with high-contrast white rounded backing */}
+        <CompanyLogo 
+          name={company.name} 
+          size={46} 
+          style={{ borderRadius: 12, background: '#ffffff', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.18)' }} 
+        />
 
         <div className="bigcompany-title-row">
-          <div className="bigcompany-name">{company.name}</div>
+          <div className="bigcompany-name" title={company.name}>{company.name}</div>
           <span className={`bigcompany-tag ${tagClass}`}>
-            <Building2 size={12} aria-hidden="true" /> {company.type}
+            <span className="tag-pulse-dot" aria-hidden="true" />
+            <Building2 size={11} aria-hidden="true" />
+            <span>{company.type}</span>
           </span>
         </div>
       </div>
 
       {/* Role */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#cbd5e1', fontSize: '0.88rem' }}>
-        <BriefcaseBusiness size={15} aria-hidden="true" />
-        <span>{company.role}</span>
+      <div className="bigcompany-meta-item">
+        <BriefcaseBusiness size={14} className="meta-icon" aria-hidden="true" />
+        <span className="meta-text">{company.role}</span>
       </div>
 
       {/* Location */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#94a3b8', fontSize: '0.88rem' }}>
-        <MapPin size={15} aria-hidden="true" />
-        <span>{company.location}</span>
+      <div className="bigcompany-meta-item">
+        <MapPin size={14} className="meta-icon" aria-hidden="true" />
+        <span className="meta-text-muted">{company.location}</span>
       </div>
 
-      {/* Salary in Gold */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Landmark size={15} aria-hidden="true" />
+      {/* Salary in Luxury Gold */}
+      <div className="bigcompany-salary-row">
+        <Landmark size={14} className="salary-icon" aria-hidden="true" />
         <span className="bigcompany-salary">{company.salary}</span>
       </div>
 
-      {/* View & Apply Button */}
+      {/* Luxury Nested Action CTA (Button-in-Button Pattern) */}
       <a
         href={company.url}
         target="_blank"
         rel="noopener noreferrer"
         className="bigcompany-btn"
+        aria-label={`View and apply at ${company.name}`}
       >
-        View & Apply <Send size={14} aria-hidden="true" />
+        <span className="btn-label">View & Apply</span>
+        <span className="btn-icon-bubble">
+          <ArrowUpRight size={14} className="btn-arrow" aria-hidden="true" />
+        </span>
       </a>
     </div>
   );

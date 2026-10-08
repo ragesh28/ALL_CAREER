@@ -8,8 +8,18 @@ import './styles/all_career_theme.css';
 
 export type ViewType = 'hub' | 'all_jobs' | 'practice' | 'big_company_jobs' | 'career_explorer';
 
+const getInitialView = (): ViewType => {
+  if (typeof window !== 'undefined') {
+    const hash = window.location.hash.replace('#', '') as ViewType;
+    if (['hub', 'all_jobs', 'practice', 'big_company_jobs', 'career_explorer'].includes(hash)) {
+      return hash;
+    }
+  }
+  return 'hub';
+};
+
 export const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<ViewType>('hub');
+  const [currentView, setCurrentView] = useState<ViewType>(getInitialView);
   const [allJobsSearch, setAllJobsSearch] = useState<string>('');
 
   // Handle URL hash navigation if user refreshes or shares URL
@@ -20,7 +30,6 @@ export const App: React.FC = () => {
         setCurrentView(hash);
       }
     };
-    handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
