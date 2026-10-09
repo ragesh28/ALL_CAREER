@@ -1,5 +1,5 @@
 {
-  "total_jobs": 974142,
+  "total_jobs": 974152,
   "sources": {
     "naukri": 335902,
     "linkedin": 246654,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 724,
-    "telegram_message": 808,
+    "telegram_post": 733,
+    "telegram_message": 809,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,10 +245,10 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 207135,
-    "mumbai": 127221,
+    "bangalore": 207137,
+    "mumbai": 127222,
     "delhi": 104004,
-    "chennai": 104641,
+    "chennai": 104642,
     "hyderabad": 93311,
     "pune": 77048,
     "noida": 47705,
@@ -314,7 +314,7 @@
     "rennes": 81,
     "message_remote": 79,
     "sanand": 117,
-    "madurai": 107,
+    "madurai": 110,
     "bhiwandi": 86,
     "post_hyderabad": 71,
     "patna": 88,
@@ -782,7 +782,10 @@
     "malad": 1,
     "lonavala": 1,
     "ranjangaon": 1,
-    "mallasandra_near_jalahalli": 1
+    "mallasandra_near_jalahalli": 1,
+    "udupi_kundapura": 1,
+    "udyambag": 1,
+    "ullagaddi_khanapur": 1
   },
-  "generated_at": "2026-10-08T22:18:32.913003"
+  "generated_at": "2026-10-09T02:30:19.395937"
 }
