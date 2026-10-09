@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "928",
+  "workflow_run_id": "37910232623",
+  "timestamp": "2026-10-09T09:59:42.673333",
+  "runtime_minutes": 37.54,
+  "messages_processed": 100,
+  "new_jobs_stored": 73,
+  "skipped_jobs_count": 8,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 30541,
+      "text": "🤖📊\nJoin this FREE Masterclass and understand how modern AI systems use LLMs, RAG, Memory, Tools & Reasoning to solve real-world problems.\n\n**Today is the webinar. Register now**\n\n*Who Can Attend?*\n💻 Working professionals looking to switch into Data/AI\n📊 Data Analytics & Data Science aspirants\n🤖 Anyone interested in AI & emerging technologies\n🔄 Non-IT professionals exploring AI careers\n\n📅 09 October 2026\n⏰ 7:00 PM\n\n👉 Register for FREE: \n\nhttps://rebrand.ly/understand-agents-ff70e3\nData Science\nR\nSQL\nVS\nData Analytics\n闸\nlearn\nVS\nAI\npandas\nNumPy\njupyter\nSpark\nAPACHE\nUnderstand, Build & Engineer\nPower BI\nthe Future of Data\nLangChain\nUnderstand\nBuild\nAutomate\nAI\nUnderstand how AI Agents use LLMs, RAG,\nnmemory, tools and reasoning to solve\nreal-world problems.\nWho Can Attend?\nStudents & fresh graduates\nWorking professionals looking to\nPython\nswitch into Data/Al\nMachine Learning\nData Analytics & Data Science aspirants\nDeep Learning\n眼\nAnyone interested in Al &\nemerging technologies\nData Analysis\nNon-IT professionals exploring\nAl careers\n09 October, 2026\nRegister for Free\n7:00 PM",
+      "timestamp": "2026-10-09T04:33:16+00:00"
+    }
+  ]
+}
