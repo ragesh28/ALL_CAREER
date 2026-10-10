@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "932",
+  "workflow_run_id": "38038455305",
+  "timestamp": "2026-10-10T09:01:52.654457",
+  "runtime_minutes": 20.04,
+  "messages_processed": 68,
+  "new_jobs_stored": 56,
+  "skipped_jobs_count": 6,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43513,
+      "text": "**🚨Free Gen AI Claude Workshop - FREE (Today Only) 🚀**\n\n💸 Cost: ~~₹10,000~~ ₹0 (FREE!)\n\nDeadline: 11:59 PM 10th Oct 2026\n\nWhat You Will Learn:\n✅ Learn 25+ AI tools\n✅ Master practical AI workflows and automate tasks\n✅ Automate assignments, content & research\n✅ Stand out in internships & placements\n\n⏰ Limited to 100 seats — Fill before they're gone!\n\n**Enroll Now (Free)**: https://link.outskill.com/A-13",
+      "timestamp": "2026-10-10T05:25:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43515,
+      "text": "🚨**TCS Free Digital Certification Program**\n\nEducation: Any Degree\nLocation: Online\nBatch: Any\n\nApply: https://kickcharm.com/tcs-ion-offers-15-day-free-digital-certification-program/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-10T07:12:46+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18904,
+      "text": "YOU WANT SUCCESS NOW,\nSuccess wants TIME.\nTime wants consistency\nConsistency wants Sacrifice.\nWhat are you Sacrificing?",
+      "timestamp": "2026-10-10T08:31:41+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260292,
+      "text": "KRJS Group of Institutions\nREQUIRES\nApplications are invited from eligible candidates\nfor the following posts in KRJS Institutions\nVEMANA INSTITUTE OF TECHNOLOGY:\nPrincipal - 1; Placement Officer - 1\nHead Office:\nAccounts Manager -1; Civil Engineer-1; Electrical Engineer - 1;\nLegal person for Court Related works -1\nApply within 10 days to: The General Secretary,\nKarnataka Reddyjana Sangha,\n#1, Mahayogi Vemana Road, 3rd Block, Koramangala,\nBangalore-560034. Ph: 080 25534194 by post or\nEmail:krjsho25@gmail.com\nFor more details visit: www.reddyjanasangha.org",
+      "timestamp": "2026-10-10T08:12:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260293,
+      "text": "AMITY\nA REPUTATION\nBUILT ON TRUST\nUNIVERSITY\nBENGALURU—\nASET IS GROWING—\nAND WE'RE\nHIRING\nCSE FACULTY\nAmity University Bengaluru's School of\nEngineering & Technology is scaling fast—\nBE PART OF A\nwith six CSE specializations coming\nGROWING\nnto full delivery.\nLEGACY\nReal ownership. Real impact.\nHIRING ALL LEVELS IN\nCOMPUTER SCIENCE & ENGINEERING\nH\nAssistant Professor• Associate Professor• Professor\n天\nSPECIAL INTEREST IN\nYOU BRING\nCOMPENSATION\nCAMPUS\nCloud & DevOps\nA Ph.D. (UGC-eligible)\nUp to 2.50 lakh/month\nDevanahalli campus -\nIoT & Robotics\nand a real commitment\n+ special allowance\nNandi Hills foothills,\nFull-Stack\nto teaching and\nup to 15,000/month\nserene surroundings,\nAI / ML / Data Science\nresearch.\nfor Ph.D. holders from\nAway from traffic hassles,\npremier institutions.\nVery near to airport.\nINTERESTED?\n(Mention position\nSend your CV to\ncareers@blr.amity.edu\n& discipline)",
+      "timestamp": "2026-10-10T08:12:27+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8358,
+      "text": "Dil se video banai hai ye\nThoda batao ki sahi bol rha hu ya galat\n\nThoda support kr dena video share karke\n\nhttps://www.instagram.com/reel/DeTjTnbzMZn/?mdxt=MXduYmVweDMwaGs4aw==\n\nDesh ki baat hai isme ♥️",
+      "timestamp": "2026-10-10T07:48:41+00:00"
+    }
+  ]
+}
