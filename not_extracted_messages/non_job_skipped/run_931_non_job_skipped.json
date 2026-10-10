@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "931",
+  "workflow_run_id": "38014524822",
+  "timestamp": "2026-10-10T01:59:16.276931",
+  "runtime_minutes": 5.92,
+  "messages_processed": 22,
+  "new_jobs_stored": 35,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18902,
+      "text": "NO MATTER WHAT\nKNOCKS YOU\nDOWN IN LIFE,\nGET BACK UP\nAND KEEP GOING.\nNEVER GIVE UP.\nGREAT BLESSINGS\nARE A RESULT\nOF GREAT\nPERSEVERANCE.",
+      "timestamp": "2026-10-10T01:45:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260269,
+      "text": "B\nON-SITE · BANGALORE\nWe're hiring\nin Bangalore\n01\nBackend Engineer E2\nEcosystem\n06\nTechnical Support Engineer\nAMER\n02\nBackend Engineer E3\n07\nApplication Security Engineer\n03\nData Engineering Manager\nM3\n08\nSOC Analyst\n04\nEngineering Manager\nEcosystem\n09\nRecruiter\nContract · 1 yr\n95\nMobile Engineer E2\nReact Native",
+      "timestamp": "2026-10-10T01:49:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260270,
+      "text": "🚀 We’re Hiring | Multiple Opportunities \n\nWe’re building the technology powering the next generation of digital asset infrastructure — creating secure, reliable, and scalable solutions for businesses, institutions, developers, and the broader financial ecosystem.\nWe’re looking for talented people who enjoy solving complex problems, taking ownership, challenging the status quo, and building technology that makes a real impact.\n\nIf that sounds like you, check out our current openings!\n\nEngineering:\nBackend Engineer E2 – Ecosystem - https://job-boards.greenhouse.io/bitgo/jobs/8644530002\nBackend Engineer E3 - https://job-boards.greenhouse.io/bitgo/jobs/8869949002\nData Engineering Manager M3 - https://job-boards.greenhouse.io/bitgo/jobs/8342108002\nMobile Engineer E2 (React Native) - https://job-boards.greenhouse.io/bitgo/jobs/8879340002\n\nOperations:\nTechnical Support Engineer (AMER) - https://job-boards.greenhouse.io/bitgo/jobs/7429337002\n\nPeople:\nRecruiter (Contract – 1 year) - https://job-boards.greenhouse.io/bitgo/jobs/7971734002\n\nSecurity:\nSOC Analyst - https://job-boards.greenhouse.io/bitgo/jobs/8527761002\n\n💡 Whether you're building scalable backend systems, leading engineering teams, strengthening security, supporting customers, or helping attract exceptional talent, there's an opportunity to make an impact.\n\n📍 Location: Bangalore \n\n📩 Interested in exploring an opportunity? Check out the roles above and apply directly.\nB\nB",
+      "timestamp": "2026-10-10T01:49:21+00:00"
+    }
+  ]
+}

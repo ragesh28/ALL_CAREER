@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1002332,
+  "total_jobs": 1002367,
   "sources": {
     "naukri": 343275,
     "linkedin": 255328,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 800,
-    "telegram_message": 855,
+    "telegram_post": 803,
+    "telegram_message": 887,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,20 +245,20 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 211799,
-    "mumbai": 130787,
+    "bangalore": 211813,
+    "mumbai": 130789,
     "delhi": 107413,
-    "chennai": 107764,
-    "hyderabad": 95815,
+    "chennai": 107767,
+    "hyderabad": 95817,
     "pune": 79667,
     "noida": 49009,
     "ahmedabad": 40284,
     "kolkata": 34738,
-    "all_india": 23844,
-    "coimbatore": 20681,
+    "all_india": 23852,
+    "coimbatore": 20682,
     "kochi": 15909,
     "remote": 9236,
-    "jaipur": 7202,
+    "jaipur": 7203,
     "maharashtra": 9486,
     "indore": 5122,
     "chandigarh": 5379,
@@ -797,7 +797,11 @@
     "nagar": 1,
     "pimpri": 1,
     "angamaly": 1,
-    "bommanahali": 1
+    "bommanahali": 1,
+    "eura_france": 1,
+    "uk_tax": 1,
+    "anz_region": 1,
+    "apac": 1
   },
-  "generated_at": "2026-10-10T01:16:31.833513"
+  "generated_at": "2026-10-10T01:59:41.085726"
 }
