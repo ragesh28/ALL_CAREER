@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1020679,
+  "total_jobs": 1020684,
   "sources": {
     "naukri": 348469,
     "linkedin": 262283,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 847,
-    "telegram_message": 942,
+    "telegram_post": 849,
+    "telegram_message": 945,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,16 +245,16 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 214957,
+    "bangalore": 214958,
     "mumbai": 133070,
     "delhi": 109756,
-    "chennai": 109795,
+    "chennai": 109796,
     "hyderabad": 97478,
     "pune": 81510,
     "noida": 50099,
     "ahmedabad": 41001,
     "kolkata": 35510,
-    "all_india": 23888,
+    "all_india": 23890,
     "coimbatore": 21255,
     "kochi": 16164,
     "remote": 9401,
@@ -811,7 +811,8 @@
     "urwa_campus": 2,
     "vadakkankulam": 1,
     "ambernath": 1,
-    "padgha": 1
+    "padgha": 1,
+    "tcs_ion_centres": 1
   },
-  "generated_at": "2026-10-10T16:46:43.391447"
+  "generated_at": "2026-10-11T06:06:59.550689"
 }
