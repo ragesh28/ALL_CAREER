@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1031392,
+  "total_jobs": 1031396,
   "sources": {
     "naukri": 350197,
     "linkedin": 265621,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 861,
-    "telegram_message": 963,
+    "telegram_message": 967,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -254,7 +254,7 @@
     "noida": 50466,
     "ahmedabad": 41219,
     "kolkata": 35887,
-    "all_india": 23902,
+    "all_india": 23906,
     "coimbatore": 21661,
     "kochi": 16214,
     "remote": 9469,
@@ -832,5 +832,5 @@
     "ernakulamkalamassery": 1,
     "navsari": 1
   },
-  "generated_at": "2026-10-11T18:21:52.460623"
+  "generated_at": "2026-10-11T22:09:30.797952"
 }
