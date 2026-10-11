@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1030242,
+  "total_jobs": 1030256,
   "sources": {
     "naukri": 350197,
     "linkedin": 265621,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 849,
-    "telegram_message": 945,
+    "telegram_post": 854,
+    "telegram_message": 954,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,16 +245,16 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 216973,
-    "mumbai": 134445,
-    "delhi": 110867,
-    "chennai": 110986,
-    "hyderabad": 98609,
+    "bangalore": 216976,
+    "mumbai": 134446,
+    "delhi": 110868,
+    "chennai": 110987,
+    "hyderabad": 98610,
     "pune": 82420,
     "noida": 50454,
     "ahmedabad": 41207,
     "kolkata": 35848,
-    "all_india": 23893,
+    "all_india": 23899,
     "coimbatore": 21604,
     "kochi": 16213,
     "remote": 9468,
@@ -268,7 +268,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 5377,
+    "karnataka": 5378,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -832,5 +832,5 @@
     "ernakulamkalamassery": 1,
     "navsari": 1
   },
-  "generated_at": "2026-10-11T12:50:34.974853"
+  "generated_at": "2026-10-11T13:13:41.322362"
 }
