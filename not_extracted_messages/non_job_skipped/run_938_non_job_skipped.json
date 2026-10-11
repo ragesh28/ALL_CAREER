@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "938",
+  "workflow_run_id": "38162554260",
+  "timestamp": "2026-10-11T18:21:33.737099",
+  "runtime_minutes": 10.45,
+  "messages_processed": 42,
+  "new_jobs_stored": 16,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43550,
+      "text": "**🚨Free Gen AI Claude Certification – FREE! 🚀**\n\n💸 ₹10,000 → ₹0  \n✅ Learn 25+ AI Tools  \n✅ Automate tasks & create content faster  \n✅ Master AI prompts for work  \n\n**Eligibility: **Students/Freshers/Experienced\n \n**Register Free:** https://link.outskill.com/A-13\n\n⚡️ Limited Seats!",
+      "timestamp": "2026-10-11T15:55:17+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8362,
+      "text": "hey, everyone!\nWasupp, how are you all?\n\nHow's the weekend.",
+      "timestamp": "2026-10-11T17:31:48+00:00"
+    }
+  ]
+}
