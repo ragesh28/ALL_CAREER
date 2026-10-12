@@ -1,5 +1,5 @@
-import React from 'react';
-import { History, RotateCcw, Search, Send } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { History, RotateCcw, Search, Send, X } from 'lucide-react';
 
 interface AllJobsTopNavProps {
   searchTerm: string;
@@ -22,6 +22,36 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
   onClearAll,
   hasActiveFilters
 }) => {
+  // Local instant state for silky-smooth 60fps typing without any blocking lag
+  const [localSearch, setLocalSearch] = useState(searchTerm);
+  const debounceTimerRef = useRef<any>(null);
+
+  useEffect(() => {
+    setLocalSearch(searchTerm);
+  }, [searchTerm]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setLocalSearch(val);
+    clearTimeout(debounceTimerRef.current);
+    debounceTimerRef.current = setTimeout(() => {
+      onSearchChange(val);
+    }, 120);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      clearTimeout(debounceTimerRef.current);
+      onSearchChange(localSearch);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setLocalSearch('');
+    clearTimeout(debounceTimerRef.current);
+    onSearchChange('');
+  };
+
   return (
     <header className="topnav">
       {/* Left: Global Brand Logo */}
@@ -39,9 +69,31 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
           <input
             type="text"
             placeholder="Search jobs, companies, skills..."
-            value={searchTerm}
-            onChange={e => onSearchChange(e.target.value)}
+            value={localSearch}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
           />
+          {localSearch && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="search-clear-btn"
+              aria-label="Clear search text"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '4px',
+                borderRadius: '50%',
+                marginRight: '4px'
+              }}
+            >
+              <X size={14} />
+            </button>
+          )}
         </div>
       </div>
 

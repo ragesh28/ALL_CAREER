@@ -557,6 +557,276 @@ body {
   content: '';
 }
 
+/* ==========================================================================
+   Awwwards-Tier Center-Bottom Kinetic Scroll Indicator
+   ========================================================================== */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  animation: heroCueEntry 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.35s;
+}
+
+@keyframes heroCueEntry {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Ambient Breathing Aura */
+.scroll-cue-ambient-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(98, 229, 219, 0.22) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 75%);
+  filter: blur(12px);
+  opacity: 0.7;
+  pointer-events: none;
+  animation: ambientAuraPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes ambientAuraPulse {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+
+/* Double-Bezel Floating Glass Capsule */
+.scroll-cue-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 8px 16px 8px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(12, 22, 44, 0.78) 50%, rgba(6, 11, 24, 0.92) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 14px 40px -4px rgba(0, 0, 0, 0.65),
+    0 0 20px -2px rgba(98, 229, 219, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.hero-scroll-cue:hover .scroll-cue-pill {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(98, 229, 219, 0.55);
+  box-shadow:
+    0 20px 50px -4px rgba(0, 0, 0, 0.8),
+    0 0 32px rgba(98, 229, 219, 0.42),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35);
+}
+
+.hero-scroll-cue:active .scroll-cue-pill {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Kinetic Photon Chamber */
+.scroll-photon-chamber {
+  position: relative;
+  width: 16px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(98, 229, 219, 0.45);
+  background: rgba(4, 9, 20, 0.7);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.scroll-photon-rail {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(98, 229, 219, 0.25), rgba(255, 255, 255, 0.05));
+}
+
+.scroll-photon-laser {
+  position: absolute;
+  top: 3px;
+  width: 4px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #62e5db 0%, #38bdf8 100%);
+  box-shadow: 0 0 8px #62e5db, 0 0 4px #38bdf8;
+  animation: photonLaserGlide 1.8s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+}
+
+@keyframes photonLaserGlide {
+  0% {
+    transform: translateY(0) scaleY(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(2px) scaleY(1.1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(12px) scaleY(1.25);
+  }
+  90% {
+    opacity: 0.2;
+    transform: translateY(15px) scaleY(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(16px) scaleY(0.5);
+  }
+}
+
+.scroll-photon-pulse-ring {
+  position: absolute;
+  bottom: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(98, 229, 219, 0.6);
+  opacity: 0;
+  animation: photonRingBloom 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes photonRingBloom {
+  0%, 65% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Shimmer Typography */
+.scroll-cue-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-cue-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, rgba(226, 232, 240, 0.75) 0%, #ffffff 35%, #62e5db 55%, rgba(226, 232, 240, 0.75) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmerGlide 3.2s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes textShimmerGlide {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* Button-in-Button Trailing Badge */
+.scroll-cue-badge {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(98, 229, 219, 0.12);
+  border: 1px solid rgba(98, 229, 219, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--hub-cyan, #62e5db);
+  overflow: hidden;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.hero-scroll-cue:hover .scroll-cue-badge {
+  background: rgba(98, 229, 219, 0.22);
+  transform: translateY(1px);
+}
+
+.scroll-cue-chevron {
+  display: block;
+  position: absolute;
+  animation: chevronCascadeMotion 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.chevron-top {
+  animation-delay: 0s;
+}
+
+.chevron-bottom {
+  animation-delay: 0.4s;
+}
+
+@keyframes chevronCascadeMotion {
+  0% {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-scroll-cue {
+    bottom: 22px;
+  }
+  .scroll-cue-pill {
+    padding: 7px 14px 7px 10px;
+    gap: 10px;
+  }
+  .scroll-cue-text {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+  .scroll-photon-chamber {
+    width: 14px;
+    height: 24px;
+  }
+  .scroll-cue-badge {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .career-stage {
   position: relative;
 }
@@ -3257,34 +3527,41 @@ select.filter-select option,
 
 /* ═══════════════════════════════════════════════════════════════════
    PREMIUM RESET ACTION BUTTON (IN PLACE OF SORT DROPDOWN)
+/* ═══════════════════════════════════════════════════════════════════
+   PREMIUM REDESIGNED RESET ACTION BUTTON (ELITE OBSIDIAN GLASS)
    ═══════════════════════════════════════════════════════════════════ */
+.premium-reset-btn,
 .reset-filter-action-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 38px;
-  padding: 0 18px;
-  border-radius: 20px;
-  background: rgba(244, 63, 94, 0.12);
-  border: 1px solid rgba(244, 63, 94, 0.38);
-  color: #fda4af;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.84rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  height: 36px;
+  padding: 0 14px 0 11px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  color: #f1f5f9;
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 
+    0 4px 16px -2px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   outline: none !important;
   -webkit-tap-highlight-color: transparent !important;
-  animation: resetPillAppear 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: premiumResetAppear 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes resetPillAppear {
+@keyframes premiumResetAppear {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.95);
+    transform: translateY(-3px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -3292,16 +3569,49 @@ select.filter-select option,
   }
 }
 
+.premium-reset-btn:hover,
 .reset-filter-action-btn:hover {
-  background: rgba(244, 63, 94, 0.24);
-  border-color: rgba(244, 63, 94, 0.68);
+  background: linear-gradient(135deg, rgba(51, 65, 85, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border-color: rgba(56, 189, 248, 0.45);
   color: #ffffff;
-  box-shadow: 0 6px 22px rgba(244, 63, 94, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 6px 22px -2px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(56, 189, 248, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
 }
 
+.premium-reset-btn:active,
 .reset-filter-action-btn:active {
-  transform: translateY(1px) scale(0.98);
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.reset-icon-halo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  transition: all 0.3s ease;
+}
+
+.premium-reset-btn:hover .reset-icon-halo {
+  background: rgba(56, 189, 248, 0.24);
+  color: #7dd3fc;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.reset-btn-label {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.premium-reset-btn:hover .reset-btn-label {
+  color: #ffffff;
 }
 
 .reset-spin-icon {
@@ -3309,8 +3619,32 @@ select.filter-select option,
   transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.premium-reset-btn:hover .reset-spin-icon,
 .reset-filter-action-btn:hover .reset-spin-icon {
   transform: rotate(-180deg);
+}
+
+.reset-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.premium-reset-btn:hover .reset-count-badge {
+  background: #38bdf8;
+  color: #0b1120;
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
 }
 
 /* ═══════════════════════════════════════════════════════════════════

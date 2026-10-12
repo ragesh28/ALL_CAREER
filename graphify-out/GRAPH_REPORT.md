@@ -1,183 +1,182 @@
-# Graph Report - ALL_CAREER_3  (2026-09-25)
+# Graph Report - ALL_CAREER_3  (2026-10-08)
 
 ## Corpus Check
-- 14200 files · ~90,384,573 words
+- 14394 files · ~93,094,758 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 26 file(s) not represented in the graph (top: .css 8, (none) 7, .bat 1)
+- Unclassified: 5699 file(s) not represented in the graph (top: .csv 5635, .zip 32, (none) 13)
 
 ## Summary
-- 5990 nodes · 15256 edges · 332 communities (184 shown, 148 thin omitted)
-- Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 1984 edges (avg confidence: 0.85)
+- 6381 nodes · 15875 edges · 288 communities (145 shown, 143 thin omitted)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 1874 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b8967c2c`
+- Built from commit: `b8598a6b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - worker-configuration.d.ts
 - sidepanel-BsfCUvXP.js
-- content-scripts/content.js
+- content.js
 - background.js
-- JobSearchEngine
-- t
-- json
-- n
-- get
-- scrape_from_md.py
 - addEventListener
-- custom-sidepanel.js
-- GIFEncoder
-- ur
+- n
+- sys
+- du
+- cc
+- scrape_from_md.py
+- drawPattern
+- ref_fs
+- c_users_lrage_onedrive_documents_vs_code_all_career_3_claude_extsnhion_lzwencoder_js
+- leetcode-api/leetcode-companywise-interview-questions-master/src/main/java/Scraper.java
 - scrape_google_jobs.py
 - n
-- Hr
-- byok-background-proxy.js
-- getHue
+- .normalize_name
+- all_career_auto_apply.js
+- startDrawing
 - scrape_google_walkin_images.py
-- importer.py
+- types/index.ts
 - scrape_alljobs2.py
-- bind
-- re
-- wd
-- time
+- Uu
+- storage.py
+- t
+- step2_get_links.py
 - Event
 - locs
 - EventTarget
-- zt
-- ui
-- remove
-- custom-options.js
+- LeetMap-Pro-main/package.json
+- bind
+- progress.ts
+- all-career-app/package.json
 - package.json
-- ImageToJobPipeline
+- Hr
 - sources
 - leetcode-api/package.json
-- claude extsnhion/manifest.json
-- pipeline.py
-- .process_image
+- progress/route.ts
+- ImageToJobPipeline
+- fc
 - scrape_telegram_jobs.py
-- ic
+- sync-data.py
 - e
 - scrape_new_companies.py
-- startDrawing
-- datetime
-- GIF
-- bn
-- location_detector.py
-- qr_scanner.py
-- getData
-- OCRBoundingBox
-- Pe
-- scrape_all_companies_v2.py
+- ref_react
+- AllJobsView.tsx
+- server-user.ts
+- ServiceWorkerGlobalScope
+- re
+- get
 - render
-- Wi
-- os
-- t
-- deserialize
-- claude extsnhion/content.js
+- constructor
+- compilerOptions
+- scrape_all_companies_v2.py
+- company/[slug]/page.tsx
+- yl
+- CompanyDatabase
+- compilerOptions
+- .get_connection
+- ingestion/deduplicator.py
 - scrape_job_portals.py
-- i
-- n
-- all_career_auto_apply.js
+- ac
+- e
+- PatternsHubClient.tsx
 - locs
 - locs
 - File Upload AT any Web/manifest.json
 - locs
 - app.py
-- .normalize_name
+- getHue
 - locs
 - axialAlignedBoundingBox
-- wi
-- recorder.js
+- LeetMap Pro — Free Company-Wise LeetCode & SQL Interview Questions
+- QueryLRUCache
 - locs
-- disable
-- qo
-- ingestion/deduplicator.py
+- TimeComplexityGuide.tsx
+- scrape_indeed_permanent.py
+- json
 - Console
 - scrape_job_portals_2.py
-- focus
-- e
-- cc
+- add
+- n
+- next
 - TransformStream
-- Uu
-- store_to_turso.py
-- constructor
+- JobDatabase
+- signal_detector.py
+- AbortSignal
 - URL
 - compilerOptions
 - test_glassdoor_methods.py
-- st
-- updateProperties
-- JobDatabase
+- Findings by priority
+- datetime
+- AllJobsPage.tsx
 - setGState
 - app.js
-- add
-- me
+- WebSocket
+- build_final_initial_jobs.py
 - step3_big_company_scrape.py
 - URLSearchParams
-- o
+- importer.py
 - fill
 - DurableObjectStorage
-- addEditToolbar
-- a
-- beginAnnotation
-- setupMessageHandler
+- SEO Action Plan
+- job_db/database.py
+- intersect
+- constructor
 - Element
 - Headers
 - SubtleCrypto
-- updateMode
+- leetcode-api/leetcode-companywise-interview-questions-master/README.md
 - bangalore
 - locs
-- serialize
+- companyLogos.ts
 - Blob
 - Body
 - FormData
 - URLPattern
 - scrape_jobs_with_permanent_indeed.py
 - Job API Calls — Working Endpoints Reference
-- s
+- R
 - validate
-- isEmpty
-- createElement
-- detectors/__init__.py
+- leetcode-companywise-interview-questions-master/README.md
+- store_to_turso.py
+- JobImporter
 - DurableObjectState
 - o
 - 🏢 ALL_CAREER — MCA Company Database Module
-- offscreen.js
+- Security Policy
 - index/manifest.json
-- l
-- disableUserSelect
-- .verify_with_gemini
-- _pumpOperatorList
-- dp
+- Readme.md
+- postcss.config.mjs
+- vercel.json
+- c_users_lrage_onedrive_documents_vs_code_all_career_3_claude_extsnhion_typedneuquant_js
+- claude_extsnhion_assets_service_worker_ts_qx93vbt4
 - WorkerEntrypoint
-- restore
+- leetcode-scraper:leetcode-scraper
 - getPattern
-- delete
 - f
 - Container
 - R2ObjectBody
 - c
-- Ie
-- highlightSelection
-- drawPattern
+- leetcode-scraper:leetcode-scraper
+- BigCompanyJobsView.tsx
+- interactive_image_tester.py
 - ByteLengthQueuingStrategy
 - WritableStream
 - DurableObjectTransaction
 - ReadableStream
 - Socket
 - WritableStreamDefaultWriter
-- a
-- it
-- popup.js
-- get
+- pipeline.py
+- WalkinsPage.tsx
+- Job
+- createElement
 - DurableObject
 - R2Bucket
 - SqlStorageCursor
 - Vectorize
-- scrape_daily_jobs.py
+- feed.xml/route.ts
 - company_names_chunks/manifest.json
-- ServiceWorkerGlobalScope
+- benchmark.py
 - ALL_CAREER
 - test/tsconfig.json
 - Ai
@@ -185,26 +184,26 @@
 - HostedImagesBinding
 - ReadableStreamBYOBReader
 - VectorizeIndex
-- toSVGPath
+- app/opengraph-image.tsx
 - logo3d.js
-- hi
-- Q
-- wa
-- Yn
-- transform
+- devDependencies
+- TestJobSearch
+- TestCompanyDatabase
+- .detect_date_time
+- restore
 - D1Database
 - D1PreparedStatement
 - KVNamespace
 - ReadableByteStreamController
 - ReadableStreamDefaultReader
 - TextDecoder
-- commit
-- mv
+- env
+- [[...path]]/route.ts
 - EventSource
 - s
 - api-worker/package.json
-- ee
-- ca
+- daily-challenge/route.ts
+- ExtensionBridgeService
 - AiGateway
 - Comment
 - ForwardableEmailMessage
@@ -218,11 +217,6 @@
 - TextEncoder
 - TransformStreamDefaultController
 - i
-- addHighlightHCMFilter
-- wc
-- mlGuessAltText
-- send
-- drag
 - t
 - AbortController
 - AiSearchAccountService
@@ -244,22 +238,6 @@
 - WorkflowEntrypoint
 - index.js
 - Cloudflare Workers
-- endMarkedContent
-- eo
-- bl
-- CMYK_HTML
-- toggleComment
-- createAltText
-- isDeleted
-- bh
-- toString
-- getBrightness
-- extractPages
-- AbortSignal
-- qx
-- setCommentData
-- isEditorHandlingKeyboard
-- getColorN_Pattern
 - env.d.ts
 - BasicImageTransformations
 - StubBase
@@ -282,19 +260,7 @@
 - WritableStreamDefaultController
 - all_jobs_data.js
 - companies.js
-- sz
-- _onTranslated
-- setVisibility
-- addChangedExistingAnnotation
-- applyInverseTransform
-- beginText
-- capPixels
-- recordShowTextOperation
-- getRangeReader
-- dh
-- WebSocket
-- getClientDimensions
-- Ew
+- showText
 - AnalyticsEngineDataset
 - CacheStorage
 - CompileError
@@ -327,25 +293,15 @@
 - logos.js
 - top150.js
 - top_companys.js
-- recordSimpleData
-- removeChangedExistingAnnotation
 - __DURABLE_OBJECT_BRAND
 - onRequest
 - __RPC_STUB_BRAND
 - __RPC_TARGET_BRAND
 - __WORKER_ENTRYPOINT_BRAND
 - __WORKFLOW_ENTRYPOINT_BRAND
-- reset
 - 20. NatWest Group (Playwright / Browser) ⚠️ Slow
-- Sm
-- altTextFinish
-- focusin
 - 47. BrowserStack (Workday) ✅
-- processDrawnLines
 - b
-- getFullReader
-- env
-- rs
 
 ## God Nodes (most connected - your core abstractions)
 1. `n()` - 202 edges
@@ -360,21 +316,21 @@
 10. `bind()` - 105 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Rule 2: Never Run Steps on All Career Portal Tabs` --references--> `isAllCareerPageTab()`  [INFERRED]
-  PROJECT_KNOWLEDGE_AND_MEMORY.md → claude extsnhion/byok-background-proxy.js
-- `Rule 3: Stop / Cancel Must Halt Immediately & Cleanly` --references--> `removeTabHud()`  [INFERRED]
-  PROJECT_KNOWLEDGE_AND_MEMORY.md → claude extsnhion/byok-background-proxy.js
-- `4.1 Live AI Health Check (`verifyActiveAIWorking`)` --references--> `verifyActiveAIWorking()`  [INFERRED]
-  PROJECT_KNOWLEDGE_AND_MEMORY.md → claude extsnhion/byok-background-proxy.js
-- `7. Guidelines for Any Future AI Assistant` --references--> `verifyActiveAIWorking()`  [INFERRED]
-  PROJECT_KNOWLEDGE_AND_MEMORY.md → claude extsnhion/byok-background-proxy.js
-- `Rule 4: Live AI Health-Check Before Execution (No Blind Clicking)` --references--> `verifyActiveAIWorking()`  [INFERRED]
-  PROJECT_KNOWLEDGE_AND_MEMORY.md → claude extsnhion/byok-background-proxy.js
+- `3.1 Chrome Extension (`Auto-Fill-V5/`)` --references--> `stopBatchAutoApply()`  [INFERRED]
+  PROJECT_KNOWLEDGE_AND_MEMORY.md → all_career_auto_apply.js
+- `6. Solved Issues & Bug History` --references--> `stopBatchAutoApply()`  [INFERRED]
+  PROJECT_KNOWLEDGE_AND_MEMORY.md → all_career_auto_apply.js
+- `TestCompanyDatabase` --uses--> `CompanyDatabase`  [INFERRED]
+  tests/test_company_db.py → company_db/database.py
+- `TestCompanyNormalizer` --uses--> `CompanyNormalizer`  [INFERRED]
+  tests/test_company_normalizer.py → company_db/normalizer.py
+- `CompanyDetector` --uses--> `CompanyResolver`  [INFERRED]
+  image_pipeline/detectors/company_detector.py → company_db/resolver.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (332 total, 148 thin omitted)
+## Communities (288 total, 143 thin omitted)
 
 ### Community 0 - "worker-configuration.d.ts"
 Cohesion: 0.00
@@ -382,103 +338,99 @@ Nodes (630): RFC-2253, RFC-5246, Ai_Cf_Ai4Bharat_Indictrans2_En_Indic_1B_Input, 
 
 ### Community 1 - "sidepanel-BsfCUvXP.js"
 Cohesion: 0.00
-Nodes (25): addContainer(), bA(), cb(), closePath(), compressSignature(), Dy(), Fa(), getCommentDialogElement() (+17 more)
+Nodes (187): addAltText(), addButton(), addButtonBefore(), addChangedExistingAnnotation(), addColorPicker(), addComment(), addCommentButton(), addCommentButtonInToolbar() (+179 more)
 
-### Community 2 - "content-scripts/content.js"
+### Community 2 - "content.js"
 Cohesion: 0.02
-Nodes (128): db(), Eb(), iy(), wb(), abort(), Ag(), Ah(), array() (+120 more)
+Nodes (137): iy(), wb(), abort(), Ag(), Ah(), array(), Bg(), bm() (+129 more)
 
 ### Community 3 - "background.js"
 Cohesion: 0.08
-Nodes (28): St(), addItem(), de(), deleteItem(), fe(), Ge(), getAllItems(), getItem() (+20 more)
+Nodes (27): addItem(), be(), de(), deleteItem(), fe(), Ge(), getAllItems(), getItem() (+19 more)
 
-### Community 4 - "JobSearchEngine"
-Cohesion: 0.09
-Nodes (11): JobSearchEngine, Any, QueryLRUCache, High-Performance Search API, Query Planner, and Keyset Paginator for ALL_CAREER., In-memory thread-safe TTL LRU cache for high-frequency filter queries., Execute high-performance indexed search with keyset pagination & total job…, Return EXPLAIN QUERY PLAN analysis string for index inspection., Resolve string names to integer IDs using O(1) in-memory dictionaries. (+3 more)
-
-### Community 5 - "t"
-Cohesion: 0.08
-Nodes (86): W(), o(), t(), b(), bd(), i(), C(), cf() (+78 more)
-
-### Community 6 - "json"
+### Community 4 - "addEventListener"
 Cohesion: 0.05
-Nodes (29): bs4, cleanup_walking_field(), Cleanup script: Remove walking_interview field from all stored job JSON files.…, Remove walking_interview key from every job in all_jobs_*.json and…, Download job portal logos and save to logos/portals/ directory., json, main(), run_cmd() (+21 more)
+Nodes (52): addEventListener(), ae(), cf(), combinedSignal(), componentDidUpdate(), db(), dblclick(), dN() (+44 more)
 
-### Community 7 - "n"
-Cohesion: 0.05
-Nodes (112): Ce(), Ai(), A(), ad(), addEventListener(), ai(), Ao(), Au() (+104 more)
-
-### Community 8 - "get"
+### Community 5 - "n"
 Cohesion: 0.07
-Nodes (58): af(), ci(), delete(), deleteByPath(), df(), ef(), es(), Et() (+50 more)
+Nodes (98): Aa(), Ao(), as(), at(), Av(), bc(), Be(), Bi() (+90 more)
+
+### Community 6 - "sys"
+Cohesion: 0.03
+Nodes (36): bs4, curl_cffi, Download job portal logos and save to logos/portals/ directory., playwright_sync_api, requests, demo_indeed_direct_links(), fetch_linkedin_job_info(), LinkedIn Original Apply Link Extractor =======================================… (+28 more)
+
+### Community 7 - "du"
+Cohesion: 0.08
+Nodes (62): Ce(), ad(), ai(), ap(), Au(), bp(), br(), bu() (+54 more)
+
+### Community 8 - "cc"
+Cohesion: 0.09
+Nodes (48): addEventListener(), af(), b(), ca(), cc(), Cm(), dc(), df() (+40 more)
 
 ### Community 9 - "scrape_from_md.py"
 Cohesion: 0.06
 Nodes (66): build_oracle_url(), clean(), clean_company_name(), dispatch_api(), get_company_career_url(), is_india(), jobspy_fallback_result(), load_checkpoint() (+58 more)
 
-### Community 10 - "addEventListener"
-Cohesion: 0.11
-Nodes (18): addEventListener(), cf(), componentDidUpdate(), dN(), Fn(), fp(), t(), ib() (+10 more)
+### Community 10 - "drawPattern"
+Cohesion: 0.27
+Nodes (12): clipBbox(), createPatternCanvas(), drawPattern(), executeOperatorList(), _getCombinedScales(), getSizeAndScale(), isVisible(), qN() (+4 more)
 
-### Community 11 - "custom-sidepanel.js"
+### Community 11 - "ref_fs"
+Cohesion: 0.05
+Nodes (32): BIG_JOBS_DATA_FILE, BIG_JOBS_FILE, fs, path, fs, JOBS_DATA_FILE, JOBS_FILE, path (+24 more)
+
+### Community 13 - "leetcode-api/leetcode-companywise-interview-questions-master/src/main/java/Scraper.java"
 Cohesion: 0.08
-Nodes (53): addLiveStepToChat(), buildAgentSystemPrompt(), callActiveModelRaw(), callCloudflare(), callCohere(), callGemini(), callGroq(), callHuggingFace() (+45 more)
-
-### Community 12 - "GIFEncoder"
-Cohesion: 0.07
-Nodes (24): c_users_lrage_onedrive_documents_vs_code_all_career_3_claude_extsnhion_lzwencoder_js, c_users_lrage_onedrive_documents_vs_code_all_career_3_claude_extsnhion_typedneuquant_js, ByteArray(), GIFEncoder(), LZWEncoder(), char_out(), cl_block(), cl_hash() (+16 more)
-
-### Community 13 - "ur"
-Cohesion: 0.08
-Nodes (32): an(), ar(), bn(), Bt(), ci(), cr(), en(), gn() (+24 more)
+Nodes (28): arraylist, duration, edgedriver, element, elements, files, filewriter, jsoup (+20 more)
 
 ### Community 14 - "scrape_google_jobs.py"
-Cohesion: 0.07
-Nodes (25): playwright_sync_api, random, generate_js_file(), _get_scraperapi_key(), load_progress(), ALL JOBS Aggregator Scraper via JobSpy → Turso + JS file Scrapes ALL portals…, Generate all_jobs_data.js from jobs list., save_progress() (+17 more)
+Cohesion: 0.10
+Nodes (22): cleanup_old_jobs(), get_total_jobs(), is_linkedin_block(), DIRECT LINKS SCRAPER — GitHub Actions Version Scrapes 150 top companies via…, Check if error indicates LinkedIn block., Scrape one company across all locations. Returns (direct_jobs, was_blocked)., run(), scrape_company() (+14 more)
 
 ### Community 15 - "n"
-Cohesion: 0.08
-Nodes (58): ad(), at(), Ax(), b(), bt(), a(), cl(), Ct() (+50 more)
+Cohesion: 0.04
+Nodes (102): a(), ad(), addCommands(), addContainer(), addSignature(), center(), D(), drag() (+94 more)
 
-### Community 16 - "Hr"
-Cohesion: 0.21
-Nodes (22): br(), cr(), dr(), ds(), Er(), fr(), fs(), Gn() (+14 more)
+### Community 16 - ".normalize_name"
+Cohesion: 0.13
+Nodes (10): Split normalized name into alphanumeric tokens for FTS5 queries., Check if a candidate phrase is a generic job poster keyword., Trim and collapse multiple whitespace characters., Produce a normalized string for exact & FTS5 indexing. Examples: "Tata…, add_candidate(), Any, Main entry point: find genuine registered company entity from OCR text. Tests…, Extract meaningful potential company candidate lines/phrases from OCR text.… (+2 more)
 
-### Community 17 - "byok-background-proxy.js"
-Cohesion: 0.06
-Nodes (70): claude_extsnhion_assets_service_worker_ts_qx93vbt4, aiDecideAndExecuteJob(), broadcastBatchStatus(), callActiveAIModel(), callCloudflareAPI(), callCohereAPI(), callGeminiAPI(), callGroqAPI() (+62 more)
+### Community 17 - "all_career_auto_apply.js"
+Cohesion: 0.07
+Nodes (43): detectJobPortalName(), escapeHtml(), getVisibleJobsFromPage(), handleBatchProgress(), init(), injectDOMModals(), loadHistoryFromStorage(), onHudCloseClick() (+35 more)
 
-### Community 18 - "getHue"
-Cohesion: 0.24
-Nodes (16): darken(), getHSLSaturation(), getHSVSaturation(), getHue(), getLightness(), getMax(), getMin(), getSaturation() (+8 more)
+### Community 18 - "startDrawing"
+Cohesion: 0.07
+Nodes (41): _addDrawingListeners(), addPoints(), cleanUndoStack(), createDrawerInstance(), defaultProperties(), defaultSVGProperties(), draw(), _drawMove() (+33 more)
 
 ### Community 19 - "scrape_google_walkin_images.py"
 Cohesion: 0.06
-Nodes (50): aiohttp, ClientSession, check_and_reset_monthly_cycle(), download_flyer_buffer(), fetch_flyer_items_via_hasdata_sync(), get_hasdata_keys(), get_next_hasdata_key(), init_not_extracted_files() (+42 more)
+Nodes (49): aiohttp, ClientSession, check_and_reset_monthly_cycle(), download_flyer_buffer(), fetch_flyer_items_via_hasdata_sync(), get_hasdata_keys(), get_next_hasdata_key(), init_not_extracted_files() (+41 more)
 
-### Community 20 - "importer.py"
-Cohesion: 0.11
-Nodes (20): contextlib, hashlib, Configuration for ALL_CAREER High-Performance Job Database Module., High-Performance SQLite Connection and Transaction Manager for ALL_CAREER., compute_job_hash(), normalize_string_for_hash(), Any, Deterministic Job Hashing and Deduplication Module. (+12 more)
+### Community 20 - "types/index.ts"
+Cohesion: 0.08
+Nodes (56): homeFaqJsonLd, metadata, metadata, CompanyCard(), CompanyCardProps, CompanyDetailView(), CompanyDetailViewProps, FAANG_SLUGS (+48 more)
 
 ### Community 21 - "scrape_alljobs2.py"
-Cohesion: 0.07
+Cohesion: 0.08
 Nodes (38): _clean_walkin_text(), extract_experience(), extract_skills(), extract_walkin_info(), Search text for technical and non-technical skills from SKILLS_DICT. Returns a…, Extract walk-in status, interview dates, and timings from job data. Returns:…, Replace English word-numbers (zero–thirty) with their digit equivalents. Also…, Extract experience requirements from job description (and optionally title).… (+30 more)
 
-### Community 22 - "bind"
-Cohesion: 0.05
-Nodes (44): addNativeFontFace(), Aj(), ak(), bb(), bind(), Bm(), ck(), createFontFaceRule() (+36 more)
+### Community 22 - "Uu"
+Cohesion: 0.24
+Nodes (15): al(), componentDidMount(), hl(), il(), jp(), Lu(), Pp(), t() (+7 more)
 
-### Community 23 - "re"
+### Community 23 - "storage.py"
 Cohesion: 0.08
-Nodes (45): # NOTE: Previously removed LinkedIn/Naukri/Shine/Indeed jobs here., run_pipeline(), collections, glob, re, Remove LinkedIn Jobs — strips all LinkedIn-sourced jobs from all_jobs_*.json…, run(), classify_job() (+37 more)
+Nodes (44): # NOTE: Previously removed LinkedIn/Naukri/Shine/Indeed jobs here., run_pipeline(), collections, glob, Remove LinkedIn Jobs — strips all LinkedIn-sourced jobs from all_jobs_*.json…, run(), classify_job(), Classify a job into a role category. Returns: (role_category, confidence) (+36 more)
 
-### Community 24 - "wd"
-Cohesion: 0.07
-Nodes (52): Wt(), an(), ar(), at(), Bn(), cn(), cr(), dn() (+44 more)
+### Community 24 - "t"
+Cohesion: 0.05
+Nodes (71): an(), ar(), bd(), Bn(), cn(), componentWillUnmount(), cr(), dn() (+63 more)
 
-### Community 25 - "time"
-Cohesion: 0.06
-Nodes (38): csv, curl_cffi, jobspy, pandas, cleanup_old_jobs(), get_total_jobs(), is_linkedin_block(), DIRECT LINKS SCRAPER — GitHub Actions Version Scrapes 150 top companies via… (+30 more)
+### Community 25 - "step2_get_links.py"
+Cohesion: 0.09
+Nodes (25): jobspy, pandas, generate_html(), main(), Scrape 100 software jobs from LinkedIn + Indeed via JobSpy → Store in Turso →…, Generate premium styled HTML page., Execute SQL via Turso HTTP API., Create daily_jobs table. (+17 more)
 
 ### Community 26 - "Event"
 Cohesion: 0.04
@@ -492,29 +444,29 @@ Nodes (45): locs, acharapakkam, akurdi, amaravati, ambala, amritsar, banur, bela
 Cohesion: 0.18
 Nodes (3): EventTarget, MessagePort, WorkerGlobalScope
 
-### Community 29 - "zt"
-Cohesion: 0.10
-Nodes (28): ao(), cn(), co(), Do(), Fo(), Gt(), ht(), io() (+20 more)
+### Community 29 - "LeetMap-Pro-main/package.json"
+Cohesion: 0.06
+Nodes (33): eslintConfig, dependencies, @clerk/nextjs, lucide-react, next, react, react-dom, sonner (+25 more)
 
-### Community 30 - "ui"
-Cohesion: 0.13
-Nodes (33): Ae(), Be(), C(), D(), di(), E(), er(), Fe() (+25 more)
+### Community 30 - "bind"
+Cohesion: 0.04
+Nodes (55): addNativeFontFace(), ag(), Aj(), ak(), bb(), bg(), bind(), Bm() (+47 more)
 
-### Community 31 - "remove"
-Cohesion: 0.12
-Nodes (17): attach(), changeParent(), commentText(), deleteId(), detach(), findNewParent(), insertRule(), makeResizable() (+9 more)
+### Community 31 - "progress.ts"
+Cohesion: 0.09
+Nodes (39): ActivityTracker(), ActivityTrackerProps, CalendarDay, DISPLAY_YEARS, formatDayLabel(), getGitHubCellColor(), toLocalDateString(), CalendarDay (+31 more)
 
-### Community 32 - "custom-options.js"
-Cohesion: 0.11
-Nodes (34): addFormFetchedModels, attachEvents(), byokConfig, chatHistoryList, customAnswers, DEFAULT_PROFILE, escapeHtml(), getCategoryBadge() (+26 more)
+### Community 32 - "all-career-app/package.json"
+Cohesion: 0.06
+Nodes (29): dependencies, clsx, framer-motion, lucide-react, react, react-dom, devDependencies, @types/react (+21 more)
 
 ### Community 33 - "package.json"
-Cohesion: 0.06
-Nodes (32): BIG_JOBS_DATA_FILE, BIG_JOBS_FILE, fs, path, fs, JOBS_DATA_FILE, JOBS_FILE, path (+24 more)
+Cohesion: 0.09
+Nodes (23): COMPANIES, puppeteer, scrapeHCLTech(), scrapeJobs(), dependencies, puppeteer, puppeteer-extra, puppeteer-extra-plugin-stealth (+15 more)
 
-### Community 34 - "ImageToJobPipeline"
-Cohesion: 0.11
-Nodes (14): DuplicateTracker, ImageHasher, Perceptual Image Hashing and Deduplication. Uses pHash, dHash, and MD5 for…, Compute perceptual hash (pHash), difference hash (dHash), and MD5. Accepts file…, Compare two perceptual hash strings using Hamming distance. If distance <=…, In-memory and persistent tracker for seen poster images., Returns True if duplicate, False if unique (and adds to tracker)., ImageValidator (+6 more)
+### Community 34 - "Hr"
+Cohesion: 0.13
+Nodes (31): ar(), br(), cr(), dr(), Er(), fetch(), fr(), Gr() (+23 more)
 
 ### Community 35 - "sources"
 Cohesion: 0.06
@@ -522,115 +474,111 @@ Nodes (37): sources, locs, total, sources, locs, total, locs, total (+29 more)
 
 ### Community 36 - "leetcode-api/package.json"
 Cohesion: 0.07
-Nodes (22): devDependencies, @cloudflare/vitest-pool-workers, @types/node, typescript, vitest, wrangler, wrangler, name (+14 more)
+Nodes (22): devDependencies, @cloudflare/vitest-pool-workers, @types/node, typescript, vitest, wrangler, @types/node, typescript (+14 more)
 
-### Community 37 - "claude extsnhion/manifest.json"
+### Community 37 - "progress/route.ts"
+Cohesion: 0.12
+Nodes (29): acquireDistributedSyncLock(), execFileAsync, lastSyncByUser, POST(), readBlobTimestamp(), releaseDistributedSyncLock(), SyncTimestamp, DELETE() (+21 more)
+
+### Community 38 - "ImageToJobPipeline"
 Cohesion: 0.06
-Nodes (35): action, default_popup, default_title, background, service_worker, type, commands, toggle-side-panel (+27 more)
+Nodes (26): AIVerifier, Any, Runs multimodal AI verification when API keys are available and merges with…, Encode image to base64 string., Verify poster image using Gemini 2.5 Flash Vision., Check if flyer is from a previous year (e.g. 2025, 2024, 2023). Returns:…, DuplicateTracker, ImageHasher (+18 more)
 
-### Community 38 - "pipeline.py"
-Cohesion: 0.16
-Nodes (21): BaseModel, AIVerifier, Multimodal AI Verifier and Fallback Module. Invoked ONLY for candidate job…, Runs multimodal AI verification when API keys are available and merges with…, Configuration and settings for ALL_CAREER Image-to-Job Extraction Pipeline., Multi-signal Company Detection for Job Flyers. Does NOT assume unknown words…, Deterministic Date and Time Detector for Walk-in & Recruitment Posters.…, Role detector that integrates with the hierarchical RoleTaxonomy. (+13 more)
-
-### Community 39 - ".process_image"
-Cohesion: 0.09
-Nodes (13): DateTimeDetector, Any, Check if flyer is from a previous year (e.g. 2025, 2024, 2023). Returns:…, Detect both date and time from text., Extract start and end time window., Extract start date and optional end date. Returns: (start_date_str,…, Check if flyer references foreign / Gulf / Middle East locations., Extract all matching roles from OCR text. (+5 more)
+### Community 39 - "fc"
+Cohesion: 0.07
+Nodes (68): W(), Ai(), A(), o(), C(), cf(), D(), E() (+60 more)
 
 ### Community 40 - "scrape_telegram_jobs.py"
 Cohesion: 0.08
 Nodes (33): extract_job_data(), get_mime_type(), load_gemini_keys(), load_keys_from_env(), Unified AI Extraction Engine for Job Scraping Pipeline Supports: 1. Mistral API…, Unified extraction calling Mistral -> Gemini Native -> OpenRouter. Returns:…, repair_json(), asyncio (+25 more)
 
-### Community 41 - "ic"
-Cohesion: 0.17
-Nodes (31): Au(), ef(), Gz(), ic(), Iu(), je(), nc(), ng() (+23 more)
+### Community 41 - "sync-data.py"
+Cohesion: 0.19
+Nodes (27): build_global_sql_dataset(), build_neetcode_company(), extract_slug_from_link(), fetch_commit_sha(), fetch_curated_domains(), fetch_leetcode_daily_challenge(), fetch_leetcode_official_company_tags(), fetch_leetcode_official_problem_ids() (+19 more)
 
 ### Community 42 - "e"
-Cohesion: 0.07
-Nodes (40): al(), ap(), bp(), componentDidMount(), ep(), fp(), t(), getLuminance() (+32 more)
+Cohesion: 0.09
+Nodes (25): Bx(), i(), ce(), fp(), t(), getLuminance(), p(), Jv() (+17 more)
 
 ### Community 43 - "scrape_new_companies.py"
 Cohesion: 0.11
 Nodes (32): clean(), jobspy_fallback(), New Company Scrapers — SEPARATE file from scrape_all_companies_v2.py Companies:…, Same Phenom People API as Qualcomm, different domain., HTML SSR: parse article.article--result, paginate via folderOffset., Clean whitespace and HTML tags from text., Workday POST API with offset pagination., Parse JSON safely, handling BOM and encoding issues on Linux. (+24 more)
 
-### Community 44 - "startDrawing"
-Cohesion: 0.11
-Nodes (23): addPoints(), cleanUndoStack(), createDrawerInstance(), _drawMove(), _endDraw(), endDrawing(), _endDrawingSession(), _getDrawingTarget() (+15 more)
+### Community 44 - "ref_react"
+Cohesion: 0.04
+Nodes (64): App(), getInitialView(), ViewType, BigCompanyView(), BigCompanyViewProps, LOCATION_OPTIONS, SORT_OPTIONS, TYPE_OPTIONS (+56 more)
 
-### Community 45 - "datetime"
-Cohesion: 0.10
-Nodes (14): datetime, generate_synthetic_job_batch(), main(), Comprehensive 500,000+ Job Performance Benchmark Suite for ALL_CAREER. Measures…, Run benchmark query multiple times and compute median, p95, p99., Generate realistic synthetic job records., run_latency_test(), JobImporter (+6 more)
-
-### Community 46 - "GIF"
+### Community 45 - "AllJobsView.tsx"
 Cohesion: 0.16
-Nodes (7): EventEmitter(), GIF(), isFunction(), isNumber(), isObject(), isUndefined(), s()
+Nodes (19): AllJobsTopNav(), AllJobsTopNavProps, AllJobsView(), AllJobsViewProps, CategoryCountPills(), CategoryCountPillsProps, JobCard, JobCardProps (+11 more)
 
-### Community 47 - "bn"
-Cohesion: 0.22
-Nodes (9): an(), bn(), nn(), opGet(), opUpdate(), Pn(), Vn(), Xn() (+1 more)
+### Community 46 - "server-user.ts"
+Cohesion: 0.14
+Nodes (19): dynamic, escapeXml(), GET(), getPrepLevel(), dynamic, GET(), revalidate, UserStorageData (+11 more)
 
-### Community 48 - "location_detector.py"
-Cohesion: 0.13
-Nodes (12): Location detector for Indian job flyers. Extracts canonical city, state,…, LocationTaxonomyResolver, Hierarchical Indian Location Taxonomy. Maps 50+ major Indian cities, states,…, Resolves raw text or locality names to canonical Indian cities/states., Scan text for matching canonical city, aliases, or locality names. Returns:…, Hierarchical Role and Occupation Taxonomy (1000+ Job Market Aliases).…, Matches OCR text against 1000+ hierarchical role definitions with priority: 1.…, Check if a phrase matches any role alias in the taxonomy with suffix expansion. (+4 more)
+### Community 48 - "re"
+Cohesion: 0.10
+Nodes (15): Check if flyer references foreign / Gulf / Middle East locations., Extract all matching roles from OCR text., LocationTaxonomyResolver, Hierarchical Indian Location Taxonomy. Maps 50+ major Indian cities, states,…, Resolves raw text or locality names to canonical Indian cities/states., Check if text refers to foreign / Gulf / Middle East locations. Returns:…, Scan text for matching canonical city, aliases, or locality names. Returns:…, Hierarchical Role and Occupation Taxonomy (1000+ Job Market Aliases).… (+7 more)
 
-### Community 49 - "qr_scanner.py"
-Cohesion: 0.08
-Nodes (21): cv2, get_ocr_engine(), OCREngine, ndarray, Multi-pass OCR Engine for Job Posters. Preserves bounding box coordinates,…, Execute multi-pass OCR on: 1. Original image 2. Upscaled 2x (for small text &…, Run OCR on a single image array and normalize coordinates back to original…, ImagePreprocessor (+13 more)
+### Community 49 - "get"
+Cohesion: 0.12
+Nodes (30): ci(), delete(), deleteByPath(), fb(), get(), getAsPrefix(), _getPrivateKey(), _getPublicKeys() (+22 more)
 
-### Community 50 - "getData"
-Cohesion: 0.50
-Nodes (4): commentData(), editorDivPaste(), getData(), updateComment()
+### Community 50 - "render"
+Cohesion: 0.03
+Nodes (92): addHCMFilter(), addLinkAnnotations(), an(), _bindJSAction(), _bindLink(), _bindNamedAction(), _bindResetFormAction(), Bj() (+84 more)
 
-### Community 51 - "OCRBoundingBox"
-Cohesion: 0.15
-Nodes (11): CompanyDetector, Detect company name using multi-signal hierarchy: 1. Email Domain extraction &…, LocationDetector, Extract multi-line venue block from text if explicit venue keyword exists., Detect canonical Indian city, state, locality, PIN code, and venue., OCRMerger, Calculate IoU of two bounding boxes [x1, y1, x2, y2]., Merge overlapping detections from different passes. Preserves higher confidence… (+3 more)
+### Community 51 - "constructor"
+Cohesion: 0.07
+Nodes (35): addHighlightArea(), bezierBoundingBox(), ca(), _callOnProgress(), clearData(), constructor(), _createQuadrilaterals(), da() (+27 more)
 
-### Community 52 - "Pe"
-Cohesion: 0.08
-Nodes (48): Fe(), mt(), bd(), Be(), bu(), cd(), ce(), Cu() (+40 more)
+### Community 52 - "compilerOptions"
+Cohesion: 0.10
+Nodes (19): compilerOptions, allowImportingTsExtensions, baseUrl, isolatedModules, jsx, lib, module, moduleResolution (+11 more)
 
 ### Community 53 - "scrape_all_companies_v2.py"
 Cohesion: 0.05
-Nodes (78): uuid, clean(), detect_and_scrape(), is_india(), main(), _playwright_api_intercept(), handle_response(), Final Master Job Scraper Integrates all discovered direct APIs and Playwright… (+70 more)
+Nodes (79): uuid, clean(), detect_and_scrape(), is_india(), main(), _playwright_api_intercept(), handle_response(), Final Master Job Scraper Integrates all discovered direct APIs and Playwright… (+71 more)
 
-### Community 54 - "render"
+### Community 54 - "company/[slug]/page.tsx"
+Cohesion: 0.20
+Nodes (12): GET(), getAllCanonicalUrls(), isAuthorized(), POST(), submitToIndexNow(), unauthorizedResponse(), CompanyPage(), getCanonicalCompanies() (+4 more)
+
+### Community 55 - "yl"
+Cohesion: 0.48
+Nodes (7): bl(), gl(), vl(), Xi(), xl(), yi(), yl()
+
+### Community 56 - "CompanyDatabase"
 Cohesion: 0.05
-Nodes (49): addFakeAnnotation(), addHCMFilter(), addLinkAnnotations(), _bindJSAction(), _bindLink(), _bindNamedAction(), _bindResetFormAction(), Bj() (+41 more)
+Nodes (47): argparse, DataGovMCAClient, Any, Official data.gov.in MCA Company Master Data API Client. Handles pagination,…, Perform a 10-record diagnostic test to verify connectivity and schema. Never…, Check if API key is present., Fetch a single paginated JSON response from data.gov.in MCA resource. Returns…, Parse and normalize record keys from data.gov.in JSON response. Returns:… (+39 more)
 
-### Community 55 - "Wi"
-Cohesion: 0.17
-Nodes (16): bl(), El(), gl(), kl(), ol(), qi(), Si(), sl() (+8 more)
+### Community 57 - "compilerOptions"
+Cohesion: 0.11
+Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
-### Community 56 - "os"
-Cohesion: 0.04
-Nodes (59): argparse, DataGovMCAClient, Any, Official data.gov.in MCA Company Master Data API Client. Handles pagination,…, Perform a 10-record diagnostic test to verify connectivity and schema. Never…, Check if API key is present., Fetch a single paginated JSON response from data.gov.in MCA resource. Returns…, Parse and normalize record keys from data.gov.in JSON response. Returns:… (+51 more)
+### Community 58 - ".get_connection"
+Cohesion: 0.11
+Nodes (15): Any, Path, Batch upsert records into companies table within a single transaction. Uses CIN…, Ultra-fast O(1) indexed B-Tree lookup for exact normalized company name., Check if query matches a curated brand alias (e.g. 'TCS' -> 'Tata Consultancy…, Query SQLite FTS5 index using prefix matching on normalized tokens. Example:…, Return database statistics (total records, file size, last update)., Create an optimized SQLite connection with WAL mode and fast pragmas, ensuring… (+7 more)
 
-### Community 57 - "t"
-Cohesion: 0.13
-Nodes (24): ci(), Co(), dg(), Gr(), hc(), iN(), ja(), Jr() (+16 more)
-
-### Community 58 - "deserialize"
-Cohesion: 0.18
-Nodes (15): addMissingCanvas(), build(), buildFocusOutline(), deserialize(), deserializeDraw(), getFromCanvas(), getNewOutline(), getOutlines() (+7 more)
-
-### Community 59 - "claude extsnhion/content.js"
-Cohesion: 0.10
-Nodes (37): actionText(), chooseAndAdvance(), chooseCandidate(), clickAndWaitForProgress(), deadEnd(), dispatchClick(), dn(), evaluatePageWithAI() (+29 more)
+### Community 59 - "ingestion/deduplicator.py"
+Cohesion: 0.14
+Nodes (14): hashlib, JobDeduplicator, normalize_email(), normalize_phone(), normalize_string(), Multi-Layer Job & Poster Flyer Deduplication Engine. Prevents duplicate jobs…, Fast pre-check before running heavy OCR: Returns: (is_duplicate: bool, reason:…, Post-extraction verification before adding to dataset: Returns: (is_duplicate:… (+6 more)
 
 ### Community 60 - "scrape_job_portals.py"
 Cohesion: 0.19
 Nodes (14): cleanup_old_jobs(), _get_scraperapi_key(), load_progress(), main(), _parse_foundit_items(), Parse Foundit middleware API items into job dicts., Try middleware API: plain requests first, then curl_cffi fallback., Fallback: use ScraperAPI proxy to hit the middleware API. (+6 more)
 
-### Community 61 - "i"
-Cohesion: 0.06
-Nodes (70): as(), Av(), bc(), Bi(), bo(), Bx(), ca(), cc() (+62 more)
-
-### Community 62 - "n"
+### Community 61 - "ac"
 Cohesion: 0.16
-Nodes (26): center(), D(), ei(), F(), fixAndSetPosition(), ha(), hideDropdown(), M() (+18 more)
+Nodes (19): ac(), Di(), fr(), gc(), Ii(), jc(), jd(), kc() (+11 more)
 
-### Community 63 - "all_career_auto_apply.js"
-Cohesion: 0.19
-Nodes (23): detectJobPortalName(), escapeHtml(), getVisibleJobsFromPage(), handleBatchProgress(), init(), injectDOMModals(), loadHistoryFromStorage(), onHudCloseClick() (+15 more)
+### Community 62 - "e"
+Cohesion: 0.04
+Nodes (69): Ab(), abort(), _abortOperatorList(), _abortRequest(), al(), av(), cancel(), cancelAllRequests() (+61 more)
+
+### Community 63 - "PatternsHubClient.tsx"
+Cohesion: 0.13
+Nodes (17): metadata, ICON_MAP, PatternCard(), PatternCardProps, EDGES, GraphEdge, GraphNode, NODES (+9 more)
 
 ### Community 64 - "locs"
 Cohesion: 0.08
@@ -652,73 +600,69 @@ Nodes (23): locs, total, locs, total, locs, total, locs, total (+15 more)
 Cohesion: 0.13
 Nodes (20): get_jobs(), hub(), jobs_page(), Flask web server for ALL_CAREER. Serves the web UI, hub pages, and API…, Serve the main ALL_CAREER hub page., Serve the Top Companys sub-menu page., Serve any file from the ALL_CAREER directory., Return jobs from CSV as JSON. (+12 more)
 
-### Community 69 - ".normalize_name"
-Cohesion: 0.06
-Nodes (25): Any, Path, Batch upsert records into companies table within a single transaction. Uses CIN…, Ultra-fast O(1) indexed B-Tree lookup for exact normalized company name., Check if query matches a curated brand alias (e.g. 'TCS' -> 'Tata Consultancy…, Query SQLite FTS5 index using prefix matching on normalized tokens. Example:…, Return database statistics (total records, file size, last update)., Create an optimized SQLite connection with WAL mode and fast pragmas, ensuring… (+17 more)
+### Community 69 - "getHue"
+Cohesion: 0.13
+Nodes (25): addFakeAnnotation(), commentButtonPositionInPage(), createOrUpdatePopup(), _createPopup(), darken(), getHSLSaturation(), getHSVSaturation(), getHue() (+17 more)
 
 ### Community 70 - "locs"
 Cohesion: 0.16
 Nodes (22): locs, locs, ahmedabad, ahmednagar, anywhere_in_india_multiple_locations, chandigarh, coimbatore, delhi (+14 more)
 
 ### Community 71 - "axialAlignedBoundingBox"
-Cohesion: 0.18
-Nodes (22): applyTransferMapsToBitmap(), applyTransferMapsToCanvas(), axialAlignedBoundingBox(), compose(), constructPath(), endGroup(), getObject(), paintImageMaskXObject() (+14 more)
+Cohesion: 0.17
+Nodes (23): applyTransferMapsToBitmap(), applyTransferMapsToCanvas(), axialAlignedBoundingBox(), compose(), constructPath(), _createMaskCanvas(), endGroup(), getObject() (+15 more)
 
-### Community 72 - "wi"
-Cohesion: 0.20
-Nodes (20): bi(), de(), dt(), ge(), qn(), a(), c(), d() (+12 more)
+### Community 72 - "LeetMap Pro — Free Company-Wise LeetCode & SQL Interview Questions"
+Cohesion: 0.13
+Nodes (14): 1. Clone & Install, 2. Fetch Latest Problem Data, 3. Start Development Server, 4. Build for Production, 🔄 API Routes, 🏗 Architecture & Data Pipeline, 🌐 Explore Live Hubs, ⚡ Features (+6 more)
 
-### Community 73 - "recorder.js"
-Cohesion: 0.19
-Nodes (20): ACTION_BADGES, ACTION_COLORS, escapeHtml(), getNextDefaultWorkflowName(), INSTRUCTIONS, loadWorkflowData(), populateRecorderResumes(), renderStepsList() (+12 more)
+### Community 73 - "QueryLRUCache"
+Cohesion: 0.14
+Nodes (7): Any, QueryLRUCache, In-memory thread-safe TTL LRU cache for high-frequency filter queries., Execute high-performance indexed search with keyset pagination & total job…, Return EXPLAIN QUERY PLAN analysis string for index inspection., Resolve string names to integer IDs using O(1) in-memory dictionaries., Build index-optimized SQL queries using pre-resolved integer IDs. Returns:…
 
 ### Community 74 - "locs"
 Cohesion: 0.10
 Nodes (21): locs, dl, gj, gujarat, haryana, hr, ka, karnataka (+13 more)
 
-### Community 75 - "disable"
-Cohesion: 0.12
-Nodes (25): addLayer(), addOrRebuild(), disable(), enable(), enableEditing(), Fe(), findClonesForPage(), getEditableAnnotation() (+17 more)
-
-### Community 76 - "qo"
-Cohesion: 0.09
-Nodes (36): ac(), bs(), clone(), Di(), Do(), Ii(), jc(), jd() (+28 more)
-
-### Community 77 - "ingestion/deduplicator.py"
+### Community 75 - "TimeComplexityGuide.tsx"
 Cohesion: 0.14
-Nodes (14): JobDeduplicator, normalize_email(), normalize_phone(), normalize_string(), Multi-Layer Job & Poster Flyer Deduplication Engine. Prevents duplicate jobs…, Fast pre-check before running heavy OCR: Returns: (is_duplicate: bool, reason:…, Post-extraction verification before adding to dataset: Returns: (is_duplicate:…, Register newly verified job into deduplicator state. (+6 more)
+Nodes (4): articleJsonLd, breadcrumbJsonLd, metadata, TimeComplexityGuide()
+
+### Community 76 - "scrape_indeed_permanent.py"
+Cohesion: 0.13
+Nodes (11): main(), scrape_google_jobs(), setup_db(), turso_execute(), extract_jk(), generate_html(), Indeed Job Scraper with Permanent Links (Playwright) Scrapes Indeed India using…, Scrape Indeed India for a specific role + location using Playwright. (+3 more)
+
+### Community 77 - "json"
+Cohesion: 0.06
+Nodes (19): analyze_leetcode_dataset(), Scans all company-wise CSV files in the folder, extracts all question IDs,…, analyze_leetmap_pro(), Scans all company-wise JSON files in LeetMap-Pro-main/public/data/companies,…, cleanup_walking_field(), Cleanup script: Remove walking_interview field from all stored job JSON files.…, Remove walking_interview key from every job in all_jobs_*.json and…, csv (+11 more)
 
 ### Community 79 - "scrape_job_portals_2.py"
 Cohesion: 0.18
 Nodes (19): cleanup_old_jobs(), close_playwright(), init_playwright(), load_progress(), main(), parse_date_posted(), Scrape TimesJobs via their internal JSON API (no Playwright needed). API: POST…, Scrape Hirist via their internal JSON API (no Playwright needed). API: GET… (+11 more)
 
-### Community 80 - "focus"
-Cohesion: 0.10
-Nodes (21): ae(), combinedSignal(), focus(), focusButton(), g_(), getFromBlob(), getFromFile(), getFromId() (+13 more)
+### Community 80 - "add"
+Cohesion: 0.03
+Nodes (126): add(), addEditor(), addLayer(), addMissingCanvas(), addNewEditorFromKeyboard(), addOrRebuild(), _addOutlines(), addToAnnotationStorage() (+118 more)
 
-### Community 81 - "e"
-Cohesion: 0.11
-Nodes (20): Ab(), cg(), doBatch(), es(), fromSerializable(), getLuminance(), e(), hy() (+12 more)
+### Community 81 - "n"
+Cohesion: 0.04
+Nodes (252): Aa(), Ao(), ap(), at(), Au(), Fe(), mt(), Ax() (+244 more)
 
-### Community 82 - "cc"
-Cohesion: 0.10
-Nodes (37): fi(), Am(), bc(), Bi(), t(), cc(), Dw(), ea() (+29 more)
+### Community 82 - "next"
+Cohesion: 0.04
+Nodes (32): nextConfig, metadata, leetcode_api_leetmap_pro_main_src_app_globals, jsonLd, metadata, viewport, PageProps, SLUG_ALIASES (+24 more)
 
 ### Community 83 - "TransformStream"
 Cohesion: 0.10
 Nodes (7): CompressionStream, DecompressionStream, FixedLengthStream, IdentityTransformStream, TextDecoderStream, TextEncoderStream, TransformStream
 
-### Community 84 - "Uu"
-Cohesion: 0.18
-Nodes (19): al(), componentDidMount(), gc(), hl(), il(), jp(), mf(), ml() (+11 more)
+### Community 84 - "JobDatabase"
+Cohesion: 0.20
+Nodes (8): Connection, JobDatabase, Any, Optimize FTS5 index, run ANALYZE, and checkpoint WAL log., Return total counts and file metrics., Create an optimized connection with WAL mode and fast pragmas., Initialize database schema, indexes, and triggers., Preload ID lookups for companies, locations, roles, and sources.
 
-### Community 85 - "store_to_turso.py"
-Cohesion: 0.24
-Nodes (12): create_table(), get_google_jobs(), main(), Scrape Google jobs with direct apply links and store in Turso database. Uses…, Store jobs in Turso database., Query Turso to verify stored data., Execute SQL statements via Turso HTTP API pipeline., Create the jobs table in Turso if it doesn't exist. (+4 more)
-
-### Community 86 - "constructor"
-Cohesion: 0.14
-Nodes (14): addHighlightArea(), constructor(), _createQuadrilaterals(), da(), define(), fromHexString(), fromHsl(), fromHslString() (+6 more)
+### Community 85 - "signal_detector.py"
+Cohesion: 0.27
+Nodes (5): JobSignalDetector, High-Recall Job and Hiring Signal Detector. Evaluates OCR text using a weighted…, Calculates cumulative weighted score for the OCR text. Returns:…, Unit tests for Job Signal Detector., TestJobSignals
 
 ### Community 88 - "compilerOptions"
 Cohesion: 0.11
@@ -728,65 +672,61 @@ Nodes (18): compilerOptions, allowJs, allowSyntheticDefaultImports, checkJs, for
 Cohesion: 0.15
 Nodes (18): diagnose_environment(), Glassdoor Scraping Test Script — tries EVERY method and logs diagnostics. Run…, Method 1: Plain requests → GraphQL API with .co.in domain., Method 2: Plain requests → GraphQL API with .com domain., Method 3: Fetch a fresh CSRF token first, then GraphQL., Method 4: curl_cffi with TLS impersonation., Method 5: ScraperAPI proxy → GraphQL API., Method 6: ScraperAPI URL mode → GraphQL (as GET with encoded URL). (+10 more)
 
-### Community 90 - "st"
+### Community 90 - "Findings by priority"
+Cohesion: 0.17
+Nodes (11): Audit matrix, Executive summary, External configuration, Findings by priority, High: Google index selection backlog, LeetMap Pro SEO Audit, Limitations, Low: third-party JavaScript (+3 more)
+
+### Community 91 - "datetime"
+Cohesion: 0.33
+Nodes (6): datetime, clean_time_and_noise(), extract_walkin_date_from_text(), get_job_walkin_dates(), parse_walkin_dates(), test()
+
+### Community 92 - "AllJobsPage.tsx"
 Cohesion: 0.18
-Nodes (17): af(), df(), Di(), Et(), ff(), jf(), lf(), og() (+9 more)
-
-### Community 91 - "updateProperties"
-Cohesion: 0.21
-Nodes (15): _addOutlines(), addSignature(), finalizeDraw(), getDefaultDrawingOptions(), _mergeSVGProperties(), _onResized(), _onResizing(), onScaleChanging() (+7 more)
-
-### Community 92 - "JobDatabase"
-Cohesion: 0.20
-Nodes (8): Connection, JobDatabase, Any, Optimize FTS5 index, run ANALYZE, and checkpoint WAL log., Return total counts and file metrics., Create an optimized connection with WAL mode and fast pragmas., Initialize database schema, indexes, and triggers., Preload ID lookups for companies, locations, roles, and sources.
+Nodes (10): CategoryBar(), CategoryBarProps, FilterSidebar(), FilterSidebarProps, Pagination(), PaginationProps, bridgeService, FilterState (+2 more)
 
 ### Community 93 - "setGState"
-Cohesion: 0.14
-Nodes (17): _bakeSMaskCanvas(), beginSMaskMode(), checkSMaskState(), _clearPreparedSMask(), endSMaskMode(), _ensurePreparedSMask(), _prepareSMaskCanvas(), recordSimpleDataFromNamed() (+9 more)
+Cohesion: 0.16
+Nodes (15): beginSMaskMode(), checkSMaskState(), _clearPreparedSMask(), endSMaskMode(), _ensurePreparedSMask(), recordSimpleDataFromNamed(), setDash(), setFlatness() (+7 more)
 
 ### Community 94 - "app.js"
 Cohesion: 0.22
 Nodes (16): allJobs, createJobCard(), escapeHtml(), extractCity(), fetchJobs(), filteredJobs, filterJobs(), formatDate() (+8 more)
 
-### Community 95 - "add"
-Cohesion: 0.14
-Nodes (18): add(), addAltText(), addButton(), addColorPicker(), addDeleteButton(), _addDrawingListeners(), addEditSignatureButton(), BP() (+10 more)
-
-### Community 96 - "me"
-Cohesion: 0.13
-Nodes (18): addEditor(), addToAnnotationStorage(), addUndoableEditor(), clonePage(), de(), deleteAnnotationElement(), deletePage(), Ge() (+10 more)
+### Community 96 - "build_final_initial_jobs.py"
+Cohesion: 0.39
+Nodes (5): clean_time_and_noise(), extract_walkin_date_from_text(), get_job_walkin_dates(), main(), parse_walkin_dates()
 
 ### Community 97 - "step3_big_company_scrape.py"
-Cohesion: 0.20
-Nodes (14): clean_old_jobs(), get_date_stamp(), is_blocked(), is_time_limit_approaching(), load_progress(), STEP 3: Big Company Job Scraper (150 Top Companies) Uses JobSpy to scrape…, Remove jobs older than KEEP_DAYS days., Save jobs directly to local workday_scraper/big_company_jobs.json file. (+6 more)
+Cohesion: 0.22
+Nodes (13): clean_old_jobs(), get_date_stamp(), is_blocked(), is_time_limit_approaching(), load_progress(), STEP 3: Big Company Job Scraper (150 Top Companies) Uses JobSpy to scrape…, Remove jobs older than KEEP_DAYS days., Save jobs directly to local workday_scraper/big_company_jobs.json file. (+5 more)
 
-### Community 99 - "o"
-Cohesion: 0.12
-Nodes (29): Ao(), bs(), Cw(), Do(), editorDivKeydown(), ek(), exec(), fo() (+21 more)
+### Community 99 - "importer.py"
+Cohesion: 0.14
+Nodes (15): Configuration for ALL_CAREER High-Performance Job Database Module., compute_job_hash(), normalize_string_for_hash(), Any, Deterministic Job Hashing and Deduplication Module., Lowercase and strip whitespace/punctuation for hashing., Generate a deterministic, stable 32-character MD5 hash for a job posting. Uses:…, parse_experience_range() (+7 more)
 
 ### Community 100 - "fill"
-Cohesion: 0.18
-Nodes (14): canSkipPatternCanvas(), closeEOFillStroke(), closeFillStroke(), closeStroke(), consumePath(), eoFill(), eoFillStroke(), fill() (+6 more)
-
-### Community 102 - "addEditToolbar"
-Cohesion: 0.14
-Nodes (14): addCommentButton(), addCommentButtonInToolbar(), addEditToolbar(), addStandaloneCommentButton(), comment(), commentButtonColor(), convert(), description() (+6 more)
-
-### Community 103 - "a"
 Cohesion: 0.16
-Nodes (25): bo(), clone(), E(), Eo(), Fi(), go(), H(), ho() (+17 more)
+Nodes (16): canSkipPatternCanvas(), closeEOFillStroke(), closeFillStroke(), closeStroke(), consumePath(), eoFill(), eoFillStroke(), fill() (+8 more)
 
-### Community 104 - "beginAnnotation"
+### Community 102 - "SEO Action Plan"
 Cohesion: 0.29
-Nodes (7): beginAnnotation(), endPath(), multiplyByDOMMatrix(), paintFormXObjectBegin(), pushBaseTransform(), recordClipBox(), setCharWidthAndBounds()
+Nodes (6): Completed in this remediation, P0 — after deployment, P1 — improve Google’s index selection, P2 — measurement and authority, SEO Action Plan, Success criteria
 
-### Community 105 - "setupMessageHandler"
+### Community 103 - "job_db/database.py"
+Cohesion: 0.16
+Nodes (8): contextlib, High-Performance SQLite Connection and Transaction Manager for ALL_CAREER., Database Schema, B-Tree Indexes, and FTS5 Definitions for ALL_CAREER., JobSearchEngine, High-Performance Search API, Query Planner, and Keyset Paginator for ALL_CAREER., Unit Tests for Keyset/Cursor Pagination and LRU Caching., TestJobPagination, Unit Tests for Job Search Engine (FTS5 + B-Tree Filters & Total Job Count).
+
+### Community 104 - "intersect"
 Cohesion: 0.22
-Nodes (10): clearData(), Cn(), getIR(), on(), t(), pointBoundingBox(), rn(), sendWithPromise() (+2 more)
+Nodes (10): getClippedPathBoundingBox(), getPathBoundingBox(), intersect(), multiplyByDOMMatrix(), pushBaseTransform(), record(), recordClipBox(), setCharWidthAndBounds() (+2 more)
 
-### Community 109 - "updateMode"
-Cohesion: 0.10
-Nodes (24): addNewEditorFromKeyboard(), clearPointerType(), disableClick(), disableTextSelection(), dragOver(), drop(), enableClick(), enableTextSelection() (+16 more)
+### Community 105 - "constructor"
+Cohesion: 0.17
+Nodes (14): Ba(), bf(), constructor(), define(), fromHexString(), fromHsl(), fromHslString(), fromHsv() (+6 more)
+
+### Community 109 - "leetcode-api/leetcode-companywise-interview-questions-master/README.md"
+Cohesion: 0.40
+Nodes (4): Happy LeetCoding. May the force be with you., If you have LeetCode Premium and want to contribute back, Leetcode Companywise Interview Questions, Star History
 
 ### Community 110 - "bangalore"
 Cohesion: 0.17
@@ -796,9 +736,9 @@ Nodes (13): locs, total, locs, all_india, bangalore, chennai, hosr, kulim (+5 mo
 Cohesion: 0.15
 Nodes (13): message_all_india, message_bangalore, message_chennai, message_offshore_india, message_remote, post_all_india, post_bangalore, post_chennai (+5 more)
 
-### Community 112 - "serialize"
+### Community 112 - "companyLogos.ts"
 Cohesion: 0.18
-Nodes (14): addButtonBefore(), addComment(), getHash(), hasBeenModified(), hasInitialVisibility(), hexdigest(), modifiedIds(), renderForToolbar() (+6 more)
+Nodes (11): AllJobsSidebar(), AllJobsSidebarProps, COMPANY_LOGO_MEMO_CACHE, DOMAIN_MAP, formatWalkinDate(), getMonthIdx(), LOCAL_COMPANY_LOGOS, LogoData (+3 more)
 
 ### Community 114 - "Body"
 Cohesion: 0.15
@@ -812,25 +752,25 @@ Nodes (11): extract_indeed_jk(), generate_html(), get_total_jobs(), LinkedIn + I
 Cohesion: 0.04
 Nodes (49): 10. Wipro (SAP SuccessFactors) ✅, 11. Arcesium (Greenhouse) ✅, 12. Juniper Networks / HPE (Phenom) ⚠️ Count only (SSR jobs), 13. Mastercard (Phenom) ⚠️ Count only (SSR jobs), 14. Barclays (SSR HTML) ✅, 15. Fidelity Investments (SSR HTML) ✅, 16. BNY (Oracle HCM) ✅, 17. American Express (Oracle HCM) ✅ (+41 more)
 
-### Community 119 - "s"
-Cohesion: 0.20
-Nodes (10): bezierBoundingBox(), draw(), end(), finish(), loadMeshShader(), Nz(), rectBoundingBox(), s() (+2 more)
+### Community 119 - "R"
+Cohesion: 0.22
+Nodes (13): t(), ei(), jg(), Jr(), Mi(), mr(), ni(), R() (+5 more)
 
 ### Community 120 - "validate"
-Cohesion: 0.26
-Nodes (11): ah(), getType(), getValidationMethod(), lh(), messages(), tg(), uh(), validate() (+3 more)
+Cohesion: 0.39
+Nodes (9): ah(), getType(), getValidationMethod(), messages(), tg(), uh(), validate(), c() (+1 more)
 
-### Community 121 - "isEmpty"
-Cohesion: 0.29
-Nodes (7): editorDivInput(), hasData(), hasSomethingToControl(), isEmpty(), _keyboardManager(), pointerdown(), startDrawingSession()
+### Community 121 - "leetcode-companywise-interview-questions-master/README.md"
+Cohesion: 0.40
+Nodes (4): Happy LeetCoding. May the force be with you., If you have LeetCode Premium and want to contribute back, Leetcode Companywise Interview Questions, Star History
 
-### Community 122 - "createElement"
-Cohesion: 0.06
-Nodes (49): ac(), ag(), bg(), bx(), cm(), createElement(), cv(), dc() (+41 more)
+### Community 122 - "store_to_turso.py"
+Cohesion: 0.24
+Nodes (12): create_table(), get_google_jobs(), main(), Scrape Google jobs with direct apply links and store in Turso database. Uses…, Store jobs in Turso database., Query Turso to verify stored data., Execute SQL statements via Turso HTTP API pipeline., Create the jobs table in Turso if it doesn't exist. (+4 more)
 
-### Community 123 - "detectors/__init__.py"
-Cohesion: 0.26
-Nodes (5): JobSignalDetector, High-Recall Job and Hiring Signal Detector. Evaluates OCR text using a weighted…, Calculates cumulative weighted score for the OCR text. Returns:…, Unit tests for Job Signal Detector., TestJobSignals
+### Community 123 - "JobImporter"
+Cohesion: 0.20
+Nodes (5): JobImporter, Path, Import jobs from a JSON file., Unit Tests for ALL_CAREER Job Database Schema and Deduplication., TestJobDatabase
 
 ### Community 125 - "o"
 Cohesion: 0.26
@@ -840,45 +780,17 @@ Nodes (14): A(), bn(), bt(), f(), en(), er(), H(), K() (+6 more)
 Cohesion: 0.11
 Nodes (18): 1. `companies` Table, 1. Test API Connectivity (10-record sanity check), 2. `company_aliases` Table, 2. Download Company Data (Full or State-by-State), 3. `company_search` (SQLite FTS5 Virtual Table), 3. Periodic Incremental Update, 4. Search & OCR Typo Resolution CLI, 🏢 ALL_CAREER — MCA Company Database Module (+10 more)
 
-### Community 127 - "offscreen.js"
-Cohesion: 0.33
-Nodes (10): applyActionIndicators(), drawActionLabel(), drawClickIndicator(), drawDragPath(), drawProgressBar(), drawWatermark(), generateGif(), getAudioContext() (+2 more)
+### Community 127 - "Security Policy"
+Cohesion: 0.50
+Nodes (3): Reporting a Vulnerability, Security Policy, Supported Versions
 
 ### Community 128 - "index/manifest.json"
 Cohesion: 0.18
 Nodes (10): name, total, name, total, generated_at, roles, ai_engineer, backend_developer (+2 more)
 
-### Community 129 - "l"
-Cohesion: 0.20
-Nodes (14): abort(), _abortOperatorList(), _abortRequest(), cancel(), cancelAllRequests(), cleanup(), clearPointerIds(), clearTimeStamp() (+6 more)
-
-### Community 130 - "disableUserSelect"
-Cohesion: 0.40
-Nodes (5): addEditListeners(), disableUserSelect(), removeEditListeners(), setEditingState(), setUpDragSession()
-
-### Community 131 - ".verify_with_gemini"
-Cohesion: 0.40
-Nodes (3): Any, Encode image to base64 string., Verify poster image using Gemini 2.5 Flash Vision.
-
-### Community 132 - "_pumpOperatorList"
-Cohesion: 0.14
-Nodes (15): _callOnProgress(), _continue(), _enqueue(), getOperatorList(), getTextContent(), getXfa(), growOperationsCount(), operatorListChanged() (+7 more)
-
-### Community 133 - "dp"
-Cohesion: 0.16
-Nodes (19): Aa(), ap(), bf(), dp(), ep(), fetch(), Ft(), it() (+11 more)
-
-### Community 135 - "restore"
-Cohesion: 0.40
-Nodes (10): _applySMaskOOBAlpha(), beginGroup(), clip(), composeSMask(), genericComposeSMask(), getScaleForStroking(), paintFormXObjectEnd(), rescaleAndStroke() (+2 more)
-
 ### Community 136 - "getPattern"
-Cohesion: 0.18
-Nodes (17): applyTransform(), areConic(), convertToViewportPoint(), _createGradient(), _createReversedGradient(), getClippedPathBoundingBox(), getPathBoundingBox(), getPattern() (+9 more)
-
-### Community 137 - "delete"
-Cohesion: 0.14
-Nodes (15): clear(), commitOrRemove(), copy(), cut(), delete(), deleteByPath(), endCurrentEditing(), focusout() (+7 more)
+Cohesion: 0.21
+Nodes (14): applyTransform(), areConic(), convertToViewportPoint(), create(), _createCanvas(), _createGradient(), _createMeshCanvas(), _createReversedGradient() (+6 more)
 
 ### Community 138 - "f"
 Cohesion: 0.19
@@ -888,45 +800,45 @@ Nodes (14): Dt(), i(), it(), Je(), jn(), lt(), p(), qn() (+6 more)
 Cohesion: 0.24
 Nodes (18): an(), cn(), dn(), f(), fn(), g(), hn(), kn() (+10 more)
 
-### Community 142 - "Ie"
-Cohesion: 0.29
-Nodes (8): ai(), at(), Ei(), Ie(), Pe(), Si(), Tt(), vi()
-
-### Community 143 - "highlightSelection"
+### Community 143 - "BigCompanyJobsView.tsx"
 Cohesion: 0.20
-Nodes (11): addNewEditor(), commentSelection(), createAndAddNewEditor(), edit(), editComment(), getSelectionBoxes(), highlightSelection(), onEditingAction() (+3 more)
+Nodes (9): AuthenticLogoBox(), BIG_COMPANY_CITIES, BIG_COMPANY_ROLES, BigCompanyJob, BigCompanyJobsView(), BigCompanyJobsViewProps, DATE_RANGES, formatDate() (+1 more)
 
-### Community 144 - "drawPattern"
-Cohesion: 0.21
-Nodes (14): clipBbox(), create(), _createCanvas(), _createMeshCanvas(), createPatternCanvas(), _createSVG(), drawPattern(), executeOperatorList() (+6 more)
+### Community 144 - "interactive_image_tester.py"
+Cohesion: 0.27
+Nodes (10): download_image_from_url(), handle_input(), main(), print_banner(), process_single_image(), Path, Interactive CLI Image-to-Job Tester for ALL_CAREER. Extracts Role, MCA-verified…, Download image buffer from URL with realistic browser headers. (+2 more)
 
 ### Community 145 - "ByteLengthQueuingStrategy"
 Cohesion: 0.22
 Nodes (3): ByteLengthQueuingStrategy, CountQueuingStrategy, QueuingStrategy
 
-### Community 151 - "a"
-Cohesion: 0.26
-Nodes (12): a(), addCommands(), onUpdatedColor(), onUpdatedOpacity(), _reportTelemetry(), setA(), toSVGProperties(), _updateColorAndOpacity() (+4 more)
+### Community 151 - "pipeline.py"
+Cohesion: 0.06
+Nodes (52): BaseModel, cv2, Multimodal AI Verifier and Fallback Module. Invoked ONLY for candidate job…, Configuration and settings for ALL_CAREER Image-to-Job Extraction Pipeline., CompanyDetector, Multi-signal Company Detection for Job Flyers. Does NOT assume unknown words…, Detect company name using multi-signal hierarchy: 1. Email Domain extraction &…, DateTimeDetector (+44 more)
 
-### Community 152 - "it"
-Cohesion: 0.20
-Nodes (12): Aa(), bf(), fo(), it(), Kr(), ls(), np(), op() (+4 more)
-
-### Community 153 - "popup.js"
+### Community 152 - "WalkinsPage.tsx"
 Cohesion: 0.29
-Nodes (4): handleGoUrl(), inPageAutoFillScript(), showStatus(), STORAGE_KEYS
+Nodes (6): JobCard(), JobCardProps, WalkinFilterBar(), WalkinFilterBarProps, getCompanyLogoData, getPortalLogo()
 
-### Community 154 - "get"
-Cohesion: 0.12
-Nodes (23): computeTelemetryFinalData(), editorStats(), get(), getAsPrefix(), has(), Hf(), Hn(), initializeGraphics() (+15 more)
+### Community 153 - "Job"
+Cohesion: 0.51
+Nodes (3): jobService, Job, ManifestData
 
-### Community 159 - "scrape_daily_jobs.py"
-Cohesion: 0.26
-Nodes (11): generate_html(), main(), Scrape 100 software jobs from LinkedIn + Indeed via JobSpy → Store in Turso →…, Generate premium styled HTML page., Execute SQL via Turso HTTP API., Create daily_jobs table., Scrape 100 software jobs from LinkedIn + Indeed., scrape_jobs_data() (+3 more)
+### Community 154 - "createElement"
+Cohesion: 0.07
+Nodes (57): ac(), af(), bx(), ce(), ci(), closePath(), cm(), Cn() (+49 more)
+
+### Community 159 - "feed.xml/route.ts"
+Cohesion: 0.29
+Nodes (7): dynamic, GET(), revalidate, dynamic, escapeXml(), GET(), revalidate
 
 ### Community 160 - "company_names_chunks/manifest.json"
 Cohesion: 0.29
 Nodes (6): chunk_count, chunk_size_bytes, chunks, sha256, source_filename, total_size_bytes
+
+### Community 161 - "benchmark.py"
+Cohesion: 0.28
+Nodes (8): generate_synthetic_job_batch(), main(), Comprehensive 500,000+ Job Performance Benchmark Suite for ALL_CAREER. Measures…, Run benchmark query multiple times and compute median, p95, p99., Generate realistic synthetic job records., run_latency_test(), random, statistics
 
 ### Community 162 - "ALL_CAREER"
 Cohesion: 0.15
@@ -936,37 +848,29 @@ Nodes (12): A focused job-discovery hub for direct-company, portal, and communit
 Cohesion: 0.29
 Nodes (6): compilerOptions, types, exclude, extends, include, ../tsconfig.json
 
-### Community 169 - "toSVGPath"
-Cohesion: 0.22
-Nodes (13): defaultProperties(), defaultSVGProperties(), getPathResizedSVGProperties(), getPathResizingSVGProperties(), getPathTranslatedSVGProperties(), oz(), removeLastElement(), _rescale() (+5 more)
+### Community 169 - "app/opengraph-image.tsx"
+Cohesion: 0.40
+Nodes (3): alt, contentType, size
 
 ### Community 170 - "logo3d.js"
 Cohesion: 0.48
 Nodes (5): buildLobedGeometry(), buildLogo(), createLogoShell(), hasWebGL(), mountWireframeLogo()
 
-### Community 171 - "hi"
+### Community 171 - "devDependencies"
+Cohesion: 0.22
+Nodes (9): devDependencies, eslint, eslint-config-next, tailwindcss, @tailwindcss/postcss, @types/node, @types/react, @types/react-dom (+1 more)
+
+### Community 174 - ".detect_date_time"
 Cohesion: 0.33
-Nodes (7): ct(), hi(), In(), Oi(), P(), X(), yi()
+Nodes (3): Any, Detect both date and time from text., Extract start date and optional end date. Returns: (start_date_str,…
 
-### Community 173 - "wa"
-Cohesion: 0.22
-Nodes (4): wa(), d(), n(), u()
+### Community 175 - "restore"
+Cohesion: 0.27
+Nodes (15): _applySMaskOOBAlpha(), beginAnnotation(), beginGroup(), clip(), composeSMask(), endPath(), genericComposeSMask(), getScaleForStroking() (+7 more)
 
-### Community 174 - "Yn"
-Cohesion: 0.22
-Nodes (7): ar(), getPage(), getViewport(), Iz(), Rz(), Vz(), Yn()
-
-### Community 175 - "transform"
-Cohesion: 0.23
-Nodes (14): _createMaskCanvas(), endText(), getOpenMarker(), getSinglePixelWidth(), isFontSubpixelAAEnabled(), paintChar(), recordCloseMarker(), resetBBox() (+6 more)
-
-### Community 182 - "commit"
-Cohesion: 0.24
-Nodes (10): commit(), dblclick(), disableEditing(), disableEditMode(), enableEditMode(), enterInEditMode(), isInEditMode(), keydown() (+2 more)
-
-### Community 183 - "mv"
-Cohesion: 0.18
-Nodes (12): av(), cs(), du(), lv(), mv(), e(), t(), ov() (+4 more)
+### Community 183 - "[[...path]]/route.ts"
+Cohesion: 0.33
+Nodes (5): DELETE, GET, PATCH, POST, PUT
 
 ### Community 185 - "s"
 Cohesion: 0.28
@@ -976,156 +880,52 @@ Nodes (8): E(), Et(), s(), gn(), qt(), s(), _t(), y()
 Cohesion: 0.20
 Nodes (9): devDependencies, wrangler, wrangler, name, private, scripts, deploy, logout (+1 more)
 
-### Community 187 - "ee"
-Cohesion: 0.28
-Nodes (9): dt(), ee(), Hd(), kt(), pt(), i(), t(), ut() (+1 more)
-
-### Community 188 - "ca"
-Cohesion: 0.25
-Nodes (8): ca(), fromRgbString(), mix(), onBackground(), shade(), tint(), toHexString(), yj()
+### Community 187 - "daily-challenge/route.ts"
+Cohesion: 0.60
+Nodes (4): GET(), LeetCodeDailyChallengeResponse, normalizeTimeZone(), parseDailyChallenge()
 
 ### Community 201 - "i"
 Cohesion: 0.50
 Nodes (4): J(), i(), m(), Ut()
 
-### Community 202 - "addHighlightHCMFilter"
-Cohesion: 0.67
-Nodes (4): addHighlightHCMFilter(), addSelectionFilter(), addSelectionHCMFilter(), createSelectionStyle()
-
-### Community 203 - "wc"
-Cohesion: 0.32
-Nodes (8): iv(), c(), r(), s(), nv(), Qd(), Uc(), wc()
-
-### Community 204 - "mlGuessAltText"
-Cohesion: 0.50
-Nodes (4): copyCanvas(), hasAltTextData(), mlGuessAltText(), setGuessedAltText()
-
-### Community 205 - "send"
-Cohesion: 0.40
-Nodes (5): Fj(), Nj(), Pj(), _request(), send()
-
-### Community 206 - "drag"
-Cohesion: 0.50
-Nodes (4): drag(), dragSelectedEditors(), getBaseTranslation(), _onTranslating()
-
 ### Community 207 - "t"
-Cohesion: 0.17
-Nodes (18): at(), ct(), D(), He(), ht(), kt(), n(), nn() (+10 more)
+Cohesion: 0.16
+Nodes (19): at(), ct(), D(), He(), ht(), kt(), n(), nn() (+11 more)
 
 ### Community 227 - "Cloudflare Workers"
 Cohesion: 0.29
 Nodes (6): Cloudflare Workers, Commands, Docs, Errors, Node.js Compatibility, Product Docs
 
-### Community 228 - "endMarkedContent"
-Cohesion: 0.67
-Nodes (3): beginMarkedContentProps(), endMarkedContent(), isContentVisible()
-
-### Community 229 - "eo"
-Cohesion: 0.29
-Nodes (7): bo(), eo(), go(), ho(), wo(), xo(), Ye()
-
-### Community 230 - "bl"
-Cohesion: 0.52
-Nodes (7): bl(), gl(), sl(), vl(), Xi(), xl(), yl()
-
-### Community 231 - "CMYK_HTML"
-Cohesion: 0.67
-Nodes (3): CMYK_HTML(), CMYK_RGB(), RGB_HTML()
-
-### Community 232 - "toggleComment"
-Cohesion: 0.50
-Nodes (4): deleteComment(), getEditorByUID(), selectComment(), toggleComment()
-
-### Community 233 - "createAltText"
-Cohesion: 0.67
-Nodes (3): createAltText(), initialize(), toolbarButtons()
-
-### Community 234 - "isDeleted"
-Cohesion: 0.67
-Nodes (3): data(), hasBeenEdited(), isDeleted()
-
-### Community 235 - "bh"
-Cohesion: 0.67
-Nodes (3): bh(), vh(), yh()
-
-### Community 236 - "toString"
-Cohesion: 0.43
-Nodes (7): cy(), gi(), hexNums(), hi(), i(), mi(), toString()
-
-### Community 237 - "getBrightness"
-Cohesion: 0.67
-Nodes (3): getBrightness(), isDark(), isLight()
-
-### Community 238 - "extractPages"
-Cohesion: 0.67
-Nodes (3): extractPages(), getPageId(), getPageMappingForSaving()
-
-### Community 240 - "qx"
-Cohesion: 0.67
-Nodes (3): qx(), Ux(), Vx()
-
-### Community 241 - "setCommentData"
-Cohesion: 0.67
-Nodes (3): setCommentData(), updateEditor(), updateFromAnnotationLayer()
-
-### Community 242 - "isEditorHandlingKeyboard"
-Cohesion: 0.67
-Nodes (3): getActive(), isEditorHandlingKeyboard(), shouldGetKeyboardEvents()
-
-### Community 243 - "getColorN_Pattern"
-Cohesion: 0.67
-Nodes (3): getColorN_Pattern(), setFillColorN(), setStrokeColorN()
-
 ### Community 245 - "BasicImageTransformations"
 Cohesion: 0.67
 Nodes (3): BasicImageTransformations, RequestInitCfPropertiesImage, RequestInitCfPropertiesImageDraw
 
-### Community 266 - "sz"
-Cohesion: 0.67
-Nodes (3): getFocusSVGProperties(), _rotateBox(), sz()
-
-### Community 267 - "_onTranslated"
-Cohesion: 0.33
-Nodes (6): endDragSession(), _onTranslated(), _setParentAndPosition(), translateInPage(), translateSelectedEditors(), translationDone()
-
-### Community 268 - "setVisibility"
-Cohesion: 0.67
-Nodes (3): setOCGState(), setVisibility(), _setVisible()
-
-### Community 273 - "recordShowTextOperation"
-Cohesion: 0.33
-Nodes (6): moveText(), nextLine(), recordIncrementalData(), recordShowTextOperation(), setLeading(), setLeadingMoveText()
-
-### Community 278 - "Ew"
-Cohesion: 0.50
-Nodes (5): Ew(), Sw(), Tw(), ww(), xw()
+### Community 273 - "showText"
+Cohesion: 0.14
+Nodes (14): endText(), getOpenMarker(), getSinglePixelWidth(), isFontSubpixelAAEnabled(), moveText(), nextLine(), recordCloseMarker(), recordIncrementalData() (+6 more)
 
 ### Community 322 - "20. NatWest Group (Playwright / Browser) ⚠️ Slow"
 Cohesion: 0.50
 Nodes (4): 20. NatWest Group (Playwright / Browser) ⚠️ Slow, Blocked Sites Mitigation Notes:, Global API Rules Updated:, HTML Parsing Selectors Reference (SSR-Locked Sites):
-
-### Community 327 - "processDrawnLines"
-Cohesion: 0.50
-Nodes (4): createBezierPoints(), extractContoursFromText(), process(), processDrawnLines()
 
 ### Community 328 - "b"
 Cohesion: 0.67
 Nodes (3): b(), wt(), zt()
 
 ## Knowledge Gaps
-- **1019 isolated node(s):** `default_title`, `service_worker`, `required`, `id`, `content_scripts` (+1014 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2571 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **148 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1252 isolated node(s):** `default_title`, `service_worker`, `required`, `id`, `content_scripts` (+1247 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2864 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **143 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `URL` connect `URL` to `worker-configuration.d.ts`, `Yn`?**
-  _High betweenness centrality (0.190) - this node is a cross-community bridge._
-- **Why does `Ai()` connect `n` to `sidepanel-BsfCUvXP.js`, `content-scripts/content.js`, `toString`, `URL`, `createElement`?**
-  _High betweenness centrality (0.078) - this node is a cross-community bridge._
-- **Why does `AbortSignal` connect `AbortSignal` to `worker-configuration.d.ts`, `focus`, `EventTarget`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+- **Why does `URL` connect `URL` to `worker-configuration.d.ts`, `Hr`?**
+  _High betweenness centrality (0.199) - this node is a cross-community bridge._
+- **Why does `downloadCsv()` connect `types/index.ts` to `Hr`?**
+  _High betweenness centrality (0.112) - this node is a cross-community bridge._
+- **Why does `Ai()` connect `fc` to `sidepanel-BsfCUvXP.js`, `content.js`, `URL`, `createElement`, `e`?**
+  _High betweenness centrality (0.063) - this node is a cross-community bridge._
 - **Are the 123 inferred relationships involving `n()` (e.g. with `Ab()` and `ac()`) actually correct?**
   _`n()` has 123 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 124 inferred relationships involving `t()` (e.g. with `ac()` and `ad()`) actually correct?**

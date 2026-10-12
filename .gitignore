@@ -25,6 +25,9 @@ desktop.ini
 *.log
 npm-debug.log*
 
+# Archive files
+*.zip
+
 # Batch files (local only)
 run.bat
 START_SCRAPER.bat

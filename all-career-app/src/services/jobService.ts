@@ -1,4 +1,6 @@
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
+import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates } from '../utils/filterUtils';
+import { formatWalkinDate } from '../utils/companyLogos';
 
 export class JobService {
   private manifestData: ManifestData | null = null;
@@ -108,6 +110,44 @@ export class JobService {
       const key = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
       if (!this.allJobsMap.has(key)) {
         r.category = this.classifyRoleCategory(titleStr || r.role || '');
+
+        // Precompute high-speed indexed properties for 0ms filtering & search
+        const dateStr = (r.fetchedAt || r.date || '').slice(0, 10);
+        let daysAgo: number | null = null;
+        if (dateStr) {
+          const jd = new Date(dateStr);
+          if (!isNaN(jd.getTime())) {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            daysAgo = Math.floor((now.getTime() - jd.getTime()) / 86400000);
+          }
+        }
+        r._dateDaysAgo = daysAgo;
+
+        const [minE, maxE] = parseExperience(r.experience);
+        r._minExp = minE;
+        r._maxExp = maxE;
+        r._normSource = srcStr;
+        r._isWalkinJob = isWalkinJob(r);
+        r._normCategory = classifyJobCategory(r);
+
+        const hay = [
+          titleStr,
+          compStr,
+          locStr,
+          r.role_search || '',
+          r.walkin_date || '',
+          r.description || '',
+          (r as any).venue || ''
+        ].filter(Boolean).join(' ').toLowerCase();
+        r._searchHay = hay;
+
+        if (r._isWalkinJob) {
+          r._walkinDatesList = getJobWalkinDates(r).map(d => formatWalkinDate(d)).filter(Boolean);
+        } else {
+          r._walkinDatesList = [];
+        }
+
         this.allJobsMap.set(key, r);
         added++;
       }

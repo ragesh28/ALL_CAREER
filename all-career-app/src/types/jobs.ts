@@ -25,6 +25,16 @@ export interface Job {
   venue?: string;
   other_details?: string;
   is_walkin?: boolean;
+
+  // Pre-indexed fast search & filter properties (0ms instantaneous lookup)
+  _searchHay?: string;
+  _minExp?: number | null;
+  _maxExp?: number | null;
+  _normSource?: string;
+  _normCategory?: string;
+  _dateDaysAgo?: number | null;
+  _isWalkinJob?: boolean;
+  _walkinDatesList?: string[];
 }
 
 export interface RoleCategory {

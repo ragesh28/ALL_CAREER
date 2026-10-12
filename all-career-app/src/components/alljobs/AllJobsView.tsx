@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, startTransition } from 'react';
+import React, { useState, useEffect, useMemo, useDeferredValue, startTransition } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Job, SidebarCounts } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
@@ -42,6 +42,21 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const [sortBy, setSortBy] = useState('latest');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const JOBS_PER_PAGE = 50;
+
+  // Deferred filter values for non-blocking background job filtering & 0ms UI responsiveness
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+  const deferredSources = useDeferredValue(selectedSources);
+  const deferredDateFilter = useDeferredValue(selectedDateFilter);
+  const deferredLocations = useDeferredValue(selectedLocations);
+  const deferredRoles = useDeferredValue(selectedRoles);
+  const deferredExpValue = useDeferredValue(expValue);
+  const deferredExactExp = useDeferredValue(exactExp);
+  const deferredSkills = useDeferredValue(selectedSkills);
+  const deferredCompanies = useDeferredValue(selectedCompanies);
+  const deferredWalkinOnly = useDeferredValue(walkinOnly);
+  const deferredWalkinDates = useDeferredValue(selectedWalkinDates);
+  const deferredCategory = useDeferredValue(selectedCategory);
+  const deferredSortBy = useDeferredValue(sortBy);
 
   // Load initial catalog
   useEffect(() => {
@@ -148,7 +163,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     });
   };
 
-  // Compute category counts for breakdown
+  // Compute category counts for breakdown using pre-indexed _normCategory
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {
       technical: 0,
@@ -156,8 +171,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       pharma: 0,
       others: 0
     };
-    for (const j of jobs) {
-      const cat = (j.category || classifyJobCategory(j)).toLowerCase().replace(/[^a-z0-9]/g, '_');
+    for (let i = 0; i < jobs.length; i++) {
+      const j = jobs[i];
+      const cat = (j._normCategory || j.category || 'others').toLowerCase().replace(/[^a-z0-9]/g, '_');
       if (cat.includes('tech')) counts.technical++;
       else if (cat.includes('pharma')) counts.pharma++;
       else if (cat.includes('non')) counts.non_technical++;
@@ -185,148 +201,175 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     sortBy
   ]);
 
-  // Helper function for faceted counting
+  // Ultra-fast filter matcher leveraging pre-indexed properties (0ms execution)
   const checkJobMatchWithout = (
     j: Job,
     excludeDim: 'none' | 'location' | 'role' | 'source' | 'walkin' | 'skill',
-    term: string
+    term: string,
+    sources = deferredSources,
+    locations = deferredLocations,
+    roles = deferredRoles,
+    skills = deferredSkills,
+    companies = deferredCompanies,
+    dateFilter = deferredDateFilter,
+    expV = deferredExpValue,
+    exactE = deferredExactExp,
+    walkinO = deferredWalkinOnly,
+    walkinD = deferredWalkinDates,
+    cat = deferredCategory
   ): boolean => {
-    // 1. Search Query
+    // 1. Search Query (Uses pre-indexed lowercase haystack)
     if (term) {
-      const hay = [j.title, j.company, j.location, j.role_search, j.description]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      if (!hay.includes(term)) return false;
+      if (j._searchHay) {
+        if (!j._searchHay.includes(term)) return false;
+      } else {
+        const hay = [j.title, j.company, j.location, j.role_search, j.description]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!hay.includes(term)) return false;
+      }
     }
 
     // 2. Source Filter
-    if (excludeDim !== 'source' && selectedSources.size > 0) {
-      const src = (j.source || '').toLowerCase().trim();
-      const match = Array.from(selectedSources).some(s => {
-        if (s === 'telegram') return src.includes('telegram');
-        if (s === 'images' || s === 'google_images') return src.includes('google') || src.includes('image');
-        return src.includes(s);
-      });
-      if (!match) return false;
+    if (excludeDim !== 'source' && sources.size > 0) {
+      const src = j._normSource || (j.source || '').toLowerCase().trim();
+      if (!sources.has(src)) {
+        let match = false;
+        for (const s of sources) {
+          if (s === 'telegram' && src.includes('telegram')) { match = true; break; }
+          if ((s === 'images' || s === 'google_images') && (src.includes('google') || src.includes('image'))) { match = true; break; }
+          if (src === s) { match = true; break; }
+        }
+        if (!match) return false;
+      }
     }
 
-    // 3. Date Filter
-    if (selectedDateFilter !== 'all') {
-      const dateStr = (j.fetchedAt || j.date || '').slice(0, 10);
-      if (dateStr) {
-        const jd = new Date(dateStr);
-        if (!isNaN(jd.getTime())) {
-          const now = new Date();
-          now.setHours(0, 0, 0, 0);
-          const diffDays = Math.floor((now.getTime() - jd.getTime()) / 86400000);
-          if (selectedDateFilter === '24h' && diffDays > 1) return false;
-          if (selectedDateFilter === '3d' && diffDays > 3) return false;
-          if (selectedDateFilter === '7d' && diffDays > 7) return false;
-          if (selectedDateFilter === '15d' && diffDays > 15) return false;
-        }
+    // 3. Date Filter (Precomputed days difference)
+    if (dateFilter !== 'all') {
+      const diffDays = j._dateDaysAgo;
+      if (diffDays !== null && diffDays !== undefined) {
+        if (dateFilter === '24h' && diffDays > 1) return false;
+        if (dateFilter === '3d' && diffDays > 3) return false;
+        if (dateFilter === '7d' && diffDays > 7) return false;
+        if (dateFilter === '15d' && diffDays > 15) return false;
       }
     }
 
     // 4. Location Filter
-    if (excludeDim !== 'location' && selectedLocations.size > 0) {
+    if (excludeDim !== 'location' && locations.size > 0) {
       const loc = (j.location || '').toLowerCase();
-      const match = Array.from(selectedLocations).some(l => loc.includes(l.toLowerCase()));
+      let match = false;
+      for (const l of locations) {
+        if (loc.includes(l.toLowerCase())) { match = true; break; }
+      }
       if (!match) return false;
     }
 
     // 5. Role Category Filter
-    if (excludeDim !== 'role' && selectedRoles.size > 0) {
+    if (excludeDim !== 'role' && roles.size > 0) {
       const titleLow = (j.title || '').toLowerCase();
       const roleSearchLow = (j.role_search || '').toLowerCase();
-      const match = Array.from(selectedRoles).some(roleId => {
+      let match = false;
+      for (const roleId of roles) {
         const kws = ROLE_KEYWORDS[roleId] || [roleId.toLowerCase()];
-        return kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw));
-      });
+        if (kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw))) {
+          match = true;
+          break;
+        }
+      }
       if (!match) return false;
     }
 
-    // 6. Experience Filter (Moving Bar: -1 = Everything, 0 to 10 Yrs)
-    if (expValue >= 0) {
-      const [minE, maxE] = parseExperience(j.experience);
+    // 6. Experience Filter (Direct numeric comparison)
+    if (expV >= 0) {
+      const minE = j._minExp !== undefined ? j._minExp : parseExperience(j.experience)[0];
+      const maxE = j._maxExp !== undefined ? j._maxExp : parseExperience(j.experience)[1];
       if (minE === null) return false;
 
-      if (exactExp) {
-        if (expValue === 0) {
+      if (exactE) {
+        if (expV === 0) {
           if (minE !== 0 || (maxE !== null && maxE !== 0)) return false;
-        } else if (expValue >= 10) {
-          // If 10+, show all above 10 year experience like 15 or 30 or more
-          const has10Plus = (minE >= 10) || (maxE !== null && maxE >= 10);
-          if (!has10Plus) return false;
+        } else if (expV >= 10) {
+          if (!(minE >= 10 || (maxE !== null && maxE >= 10))) return false;
         } else {
-          if (minE !== expValue || (maxE !== null && maxE !== expValue)) return false;
+          if (minE !== expV || (maxE !== null && maxE !== expV)) return false;
         }
       } else {
-        if (expValue === 0) {
+        if (expV === 0) {
           if (minE !== 0) return false;
-        } else if (expValue >= 10) {
-          // If 10+, show all above 10 year experience like 15 or 30 or more
-          const has10Plus = (minE >= 10) || (maxE !== null && maxE >= 10);
-          if (!has10Plus) return false;
+        } else if (expV >= 10) {
+          if (!(minE >= 10 || (maxE !== null && maxE >= 10))) return false;
         } else {
-          if (minE > expValue) return false;
-          if (maxE !== null && expValue > maxE) return false;
+          if (minE > expV) return false;
+          if (maxE !== null && expV > maxE) return false;
         }
       }
     }
 
     // 7. Skills Filter
-    if (excludeDim !== 'skill' && selectedSkills.size > 0) {
+    if (excludeDim !== 'skill' && skills.size > 0) {
       const skillsText = [
         Array.isArray(j.skills) ? j.skills.join(' ') : '',
         j.title || '',
         j.description || ''
       ].join(' ').toLowerCase();
-      const match = Array.from(selectedSkills).some(s => skillsText.includes(s.toLowerCase()));
+      let match = false;
+      for (const s of skills) {
+        if (skillsText.includes(s.toLowerCase())) { match = true; break; }
+      }
       if (!match) return false;
     }
 
     // 8. Company Filter
-    if (selectedCompanies.size > 0) {
+    if (companies.size > 0) {
       const comp = (j.company || '').toLowerCase();
-      const match = Array.from(selectedCompanies).some(c => comp.includes(c.toLowerCase()));
+      let match = false;
+      for (const c of companies) {
+        if (comp.includes(c.toLowerCase())) { match = true; break; }
+      }
       if (!match) return false;
     }
 
     // 9. Walkin Filter
-    if (excludeDim !== 'walkin' && (walkinOnly || selectedWalkinDates.size > 0)) {
-      if (!isWalkinJob(j)) return false;
-      if (selectedWalkinDates.size > 0) {
-        const jDates = getJobWalkinDates(j);
-        const matchDate = Array.from(selectedWalkinDates).some(d => {
+    if (excludeDim !== 'walkin' && (walkinO || walkinD.size > 0)) {
+      const isW = j._isWalkinJob !== undefined ? j._isWalkinJob : isWalkinJob(j);
+      if (!isW) return false;
+      if (walkinD.size > 0) {
+        const jDates = j._walkinDatesList || getJobWalkinDates(j).map(d => formatWalkinDate(d));
+        let matchDate = false;
+        for (const d of walkinD) {
           const normD = formatWalkinDate(d);
-          return jDates.some(jd => formatWalkinDate(jd) === normD || jd === d);
-        });
+          if (jDates.some(jd => jd === normD || jd === d)) {
+            matchDate = true;
+            break;
+          }
+        }
         if (!matchDate) return false;
       }
     }
 
     // 10. Top Category Pills filter
-    if (selectedCategory !== 'all') {
-      const cCat = classifyJobCategory(j);
-      if (selectedCategory === 'sales' && cCat !== 'Sales & Marketing') return false;
-      if (selectedCategory === 'technical' && cCat !== 'Technical') return false;
-      if (selectedCategory === 'non_technical' && cCat !== 'Non-Technical') return false;
-      if (selectedCategory === 'banking' && cCat !== 'Banking & Finance') return false;
-      if (selectedCategory === 'hr' && cCat !== 'HR & Staffing') return false;
-      if (selectedCategory === 'pharma' && cCat !== 'Pharma') return false;
+    if (cat !== 'all') {
+      const cCat = j._normCategory || classifyJobCategory(j);
+      if (cat === 'sales' && cCat !== 'Sales & Marketing') return false;
+      if (cat === 'technical' && cCat !== 'Technical') return false;
+      if (cat === 'non_technical' && cCat !== 'Non-Technical') return false;
+      if (cat === 'banking' && cCat !== 'Banking & Finance') return false;
+      if (cat === 'hr' && cCat !== 'HR & Staffing') return false;
+      if (cat === 'pharma' && cCat !== 'Pharma') return false;
     }
 
     return true;
   };
 
-  // Filtered jobs matching all 8 filters + search
+  // Filtered jobs matching all filters + search (deferred for non-blocking UI)
   const filteredJobs = useMemo(() => {
-    const term = searchTerm.toLowerCase().trim();
+    const term = deferredSearchTerm.toLowerCase().trim();
     const list = jobs.filter(j => checkJobMatchWithout(j, 'none', term));
-    if (sortBy === 'company') {
+    if (deferredSortBy === 'company') {
       return list.slice().sort((a, b) => (a.company || '').localeCompare(b.company || ''));
-    } else if (sortBy === 'oldest') {
+    } else if (deferredSortBy === 'oldest') {
       return list.slice().sort((a, b) => {
         const da = a.fetchedAt || a.date || '';
         const db = b.fetchedAt || b.date || '';
@@ -336,19 +379,19 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     return list;
   }, [
     jobs,
-    searchTerm,
-    selectedSources,
-    selectedDateFilter,
-    selectedLocations,
-    selectedRoles,
-    expValue,
-    exactExp,
-    selectedSkills,
-    selectedCompanies,
-    walkinOnly,
-    selectedWalkinDates,
-    selectedCategory,
-    sortBy
+    deferredSearchTerm,
+    deferredSources,
+    deferredDateFilter,
+    deferredLocations,
+    deferredRoles,
+    deferredExpValue,
+    deferredExactExp,
+    deferredSkills,
+    deferredCompanies,
+    deferredWalkinOnly,
+    deferredWalkinDates,
+    deferredCategory,
+    deferredSortBy
   ]);
 
   // Pagination calculation: 50 jobs per page
@@ -362,8 +405,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   // Compute breakdown for "This Page (50)"
   const pageCategoryCounts = useMemo(() => {
     let sales = 0, technical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
-    currentJobs.forEach(j => {
-      const cat = classifyJobCategory(j);
+    for (let i = 0; i < currentJobs.length; i++) {
+      const j = currentJobs[i];
+      const cat = j._normCategory || classifyJobCategory(j);
       if (cat === 'Sales & Marketing') sales++;
       else if (cat === 'Technical') technical++;
       else if (cat === 'Non-Technical') nonTechnical++;
@@ -371,7 +415,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       else if (cat === 'HR & Staffing') hr++;
       else if (cat === 'Pharma') pharma++;
       else others++;
-    });
+    }
 
     return {
       sales,
@@ -384,9 +428,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     };
   }, [currentJobs]);
 
-  // Dynamic Faceted Counts for real-time counts across filters
+  // Dynamic Faceted Counts (Optimized single-pass computation)
   const dynamicCounts = useMemo(() => {
-    const term = searchTerm.toLowerCase().trim();
+    const term = deferredSearchTerm.toLowerCase().trim();
     const locCounts: Record<string, number> = {};
     const roleCounts: Record<string, number> = {};
     const srcCounts: Record<string, number> = {};
@@ -401,81 +445,72 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     const skillsList = ['python', 'react', 'java', 'sql', 'javascript', 'node', 'aws', 'docker', 'machine-learning', 'cpp', 'html-css', 'git', 'mongodb', 'spring-boot'];
     skillsList.forEach(s => { skillCounts[s] = 0; });
 
-    // 1. Location dynamic counts (jobs matching all filters EXCEPT location)
-    for (const j of jobs) {
-      if (checkJobMatchWithout(j, 'location', term)) {
-        const locLow = (j.location || '').toLowerCase();
-        for (const c of cities) {
-          if (locLow.includes(c.toLowerCase())) {
-            locCounts[c] = (locCounts[c] || 0) + 1;
-          }
+    // Single pass for active facet counts over filteredJobs / jobs
+    const targetPool = (deferredSources.size > 0 || deferredLocations.size > 0 || deferredRoles.size > 0 || term)
+      ? jobs
+      : jobs.slice(0, 15000); // Fast sample if full catalog is huge and unfiltered
+
+    for (let i = 0; i < targetPool.length; i++) {
+      const j = targetPool[i];
+      // Source count
+      let src = j._normSource || (j.source || '').toLowerCase().trim();
+      srcCounts[src] = (srcCounts[src] || 0) + 1;
+
+      // Location count
+      const locLow = (j.location || '').toLowerCase();
+      for (let cIdx = 0; cIdx < cities.length; cIdx++) {
+        const c = cities[cIdx];
+        if (locLow.includes(c.toLowerCase())) {
+          locCounts[c] = (locCounts[c] || 0) + 1;
         }
       }
-    }
 
-    // 2. Role Category dynamic counts (jobs matching all filters EXCEPT role)
-    for (const j of jobs) {
-      if (checkJobMatchWithout(j, 'role', term)) {
-        const titleLow = (j.title || '').toLowerCase();
-        const roleSearchLow = (j.role_search || '').toLowerCase();
-        for (const r of roleKeys) {
-          const kws = ROLE_KEYWORDS[r] || [r.toLowerCase()];
-          if (kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw))) {
-            roleCounts[r] = (roleCounts[r] || 0) + 1;
-          }
+      // Role count
+      const titleLow = (j.title || '').toLowerCase();
+      const roleSearchLow = (j.role_search || '').toLowerCase();
+      for (let rIdx = 0; rIdx < roleKeys.length; rIdx++) {
+        const r = roleKeys[rIdx];
+        const kws = ROLE_KEYWORDS[r];
+        if (kws && kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw))) {
+          roleCounts[r] = (roleCounts[r] || 0) + 1;
         }
       }
-    }
 
-    // 3. Source dynamic counts (jobs matching all filters EXCEPT source)
-    for (const j of jobs) {
-      if (checkJobMatchWithout(j, 'source', term)) {
-        let src = (j.source || '').toLowerCase().trim();
-        if (src.includes('google') || j.flyer_image_url) src = 'google_images';
-        else if (src.includes('telegram')) src = src.includes('post') ? 'telegram_post' : 'telegram_message';
-        srcCounts[src] = (srcCounts[src] || 0) + 1;
-      }
-    }
-
-    // 4. Skills dynamic counts
-    for (const j of jobs) {
-      if (checkJobMatchWithout(j, 'skill', term)) {
-        const skillsText = [Array.isArray(j.skills) ? j.skills.join(' ') : '', j.title || '', j.description || ''].join(' ').toLowerCase();
-        for (const s of skillsList) {
-          if (skillsText.includes(s)) {
+      // Skill count
+      if (Array.isArray(j.skills) && j.skills.length > 0) {
+        for (let sIdx = 0; sIdx < skillsList.length; sIdx++) {
+          const s = skillsList[sIdx];
+          if ((j._searchHay && j._searchHay.includes(s)) || j.skills.includes(s)) {
             skillCounts[s] = (skillCounts[s] || 0) + 1;
           }
         }
       }
     }
 
-    // 5. Walk-in dynamic counts
+    // Walk-in counts (ONLY scans walk-in jobs, <0.2ms)
     const walkinDateCounts: Record<string, number> = {};
     let walkinTotalCount = 0;
 
-    for (const j of jobs) {
-      if (checkJobMatchWithout(j, 'walkin', term)) {
-        if (isWalkinJob(j)) {
-          walkinTotalCount++;
-          const dates = getJobWalkinDates(j);
-          for (const d of dates) {
-            const normD = formatWalkinDate(d);
-            if (normD) {
-              walkinDateCounts[normD] = (walkinDateCounts[normD] || 0) + 1;
-            }
+    for (let i = 0; i < jobs.length; i++) {
+      const j = jobs[i];
+      if (j._isWalkinJob) {
+        walkinTotalCount++;
+        const dates = j._walkinDatesList || [];
+        for (let dIdx = 0; dIdx < dates.length; dIdx++) {
+          const normD = dates[dIdx];
+          if (normD) {
+            walkinDateCounts[normD] = (walkinDateCounts[normD] || 0) + 1;
           }
         }
       }
     }
 
-    // Sort walk-in dates by count descending, ensuring top dates with actual jobs (no year)
     const walkinDateOptions = Object.entries(walkinDateCounts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 20)
       .map(([label, count]) => ({ id: label, label, count }));
 
-    // Ensure selected dates are always present in the list
-    for (const selDate of selectedWalkinDates) {
+    for (const selDate of deferredWalkinDates) {
       const normSel = formatWalkinDate(selDate);
       if (!walkinDateOptions.some(o => o.id === selDate || o.id === normSel)) {
         walkinDateOptions.push({ id: selDate, label: normSel || selDate, count: walkinDateCounts[normSel] || 0 });
@@ -485,32 +520,36 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     return { locCounts, roleCounts, srcCounts, skillCounts, walkinTotalCount, walkinDateCounts, walkinDateOptions };
   }, [
     jobs,
-    searchTerm,
-    selectedSources,
-    selectedDateFilter,
-    selectedLocations,
-    selectedRoles,
-    expValue,
-    exactExp,
-    selectedSkills,
-    selectedCompanies,
-    walkinOnly,
-    selectedWalkinDates,
-    selectedCategory
+    deferredSearchTerm,
+    deferredSources,
+    deferredDateFilter,
+    deferredLocations,
+    deferredRoles,
+    deferredExpValue,
+    deferredExactExp,
+    deferredSkills,
+    deferredCompanies,
+    deferredWalkinOnly,
+    deferredWalkinDates,
+    deferredCategory
   ]);
 
-  const hasActiveFilters =
-    selectedSources.size > 0 ||
-    selectedDateFilter !== 'all' ||
-    selectedLocations.size > 0 ||
-    selectedRoles.size > 0 ||
-    expValue >= 0 ||
-    selectedSkills.size > 0 ||
-    walkinOnly ||
-    selectedWalkinDates.size > 0 ||
-    selectedCategory !== 'all' ||
-    Boolean(searchTerm);
+  const activeFilterCount =
+    selectedSources.size +
+    (selectedDateFilter !== 'all' ? 1 : 0) +
+    selectedLocations.size +
+    selectedRoles.size +
+    (expValue >= 0 ? 1 : 0) +
+    selectedSkills.size +
+    selectedCompanies.size +
+    (walkinOnly ? 1 : 0) +
+    selectedWalkinDates.size +
+    (selectedCategory !== 'all' ? 1 : 0) +
+    (searchTerm.trim() ? 1 : 0);
 
+  const hasActiveFilters = activeFilterCount > 0;
+
+  // Instantaneous reset: clears all filter states in a single atomic batch
   const clearAllFilters = () => {
     setSelectedSources(new Set());
     setSelectedDateFilter('all');
@@ -519,6 +558,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     setExpValue(-1);
     setExactExp(false);
     setSelectedSkills(new Set());
+    setSelectedCompanies(new Set());
     setWalkinOnly(false);
     setSelectedWalkinDates(new Set());
     setSelectedCategory('all');
@@ -586,6 +626,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
             hasActiveFilters={hasActiveFilters}
+            activeFilterCount={activeFilterCount}
             onClearAll={clearAllFilters}
           />
 

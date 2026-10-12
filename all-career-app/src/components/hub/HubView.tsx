@@ -77,11 +77,13 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
 
     syncLayerInteractivity();
 
+    const TARGET_SCROLL = 270; // Reduced from 900 by 70% (requires only 30% scroll effort)
+
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: stage,
         start: 'top top',
-        end: '+=900',
+        end: `+=${TARGET_SCROLL}`,
         pin: true,
         scrub: true,
         anticipatePin: 1,
@@ -112,16 +114,47 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
     handleHeroClick = () => {
       const obj = { y: window.scrollY };
       gsap.to(obj, {
-        y: 900,
-        duration: 1.8,
-        ease: 'power2.out',
+        y: TARGET_SCROLL,
+        duration: 1.35,
+        ease: 'power3.inOut',
         onUpdate: () => window.scrollTo(0, obj.y)
       });
     };
 
     (hero as HTMLElement).addEventListener('click', handleHeroClick);
 
+    // 4-Second Auto-Scroll:
+    // First time opening or on refresh, smoothly scrolls down after 4 seconds.
+    // If the user scrolls manually or scrolls back to top, it will NOT auto-scroll again.
+    let userInteracted = false;
+    let hasAutoScrolled = false;
+
+    const onUserInteraction = () => {
+      userInteracted = true;
+    };
+
+    window.addEventListener('wheel', onUserInteraction, { passive: true, once: true });
+    window.addEventListener('touchmove', onUserInteraction, { passive: true, once: true });
+    window.addEventListener('keydown', onUserInteraction, { passive: true, once: true });
+
+    const autoScrollTimer = setTimeout(() => {
+      if (!userInteracted && !hasAutoScrolled && window.scrollY < 20) {
+        hasAutoScrolled = true;
+        const obj = { y: window.scrollY };
+        gsap.to(obj, {
+          y: TARGET_SCROLL,
+          duration: 1.35,
+          ease: 'power3.inOut',
+          onUpdate: () => window.scrollTo(0, obj.y)
+        });
+      }
+    }, 4000);
+
     return () => {
+      clearTimeout(autoScrollTimer);
+      window.removeEventListener('wheel', onUserInteraction);
+      window.removeEventListener('touchmove', onUserInteraction);
+      window.removeEventListener('keydown', onUserInteraction);
       document.documentElement.classList.remove('scroll-motion');
       (hero as HTMLElement).removeEventListener('click', handleHeroClick);
       ScrollTrigger.getAll().forEach((st: any) => st.kill());
@@ -129,17 +162,18 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
   }, []);
 
   const scrollToCategories = () => {
+    const TARGET_SCROLL = 270;
     const gsap = (window as any).gsap;
     if (gsap) {
       const obj = { y: window.scrollY };
       gsap.to(obj, {
-        y: 900,
-        duration: 1.8,
-        ease: 'power2.out',
+        y: TARGET_SCROLL,
+        duration: 1.35,
+        ease: 'power3.inOut',
         onUpdate: () => window.scrollTo(0, obj.y)
       });
     } else {
-      window.scrollTo({ top: 900, behavior: 'smooth' });
+      window.scrollTo({ top: TARGET_SCROLL, behavior: 'smooth' });
     }
   };
 

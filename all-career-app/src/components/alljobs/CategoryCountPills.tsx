@@ -15,6 +15,7 @@ interface CategoryCountPillsProps {
   selectedCategory: string;
   onSelectCategory: (cat: string) => void;
   hasActiveFilters?: boolean;
+  activeFilterCount?: number;
   onClearAll?: () => void;
 }
 
@@ -24,20 +25,26 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
   selectedCategory,
   onSelectCategory,
   hasActiveFilters,
+  activeFilterCount = 0,
   onClearAll
 }) => {
   return (
     <div className="sort-category-bar">
-      {/* Reset button in place of Sort dropdown (shown only when active filters exist) */}
+      {/* Premium Redesigned Reset Button (sleek obsidian glass with micro-counter) */}
       {hasActiveFilters && onClearAll ? (
         <button
           type="button"
-          className="reset-filter-action-btn"
+          className="premium-reset-btn"
           onClick={onClearAll}
           title="Reset all active filters"
         >
-          <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
-          <span>Reset Filters</span>
+          <span className="reset-icon-halo">
+            <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
+          </span>
+          <span className="reset-btn-label">Reset Filters</span>
+          {activeFilterCount > 0 && (
+            <span className="reset-count-badge">{activeFilterCount}</span>
+          )}
         </button>
       ) : (
         <div style={{ minWidth: 0 }} />

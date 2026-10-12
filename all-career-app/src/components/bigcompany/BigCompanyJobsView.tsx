@@ -623,12 +623,19 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
             <div className="filter-reset-bar" style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
               <button
                 type="button"
-                className="reset-filter-action-btn"
+                className="premium-reset-btn"
                 onClick={clearAllFilters}
                 title="Reset all active filters"
               >
-                <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
-                <span>Reset Filters</span>
+                <span className="reset-icon-halo">
+                  <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
+                </span>
+                <span className="reset-btn-label">Reset Filters</span>
+                {((selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (searchTerm ? 1 : 0)) > 0 && (
+                  <span className="reset-count-badge">
+                    {(selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (searchTerm ? 1 : 0)}
+                  </span>
+                )}
               </button>
             </div>
           )}
