@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1035310,
+  "total_jobs": 1035355,
   "sources": {
     "naukri": 351068,
     "linkedin": 265621,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 861,
-    "telegram_message": 967,
+    "telegram_post": 883,
+    "telegram_message": 990,
     "cutshort": 10,
     "big_it_jobs": 4,
     "idfc_first_bank": 8,
@@ -245,19 +245,19 @@
     "moove_career_site": 1
   },
   "locations": {
-    "bangalore": 218411,
-    "mumbai": 135268,
-    "delhi": 111147,
-    "chennai": 111812,
-    "hyderabad": 99390,
-    "pune": 82785,
+    "bangalore": 218424,
+    "mumbai": 135269,
+    "delhi": 111148,
+    "chennai": 111817,
+    "hyderabad": 99393,
+    "pune": 82787,
     "noida": 50531,
     "ahmedabad": 41272,
     "kolkata": 35924,
-    "all_india": 23910,
+    "all_india": 23918,
     "coimbatore": 21768,
     "kochi": 16228,
-    "remote": 9512,
+    "remote": 9519,
     "jaipur": 7313,
     "maharashtra": 9765,
     "indore": 5279,
@@ -362,7 +362,7 @@
     "kotputli": 1,
     "sharjah": 1,
     "jabalpur": 12,
-    "pan_india": 20,
+    "pan_india": 23,
     "mangalore": 67,
     "athani": 1,
     "zirakpur": 61,
@@ -834,7 +834,9 @@
     "bidar": 1,
     "satna": 1,
     "ranchilalpur": 1,
-    "mayiladuthurai": 1
+    "mayiladuthurai": 1,
+    "goa": 1,
+    "multiple_tcs_ion_centres": 1
   },
-  "generated_at": "2026-10-12T07:30:25.720542"
+  "generated_at": "2026-10-12T09:41:25.149934"
 }
