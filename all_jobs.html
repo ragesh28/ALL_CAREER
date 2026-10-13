@@ -868,98 +868,465 @@
             background: var(--bg-card);
             backdrop-filter: blur(8px);
             border: 1px solid var(--border);
-            padding: 18px 20px;
-            border-radius: 14px;
-            display: flex; flex-direction: column; gap: 10px;
+            padding: 12px 16px 10px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0; transform: translateY(12px);
+            opacity: 0;
+            transform: translateY(12px);
             animation: cardIn 0.45s forwards;
-            width: 100%; height: 210px; box-sizing: border-box;
-            overflow: hidden; position: relative;
+            width: 100%;
+            min-height: 130px;
+            height: auto;
+            box-sizing: border-box;
+            position: relative;
         }
+
         .job-card::before {
             content: '';
-            position: absolute; top: 0; left: 16px; right: 16px; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(52,211,153,0.25), rgba(96,165,250,0.2), transparent);
-            opacity: 0; transition: opacity 0.3s;
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.25), rgba(96, 165, 250, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .job-card:hover::before { opacity: 1; }
+
+        .job-card:hover::before {
+            opacity: 1;
+        }
+
+        .top-source-badge-btn,
+        .telegram-source-btn {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            z-index: 2;
+            white-space: nowrap;
+        }
+
+        .telegram-source-btn {
+            color: #229ED9;
+            background: rgba(34, 158, 217, 0.12);
+            border: 1px solid rgba(34, 158, 217, 0.35);
+        }
+
+        .telegram-source-btn:hover {
+            background: rgba(34, 158, 217, 0.28);
+            border-color: #229ED9;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(34, 158, 217, 0.4);
+        }
+
         .job-card:hover {
             border-color: rgba(52, 211, 153, 0.18);
             transform: translateY(-4px);
-            box-shadow: 0 16px 50px rgba(52, 211, 153, 0.1), 0 6px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 16px 50px rgba(52, 211, 153, 0.1), 0 6px 24px rgba(0, 0, 0, 0.4);
         }
-        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
 
-        .card-top { display: flex; gap: 12px; align-items: flex-start; }
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-top {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            position: relative;
+            margin-bottom: 2px;
+            padding-right: 0;
+        }
+
+        .job-card.has-top-badge .card-top {
+            padding-right: 88px; /* Leaves clear space so long company names finish with dots before post button */
+        }
+
         .logo-box {
-            width: 44px; height: 44px; flex-shrink: 0;
-            background: rgba(255,255,255,0.95); border-radius: 10px;
-            padding: 3px; position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 11px;
+            padding: 3px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s;
-            display: flex; align-items: center; justify-content: center;
         }
-        .job-card:hover .logo-box { transform: scale(1.06); }
-        .company-logo { width: 38px; height: 38px; object-fit: contain; position: absolute; top:3px; left:3px; }
+
+        .job-card:hover .logo-box {
+            transform: scale(1.06);
+        }
+
+        .company-logo {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
+
         .logo-fallback {
-            width: 100%; height: 100%; border-radius: 7px; display: none;
-            align-items: center; justify-content: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 7px;
+            display: none;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(135deg, #059669, #0891b2);
-            font-weight: 800; font-size: 1.1rem; color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
         }
-        .card-info { flex: 1; min-width: 0; }
+
+        .card-info {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
         .company-name {
-            color: var(--text-muted); font-size: 0.72rem; font-weight: 600; margin-bottom: 3px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-transform: uppercase; letter-spacing: 0.3px;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            max-width: 100%;
+            display: block;
         }
+
         .job-title {
-            font-size: 0.92rem; line-height: 1.35; color: var(--text-main); font-weight: 700;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: 0.94rem;
+            line-height: 1.36;
+            color: var(--text-main);
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            max-width: 100%;
         }
 
         .job-meta {
-            display: flex; flex-direction: column; gap: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 1px;
         }
+
         .meta-row {
-            display: flex; gap: 5px; align-items: center; overflow: hidden;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            overflow: hidden;
+            flex-wrap: wrap;
         }
+
+        /* ── Unified Badges (Location, Experience, Posted Date, Source: Exact same big size for all jobs) ── */
         .meta-badge {
-            font-size: 0.7rem; padding: 4px 9px; border-radius: 7px;
-            background: rgba(255,255,255,0.04); color: var(--text-muted);
-            border: 1px solid rgba(255,255,255,0.06);
-            display: inline-flex; align-items: center; gap: 4px;
-            white-space: nowrap; font-weight: 500;
-            max-width: 120px; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            font-weight: 600;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1;
         }
-        .meta-badge.loc { color: var(--accent-blue); border-color: rgba(96,165,250,0.15); }
-        .meta-badge.exp { color: var(--accent-amber); border-color: rgba(251,191,36,0.15); }
-        .meta-badge.date { color: var(--primary); border-color: rgba(52,211,153,0.15); }
+
+        /* ── All Icons: Exact same 18px big uniform size for location, exp, date, and source ── */
+        .meta-icon {
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .meta-badge.loc {
+            color: var(--accent-blue);
+            border-color: rgba(96, 165, 250, 0.18);
+        }
+
+        .meta-badge.exp {
+            color: var(--accent-amber);
+            border-color: rgba(251, 191, 36, 0.18);
+        }
+
+        .meta-badge.date {
+            color: var(--primary);
+            border-color: rgba(52, 211, 153, 0.18);
+        }
+
+        .walkin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 11px;
+            border-radius: 8px;
+            background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.35);
+            color: #fbbf24;
+            font-size: 0.80rem;
+            font-weight: 700;
+            margin: 1px 0 2px 0;
+            width: fit-content;
+            letter-spacing: 0.2px;
+            align-self: flex-start;
+        }
+
+        .walkin-badge::before {
+            content: '';
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #fbbf24;
+            box-shadow: 0 0 8px #fbbf24;
+            animation: pulse-walkin 2s infinite;
+        }
+
+        @keyframes pulse-walkin {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
         .portal-badge {
-            display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px;
-            border-radius: 7px; background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06); font-size: 0.68rem;
-            color: var(--text-muted); flex-shrink: 0; font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-weight: 600;
+            height: 29px;
+            box-sizing: border-box;
+            max-width: 175px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1;
         }
-        .portal-logo { width: 13px; height: 13px; object-fit: contain; border-radius: 2px; }
+
+        .portal-logo {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
 
         .card-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.04);
-            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 4px;
         }
-        .card-role { color: var(--text-dim); font-size: 0.72rem; font-weight: 500; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .card-role {
+            color: var(--text-dim);
+            font-size: 0.76rem;
+            font-weight: 500;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .apply-btn {
-            padding: 7px 18px; background: transparent; color: var(--primary);
-            text-decoration: none; font-weight: 700; border-radius: 9px;
-            font-size: 0.8rem; border: 1px solid rgba(52,211,153,0.3);
-            transition: all 0.25s; position: relative; overflow: hidden;
+            padding: 7.5px 18px;
+            background: transparent;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.2px;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+
         .apply-btn:hover {
             background: linear-gradient(135deg, #059669, #10b981);
-            color: white; border-color: transparent;
-            box-shadow: 0 4px 18px rgba(52,211,153,0.3); transform: translateY(-1px);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .card-footer .apply-btn:not(:only-child) {
+            padding: 6px 11px;
+            font-size: 0.78rem;
+            gap: 4px;
+        }
+
+        /* ── Specific Overrides for Consistency across all card types ── */
+        .job-card.normal-job {
+            padding: 12px 16px 10px;
+            gap: 6px;
+            min-height: 130px;
+            height: auto;
+        }
+
+        .job-card.normal-job .card-top {
+            gap: 12px;
+            margin-bottom: 2px;
+            padding-right: 0;
+        }
+
+        .job-card.normal-job.has-top-badge .card-top {
+            padding-right: 88px;
+        }
+
+        .job-card.normal-job .logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 11px;
+        }
+
+        .job-card.normal-job .company-logo {
+            width: 42px;
+            height: 42px;
+        }
+
+        .job-card.normal-job .company-name {
+            font-size: 0.76rem;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
+        }
+
+        .job-card.normal-job .job-title {
+            font-size: 0.94rem;
+            line-height: 1.36;
+        }
+
+        .job-card.normal-job .job-meta {
+            gap: 5px;
+            margin-top: 1px;
+        }
+
+        .job-card.normal-job .meta-row {
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .job-card.normal-job .meta-badge {
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-weight: 600;
+            gap: 6px;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
+        }
+
+        .job-card.normal-job .meta-icon {
+            font-size: 1.05rem;
+            width: 18px;
+            height: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .job-card.normal-job .portal-badge {
+            font-size: 0.84rem;
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-weight: 600;
+            gap: 6px;
+            max-width: 175px;
+            height: 29px;
+            box-sizing: border-box;
+        }
+
+        .job-card.normal-job .portal-logo {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            border-radius: 3px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .job-card.normal-job .card-footer {
+            padding-top: 6px;
+            margin-top: 4px;
+        }
+
+        .job-card.normal-job .card-role {
+            font-size: 0.76rem;
+            max-width: 120px;
+        }
+
+        .job-card.normal-job .apply-btn {
+            padding: 7.5px 18px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            border-radius: 8px;
+            gap: 6px;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            letter-spacing: 0.2px;
+        }
+
+        .job-card.normal-job .apply-btn:hover {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
         }
 
         /* ── Pagination ── */
@@ -1204,8 +1571,12 @@
         </div>
 
         <div class="topnav-right">
-            <!-- ⚡ Auto Apply & Application History (Between Search and Showing Count) -->
+            <!-- ⚡ React Web & Auto Apply & Application History -->
             <div class="topnav-auto-apply-group">
+                <a href="./index.html" class="auto-apply-nav-btn" style="text-decoration:none; background:rgba(52,211,153,0.15); border:1px solid rgba(52,211,153,0.4); color:#34d399; font-weight:700;" title="Switch to New React Web Frontend">
+                    <span class="auto-apply-icon">✨</span>
+                    <span class="auto-apply-text">New React Web</span>
+                </a>
                 <button class="auto-apply-nav-btn" id="autoApplyBtn" onclick="window.AllCareerAutoApply.startBatch()" title="Auto Apply to visible jobs on this page via Workflow Studio or AI">
                     <span class="auto-apply-icon">⚡</span>
                     <span class="auto-apply-text">Auto Apply</span>
@@ -1520,7 +1891,7 @@
         let allJobs = [];
         let filteredJobs = [];
         let currentPage = 1;
-        const JOBS_PER_PAGE = 50;
+        const JOBS_PER_PAGE = 100;
 
         // Filter state
         let selectedPortals = new Set();
@@ -2835,52 +3206,54 @@
             return added;
         }
 
-        async function fetchJsonWithFallback(localPath, githubPath) {
-            try {
-                const res = await fetch(localPath + (localPath.includes('?') ? '&' : '?') + 't=' + Date.now());
-                if (res.ok) return await res.json();
-            } catch (e) {}
-            if (githubPath) {
-                try {
-                    const res = await fetch(githubPath + (githubPath.includes('?') ? '&' : '?') + 't=' + Date.now());
-                    if (res.ok) return await res.json();
-                } catch (e) {}
-            }
-            return null;
-        }
-
         async function fetchJobsFromTurso() {
             // Step 1: Fetch metadata indexes + initial 100 latest preview jobs (< 60ms)
             try {
-                const [mObj, scObj, prevRows, rcObj] = await Promise.all([
-                    fetchJsonWithFallback('data/index/manifest.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/index/manifest.json'),
-                    fetchJsonWithFallback('data/index/sidebar_counts.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/index/sidebar_counts.json'),
-                    fetchJsonWithFallback('data/index/latest_preview_100.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/index/latest_preview_100.json'),
-                    fetchJsonWithFallback('data/index/role_categories.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/index/role_categories.json')
+                const [mRes, scRes, prevRes, rcRes] = await Promise.allSettled([
+                    fetch('data/index/manifest.json'),
+                    fetch('data/index/sidebar_counts.json'),
+                    fetch('data/index/latest_preview_100.json'),
+                    fetch('data/index/role_categories.json')
                 ]);
 
-                if (mObj) manifestData = mObj;
-                if (scObj) sidebarCountsData = scObj;
-                if (rcObj && typeof rcObj === 'object') {
-                    ROLE_CATEGORIES_DICT = rcObj;
-                    COMPILED_ROLE_PATTERNS = buildCompiledRolePatterns(ROLE_CATEGORIES_DICT);
+                if (mRes.status === 'fulfilled' && mRes.value.ok) manifestData = await mRes.value.json();
+                if (scRes.status === 'fulfilled' && scRes.value.ok) sidebarCountsData = await scRes.value.json();
+                if (rcRes.status === 'fulfilled' && rcRes.value.ok) {
+                    try {
+                        const fetchedCategories = await rcRes.value.json();
+                        if (fetchedCategories && typeof fetchedCategories === 'object') {
+                            ROLE_CATEGORIES_DICT = fetchedCategories;
+                            COMPILED_ROLE_PATTERNS = buildCompiledRolePatterns(ROLE_CATEGORIES_DICT);
+                        }
+                    } catch (e) {
+                        console.warn("Using default embedded role dictionary:", e);
+                    }
                 }
-                if (Array.isArray(prevRows)) {
-                    ingestJobs(prevRows);
+                if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
+                    const previewRows = await prevRes.value.json();
+                    ingestJobs(previewRows);
                 }
             } catch (e) {
                 console.warn("Could not load granular index:", e);
             }
 
-            // Step 2: Fetch Walk-in jobs (all portal & image walk-ins) and Big Company ATS jobs concurrently
+            // Step 2: Fetch Walk-in jobs (all 11,000+ portal & image walk-ins) and Big Company ATS jobs concurrently
             try {
-                const [walkinRows, bigJobsRows] = await Promise.all([
-                    fetchJsonWithFallback('data/index/walkin_jobs.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/index/walkin_jobs.json'),
-                    fetchJsonWithFallback('workday_scraper/big_company_jobs.json', 'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json')
+                const [walkinRes, bigJobsRes] = await Promise.allSettled([
+                    fetch("data/index/walkin_jobs.json?t=" + Date.now()).catch(() => fetch("scraped_image_walkin_jobs.json?t=" + Date.now())),
+                    fetch("workday_scraper/big_company_jobs.json?t=" + Date.now()).catch(() => 
+                        fetch("https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json?t=" + Date.now())
+                    )
                 ]);
 
-                if (Array.isArray(walkinRows)) ingestJobs(walkinRows);
-                if (Array.isArray(bigJobsRows)) ingestJobs(bigJobsRows);
+                if (walkinRes.status === 'fulfilled' && walkinRes.value.ok) {
+                    const walkinRows = await walkinRes.value.json();
+                    ingestJobs(walkinRows);
+                }
+                if (bigJobsRes.status === 'fulfilled' && bigJobsRes.value.ok) {
+                    const bigJobsRows = await bigJobsRes.value.json();
+                    ingestJobs(bigJobsRows);
+                }
             } catch (e) {
                 console.warn("Note on walkin/big jobs:", e);
             }
@@ -3573,7 +3946,8 @@
                 const isNormalJob = !isWalkin && !mailAddress && !phone;
 
                 return `
-            <div class="job-card" style="animation-delay:${(i % 30) * 0.03}s">
+            <div class="job-card ${isNormalJob ? 'normal-job' : ''} ${topSourceBadgeHtml ? 'has-top-badge' : ''}" style="animation-delay:${i * 0.025}s">
+                ${topSourceBadgeHtml}
                 <div class="card-top">
                     <div class="logo-box">
                         <img src="${logo.clearbit}" class="company-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -3586,21 +3960,19 @@
                         <div class="job-title" title="${esc(cleanTitle)}">${esc(cleanTitle)}</div>
                     </div>
                 </div>
-                ${isWalkin ? `<div class="walkin-badge">Walk-in: ${esc(walkinDisplayDate)}</div>` : ''}
+                ${isWalkin ? `<div class="walkin-badge">🚶 Walk-in: ${esc(walkinDisplayDate)}</div>` : ''}
                 <div class="job-meta">
                     <div class="meta-row">
-                        <div class="meta-badge loc" title="${esc(rawLocStr)}">${esc(cityLoc || 'India')}</div>
-                        ${job.experience ? `<div class="meta-badge exp" title="Experience: ${esc(job.experience)}">${esc(job.experience)}</div>` : ''}
+                        ${cityLoc ? `<div class="meta-badge loc" title="${esc(rawLocStr)}"><span class="meta-icon">📍</span> ${esc(cityLoc)}</div>` : ''}
+                        ${job.experience ? `<div class="meta-badge exp" title="Experience: ${esc(job.experience)}"><span class="meta-icon">💼</span> ${esc(job.experience)}</div>` : ''}
                     </div>
                     <div class="meta-row">
-                        ${date ? `<div class="meta-badge date" title="Posted: ${date}">${date}</div>` : ''}
-                        <div class="meta-badge" style="color:var(--text-main); border-color:var(--border);">
-                            ${sourceLabel ? (portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none'">` : '') + esc(sourceLabel) : 'Direct Apply'}
-                        </div>
+                        ${date ? `<div class="meta-badge date" title="Posted: ${date}"><span class="meta-icon">🕒</span> ${date}</div>` : ''}
+                        ${sourceLabel ? `<div class="portal-badge" title="Source: ${esc(sourceLabel)}">${portalLogoSrc ? `<img src="${portalLogoSrc}" class="portal-logo" alt="${esc(sourceLabel)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';"><span class="meta-icon" style="display:none">🌐</span>` : '<span class="meta-icon">🌐</span>'}<span>${esc(sourceLabel)}</span></div>` : ''}
                     </div>
                 </div>
                 <div class="card-footer">
-                    <span class="card-role" title="${esc(cleanTitle)}">${esc(cleanTitle)}</span>
+                    <span class="card-role">${esc(job.role_search || '')}</span>
                     <span style="display:flex;align-items:center;gap:4px;flex-wrap:nowrap;">${applyButtonsHtml}</span>
                 </div>
             </div>`;

@@ -73,8 +73,16 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, totalJo
           })}
         </nav>
 
-        {/* Action Button */}
-        <div className="flex items-center gap-3">
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2.5">
+          <a
+            href="./all_jobs.html"
+            title="Switch to original Classic HTML View"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:border-amber-400/40"
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>Classic View</span>
+          </a>
           <button 
             onClick={() => setActiveTab('leetcode')}
             className="hidden sm:flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-black hover:opacity-95 shadow-md shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
