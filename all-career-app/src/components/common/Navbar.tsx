@@ -1,5 +1,6 @@
 import React from 'react';
 import { Briefcase, Building2, Code2, Sparkles, Footprints } from 'lucide-react';
+import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 
 interface NavbarProps {
   activeTab: string;
@@ -25,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, totalJo
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 p-0.5 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
             <div className="w-full h-full bg-[#0b1120] rounded-[10px] flex items-center justify-center overflow-hidden">
-              <img src="/String_Theory.png" alt="All Career" className="w-7 h-7 object-contain" onError={(e) => {
+              <img src={STRING_THEORY_LOGO} alt="All Career" className="w-7 h-7 object-contain" onError={(e) => {
                 (e.target as HTMLElement).style.display = 'none';
               }} />
               <span className="text-emerald-400 font-bold text-lg">AC</span>

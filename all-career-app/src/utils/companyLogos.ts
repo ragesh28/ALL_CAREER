@@ -1,4 +1,5 @@
 // companyLogos.ts - Comprehensive Domain Map & Multi-tier Logo Fallback (Clearbit -> Google Favicon -> DuckDuckGo -> Monogram)
+import { resolveAssetUrl } from './urlHelper';
 
 export const DOMAIN_MAP: Record<string, string> = {
   // --- FAANG / BIG TECH ---
@@ -387,11 +388,13 @@ export interface PortalInfo {
 export function getPortalLogo(source: string | undefined): string {
   if (!source) return '';
   const s = source.toLowerCase().trim();
-  if (PORTAL_LOGOS_MAP[s]) return PORTAL_LOGOS_MAP[s];
-  for (const [key, val] of Object.entries(PORTAL_LOGOS_MAP)) {
-    if (s.includes(key)) return val;
+  let path = PORTAL_LOGOS_MAP[s] || '';
+  if (!path) {
+    for (const [key, val] of Object.entries(PORTAL_LOGOS_MAP)) {
+      if (s.includes(key)) { path = val; break; }
+    }
   }
-  return '';
+  return path ? resolveAssetUrl(path) : '';
 }
 
 export function detectPortalInfo(job: any): PortalInfo {
@@ -407,7 +410,7 @@ export function detectPortalInfo(job: any): PortalInfo {
     return {
       id: 'google_images',
       label: 'Images',
-      logo: '/logos/portals/google.svg',
+      logo: resolveAssetUrl('/logos/portals/google.svg'),
       url: flyerUrl || (url.startsWith('http') ? url : undefined)
     };
   }
@@ -418,7 +421,7 @@ export function detectPortalInfo(job: any): PortalInfo {
     return {
       id: isPost ? 'telegram_post' : 'telegram_message',
       label: isPost ? 'Post' : 'Messages',
-      logo: '/logos/portals/telegram.svg',
+      logo: resolveAssetUrl('/logos/portals/telegram.svg'),
       url: tgUrl || (url.startsWith('http') ? url : undefined)
     };
   }
@@ -525,12 +528,14 @@ export function getCompanyLogo(name: string): LogoData {
     }
   }
 
+  const resolvedLocal = localLogo ? resolveAssetUrl(localLogo) : undefined;
+
   const result: LogoData = {
-    local: localLogo,
-    unavatar: localLogo || `https://unavatar.io/${domain}`,
-    duckduckgo: localLogo || `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-    google: localLogo || `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-    clearbit: localLogo || `https://logo.clearbit.com/${domain}`,
+    local: resolvedLocal,
+    unavatar: resolvedLocal || `https://unavatar.io/${domain}`,
+    duckduckgo: resolvedLocal || `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    google: resolvedLocal || `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+    clearbit: resolvedLocal || `https://logo.clearbit.com/${domain}`,
     initial: (clean.charAt(0) || 'C').toUpperCase(),
     domain
   };

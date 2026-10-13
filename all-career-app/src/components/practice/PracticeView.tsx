@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
 import { PracticeContent } from './PracticeContent';
+import { fetchJsonWithFallback } from '../../utils/urlHelper';
 
 interface CompanyEntry {
   name: string;
@@ -41,15 +42,14 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateT
 
   // Load complete deduplicated company list from JSON
   useEffect(() => {
-    fetch('/data/leetcode_companies.json')
-      .then(res => res.json())
-      .then((data: CompanyEntry[]) => {
-        if (Array.isArray(data) && data.length > 0) {
+    fetchJsonWithFallback<CompanyEntry[]>('data/leetcode_companies.json')
+      .then((data) => {
+        if (data && Array.isArray(data) && data.length > 0) {
           setCompanies(data);
         }
       })
       .catch(err => {
-        console.warn('Could not load /data/leetcode_companies.json, using default list:', err);
+        console.warn('Could not load leetcode_companies.json, using default list:', err);
       });
   }, []);
 

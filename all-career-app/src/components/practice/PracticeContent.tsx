@@ -3,6 +3,7 @@ import { ArrowUpDown, BriefcaseBusiness, Layers3, Search, Star, X } from 'lucide
 import { CustomDropdown } from '../common/CustomDropdown';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
+import { fetchJsonWithFallback } from '../../utils/urlHelper';
 
 export interface LeetCodeMasterProblem {
   id: number;
@@ -71,10 +72,9 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
   useEffect(() => {
     if (allProblems.length === 0) {
       setLoadingMaster(true);
-      fetch('/data/leetcode_master.json')
-        .then(res => res.json())
-        .then((data: LeetCodeMasterProblem[]) => {
-          if (Array.isArray(data)) {
+      fetchJsonWithFallback<LeetCodeMasterProblem[]>('data/leetcode_master.json')
+        .then((data) => {
+          if (data && Array.isArray(data)) {
             // Ensure strict sort by ID ascending
             data.sort((a, b) => Number(a.id) - Number(b.id));
             setAllProblems(data);
@@ -110,9 +110,9 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         })
         .catch(() => {
           // 2. Seamless local fallback filtering leetcode_master.json
-          fetch('/data/leetcode_master.json')
-            .then(res => res.json())
-            .then((master: LeetCodeMasterProblem[]) => {
+          fetchJsonWithFallback<LeetCodeMasterProblem[]>('data/leetcode_master.json')
+            .then((master) => {
+              if (!master || !Array.isArray(master)) return;
               const matched = master.filter(p =>
                 Array.isArray(p.companies) &&
                 p.companies.some(c => c.toLowerCase() === compClean || c.toLowerCase().includes(compClean))

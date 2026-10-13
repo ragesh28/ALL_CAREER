@@ -1,4 +1,5 @@
 import { LeetCodeProblem, LeetCodeStatsData } from '../types/leetcode';
+import { fetchJsonWithFallback } from '../utils/urlHelper';
 
 export class LeetCodeService {
   private problems: LeetCodeProblem[] = [];
@@ -10,10 +11,11 @@ export class LeetCodeService {
     }
 
     try {
-      const res = await fetch('/ultimate_leetcode_master.json');
-      if (res.ok) {
-        const data = await res.json();
-        this.problems = data.problems || [];
+      const data = await fetchJsonWithFallback<{ problems: LeetCodeProblem[] }>('ultimate_leetcode_master.json', [
+        'data/leetcode_master.json'
+      ]);
+      if (data && data.problems) {
+        this.problems = data.problems;
       }
     } catch (e) {
       console.warn('Could not load local ultimate master:', e);

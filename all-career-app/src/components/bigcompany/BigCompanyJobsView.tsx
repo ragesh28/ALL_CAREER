@@ -3,6 +3,8 @@ import { BriefcaseBusiness, CalendarDays, History, Home, MapPin, RotateCcw, Sear
 import { AuthenticLogoBox } from '../alljobs/JobCard';
 import { ROLE_KEYWORDS } from '../../utils/filterUtils';
 import { bridgeService } from '../../services/bridgeService';
+import { resolveAssetUrl, fetchJsonWithFallback } from '../../utils/urlHelper';
+import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 
 interface BigCompanyJob {
   title: string;
@@ -181,22 +183,22 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
     let isMounted = true;
     async function loadData() {
       try {
-        const res = await fetch('/data/big_company_jobs.json');
-        if (res.ok) {
-          const data = await res.json();
-          if (isMounted && Array.isArray(data)) {
-            setJobs(data);
-            setLoading(false);
-            return;
-          }
+        const data = await fetchJsonWithFallback<BigCompanyJob[]>('data/big_company_jobs.json', [
+          'data/big_company_jobs.json',
+          'workday_scraper/big_company_jobs.json'
+        ]);
+        if (data && isMounted && Array.isArray(data)) {
+          setJobs(data);
+          setLoading(false);
+          return;
         }
       } catch (err) {
-        console.warn('Local big_company_jobs.json fetch failed, trying fallback...', err);
+        console.warn('Local big_company_jobs.json fetch failed, trying remote fallback...', err);
       }
 
       // Fallback to GitHub raw if local not fetched
       try {
-        const fbRes = await fetch('https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/workday_scraper/big_company_jobs.json');
+        const fbRes = await fetch('https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/big_company_jobs.json');
         if (fbRes.ok) {
           const data = await fbRes.json();
           if (isMounted && Array.isArray(data)) {
@@ -395,7 +397,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
       <nav className="topnav">
         <div className="topnav-left">
           <div className="topnav-logo" onClick={onGoHub} style={{ cursor: 'pointer' }}>
-            <img src="/String_Theory.png" alt="Logo" />
+            <img src={STRING_THEORY_LOGO} alt="ALL_CAREER" />
             <span>ALL_CAREER</span>
             <span style={{ fontSize: '0.75rem', padding: '2px 8px', borderRadius: '12px', background: 'rgba(52, 211, 153, 0.15)', color: '#34d399', fontWeight: 700, marginLeft: '8px' }}>
               Big Company Jobs

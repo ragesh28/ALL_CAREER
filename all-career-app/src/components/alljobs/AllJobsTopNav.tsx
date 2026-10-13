@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { History, RotateCcw, Search, Send, X } from 'lucide-react';
+import { resolveAssetUrl } from '../../utils/urlHelper';
+import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 
 interface AllJobsTopNavProps {
   searchTerm: string;
@@ -57,7 +59,7 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
       {/* Left: Global Brand Logo */}
       <div className="topnav-left">
         <div className="topnav-logo" onClick={onGoHub}>
-          <img src="/String_Theory.png" alt="Logo" />
+          <img src={STRING_THEORY_LOGO} alt="ALL_CAREER" />
           <span>ALL_CAREER</span>
         </div>
       </div>

@@ -14,11 +14,13 @@ export default defineConfig({
         server.middlewares.use((req, res, next) => {
           if (req.url && req.url.startsWith('/data/')) {
             const relativePath = req.url.split('?')[0];
+            const publicFilePath = path.resolve(__dirname, 'public', relativePath.slice(1));
             const parentFilePath = path.resolve(__dirname, '..', relativePath.slice(1));
-            if (fs.existsSync(parentFilePath)) {
+            const targetPath = fs.existsSync(publicFilePath) ? publicFilePath : (fs.existsSync(parentFilePath) ? parentFilePath : null);
+            if (targetPath) {
               res.setHeader('Content-Type', 'application/json');
               res.setHeader('Access-Control-Allow-Origin', '*');
-              fs.createReadStream(parentFilePath).pipe(res);
+              fs.createReadStream(targetPath).pipe(res);
               return;
             }
           }
