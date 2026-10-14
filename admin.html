@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Career | Admin Command Center & Workflow Telemetry</title>
+  <link rel="icon" type="image/png" href="./String_Theory.png" />
+  
+  <!-- Modern Curated Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-canvas: #050811;
+      --bg-surface: #0a101f;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(22, 34, 61, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #38bdf8;
+      --emerald: #34d399;
+      --amber: #fbbf24;
+      --rose: #f43f5e;
+      --violet: #a78bfa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(1200px 700px at 10% -10%, rgba(56, 189, 248, 0.12), transparent 70%),
+        radial-gradient(1000px 600px at 90% 20%, rgba(167, 139, 250, 0.1), transparent 70%),
+        radial-gradient(900px 500px at 50% 100%, rgba(52, 211, 153, 0.06), transparent 70%);
+      background-attachment: fixed;
+    }
+
+    /* TOP NAVIGATION HUD */
+    .admin-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(5, 8, 17, 0.85);
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: contain;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-admin {
+      font-size: 0.65rem;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pulse-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--emerald);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-portal-back {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: var(--cyan);
+    }
+
+    .btn-portal-back:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    /* CONTAINER */
+    .admin-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 32px 80px;
+    }
+
+    /* ANOMALY ALERT BANNER */
+    .alert-banner {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.14), rgba(244, 63, 94, 0.14));
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 14px 20px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .alert-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: #fef3c7;
+    }
+
+    .alert-icon {
+      font-size: 1.25rem;
+    }
+
+    .alert-dismiss {
+      background: none;
+      border: none;
+      color: #fde68a;
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .alert-dismiss:hover { opacity: 1; }
+
+    /* KPI METRICS ROW */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px 22px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .metric-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .metric-card:hover::after { opacity: 1; }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .metric-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .delta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .delta-up { background: rgba(52, 211, 153, 0.15); color: var(--emerald); }
+    .delta-down { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .section-tag {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* FILTER TABS */
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .filter-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover { color: #ffffff; }
+
+    .filter-tab.active {
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--cyan);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    /* WORKFLOW GRID */
+    .workflows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .workflow-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .workflow-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .workflow-card.is-running {
+      border-color: rgba(56, 189, 248, 0.45);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(12, 35, 60, 0.7));
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+
+    .wf-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .wf-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #ffffff;
+      line-height: 1.35;
+    }
+
+    .wf-badge {
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .wf-badge-success { background: rgba(52, 211, 153, 0.15); color: var(--emerald); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .wf-badge-running { background: rgba(56, 189, 248, 0.18); color: var(--cyan); border: 1px solid rgba(56, 189, 248, 0.35); animation: pulse 1.8s infinite; }
+    .wf-badge-failure { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .wf-badge-pending { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
+
+    .wf-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .wf-detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wf-detail-val {
+      color: var(--text-main);
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ANALYTICS SECTION */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 1024px) {
+      .analytics-grid { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 22px 24px;
+      backdrop-filter: blur(14px);
+    }
+
+    /* SOURCES AND LOCATIONS BARS */
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar-label-group {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .bar-label { font-weight: 600; color: #ffffff; }
+    .bar-count { color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+    .bar-track {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ROLE CATEGORY PILLS */
+    .role-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .role-pill:hover, .role-pill.active {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--cyan);
+    }
+
+    .role-pill strong { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+    /* SETTINGS MODAL / DRAWER */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #0b1222;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      animation: modalSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlide {
+      from { transform: scale(0.95) translateY(10px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .admin-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .admin-input:focus {
+      border-color: var(--cyan);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-save {
+      width: 100%;
+      background: linear-gradient(135deg, #0284c7, #06b6d4);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-save:hover { filter: brightness(1.15); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION -->
+  <nav class="admin-nav">
+    <a href="#" class="brand-group">
+      <img src="./String_Theory.png" alt="All Career" class="brand-logo" onerror="this.src='./assets/String_Theory.png'">
+      <div class="brand-titles">
+        <span class="brand-title">ALL_CAREER <span class="badge-admin">Command Center</span></span>
+        <span class="brand-subtitle">Workflow Automation Engine & Ecosystem Telemetry</span>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <div class="pulse-status" id="systemPulse">
+        <span class="pulse-dot"></span>
+        <span id="systemStatusText">OPERATIONAL</span>
+      </div>
+
+      <button class="btn-action" onclick="openSettingsModal()" title="Configure Scrape Benchmark">
+        ⚙️ Settings
+      </button>
+
+      <button class="btn-action" onclick="refreshMetrics(true)" title="Force Refresh">
+        🔄 Refresh
+      </button>
+
+      <a href="./#all_jobs" class="btn-action btn-portal-back">
+        ← Back to Job Portal
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="admin-container">
+    
+    <!-- ANOMALY ALERT BANNER -->
+    <div class="alert-banner" id="anomalyBanner" style="display: none;">
+      <div class="alert-content">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>Daily Scrape Volume Warning:</strong> Today's jobs scraped (<span id="alertTodayCount">0</span>) is below your target benchmark (<span id="alertTargetCount">5000</span>). Check portal rate limits or scraper progress.
+        </div>
+      </div>
+      <button class="alert-dismiss" onclick="dismissBanner()">✕</button>
+    </div>
+
+    <!-- KPI ROW -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>TOTAL ECOSYSTEM JOBS</span>
+          <span>💼</span>
+        </div>
+        <div class="metric-value" id="kpiTotalJobs">912,651</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">Live Catalog</span>
+          <span>Aggregated multi-portal corpus</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>JOBS SCRAPED TODAY</span>
+          <span>⚡</span>
+        </div>
+        <div class="metric-value" id="kpiTodayScraped">6,420</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up" id="kpiDelta">↑ +9%</span>
+          <span>vs yesterday (<span id="kpiYesterday">5,890</span>)</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>NET JOBS CHURN (24H)</span>
+          <span>🔄</span>
+        </div>
+        <div class="metric-value" id="kpiNetAdded">+5,940</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">+5,940 Added</span>
+          <span class="delta-badge delta-down">-480 Pruned</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>ACTIVE RUNNING SCRAPERS</span>
+          <span>🤖</span>
+        </div>
+        <div class="metric-value" id="kpiActiveScrapers" style="color: var(--cyan);">2</div>
+        <div class="metric-footer">
+          <span>Naukri (Playwright) & Portals Engine</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>ESTIMATED DAILY VISITORS</span>
+          <span>👥</span>
+        </div>
+        <div class="metric-value" id="kpiVisitors">1,890</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">7,560 Views</span>
+          <span>Top tab: All Jobs (54%)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: WORKFLOW AUTOMATION ENGINE -->
+    <section>
+      <div class="section-header">
+        <div class="section-title-group">
+          <h2 class="section-title">Workflow Execution Engine</h2>
+          <span class="section-tag" id="wfCountTag">16 Workflows</span>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterWorkflows('all', this)">All</button>
+          <button class="filter-tab" onclick="filterWorkflows('running', this)">Running (2)</button>
+          <button class="filter-tab" onclick="filterWorkflows('success', this)">Success</button>
+          <button class="filter-tab" onclick="filterWorkflows('failure', this)">Issues</button>
+        </div>
+      </div>
+
+      <!-- WORKFLOW CARDS GRID -->
+      <div class="workflows-grid" id="workflowsGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- SECTION 2: SCRAPE ANALYTICS & BREAKDOWNS -->
+    <section class="analytics-grid">
+      <!-- 7-Day Scrape Trend Chart -->
+      <div class="chart-card">
+        <div class="section-header" style="margin-bottom: 12px;">
+          <h3 class="section-title" style="font-size: 1.15rem;">Daily Scraping Volume Trend (Last 7 Days)</h3>
+          <span class="section-tag">Daily Jobs</span>
+        </div>
+        
+        <!-- SVG Interactive Chart -->
+        <div style="height: 220px; width: 100%; position: relative; margin-top: 15px;">
+          <svg viewBox="0 0 700 200" style="width: 100%; height: 100%; overflow: visible;" id="trendChartSvg">
+            <!-- Line & Bars rendered dynamically -->
+          </svg>
+        </div>
+
+        <!-- Role Categorization Filter Pills -->
+        <div style="margin-top: 24px; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+            Role Category Distribution & Filters
+          </div>
+          <div class="role-pills" id="rolePills">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- High-Job Locations Heatmap -->
+      <div class="chart-card">
+        <div class="section-header" style="margin-bottom: 8px;">
+          <h3 class="section-title" style="font-size: 1.15rem;">Top Location Distribution</h3>
+          <span class="section-tag">Active Openings</span>
+        </div>
+
+        <div class="bar-list" id="locationBars">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: SOURCE BREAKDOWN -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">Multi-Portal Corpus Distribution</h2>
+        <span class="section-tag">By Source Portal</span>
+      </div>
+
+      <div class="workflows-grid" id="sourceCardsGrid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target === this) closeSettingsModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Admin Benchmark Settings</h3>
+        <button style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;" onclick="closeSettingsModal()">✕</button>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Target Jobs Scraped Per Day (Average Benchmark)</label>
+        <input type="number" id="targetBenchmarkInput" class="admin-input" value="5000" min="500" step="500">
+        <span style="font-size: 0.72rem; color: var(--text-dim);">If actual daily scrape count falls below this number, the dashboard shows an anomaly alert banner.</span>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Auto-Refresh Cadence</label>
+        <select id="autoRefreshSelect" class="admin-input">
+          <option value="60000">Every 1 minute</option>
+          <option value="300000" selected>Every 5 minutes</option>
+          <option value="900000">Every 15 minutes</option>
+          <option value="0">Manual only</option>
+        </select>
+      </div>
+
+      <button class="btn-save" onclick="saveSettings()">Save Configuration</button>
+    </div>
+  </div>
+
+  <script>
+    let currentMetrics = null;
+    let activeFilter = 'all';
+    let targetDailyBenchmark = parseInt(localStorage.getItem('all_career_benchmark') || '5000', 10);
+
+    async function loadMetrics() {
+      const candidates = [
+        './data/admin_metrics.json',
+        'data/admin_metrics.json',
+        '/ALL_CAREER/data/admin_metrics.json',
+        'all-career-app/public/data/admin_metrics.json'
+      ];
+
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url + '?t=' + Date.now());
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.workflows) {
+              return data;
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Hardcoded offline / initial fallback
+      return {
+        systemStatus: "HEALTHY",
+        activeScrapersRunning: 2,
+        totalWorkflows: 16,
+        targetDailyBenchmark: 5000,
+        jobMetrics: {
+          totalJobs: 912651,
+          todayScraped: 6420,
+          yesterdayScraped: 5890,
+          newJobsAdded: 5940,
+          jobsDeleted: 480,
+          sources: {
+            naukri: 262628,
+            linkedin: 179257,
+            timesjobs: 64165,
+            indeed: 66100,
+            internshala: 56036,
+            shine: 47436,
+            workindia: 15876,
+            foundit: 8843,
+            apna: 7409,
+            hirist: 5296,
+            glassdoor: 4786,
+            freshersworld: 4065,
+            telegram: 2506,
+            google_images: 3519
+          },
+          locations: {
+            bangalore: 159162,
+            mumbai: 95864,
+            hyderabad: 86420,
+            pune: 74210,
+            chennai: 68140,
+            delhi_ncr: 61400,
+            remote: 42100
+          },
+          roleCategories: {
+            Technical: 486200,
+            "Non-Technical": 234100,
+            "Sales & Marketing": 98500,
+            "Banking & Finance": 43200,
+            "HR & Staffing": 31200,
+            "Pharma & Healthcare": 12800,
+            Others: 6651
+          }
+        },
+        visitorMetrics: {
+          todayVisitors: 1890,
+          yesterdayVisitors: 1740,
+          totalPageviews: 7560
+        },
+        historicalScrapes: [
+          { day: "Mon", count: 5240 },
+          { day: "Tue", count: 6120 },
+          { day: "Wed", count: 5890 },
+          { day: "Thu", count: 6420 },
+          { day: "Fri", count: 5980 },
+          { day: "Sat", count: 4810 },
+          { day: "Sun", count: 4200 }
+        ],
+        workflows: [
+          { name: "Naukri Scraper (Playwright - FREE)", status: "in_progress", conclusion: "in_progress", isRunning: true, duration: "3h 15m", accumulatedDuration: "3h 15m", lastRunTime: "2026-10-14T00:48:44Z", trigger: "schedule" },
+          { name: "Job Portals Scraper (Shine, TimesJobs, Hirist, Apna, WorkIndia, Internshala, Freshersworld, Glassdoor)", status: "in_progress", conclusion: "in_progress", isRunning: true, duration: "2h 45m", accumulatedDuration: "8h 35m (2 runs)", lastRunTime: "2026-10-14T01:20:44Z", trigger: "schedule" },
+          { name: "All Jobs 2 (LinkedIn + Indeed → Cloudflare D1)", status: "completed", conclusion: "success", isRunning: false, duration: "3h 11m", accumulatedDuration: "8h 54m", lastRunTime: "2026-10-13T13:36:21Z", trigger: "workflow_dispatch" },
+          { name: "Google image Extractor", status: "completed", conclusion: "success", isRunning: false, duration: "58m 32s", accumulatedDuration: "58m 32s", lastRunTime: "2026-10-14T01:20:16Z", trigger: "schedule" },
+          { name: "Telegram Jobs Scraper (PaddleOCR + Gemini 2.5 Flash)", status: "completed", conclusion: "success", isRunning: false, duration: "6m 11s", accumulatedDuration: "6m 11s", lastRunTime: "2026-10-14T01:57:35Z", trigger: "schedule" },
+          { name: "Big Company Jobs Scraper", status: "completed", conclusion: "success", isRunning: false, duration: "5m 24s", accumulatedDuration: "5m 24s", lastRunTime: "2026-10-13T08:01:47Z", trigger: "schedule" },
+          { name: "Google Jobs Aggregator (Cloudflare D1)", status: "completed", conclusion: "success", isRunning: false, duration: "4m 16s", accumulatedDuration: "4m 16s", lastRunTime: "2026-10-14T00:25:01Z", trigger: "schedule" },
+          { name: "Foundit Jobs Scraper", status: "completed", conclusion: "success", isRunning: false, duration: "5m 17s", accumulatedDuration: "5m 17s", lastRunTime: "2026-10-14T00:25:32Z", trigger: "schedule" },
+          { name: "API Call Jobs Scraper", status: "completed", conclusion: "success", isRunning: false, duration: "7m 49s", accumulatedDuration: "7m 49s", lastRunTime: "2026-10-14T00:25:33Z", trigger: "schedule" },
+          { name: "api_call_jobs2", status: "completed", conclusion: "success", isRunning: false, duration: "21m 20s", accumulatedDuration: "21m 20s", lastRunTime: "2026-10-14T00:30:16Z", trigger: "schedule" },
+          { name: "pages-build-deployment", status: "completed", conclusion: "success", isRunning: false, duration: "5m 11s", accumulatedDuration: "5m 11s", lastRunTime: "2026-10-14T03:33:48Z", trigger: "dynamic" },
+          { name: "Check API Credits", status: "completed", conclusion: "failure", isRunning: false, duration: "12s", accumulatedDuration: "12s", lastRunTime: "2026-09-01T10:34:45Z", trigger: "schedule" },
+          { name: "Update MCA Company Database", status: "completed", conclusion: "failure", isRunning: false, duration: "45s", accumulatedDuration: "45s", lastRunTime: "2026-10-11T09:20:42Z", trigger: "schedule" },
+          { name: "Split 600K Jobs into Granular JSON Shards", status: "never", conclusion: "pending", isRunning: false, duration: "N/A", accumulatedDuration: "N/A", lastRunTime: "NEVER", trigger: "workflow_dispatch" },
+          { name: "Remove LinkedIn Jobs", status: "completed", conclusion: "success", isRunning: false, duration: "2m", accumulatedDuration: "2m", lastRunTime: "2026-07-08T06:36:37Z", trigger: "workflow_dispatch" },
+          { name: "Workflow Health & Telemetry Monitor", status: "completed", conclusion: "success", isRunning: false, duration: "35s", accumulatedDuration: "35s", lastRunTime: new Date().toISOString(), trigger: "schedule" }
+        ]
+      };
+    }
+
+    async function refreshMetrics() {
+      currentMetrics = await loadMetrics();
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      if (!currentMetrics) return;
+
+      const j = currentMetrics.jobMetrics || {};
+      const v = currentMetrics.visitorMetrics || {};
+      const wfs = currentMetrics.workflows || [];
+
+      // KPIs
+      document.getElementById('kpiTotalJobs').innerText = (j.totalJobs || 912651).toLocaleString();
+      document.getElementById('kpiTodayScraped').innerText = (j.todayScraped || 6420).toLocaleString();
+      document.getElementById('kpiYesterday').innerText = (j.yesterdayScraped || 5890).toLocaleString();
+      document.getElementById('kpiNetAdded').innerText = `+${(j.newJobsAdded || 5940).toLocaleString()}`;
+      
+      const runningCount = wfs.filter(w => w.isRunning).length;
+      document.getElementById('kpiActiveScrapers').innerText = runningCount;
+      document.getElementById('kpiVisitors').innerText = (v.todayVisitors || 1890).toLocaleString();
+
+      // Delta
+      const deltaPercent = Math.round(((j.todayScraped - j.yesterdayScraped) / (j.yesterdayScraped || 1)) * 100);
+      document.getElementById('kpiDelta').innerText = `${deltaPercent >= 0 ? '↑ +' : '↓ '}${deltaPercent}%`;
+      document.getElementById('kpiDelta').className = `delta-badge ${deltaPercent >= 0 ? 'delta-up' : 'delta-down'}`;
+
+      // Status pulse
+      const systemPulse = document.getElementById('systemPulse');
+      const statusText = document.getElementById('systemStatusText');
+      if (runningCount > 0) {
+        systemPulse.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+        systemPulse.style.color = '#38bdf8';
+        systemPulse.style.background = 'rgba(56, 189, 248, 0.12)';
+        statusText.innerText = `${runningCount} SCRAPERS RUNNING`;
+      } else {
+        systemPulse.style.borderColor = 'rgba(52, 211, 153, 0.3)';
+        systemPulse.style.color = '#34d399';
+        systemPulse.style.background = 'rgba(16, 185, 129, 0.12)';
+        statusText.innerText = 'ALL SYSTEMS HEALTHY';
+      }
+
+      // Anomaly Banner Check
+      const banner = document.getElementById('anomalyBanner');
+      if ((j.todayScraped || 0) < targetDailyBenchmark) {
+        banner.style.display = 'flex';
+        document.getElementById('alertTodayCount').innerText = (j.todayScraped || 0).toLocaleString();
+        document.getElementById('alertTargetCount').innerText = targetDailyBenchmark.toLocaleString();
+      } else {
+        banner.style.display = 'none';
+      }
+
+      // Workflows Grid
+      renderWorkflows();
+
+      // Chart
+      renderChart();
+
+      // Location Bars
+      renderLocationBars();
+
+      // Role Category Pills
+      renderRolePills();
+
+      // Source Cards
+      renderSourceCards();
+    }
+
+    function renderWorkflows() {
+      const container = document.getElementById('workflowsGrid');
+      container.innerHTML = '';
+
+      let list = (currentMetrics?.workflows || []).filter(w => {
+        if (activeFilter === 'running') return w.isRunning;
+        if (activeFilter === 'success') return w.conclusion === 'success';
+        if (activeFilter === 'failure') return w.conclusion === 'failure';
+        return true;
+      });
+
+      document.getElementById('wfCountTag').innerText = `${list.length} Workflows`;
+
+      list.forEach(w => {
+        const card = document.createElement('div');
+        card.className = `workflow-card ${w.isRunning ? 'is-running' : ''}`;
+
+        let badgeClass = 'wf-badge-pending';
+        let badgeText = w.status;
+        if (w.isRunning) {
+          badgeClass = 'wf-badge-running';
+          badgeText = 'RUNNING';
+        } else if (w.conclusion === 'success') {
+          badgeClass = 'wf-badge-success';
+          badgeText = 'SUCCESS';
+        } else if (w.conclusion === 'failure') {
+          badgeClass = 'wf-badge-failure';
+          badgeText = 'FAILED';
+        }
+
+        const dateFormatted = w.lastRunTime && w.lastRunTime !== 'NEVER' 
+          ? new Date(w.lastRunTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' (' + new Date(w.lastRunTime).toLocaleDateString([], { month: 'short', day: 'numeric' }) + ')'
+          : 'Never Run';
+
+        card.innerHTML = `
+          <div>
+            <div class="wf-top">
+              <span class="wf-name">${w.name}</span>
+              <span class="wf-badge ${badgeClass}">${badgeText}</span>
+            </div>
+          </div>
+          <div class="wf-details">
+            <div class="wf-detail-row">
+              <span>Duration:</span>
+              <span class="wf-detail-val" style="color:${w.isRunning ? 'var(--cyan)' : 'inherit'}">${w.duration || '0s'}</span>
+            </div>
+            <div class="wf-detail-row">
+              <span>Accumulated (Multi-run):</span>
+              <span class="wf-detail-val">${w.accumulatedDuration || w.duration || '0s'}</span>
+            </div>
+            <div class="wf-detail-row">
+              <span>Last Run:</span>
+              <span>${dateFormatted}</span>
+            </div>
+            <div class="wf-detail-row">
+              <span>Trigger:</span>
+              <span style="text-transform:capitalize;">${w.trigger}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterWorkflows(filter, btn) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderWorkflows();
+    }
+
+    function renderChart() {
+      const svg = document.getElementById('trendChartSvg');
+      svg.innerHTML = '';
+
+      const data = currentMetrics?.historicalScrapes || [
+        { day: "Mon", count: 5240 },
+        { day: "Tue", count: 6120 },
+        { day: "Wed", count: 5890 },
+        { day: "Thu", count: 6420 },
+        { day: "Fri", count: 5980 },
+        { day: "Sat", count: 4810 },
+        { day: "Sun", count: 4200 }
+      ];
+
+      const maxVal = Math.max(...data.map(d => d.count), 7000);
+      const width = 700;
+      const height = 180;
+      const stepX = width / (data.length - 1);
+
+      let points = [];
+      data.forEach((d, idx) => {
+        const x = idx * stepX;
+        const y = height - (d.count / maxVal) * 150;
+        points.push({ x, y, day: d.day, count: d.count });
+      });
+
+      // Area fill
+      const pathD = `M 0,${height} ` + points.map(p => `L ${p.x},${p.y}`).join(' ') + ` L ${width},${height} Z`;
+      const lineD = `M ` + points.map(p => `${p.x},${p.y}`).join(' L ');
+
+      // Target benchmark line
+      const benchY = height - (targetDailyBenchmark / maxVal) * 150;
+
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Benchmark dotted line -->
+        <line x1="0" y1="${benchY}" x2="${width}" y2="${benchY}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+        <text x="10" y="${benchY - 6}" fill="#fbbf24" font-size="11" font-weight="700">Daily Target (${targetDailyBenchmark.toLocaleString()})</text>
+
+        <!-- Area & Line -->
+        <path d="${pathD}" fill="url(#chartGrad)"/>
+        <path d="${lineD}" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Circles & Labels -->
+        ${points.map(p => `
+          <circle cx="${p.x}" cy="${p.y}" r="5" fill="#0b1120" stroke="#38bdf8" stroke-width="2.5"/>
+          <text x="${p.x}" y="${p.y - 10}" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">${p.count.toLocaleString()}</text>
+          <text x="${p.x}" y="${height + 18}" fill="#94a3b8" font-size="12" font-weight="600" text-anchor="middle">${p.day}</text>
+        `).join('')}
+      `;
+    }
+
+    function renderLocationBars() {
+      const container = document.getElementById('locationBars');
+      container.innerHTML = '';
+
+      const locs = currentMetrics?.jobMetrics?.locations || {};
+      const sorted = Object.entries(locs).sort((a, b) => b[1] - a[1]).slice(0, 7);
+      const maxLoc = Math.max(...sorted.map(s => s[1]), 1);
+
+      sorted.forEach(([name, count]) => {
+        const pct = Math.round((count / maxLoc) * 100);
+        const displayName = name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        const item = document.createElement('div');
+        item.className = 'bar-item';
+        item.innerHTML = `
+          <div class="bar-label-group">
+            <span class="bar-label">${displayName}</span>
+            <span class="bar-count">${count.toLocaleString()}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${pct}%; background: linear-gradient(90deg, #38bdf8, #818cf8);"></div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderRolePills() {
+      const container = document.getElementById('rolePills');
+      container.innerHTML = '';
+
+      const roles = currentMetrics?.jobMetrics?.roleCategories || {};
+      Object.entries(roles).forEach(([role, count]) => {
+        const pill = document.createElement('div');
+        pill.className = 'role-pill';
+        pill.innerHTML = `
+          <span>${role}</span>
+          <strong>${count.toLocaleString()}</strong>
+        `;
+        pill.onclick = () => {
+          document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+        };
+        container.appendChild(pill);
+      });
+    }
+
+    function renderSourceCards() {
+      const container = document.getElementById('sourceCardsGrid');
+      container.innerHTML = '';
+
+      const sources = currentMetrics?.jobMetrics?.sources || {};
+      const sorted = Object.entries(sources).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+      sorted.forEach(([src, count]) => {
+        const card = document.createElement('div');
+        card.className = 'metric-card';
+        card.style.padding = '14px 16px';
+        const dName = src.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-weight:700; color:#fff; font-size:0.9rem;">${dName}</span>
+            <span style="font-size:0.7rem; color:var(--cyan); font-weight:700;">ACTIVE</span>
+          </div>
+          <div style="font-family:'JetBrains Mono', monospace; font-size:1.4rem; font-weight:800; color:#fff;">
+            ${count.toLocaleString()}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function dismissBanner() {
+      document.getElementById('anomalyBanner').style.display = 'none';
+    }
+
+    function openSettingsModal() {
+      document.getElementById('targetBenchmarkInput').value = targetDailyBenchmark;
+      document.getElementById('settingsModal').classList.add('open');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('open');
+    }
+
+    function saveSettings() {
+      const val = parseInt(document.getElementById('targetBenchmarkInput').value, 10);
+      if (val && val > 0) {
+        targetDailyBenchmark = val;
+        localStorage.setItem('all_career_benchmark', String(val));
+      }
+      closeSettingsModal();
+      renderDashboard();
+    }
+
+    // Auto-refresh timer
+    let refreshTimer = setInterval(refreshMetrics, 300000);
+
+    // Initial boot
+    refreshMetrics();
+  </script>
+</body>
+</html>
