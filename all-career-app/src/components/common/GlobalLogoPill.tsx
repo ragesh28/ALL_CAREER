@@ -11,6 +11,7 @@ export const GlobalLogoPill: React.FC<GlobalLogoPillProps> = ({ onGoHome }) => {
   return (
     <div 
       className="global-logo-pill" 
+      style={{ position: 'absolute', top: 18, left: 24, right: 'auto', zIndex: 1000 }}
       onClick={onGoHome}
       title="ALL_CAREER Home"
       role="button"
@@ -22,3 +23,4 @@ export const GlobalLogoPill: React.FC<GlobalLogoPillProps> = ({ onGoHome }) => {
     </div>
   );
 };
+

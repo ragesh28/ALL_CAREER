@@ -22,6 +22,7 @@ interface PracticeContentProps {
   selectedMode: string;
   selectedCompany: string;
   onNavigateToJobs?: (company: string) => void;
+  onCompanyCountUpdate?: (company: string, count: number) => void;
 }
 
 const ITEMS_PER_PAGE = 100;
@@ -49,7 +50,8 @@ const acceptanceTone = (value?: string) => {
 export const PracticeContent: React.FC<PracticeContentProps> = ({
   selectedMode,
   selectedCompany,
-  onNavigateToJobs
+  onNavigateToJobs,
+  onCompanyCountUpdate
 }) => {
   // Master catalog state for "All Questions"
   const [allProblems, setAllProblems] = useState<LeetCodeMasterProblem[]>([]);
@@ -68,25 +70,63 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
   const [companyDiff, setCompanyDiff] = useState<string>('All');
   const [companySort, setCompanySort] = useState<string>('freq');
 
-  // Load master catalog once if "all_questions" or company fallback needed
+  // Load master catalog: try worker API first (fast CDN, 3,474 problems), then fallback to local JSON
   useEffect(() => {
-    if (allProblems.length === 0) {
-      setLoadingMaster(true);
-      fetchJsonWithFallback<LeetCodeMasterProblem[]>('data/leetcode_master.json')
-        .then((data) => {
-          if (data && Array.isArray(data)) {
-            // Ensure strict sort by ID ascending
-            data.sort((a, b) => Number(a.id) - Number(b.id));
-            setAllProblems(data);
+    let isCancelled = false;
+    setLoadingMaster(true);
+
+    const loadMaster = async () => {
+      // 1. Try Cloudflare Worker API (used by all_questions.html)
+      try {
+        const res = await fetch('https://leetcode-api.lragesh28.workers.dev/api/all_problems');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0 && !isCancelled) {
+            const mapped: LeetCodeMasterProblem[] = data.map((p: any) => ({
+              id: Number(p.id),
+              title: p.title,
+              url: p.url,
+              difficulty: p.difficulty,
+              acceptance: p.acceptance,
+              frequency: p.frequency || 0,
+              topics: p.topics_str ? p.topics_str.split(',').map((t: string) => t.trim()).filter(Boolean) : (Array.isArray(p.topics) ? p.topics : [])
+            }));
+            mapped.sort((a, b) => Number(a.id) - Number(b.id));
+            setAllProblems(mapped);
+            setLoadingMaster(false);
+            return;
           }
-          setLoadingMaster(false);
-        })
-        .catch(err => {
-          console.warn('Failed to load leetcode_master.json:', err);
-          setLoadingMaster(false);
-        });
-    }
-  }, [allProblems.length]);
+        }
+      } catch (e) {
+        console.warn('Worker API for all_problems note:', e);
+      }
+
+      // 2. Fallback to local / remote JSON
+      try {
+        const localData = await fetchJsonWithFallback<LeetCodeMasterProblem[]>('data/leetcode_master.json', [
+          'all-career-app/public/data/leetcode_master.json',
+          './data/leetcode_master.json',
+          '/ALL_CAREER/data/leetcode_master.json',
+          'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/leetcode_master.json',
+          'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/all-career-app/public/data/leetcode_master.json'
+        ]);
+        if (!isCancelled && localData && Array.isArray(localData)) {
+          localData.sort((a, b) => Number(a.id) - Number(b.id));
+          setAllProblems(localData);
+        }
+      } catch (err) {
+        console.warn('Failed to load leetcode_master.json:', err);
+      } finally {
+        if (!isCancelled) setLoadingMaster(false);
+      }
+    };
+
+    loadMaster();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   // Load company questions when selectedCompany changes
   useEffect(() => {
@@ -102,8 +142,21 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         })
         .then((data: LeetCodeMasterProblem[]) => {
           if (Array.isArray(data) && data.length > 0) {
-            setCompanyProblems(data);
+            // Deduplicate company questions by real problem ID
+            const seen = new Map<number, LeetCodeMasterProblem>();
+            for (const item of data) {
+              const pid = Number(item.id);
+              if (!pid) continue;
+              if (!seen.has(pid) || ((item.frequency || 0) > ((seen.get(pid)?.frequency) || 0))) {
+                seen.set(pid, { ...item, id: pid });
+              }
+            }
+            const deduplicated = Array.from(seen.values());
+            setCompanyProblems(deduplicated);
             setLoadingCompany(false);
+            if (onCompanyCountUpdate) {
+              onCompanyCountUpdate(selectedCompany, deduplicated.length);
+            }
           } else {
             throw new Error('Empty from worker, using local fallback');
           }
@@ -626,7 +679,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
           <table className="problem-table">
             <thead>
               <tr>
-                <th style={{ width: '50px' }}>#</th>
+                <th style={{ width: '65px' }}>ID</th>
                 <th>Title</th>
                 <th style={{ width: '120px' }}>Acceptance</th>
                 <th style={{ width: '100px' }}>Difficulty</th>
@@ -640,7 +693,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
 
                 return (
                   <tr key={p.id || idx}>
-                    <td style={{ color: '#64748b', fontFamily: 'monospace' }}>{idx + 1}</td>
+                    <td style={{ color: '#64748b', fontFamily: 'monospace', fontWeight: 600 }}>#{p.id}</td>
                     <td>
                       <a href={p.url || `https://leetcode.com/problems/${p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`} target="_blank" rel="noopener noreferrer" className="problem-link">
                         {p.title}

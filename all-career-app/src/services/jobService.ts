@@ -1,6 +1,7 @@
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
 import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates } from '../utils/filterUtils';
 import { formatWalkinDate } from '../utils/companyLogos';
+import { fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
 
 export class JobService {
   private manifestData: ManifestData | null = null;
@@ -16,32 +17,25 @@ export class JobService {
 
   async initCatalog(onProgress?: (jobs: Job[]) => void): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
     try {
-      const [mRes, scRes, prevRes, rcRes] = await Promise.allSettled([
-        fetch('/data/index/manifest.json'),
-        fetch('/data/index/sidebar_counts.json'),
-        fetch('/data/index/latest_preview_100.json'),
-        fetch('/data/index/role_categories.json')
+      const [manifest, counts, previewRows, roleCategories] = await Promise.all([
+        fetchJsonWithFallback<ManifestData>('data/index/manifest.json', ['all-career-app/public/data/index/manifest.json']),
+        fetchJsonWithFallback<SidebarCounts>('data/index/sidebar_counts.json', ['all-career-app/public/data/index/sidebar_counts.json']),
+        fetchJsonWithFallback<Job[]>('data/index/latest_preview_100.json', [
+          'all-career-app/public/data/index/latest_preview_100.json',
+          'latest_jobs_100.json',
+          'all-career-app/public/latest_jobs_100.json',
+          './latest_jobs_100.json'
+        ]),
+        fetchJsonWithFallback<Record<string, string[]>>('data/index/role_categories.json', ['all-career-app/public/data/index/role_categories.json'])
       ]);
 
-      if (mRes.status === 'fulfilled' && mRes.value.ok) {
-        try { this.manifestData = await mRes.value.json(); } catch {}
-      }
-      if (scRes.status === 'fulfilled' && scRes.value.ok) {
-        try { this.sidebarCounts = await scRes.value.json(); } catch {}
-      }
-      if (rcRes.status === 'fulfilled' && rcRes.value.ok) {
-        try {
-          const dict = await rcRes.value.json();
-          if (dict && typeof dict === 'object') this.roleCategoriesDict = dict;
-        } catch {}
-      }
+      if (manifest) this.manifestData = manifest;
+      if (counts) this.sidebarCounts = counts;
+      if (roleCategories && typeof roleCategories === 'object') this.roleCategoriesDict = roleCategories;
 
-      if (prevRes.status === 'fulfilled' && prevRes.value.ok) {
-        try {
-          const rows: Job[] = await prevRes.value.json();
-          this.ingestJobs(rows);
-          if (onProgress) onProgress(this.getAllJobs());
-        } catch {}
+      if (Array.isArray(previewRows) && previewRows.length > 0) {
+        this.ingestJobs(previewRows);
+        if (onProgress) onProgress(this.getAllJobs());
       }
 
       // Load walk-ins immediately
@@ -49,9 +43,13 @@ export class JobService {
       if (onProgress) onProgress(this.getAllJobs());
 
       // Stream full initial_jobs in background without blocking initial render
-      fetch('/data/initial_jobs.json')
-        .then(res => res.ok ? res.json() : [])
-        .then((fullRows: Job[]) => {
+      fetchJsonWithFallback<Job[]>('data/initial_jobs.json', [
+        'all-career-app/public/data/initial_jobs.json',
+        './data/initial_jobs.json',
+        '/ALL_CAREER/data/initial_jobs.json',
+        'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/initial_jobs.json'
+      ])
+        .then((fullRows) => {
           if (Array.isArray(fullRows) && fullRows.length > 0) {
             this.ingestJobs(fullRows);
             if (onProgress) onProgress(this.getAllJobs());
@@ -68,15 +66,13 @@ export class JobService {
 
   async fetchWalkinJobs(): Promise<Job[]> {
     try {
-      let res = await fetch('/data/walkin_jobs.json?t=' + Date.now()).catch(() => null);
-      if (!res || !res.ok) {
-        res = await fetch('/data/index/walkin_jobs.json?t=' + Date.now()).catch(() => null);
-      }
-      if (!res || !res.ok) {
-        res = await fetch('/data/scraped_image_walkin_jobs.json?t=' + Date.now()).catch(() => null);
-      }
-      if (res && res.ok) {
-        const walkins: Job[] = await res.json();
+      const walkins = await fetchJsonWithFallback<Job[]>('data/walkin_jobs.json', [
+        'data/index/walkin_jobs.json',
+        'data/scraped_image_walkin_jobs.json',
+        'all-career-app/public/data/walkin_jobs.json',
+        'all-career-app/public/data/scraped_image_walkin_jobs.json'
+      ]);
+      if (Array.isArray(walkins) && walkins.length > 0) {
         this.ingestJobs(walkins);
       }
     } catch (e) {
@@ -218,7 +214,8 @@ export class JobService {
       unfechedPaths.map(async path => {
         try {
           this.loadedShards.add(path);
-          const res = await fetch(path);
+          const safeUrl = resolveAssetUrl(path);
+          const res = await fetch(safeUrl);
           if (res.ok) {
             const jobs: Job[] = await res.json();
             this.ingestJobs(jobs);

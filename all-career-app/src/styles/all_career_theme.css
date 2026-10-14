@@ -394,21 +394,13 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.frequency-rate { margin-bottom: 3px; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-  }
-}
-
-@media (max-width: 760px) {
-  .topnav { padding: 0 14px; }
+.frequency-rate { margin-bottom: 3px; }@media (max-width: 760px) {
+  .topnav { padding: 0 12px; }
   .topnav-left { min-width: auto; }
-  .topnav-logo span, .topnav-count-btn, .history-nav-btn span:nth-child(2) { display: none; }
+  .topnav-logo { gap: 8px; }
+  .topnav-logo img { width: 28px; height: 28px; }
+  .topnav-logo span { display: inline-block !important; font-size: 1rem !important; }
+  .topnav-count-btn, .history-nav-btn span:nth-child(2) { display: none; }
   .topnav-center { min-width: 0; }
   .directory-filter-control { flex-basis: 100%; }
   .difficulty-filter-set { width: 100%; }
@@ -416,7 +408,8 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   RESPONSIVE BRAND BADGE (Desktop System View: Visible, Mobile: Hidden)
+   RESPONSIVE BRAND BADGE (Top-Left Positioned, Visible on Desktop & Mobile)
+   Matches user requirement: ALL_CAREER logo and name on left corner
 ══════════════════════════════════════════════════════════════════════ */
 .all-career-brand-badge {
   display: flex;
@@ -428,23 +421,26 @@ body {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 6px 14px 6px 8px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   z-index: 1000;
 }
 
 .all-career-brand-badge:hover {
   transform: translateY(-2px) scale(1.02);
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.25);
 }
 
+.all-career-brand-badge.top-left-corner,
 .all-career-brand-badge.top-right-corner {
   position: absolute;
   top: 18px;
-  right: 28px;
+  left: 24px;
+  right: auto;
 }
 
 .all-career-brand-badge .brand-logo-icon-wrapper {
@@ -493,7 +489,8 @@ body {
 .global-logo-pill {
   position: absolute;
   top: 18px;
-  right: 28px;
+  left: 24px;
+  right: auto;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -502,16 +499,18 @@ body {
   text-decoration: none;
   padding: 6px 14px 6px 8px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   z-index: 1000;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .global-logo-pill:hover {
   transform: translateY(-2px) scale(1.02);
+  border-color: rgba(56, 189, 248, 0.5);
 }
 
 .global-logo-pill img {
@@ -531,27 +530,56 @@ body {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* ══════════════════════════════════════════════════════════════════════
-   RESPONSIVE WEB DESIGN (RWD):
-   Desktop / System View (>= 769px): SHOW the logo in the top right corner
-   Mobile View (<= 768px): HIDE the logo in top right corner completely!
-══════════════════════════════════════════════════════════════════════ */
+/* Mobile Responsiveness for Brand Badge (Top-Left on Mobile too) */
 @media (max-width: 768px) {
-  .all-career-brand-badge.top-right-corner,
   .all-career-brand-badge,
+  .all-career-brand-badge.top-left-corner,
+  .all-career-brand-badge.top-right-corner,
   .global-logo-pill {
-    display: none !important;
+    display: flex !important;
+    position: absolute !important;
+    top: 12px !important;
+    left: 14px !important;
+    right: auto !important;
+    padding: 5px 12px 5px 7px !important;
+    border-radius: 12px !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    z-index: 1000 !important;
+  }
+
+  .global-logo-pill img,
+  .all-career-brand-badge .brand-logo-icon-wrapper {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 7px !important;
+  }
+
+  .global-logo-pill span,
+  .all-career-brand-badge .brand-logo-title {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+  }
+
+  .all-career-brand-badge .brand-logo-subtitle {
+    font-size: 0.55rem !important;
+  }
+
+  /* Add clearance for pages that have full-width headers */
+  .bigcompany-header {
+    padding-top: 64px !important;
   }
 }
 
 @media (min-width: 769px) {
-  .all-career-brand-badge {
-    display: flex !important;
-  }
+  .all-career-brand-badge,
   .global-logo-pill {
     display: flex !important;
   }
 }
+
 
 /* ══════════════════════════════════════
    SCREENSHOT 1 & 2: HUB / LANDING PAGE

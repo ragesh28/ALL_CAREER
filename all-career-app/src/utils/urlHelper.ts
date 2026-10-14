@@ -29,10 +29,27 @@ export const fetchJsonWithFallback = async <T = any>(
   const allPaths = [primaryPath, ...fallbackPaths];
 
   for (const p of allPaths) {
+    if (p.startsWith('http://') || p.startsWith('https://')) {
+      try {
+        const res = await fetch(p);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) return data as T;
+        }
+      } catch {}
+      continue;
+    }
+
+    const clean = p.replace(/^\/+/, '');
     const candidates = [
-      resolveAssetUrl(p),
-      `./${p.replace(/^\/+/, '')}`,
-      `/${p.replace(/^\/+/, '')}`
+      resolveAssetUrl(clean),
+      `./${clean}`,
+      `/ALL_CAREER/${clean}`,
+      `/${clean}`,
+      `all-career-app/public/${clean}`,
+      `./all-career-app/public/${clean}`,
+      `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/all-career-app/public/${clean}`,
+      `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`
     ];
 
     // Remove duplicates

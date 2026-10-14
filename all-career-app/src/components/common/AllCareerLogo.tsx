@@ -3,14 +3,14 @@ import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 
 interface AllCareerLogoProps {
   onGoHome?: () => void;
-  position?: 'top-right' | 'inline';
+  position?: 'top-left' | 'inline';
   className?: string;
   subtitle?: string;
 }
 
 export const AllCareerLogo: React.FC<AllCareerLogoProps> = ({
   onGoHome,
-  position = 'top-right',
+  position = 'top-left',
   className = '',
   subtitle
 }) => {
@@ -18,7 +18,7 @@ export const AllCareerLogo: React.FC<AllCareerLogoProps> = ({
 
   return (
     <div
-      className={`all-career-brand-badge ${position === 'top-right' ? 'top-right-corner' : 'inline-badge'} ${className}`}
+      className={`all-career-brand-badge ${position === 'top-left' ? 'top-left-corner' : 'inline-badge'} ${className}`}
       onClick={onGoHome}
       role="button"
       tabIndex={0}

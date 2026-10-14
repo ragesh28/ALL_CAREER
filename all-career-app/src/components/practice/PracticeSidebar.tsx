@@ -19,9 +19,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
 }) => {
   const [search, setSearch] = useState('');
 
-  const filteredCompanies = companiesList.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCompanies = companiesList.filter(c => c.name.toLowerCase().includes(search.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <aside className="practice-sidebar">
