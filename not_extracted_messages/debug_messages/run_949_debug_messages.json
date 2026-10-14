@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "949",
+  "workflow_run_id": "38574900527",
+  "timestamp": "2026-10-14T14:16:06.773931",
+  "runtime_minutes": 24.81,
+  "messages_processed": 73,
+  "new_jobs_stored": 51,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 3,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 30626,
+      "text": "🚀 __Still Trying to Get Hired Before 2027? Start Here — It's FREE.__\n\nDon't just keep applying. Find out what you need to improve!\n\n✅ Company PrepSheet\n✅ Practice Test\n✅ AI Interview + Improvement Report\n\n🎁 __Worth ₹209. Available for ₹0 today!__\n\nBuilt on industry insights and our experience helping students prepare for placements at top companies.\n\n👉 __Start your FREE assessment:__ https://go.acciojob.com/4qBCte\nJOB PREPARATION HUB\nSame preparation\ntop students use.\nStill Looking for\nYour First Job?\n明\nCompany PrepSheet\nCompany-wise tests,\npatterns and key topics\nPrepare for Your Next\nPractice Test\n>\nReal interview-style\nInterview. For FREE.\nquestions\nAl Interview\nPractice with Al and\nget detailed feedback\nCompany\nPractice\nAl\nPrepSheet\nTest\nInterview\nCOMPANY-WISE\nREAL TEST-LIKE\nPRACTICE WITH\nAccioJob\nPREPARATION\nQUESTIONS\nAI FEEDBACK\nYour Preparation\nA\nCompany PrepSheet\n₹209\n₹0\n<1>\nPractice Test\nVALUE\nFREE ACCESS\nAl Interview\nINTERVIEW PR\nStart Preparing\nDSA & SYSTEM DES\nPLACEMENT GU",
+      "timestamp": "2026-10-14T08:34:08+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "job4softwaree",
+      "msg_id": 13473,
+      "text": "𝐏𝐚𝐲 𝐀𝐟𝐭𝐞𝐫 𝐏𝐥𝐚𝐜𝐞𝐦𝐞𝐧𝐭 - 𝗟𝗲𝗮𝗿𝗻 𝗳𝗿𝗼𝗺 𝘁𝗵𝗲 𝗧𝗼𝗽 𝟭% 𝗼𝗳 𝘁𝗵𝗲 𝗧𝗲𝗰𝗵 𝗜𝗻𝗱𝘂𝘀𝘁𝗿𝘆😍\n\n🔥 Highlights:\n✅ 𝟰𝟭𝗟𝗣𝗔 - Highest Package\n✅ 𝟳.𝟰𝗟𝗣𝗔 - Average Package\n✅ 𝟱𝟬𝟬+ Hiring Partners\n✅ 𝟮𝟬𝟬𝟬+ Students Placed\n\n Eligibility:- BTech / BCA / BSc / MCA / MSc\n\n🔗 𝐑𝐞𝐠𝐢𝐬𝐭𝐞𝐫 𝐍𝐨𝐰👇:-\n\n https://tinyurl.com/y43f9ckn\n\nHurry! Limited Seats Available🏃‍♂️",
+      "timestamp": "2026-10-14T11:47:12+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 6033,
+      "text": "5 jobs : https://www.instagram.com/p/DeeNv4FDtOG/?dlrf=dXQ5YTB6NmJsdGV3\n\nCheck the story",
+      "timestamp": "2026-10-14T10:59:00+00:00"
+    }
+  ]
+}
