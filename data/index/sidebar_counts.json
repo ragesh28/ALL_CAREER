@@ -1,5 +1,5 @@
 {
-  "total_jobs": 720955,
+  "total_jobs": 720961,
   "sources": {
     "naukri": 262628,
     "linkedin": 179257,
@@ -41,20 +41,20 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 44,
-    "telegram_message": 81
+    "telegram_post": 48,
+    "telegram_message": 83
   },
   "locations": {
-    "bangalore": 159160,
+    "bangalore": 159162,
     "mumbai": 95864,
     "delhi": 77206,
-    "chennai": 74636,
+    "chennai": 74637,
     "hyderabad": 67400,
     "pune": 54126,
     "noida": 34650,
     "ahmedabad": 29054,
     "kolkata": 23748,
-    "all_india": 21740,
+    "all_india": 21741,
     "coimbatore": 13844,
     "kochi": 11129,
     "remote": 6554,
@@ -146,7 +146,7 @@
     "kurla": 52,
     "kollam": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 2,
+    "pan_india": 4,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -163,5 +163,5 @@
     "tirupur": 1,
     "nashik": 1
   },
-  "generated_at": "2026-10-13T22:56:39.549448"
+  "generated_at": "2026-10-14T02:03:36.213892"
 }
