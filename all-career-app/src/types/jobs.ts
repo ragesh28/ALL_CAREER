@@ -44,6 +44,7 @@ export interface RoleCategory {
 
 export interface SidebarCounts {
   portals?: Record<string, number>;
+  sources?: Record<string, number>;
   locations?: Record<string, number>;
   roles?: Record<string, number>;
   total_jobs?: number;

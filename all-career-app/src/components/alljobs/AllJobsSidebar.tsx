@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BriefcaseBusiness, CalendarDays, ChevronDown, Globe2, MapPin, Route, Search, SlidersHorizontal, Tag } from 'lucide-react';
 import { formatWalkinDate } from '../../utils/companyLogos';
+import { resolveAssetUrl } from '../../utils/urlHelper';
+import { SidebarCounts } from '../../types/jobs';
 
 interface AllJobsSidebarProps {
   // Source
@@ -36,6 +38,7 @@ interface AllJobsSidebarProps {
   walkinCount?: number;
   walkinDateCounts?: Record<string, number>;
   walkinDateOptions?: { id: string; label: string; count: number }[];
+  sidebarCounts?: SidebarCounts | null;
 }
 
 export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
@@ -63,7 +66,8 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   skillCounts,
   walkinCount,
   walkinDateCounts,
-  walkinDateOptions
+  walkinDateOptions,
+  sidebarCounts
 }) => {
   // Section toggle state matching original all_jobs.html (source, date, location open by default)
   const [openSections, setOpenSections] = useState({
@@ -120,21 +124,21 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
 
   // 1. Sources List with authentic logos from logos/portals/
   const PORTALS = [
-    { id: 'linkedin', label: 'LinkedIn', logo: '/logos/portals/linkedin.png', defaultCount: 221380 },
-    { id: 'naukri', label: 'Naukri', logo: '/logos/portals/naukri.png', defaultCount: 322160 },
-    { id: 'indeed', label: 'Indeed', logo: '/logos/portals/indeed.png', defaultCount: 78407 },
-    { id: 'internshala', label: 'Internshala', logo: '/logos/portals/internshala.png', defaultCount: 83161 },
-    { id: 'glassdoor', label: 'Glassdoor', logo: '/logos/portals/glassdoor.ico', defaultCount: 4786 },
-    { id: 'shine', label: 'Shine', logo: '/logos/portals/shine.ico', defaultCount: 47436 },
-    { id: 'timesjobs', label: 'TimesJobs', logo: '/logos/portals/timesjobs.svg', defaultCount: 101057 },
-    { id: 'hirist', label: 'Hirist', logo: '/logos/portals/hirist.ico', defaultCount: 10355 },
-    { id: 'workindia', label: 'WorkIndia', logo: '/logos/portals/workindia.png', defaultCount: 15876 },
-    { id: 'foundit', label: 'Foundit', logo: '/logos/portals/foundit.png', defaultCount: 20644 },
-    { id: 'apna', label: 'Apna', logo: '/logos/portals/apna.png', defaultCount: 7409 },
-    { id: 'freshersworld', label: 'FreshersWorld', logo: '/logos/portals/freshersworld.ico', defaultCount: 4065 },
-    { id: 'telegram_message', label: 'Messages', logo: '/logos/portals/telegram.svg', defaultCount: 681 },
-    { id: 'telegram_post', label: 'Post', logo: '/logos/portals/telegram.svg', defaultCount: 540 },
-    { id: 'google_images', label: 'Images', logo: '/logos/portals/google.svg', defaultCount: 3519 },
+    { id: 'linkedin', label: 'LinkedIn', logo: './logos/portals/linkedin.png', defaultCount: 179257 },
+    { id: 'naukri', label: 'Naukri', logo: './logos/portals/naukri.png', defaultCount: 262628 },
+    { id: 'indeed', label: 'Indeed', logo: './logos/portals/indeed.png', defaultCount: 66100 },
+    { id: 'internshala', label: 'Internshala', logo: './logos/portals/internshala.png', defaultCount: 56036 },
+    { id: 'glassdoor', label: 'Glassdoor', logo: './logos/portals/glassdoor.ico', defaultCount: 4786 },
+    { id: 'shine', label: 'Shine', logo: './logos/portals/shine.ico', defaultCount: 47436 },
+    { id: 'timesjobs', label: 'TimesJobs', logo: './logos/portals/timesjobs.svg', defaultCount: 64165 },
+    { id: 'hirist', label: 'Hirist', logo: './logos/portals/hirist.ico', defaultCount: 5296 },
+    { id: 'workindia', label: 'WorkIndia', logo: './logos/portals/workindia.png', defaultCount: 15876 },
+    { id: 'foundit', label: 'Foundit', logo: './logos/portals/foundit.png', defaultCount: 8843 },
+    { id: 'apna', label: 'Apna', logo: './logos/portals/apna.png', defaultCount: 7409 },
+    { id: 'freshersworld', label: 'FreshersWorld', logo: './logos/portals/freshersworld.ico', defaultCount: 4065 },
+    { id: 'telegram_message', label: 'Messages', logo: './logos/portals/telegram.svg', defaultCount: 1450 },
+    { id: 'telegram_post', label: 'Post', logo: './logos/portals/telegram.svg', defaultCount: 1056 },
+    { id: 'google_images', label: 'Images', logo: './logos/portals/google.svg', defaultCount: 3519 },
     { id: 'other', label: 'Other Sources', logo: '', defaultCount: 2634 }
   ];
 
@@ -351,7 +355,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
           <div className="filter-body-inner" id="source-options">
             {PORTALS.map(item => {
               const isSelected = selectedSources.has(item.id);
-              const count = sourceCounts[item.id] ?? item.defaultCount;
+              const hasNarrowingFilter = selectedLocations.size > 0 || selectedRoles.size > 0 || selectedSkills.size > 0 || (expValue !== undefined && expValue >= 0);
+              const fullCatalogCount = sidebarCounts?.sources?.[item.id] ?? item.defaultCount;
+              const count = hasNarrowingFilter ? (sourceCounts[item.id] ?? fullCatalogCount) : fullCatalogCount;
               return (
                 <div
                   key={item.id}
@@ -366,11 +372,17 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                   </div>
                   {item.logo ? (
                     <img
-                      src={item.logo}
+                      src={resolveAssetUrl(item.logo)}
                       className="option-img"
                       alt={item.label}
                       onError={e => {
-                        (e.target as HTMLElement).style.display = 'none';
+                        const img = e.currentTarget;
+                        if (!img.dataset.fallback) {
+                          img.dataset.fallback = 'true';
+                          img.src = `logos/portals/${item.id}.png`;
+                        } else {
+                          img.style.display = 'none';
+                        }
                       }}
                     />
                   ) : (

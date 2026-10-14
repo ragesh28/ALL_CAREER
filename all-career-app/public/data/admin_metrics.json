@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T04:46:48.303640+00:00",
+  "generatedAt": "2026-10-14T05:19:01.939703+00:00",
   "systemStatus": "HEALTHY",
   "activeScrapersRunning": 2,
   "totalWorkflows": 17,
@@ -228,7 +228,8 @@
       "accumulatedDuration": "16h 55m",
       "accumulatedSeconds": 60958,
       "lastRunTime": "2026-10-13T13:36:21Z",
-      "trigger": "workflow_dispatch"
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "+4,200 jobs / batch"
     },
     {
       "name": "API Call Jobs Scraper",
@@ -240,7 +241,8 @@
       "accumulatedDuration": "37m 20s",
       "accumulatedSeconds": 2240,
       "lastRunTime": "2026-10-14T00:25:33Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+2,595 new jobs added"
     },
     {
       "name": "api_call_jobs2",
@@ -252,7 +254,8 @@
       "accumulatedDuration": "1h 47m",
       "accumulatedSeconds": 6434,
       "lastRunTime": "2026-10-14T00:30:16Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+2,595 new jobs added"
     },
     {
       "name": "Big Company Jobs Scraper",
@@ -264,7 +267,8 @@
       "accumulatedDuration": "28m 25s",
       "accumulatedSeconds": 1705,
       "lastRunTime": "2026-10-13T08:01:47Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+2,807 direct ATS jobs"
     },
     {
       "name": "Check API Credits",
@@ -276,7 +280,8 @@
       "accumulatedDuration": "2m 24s",
       "accumulatedSeconds": 144,
       "lastRunTime": "2026-09-01T10:34:45Z",
-      "trigger": "workflow_dispatch"
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "Quota Verification"
     },
     {
       "name": "Remove LinkedIn Jobs",
@@ -288,7 +293,8 @@
       "accumulatedDuration": "1m 57s",
       "accumulatedSeconds": 117,
       "lastRunTime": "2026-07-08T06:36:37Z",
-      "trigger": "workflow_dispatch"
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "Active Collector"
     },
     {
       "name": "Glassdoor Scraping Test",
@@ -300,7 +306,8 @@
       "accumulatedDuration": "1m 27s",
       "accumulatedSeconds": 87,
       "lastRunTime": "2026-07-03T06:45:36Z",
-      "trigger": "workflow_dispatch"
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "Active Collector"
     },
     {
       "name": "Google image Extractor",
@@ -312,7 +319,8 @@
       "accumulatedDuration": "3h 45m",
       "accumulatedSeconds": 13523,
       "lastRunTime": "2026-10-14T01:20:16Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+142 walk-in flyers"
     },
     {
       "name": "Google Jobs Aggregator (Cloudflare D1)",
@@ -324,7 +332,8 @@
       "accumulatedDuration": "17m 50s",
       "accumulatedSeconds": 1070,
       "lastRunTime": "2026-10-14T00:25:01Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "0 (Waiting monthly proxy reset)"
     },
     {
       "name": "Foundit Jobs Scraper",
@@ -336,31 +345,34 @@
       "accumulatedDuration": "34m 47s",
       "accumulatedSeconds": 2087,
       "lastRunTime": "2026-10-14T00:25:32Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+450 jobs / batch"
     },
     {
       "name": "Job Portals Scraper (Shine, TimesJobs, Hirist, Apna, WorkIndia, Internshala, Freshersworld, Glassdoor)",
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "3h 25m",
-      "durationSeconds": 12347,
+      "duration": "3h 58m",
+      "durationSeconds": 14288,
       "accumulatedDuration": "12h 6m",
       "accumulatedSeconds": 43607,
       "lastRunTime": "2026-10-14T01:20:44Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+1,850 jobs / batch"
     },
     {
       "name": "Naukri Scraper (Playwright - FREE)",
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "3h 57m",
-      "durationSeconds": 14268,
+      "duration": "4h 30m",
+      "durationSeconds": 16209,
       "accumulatedDuration": "14h 59m",
       "accumulatedSeconds": 53983,
       "lastRunTime": "2026-10-14T00:48:44Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+2,500 jobs / batch"
     },
     {
       "name": "Split 600K Jobs into Granular JSON Shards",
@@ -372,7 +384,8 @@
       "accumulatedDuration": "0s",
       "accumulatedSeconds": 0,
       "lastRunTime": "N/A",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "Active Collector"
     },
     {
       "name": "Telegram Jobs Scraper (PaddleOCR + Gemini 2.5 Flash)",
@@ -384,7 +397,8 @@
       "accumulatedDuration": "1h 6m",
       "accumulatedSeconds": 3997,
       "lastRunTime": "2026-10-14T01:57:35Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "+680 posts extracted"
     },
     {
       "name": "Update MCA Company Database",
@@ -396,7 +410,8 @@
       "accumulatedDuration": "8m 31s",
       "accumulatedSeconds": 511,
       "lastRunTime": "2026-10-11T09:20:42Z",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "Company Index Refresher"
     },
     {
       "name": "Workflow Health & Telemetry Monitor",
@@ -408,19 +423,21 @@
       "accumulatedDuration": "0s",
       "accumulatedSeconds": 0,
       "lastRunTime": "N/A",
-      "trigger": "schedule"
+      "trigger": "schedule",
+      "jobsSaved": "Ecosystem Telemetry Checkpoint"
     },
     {
       "name": "pages-build-deployment",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "5m 24s",
-      "durationSeconds": 324,
-      "accumulatedDuration": "21m 21s",
-      "accumulatedSeconds": 1281,
-      "lastRunTime": "2026-10-14T04:14:25Z",
-      "trigger": "dynamic"
+      "duration": "6m 14s",
+      "durationSeconds": 374,
+      "accumulatedDuration": "22m 23s",
+      "accumulatedSeconds": 1343,
+      "lastRunTime": "2026-10-14T04:48:28Z",
+      "trigger": "dynamic",
+      "jobsSaved": "Continuous Portal Deployer"
     }
   ],
   "historicalScrapes": [

@@ -584,7 +584,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       <AllJobsTopNav
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        totalJobsCount={sidebarCounts?.total_jobs || jobs.length || 912651}
+        totalJobsCount={sidebarCounts?.total_jobs || 720961}
         categoryCounts={categoryCounts}
         onGoHub={onGoHub}
         onAutoApply={handleAutoApply}
@@ -621,6 +621,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           walkinCount={dynamicCounts.walkinTotalCount}
           walkinDateCounts={dynamicCounts.walkinDateCounts}
           walkinDateOptions={dynamicCounts.walkinDateOptions}
+          sidebarCounts={sidebarCounts}
         />
 
         {/* Right Main Grid */}
