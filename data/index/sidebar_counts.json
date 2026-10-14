@@ -1,5 +1,5 @@
 {
-  "total_jobs": 734193,
+  "total_jobs": 734228,
   "sources": {
     "naukri": 268237,
     "linkedin": 179257,
@@ -41,23 +41,23 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 48,
-    "telegram_message": 83
+    "telegram_post": 67,
+    "telegram_message": 99
   },
   "locations": {
-    "bangalore": 161179,
+    "bangalore": 161186,
     "mumbai": 97571,
-    "delhi": 78651,
-    "chennai": 76208,
-    "hyderabad": 68324,
-    "pune": 55064,
+    "delhi": 78652,
+    "chennai": 76211,
+    "hyderabad": 68329,
+    "pune": 55065,
     "noida": 35682,
     "ahmedabad": 29619,
     "kolkata": 24990,
-    "all_india": 21742,
+    "all_india": 21748,
     "coimbatore": 14184,
-    "kochi": 11213,
-    "remote": 6621,
+    "kochi": 11215,
+    "remote": 6623,
     "jaipur": 5595,
     "maharashtra": 4620,
     "indore": 4324,
@@ -68,7 +68,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 1009,
+    "karnataka": 1010,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -146,7 +146,7 @@
     "kurla": 52,
     "kollam": 63,
     "tcs_ion_centres": 1,
-    "pan_india": 4,
+    "pan_india": 6,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -229,7 +229,12 @@
     "haridwar": 1,
     "tikamgarh": 1,
     "kota": 1,
-    "udaipur": 3
+    "udaipur": 3,
+    "mahindra_world_city": 1,
+    "kothur_formulation_division": 1,
+    "vapi": 1,
+    "eu": 1,
+    "across_india": 1
   },
-  "generated_at": "2026-10-14T07:08:44.802530"
+  "generated_at": "2026-10-14T07:59:26.535523"
 }
