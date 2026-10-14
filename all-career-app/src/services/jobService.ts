@@ -1,5 +1,5 @@
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
-import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates } from '../utils/filterUtils';
+import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../utils/filterUtils';
 import { formatWalkinDate } from '../utils/companyLogos';
 import { fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
 
@@ -56,6 +56,26 @@ export class JobService {
           }
         })
         .catch(err => console.warn('initial_jobs load note:', err));
+
+      // Stream big_company_jobs in background for direct ATS opportunities (Greenhouse, Lever, Workday)
+      fetchJsonWithFallback<Job[]>('data/big_company_jobs.json', [
+        'all-career-app/public/data/big_company_jobs.json',
+        './data/big_company_jobs.json',
+        'workday_scraper/big_company_jobs.json',
+        'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/big_company_jobs.json'
+      ])
+        .then((bigCompanyRows) => {
+          if (Array.isArray(bigCompanyRows) && bigCompanyRows.length > 0) {
+            const mapped = bigCompanyRows.map(bj => ({
+              ...bj,
+              url: (bj as any).apply_url || bj.url || '#',
+              source: bj.source || 'other'
+            }));
+            this.ingestJobs(mapped);
+            if (onProgress) onProgress(this.getAllJobs());
+          }
+        })
+        .catch(err => console.warn('big_company_jobs load note:', err));
 
       return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
     } catch (err) {
@@ -186,9 +206,17 @@ export class JobService {
       const roleObj = this.manifestData.roles[rSlug];
       if (!roleObj || !roleObj.sources) continue;
 
-      const targetSources = activePortals.length > 0
-        ? activePortals.filter(s => roleObj.sources[s])
-        : Object.keys(roleObj.sources);
+      let targetSources: string[] = [];
+      if (activePortals.length > 0) {
+        const includeOther = activePortals.includes('other');
+        targetSources = Object.keys(roleObj.sources).filter(s => {
+          if (activePortals.includes(s)) return true;
+          if (includeOther && isOtherSource(s)) return true;
+          return false;
+        });
+      } else {
+        targetSources = Object.keys(roleObj.sources);
+      }
 
       for (const sSlug of targetSources) {
         const srcObj = roleObj.sources[sSlug];

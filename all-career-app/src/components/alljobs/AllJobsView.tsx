@@ -7,7 +7,7 @@ import { AllJobsSidebar } from './AllJobsSidebar';
 import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
-import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates } from '../../utils/filterUtils';
+import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
 
 interface AllJobsViewProps {
@@ -234,15 +234,18 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     // 2. Source Filter
     if (excludeDim !== 'source' && sources.size > 0) {
       const src = j._normSource || (j.source || '').toLowerCase().trim();
-      if (!sources.has(src)) {
-        let match = false;
+      let match = false;
+      if (sources.has(src)) {
+        match = true;
+      } else {
         for (const s of sources) {
+          if (s === 'other' && (src === 'other' || isOtherSource(src))) { match = true; break; }
           if (s === 'telegram' && src.includes('telegram')) { match = true; break; }
           if ((s === 'images' || s === 'google_images') && (src.includes('google') || src.includes('image'))) { match = true; break; }
           if (src === s) { match = true; break; }
         }
-        if (!match) return false;
       }
+      if (!match) return false;
     }
 
     // 3. Date Filter (Precomputed days difference)
@@ -455,6 +458,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       // Source count
       let src = j._normSource || (j.source || '').toLowerCase().trim();
       srcCounts[src] = (srcCounts[src] || 0) + 1;
+      if (src === 'other' || isOtherSource(src)) {
+        srcCounts['other'] = (srcCounts['other'] || 0) + 1;
+      }
 
       // Location count
       const locLow = (j.location || '').toLowerCase();

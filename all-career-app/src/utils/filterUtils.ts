@@ -352,3 +352,33 @@ export function classifyJobCategory(job: any): string {
   }
   return 'Others';
 }
+
+export const PRIMARY_PORTAL_IDS = new Set([
+  'linkedin',
+  'naukri',
+  'indeed',
+  'internshala',
+  'glassdoor',
+  'shine',
+  'timesjobs',
+  'hirist',
+  'workindia',
+  'foundit',
+  'apna',
+  'freshersworld',
+  'telegram_message',
+  'telegram_post',
+  'telegram',
+  'google_images',
+  'images'
+]);
+
+export function isOtherSource(source: string | null | undefined): boolean {
+  if (!source) return true;
+  const s = source.toLowerCase().trim();
+  if (PRIMARY_PORTAL_IDS.has(s)) return false;
+  if (s.includes('telegram')) return false;
+  if (s.includes('google') || s.includes('flyer')) return false;
+  return true;
+}
+

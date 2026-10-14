@@ -135,7 +135,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
     { id: 'telegram_message', label: 'Messages', logo: '/logos/portals/telegram.svg', defaultCount: 681 },
     { id: 'telegram_post', label: 'Post', logo: '/logos/portals/telegram.svg', defaultCount: 540 },
     { id: 'google_images', label: 'Images', logo: '/logos/portals/google.svg', defaultCount: 3519 },
-    { id: 'other', label: 'Other Sources', logo: '', defaultCount: 0 }
+    { id: 'other', label: 'Other Sources', logo: '', defaultCount: 2634 }
   ];
 
   // 2. Date Options matching original all_jobs.html

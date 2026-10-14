@@ -146,7 +146,7 @@ def get_job_counts():
         except Exception:
             pass
 
-    total_jobs = counts.get("total", 912651)
+    total_jobs = counts.get("total_jobs") or counts.get("total") or 912651
     sources = counts.get("sources", {
         "naukri": 322160,
         "linkedin": 221380,
@@ -276,7 +276,18 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-    print(f"✅ Generated {out_path} ({len(workflows)} workflows tracked)")
+    st_path = "data/string_theory_metrics.json"
+    with open(st_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+    public_dir = os.path.join("all-career-app", "public", "data")
+    if os.path.exists(public_dir):
+        with open(os.path.join(public_dir, "string_theory_metrics.json"), "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        with open(os.path.join(public_dir, "admin_metrics.json"), "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+
+    print(f"✅ Generated {out_path} and {st_path} ({len(workflows)} workflows tracked)")
 
 if __name__ == "__main__":
     main()

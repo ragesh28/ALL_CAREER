@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>All Career | Admin Command Center & Workflow Telemetry</title>
+  <title>All Career | String Theory Command Engine</title>
   <link rel="icon" type="image/png" href="./String_Theory.png" />
   
   <!-- Modern Curated Typography -->
@@ -49,7 +49,7 @@
     }
 
     /* TOP NAVIGATION HUD */
-    .admin-nav {
+    .st-nav {
       position: sticky;
       top: 0;
       z-index: 100;
@@ -94,7 +94,7 @@
       gap: 8px;
     }
 
-    .badge-admin {
+    .badge-st {
       font-size: 0.65rem;
       padding: 2px 7px;
       border-radius: 6px;
@@ -181,7 +181,7 @@
     }
 
     /* CONTAINER */
-    .admin-container {
+    .st-container {
       max-width: 1440px;
       margin: 0 auto;
       padding: 28px 32px 80px;
@@ -593,7 +593,7 @@
       color: var(--text-muted);
     }
 
-    .admin-input {
+    .st-input {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-subtle);
       color: #ffffff;
@@ -604,7 +604,7 @@
       font-family: inherit;
     }
 
-    .admin-input:focus {
+    .st-input:focus {
       border-color: var(--cyan);
       background: rgba(255, 255, 255, 0.08);
     }
@@ -627,11 +627,11 @@
 <body>
 
   <!-- TOP NAVIGATION -->
-  <nav class="admin-nav">
+  <nav class="st-nav">
     <a href="#" class="brand-group">
       <img src="./String_Theory.png" alt="All Career" class="brand-logo" onerror="this.src='./assets/String_Theory.png'">
       <div class="brand-titles">
-        <span class="brand-title">ALL_CAREER <span class="badge-admin">Command Center</span></span>
+        <span class="brand-title">STRING THEORY <span class="badge-st">Core Engine</span></span>
         <span class="brand-subtitle">Workflow Automation Engine & Ecosystem Telemetry</span>
       </div>
     </a>
@@ -657,7 +657,7 @@
   </nav>
 
   <!-- MAIN CONTAINER -->
-  <main class="admin-container">
+  <main class="st-container">
     
     <!-- ANOMALY ALERT BANNER -->
     <div class="alert-banner" id="anomalyBanner" style="display: none;">
@@ -812,19 +812,19 @@
   <div class="modal-overlay" id="settingsModal" onclick="if(event.target === this) closeSettingsModal()">
     <div class="modal-box">
       <div class="modal-header">
-        <h3 class="modal-title">Admin Benchmark Settings</h3>
+        <h3 class="modal-title">Telemetry Benchmark Configuration</h3>
         <button style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;" onclick="closeSettingsModal()">✕</button>
       </div>
 
       <div class="input-group">
         <label class="input-label">Target Jobs Scraped Per Day (Average Benchmark)</label>
-        <input type="number" id="targetBenchmarkInput" class="admin-input" value="5000" min="500" step="500">
+        <input type="number" id="targetBenchmarkInput" class="st-input" value="5000" min="500" step="500">
         <span style="font-size: 0.72rem; color: var(--text-dim);">If actual daily scrape count falls below this number, the dashboard shows an anomaly alert banner.</span>
       </div>
 
       <div class="input-group">
         <label class="input-label">Auto-Refresh Cadence</label>
-        <select id="autoRefreshSelect" class="admin-input">
+        <select id="autoRefreshSelect" class="st-input">
           <option value="60000">Every 1 minute</option>
           <option value="300000" selected>Every 5 minutes</option>
           <option value="900000">Every 15 minutes</option>
@@ -841,12 +841,12 @@
     let activeFilter = 'all';
     let targetDailyBenchmark = parseInt(localStorage.getItem('all_career_benchmark') || '5000', 10);
 
-    async function loadMetrics() {
       const candidates = [
-        './data/admin_metrics.json',
-        'data/admin_metrics.json',
-        '/ALL_CAREER/data/admin_metrics.json',
-        'all-career-app/public/data/admin_metrics.json'
+        './data/string_theory_metrics.json',
+        'data/string_theory_metrics.json',
+        '/ALL_CAREER/data/string_theory_metrics.json',
+        'all-career-app/public/data/string_theory_metrics.json',
+        './data/admin_metrics.json'
       ];
 
       for (const url of candidates) {
