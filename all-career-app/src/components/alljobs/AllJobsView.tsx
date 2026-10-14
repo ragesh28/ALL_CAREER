@@ -599,9 +599,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   };
 
   const handleAutoApply = () => {
-    const urls = filteredJobs.slice(0, 30).map(j => j.url).filter(Boolean) as string[];
-    bridgeService.sendBatchJobsToExtension(urls);
-    alert(`Dispatched ${urls.length} application URLs to Auto-Fill-V5 Extension!`);
+    const jobsToApply = (filteredJobs && filteredJobs.length > 0 ? filteredJobs : jobs)
+      .filter(j => (j.url || (j as any).apply_url))
+      .slice(0, 30);
+    bridgeService.startBatchAutoApply(jobsToApply);
   };
 
   return (

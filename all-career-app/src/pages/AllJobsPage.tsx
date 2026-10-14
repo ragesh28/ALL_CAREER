@@ -141,9 +141,8 @@ export const AllJobsPage: React.FC = () => {
 
   // Trigger batch auto apply to Auto-Fill-V5 extension
   const handleBatchAutoApply = () => {
-    const urls = currentJobs.map(j => j.url).filter(Boolean) as string[];
-    bridgeService.sendBatchJobsToExtension(urls);
-    alert(`Dispatched ${urls.length} application URLs to Auto-Fill-V5 Extension!`);
+    const jobsToApply = currentJobs.filter(j => j.url).slice(0, 30);
+    bridgeService.startBatchAutoApply(jobsToApply);
   };
 
   return (

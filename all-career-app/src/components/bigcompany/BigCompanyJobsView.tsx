@@ -379,9 +379,10 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
   };
 
   const handleAutoApply = () => {
-    const urls = pageJobs.map(j => j.apply_url || j.url).filter(Boolean) as string[];
-    bridgeService.sendBatchJobsToExtension(urls);
-    alert(`Dispatched ${urls.length} Big Company application URLs to Auto-Fill-V5 Extension!`);
+    const jobsToApply = (pageJobs && pageJobs.length > 0 ? pageJobs : filteredJobs)
+      .filter(j => (j.apply_url || j.url))
+      .slice(0, 30);
+    bridgeService.startBatchAutoApply(jobsToApply);
   };
 
   const dateLabels: Record<string, string> = {

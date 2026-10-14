@@ -4,6 +4,7 @@ import { AllJobsView } from './components/alljobs/AllJobsView';
 import { PracticeView } from './components/practice/PracticeView';
 import { BigCompanyView } from './components/bigcompany/BigCompanyView';
 import { BigCompanyJobsView } from './components/bigcompany/BigCompanyJobsView';
+import { AutoApplyHUD } from './components/common/AutoApplyHUD';
 import './styles/all_career_theme.css';
 
 export type ViewType = 'hub' | 'all_jobs' | 'practice' | 'big_company_jobs' | 'career_explorer';
@@ -85,6 +86,9 @@ export const App: React.FC = () => {
           onGoHub={() => navigateTo('hub')}
         />
       )}
+
+      {/* Global Auto Apply Real-Time HUD & Extension Modals */}
+      <AutoApplyHUD />
     </div>
   );
 };

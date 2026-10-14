@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { History, RotateCcw, Search, Send, X } from 'lucide-react';
+import { History, RotateCcw, Search, Send, Square, X } from 'lucide-react';
 import { resolveAssetUrl } from '../../utils/urlHelper';
 import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
+import { bridgeService, BatchState } from '../../services/bridgeService';
 
 interface AllJobsTopNavProps {
   searchTerm: string;
@@ -26,7 +27,12 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
 }) => {
   // Local instant state for silky-smooth 60fps typing without any blocking lag
   const [localSearch, setLocalSearch] = useState(searchTerm);
+  const [batchState, setBatchState] = useState<BatchState>(bridgeService.getState());
   const debounceTimerRef = useRef<any>(null);
+
+  useEffect(() => {
+    return bridgeService.subscribe((s) => setBatchState(s));
+  }, []);
 
   useEffect(() => {
     setLocalSearch(searchTerm);
@@ -101,15 +107,32 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
 
       {/* Right: Actions */}
       <div className="topnav-right">
-        <button className="auto-apply-nav-btn" onClick={onAutoApply} title="Auto Apply with Extension">
-          <Send size={15} strokeWidth={2.1} aria-hidden="true" />
-          <span>Auto Apply</span>
+        <button
+          className={`auto-apply-nav-btn ${batchState.running ? 'running ring-2 ring-emerald-400 bg-rose-600/30' : ''}`}
+          onClick={onAutoApply}
+          title={batchState.running ? 'Click to Stop Auto Apply' : 'Auto Apply with Extension'}
+        >
+          {batchState.running ? (
+            <>
+              <Square size={14} className="animate-pulse text-amber-300" aria-hidden="true" />
+              <span>Stop ({batchState.currentIndex}/{batchState.total})</span>
+            </>
+          ) : (
+            <>
+              <Send size={15} strokeWidth={2.1} aria-hidden="true" />
+              <span>Auto Apply</span>
+            </>
+          )}
         </button>
 
-        <button className="history-nav-btn">
+        <button
+          className="history-nav-btn"
+          onClick={() => bridgeService.openHistory()}
+          title="View Application History"
+        >
           <History size={15} strokeWidth={2.1} aria-hidden="true" />
           <span>History</span>
-          <span style={{ color: '#fff', fontWeight: 700 }}>0</span>
+          <span style={{ color: '#fff', fontWeight: 700 }}>{batchState.history.length}</span>
         </button>
 
         <div className="topnav-count-btn" aria-label={`${totalJobsCount.toLocaleString()} jobs shown`}>
