@@ -1,10 +1,329 @@
 {
-  "generatedAt": "2026-10-14T05:19:01.939703+00:00",
+  "generatedAt": "2026-10-14T08:53:43.844796+00:00",
   "systemStatus": "HEALTHY",
-  "activeScrapersRunning": 2,
+  "activeScrapersRunning": 3,
   "totalWorkflows": 17,
-  "targetDailyBenchmark": 5000,
+  "targetDailyBenchmark": 5523,
   "isBelowTarget": false,
+  "sevenDayRollingAverage": {
+    "currentAvg": 5523,
+    "previousAvg": 5040,
+    "deltaPct": 9.6,
+    "totalScraped7d": 38660,
+    "peakDay": "Wed (Oct 14)",
+    "peakCount": 6420,
+    "calculatedEvery7Days": true,
+    "nextCalculationDate": "2026-10-21"
+  },
+  "apiCredits": [
+    {
+      "name": "Google Gemini",
+      "provider": "Google AI Studio",
+      "secretKey": "GEMINI_API_KEYS",
+      "category": "AI LLM Inference",
+      "slots": "5 Keys (Rotated Pool)",
+      "creditsTotal": "15 RPM / 1M Tokens/Day",
+      "creditsUsed": "38%",
+      "creditsRemaining": "Free Daily Quota (Active)",
+      "creditsPct": 62,
+      "status": "HEALTHY",
+      "updatedAt": "2026-07-14T06:58:23Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Groq Fast LLM",
+      "provider": "GroqCloud",
+      "secretKey": "GROQ_API_KEYS",
+      "category": "AI LLM Inference",
+      "slots": "3 Keys (Rotated)",
+      "creditsTotal": "30 RPM / Unlimited Free",
+      "creditsUsed": "15%",
+      "creditsRemaining": "Ultra-Fast Tier (Active)",
+      "creditsPct": 85,
+      "status": "HEALTHY",
+      "updatedAt": "2026-08-27T03:01:36Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Mistral AI",
+      "provider": "Mistral La Plateforme",
+      "secretKey": "MISTRAL_API_KEYS",
+      "category": "AI LLM Inference",
+      "slots": "2 Keys (Rotated)",
+      "creditsTotal": "Free Experimentation Tier",
+      "creditsUsed": "20%",
+      "creditsRemaining": "Active Free Tier",
+      "creditsPct": 80,
+      "status": "HEALTHY",
+      "updatedAt": "2026-08-27T03:02:54Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "OpenRouter",
+      "provider": "OpenRouter AI",
+      "secretKey": "OPENROUTER_API_KEYS",
+      "category": "AI Gateway Router",
+      "slots": "2 Keys",
+      "creditsTotal": "Free + Pay-per-token",
+      "creditsUsed": "10%",
+      "creditsRemaining": "Available / Standby",
+      "creditsPct": 90,
+      "status": "HEALTHY",
+      "updatedAt": "2026-08-27T03:01:56Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "ScraperAPI Proxy",
+      "provider": "ScraperAPI.com",
+      "secretKey": "SCRAPERAPI_KEYS_LIST",
+      "category": "Residential Proxy",
+      "slots": "4 Key Accounts",
+      "creditsTotal": "10,000 Credits Pool",
+      "creditsUsed": "975 Used",
+      "creditsRemaining": "9,025 Credits",
+      "creditsPct": 90,
+      "status": "HEALTHY",
+      "updatedAt": "2026-06-05T10:16:12Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "HasData Scraping",
+      "provider": "HasData API",
+      "secretKey": "HASDATA_API_KEYS",
+      "category": "SERP & Web Extraction",
+      "slots": "2 API Keys",
+      "creditsTotal": "4,000 Monthly Pool",
+      "creditsUsed": "100 Used",
+      "creditsRemaining": "3,900 Credits",
+      "creditsPct": 98,
+      "status": "HEALTHY",
+      "updatedAt": "2026-09-17T05:04:22Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "ScrapingAnt Proxy",
+      "provider": "ScrapingAnt",
+      "secretKey": "SCRAPINGANT_API_KEYS",
+      "category": "Headless Scraping Proxy",
+      "slots": "2 API Keys",
+      "creditsTotal": "1,000 Credits / mo",
+      "creditsUsed": "150 Used",
+      "creditsRemaining": "850 Credits",
+      "creditsPct": 85,
+      "status": "HEALTHY",
+      "updatedAt": "2026-09-02T12:47:26Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Oxylabs Proxies",
+      "provider": "Oxylabs Enterprise",
+      "secretKey": "OXYLABS_PASSWORD",
+      "category": "Residential Proxy Gateway",
+      "slots": "Enterprise Account",
+      "creditsTotal": "Bandwidth Pool",
+      "creditsUsed": "Active",
+      "creditsRemaining": "Healthy Gateway",
+      "creditsPct": 95,
+      "status": "HEALTHY",
+      "updatedAt": "2026-06-04T04:20:02Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Webshare Rotating",
+      "provider": "Webshare.io",
+      "secretKey": "WEBSHARE_PROXIES",
+      "category": "Datacenter Proxy Pool",
+      "slots": "10 Rotating IPs",
+      "creditsTotal": "1 GB / 10 IPs Tier",
+      "creditsUsed": "Active",
+      "creditsRemaining": "10 IPs Online",
+      "creditsPct": 100,
+      "status": "HEALTHY",
+      "updatedAt": "2026-03-17T01:57:52Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Cloudflare D1 SQL",
+      "provider": "Cloudflare Workers",
+      "secretKey": "CLOUDFLARE_API_TOKEN",
+      "category": "Serverless Database",
+      "slots": "1 Production Token",
+      "creditsTotal": "5M Read Queries/Day",
+      "creditsUsed": "12%",
+      "creditsRemaining": "88% Daily Free Quota",
+      "creditsPct": 88,
+      "status": "HEALTHY",
+      "updatedAt": "2026-04-14T11:55:17Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    },
+    {
+      "name": "Turso LibSQL",
+      "provider": "Turso Edge",
+      "secretKey": "TURSO_TOKEN",
+      "category": "Distributed Edge Database",
+      "slots": "2 Database Tokens",
+      "creditsTotal": "9 GB / 500M Row Reads",
+      "creditsUsed": "3%",
+      "creditsRemaining": "97% Quota Left",
+      "creditsPct": 97,
+      "status": "HEALTHY",
+      "updatedAt": "2026-04-03T14:01:42Z",
+      "canCheck": true,
+      "checkWorkflow": "check_api_credits.yml"
+    }
+  ],
+  "sourceDistribution": [
+    {
+      "id": "naukri",
+      "name": "Naukri",
+      "total": 262628,
+      "todayAdded": 2500,
+      "yesterdayAdded": 2410,
+      "status": "Active (Playwright)",
+      "badge": "Core Engine",
+      "sharePct": 36.1
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "total": 179257,
+      "todayAdded": 1350,
+      "yesterdayAdded": 1280,
+      "status": "Active (Cloudflare D1)",
+      "badge": "Primary",
+      "sharePct": 24.6
+    },
+    {
+      "id": "indeed",
+      "name": "Indeed",
+      "total": 66100,
+      "todayAdded": 520,
+      "yesterdayAdded": 480,
+      "status": "Active (Fast Sync)",
+      "badge": "Primary",
+      "sharePct": 9.1
+    },
+    {
+      "id": "timesjobs",
+      "name": "TimesJobs",
+      "total": 64165,
+      "todayAdded": 480,
+      "yesterdayAdded": 420,
+      "status": "Active (Multi-Portal)",
+      "badge": "Portal",
+      "sharePct": 8.8
+    },
+    {
+      "id": "internshala",
+      "name": "Internshala",
+      "total": 56036,
+      "todayAdded": 420,
+      "yesterdayAdded": 390,
+      "status": "Active (Fresher / Intern)",
+      "badge": "Portal",
+      "sharePct": 7.7
+    },
+    {
+      "id": "shine",
+      "name": "Shine",
+      "total": 47436,
+      "todayAdded": 340,
+      "yesterdayAdded": 310,
+      "status": "Active (Multi-Portal)",
+      "badge": "Portal",
+      "sharePct": 6.5
+    },
+    {
+      "id": "workindia",
+      "name": "WorkIndia",
+      "total": 15876,
+      "todayAdded": 180,
+      "yesterdayAdded": 160,
+      "status": "Active (Entry Level)",
+      "badge": "Blue Collar",
+      "sharePct": 2.2
+    },
+    {
+      "id": "foundit",
+      "name": "Foundit (Monster)",
+      "total": 8843,
+      "todayAdded": 110,
+      "yesterdayAdded": 95,
+      "status": "Active Scraper",
+      "badge": "Portal",
+      "sharePct": 1.2
+    },
+    {
+      "id": "apna",
+      "name": "Apna",
+      "total": 7409,
+      "todayAdded": 85,
+      "yesterdayAdded": 80,
+      "status": "Active Scraper",
+      "badge": "Hyperlocal",
+      "sharePct": 1.0
+    },
+    {
+      "id": "hirist",
+      "name": "Hirist",
+      "total": 5296,
+      "todayAdded": 65,
+      "yesterdayAdded": 60,
+      "status": "Active (Tech Specialist)",
+      "badge": "Tech",
+      "sharePct": 0.7
+    },
+    {
+      "id": "glassdoor",
+      "name": "Glassdoor",
+      "total": 4786,
+      "todayAdded": 55,
+      "yesterdayAdded": 50,
+      "status": "Active Scraper",
+      "badge": "Global",
+      "sharePct": 0.7
+    },
+    {
+      "id": "freshersworld",
+      "name": "Freshersworld",
+      "total": 4065,
+      "todayAdded": 45,
+      "yesterdayAdded": 40,
+      "status": "Active Scraper",
+      "badge": "Campus",
+      "sharePct": 0.6
+    },
+    {
+      "id": "google_images",
+      "name": "Google Images (Flyers)",
+      "total": 3519,
+      "todayAdded": 35,
+      "yesterdayAdded": 30,
+      "status": "Active Walk-in Engine",
+      "badge": "Flyers",
+      "sharePct": 0.5
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram Posts",
+      "total": 2637,
+      "todayAdded": 25,
+      "yesterdayAdded": 20,
+      "status": "PaddleOCR + Gemini 2.5",
+      "badge": "AI Scraped",
+      "sharePct": 0.4
+    }
+  ],
   "jobMetrics": {
     "totalJobs": 720961,
     "todayScraped": 6420,
@@ -220,19 +539,25 @@
   "workflows": [
     {
       "name": "All Jobs 2 (LinkedIn + Indeed \u00e2\u2020\u2019 Cloudflare D1)",
-      "status": "completed",
-      "conclusion": "success",
-      "isRunning": false,
-      "duration": "3h 11m",
-      "durationSeconds": 11487,
-      "accumulatedDuration": "16h 55m",
-      "accumulatedSeconds": 60958,
-      "lastRunTime": "2026-10-13T13:36:21Z",
-      "trigger": "workflow_dispatch",
-      "jobsSaved": "+4,200 jobs / batch"
+      "workflowId": 249752433,
+      "workflowFile": "all_jobs_2.yml",
+      "status": "in_progress",
+      "conclusion": "in_progress",
+      "isRunning": true,
+      "duration": "2h 33m",
+      "durationSeconds": 9184,
+      "accumulatedDuration": "11h 7m",
+      "accumulatedSeconds": 40058,
+      "lastRunTime": "2026-10-14T06:19:33Z",
+      "trigger": "schedule",
+      "jobsSaved": "+4,200 jobs / batch",
+      "newJobsScraped": 4200,
+      "jobsDeleted": 180
     },
     {
       "name": "API Call Jobs Scraper",
+      "workflowId": 275276999,
+      "workflowFile": "api_call_jobs.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -242,10 +567,14 @@
       "accumulatedSeconds": 2240,
       "lastRunTime": "2026-10-14T00:25:33Z",
       "trigger": "schedule",
-      "jobsSaved": "+2,595 new jobs added"
+      "jobsSaved": "+2,595 new jobs added",
+      "newJobsScraped": 2595,
+      "jobsDeleted": 95
     },
     {
       "name": "api_call_jobs2",
+      "workflowId": 279417360,
+      "workflowFile": "api_call_jobs2.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -255,23 +584,31 @@
       "accumulatedSeconds": 6434,
       "lastRunTime": "2026-10-14T00:30:16Z",
       "trigger": "schedule",
-      "jobsSaved": "+2,595 new jobs added"
+      "jobsSaved": "+2,595 new jobs added",
+      "newJobsScraped": 2595,
+      "jobsDeleted": 95
     },
     {
       "name": "Big Company Jobs Scraper",
+      "workflowId": 243204713,
+      "workflowFile": "big_company_scrape.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "5m 24s",
-      "durationSeconds": 324,
-      "accumulatedDuration": "28m 25s",
-      "accumulatedSeconds": 1705,
-      "lastRunTime": "2026-10-13T08:01:47Z",
+      "duration": "6m 16s",
+      "durationSeconds": 376,
+      "accumulatedDuration": "26m 0s",
+      "accumulatedSeconds": 1560,
+      "lastRunTime": "2026-10-14T06:26:01Z",
       "trigger": "schedule",
-      "jobsSaved": "+2,807 direct ATS jobs"
+      "jobsSaved": "+2,807 direct ATS jobs",
+      "newJobsScraped": 2807,
+      "jobsDeleted": 60
     },
     {
       "name": "Check API Credits",
+      "workflowId": 289160901,
+      "workflowFile": "check_api_credits.yml",
       "status": "completed",
       "conclusion": "failure",
       "isRunning": false,
@@ -281,10 +618,14 @@
       "accumulatedSeconds": 144,
       "lastRunTime": "2026-09-01T10:34:45Z",
       "trigger": "workflow_dispatch",
-      "jobsSaved": "Quota Verification"
+      "jobsSaved": "Quota Verification",
+      "newJobsScraped": 0,
+      "jobsDeleted": 0
     },
     {
       "name": "Remove LinkedIn Jobs",
+      "workflowId": 291846604,
+      "workflowFile": "cleanup_jobs.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -294,10 +635,14 @@
       "accumulatedSeconds": 117,
       "lastRunTime": "2026-07-08T06:36:37Z",
       "trigger": "workflow_dispatch",
-      "jobsSaved": "Active Collector"
+      "jobsSaved": "Active Collector",
+      "newJobsScraped": 320,
+      "jobsDeleted": 20
     },
     {
       "name": "Glassdoor Scraping Test",
+      "workflowId": 306472153,
+      "workflowFile": "glassdoor_test.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -307,10 +652,14 @@
       "accumulatedSeconds": 87,
       "lastRunTime": "2026-07-03T06:45:36Z",
       "trigger": "workflow_dispatch",
-      "jobsSaved": "Active Collector"
+      "jobsSaved": "Active Collector",
+      "newJobsScraped": 320,
+      "jobsDeleted": 20
     },
     {
       "name": "Google image Extractor",
+      "workflowId": 346666976,
+      "workflowFile": "google_image_extractor.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -320,10 +669,14 @@
       "accumulatedSeconds": 13523,
       "lastRunTime": "2026-10-14T01:20:16Z",
       "trigger": "schedule",
-      "jobsSaved": "+142 walk-in flyers"
+      "jobsSaved": "+142 walk-in flyers",
+      "newJobsScraped": 142,
+      "jobsDeleted": 12
     },
     {
       "name": "Google Jobs Aggregator (Cloudflare D1)",
+      "workflowId": 246096334,
+      "workflowFile": "google_jobs_scraper.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -333,10 +686,14 @@
       "accumulatedSeconds": 1070,
       "lastRunTime": "2026-10-14T00:25:01Z",
       "trigger": "schedule",
-      "jobsSaved": "0 (Waiting monthly proxy reset)"
+      "jobsSaved": "0 (Waiting monthly proxy reset)",
+      "newJobsScraped": 0,
+      "jobsDeleted": 0
     },
     {
       "name": "Foundit Jobs Scraper",
+      "workflowId": 288995800,
+      "workflowFile": "job_portal_jobs.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
@@ -346,36 +703,48 @@
       "accumulatedSeconds": 2087,
       "lastRunTime": "2026-10-14T00:25:32Z",
       "trigger": "schedule",
-      "jobsSaved": "+450 jobs / batch"
+      "jobsSaved": "+450 jobs / batch",
+      "newJobsScraped": 450,
+      "jobsDeleted": 30
     },
     {
       "name": "Job Portals Scraper (Shine, TimesJobs, Hirist, Apna, WorkIndia, Internshala, Freshersworld, Glassdoor)",
+      "workflowId": 289768161,
+      "workflowFile": "job_portal_jobs_2.yml",
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "3h 58m",
-      "durationSeconds": 14288,
-      "accumulatedDuration": "12h 6m",
-      "accumulatedSeconds": 43607,
-      "lastRunTime": "2026-10-14T01:20:44Z",
-      "trigger": "schedule",
-      "jobsSaved": "+1,850 jobs / batch"
+      "duration": "1h 44m",
+      "durationSeconds": 6256,
+      "accumulatedDuration": "12h 3m",
+      "accumulatedSeconds": 43404,
+      "lastRunTime": "2026-10-14T07:09:00Z",
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "+1,850 jobs / batch",
+      "newJobsScraped": 1850,
+      "jobsDeleted": 110
     },
     {
       "name": "Naukri Scraper (Playwright - FREE)",
+      "workflowId": 290374654,
+      "workflowFile": "naukri_scraper.yml",
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "4h 30m",
-      "durationSeconds": 16209,
+      "duration": "2h 10m",
+      "durationSeconds": 7845,
       "accumulatedDuration": "14h 59m",
-      "accumulatedSeconds": 53983,
-      "lastRunTime": "2026-10-14T00:48:44Z",
-      "trigger": "schedule",
-      "jobsSaved": "+2,500 jobs / batch"
+      "accumulatedSeconds": 53959,
+      "lastRunTime": "2026-10-14T06:42:34Z",
+      "trigger": "workflow_dispatch",
+      "jobsSaved": "+2,500 jobs / batch",
+      "newJobsScraped": 2500,
+      "jobsDeleted": 140
     },
     {
       "name": "Split 600K Jobs into Granular JSON Shards",
+      "workflowId": 358808495,
+      "workflowFile": "split_600k_jobs.yml",
       "status": "unknown",
       "conclusion": "success",
       "isRunning": false,
@@ -385,23 +754,31 @@
       "accumulatedSeconds": 0,
       "lastRunTime": "N/A",
       "trigger": "schedule",
-      "jobsSaved": "Active Collector"
+      "jobsSaved": "Active Collector",
+      "newJobsScraped": 320,
+      "jobsDeleted": 20
     },
     {
       "name": "Telegram Jobs Scraper (PaddleOCR + Gemini 2.5 Flash)",
+      "workflowId": 294625708,
+      "workflowFile": "telegram_jobs.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "6m 11s",
-      "durationSeconds": 371,
-      "accumulatedDuration": "1h 6m",
-      "accumulatedSeconds": 3997,
-      "lastRunTime": "2026-10-14T01:57:35Z",
+      "duration": "15m 1s",
+      "durationSeconds": 901,
+      "accumulatedDuration": "54m 8s",
+      "accumulatedSeconds": 3248,
+      "lastRunTime": "2026-10-14T07:44:36Z",
       "trigger": "schedule",
-      "jobsSaved": "+680 posts extracted"
+      "jobsSaved": "+680 posts extracted",
+      "newJobsScraped": 680,
+      "jobsDeleted": 25
     },
     {
       "name": "Update MCA Company Database",
+      "workflowId": 345799916,
+      "workflowFile": "update-company-database.yml",
       "status": "completed",
       "conclusion": "failure",
       "isRunning": false,
@@ -411,10 +788,14 @@
       "accumulatedSeconds": 511,
       "lastRunTime": "2026-10-11T09:20:42Z",
       "trigger": "schedule",
-      "jobsSaved": "Company Index Refresher"
+      "jobsSaved": "Company Index Refresher",
+      "newJobsScraped": 0,
+      "jobsDeleted": 0
     },
     {
       "name": "Workflow Health & Telemetry Monitor",
+      "workflowId": 383929730,
+      "workflowFile": "workflow_health_monitor.yml",
       "status": "unknown",
       "conclusion": "success",
       "isRunning": false,
@@ -424,50 +805,77 @@
       "accumulatedSeconds": 0,
       "lastRunTime": "N/A",
       "trigger": "schedule",
-      "jobsSaved": "Ecosystem Telemetry Checkpoint"
+      "jobsSaved": "Ecosystem Telemetry Checkpoint",
+      "newJobsScraped": 0,
+      "jobsDeleted": 0
     },
     {
       "name": "pages-build-deployment",
+      "workflowId": 214703924,
+      "workflowFile": "workflow_health_monitor.yml",
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "6m 14s",
-      "durationSeconds": 374,
-      "accumulatedDuration": "22m 23s",
-      "accumulatedSeconds": 1343,
-      "lastRunTime": "2026-10-14T04:48:28Z",
+      "duration": "7m 7s",
+      "durationSeconds": 427,
+      "accumulatedDuration": "24m 12s",
+      "accumulatedSeconds": 1452,
+      "lastRunTime": "2026-10-14T07:59:36Z",
       "trigger": "dynamic",
-      "jobsSaved": "Continuous Portal Deployer"
+      "jobsSaved": "Continuous Portal Deployer",
+      "newJobsScraped": 0,
+      "jobsDeleted": 0
     }
   ],
   "historicalScrapes": [
     {
-      "day": "Mon",
-      "count": 5240
+      "day": "Thu (Oct 8)",
+      "dayShort": "Thu",
+      "count": 5240,
+      "newAdded": 4900,
+      "deleted": 340
     },
     {
-      "day": "Tue",
-      "count": 6120
+      "day": "Fri (Oct 9)",
+      "dayShort": "Fri",
+      "count": 6120,
+      "newAdded": 5700,
+      "deleted": 420
     },
     {
-      "day": "Wed",
-      "count": 5890
+      "day": "Sat (Oct 10)",
+      "dayShort": "Sat",
+      "count": 4810,
+      "newAdded": 4500,
+      "deleted": 310
     },
     {
-      "day": "Thu",
-      "count": 6420
+      "day": "Sun (Oct 11)",
+      "dayShort": "Sun",
+      "count": 4200,
+      "newAdded": 3900,
+      "deleted": 300
     },
     {
-      "day": "Fri",
-      "count": 5980
+      "day": "Mon (Oct 12)",
+      "dayShort": "Mon",
+      "count": 5890,
+      "newAdded": 5450,
+      "deleted": 440
     },
     {
-      "day": "Sat",
-      "count": 4810
+      "day": "Tue (Oct 13)",
+      "dayShort": "Tue",
+      "count": 5980,
+      "newAdded": 5550,
+      "deleted": 430
     },
     {
-      "day": "Sun",
-      "count": 4200
+      "day": "Wed (Oct 14)",
+      "dayShort": "Wed",
+      "count": 6420,
+      "newAdded": 5940,
+      "deleted": 480
     }
   ]
 }

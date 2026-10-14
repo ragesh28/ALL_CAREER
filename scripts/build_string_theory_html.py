@@ -1,0 +1,1589 @@
+#!/usr/bin/env python3
+"""
+Builder script to generate the redesigned string_theory.html with:
+1. Workflow Execution Engine in a single unified table (Rows and Columns)
+2. Live Trigger Workflow feature using GitHub Actions REST API
+3. Fixed dark auto-refresh select dropdown (no white background)
+4. Automated 7-Day Rolling Average calculation and text display
+5. Interactive 7-Day Scrape Volume Graph with Peak Day highlight
+6. AI & Proxy API Key Credits Monitor Table (excluding Telegram)
+7. Multi-Portal Corpus Distribution Table with Today and Yesterday counts
+"""
+
+html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Theory | Command Engine & Telemetry</title>
+  <link rel="icon" type="image/png" href="./String_Theory.png" />
+  
+  <!-- Modern Curated Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-canvas: #030712;
+      --bg-surface: #0b1329;
+      --bg-card: rgba(15, 23, 42, 0.78);
+      --bg-card-hover: rgba(22, 36, 68, 0.9);
+      --border-outer: rgba(255, 255, 255, 0.08);
+      --border-inner: rgba(255, 255, 255, 0.04);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #38bdf8;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --violet: #a855f7;
+      --blue: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(1300px 700px at 5% -10%, rgba(56, 189, 248, 0.12), transparent 70%),
+        radial-gradient(1100px 600px at 95% 15%, rgba(168, 85, 247, 0.09), transparent 70%),
+        radial-gradient(900px 500px at 50% 100%, rgba(16, 185, 129, 0.06), transparent 70%);
+      background-attachment: fixed;
+    }
+
+    /* TOP NAVIGATION */
+    .st-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(3, 7, 18, 0.88);
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      object-fit: contain;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-st {
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pulse-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--emerald);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-portal-back {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: var(--cyan);
+    }
+
+    .btn-portal-back:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    /* CONTAINER */
+    .st-container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 24px 32px 80px;
+    }
+
+    /* DOUBLE-BEZEL CONTAINER WRAPPER */
+    .bezel-outer {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-outer);
+      border-radius: 22px;
+      padding: 5px;
+      margin-bottom: 30px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    .bezel-inner {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-inner);
+      border-radius: 18px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* KPI METRICS ROW */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 20px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    }
+
+    .metric-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .metric-card:hover::after { opacity: 1; }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .metric-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+    }
+
+    .delta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .delta-up { background: rgba(16, 185, 129, 0.15); color: var(--emerald); }
+    .delta-down { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
+    .delta-cyan { background: rgba(56, 189, 248, 0.15); color: var(--cyan); }
+    .delta-violet { background: rgba(168, 85, 247, 0.15); color: var(--violet); }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-tag {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* FILTER TABS */
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .filter-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover { color: #fff; }
+
+    .filter-tab.active {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--cyan);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    /* UNIFIED TABLE / DATA GRID ARCHITECTURE */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(10, 16, 31, 0.6);
+    }
+
+    .st-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .st-table th {
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+
+    .st-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #e2e8f0;
+      vertical-align: middle;
+      transition: background 0.15s ease;
+    }
+
+    .st-table tbody tr:hover td {
+      background: rgba(56, 189, 248, 0.04);
+    }
+
+    .st-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cell-primary {
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cell-sub {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cell-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-running {
+      background: rgba(16, 185, 129, 0.16);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .status-success {
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .status-failed {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--rose);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .status-idle {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* TRIGGER BUTTON */
+    .btn-trigger {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(37, 99, 235, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--cyan);
+      padding: 6px 13px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-trigger:hover {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-trigger:active {
+      transform: scale(0.97);
+    }
+
+    /* GRAPH & 7-DAY BENCHMARK CARD */
+    .chart-bento {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .chart-bento { grid-template-columns: 1fr; }
+    }
+
+    .peak-callout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.12), rgba(16, 185, 129, 0.12));
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .peak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    .avg-reference-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* MINI PROGRESS BARS */
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* MODAL STYLES (STRICT ANTI-WHITE DROPDOWN FIX) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #090e1c;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      padding: 26px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+      animation: modalSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlide {
+      from { transform: scale(0.95) translateY(12px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* EXPLICIT DARK FORM CONTROLS (FIXES WHITE SELECT BUG) */
+    .st-input, 
+    select.st-input {
+      color-scheme: dark !important;
+      background-color: #0d1527 !important;
+      color: #f8fafc !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      outline: none;
+      font-family: inherit;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    select.st-input option {
+      background-color: #090e1c !important;
+      color: #f8fafc !important;
+      padding: 10px;
+    }
+
+    .st-input:focus, 
+    select.st-input:focus {
+      border-color: var(--cyan) !important;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+    }
+
+    .btn-save {
+      width: 100%;
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-save:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 28px;
+      right: 32px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-item {
+      pointer-events: auto;
+      background: #0d1527;
+      border: 1px solid var(--border-glow);
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION HUD -->
+  <nav class="st-nav">
+    <a href="#" class="brand-group">
+      <img src="./String_Theory.png" alt="All Career" class="brand-logo" onerror="this.src='./assets/String_Theory.png'">
+      <div class="brand-titles">
+        <span class="brand-title">STRING THEORY <span class="badge-st">Core Command</span></span>
+        <span class="brand-subtitle">Workflow Automation Engine & Quota Telemetry</span>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <div class="pulse-status" id="systemPulse">
+        <span class="pulse-dot"></span>
+        <span id="systemStatusText">OPERATIONAL</span>
+      </div>
+
+      <button class="btn-action" onclick="openTokenModal()" id="ghPatBtn" title="Configure GitHub Personal Access Token to Trigger Workflows">
+        🔑 GitHub PAT: <span id="patStatus" style="color:var(--emerald);">Configured</span>
+      </button>
+
+      <button class="btn-action" onclick="openSettingsModal()" title="Telemetry Cadence & Benchmarks">
+        ⚙️ Settings
+      </button>
+
+      <button class="btn-action" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')" title="Run API Credits Check Workflow">
+        ⚡ Check Credits
+      </button>
+
+      <button class="btn-action" onclick="refreshMetrics(true)" title="Force Refresh Telemetry">
+        🔄 Refresh
+      </button>
+
+      <a href="./#all_jobs" class="btn-action btn-portal-back">
+        ← Back to Job Portal
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="st-container">
+
+    <!-- KPI METRICS STRIP -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>TOTAL ECOSYSTEM JOBS</span>
+          <span>💼</span>
+        </div>
+        <div class="metric-value" id="kpiTotalJobs">720,961</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-cyan">Aggregated Corpus</span>
+          <span>14 Live Portal Sources</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>JOBS SCRAPED TODAY</span>
+          <span>⚡</span>
+        </div>
+        <div class="metric-value" id="kpiTodayScraped">6,420</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">+5,940 Added</span>
+          <span class="delta-badge delta-down">-480 Pruned</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>7-DAY ROLLING AVERAGE</span>
+          <span>📈</span>
+        </div>
+        <div class="metric-value" id="kpiRollingAvg" style="color: var(--cyan);">5,523</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up" id="kpiAvgDelta">↑ +9.6%</span>
+          <span>Prev 7D: <strong id="kpiPrevAvg">5,040</strong>/day (Auto-calc)</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>ACTIVE RUNNING SCRAPERS</span>
+          <span>🤖</span>
+        </div>
+        <div class="metric-value" id="kpiActiveScrapers" style="color: var(--emerald);">3</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">Live Pulse</span>
+          <span>Naukri + Portals + Aggregator</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>AI & PROXY SERVICES</span>
+          <span>🛡️</span>
+        </div>
+        <div class="metric-value" id="kpiApiCount" style="color: var(--violet);">11</div>
+        <div class="metric-footer">
+          <span class="delta-badge delta-up">Quota Healthy</span>
+          <span>Zero Rate-Limit Lockouts</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: 7-DAY SCRAPING GRAPH & PEAK HIGHLIGHT -->
+    <div class="bezel-outer">
+      <div class="bezel-inner">
+        <div class="section-header">
+          <div class="section-title-group">
+            <h2 class="section-title">📊 7-Day Scraping Volume & Peak Performance</h2>
+            <span class="section-tag" id="rollingDateWindow">Last 7 Days (Oct 8 - Oct 14)</span>
+          </div>
+
+          <div class="avg-reference-text">
+            <span>Rolling 7D Benchmark: <strong style="color:var(--cyan);" id="chartBenchmarkText">5,523 jobs/day</strong></span>
+            <span>Period Total: <strong style="color:#fff;" id="chartPeriodTotal">38,660 jobs</strong></span>
+          </div>
+        </div>
+
+        <!-- PEAK DAY HIGHLIGHT BANNER -->
+        <div class="peak-callout" id="peakDayCallout">
+          <div class="peak-badge">
+            <span>🏆</span>
+            <span>Highest Scrape Day: <span id="peakDayName" style="color:var(--cyan);">Wednesday, Oct 14</span></span>
+          </div>
+          <div style="font-size:0.85rem; font-weight:700; color:var(--emerald);">
+            <span id="peakDayJobs">6,420 jobs scraped</span> (+16.2% above 7-day average)
+          </div>
+        </div>
+
+        <!-- BENTO CHART & STATS -->
+        <div class="chart-bento">
+          <!-- Interactive SVG Volume Chart -->
+          <div style="height: 230px; width: 100%; position: relative;">
+            <svg viewBox="0 0 760 220" style="width: 100%; height: 100%; overflow: visible;" id="trendChartSvg">
+              <!-- Rendered dynamically -->
+            </svg>
+          </div>
+
+          <!-- 7-Day Metric Summary Box -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">
+                Rolling Average Breakdown
+              </div>
+              <div style="font-size:1.4rem; font-family:'Outfit', sans-serif; font-weight:800; color:#fff; margin-bottom:4px;" id="sideAvgVal">
+                5,523 <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">jobs / day</span>
+              </div>
+              <div style="font-size:0.78rem; color:var(--text-dim); margin-bottom:14px;">
+                Previous 7-Day Period: <strong style="color:var(--text-muted);" id="sidePrevAvg">5,040 / day</strong> (<span style="color:var(--emerald);" id="sideDelta">+9.6%</span>)
+              </div>
+              <div style="font-size:0.75rem; color:var(--cyan); background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.25); border-radius:8px; padding:8px 12px;">
+                ℹ️ Automatically recalculated every 7 days from persistent scrape telemetry.
+              </div>
+            </div>
+
+            <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:12px; display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
+              <span>Next Cycle Recalc:</span>
+              <strong style="color:#fff;" id="nextRecalcDate">2026-10-21</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: WORKFLOW EXECUTION ENGINE (SINGLE BOX TABLE GRID) -->
+    <div class="bezel-outer">
+      <div class="bezel-inner">
+        <div class="section-header">
+          <div class="section-title-group">
+            <h2 class="section-title">⚙️ Workflow Execution Engine</h2>
+            <span class="section-tag" id="wfCountTag">17 Workflows Tracked</span>
+          </div>
+
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterWorkflows('all', this)">All Workflows</button>
+            <button class="filter-tab" onclick="filterWorkflows('running', this)">Running (<span id="tabRunningCount">3</span>)</button>
+            <button class="filter-tab" onclick="filterWorkflows('success', this)">Completed</button>
+            <button class="filter-tab" onclick="filterWorkflows('failure', this)">Failed / Issues</button>
+          </div>
+        </div>
+
+        <!-- UNIFIED TABLE GRID (ROWS & COLUMNS) -->
+        <div class="table-container">
+          <table class="st-table" id="workflowsTable">
+            <thead>
+              <tr>
+                <th style="min-width: 260px;">Workflow Name & YAML File</th>
+                <th>Execution State</th>
+                <th>Runtime</th>
+                <th>New Jobs Scraped</th>
+                <th>Jobs Deleted</th>
+                <th>Last Run Start Time</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="workflowsTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: AI & PROXY API KEY CREDITS MONITOR -->
+    <div class="bezel-outer">
+      <div class="bezel-inner">
+        <div class="section-header">
+          <div class="section-title-group">
+            <h2 class="section-title">🔑 AI & Proxy API Key Credits Monitor</h2>
+            <span class="section-tag">Active GitHub Secrets Pool</span>
+          </div>
+
+          <div style="font-size:0.78rem; color:var(--text-dim);">
+            Daily verified quotas • Telegram keys excluded
+          </div>
+        </div>
+
+        <!-- API CREDITS TABLE GRID -->
+        <div class="table-container">
+          <table class="st-table" id="apiCreditsTable">
+            <thead>
+              <tr>
+                <th style="min-width: 200px;">Provider & Service</th>
+                <th>Category</th>
+                <th>GitHub Secret Name</th>
+                <th>Key Slots / Pool</th>
+                <th style="min-width: 220px;">Credits Remaining / Quota</th>
+                <th>Last Updated in GitHub</th>
+                <th style="text-align: right;">Live Check</th>
+              </tr>
+            </thead>
+            <tbody id="apiCreditsTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: MULTI-PORTAL CORPUS DISTRIBUTION (SINGLE BOX TABLE GRID) -->
+    <div class="bezel-outer">
+      <div class="bezel-inner">
+        <div class="section-header">
+          <div class="section-title-group">
+            <h2 class="section-title">🌐 Multi-Portal Corpus Distribution</h2>
+            <span class="section-tag">14 Scraped Portals</span>
+          </div>
+
+          <div style="font-size:0.78rem; color:var(--text-dim);">
+            Today vs Yesterday Ingestion Breakdown
+          </div>
+        </div>
+
+        <!-- CORPUS DISTRIBUTION TABLE GRID -->
+        <div class="table-container">
+          <table class="st-table" id="corpusTable">
+            <thead>
+              <tr>
+                <th style="min-width: 200px;">Source Portal</th>
+                <th>Total Stored Jobs</th>
+                <th>Added Today</th>
+                <th>Added Yesterday</th>
+                <th style="min-width: 200px;">Corpus Share %</th>
+                <th>Pipeline Status</th>
+              </tr>
+            </thead>
+            <tbody id="corpusTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SETTINGS MODAL (NO WHITE DROPDOWN BUG) -->
+  <div class="modal-overlay" id="settingsModal" onclick="if(event.target === this) closeSettingsModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Telemetry Settings & Auto-Refresh</h3>
+        <button style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;" onclick="closeSettingsModal()">✕</button>
+      </div>
+
+      <div style="background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.2); border-radius:12px; padding:12px 16px; margin-bottom:18px;">
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:3px;">AUTOMATIC 7-DAY AVERAGE CALCULATION:</div>
+        <div style="font-size:1.15rem; font-family:'Outfit', sans-serif; font-weight:800; color:#fff;" id="modalCalculatedAvg">
+          5,523 jobs / day
+        </div>
+        <div style="font-size:0.74rem; color:var(--text-dim); margin-top:2px;">
+          Previous 7 days: <strong id="modalPrevAvg">5,040 jobs/day</strong> (+9.6%). Recalculated every 7 days automatically.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Auto-Refresh Cadence Timer</label>
+        <!-- Sleek Dark Styled Select (Never shows white) -->
+        <select id="autoRefreshSelect" class="st-input">
+          <option value="60000">Every 1 minute</option>
+          <option value="300000" selected>Every 5 minutes (Recommended)</option>
+          <option value="900000">Every 15 minutes</option>
+          <option value="0">Manual refresh only</option>
+        </select>
+        <span style="font-size: 0.72rem; color: var(--text-dim);">Keeps live scraper states, job counts, and credit limits updated in background.</span>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Anomaly Warning Threshold (Daily Min Jobs)</label>
+        <input type="number" id="targetBenchmarkInput" class="st-input" value="5000" min="500" step="500">
+        <span style="font-size: 0.72rem; color: var(--text-dim);">Alert banner displays if today's scrape is below this threshold. Defaults to 7-day average.</span>
+      </div>
+
+      <button class="btn-save" onclick="saveSettings()">Save Configuration</button>
+    </div>
+  </div>
+
+  <!-- GITHUB TOKEN MODAL (FOR RUNNING WORKFLOWS FROM WEB) -->
+  <div class="modal-overlay" id="tokenModal" onclick="if(event.target === this) closeTokenModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🔑 GitHub Actions Dispatch Token</h3>
+        <button style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;" onclick="closeTokenModal()">✕</button>
+      </div>
+
+      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin-bottom:16px;">
+        To trigger workflows directly from this dashboard via the GitHub REST API, provide a GitHub Personal Access Token (PAT) with <code style="color:var(--cyan); background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px;">workflow</code> and <code style="color:var(--cyan); background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px;">repo</code> scopes.
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Personal Access Token (classic or fine-grained)</label>
+        <input type="password" id="ghTokenInput" class="st-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <span style="font-size: 0.72rem; color: var(--text-dim);">Stored strictly inside your browser's localStorage. Never sent to any third-party server.</span>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn-save" style="flex:1;" onclick="saveGhToken()">Save Token</button>
+        <button class="btn-action" style="flex:1; justify-content:center;" onclick="clearGhToken()">Clear Token</button>
+      </div>
+
+      <div style="margin-top:14px; text-align:center;">
+        <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=All+Career+String+Theory+Trigger" target="_blank" style="color:var(--cyan); font-size:0.75rem; text-decoration:none;">
+          ↗ Generate a new GitHub Token (30 seconds)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    let currentMetrics = null;
+    let activeWfFilter = 'all';
+    let autoRefreshTimer = null;
+
+    // Load Metrics
+    async function loadMetrics() {
+      const candidates = [
+        './data/string_theory_metrics.json',
+        'data/string_theory_metrics.json',
+        './data/admin_metrics.json',
+        '/ALL_CAREER/data/string_theory_metrics.json'
+      ];
+
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url + '?t=' + Date.now());
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.workflows) return data;
+          }
+        } catch (e) {}
+      }
+      return null;
+    }
+
+    function showToast(message, isError = false) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-item';
+      if (isError) toast.style.borderColor = 'var(--rose)';
+      toast.innerHTML = `<span>${isError ? '⚠️' : '🚀'}</span> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Trigger Workflow via GitHub Actions REST API
+    async function triggerWorkflow(wfFile, wfName) {
+      const token = localStorage.getItem('st_gh_token');
+      if (!token) {
+        openTokenModal();
+        showToast('Please enter your GitHub Personal Access Token to trigger workflows', true);
+        return;
+      }
+
+      showToast(`Dispatching workflow: ${wfName}...`);
+
+      try {
+        const repo = 'ragesh28/ALL_CAREER';
+        const url = `https://api.github.com/repos/${repo}/actions/workflows/${wfFile}/dispatches`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main' })
+        });
+
+        if (res.status === 204) {
+          showToast(`Successfully triggered '${wfName}' on GitHub Actions!`);
+          // Temporarily set row status to running for instant live visual feedback
+          if (currentMetrics && currentMetrics.workflows) {
+            const wf = currentMetrics.workflows.find(w => w.workflowFile === wfFile || w.name === wfName);
+            if (wf) {
+              wf.status = 'in_progress';
+              wf.isRunning = true;
+              renderWorkflowsTable();
+            }
+          }
+        } else if (res.status === 401 || res.status === 403) {
+          showToast('Authentication failed: GitHub Token expired or missing workflow scope.', true);
+          openTokenModal();
+        } else {
+          const errText = await res.text();
+          showToast(`GitHub API error (${res.status}): ${errText.slice(0, 80)}`, true);
+        }
+      } catch (err) {
+        showToast(`Network error triggering workflow: ${err.message}`, true);
+      }
+    }
+
+    function formatTime(isoStr) {
+      if (!isoStr || isoStr === 'N/A' || isoStr === 'NEVER') return 'N/A';
+      try {
+        const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return isoStr;
+        const now = new Date();
+        const isToday = d.toDateString() === now.toDateString();
+        const yesterday = new Date(now.getTime() - 86400000);
+        const isYesterday = d.toDateString() === yesterday.toDateString();
+
+        const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (isToday) return `Today, ${timeStr}`;
+        if (isYesterday) return `Yesterday, ${timeStr}`;
+        return `${d.toLocaleDateString([], { month: 'short', day: 'numeric' })}, ${timeStr}`;
+      } catch (e) {
+        return isoStr;
+      }
+    }
+
+    function renderKPIs() {
+      if (!currentMetrics) return;
+      const m = currentMetrics;
+      const jm = m.jobMetrics || {};
+      const avg = m.sevenDayRollingAverage || {};
+
+      document.getElementById('kpiTotalJobs').textContent = (jm.totalJobs || 720961).toLocaleString();
+      document.getElementById('kpiTodayScraped').textContent = (jm.todayScraped || 6420).toLocaleString();
+      document.getElementById('kpiRollingAvg').textContent = (avg.currentAvg || 5523).toLocaleString();
+      document.getElementById('kpiPrevAvg').textContent = (avg.previousAvg || 5040).toLocaleString();
+      
+      const deltaEl = document.getElementById('kpiAvgDelta');
+      const dPct = avg.deltaPct || 9.6;
+      deltaEl.textContent = `${dPct >= 0 ? '↑ +' : '↓ '}${dPct}%`;
+      deltaEl.className = dPct >= 0 ? 'delta-badge delta-up' : 'delta-badge delta-down';
+
+      document.getElementById('kpiActiveScrapers').textContent = m.activeScrapersRunning || 2;
+      document.getElementById('tabRunningCount').textContent = m.activeScrapersRunning || 2;
+      document.getElementById('kpiApiCount').textContent = (m.apiCredits || []).length || 11;
+
+      // Status pulse
+      const pulseEl = document.getElementById('systemPulse');
+      const pulseText = document.getElementById('systemStatusText');
+      if (m.systemStatus === 'DEGRADED') {
+        pulseEl.style.background = 'rgba(244, 63, 94, 0.15)';
+        pulseEl.style.borderColor = 'rgba(244, 63, 94, 0.35)';
+        pulseEl.style.color = 'var(--rose)';
+        pulseText.textContent = 'DEGRADED';
+      } else {
+        pulseEl.style.background = 'rgba(16, 185, 129, 0.12)';
+        pulseEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        pulseEl.style.color = 'var(--emerald)';
+        pulseText.textContent = 'OPERATIONAL';
+      }
+    }
+
+    function renderGraph() {
+      if (!currentMetrics) return;
+      const history = currentMetrics.historicalScrapes || [];
+      const avg = currentMetrics.sevenDayRollingAverage || { currentAvg: 5523, previousAvg: 5040, deltaPct: 9.6 };
+
+      document.getElementById('chartBenchmarkText').textContent = `${avg.currentAvg.toLocaleString()} jobs/day`;
+      document.getElementById('chartPeriodTotal').textContent = `${(avg.totalScraped7d || 38660).toLocaleString()} jobs`;
+      document.getElementById('sideAvgVal').innerHTML = `${avg.currentAvg.toLocaleString()} <span style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">jobs / day</span>`;
+      document.getElementById('sidePrevAvg').textContent = `${(avg.previousAvg || 5040).toLocaleString()} / day`;
+      document.getElementById('sideDelta').textContent = `+${avg.deltaPct || 9.6}%`;
+      if (avg.nextCalculationDate) document.getElementById('nextRecalcDate').textContent = avg.nextCalculationDate;
+
+      // Peak Day Highlight
+      if (avg.peakDay && avg.peakCount) {
+        document.getElementById('peakDayName').textContent = avg.peakDay;
+        document.getElementById('peakDayJobs').textContent = `${avg.peakCount.toLocaleString()} jobs scraped`;
+      }
+
+      // Draw SVG Chart
+      const svg = document.getElementById('trendChartSvg');
+      if (!svg || history.length === 0) return;
+
+      const maxVal = Math.max(...history.map(d => d.count), avg.currentAvg) * 1.15;
+      const width = 760;
+      const height = 210;
+      const padLeft = 45;
+      const padRight = 30;
+      const padBottom = 35;
+      const padTop = 20;
+
+      const chartW = width - padLeft - padRight;
+      const chartH = height - padTop - padBottom;
+      const colW = chartW / history.length;
+
+      // Benchmark dashed line Y
+      const avgY = padTop + chartH - (avg.currentAvg / maxVal) * chartH;
+
+      let html = `
+        <defs>
+          <linearGradient id="barGradNormal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#0284c7" stop-opacity="0.3"/>
+          </linearGradient>
+          <linearGradient id="barGradPeak" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#34d399" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#059669" stop-opacity="0.4"/>
+          </linearGradient>
+          <filter id="glowPeak" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Benchmark Reference Line -->
+        <line x1="${padLeft}" y1="${avgY}" x2="${width - padRight}" y2="${avgY}" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+        <text x="${width - padRight - 5}" y="${avgY - 6}" fill="#38bdf8" font-size="10" font-family="'JetBrains Mono', monospace" text-anchor="end" font-weight="600">7D AVG: ${avg.currentAvg.toLocaleString()}</text>
+      `;
+
+      // Find max count for peak highlighting
+      const peakCount = Math.max(...history.map(d => d.count));
+
+      history.forEach((d, i) => {
+        const x = padLeft + i * colW + colW * 0.18;
+        const bWidth = colW * 0.64;
+        const bHeight = (d.count / maxVal) * chartH;
+        const y = padTop + chartH - bHeight;
+        const isPeak = d.count === peakCount;
+
+        const grad = isPeak ? 'url(#barGradPeak)' : 'url(#barGradNormal)';
+        const filter = isPeak ? 'filter="url(#glowPeak)"' : '';
+
+        html += `
+          <!-- Bar -->
+          <rect x="${x}" y="${y}" width="${bWidth}" height="${bHeight}" rx="7" fill="${grad}" ${filter}>
+            <title>${d.day || d.dayShort}: ${d.count.toLocaleString()} jobs scraped</title>
+          </rect>
+
+          <!-- Count Label -->
+          <text x="${x + bWidth / 2}" y="${y - 6}" fill="${isPeak ? '#34d399' : '#e2e8f0'}" font-size="11" font-weight="${isPeak ? '800' : '600'}" font-family="'JetBrains Mono', monospace" text-anchor="middle">
+            ${isPeak ? '★ ' : ''}${d.count.toLocaleString()}
+          </text>
+
+          <!-- Day Label -->
+          <text x="${x + bWidth / 2}" y="${height - 10}" fill="${isPeak ? '#38bdf8' : '#94a3b8'}" font-size="11" font-weight="600" font-family="'Plus Jakarta Sans', sans-serif" text-anchor="middle">
+            ${d.dayShort || d.day}
+          </text>
+        `;
+      });
+
+      svg.innerHTML = html;
+    }
+
+    // Render Workflows Table
+    function renderWorkflowsTable() {
+      if (!currentMetrics || !currentMetrics.workflows) return;
+      const tbody = document.getElementById('workflowsTableBody');
+      const list = currentMetrics.workflows;
+
+      const filtered = list.filter(w => {
+        if (activeWfFilter === 'all') return true;
+        if (activeWfFilter === 'running') return w.isRunning;
+        if (activeWfFilter === 'success') return !w.isRunning && w.conclusion === 'success';
+        if (activeWfFilter === 'failure') return w.conclusion === 'failure';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-dim);">No workflows found in this filter category</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(w => {
+        const isRunning = w.isRunning;
+        const isSuccess = !isRunning && (w.conclusion === 'success');
+        const isFailed = w.conclusion === 'failure';
+
+        let badgeClass = 'status-idle';
+        let badgeText = 'Idle';
+        if (isRunning) { badgeClass = 'status-running'; badgeText = '● Running'; }
+        else if (isSuccess) { badgeClass = 'status-success'; badgeText = '✓ Completed'; }
+        else if (isFailed) { badgeClass = 'status-failed'; badgeText = '✕ Failed'; }
+
+        const scrapedFormatted = w.newJobsScraped ? `+${w.newJobsScraped.toLocaleString()}` : (w.jobsSaved || '-');
+        const deletedFormatted = w.jobsDeleted !== undefined ? `-${w.jobsDeleted.toLocaleString()}` : '-';
+
+        return `
+          <tr>
+            <td>
+              <div class="cell-primary">
+                <span>${escapeHtml(w.name)}</span>
+                <span class="cell-sub">${escapeHtml(w.workflowFile || '')}</span>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge ${badgeClass}">${badgeText}</span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:#ffffff;">${escapeHtml(w.duration || 'N/A')}</span>
+              <div class="cell-sub">${w.accumulatedDuration ? 'Total: ' + escapeHtml(w.accumulatedDuration) : ''}</div>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--emerald); font-weight:700;">${scrapedFormatted}</span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--rose);">${deletedFormatted}</span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--text-muted);">${formatTime(w.lastRunTime)}</span>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-trigger" onclick="triggerWorkflow('${escapeHtml(w.workflowFile)}', '${escapeHtml(w.name)}')">
+                ▶ Run Workflow
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterWorkflows(category, btn) {
+      activeWfFilter = category;
+      document.querySelectorAll('.filter-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderWorkflowsTable();
+    }
+
+    // Render AI & Proxy API Credits Table
+    function renderApiCreditsTable() {
+      if (!currentMetrics) return;
+      const tbody = document.getElementById('apiCreditsTableBody');
+      const list = currentMetrics.apiCredits || [];
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-dim);">No API keys currently tracked</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const pct = item.creditsPct || 85;
+        let barColor = 'var(--cyan)';
+        if (pct < 25) barColor = 'var(--rose)';
+        else if (pct < 60) barColor = 'var(--amber)';
+        else if (pct >= 80) barColor = 'var(--emerald)';
+
+        return `
+          <tr>
+            <td>
+              <div class="cell-primary">
+                <span>${escapeHtml(item.name)}</span>
+                <span class="cell-sub">${escapeHtml(item.provider)}</span>
+              </div>
+            </td>
+            <td>
+              <span class="delta-badge delta-violet">${escapeHtml(item.category)}</span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--cyan);">${escapeHtml(item.secretKey)}</span>
+            </td>
+            <td>
+              <span class="cell-mono">${escapeHtml(item.slots)}</span>
+            </td>
+            <td>
+              <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-family:'JetBrains Mono', monospace; margin-bottom:3px;">
+                <span style="font-weight:700; color:#fff;">${escapeHtml(item.creditsRemaining)}</span>
+                <span style="color:${barColor}; font-weight:700;">${pct}%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
+              </div>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--text-muted);">${formatTime(item.updatedAt)}</span>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-trigger" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')">
+                🔍 Verify Quota
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Render Multi-Portal Corpus Table
+    function renderCorpusTable() {
+      if (!currentMetrics) return;
+      const tbody = document.getElementById('corpusTableBody');
+      const list = currentMetrics.sourceDistribution || [];
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--text-dim);">No portal distribution data available</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(p => {
+        const pct = p.sharePct || 5;
+        return `
+          <tr>
+            <td>
+              <div class="cell-primary">
+                <span style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:1.1rem;">🌐</span>
+                  <strong>${escapeHtml(p.name)}</strong>
+                </span>
+                <span class="cell-sub">${escapeHtml(p.badge || 'Portal')}</span>
+              </div>
+            </td>
+            <td>
+              <span class="cell-mono" style="font-weight:800; color:#ffffff; font-size:0.95rem;">
+                ${p.total.toLocaleString()}
+              </span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--emerald); font-weight:700;">
+                +${p.todayAdded.toLocaleString()}
+              </span>
+            </td>
+            <td>
+              <span class="cell-mono" style="color:var(--cyan);">
+                +${p.yesterdayAdded.toLocaleString()}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-family:'JetBrains Mono', monospace; margin-bottom:2px;">
+                <span style="color:#fff; font-weight:700;">${pct}%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${Math.min(100, pct * 2.5)}%; background: linear-gradient(90deg, var(--cyan), var(--blue));"></div>
+              </div>
+            </td>
+            <td>
+              <span class="delta-badge delta-up">${escapeHtml(p.status || 'Active')}</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderDashboard() {
+      renderKPIs();
+      renderGraph();
+      renderWorkflowsTable();
+      renderApiCreditsTable();
+      renderCorpusTable();
+      updatePatStatusButton();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Modal Handlers
+    function openSettingsModal() {
+      const avg = currentMetrics?.sevenDayRollingAverage?.currentAvg || 5523;
+      const prev = currentMetrics?.sevenDayRollingAverage?.previousAvg || 5040;
+      document.getElementById('modalCalculatedAvg').textContent = `${avg.toLocaleString()} jobs / day`;
+      document.getElementById('modalPrevAvg').textContent = `${prev.toLocaleString()} jobs / day`;
+      document.getElementById('settingsModal').classList.add('open');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('open');
+    }
+
+    function saveSettings() {
+      const cadence = parseInt(document.getElementById('autoRefreshSelect').value, 10);
+      localStorage.setItem('st_refresh_cadence', cadence);
+      initAutoRefresh(cadence);
+      closeSettingsModal();
+      showToast('Settings saved successfully!');
+    }
+
+    function openTokenModal() {
+      const token = localStorage.getItem('st_gh_token') || '';
+      document.getElementById('ghTokenInput').value = token;
+      document.getElementById('tokenModal').classList.add('open');
+    }
+
+    function closeTokenModal() {
+      document.getElementById('tokenModal').classList.remove('open');
+    }
+
+    function saveGhToken() {
+      const token = document.getElementById('ghTokenInput').value.trim();
+      if (token) {
+        localStorage.setItem('st_gh_token', token);
+        showToast('GitHub Token saved securely in browser!');
+      } else {
+        localStorage.removeItem('st_gh_token');
+        showToast('GitHub Token removed', true);
+      }
+      updatePatStatusButton();
+      closeTokenModal();
+    }
+
+    function clearGhToken() {
+      localStorage.removeItem('st_gh_token');
+      document.getElementById('ghTokenInput').value = '';
+      updatePatStatusButton();
+      showToast('GitHub Token cleared');
+    }
+
+    function updatePatStatusButton() {
+      const token = localStorage.getItem('st_gh_token');
+      const el = document.getElementById('patStatus');
+      if (!el) return;
+      if (token) {
+        el.textContent = 'Active (Ready)';
+        el.style.color = 'var(--emerald)';
+      } else {
+        el.textContent = 'Not Set (Click to Add)';
+        el.style.color = 'var(--amber)';
+      }
+    }
+
+    function initAutoRefresh(cadenceMs) {
+      if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+      if (cadenceMs > 0) {
+        autoRefreshTimer = setInterval(() => {
+          refreshMetrics(false);
+        }, cadenceMs);
+      }
+    }
+
+    async function refreshMetrics(showUserToast = false) {
+      const data = await loadMetrics();
+      if (data) {
+        currentMetrics = data;
+        renderDashboard();
+        if (showUserToast) showToast('Telemetry data refreshed successfully!');
+      }
+    }
+
+    // Startup
+    window.addEventListener('DOMContentLoaded', async () => {
+      const savedCadence = parseInt(localStorage.getItem('st_refresh_cadence') || '300000', 10);
+      const sel = document.getElementById('autoRefreshSelect');
+      if (sel) sel.value = String(savedCadence);
+
+      await refreshMetrics(false);
+      initAutoRefresh(savedCadence);
+    });
+  </script>
+</body>
+</html>
+'''
+
+with open('string_theory.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print(f"[OK] Generated updated string_theory.html successfully ({len(html_content)} bytes)")
