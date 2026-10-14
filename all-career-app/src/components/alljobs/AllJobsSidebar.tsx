@@ -295,25 +295,8 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   );
   const visibleSkills = showMoreSkills || skillSearch ? filteredSkills : filteredSkills.slice(0, 8);
 
-  // 6. Walk-in Dates matching Screenshot 1
-  const WALKIN_DATES = [
-    { id: 'Sep 22', label: 'Sep 22', count: 3340 },
-    { id: 'Sep 19', label: 'Sep 19', count: 535 },
-    { id: 'Sep 26', label: 'Sep 26', count: 480 },
-    { id: 'Sep 21', label: 'Sep 21', count: 308 },
-    { id: 'Sep 18', label: 'Sep 18', count: 305 },
-    { id: 'Sep 16', label: 'Sep 16', count: 290 },
-    { id: 'Sep 12', label: 'Sep 12', count: 275 },
-    { id: 'Sep 9', label: 'Sep 9', count: 244 },
-    { id: 'Sep 5', label: 'Sep 5', count: 399 },
-    { id: 'Aug 31', label: 'Aug 31', count: 321 },
-    { id: 'Aug 22', label: 'Aug 22', count: 286 },
-    { id: 'Aug 8', label: 'Aug 8', count: 250 }
-  ];
-
-  const displayWalkinDates = walkinDateOptions && walkinDateOptions.length > 0 
-    ? walkinDateOptions 
-    : WALKIN_DATES;
+  // 6. Dynamic Walk-in Dates (from jobs in rolling 60 days)
+  const displayWalkinDates = walkinDateOptions || [];
 
   const totalApplied =
     selectedSources.size +
@@ -732,25 +715,31 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
 
             {/* Scrollable list with authentic calendar dates dynamically populated */}
             <div id="walkin-dates-options" style={{ maxHeight: '240px', overflowY: 'auto' }}>
-              {displayWalkinDates.map(item => {
-                const isSelected = localWalkinDates.has(item.id);
-                const count = walkinDateCounts ? (walkinDateCounts[item.id] ?? item.count) : item.count;
-                return (
-                  <div
-                    key={item.id}
-                    className={`filter-option ${isSelected ? 'checked' : ''}`}
-                    onClick={() => handleWalkinDateClick(item.id)}
-                  >
-                    <div className="custom-checkbox">
-                      <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
+              {displayWalkinDates.length === 0 ? (
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8', padding: '6px 4px' }}>
+                  No upcoming walk-in interview dates found
+                </div>
+              ) : (
+                displayWalkinDates.map(item => {
+                  const isSelected = localWalkinDates.has(item.id);
+                  const count = walkinDateCounts ? (walkinDateCounts[item.id] ?? item.count) : item.count;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`filter-option ${isSelected ? 'checked' : ''}`}
+                      onClick={() => handleWalkinDateClick(item.id)}
+                    >
+                      <div className="custom-checkbox">
+                        <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path d="M20 6 9 17l-5-5" />
+                        </svg>
+                      </div>
+                      <span className="option-label">{item.label || item.id}</span>
+                      <span className="source-count">({count.toLocaleString()})</span>
                     </div>
-                    <span className="option-label">{formatWalkinDate(item.label || item.id)}</span>
-                    <span className="source-count">({count.toLocaleString()})</span>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

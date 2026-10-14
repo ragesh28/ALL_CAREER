@@ -7,7 +7,7 @@ import { AllJobsSidebar } from './AllJobsSidebar';
 import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
-import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../../utils/filterUtils';
+import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
 
 interface AllJobsViewProps {
@@ -339,11 +339,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       const isW = j._isWalkinJob !== undefined ? j._isWalkinJob : isWalkinJob(j);
       if (!isW) return false;
       if (walkinD.size > 0) {
-        const jDates = j._walkinDatesList || getJobWalkinDates(j).map(d => formatWalkinDate(d));
+        const jDates = j._walkinDatesList || getJobWalkinDates(j);
         let matchDate = false;
         for (const d of walkinD) {
-          const normD = formatWalkinDate(d);
-          if (jDates.some(jd => jd === normD || jd === d)) {
+          if (jDates.includes(d)) {
             matchDate = true;
             break;
           }
@@ -493,8 +492,9 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
     }
 
-    // Walk-in counts (ONLY scans walk-in jobs, <0.2ms)
+    // Walk-in counts (ONLY scans walk-in jobs)
     const walkinDateCounts: Record<string, number> = {};
+    const walkinDateMap: Record<string, number> = {};
     let walkinTotalCount = 0;
 
     for (let i = 0; i < jobs.length; i++) {
@@ -506,20 +506,46 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           const normD = dates[dIdx];
           if (normD) {
             walkinDateCounts[normD] = (walkinDateCounts[normD] || 0) + 1;
+            if (walkinDateMap[normD] === undefined) {
+              const parts = normD.split(' ');
+              if (parts.length === 2) {
+                const mIdx = MONTH_SHORT.indexOf(parts[0]);
+                const dayNum = parseInt(parts[1], 10);
+                if (mIdx !== -1 && !isNaN(dayNum)) {
+                  const now = new Date();
+                  let yr = now.getFullYear();
+                  if (mIdx < now.getMonth()) yr += 1;
+                  walkinDateMap[normD] = new Date(yr, mIdx, dayNum).getTime();
+                }
+              }
+            }
           }
         }
       }
     }
 
-    const walkinDateOptions = Object.entries(walkinDateCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 20)
-      .map(([label, count]) => ({ id: label, label, count }));
+    const sortedDates = Object.keys(walkinDateCounts).sort((a, b) => {
+      const da = walkinDateMap[a];
+      const db = walkinDateMap[b];
+      if (da !== undefined && db !== undefined) {
+        return da - db;
+      }
+      return a.localeCompare(b);
+    });
+
+    const walkinDateOptions = sortedDates.map(label => ({
+      id: label,
+      label,
+      count: walkinDateCounts[label] || 0
+    }));
 
     for (const selDate of deferredWalkinDates) {
-      const normSel = formatWalkinDate(selDate);
-      if (!walkinDateOptions.some(o => o.id === selDate || o.id === normSel)) {
-        walkinDateOptions.push({ id: selDate, label: normSel || selDate, count: walkinDateCounts[normSel] || 0 });
+      if (!walkinDateOptions.some(o => o.id === selDate)) {
+        walkinDateOptions.push({
+          id: selDate,
+          label: selDate,
+          count: walkinDateCounts[selDate] || 0
+        });
       }
     }
 

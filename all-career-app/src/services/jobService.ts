@@ -159,7 +159,7 @@ export class JobService {
         r._searchHay = hay;
 
         if (r._isWalkinJob) {
-          r._walkinDatesList = getJobWalkinDates(r).map(d => formatWalkinDate(d)).filter(Boolean);
+          r._walkinDatesList = getJobWalkinDates(r);
         } else {
           r._walkinDatesList = [];
         }

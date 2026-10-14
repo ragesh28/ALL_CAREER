@@ -641,6 +641,5 @@ export function formatWalkinDate(dateStr?: string, fallbackStr?: string): string
     return `${MONTH_SHORT[parsed.getMonth()]} ${parsed.getDate()}`;
   }
 
-  const now = new Date();
-  return `${MONTH_SHORT[now.getMonth()]} ${now.getDate()}`;
+  return target;
 }

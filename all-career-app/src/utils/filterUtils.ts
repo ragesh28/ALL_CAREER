@@ -53,120 +53,202 @@ export function extractWalkinDateFromText(text: string): string | null {
   return null;
 }
 
-export function parseWalkinDates(rawStr: string | undefined | null): string[] {
-  if (!rawStr) return [];
-  let text = cleanTimeAndNoise(String(rawStr).replace(/_/g, ' '));
+export interface WalkinDateItem {
+  label: string;
+  dateObj: Date;
+}
+
+export function parseWalkinDateObjects(rawDateStr: string | undefined | null): WalkinDateItem[] {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window
+  maxFuture.setHours(23, 59, 59, 999);
+  const currentYear = now.getFullYear();
+  const resultDates: WalkinDateItem[] = [];
+
+  if (!rawDateStr || typeof rawDateStr !== 'string') return resultDates;
+  let text = cleanTimeAndNoise(String(rawDateStr).replace(/[_]/g, ' '));
   text = text.replace(/\b(\d{1,2}(?:st|nd|rd|th)?)([A-Za-z]{3,9})\b/gi, '$1 $2');
 
-  const results: string[] = [];
-
-  const getMonthIdx = (mStr: string) => {
-    if (!mStr) return -1;
-    const s = mStr.toLowerCase().slice(0, 3);
-    return MONTH_SHORT.findIndex(m => m.toLowerCase() === s);
-  };
-
-  const addD = (_y: number, m: number, d: number) => {
+  function addDate(y: number, m: number, d: number) {
     if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
-      const lbl = `${MONTH_SHORT[m]} ${d}`;
-      if (!results.includes(lbl)) {
-        results.push(lbl);
+      const dObj = new Date(y, m, d);
+      dObj.setHours(0, 0, 0, 0);
+      if (dObj >= now && dObj <= maxFuture) {
+        resultDates.push({
+          label: `${MONTH_SHORT[m]} ${d}`,
+          dateObj: dObj
+        });
       }
     }
-  };
+  }
+
+  function getMonthIndex(str: string): number {
+    if (!str) return -1;
+    const s = str.toLowerCase().slice(0, 3);
+    return MONTH_SHORT.findIndex(m => m.toLowerCase() === s);
+  }
+
+  function dedupe(arr: WalkinDateItem[]): WalkinDateItem[] {
+    const seen = new Set<string>();
+    return arr.filter(item => {
+      if (seen.has(item.label)) return false;
+      seen.add(item.label);
+      return true;
+    });
+  }
 
   const low = text.toLowerCase();
-  const now = new Date();
   if (low.includes('today')) {
-    addD(now.getFullYear(), now.getMonth(), now.getDate());
+    addDate(now.getFullYear(), now.getMonth(), now.getDate());
   }
   if (low.includes('tomorrow')) {
-    const tom = new Date(Date.now() + 86400000);
-    addD(tom.getFullYear(), tom.getMonth(), tom.getDate());
-  }
-  if (low.includes('yesterday')) {
-    const yest = new Date(Date.now() - 86400000);
-    addD(yest.getFullYear(), yest.getMonth(), yest.getDate());
+    const tom = new Date(now.getTime() + 86400000);
+    addDate(tom.getFullYear(), tom.getMonth(), tom.getDate());
   }
 
-  // ISO date 2026-09-22
-  const iso = text.match(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
-  if (iso) {
-    addD(parseInt(iso[1]), parseInt(iso[2]) - 1, parseInt(iso[3]));
-  }
-
-  // D-M-Y: 22-09-2026
-  const dmy = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2}|\d{2})\b/);
-  if (dmy) {
-    let y = parseInt(dmy[3]);
-    if (y < 100) y += 2000;
-    addD(y, parseInt(dmy[2]) - 1, parseInt(dmy[1]));
-  }
-
-  // 19 Sep 26 or 19-Sep-26 or 19th Sep 2026 or 19 September
-  const dm = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?[-/\s]+([A-Za-z]{3,9})(?:[-/\s]+(20\d{2}|\d{2}))?\b/i);
-  if (dm) {
-    const mIdx = getMonthIdx(dm[2]);
-    if (mIdx !== -1) {
-      let y = dm[3] ? parseInt(dm[3]) : 2026;
-      if (y < 100) y += 2000;
-      addD(y, mIdx, parseInt(dm[1]));
-    }
-  }
-
-  // Month-Day: Sep 22 or September 22 or Sept 12
-  const md = text.match(/\b([A-Za-z]{3,9})[-/\s]+(\d{1,2})(?:st|nd|rd|th)?(?:[-/\s]+(20\d{2}|\d{2}))?\b/i);
-  if (md) {
-    const mIdx = getMonthIdx(md[1]);
-    if (mIdx !== -1) {
-      let y = md[3] ? parseInt(md[3]) : 2026;
-      if (y < 100) y += 2000;
-      addD(y, mIdx, parseInt(md[2]));
-    }
-  }
-
-  // Range: 21 Sep - 25 Sep
-  const rngBoth = text.match(/\b(\d{1,2})[-/\s]+([A-Za-z]{3,9})\s*(?:-|–|to)\s*(\d{1,2})[-/\s]+([A-Za-z]{3,9})\b/i);
-  if (rngBoth) {
-    const m1 = getMonthIdx(rngBoth[2]);
-    const m2 = getMonthIdx(rngBoth[4]);
-    const d1 = parseInt(rngBoth[1]);
-    const d2 = parseInt(rngBoth[3]);
+  // 1. Cross-month or discrete dates with two months:
+  // e.g. '28th Aug - 2nd Sep 2026', '7th Sep & 8th Sep 2026', '16 Sep - 15 Dec'
+  const crossMonth = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})\s*(?:(-|–|—|\bto\b)|(&|\band\b|,))\s*(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{2,4}))?\b/i);
+  if (crossMonth) {
+    const d1 = parseInt(crossMonth[1], 10), m1 = getMonthIndex(crossMonth[2]);
+    const isRange = Boolean(crossMonth[3]);
+    const d2 = parseInt(crossMonth[5], 10), m2 = getMonthIndex(crossMonth[6]);
+    let yr = crossMonth[7] ? parseInt(crossMonth[7], 10) : currentYear;
+    if (yr < 100) yr += 2000;
     if (m1 !== -1 && m2 !== -1) {
-      addD(2026, m1, d1);
-      addD(2026, m2, d2);
-    }
-  }
-
-  // Range: 21 - 25 Sep
-  const rngSame = text.match(/\b(\d{1,2})\s*(?:-|–|to)\s*(\d{1,2})\s+([A-Za-z]{3,9})\b/i);
-  if (rngSame) {
-    const mIdx = getMonthIdx(rngSame[3]);
-    if (mIdx !== -1) {
-      const d1 = parseInt(rngSame[1]);
-      const d2 = parseInt(rngSame[2]);
-      for (let day = Math.min(d1, d2); day <= Math.max(d1, d2); day++) {
-        addD(2026, mIdx, day);
+      if (isRange) {
+        const sDate = new Date(yr, m1, d1);
+        const eDate = new Date(yr, m2, d2);
+        sDate.setHours(0, 0, 0, 0); eDate.setHours(0, 0, 0, 0);
+        const diff = Math.round((eDate.getTime() - sDate.getTime()) / 86400000);
+        if (diff >= 0 && diff <= 90) {
+          for (let cur = new Date(sDate); cur <= eDate; cur.setDate(cur.getDate() + 1)) {
+            addDate(cur.getFullYear(), cur.getMonth(), cur.getDate());
+          }
+          return dedupe(resultDates);
+        }
+      } else {
+        addDate(yr, m1, d1);
+        addDate(yr, m2, d2);
+        return dedupe(resultDates);
       }
     }
   }
 
-  return results;
+  // 2. Same-month discrete dates or range BEFORE month name:
+  // e.g. '7th - 9th September 2026', '7th & 8th Sep 2026', '10th to 12th Sep', '7, 8 & 9 Sep'
+  const preMonthRange = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:(-|–|—|\bto\b|&|\band\b|,)\s*(\d{1,2})(?:st|nd|rd|th)?)+\s+([A-Za-z]{3,9})(?:\s*,?\s*(\d{2,4}))?\b/i);
+  if (preMonthRange) {
+    const mIdx = getMonthIndex(preMonthRange[4]);
+    let yr = preMonthRange[5] ? parseInt(preMonthRange[5], 10) : currentYear;
+    if (yr < 100) yr += 2000;
+    if (mIdx !== -1) {
+      const fullMatchedStr = preMonthRange[0];
+      const daysSection = fullMatchedStr.slice(0, fullMatchedStr.toLowerCase().lastIndexOf(preMonthRange[4].toLowerCase()));
+      const days = [...daysSection.matchAll(/\b(\d{1,2})(?:st|nd|rd|th)?\b/gi)]
+        .map(m => parseInt(m[1], 10))
+        .filter(d => d >= 1 && d <= 31);
+
+      const isContinuousRange = /(-|–|—|\bto\b)/i.test(daysSection);
+      if (isContinuousRange && days.length >= 2) {
+        const minD = Math.min(...days);
+        const maxD = Math.max(...days);
+        if (maxD - minD <= 31) {
+          for (let d = minD; d <= maxD; d++) addDate(yr, mIdx, d);
+          return dedupe(resultDates);
+        }
+      } else if (days.length > 0) {
+        days.forEach(d => addDate(yr, mIdx, d));
+        return dedupe(resultDates);
+      }
+    }
+  }
+
+  // 3. Month name followed by day range: e.g. 'September 7 - 9, 2026' or 'Sep 7 to 10'
+  const postMonthRange = text.match(/\b([A-Za-z]{3,9})\s+(\d{1,2})(?:st|nd|rd|th)?\s*(?:-|–|—|\bto\b|&|\band\b)\s*(\d{1,2})(?:st|nd|rd|th)?(?:\s*,?\s*(\d{2,4}))?\b/i);
+  if (postMonthRange) {
+    const mIdx = getMonthIndex(postMonthRange[1]);
+    let yr = postMonthRange[4] ? parseInt(postMonthRange[4], 10) : currentYear;
+    if (yr < 100) yr += 2000;
+    if (mIdx !== -1) {
+      const d1 = parseInt(postMonthRange[2], 10);
+      const d2 = parseInt(postMonthRange[3], 10);
+      const minD = Math.min(d1, d2);
+      const maxD = Math.max(d1, d2);
+      if (maxD - minD <= 31) {
+        for (let d = minD; d <= maxD; d++) addDate(yr, mIdx, d);
+        return dedupe(resultDates);
+      }
+    }
+  }
+
+  // 4. Single full date:
+  // e.g. '5-Sep-26', '05-Sep-2026', '5th Sep 2026', '7 September 2026', 'Sep 7, 2026'
+  const dayMonthSingle = text.match(/\b(\d{1,2})(?:st|nd|rd|th)?[-/\s]+([A-Za-z]{3,9})(?:[-/\s]+(20\d{2}|\b\d{2}\b))?\b/i);
+  if (dayMonthSingle) {
+    const d = parseInt(dayMonthSingle[1], 10);
+    const mIdx = getMonthIndex(dayMonthSingle[2]);
+    let yr = dayMonthSingle[3] ? parseInt(dayMonthSingle[3], 10) : currentYear;
+    if (yr < 100) yr += 2000;
+    if (mIdx !== -1) {
+      addDate(yr, mIdx, d);
+      return dedupe(resultDates);
+    }
+  }
+
+  const monthDaySingle = text.match(/\b([A-Za-z]{3,9})[-/\s]+(\d{1,2})(?:st|nd|rd|th)?(?:[-/\s,]+(20\d{2}|\b\d{2}\b))?\b/i);
+  if (monthDaySingle) {
+    const mIdx = getMonthIndex(monthDaySingle[1]);
+    const d = parseInt(monthDaySingle[2], 10);
+    let yr = monthDaySingle[3] ? parseInt(monthDaySingle[3], 10) : currentYear;
+    if (yr < 100) yr += 2000;
+    if (mIdx !== -1) {
+      addDate(yr, mIdx, d);
+      return dedupe(resultDates);
+    }
+  }
+
+  // 5. ISO format: YYYY-MM-DD
+  const isoMatch = text.match(/\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+  if (isoMatch) {
+    addDate(parseInt(isoMatch[1], 10), parseInt(isoMatch[2], 10) - 1, parseInt(isoMatch[3], 10));
+    return dedupe(resultDates);
+  }
+
+  // 6. Numeric: DD/MM/YYYY or DD-MM-YYYY
+  const numMatch = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/);
+  if (numMatch) {
+    let d = parseInt(numMatch[1], 10), m = parseInt(numMatch[2], 10) - 1, y = parseInt(numMatch[3], 10);
+    if (y < 100) y += 2000;
+    if (m > 11 && d <= 12) { const tmp = d; d = m + 1; m = tmp - 1; }
+    addDate(y, m, d);
+    return dedupe(resultDates);
+  }
+
+  return dedupe(resultDates);
+}
+
+export function parseWalkinDates(rawStr: string | undefined | null): string[] {
+  return parseWalkinDateObjects(rawStr).map(item => item.label);
+}
+
+export function getWalkinDateObjects(job: any): WalkinDateItem[] {
+  if (!job || !isWalkinJob(job)) return [];
+
+  let rawDateStr = String(job.walkin_date || '').trim();
+  if (!rawDateStr && Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) {
+    rawDateStr = job.walkin_dates.join(' ');
+  }
+  if (!rawDateStr) {
+    rawDateStr = extractWalkinDateFromText(job.title) || extractWalkinDateFromText(job.description) || '';
+  }
+  if (!rawDateStr) return [];
+  return parseWalkinDateObjects(rawDateStr);
 }
 
 export function getJobWalkinDates(job: any): string[] {
-  if (Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) {
-    const cleaned = job.walkin_dates.flatMap((d: string) => parseWalkinDates(d)).filter(Boolean);
-    if (cleaned.length > 0) return cleaned;
-  }
-  let raw = job.walkin_date || '';
-  if (!raw) {
-    raw = extractWalkinDateFromText(job.title || '') || extractWalkinDateFromText(job.description || '') || '';
-  }
-  if (!raw) {
-    raw = job.date || job.posted || job.date_posted || job.fetchedAt || '';
-  }
-  return parseWalkinDates(raw);
+  return getWalkinDateObjects(job).map(item => item.label);
 }
 
 export function parseExperience(expStr: string | undefined | null): [number | null, number | null] {

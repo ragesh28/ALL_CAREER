@@ -76,8 +76,21 @@ export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }
   const exp = job.experience;
   const isWalkin = isWalkinJob(job);
   const rawDate = job.date || (job as any).date_posted || (job as any).posted || (job as any).fetchedAt || '';
-  const walkinDate = getJobWalkinDates(job)[0] || job.walkin_date || rawDate;
-  const dateStr = isWalkin ? formatWalkinDate(walkinDate, rawDate) : formatAuthenticDate(rawDate);
+  const walkinDates = job._walkinDatesList || getJobWalkinDates(job);
+  let dateStr = '';
+  if (isWalkin) {
+    if (walkinDates && walkinDates.length === 1) {
+      dateStr = walkinDates[0];
+    } else if (walkinDates && walkinDates.length > 1) {
+      dateStr = `${walkinDates[0]} – ${walkinDates[walkinDates.length - 1]}`;
+    } else if (job.walkin_date) {
+      dateStr = formatWalkinDate(job.walkin_date);
+    } else {
+      dateStr = 'Upcoming';
+    }
+  } else {
+    dateStr = formatAuthenticDate(rawDate);
+  }
   const cleanTitle = job.title || job.role || 'Position';
   const applyUrl = job.url || (job as any).apply_url || job.telegram_url || job.flyer_image_url || '';
 
