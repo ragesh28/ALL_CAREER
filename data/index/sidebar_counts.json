@@ -1,5 +1,5 @@
 {
-  "total_jobs": 778549,
+  "total_jobs": 778596,
   "sources": {
     "naukri": 280991,
     "linkedin": 193233,
@@ -41,24 +41,24 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 139,
-    "telegram_message": 160,
+    "telegram_post": 163,
+    "telegram_message": 183,
     "other": 2688
   },
   "locations": {
-    "bangalore": 169390,
-    "mumbai": 102901,
-    "delhi": 83801,
-    "chennai": 80483,
-    "hyderabad": 72519,
-    "pune": 58798,
+    "bangalore": 169413,
+    "mumbai": 102903,
+    "delhi": 83802,
+    "chennai": 80484,
+    "hyderabad": 72523,
+    "pune": 58800,
     "noida": 38132,
     "ahmedabad": 31399,
     "kolkata": 26889,
-    "all_india": 21921,
-    "coimbatore": 15296,
+    "all_india": 21927,
+    "coimbatore": 15297,
     "kochi": 12163,
-    "remote": 7149,
+    "remote": 7151,
     "jaipur": 5924,
     "maharashtra": 5183,
     "indore": 4482,
@@ -69,7 +69,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 1689,
+    "karnataka": 1690,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -163,7 +163,7 @@
     "andhra_pradesh": 5,
     "tirupur": 2,
     "nashik": 5,
-    "mysore": 8,
+    "mysore": 9,
     "karunagappally": 1,
     "palakkad": 3,
     "satara": 3,
@@ -314,7 +314,10 @@
     "yelahanka": 1,
     "hisar": 1,
     "panaji": 1,
-    "mira_bhayandar": 1
+    "mira_bhayandar": 1,
+    "work_from_home": 1,
+    "punjab": 1,
+    "ahemdabad": 1
   },
-  "generated_at": "2026-10-15T13:01:39.197524"
+  "generated_at": "2026-10-15T13:53:13.940460"
 }
