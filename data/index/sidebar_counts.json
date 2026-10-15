@@ -1,5 +1,5 @@
 {
-  "total_jobs": 780321,
+  "total_jobs": 780497,
   "sources": {
     "naukri": 280991,
     "linkedin": 193233,
@@ -43,19 +43,19 @@
     "unico": 2,
     "telegram_post": 165,
     "telegram_message": 200,
-    "other": 2688
+    "other": 2864
   },
   "locations": {
-    "bangalore": 169795,
-    "mumbai": 103147,
-    "delhi": 84016,
-    "chennai": 80662,
-    "hyderabad": 72658,
-    "pune": 58961,
-    "noida": 38260,
+    "bangalore": 169871,
+    "mumbai": 103169,
+    "delhi": 84017,
+    "chennai": 80676,
+    "hyderabad": 72702,
+    "pune": 58971,
+    "noida": 38261,
     "ahmedabad": 31442,
-    "kolkata": 26958,
-    "all_india": 21942,
+    "kolkata": 26959,
+    "all_india": 21946,
     "coimbatore": 15320,
     "kochi": 12174,
     "remote": 7151,
@@ -69,14 +69,14 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 1690,
+    "karnataka": 1691,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
     "nanakramguda": 557,
     "message_all_india": 530,
     "tamil_nadu": 1134,
-    "telangana": 1129,
+    "telangana": 1130,
     "ka": 505,
     "message_bangalore": 475,
     "mh": 406,
@@ -225,7 +225,7 @@
     "kottayam": 1,
     "phagwara": 6,
     "jalandhar": 9,
-    "bihar": 9,
+    "bihar": 10,
     "roorkee": 3,
     "haridwar": 5,
     "tikamgarh": 7,
@@ -320,5 +320,5 @@
     "ahemdabad": 1,
     "ambernath": 1
   },
-  "generated_at": "2026-10-15T22:31:31.351592"
+  "generated_at": "2026-10-15T23:53:03.909545"
 }
