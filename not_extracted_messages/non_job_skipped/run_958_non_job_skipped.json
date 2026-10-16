@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "958",
+  "workflow_run_id": "38866260310",
+  "timestamp": "2026-10-16T07:45:47.034234",
+  "runtime_minutes": 24.79,
+  "messages_processed": 80,
+  "new_jobs_stored": 71,
+  "skipped_jobs_count": 6,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43652,
+      "text": "**🤖🔥 3 Days Left | Learn to Build AI Agents Using Claude - FOR FREE!**\n\nLearn how to automate tasks with AI Agents + Claude and unlock the next level of Gen AI. 🚀\n\n**👉 Start Learning FREE**: https://link.outskill.com/A-13\n\n🎓 FREE Gen AI Certification\n\nWhat you’ll learn:\n✅ Build AI Agents using Claude\n✅ Use 25+ Powerful AI Tools\n✅ Automate repetitive tasks\n✅ Create smarter AI-powered workflows\n\n⏰ Limited-Time FREE Offer\nGENERATIVE AI\nMASTERMIND\nDEADLINE IS NEAR!\n3\nDon't\nmiss out!\nDAYS LEFT\nBette\nTools\nBigge\nDream\nw\nTOPIC:\n<1>\nCustom\nAl Agents\nVibe coding &\nAl workflows\nprompting\n& tools\nDEADLINE:\n18th October, 2026\nE\nJoin Using The Link Below",
+      "timestamp": "2026-10-16T05:25:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43654,
+      "text": "🚨**TCS Free Digital Certification Program**\n\nEducation: Any Degree\nLocation: Online\nBatch: Any\n\nApply: https://kickcharm.com/tcs-ion-offers-15-day-free-digital-certification-program/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-10-16T07:15:23+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 3180,
+      "text": "Company Name:  Firstsource\nPost Name:  Healthcare – Email/Back Office\nExpected Salary:  up to ₹4 LPA*\nJob Location:  Chennai\nJobType:  Freshers/ Experienced\n\n✅Apply Link: https://job4freshers.co.in/firstsource-off-campus-drive/\n\nHow. to Apply for Job👇🏻\nhttps://youtu.be/WgSpskMXq04\n\nIf you have any doubts, feel free to contact us\nhttps://x.com/ajsinghrawat/\n\nShare with someone who needs this❤️\nfirstsource\nR\nOff Campus Recruitment Drive\nAPPLYNOW\n@job4freshers.co.in\nimage source google",
+      "timestamp": "2026-10-16T03:44:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18939,
+      "text": "You don't have\nto change\neverything.\nSometimes, changing\none small thing is enough.",
+      "timestamp": "2026-10-16T02:32:47+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15026,
+      "text": "Photo from azar\nhttps://link.outskill.com/A-12\n\nNote: Only 50 sheets remaining.\nGENERATIVE AI\nMASTERMIND\nDEADLINE IS NEAR!\n3\nDon't\nmiss out!\nDAYS LEFT\nBett\nTools\nBigge\nDream\nw\nTOPIC:\n<1>\nCustom\nAl Agents\nVibe coding &\nAl workflows\nprompting\n& tools\nDEADLINE:\n18th October, 2026\nJoin Using The Link Below",
+      "timestamp": "2026-10-16T05:02:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6400,
+      "text": "How many of you are participating in #KestraHacktober?\n\n2500+ have already registered and you should also not miss.\n\nThis is a great chance to start your open source contributions and also win prizes like Macbook Neo, IPads and Amazon Gift Cards.\n\nAll accepted PRs get a merchandise shipped to their place.\n\nLink to the page with details: https://fandf.co/3VxYXNb\n\nLink to register: https://fandf.co/4rtfgH3",
+      "timestamp": "2026-10-16T06:59:09+00:00"
+    }
+  ]
+}
