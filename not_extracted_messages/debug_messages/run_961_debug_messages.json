@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "961",
+  "workflow_run_id": "38968521066",
+  "timestamp": "2026-10-16T21:25:10.496940",
+  "runtime_minutes": 2.33,
+  "messages_processed": 5,
+  "new_jobs_stored": 13,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "bangalorejobseekers",
+      "msg_id": 145617,
+      "text": "Any job vacancies for my wife ?",
+      "timestamp": "2026-10-16T20:23:45+00:00"
+    }
+  ]
+}
