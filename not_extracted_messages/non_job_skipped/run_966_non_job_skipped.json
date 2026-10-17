@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "966",
+  "workflow_run_id": "39053162998",
+  "timestamp": "2026-10-17T17:28:36.704857",
+  "runtime_minutes": 5.55,
+  "messages_processed": 24,
+  "new_jobs_stored": 16,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43689,
+      "text": "🚨**Free** **Claude Gen AI Certification - FREE for today!🚀**\n\n💸 Cost: ₹~~10,000~~ —> ₹0 (FREE!)\n\nTomorrow is last day. Its Never Coming Again.\n\nDeadline: 11:59 PM, 18th Oct 2026\n\n**Register Now (Free):** https://link.outskill.com/A-13\n\nWhat you’ll learn:\n✅ 25+ Powerful AI Tools\n✅ Become an Excel Pro \n✅ Build Websites in seconds \n✅ Crack Exams & Interviews faster\n\n**Enroll Now (Free):** https://link.outskill.com/A-13\n\n**⚡️ Only Limited Seats Left!**",
+      "timestamp": "2026-10-17T15:55:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8375,
+      "text": "we can do this, if no jobs using AI 😭\n\nhttps://www.instagram.com/reel/Delf-HJCsB9?comment_id=18095413889445010&open_comments=true",
+      "timestamp": "2026-10-17T17:26:08+00:00"
+    }
+  ]
+}

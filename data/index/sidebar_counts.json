@@ -1,5 +1,5 @@
 {
-  "total_jobs": 816920,
+  "total_jobs": 816936,
   "sources": {
     "naukri": 292621,
     "linkedin": 201034,
@@ -41,24 +41,24 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 256,
-    "telegram_message": 283,
+    "telegram_post": 259,
+    "telegram_message": 296,
     "other": 3006
   },
   "locations": {
-    "bangalore": 177612,
+    "bangalore": 177614,
     "mumbai": 108264,
-    "delhi": 87669,
-    "chennai": 85281,
-    "hyderabad": 76613,
+    "delhi": 87670,
+    "chennai": 85282,
+    "hyderabad": 76614,
     "pune": 62094,
     "noida": 40094,
     "ahmedabad": 32702,
     "kolkata": 28000,
-    "all_india": 21982,
+    "all_india": 21987,
     "coimbatore": 16163,
     "kochi": 12727,
-    "remote": 7491,
+    "remote": 7494,
     "jaipur": 6232,
     "maharashtra": 5495,
     "indore": 4576,
@@ -147,7 +147,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 9,
+    "pan_india": 10,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -235,7 +235,7 @@
     "kothur_formulation_division": 1,
     "vapi": 1,
     "eu": 1,
-    "across_india": 2,
+    "across_india": 3,
     "trichy": 7,
     "perundurai": 1,
     "jhajjar": 1,
@@ -315,7 +315,7 @@
     "hisar": 1,
     "panaji": 5,
     "mira_bhayandar": 1,
-    "work_from_home": 1,
+    "work_from_home": 2,
     "punjab": 1,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -379,5 +379,5 @@
     "vashi": 1,
     "gautam_buddha_nagar": 1
   },
-  "generated_at": "2026-10-17T15:31:01.651398"
+  "generated_at": "2026-10-17T17:28:49.388921"
 }
