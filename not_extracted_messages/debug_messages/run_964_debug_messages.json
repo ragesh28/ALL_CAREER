@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "964",
+  "workflow_run_id": "39026619310",
+  "timestamp": "2026-10-17T11:05:48.509571",
+  "runtime_minutes": 8.35,
+  "messages_processed": 32,
+  "new_jobs_stored": 18,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "placementdriveofficial",
+      "msg_id": 13384,
+      "text": "𝗜𝗕𝗠 𝗙𝗥𝗘𝗘 𝗧𝗘𝗖𝗛 𝗖𝗢𝗨𝗥𝗦𝗘𝗦 𝟮𝟬𝟮𝟲! 🎓\n\nExplore IBM Cognitive Class and build in-demand tech skills without spending money on course fees!\n\n📚 𝗧𝗼𝗽 𝗙𝗥𝗘𝗘 𝗖𝗼𝘂𝗿𝘀𝗲𝘀 𝘁𝗼 𝗘𝘅𝗽𝗹𝗼𝗿𝗲:-\n\n💫 Artificial Intelligence & Machine Learning  \n🔥Python for Data Science  \n📊 Data Science Fundamentals  \n☁️ Cloud Computing & Big Data  \n\n🔗 𝗦𝘁𝗮𝗿𝘁 𝗟𝗲𝗮𝗿𝗻𝗶𝗻𝗴 𝗛𝗲𝗿𝗲 👇\n\nhttps://pdlink.in/4zGswuX\n\n📲 Save & Share with friends preparing for tech careers! 🔥\nLBM\nIBM\nFREE\nCOURSES\non Cognitive Class\nLearn | Build Skills | Get Certified\nAl\nArtificial\nPython for\nData\nCloud\nIntelligence\nData Science\nScience\nComputing",
+      "timestamp": "2026-10-17T07:41:48+00:00"
+    }
+  ]
+}
