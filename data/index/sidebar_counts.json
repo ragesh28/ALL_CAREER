@@ -1,5 +1,5 @@
 {
-  "total_jobs": 816969,
+  "total_jobs": 818494,
   "sources": {
     "naukri": 292621,
     "linkedin": 201034,
@@ -8,7 +8,7 @@
     "internshala": 68164,
     "shine": 47436,
     "workindia": 15876,
-    "foundit": 14014,
+    "foundit": 15539,
     "apna": 7409,
     "hirist": 7706,
     "glassdoor": 4786,
@@ -46,11 +46,11 @@
     "other": 3027
   },
   "locations": {
-    "bangalore": 177622,
-    "mumbai": 108265,
+    "bangalore": 177996,
+    "mumbai": 108647,
     "delhi": 87670,
-    "chennai": 85284,
-    "hyderabad": 76621,
+    "chennai": 85666,
+    "hyderabad": 77008,
     "pune": 62094,
     "noida": 40094,
     "ahmedabad": 32702,
@@ -379,5 +379,5 @@
     "vashi": 1,
     "gautam_buddha_nagar": 1
   },
-  "generated_at": "2026-10-17T23:22:41.113936"
+  "generated_at": "2026-10-17T23:25:39.336191"
 }
