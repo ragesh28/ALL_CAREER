@@ -1,5 +1,5 @@
 {
-  "total_jobs": 816948,
+  "total_jobs": 816969,
   "sources": {
     "naukri": 292621,
     "linkedin": 201034,
@@ -43,22 +43,22 @@
     "unico": 2,
     "telegram_post": 259,
     "telegram_message": 308,
-    "other": 3006
+    "other": 3027
   },
   "locations": {
-    "bangalore": 177615,
-    "mumbai": 108264,
+    "bangalore": 177622,
+    "mumbai": 108265,
     "delhi": 87670,
-    "chennai": 85282,
-    "hyderabad": 76614,
+    "chennai": 85284,
+    "hyderabad": 76621,
     "pune": 62094,
     "noida": 40094,
     "ahmedabad": 32702,
     "kolkata": 28000,
     "all_india": 21998,
-    "coimbatore": 16163,
+    "coimbatore": 16164,
     "kochi": 12727,
-    "remote": 7494,
+    "remote": 7495,
     "jaipur": 6232,
     "maharashtra": 5495,
     "indore": 4576,
@@ -76,7 +76,7 @@
     "nanakramguda": 557,
     "message_all_india": 530,
     "tamil_nadu": 1407,
-    "telangana": 1520,
+    "telangana": 1522,
     "ka": 505,
     "message_bangalore": 475,
     "mh": 406,
@@ -379,5 +379,5 @@
     "vashi": 1,
     "gautam_buddha_nagar": 1
   },
-  "generated_at": "2026-10-17T20:47:52.423413"
+  "generated_at": "2026-10-17T23:22:41.113936"
 }
