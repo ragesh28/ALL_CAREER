@@ -1,5 +1,5 @@
 {
-  "total_jobs": 825388,
+  "total_jobs": 825404,
   "sources": {
     "naukri": 294733,
     "linkedin": 204272,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 269,
-    "telegram_message": 315,
+    "telegram_post": 280,
+    "telegram_message": 320,
     "other": 3027,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -124,16 +124,16 @@
     "jpmorgan_chase": 1
   },
   "locations": {
-    "bangalore": 179166,
+    "bangalore": 179175,
     "mumbai": 109599,
     "delhi": 88608,
-    "chennai": 86368,
+    "chennai": 86369,
     "hyderabad": 77716,
     "pune": 62665,
-    "noida": 40473,
+    "noida": 40474,
     "ahmedabad": 32984,
     "kolkata": 28264,
-    "all_india": 22008,
+    "all_india": 22012,
     "coimbatore": 16245,
     "kochi": 12841,
     "remote": 7577,
@@ -225,7 +225,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 12,
+    "pan_india": 13,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -522,5 +522,5 @@
     "north_goaporvorim": 1,
     "virginia": 1
   },
-  "generated_at": "2026-10-18T10:24:15.582197"
+  "generated_at": "2026-10-18T11:29:59.759721"
 }
