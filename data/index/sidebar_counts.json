@@ -1,5 +1,5 @@
 {
-  "total_jobs": 827072,
+  "total_jobs": 827086,
   "sources": {
     "naukri": 294733,
     "linkedin": 204273,
@@ -43,7 +43,7 @@
     "unico": 2,
     "telegram_post": 294,
     "telegram_message": 334,
-    "other": 3027,
+    "other": 3051,
     "wabtec_careers": 1,
     "durupercom": 1,
     "hbspl": 1,
@@ -126,15 +126,15 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 179473,
-    "mumbai": 109896,
+    "bangalore": 179470,
+    "mumbai": 109895,
     "delhi": 88796,
-    "chennai": 86548,
-    "hyderabad": 77855,
-    "pune": 62828,
+    "chennai": 86556,
+    "hyderabad": 77860,
+    "pune": 62830,
     "noida": 40544,
     "ahmedabad": 33065,
-    "kolkata": 28311,
+    "kolkata": 28314,
     "all_india": 22017,
     "coimbatore": 16261,
     "kochi": 12841,
@@ -525,5 +525,5 @@
     "virginia": 1,
     "alibag": 3
   },
-  "generated_at": "2026-10-18T23:29:26.467202"
+  "generated_at": "2026-10-18T23:33:19.963972"
 }
