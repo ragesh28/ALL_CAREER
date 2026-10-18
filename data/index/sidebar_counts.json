@@ -1,5 +1,5 @@
 {
-  "total_jobs": 820277,
+  "total_jobs": 820294,
   "sources": {
     "naukri": 293326,
     "linkedin": 201054,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 259,
-    "telegram_message": 308,
+    "telegram_post": 269,
+    "telegram_message": 315,
     "other": 3027,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -124,16 +124,16 @@
     "jpmorgan_chase": 1
   },
   "locations": {
-    "bangalore": 178364,
+    "bangalore": 178365,
     "mumbai": 108917,
-    "delhi": 87844,
-    "chennai": 85947,
-    "hyderabad": 77191,
+    "delhi": 87845,
+    "chennai": 85949,
+    "hyderabad": 77192,
     "pune": 62174,
-    "noida": 40158,
+    "noida": 40159,
     "ahmedabad": 32784,
     "kolkata": 28032,
-    "all_india": 21998,
+    "all_india": 22005,
     "coimbatore": 16181,
     "kochi": 12730,
     "remote": 7540,
@@ -225,7 +225,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 10,
+    "pan_india": 12,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -335,7 +335,7 @@
     "mehsana": 3,
     "ankleshwar": 1,
     "ludhianadugri": 2,
-    "vijayawada": 12,
+    "vijayawada": 14,
     "dhanbad": 57,
     "kethepally": 2,
     "guntur": 23,
@@ -474,5 +474,5 @@
     "pardi": 1,
     "hybrid_kotputli": 1
   },
-  "generated_at": "2026-10-18T06:02:24.029804"
+  "generated_at": "2026-10-18T06:12:13.916575"
 }
