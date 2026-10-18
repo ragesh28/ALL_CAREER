@@ -1,5 +1,5 @@
 {
-  "total_jobs": 827059,
+  "total_jobs": 827062,
   "sources": {
     "naukri": 294733,
     "linkedin": 204272,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 294,
-    "telegram_message": 331,
+    "telegram_message": 334,
     "other": 3027,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -133,7 +133,7 @@
     "noida": 40544,
     "ahmedabad": 33065,
     "kolkata": 28311,
-    "all_india": 22014,
+    "all_india": 22017,
     "coimbatore": 16261,
     "kochi": 12841,
     "remote": 7577,
@@ -523,5 +523,5 @@
     "virginia": 1,
     "alibag": 3
   },
-  "generated_at": "2026-10-18T16:17:02.057220"
+  "generated_at": "2026-10-18T21:38:10.102655"
 }
