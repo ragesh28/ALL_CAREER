@@ -1,5 +1,5 @@
 {
-  "total_jobs": 830459,
+  "total_jobs": 830494,
   "sources": {
     "naukri": 296480,
     "linkedin": 204275,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 302,
-    "telegram_message": 348,
+    "telegram_post": 317,
+    "telegram_message": 368,
     "other": 3051,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 180196,
-    "mumbai": 110338,
-    "delhi": 89241,
-    "chennai": 87033,
-    "hyderabad": 78153,
-    "pune": 63175,
+    "bangalore": 180212,
+    "mumbai": 110341,
+    "delhi": 89243,
+    "chennai": 87036,
+    "hyderabad": 78154,
+    "pune": 63177,
     "noida": 40797,
     "ahmedabad": 33171,
     "kolkata": 28353,
-    "all_india": 22019,
-    "coimbatore": 16307,
+    "all_india": 22022,
+    "coimbatore": 16308,
     "kochi": 12858,
-    "remote": 7616,
+    "remote": 7617,
     "jaipur": 6502,
     "maharashtra": 5576,
     "indore": 4623,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2181,
+    "karnataka": 2182,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -227,7 +227,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 13,
+    "pan_india": 14,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -546,7 +546,8 @@
     "igatpuri": 2,
     "gwalior": 1,
     "jamshedpur": 1,
-    "sunguvarchatram": 1
+    "sunguvarchatram": 1,
+    "online": 1
   },
-  "generated_at": "2026-10-19T10:48:19.882970"
+  "generated_at": "2026-10-19T11:13:52.608889"
 }
