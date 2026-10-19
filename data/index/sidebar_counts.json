@@ -1,5 +1,5 @@
 {
-  "total_jobs": 834170,
+  "total_jobs": 834215,
   "sources": {
     "naukri": 296480,
     "linkedin": 204275,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 317,
-    "telegram_message": 368,
+    "telegram_post": 332,
+    "telegram_message": 398,
     "other": 3051,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 181115,
-    "mumbai": 110700,
+    "bangalore": 181125,
+    "mumbai": 110701,
     "delhi": 89757,
-    "chennai": 87435,
-    "hyderabad": 78661,
+    "chennai": 87436,
+    "hyderabad": 78662,
     "pune": 63501,
-    "noida": 41045,
+    "noida": 41047,
     "ahmedabad": 33324,
-    "kolkata": 28424,
-    "all_india": 22022,
+    "kolkata": 28425,
+    "all_india": 22047,
     "coimbatore": 16340,
     "kochi": 12859,
-    "remote": 7617,
+    "remote": 7619,
     "jaipur": 6528,
     "maharashtra": 5578,
     "indore": 4662,
@@ -227,7 +227,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 14,
+    "pan_india": 15,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -551,7 +551,8 @@
     "indrakaran": 1,
     "ambala_cantt": 5,
     "virar": 1,
-    "kolhapur": 1
+    "kolhapur": 1,
+    "multiple": 1
   },
-  "generated_at": "2026-10-19T15:39:37.429661"
+  "generated_at": "2026-10-19T17:50:59.078029"
 }
