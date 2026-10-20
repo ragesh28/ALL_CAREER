@@ -1,5 +1,5 @@
 {
-  "total_jobs": 836193,
+  "total_jobs": 836196,
   "sources": {
     "naukri": 296480,
     "linkedin": 204275,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 332,
-    "telegram_message": 410,
+    "telegram_post": 333,
+    "telegram_message": 412,
     "other": 3184,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,7 +126,7 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 181651,
+    "bangalore": 181652,
     "mumbai": 111172,
     "delhi": 89763,
     "chennai": 87902,
@@ -227,7 +227,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 15,
+    "pan_india": 16,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -547,12 +547,12 @@
     "gwalior": 1,
     "jamshedpur": 1,
     "sunguvarchatram": 1,
-    "online": 1,
+    "online": 2,
     "indrakaran": 1,
     "ambala_cantt": 5,
     "virar": 1,
     "kolhapur": 1,
     "multiple": 1
   },
-  "generated_at": "2026-10-20T00:39:22.458607"
+  "generated_at": "2026-10-20T01:59:41.478540"
 }
