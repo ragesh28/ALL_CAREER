@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T20:32:30.667451+00:00",
+  "generatedAt": "2026-10-20T00:14:45.031603+00:00",
   "systemStatus": "HEALTHY",
   "activeScrapersRunning": 1,
   "totalWorkflows": 17,
@@ -13,7 +13,7 @@
     "peakDay": "Wed (Oct 14)",
     "peakCount": 6420,
     "calculatedEvery7Days": true,
-    "nextCalculationDate": "2026-10-26"
+    "nextCalculationDate": "2026-10-27"
   },
   "apiCredits": [
     {
@@ -325,7 +325,7 @@
     }
   ],
   "jobMetrics": {
-    "totalJobs": 834215,
+    "totalJobs": 834227,
     "todayScraped": 6420,
     "yesterdayScraped": 5890,
     "newJobsAdded": 5940,
@@ -372,7 +372,7 @@
       "ups": 2,
       "unico": 2,
       "telegram_post": 332,
-      "telegram_message": 398,
+      "telegram_message": 410,
       "other": 3051,
       "wabtec_careers": 1,
       "durupercom": 1,
@@ -465,7 +465,7 @@
       "noida": 41047,
       "ahmedabad": 33324,
       "kolkata": 28425,
-      "all_india": 22047,
+      "all_india": 22059,
       "coimbatore": 16340,
       "kochi": 12859,
       "remote": 7619,
@@ -895,30 +895,30 @@
     }
   },
   "visitorMetrics": {
-    "todayVisitors": 1613,
-    "yesterdayVisitors": 1528,
-    "totalPageviews": 6772,
+    "todayVisitors": 1660,
+    "yesterdayVisitors": 1575,
+    "totalPageviews": 6960,
     "avgSessionSeconds": 265,
     "topPages": [
       {
         "path": "#all_jobs",
         "name": "All Jobs Portal",
-        "views": 871
+        "views": 896
       },
       {
         "path": "#practice",
         "name": "Learn Coding (LeetCode)",
-        "views": 451
+        "views": 464
       },
       {
         "path": "#career_explorer",
         "name": "Big Company Directory",
-        "views": 193
+        "views": 199
       },
       {
         "path": "#hub",
         "name": "Career Command Center Hub",
-        "views": 96
+        "views": 99
       }
     ],
     "deviceBreakdown": {
@@ -1156,11 +1156,11 @@
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "18m 44s",
-      "durationSeconds": 1124,
-      "accumulatedDuration": "1h 7m",
-      "accumulatedSeconds": 4036,
-      "lastRunTime": "2026-10-19T17:32:28Z",
+      "duration": "6m 30s",
+      "durationSeconds": 390,
+      "accumulatedDuration": "1h 9m",
+      "accumulatedSeconds": 4156,
+      "lastRunTime": "2026-10-19T22:26:17Z",
       "trigger": "schedule",
       "jobsSaved": "+680 posts extracted",
       "newJobsScraped": 680,
@@ -1190,11 +1190,11 @@
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "4m 49s",
-      "durationSeconds": 289,
-      "accumulatedDuration": "13m 8s",
-      "accumulatedSeconds": 788,
-      "lastRunTime": "2026-10-19T20:27:40Z",
+      "duration": "4m 35s",
+      "durationSeconds": 275,
+      "accumulatedDuration": "14m 7s",
+      "accumulatedSeconds": 847,
+      "lastRunTime": "2026-10-20T00:10:09Z",
       "trigger": "schedule",
       "jobsSaved": "Ecosystem Telemetry Checkpoint",
       "newJobsScraped": 0,
@@ -1207,11 +1207,11 @@
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "8m 58s",
-      "durationSeconds": 538,
-      "accumulatedDuration": "1h 19m",
-      "accumulatedSeconds": 4780,
-      "lastRunTime": "2026-10-19T17:51:11Z",
+      "duration": "8m 16s",
+      "durationSeconds": 496,
+      "accumulatedDuration": "1h 18m",
+      "accumulatedSeconds": 4706,
+      "lastRunTime": "2026-10-19T22:32:45Z",
       "trigger": "dynamic",
       "jobsSaved": "Continuous Portal Deployer",
       "newJobsScraped": 0,
