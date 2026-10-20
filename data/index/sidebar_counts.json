@@ -1,5 +1,5 @@
 {
-  "total_jobs": 839857,
+  "total_jobs": 839877,
   "sources": {
     "naukri": 298801,
     "linkedin": 204275,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 333,
-    "telegram_message": 412,
+    "telegram_post": 345,
+    "telegram_message": 420,
     "other": 3184,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 182530,
+    "bangalore": 182536,
     "mumbai": 111636,
-    "delhi": 90145,
-    "chennai": 88317,
-    "hyderabad": 79548,
+    "delhi": 90146,
+    "chennai": 88319,
+    "hyderabad": 79550,
     "pune": 64039,
     "noida": 41207,
     "ahmedabad": 33435,
     "kolkata": 28555,
-    "all_india": 22061,
+    "all_india": 22067,
     "coimbatore": 16412,
     "kochi": 12904,
-    "remote": 7656,
+    "remote": 7658,
     "jaipur": 6530,
     "maharashtra": 5578,
     "indore": 4664,
@@ -227,7 +227,7 @@
     "kurla": 52,
     "kollam": 99,
     "tcs_ion_centres": 1,
-    "pan_india": 16,
+    "pan_india": 17,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -556,5 +556,5 @@
     "lakshadweep": 1,
     "daman_diu": 1
   },
-  "generated_at": "2026-10-20T07:01:52.115503"
+  "generated_at": "2026-10-20T07:53:46.084285"
 }
