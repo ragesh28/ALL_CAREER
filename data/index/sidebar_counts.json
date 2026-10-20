@@ -1,5 +1,5 @@
 {
-  "total_jobs": 834227,
+  "total_jobs": 834360,
   "sources": {
     "naukri": 296480,
     "linkedin": 204275,
@@ -43,7 +43,7 @@
     "unico": 2,
     "telegram_post": 332,
     "telegram_message": 410,
-    "other": 3051,
+    "other": 3184,
     "wabtec_careers": 1,
     "durupercom": 1,
     "hbspl": 1,
@@ -126,16 +126,16 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 181125,
-    "mumbai": 110701,
-    "delhi": 89757,
-    "chennai": 87436,
-    "hyderabad": 78662,
-    "pune": 63501,
+    "bangalore": 181193,
+    "mumbai": 110711,
+    "delhi": 89763,
+    "chennai": 87445,
+    "hyderabad": 78693,
+    "pune": 63505,
     "noida": 41047,
     "ahmedabad": 33324,
     "kolkata": 28425,
-    "all_india": 22059,
+    "all_india": 22061,
     "coimbatore": 16340,
     "kochi": 12859,
     "remote": 7619,
@@ -156,14 +156,14 @@
     "nanakramguda": 557,
     "message_all_india": 530,
     "tamil_nadu": 1505,
-    "telangana": 1594,
+    "telangana": 1595,
     "ka": 505,
     "message_bangalore": 475,
     "mh": 406,
     "dl": 1198,
     "post_bangalore": 357,
     "bhopal": 387,
-    "haryana": 680,
+    "haryana": 681,
     "vadodara": 326,
     "gujarat": 600,
     "panchkula": 326,
@@ -439,7 +439,7 @@
     "dharuhera": 1,
     "athirappilly": 3,
     "bhatkal": 1,
-    "indianapolis": 1,
+    "indianapolis": 2,
     "kalburagi": 2,
     "haldwani": 1,
     "belgium": 1,
@@ -554,5 +554,5 @@
     "kolhapur": 1,
     "multiple": 1
   },
-  "generated_at": "2026-10-19T22:32:36.608451"
+  "generated_at": "2026-10-20T00:38:28.948332"
 }
