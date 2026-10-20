@@ -1,5 +1,5 @@
 {
-  "total_jobs": 844522,
+  "total_jobs": 844543,
   "sources": {
     "naukri": 301081,
     "linkedin": 204995,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 345,
-    "telegram_message": 420,
+    "telegram_post": 353,
+    "telegram_message": 433,
     "other": 3184,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 183501,
-    "mumbai": 112303,
+    "bangalore": 183502,
+    "mumbai": 112305,
     "delhi": 90744,
-    "chennai": 88764,
-    "hyderabad": 80020,
-    "pune": 64605,
+    "chennai": 88766,
+    "hyderabad": 80024,
+    "pune": 64606,
     "noida": 41427,
     "ahmedabad": 33614,
     "kolkata": 28685,
-    "all_india": 22067,
+    "all_india": 22075,
     "coimbatore": 16498,
     "kochi": 12968,
-    "remote": 7717,
+    "remote": 7718,
     "jaipur": 6548,
     "maharashtra": 5592,
     "indore": 4699,
@@ -562,7 +562,9 @@
     "malda": 2,
     "moradabadharthala": 1,
     "raipurnew_rajendra_nagar": 1,
-    "ranjangaon": 2
+    "ranjangaon": 2,
+    "not_specified": 1,
+    "pan_india_online": 1
   },
-  "generated_at": "2026-10-20T12:52:58.162763"
+  "generated_at": "2026-10-20T13:53:14.788891"
 }
