@@ -1,5 +1,5 @@
 {
-  "total_jobs": 844960,
+  "total_jobs": 845008,
   "sources": {
     "naukri": 301081,
     "linkedin": 204995,
@@ -43,7 +43,7 @@
     "unico": 2,
     "telegram_post": 353,
     "telegram_message": 434,
-    "other": 3184,
+    "other": 3232,
     "wabtec_careers": 1,
     "durupercom": 1,
     "hbspl": 1,
@@ -126,16 +126,16 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 183609,
-    "mumbai": 112347,
-    "delhi": 90804,
-    "chennai": 88803,
-    "hyderabad": 80095,
-    "pune": 64655,
-    "noida": 41435,
+    "bangalore": 183628,
+    "mumbai": 112349,
+    "delhi": 90807,
+    "chennai": 88808,
+    "hyderabad": 80105,
+    "pune": 64657,
+    "noida": 41437,
     "ahmedabad": 33614,
     "kolkata": 28704,
-    "all_india": 22076,
+    "all_india": 22079,
     "coimbatore": 16502,
     "kochi": 12968,
     "remote": 7718,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2468,
+    "karnataka": 2469,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -565,7 +565,8 @@
     "ranjangaon": 2,
     "not_specified": 1,
     "pan_india_online": 1,
-    "rewari": 1
+    "rewari": 1,
+    "indiana_michigan_city_catalyst_plant": 1
   },
-  "generated_at": "2026-10-20T18:36:13.431057"
+  "generated_at": "2026-10-21T00:09:21.534889"
 }
