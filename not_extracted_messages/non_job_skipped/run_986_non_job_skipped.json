@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "986",
+  "workflow_run_id": "39564300237",
+  "timestamp": "2026-10-21T08:02:11.313949",
+  "runtime_minutes": 11.01,
+  "messages_processed": 56,
+  "new_jobs_stored": 25,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18943,
+      "text": "Stop using your\nenergy to worry.\nUse your energy to\nbelieve, create, love,\ngrow, glow, manifest,\nand heal",
+      "timestamp": "2026-10-21T02:03:14+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8382,
+      "text": "download my resume template for FREE \n\nhttps://www.instagram.com/p/Deubu3NTZbC/?psln=Mzk0YjA2aHZnbzg0",
+      "timestamp": "2026-10-21T05:47:35+00:00"
+    }
+  ]
+}
