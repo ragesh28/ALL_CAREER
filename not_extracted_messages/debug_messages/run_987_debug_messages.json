@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "987",
+  "workflow_run_id": "39612025198",
+  "timestamp": "2026-10-21T14:12:14.228798",
+  "runtime_minutes": 13.77,
+  "messages_processed": 57,
+  "new_jobs_stored": 34,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 2,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "job4softwaree",
+      "msg_id": 13504,
+      "text": "𝐏𝐚𝐲 𝐀𝐟𝐭𝐞𝐫 𝐏𝐥𝐚𝐜𝐞𝐦𝐞𝐧𝐭 - 𝐆𝐞𝐭 𝐏𝐥𝐚𝐜𝐞𝐝 𝐈𝐧 𝐓𝐨𝐩 𝐌𝐍𝐂'𝐬 😍\n\nLearn Coding From Scratch - Lectures Taught By IIT Alumni \n\n60+ Hiring Drives Every Month\n\n𝐇𝐢𝐠𝐡𝐥𝐢𝐠𝐡𝐭𝐬:- \n\n🌟 Trusted by 7500+ Students\n🤝 500+ Hiring Partners\n💼 Avg. Rs. 7.4 LPA\n🚀 41 LPA Highest Package\n\nEligibility: BTech / BCA / BSc / MCA / MSc\n\n𝐑𝐞𝐠𝐢𝐬𝐭𝐞𝐫 𝐍𝐨𝐰👇 :- \n\nhttps://tinyurl.com/y43f9ckn\n\nHurry, limited seats available!🏃‍♀️",
+      "timestamp": "2026-10-21T11:39:03+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "job4fresherss",
+      "msg_id": 20252,
+      "text": "Hi Guys 👋🏻\n🎥 New Job video is LIVE!\n\n👉 Watch here: https://youtu.be/9HYOha_M74Y&list=UULFjx96VpV4g2KvuGt4wAjNrw\n\n🔁 Share this with an ECE/EEE friend looking for a opportunity!",
+      "timestamp": "2026-10-21T10:42:00+00:00"
+    }
+  ]
+}

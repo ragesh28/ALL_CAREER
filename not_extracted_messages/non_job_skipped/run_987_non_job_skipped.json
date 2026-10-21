@@ -1,0 +1,47 @@
+{
+  "workflow_run_number": "987",
+  "workflow_run_id": "39612025198",
+  "timestamp": "2026-10-21T14:12:14.228798",
+  "runtime_minutes": 13.77,
+  "messages_processed": 57,
+  "new_jobs_stored": 34,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30752,
+      "text": "🚨 REGISTRATIONS CLOSING SOON | FREE AI CAREER MASTERCLASS 🤖\n\nWant to land a tech role at companies like OpenAI, Anthropic, Google & Emergent?\n\n🎯 Learn how to crack AI roles with insights from an industry professional with experience at LinkedIn & Airbnb!\n\n✅ Skills AI companies look for \n✅ Technical interview preparation \n✅ Build a profile that stands out \n✅ Strategies to break into AI roles\n\n🎁 Attend the workshop and get a FREE Scaler certification!\n\n⚠️ Eligibility: Graduates from 2025 or earlier\n\n🔥 Don't just follow the AI boom. Prepare to be part of it.\n\n👉 Register FREE before registrations close: https://tinyurl.com/2vah6u6k",
+      "timestamp": "2026-10-21T11:13:33+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30753,
+      "text": "🚨 𝗗𝗘𝗟𝗢𝗜𝗧𝗧𝗘 — 𝟲 𝗔𝗻𝗮𝗹𝘆𝘀𝘁 𝗥𝗼𝗹𝗲𝘀! 🎯\n\n🏢 Company: Deloitte India\n💼 Role: Analyst\n📍 Location: Bengaluru, Pune\n💰 Salary: ₹5.5–8.5 LPA\n🎓 Eligibility: Any Graduate\n💼 Experience: 0–2 years (Freshers eligible)\n\n🔗 https://freshershunt.in/deloitte-hiring-2026/\n\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n\n📺 𝐇𝐨𝐰 𝐭𝐨 𝐀𝐩𝐩𝐥𝐲: https://youtu.be/Q4afjdBqZio\n\n💬 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐖𝗵𝗮𝘁𝘀𝗔𝗽𝗽: https://freshershunt.in/WhatsApp\n\n📢 𝐉𝐨𝐢𝐧 𝐓𝐞𝗹𝐞𝐠𝐫𝐚𝐦: https://telegram.me/freshershunt",
+      "timestamp": "2026-10-21T12:31:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30754,
+      "text": "🤖 𝗖𝗹𝗮𝘂𝗱𝗲 𝗔𝗜 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 — 𝗙𝗥𝗘𝗘! 🚀\n\n💸 Cost:  ₹0 (FREE!)\n\n🎓 Earn an official certificate from Anthropic, the company behind Claude!\n\n𝗪𝗵𝗮𝘁 𝘆𝗼𝘂'𝗹𝗹 𝗹𝗲𝗮𝗿𝗻:\n✅ Use Claude AI for everyday tasks\n✅ Boost productivity with AI\n✅ Build smarter workflows\n✅ Apply AI skills in work and learning\n\n🎯 Perfect for Students, Freshers & Professionals!\n\n**𝗘𝗻𝗿𝗼𝗹𝗹 𝗙𝗿𝗲𝗲:** https://tinyurl.com/Free-Claude-AI-Certification\n\n⚡ Don't miss this opportunity!",
+      "timestamp": "2026-10-21T13:33:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8383,
+      "text": "RAG and LLM in a nutshell 🛜\nbookmark this 📍 \n\nfollow for more \n\nhttps://www.instagram.com/reel/Dex95_STOAi/?exln=bXFjZzJvbXZxaDlv",
+      "timestamp": "2026-10-21T13:57:25+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6404,
+      "text": "All new changes in MongoDB now is 7 minutes.\n\nGo check it out know to find out MongoDB 9.0, Atlas Engine and Atlas Infinite.\n\nLink: https://yt.openinapp.co/46mjd\nMONGODB HAS CHANGED\nThe New\nMongoDB 9.0\nMongoDB\nAI\nAgents\nWhat's\nAtlas Agent Engine\nNew\nCloud\nAtlas Infinite\nScale",
+      "timestamp": "2026-10-21T13:54:28+00:00"
+    }
+  ]
+}
