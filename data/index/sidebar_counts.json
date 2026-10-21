@@ -1,5 +1,5 @@
 {
-  "total_jobs": 845008,
+  "total_jobs": 845025,
   "sources": {
     "naukri": 301081,
     "linkedin": 204995,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 353,
-    "telegram_message": 434,
+    "telegram_post": 359,
+    "telegram_message": 445,
     "other": 3232,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 183628,
+    "bangalore": 183639,
     "mumbai": 112349,
     "delhi": 90807,
     "chennai": 88808,
-    "hyderabad": 80105,
+    "hyderabad": 80106,
     "pune": 64657,
     "noida": 41437,
     "ahmedabad": 33614,
-    "kolkata": 28704,
-    "all_india": 22079,
-    "coimbatore": 16502,
+    "kolkata": 28705,
+    "all_india": 22080,
+    "coimbatore": 16503,
     "kochi": 12968,
-    "remote": 7718,
+    "remote": 7719,
     "jaipur": 6549,
     "maharashtra": 5592,
     "indore": 4707,
@@ -381,7 +381,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 1,
-    "mangalore": 19,
+    "mangalore": 20,
     "moodbidri": 1,
     "belagavi": 7,
     "gokak": 2,
@@ -568,5 +568,5 @@
     "rewari": 1,
     "indiana_michigan_city_catalyst_plant": 1
   },
-  "generated_at": "2026-10-21T00:09:21.534889"
+  "generated_at": "2026-10-21T01:52:25.160853"
 }
