@@ -1,5 +1,5 @@
 {
-  "total_jobs": 859339,
+  "total_jobs": 859426,
   "sources": {
     "naukri": 304129,
     "linkedin": 212064,
@@ -43,7 +43,7 @@
     "unico": 2,
     "telegram_post": 384,
     "telegram_message": 479,
-    "other": 3232,
+    "other": 3319,
     "wabtec_careers": 1,
     "durupercom": 1,
     "hbspl": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 186071,
-    "mumbai": 114308,
-    "delhi": 92503,
-    "chennai": 90274,
-    "hyderabad": 81474,
-    "pune": 66268,
+    "bangalore": 186111,
+    "mumbai": 114317,
+    "delhi": 92509,
+    "chennai": 90278,
+    "hyderabad": 81494,
+    "pune": 66272,
     "noida": 42261,
     "ahmedabad": 34207,
     "kolkata": 29072,
     "all_india": 22098,
     "coimbatore": 16877,
     "kochi": 13207,
-    "remote": 7877,
+    "remote": 7878,
     "jaipur": 6613,
     "maharashtra": 5817,
     "indore": 4729,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2647,
+    "karnataka": 2648,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -566,7 +566,7 @@
     "not_specified": 1,
     "pan_india_online": 1,
     "rewari": 1,
-    "indiana_michigan_city_catalyst_plant": 1,
+    "indiana_michigan_city_catalyst_plant": 3,
     "as_per_company": 1,
     "kirloskarvadi": 1,
     "hybrid_raipur": 1,
@@ -586,5 +586,5 @@
     "warangal": 19,
     "bhilwara": 8
   },
-  "generated_at": "2026-10-21T16:53:26.334129"
+  "generated_at": "2026-10-22T00:14:59.773057"
 }
