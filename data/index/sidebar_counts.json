@@ -1,5 +1,5 @@
 {
-  "total_jobs": 868018,
+  "total_jobs": 868051,
   "sources": {
     "naukri": 308951,
     "linkedin": 212072,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 406,
-    "telegram_message": 496,
+    "telegram_post": 420,
+    "telegram_message": 515,
     "other": 3319,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 187846,
+    "bangalore": 187860,
     "mumbai": 115634,
-    "delhi": 93255,
-    "chennai": 91453,
-    "hyderabad": 82349,
-    "pune": 66993,
+    "delhi": 93257,
+    "chennai": 91455,
+    "hyderabad": 82350,
+    "pune": 66994,
     "noida": 42757,
     "ahmedabad": 34606,
     "kolkata": 29397,
-    "all_india": 22107,
+    "all_india": 22115,
     "coimbatore": 17052,
     "kochi": 13306,
-    "remote": 7997,
+    "remote": 7999,
     "jaipur": 6730,
     "maharashtra": 5817,
     "indore": 4783,
@@ -323,7 +323,7 @@
     "bhiwadi": 1,
     "hosursipcot_ph_2": 1,
     "sundargarh": 2,
-    "hosakote": 1,
+    "hosakote": 2,
     "nagercoil": 5,
     "oragadam": 1,
     "jamnagar": 1,
@@ -567,7 +567,7 @@
     "pan_india_online": 1,
     "rewari": 1,
     "indiana_michigan_city_catalyst_plant": 3,
-    "as_per_company": 1,
+    "as_per_company": 2,
     "kirloskarvadi": 1,
     "hybrid_raipur": 1,
     "rudrapur": 1,
@@ -587,7 +587,8 @@
     "bhilwara": 22,
     "kursela": 1,
     "triprayar": 4,
-    "udaipurshakti_nagar": 1
+    "udaipurshakti_nagar": 1,
+    "red_hills": 1
   },
-  "generated_at": "2026-10-22T12:33:02.836922"
+  "generated_at": "2026-10-22T14:14:30.274253"
 }
