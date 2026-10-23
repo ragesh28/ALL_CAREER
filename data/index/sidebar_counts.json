@@ -1,5 +1,5 @@
 {
-  "total_jobs": 878027,
+  "total_jobs": 878090,
   "sources": {
     "naukri": 312070,
     "linkedin": 215608,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 421,
-    "telegram_message": 522,
+    "telegram_post": 441,
+    "telegram_message": 565,
     "other": 3431,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 189563,
-    "mumbai": 117076,
-    "delhi": 94513,
-    "chennai": 92486,
-    "hyderabad": 83227,
+    "bangalore": 189583,
+    "mumbai": 117077,
+    "delhi": 94516,
+    "chennai": 92489,
+    "hyderabad": 83229,
     "pune": 68024,
     "noida": 43328,
     "ahmedabad": 35080,
     "kolkata": 29745,
-    "all_india": 22125,
+    "all_india": 22149,
     "coimbatore": 17205,
     "kochi": 13489,
-    "remote": 8108,
+    "remote": 8111,
     "jaipur": 6780,
     "maharashtra": 5929,
     "indore": 4811,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2732,
+    "karnataka": 2735,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -227,7 +227,7 @@
     "kurla": 52,
     "kollam": 106,
     "tcs_ion_centres": 1,
-    "pan_india": 19,
+    "pan_india": 21,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -395,7 +395,7 @@
     "hisar": 1,
     "panaji": 7,
     "mira_bhayandar": 1,
-    "work_from_home": 3,
+    "work_from_home": 4,
     "punjab": 2,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -591,7 +591,8 @@
     "red_hills": 1,
     "abu_dhabi_emirate": 1,
     "cherthala": 1,
-    "sector_14": 1
+    "sector_14": 1,
+    "mandya": 1
   },
-  "generated_at": "2026-10-23T06:41:25.385425"
+  "generated_at": "2026-10-23T07:59:49.549673"
 }
