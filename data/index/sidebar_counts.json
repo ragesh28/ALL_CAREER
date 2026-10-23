@@ -1,5 +1,5 @@
 {
-  "total_jobs": 889666,
+  "total_jobs": 889677,
   "sources": {
     "naukri": 315209,
     "linkedin": 219022,
@@ -42,7 +42,7 @@
     "ups": 2,
     "unico": 2,
     "telegram_post": 450,
-    "telegram_message": 575,
+    "telegram_message": 586,
     "other": 3431,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -135,7 +135,7 @@
     "noida": 43890,
     "ahmedabad": 35633,
     "kolkata": 30177,
-    "all_india": 22155,
+    "all_india": 22165,
     "coimbatore": 17433,
     "kochi": 13700,
     "remote": 8189,
@@ -314,7 +314,7 @@
     "mahindra_world_city": 1,
     "kothur_formulation_division": 1,
     "vapi": 2,
-    "eu": 1,
+    "eu": 2,
     "across_india": 4,
     "trichy": 14,
     "perundurai": 1,
@@ -597,5 +597,5 @@
     "azara": 1,
     "arakkunnam": 1
   },
-  "generated_at": "2026-10-23T16:19:23.919857"
+  "generated_at": "2026-10-23T22:22:54.413666"
 }
