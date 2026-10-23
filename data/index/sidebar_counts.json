@@ -1,5 +1,5 @@
 {
-  "total_jobs": 873341,
+  "total_jobs": 873343,
   "sources": {
     "naukri": 308951,
     "linkedin": 215608,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 420,
-    "telegram_message": 521,
+    "telegram_post": 421,
+    "telegram_message": 522,
     "other": 3431,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,7 +126,7 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 188618,
+    "bangalore": 188620,
     "mumbai": 116368,
     "delhi": 93945,
     "chennai": 91881,
@@ -591,5 +591,5 @@
     "red_hills": 1,
     "abu_dhabi_emirate": 1
   },
-  "generated_at": "2026-10-23T00:15:56.275525"
+  "generated_at": "2026-10-23T01:43:41.127684"
 }
