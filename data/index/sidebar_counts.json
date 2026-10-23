@@ -1,5 +1,5 @@
 {
-  "total_jobs": 884074,
+  "total_jobs": 884093,
   "sources": {
     "naukri": 315209,
     "linkedin": 215615,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 441,
-    "telegram_message": 565,
+    "telegram_post": 450,
+    "telegram_message": 575,
     "other": 3431,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,19 +126,19 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 190627,
-    "mumbai": 118077,
-    "delhi": 95344,
-    "chennai": 93188,
-    "hyderabad": 83558,
+    "bangalore": 190630,
+    "mumbai": 118078,
+    "delhi": 95346,
+    "chennai": 93192,
+    "hyderabad": 83559,
     "pune": 68662,
     "noida": 43671,
     "ahmedabad": 35390,
     "kolkata": 29969,
-    "all_india": 22150,
+    "all_india": 22155,
     "coimbatore": 17329,
     "kochi": 13580,
-    "remote": 8163,
+    "remote": 8164,
     "jaipur": 6878,
     "maharashtra": 5930,
     "indore": 4873,
@@ -547,7 +547,7 @@
     "gwalior": 2,
     "jamshedpur": 1,
     "sunguvarchatram": 1,
-    "online": 2,
+    "online": 4,
     "indrakaran": 1,
     "ambala_cantt": 6,
     "virar": 3,
@@ -596,5 +596,5 @@
     "dehradunsahastradhara_road": 1,
     "azara": 1
   },
-  "generated_at": "2026-10-23T12:32:03.584706"
+  "generated_at": "2026-10-23T13:46:04.615802"
 }

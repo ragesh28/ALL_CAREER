@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "997",
+  "workflow_run_id": "39962082205",
+  "timestamp": "2026-10-23T13:45:54.870166",
+  "runtime_minutes": 9.2,
+  "messages_processed": 40,
+  "new_jobs_stored": 19,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43825,
+      "text": "FREE Claude AI Masterclass- From Prompting to Building 🤳🏼⚙️💻\n\nBuild AI Agents for Real-World Applications in 120 Minutes. 💯\n\n🔖No prior AI experience needed \n\nEligibility :-  Freshers • Working Professionals\n\n📅 Date: 24 October 2026  ⏰  7:00 PM\n💻 Mode:Online  \n\n🔗 𝗥𝗲𝗴𝗶𝘀𝘁𝗲𝗿 𝗙𝗼𝗿 𝗙𝗥𝗘𝗘👇 : \nhttps://rebrand.ly/claudefreemasterclass \n\n📢 Share this opportunity with your friends.\nClaudeAl\nMasterclass:\nPlan\nSearch\nBuild Al Agents for\nTake Action\nReal-World Applications\nDeliver\nn 120 Minutes\nSolv\nNo prior Al experience needed -\nlearn, build and experience Al Agents in action.\nRegister for Free\nOctober 24, 2026\n7:00 PM (IST)\nEng\nFree Webinar·Limited Seats Available",
+      "timestamp": "2026-10-23T13:10:33+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8388,
+      "text": "How to build your first AI agent 😉😄 \nStep by step 📌 \n\nsave share and comment for more 🚀 \n\nhttps://www.instagram.com/reel/De1CfFizZn6/?vrfl=MWVzczVzbmdrMTNoZw==\n\nAll the best 👍😃",
+      "timestamp": "2026-10-23T10:35:48+00:00"
+    }
+  ]
+}
