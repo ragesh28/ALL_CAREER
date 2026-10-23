@@ -1,5 +1,5 @@
 {
-  "total_jobs": 875323,
+  "total_jobs": 873341,
   "sources": {
     "naukri": 308951,
     "linkedin": 215608,
@@ -43,7 +43,7 @@
     "unico": 2,
     "telegram_post": 420,
     "telegram_message": 521,
-    "other": 3319,
+    "other": 3431,
     "wabtec_careers": 1,
     "durupercom": 1,
     "hbspl": 1,
@@ -126,16 +126,16 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 189078,
-    "mumbai": 116876,
-    "delhi": 93943,
-    "chennai": 92401,
-    "hyderabad": 83356,
+    "bangalore": 188618,
+    "mumbai": 116368,
+    "delhi": 93945,
+    "chennai": 91881,
+    "hyderabad": 82858,
     "pune": 67461,
     "noida": 42978,
     "ahmedabad": 34912,
     "kolkata": 29636,
-    "all_india": 22121,
+    "all_india": 22122,
     "coimbatore": 17140,
     "kochi": 13427,
     "remote": 8033,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2731,
+    "karnataka": 2732,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -591,5 +591,5 @@
     "red_hills": 1,
     "abu_dhabi_emirate": 1
   },
-  "generated_at": "2026-10-23T00:13:22.753472"
+  "generated_at": "2026-10-23T00:15:56.275525"
 }
