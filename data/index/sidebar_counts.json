@@ -1,5 +1,5 @@
 {
-  "total_jobs": 896529,
+  "total_jobs": 896558,
   "sources": {
     "naukri": 317961,
     "linkedin": 219022,
@@ -41,8 +41,8 @@
     "southwest": 2,
     "ups": 2,
     "unico": 2,
-    "telegram_post": 456,
-    "telegram_message": 586,
+    "telegram_post": 471,
+    "telegram_message": 600,
     "other": 3503,
     "wabtec_careers": 1,
     "durupercom": 1,
@@ -126,16 +126,16 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 193248,
+    "bangalore": 193265,
     "mumbai": 120003,
     "delhi": 96617,
-    "chennai": 94793,
-    "hyderabad": 85095,
+    "chennai": 94796,
+    "hyderabad": 85096,
     "pune": 69749,
     "noida": 44166,
     "ahmedabad": 35734,
     "kolkata": 30269,
-    "all_india": 22167,
+    "all_india": 22168,
     "coimbatore": 17513,
     "kochi": 13751,
     "remote": 8263,
@@ -149,7 +149,7 @@
     "thane": 1163,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 2823,
+    "karnataka": 2824,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -381,7 +381,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 1,
-    "mangalore": 45,
+    "mangalore": 47,
     "moodbidri": 1,
     "belagavi": 7,
     "gokak": 2,
@@ -598,7 +598,11 @@
     "arakkunnam": 1,
     "mg_davanagere": 2,
     "tilakwadi": 1,
-    "kanayannur": 1
+    "kanayannur": 1,
+    "udupi": 1,
+    "electronic_city": 1,
+    "indranagar": 1,
+    "bidar": 1
   },
-  "generated_at": "2026-10-24T06:48:08.392097"
+  "generated_at": "2026-10-24T07:43:42.013798"
 }
