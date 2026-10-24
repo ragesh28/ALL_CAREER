@@ -1,0 +1,19 @@
+{
+  "workflow_run_number": "1005",
+  "workflow_run_id": "40139011135",
+  "timestamp": "2026-10-24T22:38:24.891486",
+  "runtime_minutes": 1.17,
+  "messages_processed": 1,
+  "new_jobs_stored": 0,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16565,
+      "text": "If you know how to prompt ChatGPT, it is time to move to AI agents that actually execute tasks: https://x.com/vedangvatsa/status/2114122928845635638\nBrowser Wrapper\nAgent Platform\nChatGPT, Lovable, v0\nAntigravity, OpenCode, Codex\nlovable.dev / project\nrepo-root > terminal\n> opencode \"Build user login\"\n\"Build user login\"\n+ Created src/auth.ts\n+ Generated prisma migration\nEnvironment: Remote sandbox\n+ Ran tests: 12 passed\nCode export: Manual download required\n$100M+ ARR\nDirect File Edits\nPopular because it hides developer tools\nExecutes terminal commands on your machine\nIsolated from your existing codebase\nInspect changes via git diff before commit",
+      "timestamp": "2026-10-24T22:35:46+00:00"
+    }
+  ]
+}
