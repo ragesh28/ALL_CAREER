@@ -1,5 +1,5 @@
 {
-  "total_jobs": 889749,
+  "total_jobs": 892058,
   "sources": {
     "naukri": 315209,
     "linkedin": 219022,
@@ -8,7 +8,7 @@
     "internshala": 74153,
     "shine": 47448,
     "workindia": 15876,
-    "foundit": 20775,
+    "foundit": 23084,
     "apna": 7409,
     "hirist": 9109,
     "glassdoor": 4800,
@@ -126,11 +126,11 @@
     "thales_careers_thales_group": 1
   },
   "locations": {
-    "bangalore": 191474,
-    "mumbai": 118804,
+    "bangalore": 192051,
+    "mumbai": 119381,
     "delhi": 96138,
-    "chennai": 93668,
-    "hyderabad": 84142,
+    "chennai": 94245,
+    "hyderabad": 84720,
     "pune": 69229,
     "noida": 43890,
     "ahmedabad": 35633,
@@ -597,5 +597,5 @@
     "azara": 1,
     "arakkunnam": 1
   },
-  "generated_at": "2026-10-24T00:03:24.571199"
+  "generated_at": "2026-10-24T00:05:13.605773"
 }
