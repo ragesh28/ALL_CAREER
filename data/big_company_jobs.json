@@ -68583,5 +68583,1526 @@
         "total_jobs": 0,
         "fetched_at": "2026-10-23",
         "company": "ITC Infotech"
+    },
+    {
+        "title": "Senior Machine Learning Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Automation Engineer - BPMS",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Specialist-VAS",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Ericsson"
+    },
+    {
+        "title": "SCOM Specialist with SQL DBA",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Architect AI DevOps",
+        "location": "Kolkata",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Network Service Process Architect",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526898",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Technical Product Manager - Principal",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526896",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Senior Simulation Engineer   Rolling Stock",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526887",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Supplier Quality Assurance Professional",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526756",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Quality Executive-Testing",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526667",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Talent Acquisition Partner",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/526614",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Siemens"
+    },
+    {
+        "title": "Analyst - GBS",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26036895/analyst-gbs-mumbai-india",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Assistant Manager",
+        "location": "Gandhinagar",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037570/assistant-manager-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Assistant Manager",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037569/assistant-manager-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Assistant Manager",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26038112/assistant-manager-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Assistant Manager",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26038117/assistant-manager-hyderabad-india",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "AVP",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26038121/avp-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Infrastructure Engineer Lead - GBS IND",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037543/infrastructure-engineer-lead-gbs-ind-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Infrastructure Engineer Lead - GBS IND",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037541/infrastructure-engineer-lead-gbs-ind-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Senior Infrastructure Engineer - GBS IND",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037544/senior-infrastructure-engineer-gbs-ind-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Software Engineer I A - GBS IND",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26039175/software-engineer-i-a-gbs-ind-chennai-india",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Software Engineer II B - GBS IND",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26037470/software-engineer-ii-b-gbs-ind-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Team Leader",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26028110/team-leader-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Advanced Elect Design Engr",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/158107",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Program Specialist",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/158282",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Program Specialist",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/158408",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Advanced Software Engr",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/159050",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Advanced Application Engr",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/159433",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Software Eng Supervisor",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/159819",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Mech Design Engr II",
+        "location": "Madurai",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160240",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "R&D Engr/Scientist II",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160360",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr. Finance Supervisor",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160576",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Advanced Software Engr",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160653",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Lead Cust Exp Specialist",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160662",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Cyber Sec Supervisor",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160873",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Deputy Manager - RBIN/HRL-TA",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000157380079",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bosch"
+    },
+    {
+        "title": "Demand Planner - North",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000157329841",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Bosch"
+    },
+    {
+        "title": "Lead Logistics Customer Experience & Operations Specialist",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "People Operations - Sr. Advisor",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "Customer Experience Partner - SCM",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "Associate Finance Controller",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "Landside Operations Specialist",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "Site HSSE Advisor",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "Landside Surcharge Specialist",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Maersk"
+    },
+    {
+        "title": "TRAVEL & EXPENSE ASSOCIATE",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "AR SPECIALIST",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "QE Lead-Playwright",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Hardware Test Execution",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Process Engineer (ME_PE)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Workday Technical Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Workday Functional Consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Hardware Test Technician",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Data & Reporting Analyst",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Copilot Studio Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI & Kubernetes Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Market Development Leader - Europe & APMEA",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Datastage Lead Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "M365 Senior Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Forward Deployed Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "SERVICE DESK ANALYST L1 1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Design Verification Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Fusion Finance Functional",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "CHANGE AND RELEASE COORDINATOR L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "CAPACITY AND AVAILABILITY LEAD L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "DELIVERY TRANSITION HEAD L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "ACCOUNT QUALITY MANAGER L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "INFRASTRUCTURE AND PLATFORM ARCHITECT L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "WFM - Assistant Manager",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Microsoft Exchange Server Admin_L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Azure SECURITY ARCHITECT L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Java Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "TEST ARCHITECT L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Gitlab Engineer (CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Business Intelligence Analyst",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "BI Dashboard and Analytics Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sample Manager - LIMS",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "FEBA - Support consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sr Underwriter-5",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Icertis - Functional Consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Legal Counsel",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Splunk Observability Engineer with Immediate joining",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Check Point Firewall",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "ServiceNow Tech Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Analyst, Real Estate Finance Data Management, Analytics & AI",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Country/ Sector Sales Head L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sr Group Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Fullstack Java Technical Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "SCRUM MASTER L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Infrastructure Security Consulting",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Associate Product Manager - AI-Powered Enterprise Document Management & Content Int",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Mern Stack Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Assistant Manager - Quality - Quality Management L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Field Service Engineer - AV Technician (all genders)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "COBOL Mainframe Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Lead Analyst - Real Estate Finance Data Management & Analytics",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Analyst - Real Estate Finance Data Management & Analytics",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Analyst - Real Estate Finance Data Management & Analytics",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Team Manager - Real Estate Finance Data Management & Analytics",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Associate Product Manager - AI-Powered Wealth & Investment Management Platform",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Lead Administrator - Nutanix",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Performance Test Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Lead Analyst, Real Estate Finance Data Management, Analytics & AI",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Workforce Software Consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior SAP Presales / SAP Solutioning Architect",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Fullstack Technical Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "TEST LEAD L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "SENIOR PARTNER - Sales and Marketing",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Wipro"
+    },
+    {
+        "title": "Analyst - India Payroll, Finance",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://job-boards.greenhouse.io/arcesiumllc/jobs/5259908007",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Arcesium"
+    },
+    {
+        "title": "Lead Software Engineer - Java Spring Boot, Kafka and Event-Driven Architecture",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480657112",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Software Engineer I - Java Full Stack React/Angular",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480658068",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Software Engineer II | Data & AI Platform",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480658070",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Analyst, Analytics & Metrics",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480681411",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Lead Software Integration Engineer(Quality Engineer)",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480638875",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Vice President, Full-Stack Engineer",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/82052",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "BNY"
+    },
+    {
+        "title": "Specialist, Data Management & Quantitative Analysis",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/83015",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "BNY"
+    },
+    {
+        "title": "Senior Specialist, Full-Stack Engineer",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/83291",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "BNY"
+    },
+    {
+        "title": "Analyst-Compliance",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26013840",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "American Express"
+    },
+    {
+        "title": "Financial Systems Analyst II",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26015430",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "American Express"
+    },
+    {
+        "title": "Operations Support",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26015492",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "American Express"
+    },
+    {
+        "title": "Director, Software Engineering",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Director--Software-Engineering_REF089512W-1",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Visa"
+    },
+    {
+        "title": "Sr. Data Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Sr-Data-Engineer_REF089134W-1",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Visa"
+    },
+    {
+        "title": "L&D Communications & Engagement Lead",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://fractal.wd1.myworkdayjobs.com/job/Gurgaon/L-D-Communications---Engagement-Lead_SR-45960",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Fractal Analytics"
+    },
+    {
+        "title": "Cyber Security Specialist",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482887547",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ABB"
+    },
+    {
+        "title": "Data Science & AI Specialist - Industrial Analytics",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482758257",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ABB"
+    },
+    {
+        "title": "Shift Leader- Production",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482493564",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ABB"
+    },
+    {
+        "title": "Service Business Process Lead",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480500448",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ABB"
+    },
+    {
+        "title": "Technology and Engineering | Full-timeSenior Associate Data Science/Machine Learning - Chicago - HybridChicago, Illinois, United States",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.publicissapient.com/job-details/2026-173044-senior-associate-data-science-machine-learning---chicago---hybrid-chicago?trid=fabf8f5c-18fc-43ce-ba06-84dac34b9203",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Publicis Sapient"
+    },
+    {
+        "title": "Strategy and Consulting | Full-timeData Strategy, Senior ConsultantNew York, United States",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.publicissapient.com/job-details/2026-173069-data-strategy--senior-consultant-new-york?trid=fabf8f5c-18fc-43ce-ba06-84dac34b9203",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Publicis Sapient"
+    },
+    {
+        "title": "Product and Agile Management | Full-timeSenior Endur Business Analyst (Gas)Houston, Texas, United States",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.publicissapient.com/job-details/2026-173357-senior-endur-business-analyst--gas--houston?trid=fabf8f5c-18fc-43ce-ba06-84dac34b9203",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Publicis Sapient"
+    },
+    {
+        "title": "Manager - AI Engineering",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4480675120",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ZS Associates"
+    },
+    {
+        "title": "FLM (Production shift supervisor)",
+        "location": "Haryana",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4481697155",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Continental"
+    },
+    {
+        "title": "Senior AI Data Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41657",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Senior Test Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41533",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Senior SW Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41537",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Test Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41536",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Senior SW Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41570",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Senior Test Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41553",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "Senior SW Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41565",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Nokia"
+    },
+    {
+        "title": "CBS CSU Associate AI Engineer",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482866225",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Grundfos"
+    },
+    {
+        "title": "Project Manager",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4481661595",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Brillio"
+    },
+    {
+        "title": "Product Support Analyst I",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://sabre.wd1.myworkdayjobs.com/job/Bengaluru-Karnataka-India/Product-Support-Analyst-I_JR108876",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Sabre"
+    },
+    {
+        "title": "Software Development Engineer - Tejas",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.sarvam.ai/careers/jobs/db89b576-2456-4cc4-ab0b-c45f8c6c27f0",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Sarvam AI"
+    },
+    {
+        "title": "Marketing internship (brand & communication)",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.sarvam.ai/careers/jobs/bba82f34-1544-421e-a393-3edd8a5f4cb2",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Sarvam AI"
+    },
+    {
+        "title": "Senior GL Accountant",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482856964",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Cohesity"
+    },
+    {
+        "title": "Senior Field Technical Director",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482878022",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Cohesity"
+    },
+    {
+        "title": "Lead - SEO",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Lead---SEO_JR103746",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "BrowserStack"
+    },
+    {
+        "title": "Lead - Strategy",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Lead---Strategy_JR103749",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "BrowserStack"
+    },
+    {
+        "title": "Data Center Facility Operations Lead - Commissioning & Delivery",
+        "location": "Remote",
+        "posted": "",
+        "apply_url": "https://job-boards.greenhouse.io/anthropic/jobs/5462718008",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Anthropic"
+    },
+    {
+        "title": "Software Development Engineer II, EU INTech Delivery Speed Tech",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "/en/jobs/10585989/software-development-engineer-ii-eu-intech-delivery-speed-tech",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "Amazon AI"
+    },
+    {
+        "title": "Software Engineer, AVP(Identity and Access management)",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482897432",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Software Engineer, AVP(Identity and Access management)",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482894730",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Devops Engineer REM, Associate Vice President",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483164202",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Devops Engineer REM, Associate Vice President",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483167001",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Devops Engineer REM, Associate Vice President",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483153533",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Software Engineer - App Connect Enterprise",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483148587",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Quality Automation Engineer, API Testing, AVP",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483152523",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Software Engineer - App Connect Enterprise",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483146719",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Software Engineer - App Connect Enterprise",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483166122",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Site Reliability Engineer, AVP",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482851315",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Site Reliability Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482850443",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Principal Engineer, Java And Spring Boot, VP",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483146720",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Business Capability Manager, Director",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483164203",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Business Capability Manager, Director",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4483165157",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Site Reliability Engineer, AVP",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482857183",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Digital Analyst, VP",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482889971",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Software Engineer, .NET",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482767712",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Lead Engineer, VP",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4482766737",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Senior PLM Teamcenter Consultant",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4481664274",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ITC Infotech"
+    },
+    {
+        "title": "SAP Project Manager",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4481667007",
+        "total_jobs": 0,
+        "fetched_at": "2026-10-24",
+        "company": "ITC Infotech"
     }
 ]
