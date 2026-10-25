@@ -1,5 +1,5 @@
 {
-  "total_jobs": 911185,
+  "total_jobs": 911216,
   "sources": {
     "naukri": 319819,
     "linkedin": 225876,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 27,
-    "telegram_post": 24
+    "telegram_message": 43,
+    "telegram_post": 39
   },
   "locations": {
-    "bangalore": 196188,
-    "mumbai": 121634,
-    "delhi": 98330,
-    "chennai": 96350,
-    "hyderabad": 86681,
+    "bangalore": 196198,
+    "mumbai": 121635,
+    "delhi": 98332,
+    "chennai": 96352,
+    "hyderabad": 86682,
     "pune": 71528,
     "noida": 44979,
     "ahmedabad": 36217,
     "kolkata": 30709,
-    "all_india": 22183,
+    "all_india": 22195,
     "coimbatore": 17846,
     "kochi": 13899,
-    "remote": 8403,
+    "remote": 8404,
     "jaipur": 6963,
     "maharashtra": 6205,
     "indore": 4967,
@@ -302,7 +302,7 @@
     "hisar": 1,
     "panaji": 7,
     "mira_bhayandar": 1,
-    "work_from_home": 4,
+    "work_from_home": 5,
     "punjab": 2,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -474,7 +474,7 @@
     "pan_india_online": 1,
     "rewari": 2,
     "indiana_michigan_city_catalyst_plant": 3,
-    "as_per_company": 2,
+    "as_per_company": 3,
     "kirloskarvadi": 1,
     "hybrid_raipur": 1,
     "rudrapur": 1,
@@ -533,5 +533,5 @@
     "barasat": 1,
     "knowledge_park_iii": 1
   },
-  "generated_at": "2026-10-25T12:08:46.883471"
+  "generated_at": "2026-10-25T16:49:57.486706"
 }
