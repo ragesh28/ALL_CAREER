@@ -1,5 +1,5 @@
 {
-  "total_jobs": 909926,
+  "total_jobs": 909938,
   "sources": {
     "naukri": 319819,
     "linkedin": 225876,
@@ -40,20 +40,20 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 22,
-    "telegram_post": 17
+    "telegram_message": 27,
+    "telegram_post": 24
   },
   "locations": {
-    "bangalore": 195918,
-    "mumbai": 121498,
+    "bangalore": 195921,
+    "mumbai": 121499,
     "delhi": 98192,
-    "chennai": 96142,
+    "chennai": 96143,
     "hyderabad": 86594,
-    "pune": 71366,
-    "noida": 44903,
+    "pune": 71367,
+    "noida": 44904,
     "ahmedabad": 36185,
     "kolkata": 30651,
-    "all_india": 22179,
+    "all_india": 22183,
     "coimbatore": 17806,
     "kochi": 13899,
     "remote": 8403,
@@ -222,7 +222,7 @@
     "mahindra_world_city": 1,
     "kothur_formulation_division": 1,
     "vapi": 2,
-    "eu": 2,
+    "eu": 3,
     "across_india": 4,
     "trichy": 17,
     "perundurai": 1,
@@ -533,5 +533,5 @@
     "barasat": 1,
     "knowledge_park_iii": 1
   },
-  "generated_at": "2026-10-25T11:12:33.180221"
+  "generated_at": "2026-10-25T11:56:26.584643"
 }

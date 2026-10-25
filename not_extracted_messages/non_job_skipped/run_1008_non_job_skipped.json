@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "1008",
+  "workflow_run_id": "40190341996",
+  "timestamp": "2026-10-25T11:56:16.703445",
+  "runtime_minutes": 5.25,
+  "messages_processed": 31,
+  "new_jobs_stored": 12,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8397,
+      "text": "How does LLM Hallucination work 👏 \nhow to handle it 📍 \n\nfully funny and interesting video\n\nhttps://www.instagram.com/reel/De6Ues6zgAd/?obrf=MWdpcHgxdHEyM2hoag==\n\ncheck kroo aur comment Krna guyz!",
+      "timestamp": "2026-10-25T09:21:20+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16567,
+      "text": "Join our 100k+ member Web3 & AI community: https://t.me/addlist/TenwZIw-RTQ4Yjk1",
+      "timestamp": "2026-10-25T11:05:36+00:00"
+    }
+  ]
+}
