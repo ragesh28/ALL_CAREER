@@ -1,5 +1,5 @@
 {
-  "total_jobs": 912677,
+  "total_jobs": 912682,
   "sources": {
     "naukri": 319819,
     "linkedin": 225876,
@@ -40,7 +40,7 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 43,
+    "telegram_message": 48,
     "telegram_post": 39
   },
   "locations": {
@@ -53,7 +53,7 @@
     "noida": 45088,
     "ahmedabad": 36252,
     "kolkata": 30770,
-    "all_india": 22195,
+    "all_india": 22197,
     "coimbatore": 17898,
     "kochi": 13899,
     "remote": 8404,
@@ -222,7 +222,7 @@
     "mahindra_world_city": 1,
     "kothur_formulation_division": 1,
     "vapi": 2,
-    "eu": 3,
+    "eu": 4,
     "across_india": 4,
     "trichy": 17,
     "perundurai": 1,
@@ -409,7 +409,7 @@
     "south_africa": 2,
     "bhagalpurbarari": 1,
     "dehradunjolly_grant": 1,
-    "new_york": 2,
+    "new_york": 3,
     "sanglivishrambag": 1,
     "tirupati": 1,
     "bawal": 1,
@@ -532,7 +532,8 @@
     "sonipatkundli": 1,
     "barasat": 1,
     "knowledge_park_iii": 1,
-    "okhla": 1
+    "okhla": 1,
+    "emea": 1
   },
-  "generated_at": "2026-10-25T17:08:00.016364"
+  "generated_at": "2026-10-25T19:48:12.345435"
 }
