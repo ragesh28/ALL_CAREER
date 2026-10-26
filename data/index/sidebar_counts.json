@@ -1,5 +1,5 @@
 {
-  "total_jobs": 918462,
+  "total_jobs": 918494,
   "sources": {
     "naukri": 322026,
     "linkedin": 225881,
@@ -40,26 +40,26 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 59,
-    "telegram_post": 46
+    "telegram_message": 82,
+    "telegram_post": 55
   },
   "locations": {
-    "bangalore": 197572,
+    "bangalore": 197578,
     "mumbai": 122861,
-    "delhi": 99021,
-    "chennai": 97673,
+    "delhi": 99022,
+    "chennai": 97676,
     "hyderabad": 87566,
-    "pune": 71975,
+    "pune": 71976,
     "noida": 45332,
     "ahmedabad": 36358,
-    "kolkata": 30898,
-    "all_india": 22207,
-    "coimbatore": 18028,
+    "kolkata": 30899,
+    "all_india": 22222,
+    "coimbatore": 18029,
     "kochi": 13921,
-    "remote": 8453,
+    "remote": 8455,
     "jaipur": 7093,
     "maharashtra": 6218,
-    "indore": 5007,
+    "indore": 5008,
     "chandigarh": 4914,
     "kerala": 2935,
     "rajasthan": 1921,
@@ -139,7 +139,7 @@
     "pollachi": 64,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 22,
+    "pan_india": 23,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -557,5 +557,5 @@
     "jadcherla": 1,
     "nagari": 3
   },
-  "generated_at": "2026-10-26T12:16:36.676600"
+  "generated_at": "2026-10-26T14:35:26.585518"
 }
