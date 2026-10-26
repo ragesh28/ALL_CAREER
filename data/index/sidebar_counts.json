@@ -1,5 +1,5 @@
 {
-  "total_jobs": 914569,
+  "total_jobs": 914570,
   "sources": {
     "naukri": 319819,
     "linkedin": 225876,
@@ -40,7 +40,7 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 48,
+    "telegram_message": 49,
     "telegram_post": 39
   },
   "locations": {
@@ -49,7 +49,7 @@
     "delhi": 98517,
     "chennai": 97027,
     "hyderabad": 87282,
-    "pune": 71704,
+    "pune": 71705,
     "noida": 45088,
     "ahmedabad": 36252,
     "kolkata": 30770,
@@ -535,5 +535,5 @@
     "okhla": 1,
     "emea": 1
   },
-  "generated_at": "2026-10-25T23:34:37.188960"
+  "generated_at": "2026-10-26T01:21:04.994113"
 }
