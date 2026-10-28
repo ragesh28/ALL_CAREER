@@ -1,5 +1,5 @@
 {
-  "total_jobs": 926310,
+  "total_jobs": 926340,
   "sources": {
     "naukri": 324146,
     "linkedin": 226788,
@@ -40,20 +40,20 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 129,
-    "telegram_post": 92
+    "telegram_message": 144,
+    "telegram_post": 107
   },
   "locations": {
-    "bangalore": 199443,
-    "mumbai": 123842,
-    "delhi": 99965,
-    "chennai": 98457,
-    "hyderabad": 88238,
+    "bangalore": 199453,
+    "mumbai": 123843,
+    "delhi": 99966,
+    "chennai": 98459,
+    "hyderabad": 88240,
     "pune": 72634,
     "noida": 45629,
     "ahmedabad": 36666,
     "kolkata": 31128,
-    "all_india": 22261,
+    "all_india": 22266,
     "coimbatore": 18169,
     "kochi": 14037,
     "remote": 8534,
@@ -61,7 +61,7 @@
     "maharashtra": 6244,
     "indore": 5050,
     "chandigarh": 4981,
-    "kerala": 2949,
+    "kerala": 2950,
     "rajasthan": 1923,
     "dl": 1934,
     "kl": 1467,
@@ -69,7 +69,7 @@
     "haryana": 962,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 3741,
+    "karnataka": 3742,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -146,7 +146,7 @@
     "shimoga": 2,
     "chikkamangalur": 1,
     "tumkur": 1,
-    "ballary": 1,
+    "ballary": 2,
     "belgaum": 1,
     "kallapur_sk": 1,
     "field": 2,
@@ -223,7 +223,7 @@
     "kothur_formulation_division": 1,
     "vapi": 2,
     "eu": 4,
-    "across_india": 6,
+    "across_india": 7,
     "trichy": 18,
     "perundurai": 1,
     "jhajjar": 2,
@@ -290,7 +290,7 @@
     "khb_colony": 1,
     "mangalore": 46,
     "moodbidri": 1,
-    "belagavi": 8,
+    "belagavi": 9,
     "gokak": 2,
     "kanagal_plant": 1,
     "canada": 3,
@@ -563,7 +563,10 @@
     "allahabad": 1,
     "bhiwandi": 39,
     "apac_mena": 1,
-    "lalru": 1
+    "lalru": 1,
+    "panjim": 1,
+    "hospet": 1,
+    "foundry_division": 2
   },
-  "generated_at": "2026-10-28T00:46:41.261353"
+  "generated_at": "2026-10-28T06:14:18.788441"
 }
