@@ -1,5 +1,5 @@
 {
-  "total_jobs": 926209,
+  "total_jobs": 926310,
   "sources": {
     "naukri": 324146,
     "linkedin": 226788,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 3632,
+    "other": 3733,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,16 +44,16 @@
     "telegram_post": 92
   },
   "locations": {
-    "bangalore": 199391,
-    "mumbai": 123829,
-    "delhi": 99960,
-    "chennai": 98454,
-    "hyderabad": 88223,
-    "pune": 72627,
-    "noida": 45627,
+    "bangalore": 199443,
+    "mumbai": 123842,
+    "delhi": 99965,
+    "chennai": 98457,
+    "hyderabad": 88238,
+    "pune": 72634,
+    "noida": 45629,
     "ahmedabad": 36666,
     "kolkata": 31128,
-    "all_india": 22260,
+    "all_india": 22261,
     "coimbatore": 18169,
     "kochi": 14037,
     "remote": 8534,
@@ -78,14 +78,14 @@
     "message_bangalore": 659,
     "nanakramguda": 557,
     "tamil_nadu": 2455,
-    "telangana": 2495,
+    "telangana": 2496,
     "ka": 505,
     "post_bangalore": 357,
     "panchkula": 383,
     "bhopal": 401,
     "mh": 406,
     "vadodara": 362,
-    "gujarat": 846,
+    "gujarat": 847,
     "gandhinagar": 247,
     "post_all_india": 173,
     "tn": 236,
@@ -303,7 +303,7 @@
     "panaji": 7,
     "mira_bhayandar": 1,
     "work_from_home": 6,
-    "punjab": 2,
+    "punjab": 3,
     "ahemdabad": 1,
     "ambernath": 1,
     "chenani": 1,
@@ -565,5 +565,5 @@
     "apac_mena": 1,
     "lalru": 1
   },
-  "generated_at": "2026-10-27T23:56:44.103572"
+  "generated_at": "2026-10-28T00:46:41.261353"
 }
