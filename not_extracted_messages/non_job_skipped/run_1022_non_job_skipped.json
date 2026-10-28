@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "1022",
+  "workflow_run_id": "40693703456",
+  "timestamp": "2026-10-28T13:31:45.516155",
+  "runtime_minutes": 18.82,
+  "messages_processed": 87,
+  "new_jobs_stored": 71,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43941,
+      "text": "🚨** TOMORROW | LEARN FROM A MICROSOFT EXPERT!** 🤖💻\n\nAI is changing how software gets built. Discover the tools and workflows helping developers work smarter and build faster.\n\n🔥 What you'll discover:\n\n✅ New AI tools for developers\n✅ AI-assisted coding & smarter workflows\n✅ How software engineering is evolving\n\n📅 29th October | 7:30 PM – 10 PM\n\n🎯 Join this FREE Masterclass!\n\n👉 **Register Here:** https://tinyurl.com/33brbae2",
+      "timestamp": "2026-10-28T13:15:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 260937,
+      "text": "https://lnkd.in/p/gXwQcTX3",
+      "timestamp": "2026-10-28T12:16:32+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16579,
+      "text": "1,500+ have visited our Devcon/IBW side event list so far: hashtagweb3.com/devcon\n\nDM to get your event listed or to book a featured listing: https://x.com/hashtag_web3/status/2115424067218219057\nDEV\nCON\nVIlI\nINDIA\nPPOPEr",
+      "timestamp": "2026-10-28T12:46:57+00:00"
+    }
+  ]
+}
