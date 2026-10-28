@@ -1,5 +1,5 @@
 {
-  "total_jobs": 943055,
+  "total_jobs": 943060,
   "sources": {
     "naukri": 332252,
     "linkedin": 229880,
@@ -40,7 +40,7 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 188,
+    "telegram_message": 193,
     "telegram_post": 134
   },
   "locations": {
@@ -53,7 +53,7 @@
     "noida": 46605,
     "ahmedabad": 37399,
     "kolkata": 31774,
-    "all_india": 22279,
+    "all_india": 22284,
     "coimbatore": 18531,
     "kochi": 14350,
     "remote": 8728,
@@ -577,5 +577,5 @@
     "puducherry": 1,
     "theni": 1
   },
-  "generated_at": "2026-10-28T17:15:12.497634"
+  "generated_at": "2026-10-28T23:24:31.669705"
 }
