@@ -1,5 +1,5 @@
 {
-  "total_jobs": 943060,
+  "total_jobs": 943164,
   "sources": {
     "naukri": 332252,
     "linkedin": 229880,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 3733,
+    "other": 3837,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,12 +44,12 @@
     "telegram_post": 134
   },
   "locations": {
-    "bangalore": 202797,
-    "mumbai": 126028,
-    "delhi": 101880,
-    "chennai": 100425,
-    "hyderabad": 89584,
-    "pune": 74453,
+    "bangalore": 202849,
+    "mumbai": 126038,
+    "delhi": 101888,
+    "chennai": 100430,
+    "hyderabad": 89606,
+    "pune": 74457,
     "noida": 46605,
     "ahmedabad": 37399,
     "kolkata": 31774,
@@ -69,7 +69,7 @@
     "haryana": 1086,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 4201,
+    "karnataka": 4202,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -151,7 +151,7 @@
     "kallapur_sk": 1,
     "field": 2,
     "sweden": 1,
-    "andhra_pradesh": 27,
+    "andhra_pradesh": 28,
     "tirupur": 18,
     "nashik": 18,
     "mysore": 31,
@@ -575,7 +575,8 @@
     "palghar": 4,
     "nagar": 1,
     "puducherry": 1,
-    "theni": 1
+    "theni": 1,
+    "lindale": 1
   },
-  "generated_at": "2026-10-28T23:24:31.669705"
+  "generated_at": "2026-10-29T01:17:50.020505"
 }
