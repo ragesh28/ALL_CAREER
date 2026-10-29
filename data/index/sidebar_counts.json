@@ -1,5 +1,5 @@
 {
-  "total_jobs": 955716,
+  "total_jobs": 955750,
   "sources": {
     "naukri": 336269,
     "linkedin": 235185,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 194,
-    "telegram_post": 138
+    "telegram_message": 212,
+    "telegram_post": 154
   },
   "locations": {
-    "bangalore": 205424,
+    "bangalore": 205434,
     "mumbai": 127368,
     "delhi": 103124,
     "chennai": 101886,
-    "hyderabad": 90845,
-    "pune": 75622,
-    "noida": 47244,
+    "hyderabad": 90849,
+    "pune": 75625,
+    "noida": 47245,
     "ahmedabad": 37752,
     "kolkata": 32304,
-    "all_india": 22285,
+    "all_india": 22293,
     "coimbatore": 18900,
     "kochi": 14685,
-    "remote": 8922,
+    "remote": 8924,
     "jaipur": 7563,
     "maharashtra": 6504,
     "indore": 5113,
@@ -302,7 +302,7 @@
     "hisar": 1,
     "panaji": 8,
     "mira_bhayandar": 1,
-    "work_from_home": 7,
+    "work_from_home": 8,
     "punjab": 3,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -454,7 +454,7 @@
     "gwalior": 3,
     "jamshedpur": 1,
     "sunguvarchatram": 1,
-    "online": 4,
+    "online": 7,
     "indrakaran": 1,
     "ambala_cantt": 6,
     "virar": 4,
@@ -582,7 +582,9 @@
     "jalpaiguri": 1,
     "mauritius": 1,
     "pantnagar": 1,
-    "silvassa": 1
+    "silvassa": 1,
+    "colombia": 1,
+    "us_ca": 1
   },
-  "generated_at": "2026-10-29T13:21:29.398338"
+  "generated_at": "2026-10-29T13:34:29.541279"
 }

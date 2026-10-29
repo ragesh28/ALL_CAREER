@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "1026",
+  "workflow_run_id": "40880135121",
+  "timestamp": "2026-10-29T13:34:05.788714",
+  "runtime_minutes": 14.34,
+  "messages_processed": 54,
+  "new_jobs_stored": 34,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 4,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 43959,
+      "text": "🚨** TODAY Don't Miss | LEARN FROM A MICROSOFT EXPERT!** 🤖💻\n\nAI is changing how software gets built. Discover the tools and workflows helping developers work smarter and build faster.\n\n🔥 What you'll discover:\n\n✅ New AI tools for developers\n✅ AI-assisted coding & smarter workflows\n✅ How software engineering is evolving\n\n📅 29th October | 7:30 PM – 10 PM\n\n🎯 Join this FREE Masterclass!\n\n👉 **Register Here:** https://tinyurl.com/33brbae2",
+      "timestamp": "2026-10-29T09:20:22+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8407,
+      "text": "🚀 Reduce LLM Token Costs! Check out my new reel 👇\n\nhttps://www.instagram.com/reel/DfEnl4ATSkk/",
+      "timestamp": "2026-10-29T10:55:51+00:00"
+    }
+  ]
+}
