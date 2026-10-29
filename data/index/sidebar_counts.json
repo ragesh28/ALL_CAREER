@@ -1,5 +1,5 @@
 {
-  "total_jobs": 943164,
+  "total_jobs": 943169,
   "sources": {
     "naukri": 332252,
     "linkedin": 229880,
@@ -40,15 +40,15 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 193,
-    "telegram_post": 134
+    "telegram_message": 194,
+    "telegram_post": 138
   },
   "locations": {
-    "bangalore": 202849,
+    "bangalore": 202851,
     "mumbai": 126038,
     "delhi": 101888,
-    "chennai": 100430,
-    "hyderabad": 89606,
+    "chennai": 100431,
+    "hyderabad": 89607,
     "pune": 74457,
     "noida": 46605,
     "ahmedabad": 37399,
@@ -61,7 +61,7 @@
     "maharashtra": 6327,
     "indore": 5086,
     "chandigarh": 5048,
-    "kerala": 3014,
+    "kerala": 3015,
     "rajasthan": 1933,
     "dl": 2089,
     "kl": 1467,
@@ -578,5 +578,5 @@
     "theni": 1,
     "lindale": 1
   },
-  "generated_at": "2026-10-29T01:17:50.020505"
+  "generated_at": "2026-10-29T06:25:55.303249"
 }
