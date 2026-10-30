@@ -1,5 +1,5 @@
 {
-  "total_jobs": 958620,
+  "total_jobs": 958653,
   "sources": {
     "naukri": 337526,
     "linkedin": 235185,
@@ -40,20 +40,20 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 217,
-    "telegram_post": 154
+    "telegram_message": 233,
+    "telegram_post": 171
   },
   "locations": {
-    "bangalore": 206009,
+    "bangalore": 206026,
     "mumbai": 127955,
-    "delhi": 103297,
-    "chennai": 102414,
+    "delhi": 103299,
+    "chennai": 102418,
     "hyderabad": 91312,
-    "pune": 75777,
+    "pune": 75778,
     "noida": 47334,
     "ahmedabad": 37870,
     "kolkata": 32378,
-    "all_india": 22291,
+    "all_india": 22297,
     "coimbatore": 18951,
     "kochi": 14739,
     "remote": 8936,
@@ -69,7 +69,7 @@
     "haryana": 1160,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 4587,
+    "karnataka": 4588,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -223,7 +223,7 @@
     "kothur_formulation_division": 1,
     "vapi": 2,
     "eu": 4,
-    "across_india": 7,
+    "across_india": 8,
     "trichy": 19,
     "perundurai": 1,
     "jhajjar": 2,
@@ -587,7 +587,8 @@
     "us_ca": 1,
     "mahadevapura": 1,
     "mangalagiri": 1,
-    "uk": 1
+    "uk": 1,
+    "moodbidre": 1
   },
-  "generated_at": "2026-10-30T01:23:29.464940"
+  "generated_at": "2026-10-30T06:21:24.734387"
 }
