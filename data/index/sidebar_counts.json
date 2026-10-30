@@ -1,5 +1,5 @@
 {
-  "total_jobs": 972180,
+  "total_jobs": 972185,
   "sources": {
     "naukri": 342854,
     "linkedin": 240751,
@@ -40,7 +40,7 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 257,
+    "telegram_message": 262,
     "telegram_post": 184
   },
   "locations": {
@@ -53,7 +53,7 @@
     "noida": 48064,
     "ahmedabad": 38354,
     "kolkata": 32990,
-    "all_india": 22311,
+    "all_india": 22315,
     "coimbatore": 19385,
     "kochi": 15177,
     "remote": 9127,
@@ -604,7 +604,8 @@
     "rajaji_nagar": 1,
     "gonda": 1,
     "rangareddy": 1,
-    "ludhianapakhowal_road": 2
+    "ludhianapakhowal_road": 2,
+    "hong_kong": 1
   },
-  "generated_at": "2026-10-30T16:47:44.777072"
+  "generated_at": "2026-10-30T23:08:35.678927"
 }
