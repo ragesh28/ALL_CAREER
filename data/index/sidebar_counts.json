@@ -1,5 +1,5 @@
 {
-  "total_jobs": 972280,
+  "total_jobs": 972292,
   "sources": {
     "naukri": 342854,
     "linkedin": 240751,
@@ -41,22 +41,22 @@
     "citi": 3,
     "jobs": 3,
     "telegram_message": 262,
-    "telegram_post": 184
+    "telegram_post": 196
   },
   "locations": {
-    "bangalore": 208596,
+    "bangalore": 208598,
     "mumbai": 129555,
     "delhi": 104681,
     "chennai": 103837,
     "hyderabad": 92504,
-    "pune": 77215,
+    "pune": 77216,
     "noida": 48064,
     "ahmedabad": 38354,
     "kolkata": 32992,
-    "all_india": 22315,
+    "all_india": 22316,
     "coimbatore": 19385,
     "kochi": 15177,
-    "remote": 9127,
+    "remote": 9128,
     "jaipur": 7580,
     "maharashtra": 6758,
     "indore": 5135,
@@ -69,7 +69,7 @@
     "haryana": 1236,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 4949,
+    "karnataka": 4952,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -288,7 +288,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 1,
-    "mangalore": 56,
+    "mangalore": 57,
     "moodbidri": 1,
     "belagavi": 9,
     "gokak": 2,
@@ -577,7 +577,7 @@
     "puducherry": 1,
     "theni": 1,
     "lindale": 1,
-    "udupi": 1,
+    "udupi": 2,
     "bilimora": 3,
     "jalpaiguri": 1,
     "mauritius": 1,
@@ -606,7 +606,9 @@
     "rangareddy": 1,
     "ludhianapakhowal_road": 2,
     "hong_kong": 1,
-    "new_windsor": 1
+    "new_windsor": 1,
+    "koteshwara": 1,
+    "venur": 1
   },
-  "generated_at": "2026-10-31T01:05:46.876114"
+  "generated_at": "2026-10-31T02:44:27.433700"
 }
