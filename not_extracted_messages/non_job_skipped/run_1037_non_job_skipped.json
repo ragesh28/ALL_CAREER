@@ -1,0 +1,26 @@
+{
+  "workflow_run_number": "1037",
+  "workflow_run_id": "41252544160",
+  "timestamp": "2026-10-31T23:33:25.828607",
+  "runtime_minutes": 1.43,
+  "messages_processed": 2,
+  "new_jobs_stored": 0,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16596,
+      "text": "If you haven't read the Bitcoin whitepaper yet, here is a brief explainer on how 9 pages of math solved money without banks: https://x.com/vedangvatsa/status/2116627074735640913\nBitcoin: A Peer-to-Peer Electronic Cash System\nSatoshi Nakamoto\nsatoshin@gmx.com\nwww.bitcoin.org\nAbstract. A purely peer-to-peer version of electronic cash would allow online\npayments to be sent directly from one party to another without going through a\nfinancial institution. Digital signatures provide part of the solution, but the main\nbenefits are lost if a trusted third party is still required to prevent double-spending.\nWe propose a solution to the double-spending problem using a peer-to-peer network.\nThe network timestamps transactions by hashing them into an ongoing chain of\nhash-based proof-of-work, forming a record that cannot be changed without redoing\nthe proof-of-work. The longest chain not only serves as proof of the sequence of\nevents witnessed, but proof that it came from the largest pool of CPU power. As\nlong as a majority of CPU power is controlled by nodes that are not cooperating to\nattack the network, they'll generate the longest chain and outpace attackers. The\nnetwork itself requires minimal structure. Messages are broadcast on a best effort\nbasis, and nodes can leave and rejoin the network at will, accepting the longest\nproof-of-work chain as proof of what happened while they were gone.",
+      "timestamp": "2026-10-31T20:28:20+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Fresherjobsadda",
+      "msg_id": 4998,
+      "text": "🚀 URLTrims – One Link, Unlimited Possibilities! 🔥\n━━━━━━━━━━━━━━━━━━\n💡 एक बार Link लगाओ, बार-बार बदलने की झंझट भूल जाओ!\n🌐 Smart Link Management & Traffic Splitting Tool\n━━━━━━━━━━━━━━━━━━\n🔥 URLTrims क्यों इस्तेमाल करें?\n🔗 ONE LINK, FULL CONTROL\nएक बार Link कहीं भी Share करें। बाद में बिना पुराने Link को बदले उसकी Destination बदलें।\n━━━━━━━━━━━━━━━━━━\n🔄 CHANGE LINKS ANYTIME\nAdmin Panel से कभी भी Destination URL बदलें। पुराना Link वही रहेगा!\n━━━━━━━━━━━━━━━━━━\n🚦 SMART TRAFFIC SPLITTING\nएक ही Link से Traffic को अलग-अलग Websites पर भेजें।\n🎯 50% Traffic ➜ Website A\n🎯 30% Traffic ➜ Website B\n🎯 20% Traffic ➜ Website C\n━━━━━━━━━━━━━━━━━━\n⚡ NO NEED TO UPDATE OLD LINKS\nLink 100 जगह लगा हो, फिर भी सिर्फ Admin Panel से बदलाव करें!\n━━━━━━━━━━━━━━━━━━\n💎 Your Link Stays Same.\n🔄 Your Destination Changes.\n👑 You Stay in Control!\n━━━━━━━━━━━━━━━━━━\n🚀 STOP REPLACING LINKS!\n🔥 START MANAGING SMARTLY!\n🌐 TRY NOW 👇\n[https://urltrims.com/](https://urltrims.com/)\nURLTrims\nOne Link,\nUnlimited Possibilities!\n歌 Link功，歌-丽\nG  SC  !\n50%\n….\nURLTrims\nAdmin Panel\nTraffic\nOne Link, Full Control\nWebsite A\nDashboard\nEdit Link\nLinkControl\nurltrims.com/abc123\nG\nLinks\nDestination (Change Anytime)\nChange Links Anytime\n30%\nTraffic Split\nhttps://your-new-link.com\nurltrims.com/abc123\nTraffic\nAdmin PanelDestination\nWebsite B\nStatistics\nTraffic Split\nURL\nWebsite A\n50%\nSettings\nWebsite B\n30%\nSmart Traffic Splitting\nWebsite C\n20%\n20%\nLinkTrafic-3\nTraffic\nUpdate\nWebsites  Pages\nWebsite C\nNo Need to Update Old Links\nLink Share\nYour Link Stays Same.\n    Mnage\nYour Destination Changes.\nPerfect for Digital Marketers\nYou Stay in Control!\nhttps://urltrims.com/\nAffiliate Marketers, Bloggers, Website Owners,\nAdvertisers  Social Media Creators f Ideal!",
+      "timestamp": "2026-10-31T23:30:49+00:00"
+    }
+  ]
+}
