@@ -1,5 +1,5 @@
 {
-  "total_jobs": 986461,
+  "total_jobs": 986487,
   "sources": {
     "naukri": 345984,
     "linkedin": 245884,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 282,
-    "telegram_post": 205
+    "telegram_message": 300,
+    "telegram_post": 213
   },
   "locations": {
-    "bangalore": 211495,
-    "mumbai": 131317,
+    "bangalore": 211499,
+    "mumbai": 131319,
     "delhi": 105935,
-    "chennai": 105075,
-    "hyderabad": 94019,
-    "pune": 78965,
+    "chennai": 105077,
+    "hyderabad": 94020,
+    "pune": 78966,
     "noida": 48783,
     "ahmedabad": 38907,
     "kolkata": 33722,
-    "all_india": 22330,
+    "all_india": 22343,
     "coimbatore": 19671,
     "kochi": 15416,
-    "remote": 9248,
+    "remote": 9249,
     "jaipur": 7652,
     "maharashtra": 6936,
     "indore": 5219,
@@ -139,7 +139,7 @@
     "pollachi": 64,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 29,
+    "pan_india": 30,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -218,7 +218,7 @@
     "haridwar": 6,
     "tikamgarh": 7,
     "kota": 6,
-    "udaipur": 19,
+    "udaipur": 20,
     "mahindra_world_city": 1,
     "kothur_formulation_division": 1,
     "vapi": 3,
@@ -616,5 +616,5 @@
     "hybrid_pan_india_ntt_data_location": 2,
     "uttara_kannada": 1
   },
-  "generated_at": "2026-10-31T14:25:07.373391"
+  "generated_at": "2026-10-31T16:00:36.340398"
 }

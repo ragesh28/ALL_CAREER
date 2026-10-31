@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "1035",
+  "workflow_run_id": "41216375459",
+  "timestamp": "2026-10-31T16:00:18.231489",
+  "runtime_minutes": 9.14,
+  "messages_processed": 41,
+  "new_jobs_stored": 26,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30926,
+      "text": "📢 FREE Certification Alert – Data Science & AI\n\nStart your journey in AI & Data Science 🚀\n(No prior coding required – we’ll teach from basics)\n\n📊 Learn from Scratch\n🤖 AI Tools + Automation\n📁 Build Real-World Projects\n🎓 Certification from Scaler\n\n⏳ Last Date: 5th November (Limited Seats)\n\nApply Now:  https://tinyurl.com/58h6auuj",
+      "timestamp": "2026-10-31T12:08:37+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16592,
+      "text": "Learn Web3, DeFi, smart contracts, and security through 66 structured, interactive lessons at hashtagweb3.com/learn/tg\nThe Web3 Playbook\nQ Search articles by title or keyword..\nAll\nCareer Guides\nGetting Started\nIndustry Insights\nTechnology Deep Dives",
+      "timestamp": "2026-10-31T10:44:42+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6425,
+      "text": "If you are thinking of learning Web Development, watch this how AI changes it?\n\nhttps://www.linkedin.com/posts/arshgoyal_i-turned-a-single-screenshot-into-a-fully-ugcPost-7522312423303749632-gLjd",
+      "timestamp": "2026-10-31T15:09:44+00:00"
+    }
+  ]
+}
