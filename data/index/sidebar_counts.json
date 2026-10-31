@@ -1,5 +1,5 @@
 {
-  "total_jobs": 972185,
+  "total_jobs": 972280,
   "sources": {
     "naukri": 342854,
     "linkedin": 240751,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 3935,
+    "other": 4030,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,15 +44,15 @@
     "telegram_post": 184
   },
   "locations": {
-    "bangalore": 208550,
-    "mumbai": 129548,
-    "delhi": 104674,
-    "chennai": 103830,
-    "hyderabad": 92483,
-    "pune": 77212,
+    "bangalore": 208596,
+    "mumbai": 129555,
+    "delhi": 104681,
+    "chennai": 103837,
+    "hyderabad": 92504,
+    "pune": 77215,
     "noida": 48064,
     "ahmedabad": 38354,
-    "kolkata": 32990,
+    "kolkata": 32992,
     "all_india": 22315,
     "coimbatore": 19385,
     "kochi": 15177,
@@ -346,7 +346,7 @@
     "dharuhera": 1,
     "athirappilly": 3,
     "bhatkal": 1,
-    "indianapolis": 2,
+    "indianapolis": 3,
     "kalburagi": 2,
     "haldwani": 1,
     "belgium": 2,
@@ -605,7 +605,8 @@
     "gonda": 1,
     "rangareddy": 1,
     "ludhianapakhowal_road": 2,
-    "hong_kong": 1
+    "hong_kong": 1,
+    "new_windsor": 1
   },
-  "generated_at": "2026-10-30T23:08:35.678927"
+  "generated_at": "2026-10-31T01:05:46.876114"
 }
