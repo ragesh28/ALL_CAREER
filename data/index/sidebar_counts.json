@@ -1,5 +1,5 @@
 {
-  "total_jobs": 975547,
+  "total_jobs": 975576,
   "sources": {
     "naukri": 344425,
     "linkedin": 240751,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 262,
-    "telegram_post": 196
+    "telegram_message": 282,
+    "telegram_post": 205
   },
   "locations": {
-    "bangalore": 209379,
+    "bangalore": 209384,
     "mumbai": 129998,
     "delhi": 104986,
     "chennai": 104135,
-    "hyderabad": 92833,
-    "pune": 77674,
-    "noida": 48234,
+    "hyderabad": 92835,
+    "pune": 77676,
+    "noida": 48235,
     "ahmedabad": 38479,
     "kolkata": 33131,
-    "all_india": 22316,
+    "all_india": 22329,
     "coimbatore": 19458,
     "kochi": 15224,
-    "remote": 9147,
+    "remote": 9150,
     "jaipur": 7601,
     "maharashtra": 6766,
     "indore": 5150,
@@ -139,7 +139,7 @@
     "pollachi": 64,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 28,
+    "pan_india": 29,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 2,
@@ -324,7 +324,7 @@
     "shantinagar": 3,
     "bherya": 1,
     "hsr_layout": 1,
-    "taiwan": 1,
+    "taiwan": 2,
     "pali": 1,
     "dhanbadbartand": 1,
     "thrissurthaikkattussery": 1,
@@ -608,7 +608,8 @@
     "hong_kong": 1,
     "new_windsor": 1,
     "koteshwara": 1,
-    "venur": 1
+    "venur": 1,
+    "us": 1
   },
-  "generated_at": "2026-10-31T07:34:44.580964"
+  "generated_at": "2026-10-31T09:59:19.392461"
 }

@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "1034",
+  "workflow_run_id": "41190018429",
+  "timestamp": "2026-10-31T09:59:03.145746",
+  "runtime_minutes": 8.14,
+  "messages_processed": 46,
+  "new_jobs_stored": 29,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44001,
+      "text": "**📢 FREE Certification Alert – Data Science & AI**\n\nStart your journey in AI & Data Science 🚀\n(No prior coding required – we’ll teach from basics)\n\n📊 Learn from Scratch\n🤖 AI Tools + Automation\n📁 Build Real-World Projects\n🎓 Certification from Scaler\n\n⏳ **Last Date**: 5th November (Limited Seats)\n\n**Apply Now: **https://tinyurl.com/56djsvbn",
+      "timestamp": "2026-10-31T06:30:00+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6423,
+      "text": "Vaani launched on Product hunt yesterday. \n\nThey held their #1 position for 23 hours, now they slipped to #2 to a company from China \n\nLet’s show them some love on Product Hunt, and bring it home \n\nhttps://www.producthunt.com/products/vaani-developer-platfrom",
+      "timestamp": "2026-10-31T06:41:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6424,
+      "text": "My friend at Amazon told me about the agent they built that made 99 correct decisions but still failed the actual task. One wrong call was enough.\n\nhttps://lnkd.in/p/dsd5cVF2",
+      "timestamp": "2026-10-31T07:06:20+00:00"
+    }
+  ]
+}
