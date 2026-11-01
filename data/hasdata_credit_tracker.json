@@ -144,6 +144,12 @@
       "credits_used": 100,
       "jobs_extracted": 437,
       "cities_processed": 20
+    },
+    {
+      "date": "2026-11-01",
+      "credits_used": 100,
+      "jobs_extracted": 424,
+      "cities_processed": 20
     }
   ],
   "cycle_history": [
@@ -153,9 +159,16 @@
       "end_date": "2026-10-14",
       "credits_used": 500,
       "total_pool": 4000
+    },
+    {
+      "month": "2026-10",
+      "start_date": "2026-10-14",
+      "end_date": "2026-11-01",
+      "credits_used": 1800,
+      "total_pool": 4000
     }
   ],
-  "cycle_month": "2026-10",
-  "cycle_start_date": "2026-10-14",
-  "cycle_used_credits": 1800
+  "cycle_month": "2026-11",
+  "cycle_start_date": "2026-11-01",
+  "cycle_used_credits": 100
 }
