@@ -1,5 +1,5 @@
 {
-  "total_jobs": 991091,
+  "total_jobs": 991119,
   "sources": {
     "naukri": 347953,
     "linkedin": 245884,
@@ -40,20 +40,20 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 304,
-    "telegram_post": 213
+    "telegram_message": 315,
+    "telegram_post": 230
   },
   "locations": {
-    "bangalore": 212698,
+    "bangalore": 212715,
     "mumbai": 132082,
     "delhi": 106247,
-    "chennai": 105802,
+    "chennai": 105805,
     "hyderabad": 94638,
-    "pune": 79312,
+    "pune": 79313,
     "noida": 48972,
     "ahmedabad": 39032,
     "kolkata": 33835,
-    "all_india": 22350,
+    "all_india": 22351,
     "coimbatore": 19707,
     "kochi": 15453,
     "remote": 9269,
@@ -69,7 +69,7 @@
     "haryana": 1284,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 5178,
+    "karnataka": 5179,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -154,7 +154,7 @@
     "andhra_pradesh": 35,
     "tirupur": 21,
     "nashik": 21,
-    "mysore": 34,
+    "mysore": 36,
     "karunagappally": 1,
     "palakkad": 7,
     "satara": 3,
@@ -223,7 +223,7 @@
     "kothur_formulation_division": 1,
     "vapi": 4,
     "eu": 4,
-    "across_india": 9,
+    "across_india": 10,
     "trichy": 23,
     "perundurai": 1,
     "jhajjar": 3,
@@ -623,7 +623,9 @@
     "lepakshi": 1,
     "jharsuguda": 1,
     "assandh": 1,
-    "durgapurdhandabag": 1
+    "durgapurdhandabag": 1,
+    "chintamani": 1,
+    "mulbagal": 1
   },
-  "generated_at": "2026-11-01T06:35:31.717236"
+  "generated_at": "2026-11-01T06:45:24.584994"
 }
