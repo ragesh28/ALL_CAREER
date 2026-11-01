@@ -7,7 +7,8 @@ import { bridgeService, BatchState } from '../../services/bridgeService';
 interface AllJobsTopNavProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
-  totalJobsCount: number;
+  totalJobsCount: number | null;
+  catalogLoading?: boolean;
   categoryCounts: Record<string, number>;
   onGoHub: () => void;
   onAutoApply: () => void;
@@ -19,6 +20,7 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
   searchTerm,
   onSearchChange,
   totalJobsCount,
+  catalogLoading = false,
   categoryCounts: _categoryCounts,
   onGoHub,
   onAutoApply,
@@ -135,9 +137,9 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
           <span style={{ color: '#fff', fontWeight: 700 }}>{batchState.history.length}</span>
         </button>
 
-        <div className="topnav-count-btn" aria-label={`${totalJobsCount.toLocaleString()} jobs shown`}>
-          <span>Showing</span>
-          <span className="count-num">{totalJobsCount.toLocaleString()}</span>
+        <div className="topnav-count-btn" aria-live="polite">
+          <span>Catalog</span>
+          <span className="count-num">{totalJobsCount === null ? (catalogLoading ? 'Loading…' : 'Unavailable') : totalJobsCount.toLocaleString()}</span>
           <span>jobs</span>
         </div>
       </div>

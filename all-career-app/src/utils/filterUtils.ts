@@ -58,7 +58,7 @@ export interface WalkinDateItem {
   dateObj: Date;
 }
 
-export function parseWalkinDateObjects(rawDateStr: string | undefined | null): WalkinDateItem[] {
+export function parseWalkinDateObjects(rawDateStr: string | undefined | null, referenceDate?: string): WalkinDateItem[] {
   const now = new Date();
   now.setHours(0, 0, 0, 0);
   const maxFuture = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days rolling window
@@ -74,6 +74,7 @@ export function parseWalkinDateObjects(rawDateStr: string | undefined | null): W
     if (m >= 0 && m <= 11 && d >= 1 && d <= 31) {
       const dObj = new Date(y, m, d);
       dObj.setHours(0, 0, 0, 0);
+      if (dObj.getFullYear() !== y || dObj.getMonth() !== m || dObj.getDate() !== d) return;
       if (dObj >= now && dObj <= maxFuture) {
         resultDates.push({
           label: `${MONTH_SHORT[m]} ${d}`,
@@ -99,12 +100,15 @@ export function parseWalkinDateObjects(rawDateStr: string | undefined | null): W
   }
 
   const low = text.toLowerCase();
-  if (low.includes('today')) {
-    addDate(now.getFullYear(), now.getMonth(), now.getDate());
-  }
-  if (low.includes('tomorrow')) {
-    const tom = new Date(now.getTime() + 86400000);
-    addDate(tom.getFullYear(), tom.getMonth(), tom.getDate());
+  const reference = referenceDate ? new Date(referenceDate) : null;
+  if (reference && !Number.isNaN(reference.getTime())) {
+    if (/\btoday\b/i.test(low)) {
+      addDate(reference.getFullYear(), reference.getMonth(), reference.getDate());
+    }
+    if (/\btomorrow\b/i.test(low)) {
+      const tom = new Date(reference.getFullYear(), reference.getMonth(), reference.getDate() + 1);
+      addDate(tom.getFullYear(), tom.getMonth(), tom.getDate());
+    }
   }
 
   // 1. Cross-month or discrete dates with two months:
@@ -244,7 +248,7 @@ export function getWalkinDateObjects(job: any): WalkinDateItem[] {
     rawDateStr = extractWalkinDateFromText(job.title) || extractWalkinDateFromText(job.description) || '';
   }
   if (!rawDateStr) return [];
-  return parseWalkinDateObjects(rawDateStr);
+  return parseWalkinDateObjects(rawDateStr, job.fetchedAt || job.date);
 }
 
 export function getJobWalkinDates(job: any): string[] {

@@ -694,7 +694,10 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 </svg>
               </div>
               <span className="option-label"><Route size={14} aria-hidden="true" /> All Walk-ins</span>
-              <span className="source-count">({(walkinCount !== undefined ? walkinCount : 7365).toLocaleString()})</span>
+              <span className="source-count">({(walkinCount ?? 0).toLocaleString()})</span>
+            </div>
+            <div style={{ fontSize: '0.72rem', color: '#94a3b8', padding: '2px 4px 0' }}>
+              Counts cover loaded jobs and can change as more load.
             </div>
 
             {/* Subheader: INTERVIEW DATES matching Screenshot 1 */}

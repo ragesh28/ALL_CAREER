@@ -18,6 +18,7 @@ interface AllJobsViewProps {
 export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [sidebarCounts, setSidebarCounts] = useState<SidebarCounts | null>(null);
+  const [catalogLoading, setCatalogLoading] = useState(true);
   const [loading, setLoading] = useState(true);
 
   // Filters State
@@ -68,6 +69,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
     }).then(data => {
       if (!isMounted) return;
+      setCatalogLoading(false);
       setJobs(data.previewJobs);
       if (data.sidebarCounts) {
         setSidebarCounts(data.sidebarCounts);
@@ -499,7 +501,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
 
     for (let i = 0; i < jobs.length; i++) {
       const j = jobs[i];
-      if (j._isWalkinJob) {
+      if (j._isWalkinJob && checkJobMatchWithout(j, 'walkin', term)) {
         walkinTotalCount++;
         const dates = j._walkinDatesList || [];
         for (let dIdx = 0; dIdx < dates.length; dIdx++) {
@@ -611,7 +613,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       <AllJobsTopNav
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        totalJobsCount={sidebarCounts?.total_jobs || 720961}
+        totalJobsCount={sidebarCounts?.total_jobs ?? null}
+        catalogLoading={catalogLoading}
         categoryCounts={categoryCounts}
         onGoHub={onGoHub}
         onAutoApply={handleAutoApply}
