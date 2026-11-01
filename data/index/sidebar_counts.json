@@ -1,5 +1,5 @@
 {
-  "total_jobs": 997638,
+  "total_jobs": 997688,
   "sources": {
     "naukri": 349998,
     "linkedin": 248280,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 315,
-    "telegram_post": 230
+    "telegram_message": 353,
+    "telegram_post": 242
   },
   "locations": {
-    "bangalore": 213935,
+    "bangalore": 213955,
     "mumbai": 132893,
     "delhi": 107157,
-    "chennai": 106604,
-    "hyderabad": 95211,
-    "pune": 79947,
-    "noida": 49370,
+    "chennai": 106606,
+    "hyderabad": 95212,
+    "pune": 79953,
+    "noida": 49371,
     "ahmedabad": 39252,
     "kolkata": 34143,
-    "all_india": 22352,
+    "all_india": 22367,
     "coimbatore": 19806,
     "kochi": 15534,
-    "remote": 9319,
+    "remote": 9321,
     "jaipur": 7701,
     "maharashtra": 7011,
     "indore": 5254,
@@ -69,7 +69,7 @@
     "haryana": 1296,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 5208,
+    "karnataka": 5209,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -639,7 +639,9 @@
     "himatnagar": 1,
     "gandhidham": 1,
     "aligarh": 1,
-    "moradabad": 2
+    "moradabad": 2,
+    "madhya_pradesh": 1,
+    "manipal": 1
   },
-  "generated_at": "2026-11-01T14:23:03.259345"
+  "generated_at": "2026-11-01T14:35:47.156062"
 }
