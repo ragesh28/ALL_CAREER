@@ -1,5 +1,5 @@
 {
-  "total_jobs": 999923,
+  "total_jobs": 999958,
   "sources": {
     "naukri": 349998,
     "linkedin": 248280,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 359,
-    "telegram_post": 242
+    "telegram_message": 376,
+    "telegram_post": 260
   },
   "locations": {
-    "bangalore": 214470,
+    "bangalore": 214484,
     "mumbai": 133358,
     "delhi": 107230,
-    "chennai": 107128,
-    "hyderabad": 95706,
+    "chennai": 107130,
+    "hyderabad": 95709,
     "pune": 80001,
-    "noida": 49400,
+    "noida": 49401,
     "ahmedabad": 39264,
-    "kolkata": 34169,
-    "all_india": 22373,
-    "coimbatore": 19814,
+    "kolkata": 34170,
+    "all_india": 22381,
+    "coimbatore": 19815,
     "kochi": 15534,
-    "remote": 9321,
+    "remote": 9322,
     "jaipur": 7712,
     "maharashtra": 7021,
     "indore": 5262,
@@ -642,7 +642,10 @@
     "moradabad": 2,
     "madhya_pradesh": 1,
     "manipal": 1,
-    "hk": 1
+    "hk": 1,
+    "jigani": 2,
+    "unit_01": 1,
+    "devanahalli_aerospace_park": 1
   },
-  "generated_at": "2026-11-02T01:08:40.941800"
+  "generated_at": "2026-11-02T06:41:45.757955"
 }
