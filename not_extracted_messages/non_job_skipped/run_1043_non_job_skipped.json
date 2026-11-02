@@ -1,0 +1,82 @@
+{
+  "workflow_run_number": "1043",
+  "workflow_run_id": "41488545664",
+  "timestamp": "2026-11-02T17:47:56.466549",
+  "runtime_minutes": 31.69,
+  "messages_processed": 126,
+  "new_jobs_stored": 87,
+  "skipped_jobs_count": 10,
+  "failed_extractions_count": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44051,
+      "text": "**🚨 Limited Seats Left!\n**\n📢 FREE 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 𝗔𝗹𝗲𝗿𝘁 – Data Science and Artificial Intelligence\n\nUpgrade your career with AI-powered Data Science skills.\n\nNo Coding Background Required. Learn everything from basics.\n\n📊 Learn Data Science with AI from Scratch\n🤖 AI Tools & Automation\n📈 Build real world Projects for job ready portfolio \n\n🔥Deadline :- 5th November 2026\n\n 𝗔𝗽𝗽𝗹𝘆 𝗡𝗼𝘄👇 :- https://tinyurl.com/56djsvbn\n\nDon't Miss This Opportunity.",
+      "timestamp": "2026-11-02T09:23:49+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18951,
+      "text": "A degree in your hand. A wrapper at your feet.\n\nWhich one reveals more about you?\n\nWe frame our certificates, polish our resumes, and then throw our responsibility out of a car window.\n\nMeanwhile, the person we call “uneducated” picks up what we couldn’t be bothered to put in a bin.\n\nWho really needs the lesson?\n\nYour qualifications may earn you a title. Your conduct earns you respect.\nWHAT THE POINT\nOF EDUCATION\nIF YOU STILL THROW\nGARBAGE ON STREETS\nTO BE ULTIMATELY\nPICKED BY\nAN UNEDUCATED PERSON!\nOn a Hyderabad road. One\nof the Best & Hard-hitting\nmessages!",
+      "timestamp": "2026-11-02T07:34:17+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8416,
+      "text": "Zepto Quick commerce System Design 🤗 \n\nSimple breakdown 📍 \nMostly asked in interview questions 😄 \n\nhttps://www.instagram.com/reel/DfO124dzXiw/?cplk=eGkwNnkwem01NTJs",
+      "timestamp": "2026-11-02T12:05:07+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15100,
+      "text": "**📌Barclays is hiring for Senior UI Developer\nBatch: 2021, 2022, 2023, 2024\nLocation: Pune\nApply here: ****https://search.jobs.barclays/job/-/-/13015/92613185088**",
+      "timestamp": "2026-11-02T15:19:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15103,
+      "text": "**📌Amazon is hiring for SDE\nBatch: 2021, 2022, 2023\nLocation: Bangalore\nApply here: ****https://www.amazon.jobs/en/jobs/10571786/software-development-engineer?cmpid=SPLICX0248M&ss=paid**\namazon\nImpact the\nfuture, today.",
+      "timestamp": "2026-11-02T15:19:42+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15105,
+      "text": "**📌Abnormal AI is hiring for Software Engineer I\nBatch: 2021, 2022, 2023\nLocation: Bangalore\nApply here: ****https://abnormal.ai/careers/jobs/8016939003?gh_jid=8016939003**\nAbnormal\nWe Stop Attacks\nOthers Can't\nhe Behavioral Security Platform\nor the Al era.\nSee It in Action -",
+      "timestamp": "2026-11-02T15:19:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15107,
+      "text": "**📌Cisco is hiring for Software Engineer\nBatch: 2025, 2026\nLocation: Bangalore\nApply here: ****https://careers.cisco.com/global/en/job/CISCISGLOBAL2015025EXTERNALENGLOBAL/Software-Engineer**\n\nCISCO",
+      "timestamp": "2026-11-02T15:20:02+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15108,
+      "text": "**📌LSEG is hiring for Associate Software Engineer\nBatch: 2024, 2025, 2026\nLocation: Bangalore\nApply here: ****https://lseg.wd3.myworkdayjobs.com/Careers/job/IND-BLR-Divyasree-Technopolis/Associate-Software-Engineer_R0124079**\nLSEG\nDICTUM\nPACTUM\nMEUM",
+      "timestamp": "2026-11-02T15:20:03+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "internfreak",
+      "msg_id": 5405,
+      "text": "Salesforce Is Hiring For Software Engineering AMTS\nBatch: 2025 / 2026\n\nLink: https://www.salesforce.com/company/careers/jobs/JR307116/software-engineering-amts/",
+      "timestamp": "2026-11-02T16:22:02+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "internfreak",
+      "msg_id": 5406,
+      "text": "Rubrik Is Hiring For Software Engineer Role\nBatch: 2027, 2026, 2025 \nCTC: 72 LPA\n\nLink: https://www.rubrik.com/company/careers/departments/job.8256407",
+      "timestamp": "2026-11-02T16:28:22+00:00"
+    }
+  ]
+}
