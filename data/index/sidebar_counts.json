@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1013609,
+  "total_jobs": 1013614,
   "sources": {
     "naukri": 353324,
     "linkedin": 252584,
@@ -41,15 +41,15 @@
     "citi": 3,
     "jobs": 3,
     "telegram_message": 439,
-    "telegram_post": 289
+    "telegram_post": 294
   },
   "locations": {
-    "bangalore": 217315,
+    "bangalore": 217316,
     "mumbai": 135220,
-    "delhi": 108653,
+    "delhi": 108655,
     "chennai": 108540,
     "hyderabad": 97556,
-    "pune": 81213,
+    "pune": 81214,
     "noida": 49960,
     "ahmedabad": 39713,
     "kolkata": 34716,
@@ -659,7 +659,8 @@
     "ludhianajandiali": 1,
     "bnagalore": 2,
     "multiple_cities": 1,
-    "chikkaballapura": 1
+    "chikkaballapura": 1,
+    "online_nationwide": 1
   },
-  "generated_at": "2026-11-03T03:10:41.403624"
+  "generated_at": "2026-11-03T07:16:50.050500"
 }

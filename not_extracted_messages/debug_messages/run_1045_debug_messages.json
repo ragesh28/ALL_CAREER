@@ -1,0 +1,21 @@
+{
+  "workflow_run_number": "1045",
+  "workflow_run_id": "41593060763",
+  "timestamp": "2026-11-03T07:16:24.806179",
+  "runtime_minutes": 14.49,
+  "messages_processed": 57,
+  "new_jobs_stored": 5,
+  "skipped_jobs_count": 45,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 28,
+  "text_messages_processed": 29,
+  "stored_locations": {
+    "Pune": 1,
+    "Bangalore": 1,
+    "Gurgaon": 1,
+    "Online / Nationwide": 1,
+    "Gurugram": 1
+  },
+  "stored_walkins": 0,
+  "debug_failed_messages": []
+}
