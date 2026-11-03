@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1027423,
+  "total_jobs": 1027480,
   "sources": {
     "naukri": 357199,
     "linkedin": 258084,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 439,
-    "telegram_post": 294
+    "telegram_message": 469,
+    "telegram_post": 321
   },
   "locations": {
-    "bangalore": 220138,
+    "bangalore": 220163,
     "mumbai": 136605,
-    "delhi": 110043,
-    "chennai": 110107,
-    "hyderabad": 98992,
-    "pune": 82656,
-    "noida": 50635,
+    "delhi": 110046,
+    "chennai": 110112,
+    "hyderabad": 98996,
+    "pune": 82659,
+    "noida": 50636,
     "ahmedabad": 40252,
     "kolkata": 35245,
-    "all_india": 22412,
-    "coimbatore": 20358,
+    "all_india": 22422,
+    "coimbatore": 20359,
     "kochi": 15934,
-    "remote": 9655,
+    "remote": 9658,
     "jaipur": 7865,
     "maharashtra": 7456,
     "indore": 5322,
@@ -69,7 +69,7 @@
     "haryana": 1363,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 5617,
+    "karnataka": 5618,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -112,7 +112,7 @@
     "rennes": 81,
     "message_remote": 112,
     "sanand": 84,
-    "madurai": 133,
+    "madurai": 134,
     "trivandrum": 125,
     "ambala": 112,
     "message_chennai": 107,
@@ -669,5 +669,5 @@
     "dhankawadi": 11,
     "ponnani": 1
   },
-  "generated_at": "2026-11-03T15:22:01.819745"
+  "generated_at": "2026-11-03T15:49:26.481317"
 }
