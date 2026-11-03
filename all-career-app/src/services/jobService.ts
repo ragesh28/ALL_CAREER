@@ -86,8 +86,8 @@ export class JobService {
 
   async fetchWalkinJobs(): Promise<Job[]> {
     try {
-      const walkins = await fetchJsonWithFallback<Job[]>('data/walkin_jobs.json', [
-        'data/index/walkin_jobs.json',
+      const walkins = await fetchJsonWithFallback<Job[]>('data/index/walkin_jobs.json', [
+        'data/walkin_jobs.json',
         'data/scraped_image_walkin_jobs.json',
         'all-career-app/public/data/walkin_jobs.json',
         'all-career-app/public/data/scraped_image_walkin_jobs.json'
@@ -108,7 +108,7 @@ export class JobService {
       if (!r) continue;
       const compStr = typeof r.company === 'string' ? r.company : (r.company ? String((r.company as any).name || r.company) : 'DIRECT RECRUITER');
       const titleStr = typeof r.title === 'string' ? r.title : (r.title ? String(r.title) : 'Position');
-      const locStr = typeof r.location === 'string' ? r.location : (r.location ? String(r.location) : 'India');
+      const locStr = typeof r.location === 'string' ? r.location : (r.location ? String((r.location as any).city || (r.location as any).name || 'India') : 'India');
 
       r.company = compStr;
       r.title = titleStr;
@@ -123,7 +123,9 @@ export class JobService {
       }
       if (srcStr) r.source = srcStr;
 
-      const key = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
+      const identityUrl = String(r.url || (r as any).apply_url || (r as any).telegram_url || (r as any).flyer_image_url || '').trim();
+      const detailsKey = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
+      const key = identityUrl && identityUrl !== '#' ? `url:${identityUrl.toLowerCase()}|${detailsKey}` : detailsKey;
       if (!this.allJobsMap.has(key)) {
         r.category = this.classifyRoleCategory(titleStr || r.role || '');
 

@@ -451,6 +451,10 @@ async def run_pipeline():
     messages_processed = 0
     messages_skipped_none = 0
     messages_failed = 0
+    image_messages_processed = 0
+    text_messages_processed = 0
+    stored_locations = {}
+    stored_walkins = 0
     non_job_skipped_list = []
     failed_extraction_list = []
 
@@ -552,6 +556,10 @@ async def run_pipeline():
 
                     # Analyze text with Gemini 2.5 Flash (round-robin key rotation)
                     messages_processed += 1
+                    if has_image:
+                        image_messages_processed += 1
+                    else:
+                        text_messages_processed += 1
                     print(f"  Analyzing {telegram_type.replace('telegram_', '')} {msg.id} with Gemini 2.5 Flash...")
                     job_result = extract_job_with_gemini(raw_text)
 
@@ -649,6 +657,10 @@ async def run_pipeline():
                             stored_count = storage.store_jobs_batch([job_data])
                             if stored_count > 0:
                                 new_jobs_stored += 1
+                                city = str(location or 'Unknown').strip() or 'Unknown'
+                                stored_locations[city] = stored_locations.get(city, 0) + 1
+                                if is_walk:
+                                    stored_walkins += 1
                                 print("      ✅ Stored in database.")
                             else:
                                 print("      ⚠️ Duplicate — already exists.")
@@ -688,6 +700,10 @@ async def run_pipeline():
         "new_jobs_stored": new_jobs_stored,
         "messages_skipped_none": messages_skipped_none,
         "messages_failed": messages_failed,
+        "image_messages_processed": image_messages_processed,
+        "text_messages_processed": text_messages_processed,
+        "stored_locations": stored_locations,
+        "stored_walkins": stored_walkins,
     }
     save_not_extracted_messages(run_number, run_id, stats, non_job_skipped_list, failed_extraction_list)
 
@@ -735,6 +751,10 @@ def save_not_extracted_messages(run_number, run_id, stats, non_job_skipped_list,
         "new_jobs_stored": stats.get("new_jobs_stored", 0),
         "skipped_jobs_count": stats.get("messages_skipped_none", 0),
         "failed_extractions_count": stats.get("messages_failed", 0),
+        "image_messages_processed": stats.get("image_messages_processed"),
+        "text_messages_processed": stats.get("text_messages_processed"),
+        "stored_locations": stats.get("stored_locations"),
+        "stored_walkins": stats.get("stored_walkins"),
     }
 
     # 1. Save non_job_skipped file (e.g. run_690_non_job_skipped.json)

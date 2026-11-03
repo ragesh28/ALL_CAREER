@@ -266,7 +266,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       const loc = (j.location || '').toLowerCase();
       let match = false;
       for (const l of locations) {
-        if (loc.includes(l.toLowerCase())) { match = true; break; }
+        if (loc.includes(l.toLowerCase()) || (l === 'Bangalore' && loc.includes('bengaluru'))) { match = true; break; }
       }
       if (!match) return false;
     }
@@ -450,25 +450,24 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     skillsList.forEach(s => { skillCounts[s] = 0; });
 
     // Single pass for active facet counts over filteredJobs / jobs
-    const targetPool = (deferredSources.size > 0 || deferredLocations.size > 0 || deferredRoles.size > 0 || term)
-      ? jobs
-      : jobs.slice(0, 15000); // Fast sample if full catalog is huge and unfiltered
+    const targetPool = jobs;
 
     for (let i = 0; i < targetPool.length; i++) {
       const j = targetPool[i];
       // Source count
       let src = j._normSource || (j.source || '').toLowerCase().trim();
       srcCounts[src] = (srcCounts[src] || 0) + 1;
-      if (src === 'other' || isOtherSource(src)) {
+      if (src !== 'other' && isOtherSource(src)) {
         srcCounts['other'] = (srcCounts['other'] || 0) + 1;
       }
 
       // Location count
-      const locLow = (j.location || '').toLowerCase();
-      for (let cIdx = 0; cIdx < cities.length; cIdx++) {
-        const c = cities[cIdx];
-        if (locLow.includes(c.toLowerCase())) {
-          locCounts[c] = (locCounts[c] || 0) + 1;
+      if (checkJobMatchWithout(j, 'location', term)) {
+        const locLow = (j.location || '').toLowerCase();
+        for (const c of cities) {
+          if (locLow.includes(c.toLowerCase()) || (c === 'Bangalore' && locLow.includes('bengaluru'))) {
+            locCounts[c] = (locCounts[c] || 0) + 1;
+          }
         }
       }
 
@@ -645,7 +644,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           selectedWalkinDates={selectedWalkinDates}
           onToggleWalkinDate={handleToggleWalkinDate}
           sourceCounts={dynamicCounts.srcCounts}
-          locationCounts={dynamicCounts.locCounts}
+          locationCounts={hasActiveFilters ? dynamicCounts.locCounts : sidebarCounts?.locations}
+          locationCountsAreCatalog={!hasActiveFilters}
           roleCounts={dynamicCounts.roleCounts}
           skillCounts={dynamicCounts.skillCounts}
           walkinCount={dynamicCounts.walkinTotalCount}

@@ -10,6 +10,8 @@ import sys
 import json
 import time
 import subprocess
+import glob
+from collections import Counter
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -143,69 +145,36 @@ def get_workflows_status():
             elif "health" in nl or "telemetry" in nl: wf_file = "workflow_health_monitor.yml"
             else: wf_file = "workflow_health_monitor.yml"
 
-        if "naukri" in nl:
-            jobs_saved_val = "+2,500 jobs / batch"
-            scraped_num = 2500
-            deleted_num = 140
-        elif "job portals" in nl:
-            jobs_saved_val = "+1,850 jobs / batch"
-            scraped_num = 1850
-            deleted_num = 110
-        elif "all jobs 2" in nl or "all_jobs_2" in nl:
-            jobs_saved_val = "+4,200 jobs / batch"
-            scraped_num = 4200
-            deleted_num = 180
-        elif "api call jobs" in nl or "api_call_jobs" in nl:
-            jobs_saved_val = "+2,595 new jobs added"
-            scraped_num = 2595
-            deleted_num = 95
-        elif "big company" in nl:
-            jobs_saved_val = "+2,807 direct ATS jobs"
-            scraped_num = 2807
-            deleted_num = 60
-        elif "telegram" in nl:
-            jobs_saved_val = "+680 posts extracted"
-            scraped_num = 680
-            deleted_num = 25
-        elif "google image" in nl or "extractor" in nl:
-            jobs_saved_val = "+142 walk-in flyers"
-            scraped_num = 142
-            deleted_num = 12
-        elif "google jobs" in nl:
-            jobs_saved_val = "0 (Waiting monthly proxy reset)"
-            scraped_num = 0
-            deleted_num = 0
-        elif "foundit" in nl:
-            jobs_saved_val = "+450 jobs / batch"
-            scraped_num = 450
-            deleted_num = 30
-        elif "pages" in nl:
-            jobs_saved_val = "Continuous Portal Deployer"
-            scraped_num = 0
-            deleted_num = 0
-        elif "health" in nl or "telemetry" in nl:
-            jobs_saved_val = "Ecosystem Telemetry Checkpoint"
-            scraped_num = 0
-            deleted_num = 0
-        elif "credits" in nl:
-            jobs_saved_val = "Quota Verification"
-            scraped_num = 0
-            deleted_num = 0
-        elif "mca" in nl or "company database" in nl:
-            jobs_saved_val = "Company Index Refresher"
-            scraped_num = 0
-            deleted_num = 0
-        else:
-            jobs_saved_val = "Active Collector"
-            scraped_num = 320
-            deleted_num = 20
+        # Only report measured data for the exact run. Missing telemetry is unknown,
+        # not zero and not a made-up per-workflow estimate.
+        run_id = last_run.get("databaseId") if last_run else None
+        run_metrics = None
+        if wf_file == "telegram_jobs.yml" and run_id:
+            for path in glob.glob("not_extracted_messages/non_job_skipped/*.json"):
+                try:
+                    with open(path, encoding="utf-8") as fh:
+                        report = json.load(fh)
+                    if str(report.get("workflow_run_id")) == str(run_id):
+                        run_metrics = {
+                            "messagesProcessed": report.get("messages_processed"),
+                            "newJobsStored": report.get("new_jobs_stored"),
+                            "nonJobMessages": report.get("skipped_jobs_count"),
+                            "failedExtractions": report.get("failed_extractions_count"),
+                            "imageMessages": report.get("image_messages_processed"),
+                            "textMessages": report.get("text_messages_processed"),
+                            "walkinsStored": report.get("stored_walkins"),
+                            "locations": report.get("stored_locations"),
+                        }
+                        break
+                except (OSError, ValueError, TypeError):
+                    continue
 
         results.append({
             "name": w_name,
             "workflowId": w_id,
             "workflowFile": wf_file,
             "status": status,
-            "conclusion": conclusion or ("in_progress" if is_running else "success"),
+            "conclusion": conclusion or ("in_progress" if is_running else "unknown"),
             "isRunning": is_running,
             "duration": format_duration(duration_sec),
             "durationSeconds": duration_sec,
@@ -213,9 +182,10 @@ def get_workflows_status():
             "accumulatedSeconds": accumulated_sec,
             "lastRunTime": started_at or "N/A",
             "trigger": last_run.get("event", "schedule") if last_run else "schedule",
-            "jobsSaved": jobs_saved_val,
-            "newJobsScraped": scraped_num,
-            "jobsDeleted": deleted_num
+            "runId": run_id,
+            "runMetrics": run_metrics,
+            "newJobsScraped": run_metrics.get("newJobsStored") if run_metrics else None,
+            "jobsDeleted": None
         })
 
     return results

@@ -43,6 +43,8 @@ jobs:
                       if k and k not in all_keys:
                           all_keys.append(k)
 
+          SCRAPERAPI_KEY = all_keys[0] if all_keys else ""
+
           OXYLABS_USER   = os.environ.get("OXYLABS_USERNAME", "")
           OXYLABS_PASS   = os.environ.get("OXYLABS_PASSWORD", "")
           OXYLABS_HOST   = os.environ.get("OXYLABS_ENTRYPOINT", "").strip() or "dc.oxylabs.io"

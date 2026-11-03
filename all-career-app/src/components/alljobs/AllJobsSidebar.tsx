@@ -33,6 +33,7 @@ interface AllJobsSidebarProps {
   // Dynamic counts
   sourceCounts: Record<string, number>;
   locationCounts?: Record<string, number>;
+  locationCountsAreCatalog?: boolean;
   roleCounts?: Record<string, number>;
   skillCounts?: Record<string, number>;
   walkinCount?: number;
@@ -62,6 +63,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   onToggleWalkinDate,
   sourceCounts,
   locationCounts,
+  locationCountsAreCatalog,
   roleCounts,
   skillCounts,
   walkinCount,
@@ -428,10 +430,16 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
+            <div style={{ fontSize: '0.72rem', color: '#94a3b8', padding: '2px 4px 6px' }}>
+              {locationCountsAreCatalog ? 'Catalog location totals' : 'Counts in loaded matching jobs'}
+            </div>
             <div id="location-options">
               {locationsList.map(item => {
                 const isSelected = selectedLocations.has(item.id);
-                const count = locationCounts ? (locationCounts[item.id] ?? 0) : item.count;
+                const count = locationCountsAreCatalog
+                  ? (locationCounts?.[item.id.toLowerCase()] === undefined ? null :
+                    locationCounts[item.id.toLowerCase()] + (item.id === 'Bangalore' ? (locationCounts.bengaluru ?? 0) : 0))
+                  : (locationCounts?.[item.id] ?? null);
                 return (
                   <div
                     key={item.id}
@@ -444,7 +452,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({count.toLocaleString()})</span>
+                    <span className="source-count">{count === null ? '—' : `(${count.toLocaleString()})`}</span>
                   </div>
                 );
               })}

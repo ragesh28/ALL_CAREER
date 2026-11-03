@@ -1290,6 +1290,7 @@
       }
 
       tbody.innerHTML = filtered.map(w => {
+        const workflowIndex = list.indexOf(w);
         const isRunning = w.isRunning;
         const isSuccess = !isRunning && (w.conclusion === 'success');
         const isFailed = w.conclusion === 'failure';
@@ -1300,14 +1301,14 @@
         else if (isSuccess) { badgeClass = 'status-success'; badgeText = '✓ Completed'; }
         else if (isFailed) { badgeClass = 'status-failed'; badgeText = '✕ Failed'; }
 
-        const scrapedFormatted = w.newJobsScraped ? `+${w.newJobsScraped.toLocaleString()}` : (w.jobsSaved || '-');
-        const deletedFormatted = w.jobsDeleted !== undefined ? `-${w.jobsDeleted.toLocaleString()}` : '-';
+        const scrapedFormatted = w.runId && Number.isFinite(w.newJobsScraped) ? w.newJobsScraped.toLocaleString() : 'Not reported';
+        const deletedFormatted = w.runId && Number.isFinite(w.jobsDeleted) ? w.jobsDeleted.toLocaleString() : 'Not reported';
 
         return `
           <tr>
             <td>
               <div class="cell-primary">
-                <span>${escapeHtml(w.name)}</span>
+                <button type="button" class="btn-action" aria-expanded="false" aria-controls="workflow-detail-${workflowIndex}" onclick="toggleWorkflowDetails(${workflowIndex}, this)">${escapeHtml(w.name)} ▾</button>
                 <span class="cell-sub">${escapeHtml(w.workflowFile || '')}</span>
               </div>
             </td>
@@ -1333,8 +1334,64 @@
               </button>
             </td>
           </tr>
+          <tr id="workflow-detail-${workflowIndex}" hidden><td colspan="7"><div style="padding:12px 16px;color:var(--text-muted)">Loading workflow details…</div></td></tr>
         `;
       }).join('');
+    }
+
+    let walkinSnapshotPromise;
+    async function toggleWorkflowDetails(index, button) {
+      const row = document.getElementById(`workflow-detail-${index}`);
+      if (!row) return;
+      row.hidden = !row.hidden;
+      button.setAttribute('aria-expanded', String(!row.hidden));
+      if (row.hidden) return;
+      const w = currentMetrics.workflows[index];
+      const file = String(w.workflowFile || '');
+      const cell = row.firstElementChild;
+      const metrics = w.runMetrics;
+      const metricLine = metrics ? Object.entries({
+        'Messages processed': metrics.messagesProcessed,
+        'New jobs stored': metrics.newJobsStored,
+        'Non-job messages': metrics.nonJobMessages,
+        'Failed extractions': metrics.failedExtractions,
+        'Image messages': metrics.imageMessages,
+        'Text messages': metrics.textMessages,
+        'Walk-ins stored': metrics.walkinsStored
+      }).filter(([, value]) => Number.isFinite(value)).map(([label, value]) => `${label}: ${value.toLocaleString()}`).join(' · ') : 'Run-level extraction and location data were not recorded.';
+      let snapshot = metrics?.locations && typeof metrics.locations === 'object'
+        ? `<p style="margin-top:6px">Run locations: ${Object.entries(metrics.locations).map(([city, count]) => `${escapeHtml(city)}: ${Number(count).toLocaleString()}`).join(' · ')}</p>` : '';
+      const sources = {
+        'telegram_jobs.yml': ['telegram'],
+        'google_image_extractor.yml': ['google', 'image'],
+        'naukri_scraper.yml': ['naukri'],
+        'all_jobs_2.yml': ['linkedin', 'indeed'],
+        'job_portal_jobs.yml': ['foundit'],
+        'job_portal_jobs_2.yml': ['shine', 'timesjobs', 'hirist', 'apna', 'workindia', 'internshala', 'freshersworld', 'glassdoor']
+      }[file];
+      if (sources) {
+        try {
+          walkinSnapshotPromise ||= fetch('data/index/walkin_jobs.json').then(r => {
+            if (!r.ok) throw new Error('Walk-in index unavailable');
+            return r.json();
+          }).catch(e => { walkinSnapshotPromise = null; throw e; });
+          const jobs = await walkinSnapshotPromise;
+          const matches = jobs.filter(j => sources.some(source => String(j.source || '').toLowerCase().includes(source)));
+          const locations = {};
+          for (const j of matches) {
+            const city = typeof j.location === 'string' ? j.location : (j.location?.city || 'Unknown');
+            const key = city.trim() || 'Unknown';
+            locations[key] = (locations[key] || 0) + 1;
+          }
+          const top = Object.entries(locations).sort((a, b) => b[1] - a[1]).slice(0, 12)
+            .map(([city, count]) => `${escapeHtml(city)}: ${count.toLocaleString()}`).join(' · ');
+          snapshot += `<p style="margin-top:10px"><strong>Walk-in index snapshot:</strong> ${matches.length.toLocaleString()} records attributed by source. These are catalog totals, not jobs from this run.</p><p style="margin-top:6px">${top || 'No locations available.'}</p>`;
+        } catch {
+          snapshot += '<p style="margin-top:10px">Walk-in index is unavailable.</p>';
+        }
+      }
+      const runLink = /^\d+$/.test(String(w.runId || '')) ? `<a href="https://github.com/ragesh28/ALL_CAREER/actions/runs/${w.runId}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Open this run on GitHub ↗</a>` : '';
+      cell.innerHTML = `<div style="padding:12px 16px;color:var(--text-muted);line-height:1.6"><strong style="color:var(--text-main)">Latest run</strong><p>${escapeHtml(metricLine)}</p>${snapshot}<p style="margin-top:10px">${runLink}</p></div>`;
     }
 
     function filterWorkflows(category, btn) {

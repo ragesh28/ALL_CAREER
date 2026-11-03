@@ -16,7 +16,7 @@ export default defineConfig({
             const relativePath = req.url.split('?')[0];
             const publicFilePath = path.resolve(__dirname, 'public', relativePath.slice(1));
             const parentFilePath = path.resolve(__dirname, '..', relativePath.slice(1));
-            const targetPath = fs.existsSync(publicFilePath) ? publicFilePath : (fs.existsSync(parentFilePath) ? parentFilePath : null);
+            const targetPath = fs.existsSync(parentFilePath) ? parentFilePath : (fs.existsSync(publicFilePath) ? publicFilePath : null);
             if (targetPath) {
               res.setHeader('Content-Type', 'application/json');
               res.setHeader('Access-Control-Allow-Origin', '*');
