@@ -61,7 +61,7 @@ jobs:
 
       # Auto-restart if stopped mid-run (only if not cancelled manually)
       - name: Auto-Restart if Not Finished
-        if: always() && !cancelled()
+        if: always() && !cancelled() && inputs.test_mode != true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

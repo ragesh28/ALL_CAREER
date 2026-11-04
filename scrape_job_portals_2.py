@@ -118,6 +118,7 @@ LOCATIONS = [
 
 TEST_MODE = "--test" in sys.argv
 if TEST_MODE:
+    PROGRESS_FILE = 'job_portals_2_test_progress.json'
     print("🧪 RUNNING IN TEST MODE: Only 1 role and 1 location will be scraped.")
     SEARCH_ROLES = ["Software Engineer"]
     LOCATIONS = ["Bangalore"]
