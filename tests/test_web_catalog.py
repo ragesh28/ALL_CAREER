@@ -8,6 +8,39 @@ from scripts.build_web_catalog import build
 
 
 class WebCatalogTests(unittest.TestCase):
+    def test_recovers_sources_and_archive_only_records(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            shards = root / 'data/jobs/developer'
+            shards.mkdir(parents=True)
+            legacy = {'title': 'Legacy opening', 'company': 'A', 'location': 'Chennai', 'url': 'https://example.com/old', 'date_posted': '2026-07-01'}
+            (shards / 'workindia_chennai.json').write_text(json.dumps([legacy]), encoding='utf-8')
+            archive_only = {'title': 'Archived opening', 'company_name': 'B', 'location': 'Chennai', 'apply_link': 'https://apna.co/job/123', 'job_posted_date': '2026-11-01'}
+            (root / 'all_jobs_1.json').write_text(json.dumps([archive_only]), encoding='utf-8')
+            summary = build(root)
+            self.assertEqual(summary['total_jobs'], 2)
+            self.assertEqual(summary['sources'], {'apna': 1, 'workindia': 1})
+            self.assertEqual(summary['audit']['input_records'], {'archive': 1, 'shard': 1})
+            manifest = json.loads(gzip.decompress((root / summary['manifest']).read_bytes()))
+            self.assertEqual(manifest['sources']['apna'][0]['count'], 1)
+
+    def test_walkin_enrichment_keeps_posting_date_and_source_consistent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            shards = root / 'data/jobs/developer'
+            shards.mkdir(parents=True)
+            job = {'title': 'Engineer', 'company': 'A', 'location': 'Chennai', 'url': 'https://example.com/job', 'date_posted': '2026-11-04'}
+            (shards / 'naukri_chennai.json').write_text(json.dumps([job]), encoding='utf-8')
+            index = root / 'data/index'
+            index.mkdir()
+            (index / 'walkin_jobs.json').write_text(json.dumps([{**job, 'source': 'naukri', 'date_posted': '2026-11-01', 'is_walkin': True, 'walkin_date': '5 November 2026'}]), encoding='utf-8')
+            summary = build(root)
+            row = json.loads((root / 'data/web/latest.json').read_bytes())[0]
+            self.assertEqual(summary['walkins']['total'], 1)
+            self.assertIs(row['is_walkin'], True)
+            self.assertEqual(row['date_posted'], '2026-11-04')
+            self.assertEqual(row['source'], 'naukri')
+
     def test_paging_sort_counts_and_aliases(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

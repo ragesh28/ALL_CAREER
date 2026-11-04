@@ -41,6 +41,8 @@ jobs:
             /data/jobs/
             /data/index/
             /data/web/
+            /all_jobs_*.json
+            /scraped_image_walkin_jobs.json
           sparse-checkout-cone-mode: false
       - uses: actions/setup-python@v5
         with:

@@ -9,6 +9,7 @@ import gzip
 import json
 import re
 import sqlite3
+from urllib.parse import urlsplit
 import tempfile
 from collections import Counter, defaultdict
 from contextlib import closing
@@ -18,6 +19,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
+BUILD_VERSION = 2
+PORTALS = ('telegram_message', 'telegram_post', 'google_images', 'freshersworld', 'internshala', 'workindia', 'timesjobs', 'linkedin', 'naukri', 'foundit', 'glassdoor', 'shine', 'hirist', 'apna')
+
+
+def source_name(value, hint='', url=''):
+    source = re.sub(r'[\s-]+', '_', str(value or '').strip().lower())
+    aliases = {'apna_jobs': 'apna', 'work_india': 'workindia', 'freshers_world': 'freshersworld', 'google_image': 'google_images'}
+    source = aliases.get(source, source)
+    if source and source != 'other':
+        return source
+    if hint in PORTALS:
+        return hint
+    host = urlsplit(str(url or '')).hostname or ''
+    for portal in PORTALS:
+        if portal.replace('_', '') in host.replace('.', ''):
+            return portal
+    return source or hint or 'other'
 
 
 def city_name(value):
@@ -27,15 +45,16 @@ def city_name(value):
     return ALIASES.get(value.lower(), value.lower())
 
 
-def normalize(job):
+def normalize(job, source_hint=''):
     j = dict(job)
     for field in ('company', 'location'):
         if isinstance(j.get(field), dict):
             j[field] = j[field].get('city' if field == 'location' else 'name') or 'Unknown'
     j['title'] = str(j.get('title') or j.get('role') or 'Position')
-    j['source'] = str(j.get('source') or j.get('platform') or 'other').lower().replace(' ', '_')
-    j['url'] = j.get('url') or j.get('apply_url') or j.get('telegram_url') or ''
-    date = str(j.get('date_posted') or j.get('fetchedAt') or j.get('fetched_at') or j.get('date') or '')
+    j['company'] = j.get('company') or j.get('company_name') or j.get('company_canonical') or ''
+    j['url'] = j.get('url') or j.get('apply_url') or j.get('apply_link') or j.get('linkedin_url') or j.get('permanent_url') or j.get('source_url') or j.get('telegram_url') or j.get('flyer_image_url') or ''
+    j['source'] = source_name(j.get('source') or j.get('platform'), source_hint, j['url'])
+    date = str(j.get('date_posted') or j.get('job_posted_date') or j.get('fetchedAt') or j.get('fetched_at') or j.get('date') or '')
     j['date_posted'] = date[:10] if re.match(r'^\d{4}-\d{2}-\d{2}', date) else ''
     j['is_walkin'] = j.get('is_walkin') in (True, 'true') or bool(j.get('walkin_date') or j.get('walkin_dates')) or bool(WALKIN.search(j['title'] + ' ' + str(j.get('description') or ''))) or j['source'] in ('google_images', 'flyer')
     # Only display data goes into browser pages; full originals stay in source shards.
@@ -56,9 +75,14 @@ def build(root=ROOT, page_size=250):
     out = root / 'data/web'
     with tempfile.TemporaryDirectory() as temporary, closing(sqlite3.connect(str(Path(temporary) / 'sort.db'))) as db:
         db.execute('CREATE TABLE jobs (id TEXT PRIMARY KEY, date TEXT, payload TEXT, walkin INTEGER, city TEXT, source TEXT)')
-        sources = sorted((root / 'data/jobs').glob('*/*.json'))
-        sources += [root / 'data/index/walkin_jobs.json']
+        archives = sorted((p for p in root.glob('all_jobs_*.json') if p.stem.removeprefix('all_jobs_').isdigit()), key=lambda p: int(p.stem.removeprefix('all_jobs_')))
+        shards = sorted((root / 'data/jobs').glob('*/*.json'))
+        if not archives and not shards:
+            raise ValueError('No job source files found; keeping the previously published catalog')
+        sources = archives + shards + [root / 'data/index/walkin_jobs.json', root / 'scraped_image_walkin_jobs.json']
         inputs_hash = hashlib.sha256()
+        inputs_hash.update(f'web-catalog-{BUILD_VERSION}-{page_size}'.encode())
+        input_counts = Counter()
         for path in sources:
             if not path.exists():
                 continue
@@ -69,17 +93,25 @@ def build(root=ROOT, page_size=250):
             rows = json.loads(raw)
             if not isinstance(rows, list):
                 raise ValueError(f'Expected job array: {path}')
+            kind = 'archive' if path in archives else 'shard' if path.parent.parent.name == 'jobs' else 'walkin_index'
+            input_counts[kind] += len(rows)
+            hint = next((s for s in PORTALS if path.stem.startswith(s + '_')), '') if kind == 'shard' else 'google_images' if path.name == 'scraped_image_walkin_jobs.json' else ''
             inserts = []
             for row in rows:
                 if not isinstance(row, dict):
                     continue
-                j = normalize(row)
+                j = normalize(row, hint)
                 identity = [j.get('url'), j['title'].strip().lower(), str(j.get('company', '')).strip().lower(), city_name(j.get('location'))]
                 key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
                 inserts.append((key, j['date_posted'], json.dumps(j, ensure_ascii=False, separators=(',', ':')), int(j['is_walkin']), city_name(j.get('location')), j['source']))
-            db.executemany('''INSERT INTO jobs VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET
+            prefer = "excluded.date>jobs.date OR excluded.walkin>jobs.walkin OR (jobs.source='other' AND excluded.source!='other')"
+            db.executemany(f'''INSERT INTO jobs VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET
+                date=MAX(jobs.date,excluded.date),
+                source=CASE WHEN {prefer} THEN excluded.source ELSE jobs.source END,
                 walkin=MAX(jobs.walkin,excluded.walkin),
-                payload=CASE WHEN excluded.walkin>jobs.walkin THEN excluded.payload ELSE jobs.payload END''', inserts)
+                payload=json_set(CASE WHEN {prefer} THEN excluded.payload ELSE jobs.payload END,
+                    '$.date_posted',MAX(jobs.date,excluded.date),
+                    '$.is_walkin',json(CASE WHEN MAX(jobs.walkin,excluded.walkin)=1 THEN 'true' ELSE 'false' END))''', inserts)
         db.commit()
         previous_path = out / 'summary.json'
         if previous_path.exists():
@@ -89,6 +121,7 @@ def build(root=ROOT, page_size=250):
                 return previous
         db.execute('CREATE INDEX newest ON jobs(date DESC, id)')
         db.execute('CREATE INDEX walkin_city ON jobs(walkin,city,date DESC,id)')
+        db.execute('CREATE INDEX source_date ON jobs(source,date DESC,id)')
 
         def pages(query, params=()):
             descriptors, batch, size = [], [], 0
@@ -117,6 +150,10 @@ def build(root=ROOT, page_size=250):
         walkin_pages = {}
         for city, in db.execute('SELECT DISTINCT city FROM jobs WHERE walkin=1').fetchall():
             walkin_pages[city] = pages('SELECT payload FROM jobs WHERE walkin=1 AND city=? ORDER BY date DESC,id', (city,))
+        source_pages = {}
+        for source, count in db.execute('SELECT source,count(*) FROM jobs GROUP BY source').fetchall():
+            if count <= 25000:
+                source_pages[source] = pages('SELECT payload FROM jobs WHERE source=? ORDER BY date DESC,id', (source,))
 
         counts = lambda column, where='': dict(db.execute(f'SELECT {column},count(*) FROM jobs {where} GROUP BY {column}'))
         date_groups = Counter()
@@ -129,6 +166,7 @@ def build(root=ROOT, page_size=250):
         summary = {
             'schema': 1, 'generated_at': datetime.now(timezone.utc).isoformat(), 'inputs_hash': inputs_hash.hexdigest(), 'page_size': page_size,
             'total_jobs': db.execute('SELECT count(*) FROM jobs').fetchone()[0],
+            'audit': {'input_records': dict(input_counts), 'source_files': sum(p.exists() for p in sources), 'build_version': BUILD_VERSION},
             'sources': counts('source'), 'locations': counts('city'),
             'walkins': {'total': db.execute('SELECT count(*) FROM jobs WHERE walkin=1').fetchone()[0], 'locations': counts('city', 'WHERE walkin=1'), 'sources': counts('source', 'WHERE walkin=1'), 'source_locations': dict(cross), 'date_groups': [[city, src, json.loads(raw), date, count] for (city, src, raw, date), count in date_groups.items()]}
         }
@@ -136,7 +174,7 @@ def build(root=ROOT, page_size=250):
         for source, city, count in db.execute('SELECT source,city,count(*) FROM jobs GROUP BY source,city'):
             source_locations[source][city] = count
         summary['source_locations'] = dict(source_locations)
-        manifest_data = {'schema': 1, 'page_size': page_size, 'total_jobs': summary['total_jobs'], 'pages': feed, 'walkins': walkin_pages}
+        manifest_data = {'schema': 1, 'page_size': page_size, 'total_jobs': summary['total_jobs'], 'pages': feed, 'walkins': walkin_pages, 'sources': source_pages}
         manifest_bytes = json.dumps(manifest_data, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
         manifest_name = 'manifest-' + hashlib.sha256(manifest_bytes).hexdigest()[:24] + '.json.gz'
         (out / manifest_name).parent.mkdir(parents=True, exist_ok=True)
@@ -151,6 +189,7 @@ def build(root=ROOT, page_size=250):
         now = datetime.now(timezone.utc).timestamp()
         paths = {p['path'] for p in feed}
         paths.update(p['path'] for rows in walkin_pages.values() for p in rows)
+        paths.update(p['path'] for rows in source_pages.values() for p in rows)
         paths.add('data/web/' + manifest_name)
         for path in paths:
             retained[path] = now
