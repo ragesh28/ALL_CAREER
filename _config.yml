@@ -1,0 +1,21 @@
+# Keep scraper storage in Git while publishing only the data the site consumes.
+# The browser uses data/web and legacy data/jobs, not these archival duplicates.
+exclude:
+  - 'all_jobs_*.json'
+  - jobs_by_role
+  - data/company_names_chunks
+  - 'data/*.db'
+  - scripts
+  - tests
+  - 'test_*.html'
+  - graphify-out
+  - all-career-app/src
+  - all-career-app/node_modules
+  - all-career-app/dist
+  - node_modules
+  - Gemfile
+  - Gemfile.lock
+  - vendor/bundle
+  - vendor/cache
+  - vendor/gems
+  - vendor/ruby
