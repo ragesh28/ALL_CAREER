@@ -73,9 +73,12 @@ def build(root=ROOT, page_size=250):
                 identity = [j.get('url'), j['title'].strip().lower(), str(j.get('company', '')).strip().lower(), city_name(j.get('location'))]
                 key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
                 inserts.append((key, j['date_posted'], json.dumps(j, ensure_ascii=False, separators=(',', ':')), int(j['is_walkin']), city_name(j.get('location')), j['source']))
-            db.executemany('INSERT OR IGNORE INTO jobs VALUES (?,?,?,?,?,?)', inserts)
+            db.executemany('''INSERT INTO jobs VALUES (?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET
+                walkin=MAX(jobs.walkin,excluded.walkin),
+                payload=CASE WHEN excluded.walkin>jobs.walkin THEN excluded.payload ELSE jobs.payload END''', inserts)
         db.commit()
         db.execute('CREATE INDEX newest ON jobs(date DESC, id)')
+        db.execute('CREATE INDEX walkin_city ON jobs(walkin,city,date DESC,id)')
 
         def pages(query, params=()):
             descriptors, batch, size = [], [], 0
