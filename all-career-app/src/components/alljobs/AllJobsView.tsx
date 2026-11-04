@@ -70,7 +70,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   // Load initial catalog
   useEffect(() => {
     let isMounted = true;
-    jobService.initCatalog(incoming => {
+    let retry: ReturnType<typeof setTimeout> | undefined;
+    const loadCatalog = () => jobService.initCatalog(incoming => {
       if (isMounted) {
         setJobs(incoming);
         setLoading(false);
@@ -80,6 +81,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       setSidebarCounts(counts);
       setSummary(nextSummary);
       setCatalogLoading(false);
+      if (!nextSummary) retry = setTimeout(loadCatalog, 5000);
     }).then(data => {
       if (!isMounted) return;
       setCatalogLoading(false);
@@ -89,8 +91,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
       setLoading(false);
     });
+    loadCatalog();
     return () => {
       isMounted = false;
+      if (retry) clearTimeout(retry);
     };
   }, []);
 
@@ -745,11 +749,11 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           locationCountsAreCatalog={!hasActiveFilters || canUseWalkinSummary}
           roleCounts={dynamicCounts.roleCounts}
           skillCounts={dynamicCounts.skillCounts}
-          walkinCount={catalogLoading ? undefined : canUseWalkinSummary ? (summaryFacets?.total ?? (selectedLocations.size === 0 && selectedSources.size === 0 ? summary?.walkins.total : undefined)) : dynamicCounts.walkinTotalCount}
-          walkinSummaryLoading={catalogLoading || (canUseWalkinSummary && !summaryFacets)}
+          walkinCount={catalogLoading || (!summary && !hasActiveFilters) ? undefined : canUseWalkinSummary ? (summaryFacets?.total ?? (selectedLocations.size === 0 && selectedSources.size === 0 ? summary?.walkins.total : undefined)) : dynamicCounts.walkinTotalCount}
+          walkinSummaryLoading={catalogLoading || (!summary && !hasActiveFilters) || (canUseWalkinSummary && !summaryFacets)}
           walkinCountsAreCatalog={canUseWalkinSummary}
           walkinDateCounts={canUseWalkinSummary ? summaryFacets?.dates : dynamicCounts.walkinDateCounts}
-          walkinDateOptions={canUseWalkinSummary ? walkinDateOptions : dynamicCounts.walkinDateOptions}
+          walkinDateOptions={!summary && !hasActiveFilters ? [] : canUseWalkinSummary ? walkinDateOptions : dynamicCounts.walkinDateOptions}
           sidebarCounts={sidebarCounts}
         />
 
