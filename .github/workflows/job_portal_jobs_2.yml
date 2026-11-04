@@ -1,7 +1,12 @@
 name: Job Portals Scraper (Shine, TimesJobs, Hirist, Apna, WorkIndia, Internshala, Freshersworld, Glassdoor)
 
 on:
-  workflow_dispatch:   # Manual trigger
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Verify one role and city instead of the full scraping queue'
+        type: boolean
+        default: false
   schedule:
     - cron: '30 22 * * *'  # 4:00 AM IST (10:30 PM UTC previous day)
 
@@ -34,8 +39,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           PYTHONUNBUFFERED: "1"
+          PORTAL_TEST_MODE: ${{ inputs.test_mode || 'false' }}
         run: |
-          python -u scrape_job_portals_2.py
+          if [ "$PORTAL_TEST_MODE" = "true" ]; then
+            python -u scrape_job_portals_2.py --test
+          else
+            python -u scrape_job_portals_2.py
+          fi
 
       # Always commit and push progress to save state (even on timeout/failure)
       - name: Commit and Push Scrape Progress
