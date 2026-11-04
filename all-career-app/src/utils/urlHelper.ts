@@ -31,7 +31,9 @@ export const fetchCatalogJson = <T,>(path: string): Promise<T | null> => {
     const clean = path.replace(/^\/+/, '');
     for (const url of [resolveAssetUrl(clean), `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`]) {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      // The summary can be much larger than a page; allow slower mobile links
+      // enough time to receive it before trying the fallback host.
+      const timeout = setTimeout(() => controller.abort(), clean.endsWith('/summary.json') ? 30000 : 8000);
       try {
         const res = await fetch(url, { signal: controller.signal, cache: mutable ? 'no-cache' : 'default' });
         if (res.ok) {
