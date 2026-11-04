@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1028421,
+  "total_jobs": 1028536,
   "sources": {
     "naukri": 358712,
     "linkedin": 258084,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4222,
+    "other": 4338,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,16 +44,16 @@
     "telegram_post": 321
   },
   "locations": {
-    "bangalore": 220233,
-    "mumbai": 136772,
-    "delhi": 110252,
-    "chennai": 110249,
-    "hyderabad": 98980,
-    "pune": 82810,
+    "bangalore": 220284,
+    "mumbai": 136784,
+    "delhi": 110255,
+    "chennai": 110257,
+    "hyderabad": 99008,
+    "pune": 82816,
     "noida": 50721,
-    "ahmedabad": 40289,
-    "kolkata": 35301,
-    "all_india": 22418,
+    "ahmedabad": 40290,
+    "kolkata": 35303,
+    "all_india": 22420,
     "coimbatore": 20419,
     "kochi": 15965,
     "remote": 9673,
@@ -346,7 +346,7 @@
     "dharuhera": 1,
     "athirappilly": 3,
     "bhatkal": 1,
-    "indianapolis": 3,
+    "indianapolis": 4,
     "kalburagi": 2,
     "haldwani": 1,
     "belgium": 2,
@@ -473,7 +473,7 @@
     "not_specified": 1,
     "pan_india_online": 1,
     "rewari": 2,
-    "indiana_michigan_city_catalyst_plant": 3,
+    "indiana_michigan_city_catalyst_plant": 4,
     "as_per_company": 4,
     "kirloskarvadi": 1,
     "hybrid_raipur": 1,
@@ -667,5 +667,5 @@
     "sahibabad": 2,
     "dhankawadi": 5
   },
-  "generated_at": "2026-11-04T01:35:53.169860"
+  "generated_at": "2026-11-04T01:43:28.351093"
 }
