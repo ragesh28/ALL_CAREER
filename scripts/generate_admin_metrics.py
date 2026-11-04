@@ -192,7 +192,7 @@ def get_workflows_status():
 
 def get_job_counts():
     """Extract ecosystem metrics from data/index/sidebar_counts.json and progress files."""
-    sidebar_path = "data/index/sidebar_counts.json"
+    sidebar_path = "data/web/summary.json" if os.path.exists("data/web/summary.json") else "data/index/sidebar_counts.json"
     counts = {}
     if os.path.exists(sidebar_path):
         try:
