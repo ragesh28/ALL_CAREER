@@ -132,6 +132,13 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     } finally { if (!controller.signal.aborted) setBatchLoading(false); }
   };
 
+  // Retry failed catalog pages without requiring the visitor to click again.
+  useEffect(() => {
+    if (!batchError || batchLoading || !summary) return;
+    const retry = setTimeout(() => { void requestBatch(); }, 5000);
+    return () => clearTimeout(retry);
+  }, [batchError, batchLoading, summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
+
   // Filter Toggles
   const handleToggleSource = (source: string) => {
     setSelectedSources(prev => {
@@ -712,8 +719,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       <AllJobsTopNav
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        totalJobsCount={sidebarCounts?.total_jobs ?? null}
-        catalogLoading={catalogLoading}
+        totalJobsCount={summary?.total_jobs ?? null}
+        catalogLoading={catalogLoading || !summary}
         categoryCounts={categoryCounts}
         onGoHub={onGoHub}
         onAutoApply={handleAutoApply}

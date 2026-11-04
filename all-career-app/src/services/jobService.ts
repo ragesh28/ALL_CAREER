@@ -44,8 +44,6 @@ export class JobService {
         }
         this.summary = summary;
         this.sidebarCounts = summary;
-      } else {
-        this.sidebarCounts = await fetchCatalogJson<SidebarCounts>('data/index/sidebar_counts.json');
       }
       onCounts?.(this.sidebarCounts, this.summary);
     })();
