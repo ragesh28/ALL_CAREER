@@ -58,11 +58,15 @@ def build(root=ROOT, page_size=250):
         db.execute('CREATE TABLE jobs (id TEXT PRIMARY KEY, date TEXT, payload TEXT, walkin INTEGER, city TEXT, source TEXT)')
         sources = sorted((root / 'data/jobs').glob('*/*.json'))
         sources += [root / 'data/index/walkin_jobs.json']
+        inputs_hash = hashlib.sha256()
         for path in sources:
             if not path.exists():
                 continue
             # Fail rather than publishing a silently incomplete catalog.
-            rows = json.loads(path.read_text(encoding='utf-8'))
+            raw = path.read_bytes()
+            inputs_hash.update(str(path.relative_to(root)).replace('\\', '/').encode())
+            inputs_hash.update(raw)
+            rows = json.loads(raw)
             if not isinstance(rows, list):
                 raise ValueError(f'Expected job array: {path}')
             inserts = []
@@ -77,6 +81,12 @@ def build(root=ROOT, page_size=250):
                 walkin=MAX(jobs.walkin,excluded.walkin),
                 payload=CASE WHEN excluded.walkin>jobs.walkin THEN excluded.payload ELSE jobs.payload END''', inserts)
         db.commit()
+        previous_path = out / 'summary.json'
+        if previous_path.exists():
+            previous = json.loads(previous_path.read_bytes())
+            if previous.get('inputs_hash') == inputs_hash.hexdigest() and previous.get('page_size') == page_size:
+                print('Source jobs unchanged; keeping the existing published snapshot.', flush=True)
+                return previous
         db.execute('CREATE INDEX newest ON jobs(date DESC, id)')
         db.execute('CREATE INDEX walkin_city ON jobs(walkin,city,date DESC,id)')
 
@@ -117,7 +127,7 @@ def build(root=ROOT, page_size=250):
             date_groups[(city, source, json.dumps(raw), j.get('date_posted', ''))] += 1
             cross[source][city] += 1
         summary = {
-            'schema': 1, 'generated_at': datetime.now(timezone.utc).isoformat(),
+            'schema': 1, 'generated_at': datetime.now(timezone.utc).isoformat(), 'inputs_hash': inputs_hash.hexdigest(), 'page_size': page_size,
             'total_jobs': db.execute('SELECT count(*) FROM jobs').fetchone()[0],
             'sources': counts('source'), 'locations': counts('city'),
             'walkins': {'total': db.execute('SELECT count(*) FROM jobs WHERE walkin=1').fetchone()[0], 'locations': counts('city', 'WHERE walkin=1'), 'sources': counts('source', 'WHERE walkin=1'), 'source_locations': dict(cross), 'date_groups': [[city, src, json.loads(raw), date, count] for (city, src, raw, date), count in date_groups.items()]}
