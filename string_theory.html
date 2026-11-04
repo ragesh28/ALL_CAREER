@@ -1361,6 +1361,12 @@
       }).filter(([, value]) => Number.isFinite(value)).map(([label, value]) => `${label}: ${value.toLocaleString()}`).join(' · ') : 'Run-level extraction and location data were not recorded.';
       let snapshot = metrics?.locations && typeof metrics.locations === 'object'
         ? `<p style="margin-top:6px">Run locations: ${Object.entries(metrics.locations).map(([city, count]) => `${escapeHtml(city)}: ${Number(count).toLocaleString()}`).join(' · ')}</p>` : '';
+      if (w.portalHealth && typeof w.portalHealth === 'object') {
+        snapshot += '<p style="margin-top:10px"><strong>Portal collection health</strong></p>' + Object.entries(w.portalHealth).map(([source, report]) => {
+          const probe = report.last_probe || {};
+          return `<p>${escapeHtml(source)}: ${Number(report.scraped_total || 0).toLocaleString()} extracted · ${Number(report.new_stored_total || 0).toLocaleString()} newly stored · ${escapeHtml(probe.status || 'unknown')} · HTTP ${Number(probe.http_status || 0) || 'unavailable'}</p>`;
+        }).join('');
+      }
       const sources = {
         'telegram_jobs.yml': ['telegram'],
         'google_image_extractor.yml': ['google', 'image'],

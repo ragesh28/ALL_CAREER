@@ -129,8 +129,39 @@ def d1_execute(sql, params=None):
     pass
 
 import storage
+PORTAL_HEALTH_FILE = 'job_portals_2_health.json'
+PORTAL_HEALTH = {'run_id': os.environ.get('GITHUB_RUN_ID', ''), 'updated_at': None, 'portals': {}}
+
+
+def save_portal_health():
+    PORTAL_HEALTH['updated_at'] = datetime.now().isoformat()
+    temporary = PORTAL_HEALTH_FILE + '.tmp'
+    with open(temporary, 'w', encoding='utf-8') as handle:
+        json.dump(PORTAL_HEALTH, handle, ensure_ascii=False, indent=2)
+    os.replace(temporary, PORTAL_HEALTH_FILE)
+
+
+def scrape_reported_portal(source, role, city):
+    from scripts.portal_extractors import scrape_public_listing
+    jobs, report = scrape_public_listing(source, role, city)
+    entry = PORTAL_HEALTH['portals'].setdefault(source, {'scraped_total': 0, 'new_stored_total': 0, 'requests_total': 0})
+    entry['scraped_total'] += report['scraped']
+    entry['requests_total'] += report['requests']
+    entry['last_probe'] = report
+    save_portal_health()
+    print(f"    {source}: {len(jobs)} extracted; status={report['status']}; HTTP={report['http_status']}")
+    return jobs
+
+
 def store_jobs_batch(jobs):
-    return storage.store_jobs_batch(jobs)
+    inserted = storage.store_jobs_batch(jobs)
+    if jobs:
+        entry = PORTAL_HEALTH['portals'].get(jobs[0].get('source'))
+        if entry is not None:
+            entry['new_stored_total'] += inserted
+            save_portal_health()
+    return inserted
+
 
 def cleanup_old_jobs():
     pass
@@ -414,77 +445,8 @@ def scrape_hirist(role, city):
     return jobs
 
 def scrape_workindia(role, city):
-    """Scrape WorkIndia using Playwright to bypass anti-bot, extract __ROUTE_DATA__."""
-    global browser_instance
-    print("  - Scraping WorkIndia (Playwright + __ROUTE_DATA__)...")
-    jobs = []
-    
-    EXP_MAP = {"fresher": "Fresher", "lt_1_year": "0-1 Yrs", "1_to_2_years": "1-2 Yrs",
-               "gt_2_years": "2+ Yrs", "experience": "Experienced"}
-    try:
-        role_fmt = role.lower().replace(" ", "-")
-        city_fmt = "bengaluru" if city.lower() == "bangalore" else city.lower().replace(" ", "-")
-        
-        url = f"https://www.workindia.in/{role_fmt}-jobs-in-{city_fmt}/"
-        print(f"    URL: {url}")
-        
-        page_content = ""
-        if browser_instance:
-            try:
-                context = browser_instance.new_context(
-                    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    viewport={"width": 1440, "height": 900}
-                )
-                page_obj = context.new_page()
-                page_obj.goto(url, wait_until="load", timeout=30000)
-                page_obj.wait_for_timeout(3000)
-                page_content = page_obj.content()
-                page_obj.close()
-                context.close()
-            except Exception as e:
-                print(f"    Playwright error: {e}")
-        elif curl_requests:
-            try:
-                r = curl_requests.get(url, impersonate="chrome124", timeout=30, verify=False)
-                if r.status_code == 200:
-                    page_content = r.text
-                else:
-                    print(f"    WorkIndia returned {r.status_code}")
-            except Exception as e:
-                print(f"    curl_cffi error: {e}")
-        else:
-            print("    No Playwright or curl_cffi available!")
-            return []
-        
-        if page_content:
-            match = re.search(r'__ROUTE_DATA__\s*=\s*(.*?)\s*</script>', page_content, re.DOTALL)
-            if match:
-                try:
-                    route_data = json.loads(match.group(1))
-                    data_list = route_data.get("data", [])
-                    for j in data_list:
-                        title = j.get("profile_job_title", "")
-                        company = j.get("branch_company_name", "")
-                        loc = j.get("branch_location_city_name", "").title() or city
-                        date_posted = str(j.get("created_at", ""))[:10] or datetime.now().strftime("%Y-%m-%d")
-                        job_id = j.get("id", "")
-                        job_url = f"https://www.workindia.in/jobs/{job_id}/" if job_id else ""
-                        exp_raw = j.get("job_experience", "")
-                        experience = EXP_MAP.get(exp_raw, exp_raw)
-                        if title and company:
-                            jobs.append({
-                                "title": title, "company": company, "location": loc,
-                                "date_posted": date_posted, "url": job_url,
-                                "source": "workindia", "role_search": role,
-                                "experience": experience
-                            })
-                except Exception as e:
-                    print(f"    WorkIndia JSON parse error: {e}")
-            else:
-                print("    No __ROUTE_DATA__ found in page")
-    except Exception as e:
-        print(f"    WorkIndia error: {e}")
-    return jobs
+    return scrape_reported_portal('workindia', role, city)
+
 
 def scrape_internshala(role, city):
     print("  - Scraping Internshala (Playwright)...")
@@ -562,100 +524,8 @@ def scrape_internshala(role, city):
     return jobs
 
 def scrape_freshersworld(role, city):
-    print("  - Scraping Freshersworld (Playwright)...")
-    global browser_instance
-    jobs = []
-    try:
-        role_fmt = role.lower().replace(" ", "-")
-        city_fmt = city.lower().replace(" ", "-")
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-        }
-        for page in range(1, 5):
-            if page == 1:
-                url = f"https://www.freshersworld.com/jobs/jobsearch/{role_fmt}-jobs-in-{city_fmt}"
-            else:
-                offset = (page - 1) * 20
-                url = f"https://www.freshersworld.com/jobs/jobsearch/{role_fmt}-jobs-in-{city_fmt}?limit=20&offset={offset}"
-                
-            print(f"    Page {page}: {url}")
-            
-            page_content = ""
-            if browser_instance:
-                try:
-                    context = browser_instance.new_context(
-                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-                        viewport={"width": 1440, "height": 900}
-                    )
-                    page_obj = context.new_page()
-                    page_obj.goto(url, wait_until="load", timeout=30000)
-                    page_obj.wait_for_timeout(2000)
-                    page_content = page_obj.content()
-                    page_obj.close()
-                    context.close()
-                except Exception as e:
-                    print(f"    Playwright error: {e}")
-            else:
-                r = requests.get(url, headers=headers, timeout=20)
-                if r.status_code == 200:
-                    page_content = r.text
-                else:
-                    print(f"    Freshersworld page {page} returned {r.status_code}")
-                    break
-            
-            if page_content:
-                soup = BeautifulSoup(page_content, 'html.parser')
-                # Only use div.job-container to avoid duplicate cards
-                # (div.job-desc-block is a child of job-container, matching both creates duplicates)
-                cards = soup.select('div.job-container')
-                if not cards:
-                    break
-                for card in cards:
-                    title_el = card.select_one('span.wrap-title')
-                    if not title_el:
-                        title_el = card.select_one('div.job-desc-title')
-                    company_el = card.select_one('h3.latest-jobs-title, div.job-desc-company')
-                    loc_el = card.select_one('span.job-location')
-                    
-                    title = title_el.text.strip() if title_el else ""
-                    company = company_el.text.strip() if company_el else ""
-                    loc = loc_el.text.strip() if loc_el else city
-                    
-                    # Clean title: remove trailing "Less" or "More" button text
-                    import re as _re
-                    title = _re.sub(r'\s*(Less|More|LessMore)\s*$', '', title).strip()
-                    # Remove " at CityName" suffix from title if present
-                    title = _re.sub(r'\s+at\s+\w+$', '', title).strip()
-                    
-                    # Get the CORRECT job URL: the "View & Apply" link (not the city link)
-                    # The city link is first, the actual job link contains '/jobs/' in href
-                    job_url = ""
-                    all_links = card.find_all('a', href=True)
-                    for a_tag in all_links:
-                        href = a_tag.get('href', '')
-                        if '/jobs/' in href and 'jobsearch' not in href and 'category' not in href:
-                            job_url = href
-                            break
-                    
-                    # Ensure full URL
-                    if job_url and not job_url.startswith('http'):
-                        job_url = f"https://www.freshersworld.com{job_url}"
-                    
-                    # Experience
-                    exp_el = card.select_one('span.experience, [class*="experience"]')
-                    experience = exp_el.get_text(strip=True) if exp_el else ""
-                    
-                    if title and company and job_url:
-                        jobs.append({
-                            "title": title, "company": company, "location": loc,
-                            "date_posted": datetime.now().strftime("%Y-%m-%d"), 
-                            "url": job_url, "source": "freshersworld", "role_search": role,
-                            "experience": experience
-                        })
-            time.sleep(1)
-    except Exception as e:
-        print(f"    Freshersworld error: {e}")
-    return jobs
+    return scrape_reported_portal('freshersworld', role, city)
+
 
 def scrape_glassdoor(role, city):
     print("  - Scraping Glassdoor (via GraphQL API)...")
@@ -851,138 +721,8 @@ def scrape_glassdoor(role, city):
     return unique_jobs
 
 def scrape_apna(role, city):
-    print("  - Scraping Apna (via API)...")
-    role_enc = role.replace(" ", "-").lower()
-    
-    city_lower = city.lower().split(",")[0].strip()
-    city_slug = "bengaluru" if city_lower == "bangalore" else city_lower.replace(" ", "-")
-    url = f"https://apna.co/jobs/{role_enc}-jobs-in-{city_slug}"
-    jobs = []
-    
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Language": "en-IN,en;q=0.9",
-    }
-    
-    cutoff_date = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
-    
-    try:
-        r = requests.get(url, headers=headers, timeout=20, verify=False)
-        city_id = None
-        state_name = None
-        
-        if r.status_code == 200:
-            m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', r.text)
-            if m:
-                try:
-                    js_data = json.loads(m.group(1))
-                    pageProps = js_data.get("props", {}).get("pageProps", {})
-                    
-                    filter_obj = pageProps.get("filter", {})
-                    city_id = filter_obj.get("nb_location_city_id")
-                    state_name = filter_obj.get("state_name")
-                    
-                    # Resolve state_name from cityList if not present in filter
-                    if city_id and not state_name:
-                        for c_item in pageProps.get("cityList", []):
-                            if c_item.get("id") == city_id:
-                                state_name = c_item.get("state")
-                                break
-                                
-                    if not city_id and "city" in pageProps.get("filters", {}):
-                        city_list = pageProps.get("filters", {}).get("city", [])
-                        if city_list:
-                            city_id = city_list[0].get("id")
-                            state_name = city_list[0].get("state")
-                            
-                    results = pageProps.get("jobs", []) or pageProps.get("initialState", {}).get("jobs", [])
-                    for item in results:
-                        title = (item.get("title") or item.get("jobTitle", "")).strip()
-                        company = (item.get("companyName") or item.get("company", {}).get("name", "")).strip()
-                        loc = item.get("location") or item.get("locationName") or city
-                        date_posted = item.get("postedDate") or item.get("created")
-                        date_str = parse_date_posted(date_posted)
-                        if date_str < cutoff_date:
-                            continue
-                        job_url = item.get("jobUrl") or item.get("url")
-                        if not job_url and item.get("id"):
-                            job_url = f"https://apna.co/job/{item.get('id')}"
-                        if job_url and job_url.startswith("/"):
-                            job_url = "https://apna.co" + job_url
-                        # Experience
-                        experience = item.get("experience_in_years", "")
-                        min_e = item.get("min_experience")
-                        max_e = item.get("max_experience")
-                        if not experience and min_e is not None:
-                            experience = f"{min_e}-{max_e} Yrs"
-                        if title and job_url:
-                            jobs.append({
-                                "title": title, "company": company, "location": loc,
-                                "date_posted": date_str, "url": job_url,
-                                "source": "apna", "role_search": role,
-                                "experience": experience
-                            })
-                except Exception as je:
-                    print(f"    Apna page 1 JSON parse error: {je}")
-        else:
-            print(f"    Apna landing page returned {r.status_code}")
-            
-        if city_id and state_name:
-            api_headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                "Accept": "application/json, text/plain, */*",
-                "Origin": "https://apna.co",
-                "Referer": url,
-            }
-            state_enc = urllib.parse.quote(state_name)
-            
-            for page in range(2, 5):
-                api_url = f"https://production.apna.co/user-profile-orchestrator/public/v1/jobs/?nb_location_city_id={city_id}&state_name={state_enc}&posted_in=72&page={page}&page_size=25"
-                print(f"    Page {page}: {api_url}")
-                try:
-                    resp = requests.get(api_url, headers=api_headers, timeout=20, verify=False)
-                    if resp.status_code == 200:
-                        api_data = resp.json()
-                        api_jobs = api_data.get("results", {}).get("jobs", [])
-                        if not api_jobs:
-                            break
-                        for item in api_jobs:
-                            title = (item.get("title") or "").strip()
-                            company = (item.get("organization", {}) or {}).get("name", "").strip()
-                            loc = item.get("location_name") or city
-                            date_posted = item.get("created_on") or item.get("last_updated")
-                            date_str = parse_date_posted(date_posted)
-                            if date_str < cutoff_date:
-                                continue
-                            job_url = item.get("public_url_v2") or item.get("public_url")
-                            if not job_url and item.get("id"):
-                                job_url = f"https://apna.co/job/{item.get('id')}"
-                            # Experience
-                            experience = item.get("experience_in_years", "")
-                            min_e = item.get("min_experience")
-                            max_e = item.get("max_experience")
-                            if not experience and min_e is not None:
-                                experience = f"{min_e}-{max_e} Yrs"
-                            if title and job_url:
-                                jobs.append({
-                                    "title": title, "company": company, "location": loc,
-                                    "date_posted": date_str, "url": job_url,
-                                    "source": "apna", "role_search": role,
-                                    "experience": experience
-                                })
-                    else:
-                        print(f"    Apna API page {page} returned {resp.status_code}")
-                        break
-                except Exception as ae:
-                    print(f"    Apna API page {page} error: {ae}")
-                    break
-                time.sleep(1)
-        else:
-            print("    Warning: Could not extract Apna city/state ID from landing page. Pagination skipped.")
-    except Exception as e:
-        print(f"    Apna scraper error: {e}")
-    return jobs
+    return scrape_reported_portal('apna', role, city)
+
 
 # ---------------------------------------------------------------------------
 # MAIN LOOP

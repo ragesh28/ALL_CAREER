@@ -187,6 +187,14 @@ def get_workflows_status():
             "newJobsScraped": run_metrics.get("newJobsStored") if run_metrics else None,
             "jobsDeleted": None
         })
+        if wf_file == 'job_portal_jobs_2.yml' and run_id:
+            try:
+                with open('job_portals_2_health.json', encoding='utf-8') as fh:
+                    portal_report = json.load(fh)
+                if str(portal_report.get('run_id')) == str(run_id):
+                    results[-1]['portalHealth'] = portal_report.get('portals', {})
+            except (OSError, ValueError, TypeError):
+                pass
 
     return results
 
