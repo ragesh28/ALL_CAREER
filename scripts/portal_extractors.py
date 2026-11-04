@@ -53,6 +53,8 @@ def parse_listing(html, source, city, role=''):
             rows = payload.get('data', [])
             if isinstance(rows, dict):
                 rows = rows.get('jobs') or rows.get('results') or []
+            if not isinstance(rows, list):
+                continue
             for item in rows:
                 if not isinstance(item, dict):
                     continue
@@ -80,10 +82,14 @@ def parse_listing(html, source, city, role=''):
                 continue
             for item in structured(payload):
                 organization = item.get('hiringOrganization') or {}
+                if not isinstance(organization, dict):
+                    continue
                 location = item.get('jobLocation') or {}
                 if isinstance(location, list):
                     location = location[0] if location else {}
                 address = location.get('address') or {} if isinstance(location, dict) else {}
+                if not isinstance(address, dict):
+                    address = {}
                 if item.get('title') and organization.get('name') and item.get('url'):
                     jobs.append({'title': item['title'], 'company': organization['name'], 'location': address.get('addressLocality') or city, 'date_posted': str(item.get('datePosted') or '')[:10], 'fetched_at': discovered, 'url': item['url'], 'source': source, 'role_search': role})
     return list({j['url']: j for j in jobs}.values())
