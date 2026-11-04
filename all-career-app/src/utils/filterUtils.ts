@@ -242,13 +242,14 @@ export function getWalkinDateObjects(job: any): WalkinDateItem[] {
 
   let rawDateStr = String(job.walkin_date || '').trim();
   if (!rawDateStr && Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) {
-    rawDateStr = job.walkin_dates.join(' ');
+    const dates = job.walkin_dates.flatMap((raw: string) => parseWalkinDateObjects(raw, job.date_posted || job.fetchedAt || job.date));
+    return [...new Map(dates.map((item: WalkinDateItem) => [item.label, item])).values()] as WalkinDateItem[];
   }
   if (!rawDateStr) {
     rawDateStr = extractWalkinDateFromText(job.title) || extractWalkinDateFromText(job.description) || '';
   }
   if (!rawDateStr) return [];
-  return parseWalkinDateObjects(rawDateStr, job.fetchedAt || job.date);
+  return parseWalkinDateObjects(rawDateStr, job.date_posted || job.fetchedAt || job.date);
 }
 
 export function getJobWalkinDates(job: any): string[] {

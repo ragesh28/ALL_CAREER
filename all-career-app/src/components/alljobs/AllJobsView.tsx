@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useDeferredValue, startTransition } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useDeferredValue, startTransition } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Job, SidebarCounts } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
@@ -9,6 +9,7 @@ import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
 import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
+import { CatalogSummary, catalogCity } from '../../services/catalogTypes';
 
 interface AllJobsViewProps {
   onGoHub: () => void;
@@ -20,6 +21,13 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const [sidebarCounts, setSidebarCounts] = useState<SidebarCounts | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState<CatalogSummary | null>(null);
+  const [summaryFacets, setSummaryFacets] = useState<{ total: number; dates: Record<string, number>; locations: Record<string, number>; sources: Record<string, number> } | null>(null);
+  const [batchLoading, setBatchLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [batchError, setBatchError] = useState(false);
+  const summaryWorker = useRef<Worker | null>(null);
+  const workerRequest = useRef(0);
 
   // Filters State
   const [searchTerm, setSearchTerm] = useState(initialSearch || '');
@@ -63,10 +71,15 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   useEffect(() => {
     let isMounted = true;
     jobService.initCatalog(incoming => {
-      if (isMounted && incoming.length > 0) {
+      if (isMounted) {
         setJobs(incoming);
         setLoading(false);
       }
+    }, (counts, nextSummary) => {
+      if (!isMounted) return;
+      setSidebarCounts(counts);
+      setSummary(nextSummary);
+      setCatalogLoading(false);
     }).then(data => {
       if (!isMounted) return;
       setCatalogLoading(false);
@@ -80,6 +93,43 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       isMounted = false;
     };
   }, []);
+
+  // Walk-in dates are computed from the compact summary off the UI thread.
+  useEffect(() => {
+    const worker = new Worker(new URL('../../services/walkinSummary.worker.ts', import.meta.url), { type: 'module' });
+    summaryWorker.current = worker;
+    worker.onmessage = ({ data }) => {
+      if (data.id === workerRequest.current) setSummaryFacets(data);
+    };
+    return () => { worker.terminate(); summaryWorker.current = null; };
+  }, []);
+  useEffect(() => {
+    if (!summary) return;
+    const id = ++workerRequest.current;
+    summaryWorker.current?.postMessage({ id, summary, locations: [...selectedLocations], sources: [...selectedSources], dates: [...selectedWalkinDates] });
+  }, [summary, selectedLocations, selectedSources, selectedWalkinDates]);
+
+  const requestBatch = async () => {
+    setBatchLoading(true);
+    try {
+      const result = await jobService.loadMore({ sources: [...selectedSources], locations: [...selectedLocations], walkin: walkinOnly || selectedWalkinDates.size > 0 });
+      setJobs(result.jobs);
+      setHasMore(result.hasMore);
+      setBatchError(result.error);
+    } finally { setBatchLoading(false); }
+  };
+  useEffect(() => {
+    if (!summary) return;
+    let active = true;
+    const timer = setTimeout(async () => {
+      setBatchLoading(true);
+      try {
+        const result = await jobService.loadMore({ sources: [...selectedSources], locations: [...selectedLocations], walkin: walkinOnly || selectedWalkinDates.size > 0 });
+        if (active) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
+      } finally { if (active) setBatchLoading(false); }
+    }, 150);
+    return () => { active = false; clearTimeout(timer); };
+  }, [summary, selectedSources, selectedLocations, walkinOnly, selectedWalkinDates]);
 
   // Filter Toggles
   const handleToggleSource = (source: string) => {
@@ -581,6 +631,32 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     (searchTerm.trim() ? 1 : 0);
 
   const hasActiveFilters = activeFilterCount > 0;
+  const canUseWalkinSummary = !!summary && !searchTerm.trim() && selectedRoles.size === 0 && selectedSkills.size === 0 && selectedCompanies.size === 0 && selectedDateFilter === 'all' && expValue < 0 && selectedCategory === 'all';
+  const catalogFacets = useMemo(() => {
+    const locations: Record<string, number> = {}, sources: Record<string, number> = {};
+    const cities = [...selectedLocations].map(catalogCity);
+    for (const [source, locs] of Object.entries(summary?.source_locations || {})) {
+      const sourceMatch = !selectedSources.size || [...selectedSources].some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source)));
+      for (const [city, count] of Object.entries(locs)) {
+        if (sourceMatch) locations[city] = (locations[city] || 0) + count;
+        if (!cities.length || cities.includes(city)) sources[source] = (sources[source] || 0) + count;
+      }
+    }
+    return { locations, sources };
+  }, [summary, selectedLocations, selectedSources]);
+  const useWalkinFacets = canUseWalkinSummary && (walkinOnly || selectedWalkinDates.size > 0);
+  const displayedSources = canUseWalkinSummary ? (useWalkinFacets ? summaryFacets?.sources || {} : catalogFacets.sources) : dynamicCounts.srcCounts;
+  const sourceFacets = { ...displayedSources };
+  sourceFacets.telegram = Object.entries(displayedSources).filter(([s]) => s.includes('telegram')).reduce((sum, [, n]) => sum + n, 0);
+  if (canUseWalkinSummary) sourceFacets.other = Object.entries(displayedSources).filter(([s]) => s === 'other' || isOtherSource(s)).reduce((sum, [, n]) => sum + n, 0);
+  const walkinDateOptions = useMemo(() => {
+    const dates = summaryFacets?.dates || {};
+    return Object.entries(dates).map(([label, count]) => ({ id: label, label, count })).sort((a, b) => {
+      const date = (label: string) => { const [month, day] = label.split(' '); return (MONTH_SHORT.indexOf(month) * 31 + Number(day) - (new Date().getMonth() * 31 + new Date().getDate()) + 372) % 372; };
+      return date(a.id) - date(b.id);
+    });
+  }, [summaryFacets]);
+  const walkinLocations = summaryFacets ? Object.fromEntries(Object.entries(summaryFacets.locations).map(([city, count]) => [city, count])) : summary?.walkins.locations;
 
   // Instantaneous reset: clears all filter states in a single atomic batch
   const clearAllFilters = () => {
@@ -643,19 +719,25 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           onToggleWalkin={handleToggleWalkin}
           selectedWalkinDates={selectedWalkinDates}
           onToggleWalkinDate={handleToggleWalkinDate}
-          sourceCounts={dynamicCounts.srcCounts}
-          locationCounts={hasActiveFilters ? dynamicCounts.locCounts : sidebarCounts?.locations}
-          locationCountsAreCatalog={!hasActiveFilters}
+          sourceCounts={sourceFacets}
+          sourceCountsAreCatalog={canUseWalkinSummary}
+          locationCounts={useWalkinFacets ? walkinLocations : canUseWalkinSummary ? catalogFacets.locations : hasActiveFilters ? dynamicCounts.locCounts : sidebarCounts?.locations}
+          locationCountsAreCatalog={!hasActiveFilters || canUseWalkinSummary}
           roleCounts={dynamicCounts.roleCounts}
           skillCounts={dynamicCounts.skillCounts}
-          walkinCount={dynamicCounts.walkinTotalCount}
-          walkinDateCounts={dynamicCounts.walkinDateCounts}
-          walkinDateOptions={dynamicCounts.walkinDateOptions}
+          walkinCount={catalogLoading ? undefined : canUseWalkinSummary ? (summaryFacets?.total ?? (selectedLocations.size === 0 && selectedSources.size === 0 ? summary?.walkins.total : undefined)) : dynamicCounts.walkinTotalCount}
+          walkinSummaryLoading={catalogLoading || (canUseWalkinSummary && !summaryFacets)}
+          walkinCountsAreCatalog={canUseWalkinSummary}
+          walkinDateCounts={canUseWalkinSummary ? summaryFacets?.dates : dynamicCounts.walkinDateCounts}
+          walkinDateOptions={canUseWalkinSummary ? walkinDateOptions : dynamicCounts.walkinDateOptions}
           sidebarCounts={sidebarCounts}
         />
 
         {/* Right Main Grid */}
         <main className="alljobs-main">
+          <p role="status" style={{ color: '#94a3b8', fontSize: '0.8rem', margin: '0 0 12px' }}>
+            {filteredJobs.length.toLocaleString()} matching jobs loaded · Newest first · More jobs load in small batches
+          </p>
           {/* Category count pills */}
           <CategoryCountPills
             pageCounts={pageCategoryCounts}
@@ -675,7 +757,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
             </div>
           ) : filteredJobs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
-              No jobs found matching your criteria.
+              {batchLoading ? 'Loading matching jobs…' : hasMore ? 'No matches in the loaded batch. Load more jobs to continue searching.' : 'No jobs found matching your criteria.'}
             </div>
           ) : (
             <>
@@ -752,6 +834,11 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
               )}
             </>
           )}
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
+            {(hasMore || batchError) && <button type="button" className="page-btn" disabled={batchLoading} onClick={requestBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
+              {batchLoading ? 'Loading jobs…' : batchError ? 'Retry loading jobs' : 'Load more matching jobs'}
+            </button>}
+          </div>
         </main>
       </div>
     </div>

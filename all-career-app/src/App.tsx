@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { HubView } from './components/hub/HubView';
 import { AllJobsView } from './components/alljobs/AllJobsView';
-import { PracticeView } from './components/practice/PracticeView';
-import { BigCompanyView } from './components/bigcompany/BigCompanyView';
-import { BigCompanyJobsView } from './components/bigcompany/BigCompanyJobsView';
 import { AutoApplyHUD } from './components/common/AutoApplyHUD';
 import './styles/all_career_theme.css';
+
+const PracticeView = lazy(() => import('./components/practice/PracticeView').then(m => ({ default: m.PracticeView })));
+const BigCompanyView = lazy(() => import('./components/bigcompany/BigCompanyView').then(m => ({ default: m.BigCompanyView })));
+const BigCompanyJobsView = lazy(() => import('./components/bigcompany/BigCompanyJobsView').then(m => ({ default: m.BigCompanyJobsView })));
 
 export type ViewType = 'hub' | 'all_jobs' | 'practice' | 'big_company_jobs' | 'career_explorer';
 
@@ -48,6 +49,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="all-career-root">
+      <Suspense fallback={<div role="status" style={{ padding: 32, color: '#94a3b8' }}>Loading section…</div>}>
       {/* 1. Hub / Landing Scene (Screenshots 1 & 2) */}
       {currentView === 'hub' && (
         <HubView onNavigate={navigateTo} />
@@ -88,6 +90,7 @@ export const App: React.FC = () => {
       )}
 
       {/* Global Auto Apply Real-Time HUD & Extension Modals */}
+      </Suspense>
       <AutoApplyHUD />
     </div>
   );

@@ -1,7 +1,8 @@
+import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, catalogCity } from './catalogTypes';
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
 import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../utils/filterUtils';
 import { formatWalkinDate } from '../utils/companyLogos';
-import { fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
+import { fetchCatalogJson, fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
 
 export class JobService {
   private manifestData: ManifestData | null = null;
@@ -15,73 +16,65 @@ export class JobService {
     others: []
   };
 
-  async initCatalog(onProgress?: (jobs: Job[]) => void): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
-    try {
-      const [manifest, counts, previewRows, roleCategories] = await Promise.all([
-        fetchJsonWithFallback<ManifestData>('data/index/manifest.json', ['all-career-app/public/data/index/manifest.json']),
-        fetchJsonWithFallback<SidebarCounts>('data/index/sidebar_counts.json', ['all-career-app/public/data/index/sidebar_counts.json']),
-        fetchJsonWithFallback<Job[]>('data/index/latest_preview_100.json', [
-          'all-career-app/public/data/index/latest_preview_100.json',
-          'latest_jobs_100.json',
-          'all-career-app/public/latest_jobs_100.json',
-          './latest_jobs_100.json'
-        ]),
-        fetchJsonWithFallback<Record<string, string[]>>('data/index/role_categories.json', ['all-career-app/public/data/index/role_categories.json'])
-      ]);
+  private summary: CatalogSummary | null = null;
+  private browserCatalog: BrowserCatalog | null = null;
+  private batchLoading = false;
 
-      if (manifest) this.manifestData = manifest;
-      if (counts) this.sidebarCounts = counts;
-      if (roleCategories && typeof roleCategories === 'object') this.roleCategoriesDict = roleCategories;
-
-      if (Array.isArray(previewRows) && previewRows.length > 0) {
-        this.ingestJobs(previewRows);
-        if (onProgress) onProgress(this.getAllJobs());
+  async initCatalog(
+    onProgress?: (jobs: Job[]) => void,
+    onCounts?: (counts: SidebarCounts | null, summary: CatalogSummary | null) => void
+  ): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
+    // These tasks publish independently: a slow preview cannot hide counts, and
+    // counts never wait for walk-in records, manifests, categories or ATS dumps.
+    const previewTask = (async () => {
+      const rows = await fetchCatalogJson<Job[]>('data/web/latest.json')
+        ?? await fetchCatalogJson<Job[]>('data/index/latest_preview_100.json');
+      if (Array.isArray(rows)) this.ingestJobs(rows);
+      onProgress?.(this.getAllJobs());
+    })();
+    const countsTask = (async () => {
+      const summary = await fetchCatalogJson<CatalogSummary>('data/web/summary.json');
+      if (summary?.schema === 1 && summary.walkins) {
+        this.summary = summary;
+        this.sidebarCounts = summary;
+      } else {
+        this.sidebarCounts = await fetchCatalogJson<SidebarCounts>('data/index/sidebar_counts.json');
       }
+      onCounts?.(this.sidebarCounts, this.summary);
+    })();
+    await Promise.allSettled([previewTask, countsTask]);
+    return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
+  }
 
-      // Load walk-ins immediately
-      await this.fetchWalkinJobs();
-      if (onProgress) onProgress(this.getAllJobs());
-
-      // Stream full initial_jobs in background without blocking initial render
-      fetchJsonWithFallback<Job[]>('data/initial_jobs.json', [
-        'all-career-app/public/data/initial_jobs.json',
-        './data/initial_jobs.json',
-        '/ALL_CAREER/data/initial_jobs.json',
-        'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/initial_jobs.json'
-      ])
-        .then((fullRows) => {
-          if (Array.isArray(fullRows) && fullRows.length > 0) {
-            this.ingestJobs(fullRows);
-            if (onProgress) onProgress(this.getAllJobs());
-          }
-        })
-        .catch(err => console.warn('initial_jobs load note:', err));
-
-      // Stream big_company_jobs in background for direct ATS opportunities (Greenhouse, Lever, Workday)
-      fetchJsonWithFallback<Job[]>('data/big_company_jobs.json', [
-        'all-career-app/public/data/big_company_jobs.json',
-        './data/big_company_jobs.json',
-        'workday_scraper/big_company_jobs.json',
-        'https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/data/big_company_jobs.json'
-      ])
-        .then((bigCompanyRows) => {
-          if (Array.isArray(bigCompanyRows) && bigCompanyRows.length > 0) {
-            const mapped = bigCompanyRows.map(bj => ({
-              ...bj,
-              url: (bj as any).apply_url || bj.url || '#',
-              source: bj.source || 'other'
-            }));
-            this.ingestJobs(mapped);
-            if (onProgress) onProgress(this.getAllJobs());
-          }
-        })
-        .catch(err => console.warn('big_company_jobs load note:', err));
-
-      return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
-    } catch (err) {
-      console.warn('Error loading initial job preview:', err);
-      return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
+  private async catalog(): Promise<BrowserCatalog | null> {
+    if (!this.browserCatalog && this.summary?.manifest) {
+      this.browserCatalog = await fetchCatalogJson<BrowserCatalog>(this.summary.manifest);
     }
+    return this.browserCatalog;
+  }
+
+  async loadMore(filters: CatalogFilters): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
+    this.batchLoading = true;
+    try {
+      const catalog = await this.catalog();
+      if (!catalog) return { jobs: this.getAllJobs(), hasMore: false, error: true };
+      const cities = filters.locations.map(catalogCity);
+      let pages: CatalogPage[] = filters.walkin
+        ? Object.entries(catalog.walkins).filter(([city]) => !cities.length || cities.includes(city)).flatMap(([, rows]) => rows)
+        : catalog.pages;
+      pages = pages.filter(page => (!cities.length || page.locations.some(city => cities.includes(city))) &&
+        (!filters.sources.length || page.sources.some(source => filters.sources.some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source))))));
+      if (filters.walkin) pages = pages.slice().sort((a, b) => b.newest.localeCompare(a.newest));
+      const pending = pages.filter(page => !this.loadedShards.has(page.path));
+      const page = pending[0];
+      if (!page) return { jobs: this.getAllJobs(), hasMore: false, error: false };
+      const rows = await fetchCatalogJson<Job[]>(page.path);
+      if (!Array.isArray(rows)) return { jobs: this.getAllJobs(), hasMore: true, error: true };
+      this.ingestJobs(rows);
+      // Failed pages remain retryable.
+      this.loadedShards.add(page.path);
+      return { jobs: this.getAllJobs(), hasMore: pending.length > 1, error: false };
+    } finally { this.batchLoading = false; }
   }
 
   async fetchWalkinJobs(): Promise<Job[]> {
@@ -130,7 +123,8 @@ export class JobService {
         r.category = this.classifyRoleCategory(titleStr || r.role || '');
 
         // Precompute high-speed indexed properties for 0ms filtering & search
-        const dateStr = (r.fetchedAt || r.date || '').slice(0, 10);
+        r.date = String((r as any).date_posted || r.fetchedAt || (r as any).fetched_at || r.date || '');
+        const dateStr = r.date.slice(0, 10);
         let daysAgo: number | null = null;
         if (dateStr) {
           const jd = new Date(dateStr);
@@ -176,8 +170,8 @@ export class JobService {
   getAllJobs(): Job[] {
     const list = Array.from(this.allJobsMap.values());
     list.sort((a, b) => {
-      const da = a.fetchedAt || a.date || '';
-      const db = b.fetchedAt || b.date || '';
+      const da = String((a as any).date_posted || a.fetchedAt || a.date || '');
+      const db = String((b as any).date_posted || b.fetchedAt || b.date || '');
       if (da !== db) return db.localeCompare(da);
       return (Number(b._id || b.id || 0)) - (Number(a._id || a.id || 0));
     });

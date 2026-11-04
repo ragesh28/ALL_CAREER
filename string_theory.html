@@ -1371,21 +1371,23 @@
       }[file];
       if (sources) {
         try {
-          walkinSnapshotPromise ||= fetch('data/index/walkin_jobs.json').then(r => {
+          walkinSnapshotPromise ||= fetch('data/web/summary.json').then(r => {
             if (!r.ok) throw new Error('Walk-in index unavailable');
             return r.json();
           }).catch(e => { walkinSnapshotPromise = null; throw e; });
-          const jobs = await walkinSnapshotPromise;
-          const matches = jobs.filter(j => sources.some(source => String(j.source || '').toLowerCase().includes(source)));
+          const summary = await walkinSnapshotPromise;
           const locations = {};
-          for (const j of matches) {
-            const city = typeof j.location === 'string' ? j.location : (j.location?.city || 'Unknown');
-            const key = city.trim() || 'Unknown';
-            locations[key] = (locations[key] || 0) + 1;
+          let matchedCount = 0;
+          for (const [source, cities] of Object.entries(summary.walkins?.source_locations || {})) {
+            if (!sources.some(s => source.includes(s))) continue;
+            for (const [city, count] of Object.entries(cities)) {
+              locations[city] = (locations[city] || 0) + Number(count);
+              matchedCount += Number(count);
+            }
           }
           const top = Object.entries(locations).sort((a, b) => b[1] - a[1]).slice(0, 12)
             .map(([city, count]) => `${escapeHtml(city)}: ${count.toLocaleString()}`).join(' · ');
-          snapshot += `<p style="margin-top:10px"><strong>Walk-in index snapshot:</strong> ${matches.length.toLocaleString()} records attributed by source. These are catalog totals, not jobs from this run.</p><p style="margin-top:6px">${top || 'No locations available.'}</p>`;
+          snapshot += `<p style="margin-top:10px"><strong>Walk-in index snapshot:</strong> ${matchedCount.toLocaleString()} records attributed by source. These are catalog totals, not jobs from this run.</p><p style="margin-top:6px">${top || 'No locations available.'}</p>`;
         } catch {
           snapshot += '<p style="margin-top:10px">Walk-in index is unavailable.</p>';
         }

@@ -22,6 +22,37 @@ export const resolveAssetUrl = (path: string): string => {
   return `${base}/${clean}`;
 };
 
+// Catalog requests have one published location and one bounded fallback.
+const catalogRequests = new Map<string, Promise<any>>();
+export const fetchCatalogJson = <T,>(path: string): Promise<T | null> => {
+  if (catalogRequests.has(path)) return catalogRequests.get(path)!;
+  const task = (async () => {
+    const clean = path.replace(/^\/+/, '');
+    for (const url of [resolveAssetUrl(clean), `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`]) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        if (res.ok) {
+          if (clean.endsWith('.gz')) {
+            const buffer = await res.arrayBuffer();
+            const bytes = new Uint8Array(buffer);
+            // Some static hosts send Content-Encoding and the browser unwraps it.
+            if (bytes[0] !== 31 || bytes[1] !== 139) return JSON.parse(new TextDecoder().decode(buffer)) as T;
+            return await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).json() as T;
+          }
+          return await res.json() as T;
+        }
+      } catch { /* A timeout or a failed host may use the fallback. */ }
+      finally { clearTimeout(timeout); }
+    }
+    catalogRequests.delete(path);
+    return null;
+  })();
+  catalogRequests.set(path, task);
+  return task;
+};
+
 export const fetchJsonWithFallback = async <T = any>(
   primaryPath: string,
   fallbackPaths: string[] = []

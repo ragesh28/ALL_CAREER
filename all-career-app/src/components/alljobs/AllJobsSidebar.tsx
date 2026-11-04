@@ -32,11 +32,14 @@ interface AllJobsSidebarProps {
   onToggleWalkinDate: (date: string) => void;
   // Dynamic counts
   sourceCounts: Record<string, number>;
+  sourceCountsAreCatalog?: boolean;
   locationCounts?: Record<string, number>;
   locationCountsAreCatalog?: boolean;
   roleCounts?: Record<string, number>;
   skillCounts?: Record<string, number>;
   walkinCount?: number;
+  walkinSummaryLoading?: boolean;
+  walkinCountsAreCatalog?: boolean;
   walkinDateCounts?: Record<string, number>;
   walkinDateOptions?: { id: string; label: string; count: number }[];
   sidebarCounts?: SidebarCounts | null;
@@ -62,11 +65,14 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   selectedWalkinDates,
   onToggleWalkinDate,
   sourceCounts,
+  sourceCountsAreCatalog,
   locationCounts,
   locationCountsAreCatalog,
   roleCounts,
   skillCounts,
   walkinCount,
+  walkinSummaryLoading,
+  walkinCountsAreCatalog,
   walkinDateCounts,
   walkinDateOptions,
   sidebarCounts
@@ -340,9 +346,13 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
           <div className="filter-body-inner" id="source-options">
             {PORTALS.map(item => {
               const isSelected = selectedSources.has(item.id);
-              const hasNarrowingFilter = selectedLocations.size > 0 || selectedRoles.size > 0 || selectedSkills.size > 0 || (expValue !== undefined && expValue >= 0);
-              const fullCatalogCount = sidebarCounts?.sources?.[item.id] ?? item.defaultCount;
-              const count = hasNarrowingFilter ? (sourceCounts[item.id] ?? fullCatalogCount) : fullCatalogCount;
+              const hasNarrowingFilter = selectedLocations.size > 0 || selectedRoles.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || expValue >= 0;
+              const catalogSources = sidebarCounts?.sources;
+              const fullCatalogCount = !catalogSources ? null : item.id === 'other'
+                ? Object.entries(catalogSources).filter(([source]) => !PORTALS.some(item => item.id === source) && !source.includes('telegram')).reduce((sum, [, count]) => sum + count, 0)
+                : item.id === 'telegram' ? Object.entries(catalogSources).filter(([source]) => source.includes('telegram')).reduce((sum, [, count]) => sum + count, 0)
+                : (catalogSources[item.id] ?? 0);
+              const count = sourceCountsAreCatalog || hasNarrowingFilter ? (sourceCounts[item.id] ?? 0) : fullCatalogCount;
               return (
                 <div
                   key={item.id}
@@ -375,7 +385,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                   )}
                   <span className="option-label">{item.label}</span>
                   <span className="source-count" id={`cnt-src-${item.id}`}>
-                    ({count.toLocaleString()})
+                    {count === null ? 'Loading…' : `(${count.toLocaleString()})`}
                   </span>
                 </div>
               );
@@ -437,8 +447,8 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
               {locationsList.map(item => {
                 const isSelected = selectedLocations.has(item.id);
                 const count = locationCountsAreCatalog
-                  ? (locationCounts?.[item.id.toLowerCase()] === undefined ? null :
-                    locationCounts[item.id.toLowerCase()] + (item.id === 'Bangalore' ? (locationCounts.bengaluru ?? 0) : 0))
+                  ? (!locationCounts ? null :
+                    (locationCounts[item.id.toLowerCase()] ?? 0) + (item.id === 'Bangalore' ? (locationCounts.bengaluru ?? 0) : 0))
                   : (locationCounts?.[item.id] ?? null);
                 return (
                   <div
@@ -702,10 +712,10 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 </svg>
               </div>
               <span className="option-label"><Route size={14} aria-hidden="true" /> All Walk-ins</span>
-              <span className="source-count">({(walkinCount ?? 0).toLocaleString()})</span>
+              <span className="source-count">{walkinCount === undefined ? (walkinSummaryLoading ? 'Loading…' : 'Unavailable') : `(${walkinCount.toLocaleString()})`}</span>
             </div>
             <div style={{ fontSize: '0.72rem', color: '#94a3b8', padding: '2px 4px 0' }}>
-              Counts cover loaded jobs and can change as more load.
+              {walkinCountsAreCatalog ? 'Full walk-in catalog counts' : 'Counts in loaded matching jobs'}
             </div>
 
             {/* Subheader: INTERVIEW DATES matching Screenshot 1 */}
@@ -728,7 +738,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="walkin-dates-options" style={{ maxHeight: '240px', overflowY: 'auto' }}>
               {displayWalkinDates.length === 0 ? (
                 <div style={{ fontSize: '0.75rem', color: '#94a3b8', padding: '6px 4px' }}>
-                  No upcoming walk-in interview dates found
+                  {walkinSummaryLoading ? 'Loading interview dates…' : 'No upcoming walk-in interview dates found'}
                 </div>
               ) : (
                 displayWalkinDates.map(item => {
