@@ -36,6 +36,12 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          sparse-checkout: |
+            /scripts/build_web_catalog.py
+            /data/jobs/
+            /data/index/
+            /data/web/
+          sparse-checkout-cone-mode: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
