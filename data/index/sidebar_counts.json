@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1038201,
+  "total_jobs": 1039255,
   "sources": {
-    "naukri": 359163,
+    "naukri": 360217,
     "linkedin": 263501,
     "timesjobs": 116552,
     "indeed": 94639,
@@ -44,19 +44,19 @@
     "telegram_post": 374
   },
   "locations": {
-    "bangalore": 222067,
-    "mumbai": 138008,
-    "delhi": 111156,
-    "chennai": 111285,
-    "hyderabad": 100255,
-    "pune": 83762,
-    "noida": 51026,
-    "ahmedabad": 40514,
-    "kolkata": 35605,
+    "bangalore": 222335,
+    "mumbai": 138136,
+    "delhi": 111282,
+    "chennai": 111461,
+    "hyderabad": 100308,
+    "pune": 83870,
+    "noida": 51095,
+    "ahmedabad": 40539,
+    "kolkata": 35627,
     "all_india": 22431,
-    "coimbatore": 20627,
-    "kochi": 16178,
-    "remote": 9802,
+    "coimbatore": 20659,
+    "kochi": 16199,
+    "remote": 9825,
     "jaipur": 7872,
     "maharashtra": 7759,
     "indore": 5338,
@@ -113,7 +113,7 @@
     "message_remote": 112,
     "sanand": 84,
     "madurai": 134,
-    "trivandrum": 131,
+    "trivandrum": 132,
     "ambala": 112,
     "message_chennai": 107,
     "post_hyderabad": 106,
@@ -245,7 +245,7 @@
     "mehsana": 4,
     "ankleshwar": 3,
     "ludhianadugri": 2,
-    "vijayawada": 34,
+    "vijayawada": 35,
     "kethepally": 2,
     "guntur": 27,
     "pitampura": 7,
@@ -674,7 +674,8 @@
     "mahabaleshwar": 1,
     "permanent_work_from_home": 1,
     "sringeri": 2,
-    "puttur": 1
+    "puttur": 1,
+    "hybrid_dehradun": 1
   },
-  "generated_at": "2026-11-04T13:26:28.927903"
+  "generated_at": "2026-11-04T13:46:11.515545"
 }
