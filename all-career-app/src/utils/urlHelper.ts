@@ -26,13 +26,14 @@ export const resolveAssetUrl = (path: string): string => {
 const catalogRequests = new Map<string, Promise<any>>();
 export const fetchCatalogJson = <T,>(path: string): Promise<T | null> => {
   if (catalogRequests.has(path)) return catalogRequests.get(path)!;
+  const mutable = /(?:summary|latest|sidebar_counts|latest_preview_100)\.json$/.test(path);
   const task = (async () => {
     const clean = path.replace(/^\/+/, '');
     for (const url of [resolveAssetUrl(clean), `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`]) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
       try {
-        const res = await fetch(url, { signal: controller.signal });
+        const res = await fetch(url, { signal: controller.signal, cache: mutable ? 'no-cache' : 'default' });
         if (res.ok) {
           if (clean.endsWith('.gz')) {
             const buffer = await res.arrayBuffer();
@@ -50,6 +51,7 @@ export const fetchCatalogJson = <T,>(path: string): Promise<T | null> => {
     return null;
   })();
   catalogRequests.set(path, task);
+  if (mutable) void task.finally(() => catalogRequests.delete(path));
   return task;
 };
 

@@ -109,27 +109,24 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     summaryWorker.current?.postMessage({ id, summary, locations: [...selectedLocations], sources: [...selectedSources], dates: [...selectedWalkinDates] });
   }, [summary, selectedLocations, selectedSources, selectedWalkinDates]);
 
+  const loadController = useRef<AbortController | null>(null);
   const requestBatch = async () => {
+    loadController.current?.abort();
+    const controller = new AbortController();
+    loadController.current = controller;
     setBatchLoading(true);
     try {
-      const result = await jobService.loadMore({ sources: [...selectedSources], locations: [...selectedLocations], walkin: walkinOnly || selectedWalkinDates.size > 0 });
-      setJobs(result.jobs);
-      setHasMore(result.hasMore);
-      setBatchError(result.error);
-    } finally { setBatchLoading(false); }
+      const result = await jobService.loadUntil(
+        { sources: [...deferredSources], locations: [...deferredLocations], walkin: deferredWalkinOnly || deferredWalkinDates.size > 0, postedDays: ({ '24h': 1, '3d': 3, '7d': 7, '15d': 15 } as Record<string, number>)[deferredDateFilter] },
+        job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim()),
+        filteredJobs.length + JOBS_PER_PAGE,
+        incoming => { if (!controller.signal.aborted) setJobs(incoming); },
+        controller.signal
+      );
+      if (!controller.signal.aborted) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
+      return result;
+    } finally { if (!controller.signal.aborted) setBatchLoading(false); }
   };
-  useEffect(() => {
-    if (!summary) return;
-    let active = true;
-    const timer = setTimeout(async () => {
-      setBatchLoading(true);
-      try {
-        const result = await jobService.loadMore({ sources: [...selectedSources], locations: [...selectedLocations], walkin: walkinOnly || selectedWalkinDates.size > 0 });
-        if (active) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
-      } finally { if (active) setBatchLoading(false); }
-    }, 150);
-    return () => { active = false; clearTimeout(timer); };
-  }, [summary, selectedSources, selectedLocations, walkinOnly, selectedWalkinDates]);
 
   // Filter Toggles
   const handleToggleSource = (source: string) => {
@@ -303,6 +300,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     // 3. Date Filter (Precomputed days difference)
     if (dateFilter !== 'all') {
       const diffDays = j._dateDaysAgo;
+      if (diffDays === null || diffDays === undefined) return false;
       if (diffDays !== null && diffDays !== undefined) {
         if (dateFilter === '24h' && diffDays > 1) return false;
         if (dateFilter === '3d' && diffDays > 3) return false;
@@ -447,6 +445,28 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     deferredCategory,
     deferredSortBy
   ]);
+
+  useEffect(() => {
+    if (!summary) return;
+    loadController.current?.abort();
+    const controller = new AbortController();
+    loadController.current = controller;
+    setBatchLoading(true);
+    setBatchError(false);
+    const timer = setTimeout(async () => {
+      try {
+        const result = await jobService.loadUntil(
+          { sources: [...deferredSources], locations: [...deferredLocations], walkin: deferredWalkinOnly || deferredWalkinDates.size > 0, postedDays: ({ '24h': 1, '3d': 3, '7d': 7, '15d': 15 } as Record<string, number>)[deferredDateFilter] },
+          job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim()),
+          JOBS_PER_PAGE,
+          incoming => { if (!controller.signal.aborted) setJobs(incoming); },
+          controller.signal
+        );
+        if (!controller.signal.aborted) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
+      } finally { if (!controller.signal.aborted) setBatchLoading(false); }
+    }, 150);
+    return () => { controller.abort(); clearTimeout(timer); };
+  }, [summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
 
   // Pagination calculation: 50 jobs per page
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));

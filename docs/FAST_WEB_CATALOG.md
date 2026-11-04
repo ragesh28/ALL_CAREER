@@ -1,6 +1,7 @@
 # Static web catalog
 
-Scrapers continue to own `data/jobs/` and `data/index/walkin_jobs.json`.
+Scrapers continue to own `data/jobs/`, `all_jobs_<number>.json` archives,
+`scraped_image_walkin_jobs.json` and `data/index/walkin_jobs.json`.
 `Publish Fast Web Catalog` runs after scraper completions, hourly, or manually.
 It publishes a separate browser projection in `data/web/` using Python's standard library.
 No database service or paid backend is required. The temporary SQLite file only sorts
@@ -18,7 +19,10 @@ the source records inside the GitHub Actions runner.
   an unusually large single record can exceed the byte limit. Pages stop at
   posting-date boundaries, keeping historical pages stable as new jobs arrive.
 - The browser uses native gzip decompression for `.json.gz` pages. All Jobs shows
-  50 records at a time and downloads another batch on request.
+  50 records at a time. It automatically continues through candidate downloads
+  until 50 actual matches are available or the candidate files are exhausted.
+  Sources with fewer than 50 matches therefore display all results without
+  repeated Load more clicks. Smaller sources also get dedicated page indexes.
 - Walk-in pages are additionally grouped by city. Selecting Chennai walk-ins
   requests relevant city pages, rather than the entire walk-in index.
 - General source/location facets are computed from the full summary. Text,
@@ -32,8 +36,19 @@ the source records inside the GitHub Actions runner.
 
 ## Publishing and retention
 
-Source files are never rewritten by the publisher. Records are deduplicated by
+Source files are never rewritten by the publisher. Archives and granular shards
+are read together so archive-only records remain browsable. Missing portal names
+are recovered from the shard filename or known job URL; aliases such as
+`apna_jobs` are normalized to the displayed source. Records are deduplicated by
 URL, title, company and normalized city, then ordered by posting date descending.
+The summary's `audit` records how many archive, shard and walk-in input records
+were read. The displayed total and facets come from the resulting catalog,
+rather than the old incremental counter or the number of downloaded records.
+Archives containing Git conflict markers are read as both complete alternatives;
+the combined records are deduplicated and the affected filenames are recorded
+in `audit.recovered_conflict_files`. Original archives remain untouched. Invalid
+JSON without a complete recoverable conflict stops publication and preserves
+the last successful catalog.
 The summary and referenced pages are committed together. Content hashes prevent
 mixing old cached pages with a new manifest. Pages that are no longer referenced
 are retained for three days for open browser sessions. An unchanged source
@@ -54,9 +69,19 @@ Run from `all-career-app`:
 
 ```powershell
 node tests/catalog-service.test.cjs
+node tests/catalog-small-results.cjs
 npm run build
 ```
 
 For the browser integration check, start Vite on port 5187 and run
 `node tests/catalog-browser.cjs` from `all-career-app`. The fixture intentionally
 stalls the preview request and asserts that all three count sections are visible.
+
+## Portal diagnostics
+
+Apna and FreshersWorld use public rendered listing cards rather than a retired
+Next.js payload or an exclusively browser-rendered path. WorkIndia supports its
+public route payload and JobPosting structured data when the site permits access.
+HTTP 401/403/429 is reported as blocked, not as a successful empty scrape.
+`job_portals_2_health.json` preserves per-run extraction/status data and is shown
+in matching admin workflow details after the telemetry monitor runs.

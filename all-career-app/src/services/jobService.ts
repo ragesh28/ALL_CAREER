@@ -26,15 +26,22 @@ export class JobService {
   ): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
     // These tasks publish independently: a slow preview cannot hide counts, and
     // counts never wait for walk-in records, manifests, categories or ATS dumps.
+    let previewRows: Job[] | null = null;
     const previewTask = (async () => {
       const rows = await fetchCatalogJson<Job[]>('data/web/latest.json')
         ?? await fetchCatalogJson<Job[]>('data/index/latest_preview_100.json');
-      if (Array.isArray(rows)) this.ingestJobs(rows);
+      if (Array.isArray(rows)) { previewRows = rows; this.ingestJobs(rows); }
       onProgress?.(this.getAllJobs());
     })();
     const countsTask = (async () => {
       const summary = await fetchCatalogJson<CatalogSummary>('data/web/summary.json');
       if (summary?.schema === 1 && summary.walkins) {
+        if (this.summary && this.summary.manifest !== summary.manifest) {
+          this.allJobsMap.clear();
+          this.loadedShards.clear();
+          this.browserCatalog = null;
+          if (previewRows) this.ingestJobs(previewRows);
+        }
         this.summary = summary;
         this.sidebarCounts = summary;
       } else {
@@ -53,28 +60,57 @@ export class JobService {
     return this.browserCatalog;
   }
 
+  private async candidatePages(filters: CatalogFilters): Promise<CatalogPage[] | null> {
+    const catalog = await this.catalog();
+    if (!catalog) return null;
+    const cities = filters.locations.map(catalogCity);
+    const matchesSource = (source: string) => !filters.sources.length || filters.sources.some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source)));
+    let pages: CatalogPage[] = filters.walkin
+      ? Object.entries(catalog.walkins).filter(([city]) => !cities.length || cities.includes(city)).flatMap(([, rows]) => rows)
+      : catalog.pages;
+    if (!filters.walkin && filters.sources.length && filters.sources.every(source => !!catalog.sources?.[source])) {
+      pages = filters.sources.flatMap(source => catalog.sources![source]);
+    }
+    const minimumDate = filters.postedDays === undefined ? '' : new Date(Date.now() - (filters.postedDays + 1) * 86400000).toISOString().slice(0, 10);
+    pages = pages.filter(page => (!minimumDate || (page.newest || '') >= minimumDate) && (!cities.length || page.locations.some(city => cities.includes(city))) && page.sources.some(matchesSource));
+    const unique = [...new Map(pages.map(page => [page.path, page])).values()];
+    return unique.sort((a, b) => (b.newest || '').localeCompare(a.newest || ''));
+  }
+
   async loadMore(filters: CatalogFilters): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
-    this.batchLoading = true;
-    try {
-      const catalog = await this.catalog();
-      if (!catalog) return { jobs: this.getAllJobs(), hasMore: false, error: true };
-      const cities = filters.locations.map(catalogCity);
-      let pages: CatalogPage[] = filters.walkin
-        ? Object.entries(catalog.walkins).filter(([city]) => !cities.length || cities.includes(city)).flatMap(([, rows]) => rows)
-        : catalog.pages;
-      pages = pages.filter(page => (!cities.length || page.locations.some(city => cities.includes(city))) &&
-        (!filters.sources.length || page.sources.some(source => filters.sources.some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source))))));
-      if (filters.walkin) pages = pages.slice().sort((a, b) => b.newest.localeCompare(a.newest));
-      const pending = pages.filter(page => !this.loadedShards.has(page.path));
-      const page = pending[0];
-      if (!page) return { jobs: this.getAllJobs(), hasMore: false, error: false };
-      const rows = await fetchCatalogJson<Job[]>(page.path);
-      if (!Array.isArray(rows)) return { jobs: this.getAllJobs(), hasMore: true, error: true };
-      this.ingestJobs(rows);
-      // Failed pages remain retryable.
-      this.loadedShards.add(page.path);
-      return { jobs: this.getAllJobs(), hasMore: pending.length > 1, error: false };
-    } finally { this.batchLoading = false; }
+    const pages = await this.candidatePages(filters);
+    if (!pages) return { jobs: this.getAllJobs(), hasMore: false, error: true };
+    const pending = pages.filter(page => !this.loadedShards.has(page.path));
+    const page = pending[0];
+    if (!page) return { jobs: this.getAllJobs(), hasMore: false, error: false };
+    const rows = await fetchCatalogJson<Job[]>(page.path);
+    if (!Array.isArray(rows)) return { jobs: this.getAllJobs(), hasMore: true, error: true };
+    this.ingestJobs(rows);
+    this.loadedShards.add(page.path);
+    return { jobs: this.getAllJobs(), hasMore: pending.length > 1, error: false };
+  }
+
+  async loadUntil(
+    filters: CatalogFilters,
+    matches: (job: Job) => boolean,
+    target = 50,
+    onProgress?: (jobs: Job[]) => void,
+    signal?: AbortSignal
+  ): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
+    let jobs = this.getAllJobs();
+    const pages = await this.candidatePages(filters);
+    if (!pages) return { jobs, hasMore: false, error: true };
+    let hasMore = pages.some(page => !this.loadedShards.has(page.path));
+    // A page download is not a result page. Continue until 50 actual matches
+    // exist, or all candidate files are exhausted (including tiny sources).
+    while (!signal?.aborted && hasMore && jobs.filter(matches).length < target) {
+      const result = await this.loadMore(filters);
+      jobs = result.jobs;
+      hasMore = result.hasMore;
+      if (result.error) return result;
+      if (!signal?.aborted) onProgress?.(jobs);
+    }
+    return { jobs, hasMore, error: false };
   }
 
   async fetchWalkinJobs(): Promise<Job[]> {
@@ -107,12 +143,13 @@ export class JobService {
       r.title = titleStr;
       r.location = locStr;
 
-      let srcStr = String(r.source || (r as any).platform || '').toLowerCase().trim();
+      let srcStr = String(r.source || (r as any).platform || '').toLowerCase().trim().replace(/\s+/g, '_');
+      const aliases: Record<string, string> = { apna_jobs: 'apna', work_india: 'workindia', freshers_world: 'freshersworld' };
+      srcStr = aliases[srcStr] || srcStr;
       const uStr = String(r.url || (r as any).apply_url || (r as any).telegram_url || '').toLowerCase();
-      if (srcStr.includes('google') || (r as any).flyer_image_url || (r as any).raw_flyer_src || uStr.includes('google.com')) {
-        srcStr = 'google_images';
-      } else if (srcStr.includes('telegram') || (r as any).telegram_url || uStr.includes('t.me/')) {
-        srcStr = srcStr.includes('post') ? 'telegram_post' : 'telegram_message';
+      if (!srcStr || srcStr === 'other') {
+        if ((r as any).telegram_url || uStr.includes('t.me/')) srcStr = 'telegram_message';
+        else if ((r as any).flyer_image_url || (r as any).raw_flyer_src) srcStr = 'google_images';
       }
       if (srcStr) r.source = srcStr;
 

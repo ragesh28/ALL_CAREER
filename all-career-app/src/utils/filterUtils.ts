@@ -5,7 +5,7 @@ export function isWalkinJob(job: any): boolean {
   if (Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) return true;
 
   const src = String(job.source || '').toLowerCase();
-  if (src === 'google_images' || src.includes('google') || src.includes('flyer')) return true;
+  if (src === 'google_images' || src === 'google images' || src.includes('flyer')) return true;
 
   const title = String(job.title || job.role || '');
   const desc = String(job.description || job.other_details || '');

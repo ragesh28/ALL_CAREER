@@ -26,12 +26,14 @@ export interface BrowserCatalog {
   schema: number;
   pages: CatalogPage[];
   walkins: Record<string, CatalogPage[]>;
+  sources?: Record<string, CatalogPage[]>;
 }
 
 export interface CatalogFilters {
   sources: string[];
   locations: string[];
   walkin: boolean;
+  postedDays?: number;
 }
 
 export const catalogCity = (value: string) => {
