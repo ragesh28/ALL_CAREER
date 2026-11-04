@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1028420,
+  "total_jobs": 1028421,
   "sources": {
     "naukri": 358712,
     "linkedin": 258084,
@@ -40,11 +40,11 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 477,
+    "telegram_message": 478,
     "telegram_post": 321
   },
   "locations": {
-    "bangalore": 220232,
+    "bangalore": 220233,
     "mumbai": 136772,
     "delhi": 110252,
     "chennai": 110249,
@@ -667,5 +667,5 @@
     "sahibabad": 2,
     "dhankawadi": 5
   },
-  "generated_at": "2026-11-03T21:16:27.148382"
+  "generated_at": "2026-11-04T01:35:53.169860"
 }
