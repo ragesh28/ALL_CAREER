@@ -8,6 +8,21 @@ from scripts.build_web_catalog import build
 
 
 class WebCatalogTests(unittest.TestCase):
+    def test_recovers_both_archive_conflict_alternatives(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            common = {'title': 'Common', 'company': 'A', 'source': 'apna', 'location': 'Chennai', 'url': 'https://apna.co/job/1'}
+            left = {**common, 'title': 'Left', 'url': 'https://apna.co/job/2'}
+            right = {**common, 'title': 'Right', 'url': 'https://apna.co/job/3'}
+            raw = '<<<<<<< Updated upstream\n' + json.dumps([common, left]) + '\n=======\n' + json.dumps([common, right]) + '\n>>>>>>> Stashed changes\n'
+            archive = root / 'all_jobs_1.json'
+            archive.write_text(raw, encoding='utf8')
+            summary = build(root)
+            self.assertEqual(summary['total_jobs'], 3)
+            self.assertEqual(summary['sources']['apna'], 3)
+            self.assertEqual(summary['audit']['recovered_conflict_files'], ['all_jobs_1.json'])
+            self.assertEqual(archive.read_text(encoding='utf8'), raw)
+
     def test_recovers_sources_and_archive_only_records(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

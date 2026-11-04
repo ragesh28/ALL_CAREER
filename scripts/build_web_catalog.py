@@ -19,8 +19,42 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
-BUILD_VERSION = 2
+BUILD_VERSION = 3
 PORTALS = ('telegram_message', 'telegram_post', 'google_images', 'freshersworld', 'internshala', 'workindia', 'timesjobs', 'linkedin', 'naukri', 'foundit', 'glassdoor', 'shine', 'hirist', 'apna')
+
+
+def read_job_array(raw, path):
+    """Recover both complete Git conflict alternatives without discarding jobs."""
+    try:
+        return json.loads(raw), False
+    except json.JSONDecodeError as original:
+        text = raw.decode('utf-8-sig')
+        if not re.search(r'^<<<<<<< ', text, re.M):
+            raise json.JSONDecodeError(f'{path}: {original.msg}', original.doc, original.pos) from original
+    left, right, state = [], [], 'common'
+    for line in text.splitlines(keepends=True):
+        if line.startswith('<<<<<<< '):
+            if state != 'common':
+                raise ValueError(f'{path}: nested conflict markers')
+            state = 'left'
+        elif line.startswith('||||||| ') and state == 'left':
+            state = 'base'
+        elif line.startswith('=======') and state in ('left', 'base'):
+            state = 'right'
+        elif line.startswith('>>>>>>> ') and state == 'right':
+            state = 'common'
+        elif state == 'common':
+            left.append(line); right.append(line)
+        elif state == 'left':
+            left.append(line)
+        elif state == 'right':
+            right.append(line)
+    if state != 'common':
+        raise ValueError(f'{path}: incomplete conflict markers')
+    variants = [json.loads(''.join(left)), json.loads(''.join(right))]
+    if not all(isinstance(rows, list) for rows in variants):
+        raise ValueError(f'{path}: conflict alternatives must be job arrays')
+    return variants[0] + variants[1], True
 
 
 def source_name(value, hint='', url=''):
@@ -83,6 +117,7 @@ def build(root=ROOT, page_size=250):
         inputs_hash = hashlib.sha256()
         inputs_hash.update(f'web-catalog-{BUILD_VERSION}-{page_size}'.encode())
         input_counts = Counter()
+        recovered_conflicts = []
         for path in sources:
             if not path.exists():
                 continue
@@ -90,7 +125,10 @@ def build(root=ROOT, page_size=250):
             raw = path.read_bytes()
             inputs_hash.update(str(path.relative_to(root)).replace('\\', '/').encode())
             inputs_hash.update(raw)
-            rows = json.loads(raw)
+            rows, recovered = read_job_array(raw, path.relative_to(root))
+            if recovered:
+                recovered_conflicts.append(path.relative_to(root).as_posix())
+                print(f'Recovered both conflict alternatives: {path.name}', flush=True)
             if not isinstance(rows, list):
                 raise ValueError(f'Expected job array: {path}')
             kind = 'archive' if path in archives else 'shard' if path.parent.parent.name == 'jobs' else 'walkin_index'
@@ -166,7 +204,7 @@ def build(root=ROOT, page_size=250):
         summary = {
             'schema': 1, 'generated_at': datetime.now(timezone.utc).isoformat(), 'inputs_hash': inputs_hash.hexdigest(), 'page_size': page_size,
             'total_jobs': db.execute('SELECT count(*) FROM jobs').fetchone()[0],
-            'audit': {'input_records': dict(input_counts), 'source_files': sum(p.exists() for p in sources), 'build_version': BUILD_VERSION},
+            'audit': {'input_records': dict(input_counts), 'source_files': sum(p.exists() for p in sources), 'build_version': BUILD_VERSION, 'recovered_conflict_files': recovered_conflicts},
             'sources': counts('source'), 'locations': counts('city'),
             'walkins': {'total': db.execute('SELECT count(*) FROM jobs WHERE walkin=1').fetchone()[0], 'locations': counts('city', 'WHERE walkin=1'), 'sources': counts('source', 'WHERE walkin=1'), 'source_locations': dict(cross), 'date_groups': [[city, src, json.loads(raw), date, count] for (city, src, raw, date), count in date_groups.items()]}
         }
