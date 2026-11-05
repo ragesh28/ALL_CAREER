@@ -1,41 +1,41 @@
 {
-  "run_id": "41995620432",
-  "updated_at": "2026-11-05T14:29:53.711411",
+  "run_id": "42045854277",
+  "updated_at": "2026-11-05T17:24:23.082556",
   "portals": {
     "apna": {
-      "scraped_total": 8042,
-      "new_stored_total": 5809,
-      "requests_total": 687,
+      "scraped_total": 3647,
+      "new_stored_total": 2515,
+      "requests_total": 391,
       "last_probe": {
-        "requests": 2,
-        "scraped": 24,
+        "requests": 3,
+        "scraped": 26,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-indore"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 341,
+      "requests_total": 182,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-indore/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 341,
+      "requests_total": 182,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-indore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
