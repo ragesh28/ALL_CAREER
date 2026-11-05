@@ -168,6 +168,12 @@
       "credits_used": 100,
       "jobs_extracted": 369,
       "cities_processed": 20
+    },
+    {
+      "date": "2026-11-05",
+      "credits_used": 0,
+      "jobs_extracted": 0,
+      "cities_processed": 20
     }
   ],
   "cycle_history": [
