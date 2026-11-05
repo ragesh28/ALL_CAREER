@@ -1,41 +1,41 @@
 {
-  "run_id": "41764590213",
-  "updated_at": "2026-11-04T03:10:02.698570",
+  "run_id": "41956885000",
+  "updated_at": "2026-11-05T08:34:41.607580",
   "portals": {
     "apna": {
-      "scraped_total": 100,
-      "new_stored_total": 100,
-      "requests_total": 4,
+      "scraped_total": 6745,
+      "new_stored_total": 3173,
+      "requests_total": 793,
       "last_probe": {
-        "requests": 4,
-        "scraped": 100,
+        "requests": 2,
+        "scraped": 14,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/software-engineer-jobs-in-bengaluru"
+        "url": "https://apna.co/jobs/database-administrator-jobs-in-chennai"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 1,
+      "requests_total": 422,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/software-engineer-jobs-in-bengaluru/"
+        "url": "https://www.workindia.in/database-administrator-jobs-in-chennai/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 1,
+      "requests_total": 422,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/software-engineer-jobs-in-bangalore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/database-administrator-jobs-in-chennai"
       }
     }
   }
