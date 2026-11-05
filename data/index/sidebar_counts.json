@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1062210,
+  "total_jobs": 1062222,
   "sources": {
     "naukri": 362303,
     "linkedin": 265354,
@@ -40,11 +40,11 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 543,
+    "telegram_message": 555,
     "telegram_post": 399
   },
   "locations": {
-    "bangalore": 226847,
+    "bangalore": 226848,
     "mumbai": 141444,
     "delhi": 113522,
     "chennai": 113994,
@@ -53,7 +53,7 @@
     "noida": 52386,
     "ahmedabad": 41331,
     "kolkata": 36318,
-    "all_india": 22455,
+    "all_india": 22466,
     "coimbatore": 20994,
     "kochi": 16402,
     "remote": 9897,
@@ -848,5 +848,5 @@
     "industrial_area": 1,
     "tulsi_vihar_colony": 1
   },
-  "generated_at": "2026-11-05T17:24:50.824151"
+  "generated_at": "2026-11-05T22:13:48.137412"
 }
