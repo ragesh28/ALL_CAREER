@@ -1,41 +1,41 @@
 {
-  "run_id": "41956885000",
-  "updated_at": "2026-11-05T08:34:41.607580",
+  "run_id": "41995620432",
+  "updated_at": "2026-11-05T14:29:53.711411",
   "portals": {
     "apna": {
-      "scraped_total": 6745,
-      "new_stored_total": 3173,
-      "requests_total": 793,
+      "scraped_total": 8042,
+      "new_stored_total": 5809,
+      "requests_total": 687,
       "last_probe": {
         "requests": 2,
-        "scraped": 14,
+        "scraped": 24,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/database-administrator-jobs-in-chennai"
+        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-indore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 422,
+      "requests_total": 341,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/database-administrator-jobs-in-chennai/"
+        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-indore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 422,
+      "requests_total": 341,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/database-administrator-jobs-in-chennai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-indore"
       }
     }
   }
