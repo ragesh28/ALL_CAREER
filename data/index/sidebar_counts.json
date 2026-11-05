@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1041428,
+  "total_jobs": 1041435,
   "sources": {
     "naukri": 361304,
     "linkedin": 263502,
@@ -40,11 +40,11 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 513,
-    "telegram_post": 381
+    "telegram_message": 514,
+    "telegram_post": 387
   },
   "locations": {
-    "bangalore": 222907,
+    "bangalore": 222912,
     "mumbai": 138494,
     "delhi": 111378,
     "chennai": 111842,
@@ -56,7 +56,7 @@
     "all_india": 22447,
     "coimbatore": 20693,
     "kochi": 16230,
-    "remote": 9852,
+    "remote": 9853,
     "jaipur": 7872,
     "maharashtra": 7862,
     "indore": 5338,
@@ -223,7 +223,7 @@
     "kothur_formulation_division": 1,
     "vapi": 4,
     "eu": 4,
-    "across_india": 13,
+    "across_india": 14,
     "trichy": 39,
     "perundurai": 2,
     "jhajjar": 3,
@@ -681,5 +681,5 @@
     "zira": 1,
     "latam": 1
   },
-  "generated_at": "2026-11-05T01:47:58.923588"
+  "generated_at": "2026-11-05T07:38:06.478519"
 }

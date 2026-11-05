@@ -1,0 +1,518 @@
+{
+  "workflow_run_number": "1053",
+  "workflow_run_id": "41983917789",
+  "timestamp": "2026-11-05T07:37:35.612877",
+  "runtime_minutes": 32.01,
+  "messages_processed": 79,
+  "new_jobs_stored": 7,
+  "skipped_jobs_count": 71,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 52,
+  "text_messages_processed": 27,
+  "stored_locations": {
+    "Bengaluru": 2,
+    "Across India": 1,
+    "Remote": 1,
+    "Bangalore": 3
+  },
+  "stored_walkins": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Internshipsworld",
+      "msg_id": 6584,
+      "text": "𝐖𝐄𝐗 𝐇𝐢𝐫𝐢𝐧𝐠 𝟐𝟎𝟐𝟔 – 𝐒𝐨𝐟𝐭𝐰𝐚𝐫𝐞 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭 𝐄𝐧𝐠𝐢𝐧𝐞𝐞𝐫 💻 🚀\n\n◆ 𝐉𝐨𝐛 𝐑𝐨𝐥𝐞: Software Development Engineer\n📍 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: Bengaluru\n🎓 𝐐𝐮𝐚𝐥𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧: Bachelor’s in Computer Science / Machine Learning / Software Engineering\n💼 𝐄𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞: Freshers / Relevant Experience\n💰 𝐄𝐬𝐭𝐢𝐦𝐚𝐭𝐞𝐝 𝐒𝐚𝐥𝐚𝐫𝐲: ₹8–15 LPA\n\n🔗 𝐀𝐩𝐩𝐥𝐲 𝐋𝐢𝐧𝐤:\nhttps://pdlink.in/4iuBUut\n\n📢 𝐒𝐡𝐚𝐫𝐞 𝐭𝐡𝐢𝐬 𝐨𝐩𝐩𝐨𝐫𝐭𝐮𝐧𝐢𝐭𝐲 𝐰𝐢𝐭𝐡 𝐟𝐫𝐢𝐞𝐧𝐝𝐬 𝐰𝐡𝐨 𝐰𝐞𝐫𝐞 𝐥𝐨𝐨𝐤𝐢𝐧𝐠 𝐟𝐨𝐫 𝐣𝐨𝐛𝐬. ❤️ ✨\nwex",
+      "timestamp": "2026-11-05T06:11:54+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "placementdriveofficial",
+      "msg_id": 13591,
+      "text": "𝐑𝐚𝐳𝐨𝐫𝐩𝐚𝐲 𝐇𝐢𝐫𝐢𝐧𝐠 𝟐𝟎𝟐𝟔 – 𝐅𝐫𝐨𝐧𝐭𝐞𝐧𝐝 𝐄𝐧𝐠𝐢𝐧𝐞𝐞𝐫 💻 🚀\n\n◆ 𝐉𝐨𝐛 𝐑𝐨𝐥𝐞: Frontend Engineer\n📍 𝐋𝐨𝐜𝐚𝐭𝐢𝐨𝐧: Bengaluru\n🎓 𝐐𝐮𝐚𝐥𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧: Graduation\n💼 𝐄𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞: 1+ Year\n💰 𝐄𝐬𝐭𝐢𝐦𝐚𝐭𝐞𝐝 𝐒𝐚𝐥𝐚𝐫𝐲: ₹10–18 LPA\n\n🔗 𝐀𝐩𝐩𝐥𝐲 𝐋𝐢𝐧𝐤:\nhttps://pdlink.in/4iXx9eg\n\n📢 𝐒𝐡𝐚𝐫𝐞 𝐭𝐡𝐢𝐬 𝐨𝐩𝐩𝐨𝐫𝐭𝐮𝐧𝐢𝐭𝐲 𝐰𝐢𝐭𝐡 𝐟𝐫𝐢𝐞𝐧𝐝𝐬 𝐰𝐡𝐨 𝐰𝐞𝐫𝐞 𝐥𝐨𝐨𝐤𝐢𝐧𝐠 𝐟𝐨𝐫 𝐣𝐨𝐛𝐬. ❤️ ✨\n1Razorpay",
+      "timestamp": "2026-11-05T01:45:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "seekeras",
+      "msg_id": 18848,
+      "text": "Company Tata Communications\nRoles Full Stack Developer & other\nQualification Bachalor’s Degree\nLocation Pune, Chennai\nWork Experience 1-4 years\n\nLink- https://foundthejob.com/tata-communications-hiring-2026/#google_vignette",
+      "timestamp": "2026-11-05T04:12:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "seekeras",
+      "msg_id": 18849,
+      "text": "Deloitte Direct Hiring Freshers & Experience Upto 5 Years of Experience can Apply CTC Upto 8 LPA comment Anything to get the Link in DM 👇👇\n\nhttps://www.instagram.com/reel/DfWOUS1zNW3/?rpxt=MXV3aDAwcmkxenBiaA==",
+      "timestamp": "2026-11-05T05:01:59+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "seekeras",
+      "msg_id": 18850,
+      "text": "🚨 Guys, Sutherland is conducting an Online Interview TODAY! 🎯\n\n🚀🔮 Hi Everyone,Please wait in the lobby for your turn. The interview will Start from 11:30 AM So keep trying to join the meeting\n\n🏢 Company: Sutherland\n\n📅 Oct 5th\n\n🕚 11:30 am – 3:30 pm\n\n💻 Interview Platform: Webex App\n\n🔗 Meeting Link: Join through the Webex App 👇\n\nhttps://sutherland.webex.com/wbxmjs/joinservice/sites/sutherland/meeting/download/6c299fe1619f44758fa6951cd8e48a16?MTID=m634034a85fadc9b7aa7883a9fa71d9f5\n\n🔗 Deatails : https://foundthejob.com/sutherland-mega-online-interview-for-12-pass/",
+      "timestamp": "2026-11-05T05:47:51+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 30999,
+      "text": "🚨 𝗜𝗡𝗙𝗢𝗦𝗬𝗦 𝗠𝗘𝗚𝗔 𝗛𝗜𝗥𝗜𝗡𝗚 — 𝗦𝗘 𝟮𝟬𝟮𝟳 + 𝗦𝗣 & 𝗗𝗦𝗘 (𝗨𝗽 𝘁𝗼 ₹𝟮𝟭 𝗟𝗣𝗔)! 🎯\n\n2024, 2025, 2026 & 2027 Batches Hiring \n\nTomorrow is the Last Day To Apply\n\n🏢 Company: Infosys\n📍 Location: PAN India\n\n1️⃣ Systems Engineer (SE) | 2027 Batch\n💰 Salary: ₹3.6 to 5 LPA\n🎓 Eligibility: BE/BTech/ME/MTech/MCA/MSc — 2027 batch, 60% throughout\n⚠️ Note: Campus registration link — also inform your college TPO\n🔗 https://freshershunt.in/infosys-off-campus-drive-2027/\n\n2️⃣ Specialist Programmer (Trainee) & Digital Specialist Engineer (Trainee)\n💰 Salary: SP – ₹10 / 16 / 21 LPA | DSE – ₹6.25 LPA + ₹75K bonus\n🎓 Eligibility: BE/BTech, ME/MTech, MCA, MSc – 2024, 2025, 2026 Batch\n💼 Experience: 0–2 years\n🔗 https://freshershunt.in/infosys-off-campus-drive-2026/\n\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n\n📺 𝐇𝐨𝐰 𝐭𝐨 𝐀𝐩𝐩𝐥𝐲: https://youtu.be/Q4afjdBqZio\n\n💬 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐖𝗵𝗮𝘁𝘀𝗔𝗽𝗽: https://freshershunt.in/WhatsApp\n\n📢 𝐉𝐨𝐢𝐧 𝐓𝐞𝗹𝐞𝐠𝐫𝐚𝐦: https://telegram.me/freshershunt",
+      "timestamp": "2026-11-05T03:34:07+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31000,
+      "text": "𝗪𝗶𝗽𝗿𝗼 𝗝𝗼𝗯 𝗔𝗹𝗲𝗿𝘁  | 𝗔𝗽𝗽𝗹𝘆 𝗡𝗼𝘄😍\n\nRoles :- Multiple Roles \n\nExperience:- Freshers/Experienced \n\n Salary :- 5 To 23LPA\n\nJob Location: PAN India \n\n𝗔𝗽𝗽𝗹𝘆 𝗡𝗼𝘄👇:-  \n\n   https://fhlinks.in/sow7Eu\n\nSelect the company name, and role and apply to the job\n\nOnce you get shortlisted, you will receive a call from HR",
+      "timestamp": "2026-11-05T04:35:13+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31001,
+      "text": "🚨 𝗧𝗖𝗦 𝗡𝗤𝗧 — 𝗡𝗼𝘃𝗲𝗺𝗯𝗲𝗿 𝟮𝟬𝟮𝟲 𝗥𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝘁𝗶𝗼𝗻 𝗢𝗽𝗲𝗻! 🎯\n\n🏢 Company: TCS iON\n💼 Exam: National Qualifier Test (NQT)\n📍 Mode: In-centre at TCS iON centres\n📅 Last Date to Apply: 12 Nov 2026\n📝 Exam Date: 24 Nov 2026\n🎓 Batch: 2022 / 2023 / 2024 / 2025 / 2026 / 2027 / 2028\n📋 Eligibility: UG / PG / Diploma – any stream\n💼 Experience: Freshers & Final-year students\n\n🔗 https://freshershunt.in/tcs-nqt/\n\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n\n📺 𝐇𝐨𝐰 𝐭𝐨 𝐀𝐩𝐩𝐥𝐲: https://youtu.be/Q4afjdBqZio\n\n💬 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐖𝗵𝗮𝘁𝘀𝗔𝗽𝗽: https://freshershunt.in/WhatsApp\n\n📢 𝐉𝐨𝐢𝐧 𝐓𝐞𝗹𝐞𝐠𝐫𝐚𝐦: https://telegram.me/freshershunt",
+      "timestamp": "2026-11-05T05:34:40+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31002,
+      "text": "🪔 **PRE-DIWALI OFFER** 📢 FREE 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻\n\nLast Day to register. \n\nLearn Data Science and Artificial Intelligence from Scratch | **No Coding Background Required**\n\n📊 Learn Data Science with AI from Scratch\n🤖 AI Tools & Automation\n📈 Build real world Projects for job ready portfolio \n\n🔥Deadline :- 5th November 2026\n\n 𝗔𝗽𝗽𝗹𝘆 𝗡𝗼𝘄 :-  https://tinyurl.com/58h6auuj",
+      "timestamp": "2026-11-05T06:33:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44110,
+      "text": "🚀 **Remote Job Opportunity**!!!\n\n**Startek Mass Hiring Freshers for Associate**\n\nExperience: Freshers/Experienced\nEducation: Any Graduate\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/startek-work-from-home-hiring-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-11-05T02:01:56+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44111,
+      "text": "🚨**Deloitte Latest Mass Hiring Freshers for Internship**\n\nRemote - (Hybrid)\nExperience: Freshers\nEducation: Any Graduate\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/deloitte-recruitment-hiring-any-graduates-fresher/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-11-05T03:02:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44112,
+      "text": "**🚀 Remainder: Today Online Drive | Don't Miss\n\nSutherland Virtual Hiring Drive For Associate Role**\n\nDrive Date: 5th Nov 2026\nInterview Time: 11:30 AM – 3:30 PM\nEducation: 10+2 pass/Any Graduate\nSalary: Rs 4 LPA (Expected)\n\nApply: https://kickcharm.com/sutherland-work-from-home-hiring-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-11-05T04:02:08+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44113,
+      "text": "🚨** Cognizant Off Campus Hiring Freshers Across India**\n\nDigital Workplace Practice (Service Desk) Role\nExperience: Freshers\nEducation: Any 3-year UG degree \nSalary: Rs 3-4 LPA (Expected)\nLocation: PAN India \n\nApply: https://kickcharm.com/cognizant-recruitment-hiring-graduates-freshers/\n\nComplete Career Toolkit: https://tinyurl.com/ymj5e226",
+      "timestamp": "2026-11-05T05:00:45+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44114,
+      "text": "**📢 FREE Certification Alert – Data Science & AI**\n\nStart your journey in AI & Data Science 🚀\n(No prior coding required – we’ll teach from basics)\n\n📊 Learn from Scratch\n🤖 AI Tools + Automation\n📁 Build Real-World Projects\n🎓 Certification from Scaler\n\n⏳ **Last Date**: 5th November (Limited Seats)\n\n**Apply Now: **https://tinyurl.com/56djsvbn",
+      "timestamp": "2026-11-05T05:26:58+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44115,
+      "text": "**🚀 Amazon Virtual Hiring for Data Operations Associate**\n\nExperience: Freshers/Experienced\nEducation: Any Graduate\nLocation: Remote\nSalary: Rs 4-5 LPA (Expected)\n\nApply: https://kickcharm.com/amazon-work-from-home-hiring-freshers/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-11-05T06:24:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44116,
+      "text": "**🚀 Today HCLTech Virtual Drive\n\nHCL Virtual Hiring Freshers for Service Associate\n**\nDate: 5th Nov 2026\nVirtual Drive Timing- 1 PM\nExperience: Freshers\nSalary: Rs 4 LPA (Expected)\n\nApply: https://kickcharm.com/hcl-recruitment-hiring-any-graduates/\n\nJoin Whatsapp: https://tinyurl.com/43x7pyjk",
+      "timestamp": "2026-11-05T07:05:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 3315,
+      "text": "Last Date to apply for RRC NWR Apprentice Recruitment 2026 (2,008 Posts) 🔥\nhttps://job4freshers.co.in/rrc-nwr-apprentice-recruitment/\n⏰ Last Date: 6 November 2026\nRAILWAY\nNORTH WESTERN\n*\n3R  ea\nRRC NORTH WESTERN\nRAILWAY(NWR)\nINDIAN RAILWAYS\nWAP-7\nAPPRENTICE\nRECRUITMENT\nINDIAN RAILWAYS",
+      "timestamp": "2026-11-05T02:31:11+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 3316,
+      "text": "Company Name:  Hexaware Technologies\nPost Name:  Finance and Accounting – Record-to-Report\nExpected Salary:  up to ₹3.2 LPA*\nJob Location:  India\nJobType:  Freshers\n\n✅Apply Link: https://job4freshers.co.in/hexaware-recruitment-finance-accounting/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nTelegram\nhttps://telegram.me/job4fresherss\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nHexaware\nFinance and\nAccounting",
+      "timestamp": "2026-11-05T04:02:03+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 3317,
+      "text": "🚨 Sutherland Virtual Interview Drive \n\n💻Role: Associate / Sr. Associate\n\n📌Mysore location\n\n5th Nov 2026 | 11:30 AM- 3:30 PM\nhttps://sutherland.webex.com/wbxmjs/joinservice/sites/sutherland/meeting/download/6c299fe1619f44758fa6951cd8e48a16?MTID=m634034a85fadc9b7aa7883a9fa71d9f5\n\nCheck for Details: 👇 \nhttps://job4freshers.co.in/sutherland-virtual-hiring/\n\nAll the best ❤️\nwebex",
+      "timestamp": "2026-11-05T05:50:40+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "careerwithasr",
+      "msg_id": 3318,
+      "text": "Company Name:  Meta\nPost Name:  ASIC Engineer Intern\nExpected Stipend:  up to ₹35k/ Month*\nJob Location:  Bangalore\nJobType:  Internship\n\n✅Apply Link: https://job4freshers.co.in/meta-internship-update/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nTelegram\nhttps://telegram.me/job4fresherss\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nMeta\nMeta\nASIC\nEngineer\nIntern",
+      "timestamp": "2026-11-05T06:35:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18953,
+      "text": "Most freshers don’t get rejected for being bad. They get rejected for something nobody tells them about.\n\nYou send 100 applications. You get silence.\n\nSo we built AltiGrad.\n\nIn about 2 minutes, you get:\n\n ✅ A readiness score out of 100\n ✅ The 3 things holding you back\n ✅ One action to take today\n\nIt’s free.  🎯 Get your free AltiGrad score here: [**https://way2fresher.com/altigrad**](https://way2fresher.com/altigrad)\n\nVisit [**way2fresher.com**](http://way2fresher.com/) for fresher jobs, a free ATS resume builder, AI mock interviews and career guides.\nWAY2FRESHER\n100% free\nRejection is rarely\nrandom.\nSee exactly what is holding your\napplications back, and what to fix\nfirst. Ready in about 2 minutes.\nGet your readiness score with\nAltiGrad\nout of 100\nTake the free check",
+      "timestamp": "2026-11-05T05:00:14+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresheroffcampus",
+      "msg_id": 18122,
+      "text": "👨‍💼** Medtronic Off Campus 2026 Hiring – Co-op/Apprentice (Non-Tech)**\n\n📍 Location: Gurgaon (Remote)\n🎓 Qualification: B.com/ BBA / BMS\n💼 Experience: Fresher Eligible (0 Years)\n💰 Stipend: ₹20,000 – ₹30,000/Month (Expected)\n\n🔗** Apply Now:** [**https://www.fresheroffcampus.com/medtronic-hiring-fresher/**](https://www.fresheroffcampus.com/medtronic-hiring-fresher/)\n\n📲 Stay Updated:\n👉 WhatsApp Channel: [https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B](https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B)\n👉 Telegram Channel: [https://t.me/fresheroffcampus](https://t.me/fresheroffcampus2.9K05:24)",
+      "timestamp": "2026-11-05T03:33:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresheroffcampus",
+      "msg_id": 18123,
+      "text": "**👨‍💻 HP Off Campus 2026 Hiring Freshers – Financial Analyst**\n\n📍 **Location:** Bangalore\n🎓 **Qualification:** Business Administration / Economics / Finance or Related 4-Year Degree\n💼 **Experience:** Fresher Eligible (0–2 Years)\n💰 CTC: 6 - 10 LPA\n\n**🔗 Apply Now: ****https://www.fresheroffcampus.com/hp-off-campus-hiring-fresher/**\n\n📲 Stay Updated:\n👉 WhatsApp Channel : https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel : https://t.me/fresheroffcampus",
+      "timestamp": "2026-11-05T06:14:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 20396,
+      "text": "Company Name:  Caterpillar\nPost Name:  Administrative Assistant\nQualification:  Degree or equivalent experience\nExperience:  Freshers & Experienced\nExpected Salary:  Rs 4.8 – 7.1 LPA (approx.)\nJob Location:  Chennai\nLast Date:  17 November 2026\n\n✅Apply Link: https://job4freshers.co.in/caterpillar-administrative-assistant/\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\n📘 30+ companies placement kits (aptitude, coding & interview questions)  👇\nhttps://topmate.io/asr/1164730\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nCATERPILLAR\nR\nCAT\nAdministrative\nAssistant\nAFPILA\nCAT\nCAFPPILARR",
+      "timestamp": "2026-11-05T02:56:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 20397,
+      "text": "Organization Name:  State Bank of India (SBI)\nPost Name:  Security Officer (Manager / Deputy Manager), Assistant Manager – Engineer (Fire)\nTotal Vacancies:  77 (Security Officer 60, Engineer Fire 17)\nQualification:  Graduation + commissioned service / Fire Engineering degree + experience\nSalary:  Rs. 48,480 – Rs. 1,05,820 (grade-wise)\nJob Location:  Across India\nFreshers / Experienced:  Experienced\nLast Date to Apply:  25.11.2026\n\nApply Now: https://job4freshers.co.in/sbi-so-recruitment-engineer/\n\n\nWhatsApp Channel Link:\nhttps://whatsapp.com/channel/0029VaHzGjzK5cDJhqioix0s\n\n✅For Government Jobs Join\n👉https://telegram.me/job4government\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nSBI\nPSBI\nState Bank of India\nSO\nRecruitment",
+      "timestamp": "2026-11-05T04:36:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 20398,
+      "text": "🚨 Sutherland Virtual Interview Drive \n\n💻Role: Associate / Sr. Associate\n\n📌Mysore location\n\n5th Nov 2026 | 11:30 AM- 3:30 PM\nhttps://sutherland.webex.com/wbxmjs/joinservice/sites/sutherland/meeting/download/6c299fe1619f44758fa6951cd8e48a16?MTID=m634034a85fadc9b7aa7883a9fa71d9f5\n\nCheck for Details: 👇 \nhttps://job4freshers.co.in/sutherland-virtual-hiring/\n\nAll the best ❤️\nwebex",
+      "timestamp": "2026-11-05T05:39:54+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "job4fresherss",
+      "msg_id": 20399,
+      "text": "Company Name:  Xylem\nPost Name:  Graduate Engineer Trainee\nWork Mode:  Hybrid\nQualification:  Bachelor’s degree in Engineering or a related field\nExperience:  Freshers (entry level)\nExpected Salary:  Rs 4.8 – 5.3 LPA (approx.)\nJob Location:  Chennai\n\n✅Apply Link: https://job4freshers.co.in/xylem-graduate-engineer-trainee/\n\nInterview Experience👇🏻\nhttps://yt.openinapp.co/success-story\n\nJoin our WhatsApp Private Community 👇🏻\nhttps://whatsapp.com/channel/0029VajJQWO6hENjuUnhZM0M\n\nShare This opportunity with your Friends and WhatsApp Group❤️\nxylem®\nGraduate\nxylem\nEngineer Trainee\nHIRING",
+      "timestamp": "2026-11-05T06:38:01+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 6141,
+      "text": "🚀 Remainder: Today Online Drive | Don't Miss\n\nSutherland Virtual Hiring Drive For Associate Role\n\nDrive Date: 5th Nov 2026\nInterview Time: 11:30 AM – 3:30 PM\nEducation: 10+2 pass/Any Graduate\nSalary: Rs 4 LPA (Expected)\n\nApply: https://kickcharm.com/sutherland-work-from-home-hiring-freshers/",
+      "timestamp": "2026-11-05T04:42:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 6142,
+      "text": "**Latest 10 Jobs – Off-Campus Job Drives**\n\nDirect job-post links\n\n1. Paytm - [https://offcampusjobdrives.com/paytm-hiring-for-intern-talent-acquisition](https://offcampusjobdrives.com/paytm-hiring-for-intern-talent-acquisition/?utm_source=chatgpt.com)/⁠\n\n2. EY - [https://offcampusjobdrives.com/ey-off-campus-hiring-for-testing-engineer](https://offcampusjobdrives.com/ey-off-campus-hiring-for-testing-engineer/?utm_source=chatgpt.com)/⁠\n\n3. HPE - [https://offcampusjobdrives.com/hpe-recruitment-for-software-systems-engineer-devops](https://offcampusjobdrives.com/hpe-recruitment-for-software-systems-engineer-devops/?utm_source=chatgpt.com)/⁠\n\n4. Volvo - [https://offcampusjobdrives.com/volvo-off-campus-hiring-for-graduate-apprentice-trainee](https://offcampusjobdrives.com/volvo-off-campus-hiring-for-graduate-apprentice-trainee/?utm_source=chatgpt.com)/⁠\n\n5. Qualcomm - [https://offcampusjobdrives.com/qualcomm-2027-campus-hire_-associate-engineer](https://offcampusjobdrives.com/qualcomm-2027-campus-hire_-associate-engineer/?utm_source=chatgpt.com)/⁠\n\n6. Harmonic - [https://offcampusjobdrives.com/harmonic-recruitment-for-associate-sw-development-engineer](https://offcampusjobdrives.com/harmonic-recruitment-for-associate-sw-development-engineer/?utm_source=chatgpt.com)/⁠\n\n7. Accenture - [https://offcampusjobdrives.com/accenture-hiring-for-customer-service-new-associate-2](https://offcampusjobdrives.com/accenture-hiring-for-customer-service-new-associate-2/?utm_source=chatgpt.com)/⁠\n\n8. NewStreet - [https://offcampusjobdrives.com/newstreet-hiring-for-associate-software-engineer](https://offcampusjobdrives.com/newstreet-hiring-for-associate-software-engineer/?utm_source=chatgpt.com)/⁠\n\n9. Virtusa - [https://offcampusjobdrives.com/virtusa-off-campus-recruitment-for-software-testing-engineer](https://offcampusjobdrives.com/virtusa-off-campus-recruitment-for-software-testing-engineer/?utm_source=chatgpt.com)/⁠\n\n10. HSBC - [https://offcampusjobdrives.com/hsbc-off-campus-hiring-for-business-analyst](https://offcampusjobdrives.com/hsbc-off-campus-hiring-for-business-analyst/?utm_source=chatgpt.com)/⁠",
+      "timestamp": "2026-11-05T06:11:56+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261297,
+      "text": "Vidyavardhaka Sangha (Regd), Mysore\nVIDYAVARDHAKA COLLEGE OF ENGINEERING\nAutonomous Institute, Accredited by NBA, & NAAC with\"A\" Grade\nVVCE\nGokulam 3rd Stage, Mysuru-570 002\nSTAFF REQUIRED\nTEACHING\nENGG. Dept.\nAssistant Professor in CS&E, E&CE : First Class in BE & M.Tech,\nPreference will be given to Ph.Ds.\nNON TEACHING\nResident Warden for Boys Hostel : Any graduation with\nrelevant experience.\nSecond Division Clerk (SDC) : B.Com / M.Com and experience\nworking as office staff with computer Knowledge.\nPay scale for teaching - AlCTE 7th pay scale as per the college norms\nNon teaching - State scale\nit httnou//vvoe ac in/careers",
+      "timestamp": "2026-11-05T01:24:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261299,
+      "text": "RAMAIAH\nInstitute of Management\nRamaiah Institute of Management, Bengaluru a premier institution forming part of the\nGokula Education Foundation (GEF), invites applications for Exciting Career Opportunity\nPositions Available\nA) Non-Teaching\n1) Registrar: Qualification: Master's Degree preferably MBA in HR with at least 60%\nmarks or an equivalent grade from a recognized university. Candidates with Ph.D. degree\nin relevant field maybe preferred. Experience: Minimum 10 years of administrative\nexperience in University/ Technical Educational Institutions, / Industry with at least 5 years\nin a senior administrative capacity.\n• Experience in administration, establishment matters, statutory compliance, and liaison\nwith regulatory bodies such as AICTE, UGC, University is mandatory.\n2) Head - Admissions : Qualification: Master's degreein Education, Management,\nBusiness Administration (MBA), or a related discipline will be preferred. Experience:\n5-10 years of relevant experience in admissions, student recruitment, academic\nadministration, or education management, preferably with prior leadership experience.\n3) Lab Assistant- Candidates should possess BCA /MCA or an equivalent qualification\nin Computer Application, Computer Science or Information Technology. Minimum 2 years\nof experience in computer lab or IT support is required.\nB) Teaching\n Assistant Professor - Department of OB & HRM, Marketing & International Business\nand Operations Management\nAssociate Professor- Department of Operations Management\n• Professor- Department of Operations Management and Business Analytics & Data\nScience\nWe are looking for professionals who:\n Hold an MBA and a Ph.D. in the relevant discipline from a recognized university\nMinimum 5 years of experience - Assistant Professor, minimum 10 years of experience\n- Associate Professor and min 15 years of experience-Professor\nInterested candidates are requested to submit their resume along with a cover letter and\nrelevant credentials to careers@msrim.org\nFor more details kindly check\nhttps://msrim.in/pdf/JD-for-carrer-v2.pdf.\nApplication Deadline: 10 days from the date of this advertisement",
+      "timestamp": "2026-11-05T01:24:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261300,
+      "text": "SRIGURU INTERNATIONAL PUBLIC SCHOOL\n(Proposed to be affiliated to the CBSE, New Delhi)\nWe are Hiring Passionate Teachers\n& Staff with Strong Communication Skills\nDAYCARE, KG / MONTESSORI TEACHERS\nCertified & Trained Candidates in Elementary Education (NTT) /\nMontessori Teacher Training Program\nPRT/TGT/PGT FACULTY\nEnglish, Hindi, Kannada, General Science, Social Science, Mathematics, Physics,\nChemistry, Biology, Computer Science, Dance, Music, Physical Education\nADMIN & OTHER AREAS\nOffice Staff, Librarian, Science Lab Assistant, Front Office Executive\nSalary & Remuneration will be according to Qualification & Experience!\n+ 91 80956 55755/+91 80957 55855\nKindly email your detailed CV with your latest passport size photo to :\nsips.info26@gmail.com\n#37/2A, Ramaiahpalya Main Road, Thagachaguppe, Kumbalgodu, Bengaluru - 560 074",
+      "timestamp": "2026-11-05T01:24:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261301,
+      "text": "Chamrajnagar\nPUBLIC SCHOOL\nBegur, Gundlupet Tq, Chamaraja Nagar Dist.\nTEACHERS\nJoin Our\nWANTED\nDedicated\nTeam...\nPrincipal Post\nQualification: M.Sc, B.Ed\nTeachers\nQualification:\nM.Sc or B.Sc with B.Ed\nor\nM.A (English Literature) or B.A(English Literature)\nwith B.Ed\nWALK-IN INTERVIEW\n7thNovember 2026|11:00 A.M.\nCandidates must carry all necessary documents.\nPreference iven to anddates from Beg,Nanangud and Gundluete\n+91 90608 63562",
+      "timestamp": "2026-11-05T01:46:12+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261302,
+      "text": "WEARE\nCURE\nYEARS\nHOSPITALS\nHIRING\nEXCELLENCE\n1INCT 1994\nMD GENERAL PHYSICIAN\nELIGIBILITY\n• MD (General Medicine) from a recognized\nmedical institution.\n• Valid KMC/State Medical Council\nregistration.\n• Strong clinical, communication, and\npatient management skills.\nJOB DETAILS\nLocation: CurePlus Kaveri Hospital,\nKushalnagar, Karnataka.\nShift: General Shift\nEmployment Type: Full-Time\nAttractive salary\n+919353401761\nhr@sashealthcareindia.com",
+      "timestamp": "2026-11-05T01:46:32+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261303,
+      "text": "23Q\n3eQE3%\n34a\nWezanago\nBGBZBGEL JAE\n3\nC3ananSon\n9\nE3\nBBGEZB EZDBY\n3\naaanan3..\n33Z0E2\n23\n+919972385510",
+      "timestamp": "2026-11-05T01:48:10+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261304,
+      "text": "Belagavi\nTRAUMA CURE-INDIA\nOrthopaedic & Trauma Care •\nIndia\nNOW\nHIRING\nOPEN POSITIONS\nTRAUMA CURE-INDIA\nUnit Head\nReceptionist\nPRO\n(Public Relations Officer)\nSPECIALTY HIGHLIGHT\nBone, Joint & Trauma Surgery\nLocations:\nApoorva Multi-speciality Hospital,\nBelagavi, Karnataka\nSiddhant Multispeciality Hospital,\nAthani, Belagavi\nContact Numbers\nSend your CV on\n8719906888\nWhatsApp / Call\n63661 63596\nBe a part of our dedicated team\nand make a difference in patient care",
+      "timestamp": "2026-11-05T01:49:40+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261305,
+      "text": "Belagavi\nBELAGAVI\nApoorva\nHOSPITALS\nWE ARE\nHIRING!\nURGENT STAFF REQUIREMENT\nApoorva Hospitals, Belagavi is expanding\nour healthcare family!\nWe are looking for dedicated, skilled, and\npassionate professionals to join our team.\nDEPARTMENT\nQUALIFICATION\nEXPERIENCE\nNUMBER OF\nREQUIRED\nSTAFF REQUIRED\nFRONT OFFICE with Counselling\nFRONT OFFICE with Counselling\nAny Graduate (Bsc / Bcom)\n1 Year\n2\nCASUALTY\nEMERGENCY BROTHER\nBSc Nursing / GNM with\n2 Years\n1\nEmergency Certificate\nUSG\nBSc / Diploma in\nUSG Technician\n2 Years\n1\nUSG COURSE\nNURSING DEPARTMENT\nICU NURSE\nBSc / GNM Nursing\n1 Years\n2\nSTAFF NURSE\nBSc / GNM Nursing\n1 Years\n2\nMARKETING\nMARKETING PRO (Chandgad /\nAny Graduate (Bsc /\n3 Years\n1\nGokak Taluk)\nBcom)\nACCOUNTS\nB.Com / M.Com\n3 Years\nACCOUNTANT Incharge\n1\nOT\nBSc / Diploma OT\n1 Year\n1\nOT Technician\nTechnician\nAPPLY NOW\napoorvahealthcarebelgaum@gmail.com\n8884764333\nHaglina Hands.",
+      "timestamp": "2026-11-05T01:50:46+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261306,
+      "text": "Reliable Software is looking for a Customer Support Engineer for our ERP Software team. Role Details: \n• Position: Customer Support Engineer (ERP Software)\n • Qualification: BCA / B.Com / Diploma in CS/IT (with computer applications knowledge) \n• Eligibility: \nOpen to both Freshers & Experienced Professionals\n • Languages Desired: Kannada, Hindi & English\n How to Apply: Send your updated resume directly to: \n📧 Vijithamartk@relysoft.in\nReliable\nSOFTWARE\nSince 2000\nActively Calm. Calmly Active\nJOB OPPORTUNITY: WE ARE HIRING\nCUSTOMER SUPPORT\nENGINEER\nsupport\nFor ERP Software\nQualification:BCA/\nELIGIBILITY:\nB.Com / Diploma in CS/\n0\nIT with Knowledge in\nComputer applications.\nFRESHERS &\nPROFESSIONALS CAN APPLY\nLanguage: Kannada, Hindi, English\n(all desired)\nAPPLY NOW\nEmail Id: Vijithamartk@relysoft.in\nwww.relysoft.in",
+      "timestamp": "2026-11-05T01:52:36+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261307,
+      "text": "We’re expanding our team at Mandovi Furniture & Interiors, Belagavi! If you are passionate about design, spaces, and customer experience, explore the opportunities below:\n   1. Sales Executive Role: Be the face of our brand Background: Graduate / Post Graduate in Marketing Experience: Minimum 2 years in sales (furniture/interior industry preferred) Key Skills: Client communication, MS Excel proficiency, target-driven mindset  \n2. Interior Designer Role: Design. Visualise. Create. Background: Degree/Diploma in Interior Design, Architecture, or related field Experience: Minimum 3 years handling projects from concept to execution Key Skills: AutoCAD, SketchUp, 3D Rendering (V-Ray/Lumion/Enscape), 2D working drawings & BOQs, modular kitchen & furniture knowledge Workplace Highlights: Work with premium brands & bespoke projects Collaborative, high-growth environment Comprehensive project exposure \nLocation: Bauxite Road, Belagavi, Karnataka \nHow to Apply: \nSend your resume/portfolio to info@mandovihome.com\nDesigning\nHomes\nMANDOVI\nCreating\nHappiness\n—FURNITURE AND INTERIORS\nSINCE 1971.\nFURNITURE | INTERIOR | TURNKEY\nBELAGAVI\nWe're\nHiring!\nJoin Our Team\nBe a part of Mandovi Furniture and Interiors, Belagavi.\nLet's create beautiful homes together.\nSALES EXECUTIVE\nINTERIOR DESIGNER\nBe the face of our brand\n21\nDesign. Visualise. Create.\nREQUIRED QUALIFICATIONS & SKILLS\nREQUIRED QUALIFICATIONS & SKILLS\nGraduate / Post Graduate\nGraduate / Post Graduate\nin Marketing\nin Interior Design / Architecture\nor related field\nMinimum 3 years of experience\nMinimum 2 years of experience\nin interior design\nin sales (preferably in furniture,\ninterior or related industry)\nProficiency in SketchUp, AutoCAD\nand 3D rendering tools (V-Ray / Enscape /\nExperience in furniture and\nLumion etc.)\ninteriors is a plus point\nKnowledge of modular kitchens, furniture,\nspace planning, materials and finishes\nGood computer knowledge\nAbility to prepare 2D drawings, 3D visuals,\nand proficient in Excel\nworking drawings and BOQs\nExperience in handling individual projects\nGood communication\nfrom concept to execution\nand interpersonal skills\nGood client coordination and project\nmanagement skills\nPassionate about sales,\n管\nBasic Excel, costing and presentation skills\ntarget-driven and customer-focused\n(Photoshop / PowerPoint is a plus)\nAPPLY NOW\nShare your resume to\nWhatsApp\ninfo@mandovihome.com\n9784 9784 54\nLocation\nBauxite Rond",
+      "timestamp": "2026-11-05T01:55:37+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261308,
+      "text": "Ready to lead the electric revolution in Belagavi? ⚡ Walk-in interviews are now open for UV Space Station, Belagavi. We are looking for passionate, driven individuals to join our crew across multiple roles: \n🚀 Open Positions: \n• Sales Manager\n • Salesman / Product Advisor\n • Technician Crew\n 📅 Drive Dates: Up to 6th November 2026 \n⏰ Slots: 10:30 AM – 11:30 AM | 3:00 PM – 4:00 PM \n📍 Interview Venue: Lotus The Car Shop, Nehru Nagar, Behind Samiti Women’s Hostel, Belagavi \n📌 What to bring: \n• Updated Resume / CV \n• Valid Govt ID Proof (Please arrive at least 10 minutes prior to your slot) \n📞 Questions / Inquiries: Call +91 9901924904\nUNCHARTED TERRITORY?\nUV SPACE STATION\nYES.\nBELAGAVI\nINTERVIEW\nSHORTLISTED\nYou have been shortlisted for the\ninterview at UV Space Station, Belagavi\nOPEN POSITIONS\nSALES MANAGER\nSALESMAN/\nPRODUCT ADVISOR\nTECHNICIAN CREW\nBRING\nCARRY A\nARRIVE\nUPDATED\nVALID\n10 MINUTI\nRESUME\nID PROOF\nBEFORE\nYOUR SLO\nINTERVIEW LAST DATE\n6TH NOV 2026\nVENOM\nINTERVIEW SLOTS\nCROSSOVER TO YOUR WILD SIDE\n10:30 AM - 11:30 AM\n3:00 PM - 4:00 PM\nPOWERED BY\nVX-100\nINTERVIEW VENUE\nLIMITED INTERVIEW SLOTS\nLotus The Car Shop\nCALL FOR DOUBTS\nNehru Nagar, Behind Samiti\nWomen's Hostel, Belagavi\n9901924904\n(Available on Google Maps)",
+      "timestamp": "2026-11-05T01:57:52+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261309,
+      "text": "ADMS Marketing Pvt. Ltd. is expanding its customer support team and looking for energetic, passionate Telecalling Executives to join us. Key Highlights:\n • Role: Telecalling Executive \n• Total Openings: 20 Positions\n • Salary: ₹15,000 / month + Attractive Incentives \n• Location: Belagavi, Karnataka \n• Work Mode: On-site (WFH / Flexible options available for Tamil & Assamese Language Experts)\n Language Experts Needed (3 Openings Each):\n • Kannada\n • Telugu\n • Tamil\n • Hindi & English \n• Marathi\n • Bengali \n• Assamese Eligibility Criteria:\n • Minimum 2nd PUC completed\n • 2+ years of relevant experience in telecalling/customer support\n • Basic computer proficiency & reporting skills \n• Strong communication & email drafting skills \nWalk-in Interview Details:\n 🗓 Dates: 5th, 6th & 7th November \n👥 Format: Face-to-Face Interview Only\n 📍 Location: ADMS Marketing Pvt. Ltd., Plot No. 165, M Square Building, 2nd Floor, CTS 4857/64, 1368, Sadashiv Nagar, Last Bus Stop, Belagavi, Karnataka – 590019\nADMS Marketing Pvt. Ltd.\nRide\nWE ARE\nElect\nHIRING\nTELECALLING EXECUTIVES\nADMS\neBikes\nADMS Marketing Pvt. Ltd. is looking for passionate\nand energetic Telecalling Executives to join our\ndynamic team!\nRequired Language Experts -\n3 Vacancies Per Language\nJob Highlights:\nKannada Language Expert -\n3\nTelugu Language Expert -\n3\n\nCompany: ADMS Marketing Pvt. Ltd.\nTamil Language Expert -\n3\nHindi, English Language Expert -\n3\nOpenings: 20 Positions\nMarathi Language Expert -\n3\nSalary: ₹15,000 /month +\nBengali Language Expert -\n3\nAttractive Incentives\nAssamese Language Expert -\n3\nFLEXIBLE WORK MODE AVAILABLE -\nTAMIL & ASSAMESE LANGUAGE EXPERT\nPreference: Immediate Joiners |\nOffice / Work From Home (WFH) options availab\nCandidate Criteria & Skills Required:\nEducation:\nExperience:\nComputer Skills:\nCommunication:\nGoal-Oriented:\nMinimum\nMinimum 2 years\nBasic computer\nExcellent\nAbility to achleve\n2nd PUC\nof experience\nknowledge\ncommunication\ntargets and handle\ncompleted.\nin telecalling /\n(for reporting\nskills & basic\ntelecalling operatio\nsame field.\nand data\nemail drafting\nefficiently.\nrecording).\nabilities.\nWalk-in Interview Details:\nInterview Location:\n田\nDates: 5th, 6th & 7th November\nADMS Marketing Pvt. Ltd.\n田\nPlot No. 165, M Square Building, 2nd Floor,\nFormat: Face-to-Face Interview\nOnly\nCTS 4857/64, 1368, Sadashiv Nagar,\nLast Bus Stop, Belagavi, Karnataka - 59001\nHow to Apply / Contact Us:\nSend your updated CV/Resume today!\nWhatsApp / Call:\nEmail: humanresource.adms@gmail.com\n+91 81054 79216 | +91 97435 2018",
+      "timestamp": "2026-11-05T02:00:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261310,
+      "text": "enqssemdg...\ndegow\ndOEg-L\nHodoeg ddeag:\nMale/Female\nLEGdHEg:\nMale\n 3 O:-\nega .de\ne\n9481642034\n9901995561",
+      "timestamp": "2026-11-05T02:04:55+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261311,
+      "text": "📢 WE ARE HIRING | JOIN THE COLUMBIAA HOSPITAL TEAM! 🏥\n💙 Columbiaa Hospital, Kasturi Nagar, Bengaluru, is looking for passionate and dedicated professionals to join our growing healthcare team!\n 📌 Current Openings: \n💊 Pharmacists \n🔬 Lab Technicians \n👩‍⚕️ Staff Nurses – Casualty, Ward, ICU & OT\n 💻 Front Office Executives – IP & OP Billing \n✨ Experience Required: 1–3 Years\n 💰 Attractive Salaries Based on Experience! If you are committed to patient care and looking to grow your career in healthcare, we would love to hear from you!\n 📩 Send Your Resume Today! \n📞 Contact: +91 9346262369 \n📧 Email: hr@columbiaahospital.com \n📍 Address: Building No. 06, 5th Main Road, B Channasandra, OMBR Layout, Kasturi Nagar, Bengaluru, Karnataka – 560043.\nCOLUMBIAA\nHOSPITAL\nYour health care partner\nWE ARE\nHIRING\nSORa\n2A1 EMERGEANC\nCOLUM\n2417 PHARMACY\nJoin Our Team\nLab\nPharmacists\nTechnicians\nFront Office\nStaff Nurses\nExecutives\n(Casuality, Ward, ICU, OT)\n(IP & OP Billing)\nMinimum\nAttractive Salaries\n1-3 Years\nExperience\nBased on Experience\nSend resumes to\nBuilding No 06, 5th Main Rd,\n+919346262369\nB Channasandra, OMBR Layout,\nKasturi Nagar, Bengaluru,\nhr@columbiaahospital.com\nKarnataka 560043",
+      "timestamp": "2026-11-05T02:06:57+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261312,
+      "text": "Mysore\nVIDYAVARDHAKA SANGHA (R), MySUrU\nVIDYAVARDHAKA FIRST GRADE COLLEGE\nSheshadri lyer Road, Mysuru-01, Phone: 0821-2422385\nEmail:vvfgc@yahoo.co.in |website:www.vvfgc.ac.in\nREQUIRED\nI.No\nSubject\nDesignation\nEducation Qualification\nPosts\nMCA / M.Sc in Computer\n1\nMCA\nAsst. Professors\n04\nScience\nCandidates with NET/K-SET, experience and Ph.D., are preferable\nPlease submit the applications within 7 days along with copies of\nCertificates, Bio-Data & Passport size photo to the office.",
+      "timestamp": "2026-11-05T02:11:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261313,
+      "text": "📢 WE ARE HIRING | JOIN THE COLUMBIAA HOSPITAL TEAM! 🏥\n💙 Columbiaa Hospital, Kasturi Nagar, Bengaluru, is looking for dedicated and hardworking individuals to join our growing healthcare team! \n📌 Current Openings:\n 🧹 Housekeeping Staff\n 🏥 Ward Boys \n✨ Experience Required: 1–3 Years of hospital experience \n💰 Salary: Attractive salary based on experience! If you are responsible, committed to maintaining hospital cleanliness and hygiene, and passionate about supporting patient care, we would love to hear from you! \n📩 Send Your Resume Today! \n📞 Contact: +91 9346262369\n 📧 Email: hr@columbiaahospital.com \n📍 Address: Building No. 06, 5th Main Road, B Channasandra, OMBR Layout, Kasturi Nagar, Bengaluru, Karnataka – 560043.\nCOLUMBIAA\nHOSPITAL\nYour health care partner\nWEARE\nHIRING\nGreowan\nZAIT PHARMACY\nJoin Our Team\nWard\nHousekeeping\nStaff\nBoys\nCLEANING\nIM PROGRISS\nMinimum\n1-3 Years\nAttractive Salaries\nExperience\nBased on Experience\nSend resumes to\nBuilding No 06, 5th Main Rd,\n+919346262369\nB Channasandra, OMBR Layout,\nKasturi Nagar, Bengaluru,\nhr@columbiaahospital.com\nKarnataka 560043",
+      "timestamp": "2026-11-05T02:11:40+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261314,
+      "text": "St. Paul's School\nAffiliated to CBSE, New Delhi, Pattegarapalya, Bangalore-79\nWANTED\nMale\nOffice Assistant\nSupervision / Manager\nContact: 9535177379, 9591121123",
+      "timestamp": "2026-11-05T02:14:25+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261315,
+      "text": "目目\nQuantumKids\nNEXT GEN TUTORIALS\nWANTED\nTEACHER\nQUANTUM KIDS TUTORIALS\nNEXT GEN TUTORIALS\nTeachers required\nfor tuition classes\nPassionate· Dedicated · Student-friendly\nContact:\n9743778650",
+      "timestamp": "2026-11-05T02:14:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261316,
+      "text": "Teacher Recruitment:\nIsaac Newton English School, Cottonpet, Bengaluru \nWe are inviting dedicated, qualified and passionate educators for the current academic session.\n\n--- Open Positions\n1) High School Social Science Teacher\n\n--- Qualifications:\nB.A./M.A. in History, Geography, Political Science or Economics paired with a B.Ed or equivalent teaching certification.\n\nInterested candidates can share their resume on WhatsApp Number + 91 9986065589.",
+      "timestamp": "2026-11-05T02:15:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261317,
+      "text": "*Vinodh English School* *Gorguntepalya* Bangalore 560022.\n\nUrgently required  *Social* *Science* faculty for Higher Primary and High School.\n \n\n Contact  *7892525535",
+      "timestamp": "2026-11-05T02:15:10+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261318,
+      "text": "Looking for social, English and Science teachers for the high school section \n\nLocation \nS V S HIGH SCHOOL \nChowdeshwari Nagar \nLaggere Bengaluru:58\nContact: 7022834662",
+      "timestamp": "2026-11-05T02:15:10+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261319,
+      "text": "PNC COGNITTO\n— DEGREE COLLEGE —\nWe are\nJoin Our\nHiring\nTeam\nPRINCIPAL\nWITH ECONOMIC SUBJECT\nImmediate\nRequirement\nContact-9113269694\nAddress: 33, SRB Campus, Opp SRB Gardenia,\nConfident Oberon Main Rd, Kumbena Agrahara,\nKadugodi, Bengaluru, Karnataka 560067",
+      "timestamp": "2026-11-05T02:18:02+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261320,
+      "text": "VIDYASAGAR\nPUBLIC SCHOOL\nWE ARE HIRING\nImmediate Requirement\n-00-0\nHIGHER PRIMARY\n-00\n-100\nMATHEMATICS TEACHER\nQualification: Equivalent Degree\nSalary: Based on Demo session\n3T\nLOWER PRIMARY\nHINDI TEACHER\nQualification: Equivalent Degree\nSalary: Based on Demo session\nLOCATION: CHANDRA LAYOUT\nCONTACT US:\nAcademic Coordinator: 9449500083\nPrincipal: 9980669993",
+      "timestamp": "2026-11-05T02:18:02+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261321,
+      "text": "GUAN NEIS ROMINT\nBANGALDRE\n\n井\nAfT:\nESTD.1981\nCamlin High School\n6th 'C' Main, 4th Cross, Next to 7th Main\nHampinagar Bus Stop,\nVijayanagar 2nd Stage,\nBangalore-104\nTEACHER REQUIRED\nBIOLOGY\nCome with original documents\nand give demo for\nimmediate appointment\n080-23301363",
+      "timestamp": "2026-11-05T02:18:03+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261322,
+      "text": "WORLD SCHOOL,NAGARUR\nCOME TO LEARN & GO TO SERVE\nWE ARE\nHIRING\nJoin\nOffice Admin\nOur\nTeam\nPre-Primary Teachers\nPrimary Teachers\nHigh School Teachers - All Subjects\nGraduate\nFluent in English\nRelevant Experience\nEmail your CV to hr.bgswsng@amail.com",
+      "timestamp": "2026-11-05T02:18:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261323,
+      "text": "KAIRALEE NILAYAM\nEDUCATIONAL INSTITUTIONS\nVimanapura (HAL), Bengaluru – 560 017\nEstablished in 1950\nOver Seven Decades of Trust Tradition and Excellence in Education\nWith a proud legacy of nurturing generations of students\nthrough quality education, strong values and academic\nexcellence, Kairalee\nNilayam Educational Institutions\nmanages State Board and CBSE-affiliated schools, serving\nover 3,500 students.\nINVITES APPLICATIONS FROM QUALIFIED, EXPERIENCED\nAND DEDICATED ACADEMIC PROFESSIONALS FOR\nTHE POSITION OF\nPRINCIPAL – PRE-UNIVERSITY COLLEGE\nFOR THE NEWLY ESTABLISHED PU COLLEGE\nEligibility and Experience\n• Postgraduate degree with B.Ed./M.Ed.\n• Minimum 10 years of relevant teaching and/or\nacademic administrative experience.\n• Strong leadership, administrative and\ncommunication skills.\n• A commitment to academic excellence, student\ndevelopment and institutional growth.\nInterested candidates may submit their detailed\nrésumé, copies of relevant educational and experience\ncertificates, testimonials and a recent passport-size\nphotograph to:\nThe Secretary & Correspondent\nKAIRALEE NILAYAM EDUCATIONAL INSTITUTIONS\nVimanapura (HAL), Bengaluru-560017\nPhone: +919141654726, +918025236608\nEmail: kksvimananura@gmail.com",
+      "timestamp": "2026-11-05T02:19:48+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261324,
+      "text": "K.S.R.T.C-\nBened\noa gaa e a  t o\nugoud gno sgcud uegggd\n3\nd  o o\n(Technical Assistants) e\nqcua dei uouuodo, ggo, g, emnhbd,\nogid, &ecod, queugd, gugnd, goda,\n,   .\n(Technical Assistants)\nucud aei oda, ogdd, Hueey, gdyd, gd,\nIaa, gugqud, 孔ohqdgedd, cducnoa,\n&UHES, G叫GGd, eHG, GO, HHE,\n833\ne\n3\n33\nJoeanod, aodeggd, qbegd, qe, ¿ycod,\nC9\nC\nGeggugd, ewgg, acuonc, on&sd uzd.\nyowu umoud ai\ngcud gn ehggdu\n8Y6586 386p8\n8y6586\n33CE 2\n33 \n3RERNEG\nD3BFB3.R?啊 5DB7\n/ engae: / 68\n1 /  \n3 3 \n2\n(7a//aa)\n2\nee-4\nee-4\n3  \n93 ad \nO\no\n3E 3 J7SS\nET R T LO\nPe\nQ6\n2\n2uee buea)\n2\n2\nBea Ge  oeb  e  P\n2\ncup30R CC08P3 C38\n22\n  , \nPhone No. 0821-3588801, 9110692229. 8618943513",
+      "timestamp": "2026-11-05T02:20:41+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261325,
+      "text": "Shivamogga and Davanagere\nWE ARE\nry Motors Pvt. Ltd.\nHIRING\nJOIN OUR TEAM\nDRIVE A BRIGHTER TOMORROW\nMD\nHECTOR\nWINDSOREV\nLocation - MG SHIMOGA\nLocation - MG DAVANAGERE\nSALES MANAGER\nSALES MANAGER /\nASST. SALES MANAGER /\nRELATIONSHIP MANAGER\nTEAM LEADER\nNEW CAR ŚALES\nRELATIONSHIP MANAGER\nACCESSORY INCHARGE\nNEW CAR ŠALES\nUSED CAR EVALUATOR\nUSED CAR EVALUATOR\nDRIVERS\nDRIVER\n具\nSend your CV:\nContact:",
+      "timestamp": "2026-11-05T02:30:30+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261326,
+      "text": "URGENT\nu000001\nHIRING!!\nE=mc²\n10Students\nCoaching Class\nJoin our mission to\nNURTURE MINDS &\nPHYS\nSHAPE FUTURES\nat Ankuram.\nWE ARE LOOKING FOR\nPHYSICS\nTEACHER\nFor PU1 & PU2 Classes\n+91 7353313447\nAPPLY NOW\nKudroli, Mangalore\nBe a guide.\nMake a difference.",
+      "timestamp": "2026-11-05T02:35:04+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261327,
+      "text": "# WE ARE\nHIRING!\nMANAGER - EXCHANGE & USED CARS\nDRIVE GROWTH. LEAD PERFORMANCE. BUILD CUSTOMER TRUST.\nKey Roles & Responsibilities:\nSkills Required:\nDrive Exchange & Used Car Business, Achieve\nExpert in Used Car Evaluation & Pricing\nTargets Through Evaluation, Procurement,\nStrong knowledge of market rates,\nSales Of Pre-owned Vehicles With Maximum\nmodels, and depreciation\nProfitability And Customer Satisfaction.\nQualification & Experience:\nLead Evaluators / Used Car Sales Executives\nEnsure 100% Customer Satisfaction And\nAny Degree / Diploma\nHandle Complaints\n5+ years experience in Used Car / True Value\nWHAT WE OFFER\nCompetitive\nSupportive\nPF\nGratuity\nHealth\nBonus &\nSalary\nWork Environment\nInsurance\nIncentives\n...APPLY NOW...\nDrive Your\nCareer Forward!\nSCAN ME\nSend your resume at :\nrecruitment@unitedtoyota.net\nLOCATION\nContact Number :\nMANGALORE\n9483530500,8951779267",
+      "timestamp": "2026-11-05T02:35:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261328,
+      "text": "MANGALORE\nTHE NEXT CHAPTER\nISELECTRIC\nSTAY TUNED...\nBE A PART OF OUR EXCITING NEW JOURNEY\nWE ARE HIRING\nEV SALES CONSULTANT\nBuild Your\nGrow with\nBe a Part of\nCareer with Honda\nan Innovative Brand\nOur EV Revolution\nAPPLY NOW\n9606803024\ncareers@arthahonda.com\nARTHA HONDA",
+      "timestamp": "2026-11-05T02:35:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261329,
+      "text": "BEL EDUCATIONAL INSTITUTIONS\nJalahalli Post, Bengaluru - 560013\nBharat Electronics Educational Institutions (BEEl) is one\nof the premier institutions, with its rich legacy of providing\nquality education.\nBEEl requires well-qualified and experienced Teachers on\nFixed Tenure Basis.\nCandidates having relevant experience only need to apply on\nor before 24.11.2026.\nFor detailed advertisement visit our website\nwww.beei.edu.in\nwww.bel-india.in",
+      "timestamp": "2026-11-05T03:11:20+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261331,
+      "text": "Bangalore\nWIPRO\nWe Build\na Better Tomor\nwipro\nWALK-IN DRIVE\nBANGALORE\nExciting Career Opportunities\nat Wipro!\nWipro is conducting a Walk-In Drive for eligible\ncandidates. Grab this opportunity to be part of a\nleading global technology company.\nLocation:\nWalk-In Dates:\nWipro SJP2, Bangalore\n5th November 2026\n(Thursday)\nReporting Time:\n6th November 2026\n(Friday)\n9:30 AM to 1:00 PM IST\n10th November 2026\n(Tuesday)\nPosition:\nService Desk\n11th November 2026\n(Wednesday)\nQualification:\n12th November 2026\n5(Thursday)\nFulltime Graduates\nSalary / CTC:\nDocuments Required:\n专\n3 to 3.5 LPA\n- Updated Resume\nPoint of Contact (POC):\n- Government ID Proof\nMurali\nDon't miss this opportunity!\nWipro-\nWalk in and take the next step in your career.",
+      "timestamp": "2026-11-05T04:39:09+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261332,
+      "text": "📢 WE'RE HIRING | FACTORY SUPERVISOR\n\nLi-Circle is looking for a proactive and safety-focused Factory Supervisor to join our team at Kaiwara.\n\nIf you have the ability to manage factory operations, lead a team, and ensure smooth production, we'd love to hear from you!\n\nKey Responsibilities:\n🔹 Oversee daily factory operations and ensure smooth production\n🔹 Manage and lead a team of workers\n🔹 Ensure compliance with safety standards and company policies\n🔹 Identify opportunities to improve process efficiency\n🔹 Coordinate with other departments to optimize workflow\n🔹 Troubleshoot and resolve production-related issues\n\n📍 Location: Kaiwara\n💰 Salary: ₹20,000 – ₹25,000 per month\nInterested Kindly reach out to: \n�      Contact: 6363490867\n✉️ Email: sourcing@licircle.com\nLi-Circle\nWe're\nHiring!\nFactory Supervisor\nLocation\nSalary\nKaiwara\n₹20,000-₹25,000\nper month\nInterested candidates can mail their resume to:\nsourcing@licircle.com\nJoin our team!",
+      "timestamp": "2026-11-05T04:43:33+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261333,
+      "text": "PART TIME/ BUSINESS OPPORTUNITY \n\nLIFE TIME REGULAR INCOME\nEarn Lakhs together Payouts\nMonthly Quarterly Yearly \n\nDirect Walkin - Centinary Building MG road Bangalore 560001\nNEED only PASSIONATE on EARNINGS\n\nHere is an golden opportunity from HDFC Life for freelancing \n💸💸💸💸💸💸💸💸💸💸\n\nIncentive + Commission + Foreign Tour\n   Respect  Rewards  Recognition \n\nNo Target     🎯\nNo Pressure😧\nNo Scam      🧐\nWork from anywhere 🏡 \n\nEarn 39% to 75% commission💰\nLifetime Income 💸\nTime Flexible Work⏳\nForeign tour campaign ✈️\nRewards and Recognition🏆\n\nRefer and get  ₹1000  bonus people aged above 35 years ( House wife, Retired Person , Freelancer, Self Employee, Tax consultant anybody )\n\nimmediately Contact in Telegram \n8722403242 ( Aishwarya ,Manager )\nGmail aiswarya.m@hdfclife.com",
+      "timestamp": "2026-11-05T06:15:33+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261334,
+      "text": "Shivamogga\nBUILDING A STRONGER TOMORROW\nHydraulic Motors\nWEARE\nHIRING!\nBOD 0G \n0000-00\nGED GOGOGD\n\nBOGO DOD GORDDD\nPosion:\nNOR\nComany\nLocation:\nSai India Limited\nShimoga (Shivamogga)\nRequirements & Qualifications\nEducation:\nITI / Diploma (Mechanical or related field)\nExperience:\nFreshers or Experienced candidates welcome\nKey Skills:\nBasic knowledge of CNC machine operations,\ndrawing reading, and precision measurement tools.\nHow to Apply / Contact Us\nInterested candidates can reach out directly\nvia phone or WhatsApp:",
+      "timestamp": "2026-11-05T06:34:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Bangalore_jobs",
+      "msg_id": 261335,
+      "text": "Chikkamagaluru\nST. MARY'S\nINTERNATIONAL SCHOOL\nF=ma\nWE'RE\nHIRING\nPHYSICS FACULTY\nLOCATION: CHIKMAGALUR\nPASSIONATE EDUCATORS\nWELCOME\nStrong\nFoundations\nNEET, JEE & KCET\nPreparation\nProblem-Solving\nExcellence\nStudent\nMentorship\nSend your CV/resume to:\nAPPLY NOW →\nhr@smis edu in",
+      "timestamp": "2026-11-05T07:11:30+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8422,
+      "text": "Visa Hiring Intern 📍 \n\nhttps://www.instagram.com/p/DfWX-YXz2nU/?obrf=eGw4MnVodGwyeWRo",
+      "timestamp": "2026-11-05T06:25:32+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "web3hiring",
+      "msg_id": 16609,
+      "text": "- Robinhood is hiring [Staff Software Engineer, Backend Platform](https://hashtagweb3.com/eng480?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n- Bitdeer is hiring [2027 Sales & Business Development Graduate Talent Trainee](https://hashtagweb3.com/rec26?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n- Prime Intellect is hiring [Applied Researcher - Chip Design](https://hashtagweb3.com/arcd?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n- BitGo is hiring [Senior Data Engineer](https://hashtagweb3.com/eng503?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)\n- OKX is hiring [Affiliate Manager](https://hashtagweb3.com/mgr212?utm_source=telegram&utm_medium=social&utm_campaign=web3hiring)",
+      "timestamp": "2026-11-05T03:32:46+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "mohancareers",
+      "msg_id": 3237,
+      "text": "📢Work From Home Jobs 📢\n\nTelus Digital Hiring For Freshers/experience \nCompany name : Telus Digital \nJob role               : Data Analyst \nQualification       :Any Graduation \nSalary                  : 3 -6 LPA\n📎APPLY HERE📎 \nhttps://mohancareers.com/telus-digital-work-from-home-jobs-work-from-home-jobs-2026/\nTE LUS Digital",
+      "timestamp": "2026-11-05T02:05:18+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "mohancareers",
+      "msg_id": 3238,
+      "text": "📢  Work from home jobs📢\n    Amazon Hiring For Representative \nCompany name   :    Amazon \nJob role                 :    Representative \nQualification          :   AnyGraduation \nSalary                      :   2-5 LPA\n📎Apply link 📎\nhttps://mohancareers.com/amazon-hiring-for-freshers-amazon-work-from-home-jobs-amazon-recruitment/\nDIC\namazon\nhary\nDAY1",
+      "timestamp": "2026-11-05T04:48:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "Fresherjobsadda",
+      "msg_id": 5000,
+      "text": "**Sending out resumes but still not getting calls from HR?** 📞\n\nYour skills deserve to stand out. A clear, well-written resume can help recruiters see what you bring to the role.\n\nMeet **Design My Resume**—currently **FREE to use!** ✨\n\n✅ Choose a professional resume template\n✅ Get AI help with your resume content\n✅ Check your resume with the ATS Checker\n✅ Import and update your existing resume\n✅ Download your resume as a PDF for free\n✅ **No payment. No credit card required.**\n\n👉 **Create your resume:** [designmyresume.com](http://designmyresume.com/)\n\nKnow someone looking for a job? Share this with them! 🚀\nDESIGN MY RESUME\nSending resumes.\nStill no HR calls?\nGive your resume a fresh start.\nRESUME\n100% FREE — RIGHT NOW\nRESUME\nSUMMARY\nEXPERIENCE\nResults-driven professional with\nProfessional templates\nexperience in project coordination,\nteam collaboration, and process\nimprovement.\nSKILLS\nAl writing help +\nProject Management\nEDUCATION\nATS checker\nCommunication\nData Analysis\nProblem Solving\n10:24\n二\nFree PDF download\nMissed Call\nBuild your resume today\ndesignmyresume.com",
+      "timestamp": "2026-11-05T07:05:43+00:00"
+    }
+  ]
+}
