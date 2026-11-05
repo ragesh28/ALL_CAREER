@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1058540,
+  "total_jobs": 1058581,
   "sources": {
     "naukri": 362303,
     "linkedin": 265354,
@@ -40,23 +40,23 @@
     "talentcom": 3,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 514,
-    "telegram_post": 387
+    "telegram_message": 543,
+    "telegram_post": 399
   },
   "locations": {
-    "bangalore": 226111,
+    "bangalore": 226127,
     "mumbai": 140885,
-    "delhi": 113157,
-    "chennai": 113704,
-    "hyderabad": 102601,
-    "pune": 85741,
-    "noida": 52197,
+    "delhi": 113158,
+    "chennai": 113708,
+    "hyderabad": 102602,
+    "pune": 85743,
+    "noida": 52198,
     "ahmedabad": 41160,
     "kolkata": 36159,
-    "all_india": 22447,
-    "coimbatore": 20948,
+    "all_india": 22455,
+    "coimbatore": 20950,
     "kochi": 16389,
-    "remote": 9895,
+    "remote": 9897,
     "jaipur": 8179,
     "maharashtra": 7948,
     "indore": 5444,
@@ -112,7 +112,7 @@
     "rennes": 81,
     "message_remote": 112,
     "sanand": 89,
-    "madurai": 146,
+    "madurai": 147,
     "trivandrum": 212,
     "ambala": 113,
     "message_chennai": 107,
@@ -139,7 +139,7 @@
     "pollachi": 65,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 30,
+    "pan_india": 32,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 5,
@@ -223,7 +223,7 @@
     "kothur_formulation_division": 1,
     "vapi": 4,
     "eu": 4,
-    "across_india": 14,
+    "across_india": 15,
     "trichy": 44,
     "perundurai": 2,
     "jhajjar": 3,
@@ -789,5 +789,5 @@
     "alappuzha": 1,
     "muvattupuzha": 1
   },
-  "generated_at": "2026-11-05T15:36:29.710751"
+  "generated_at": "2026-11-05T15:58:45.128461"
 }
