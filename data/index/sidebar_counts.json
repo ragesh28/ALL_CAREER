@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1040370,
+  "total_jobs": 1040484,
   "sources": {
     "naukri": 361304,
     "linkedin": 263502,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4338,
+    "other": 4452,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,19 +44,19 @@
     "telegram_post": 381
   },
   "locations": {
-    "bangalore": 222609,
-    "mumbai": 138245,
-    "delhi": 111371,
-    "chennai": 111602,
-    "hyderabad": 100371,
-    "pune": 84014,
-    "noida": 51194,
+    "bangalore": 222669,
+    "mumbai": 138257,
+    "delhi": 111378,
+    "chennai": 111608,
+    "hyderabad": 100389,
+    "pune": 84020,
+    "noida": 51195,
     "ahmedabad": 40588,
     "kolkata": 35659,
-    "all_india": 22444,
+    "all_india": 22447,
     "coimbatore": 20693,
     "kochi": 16230,
-    "remote": 9851,
+    "remote": 9852,
     "jaipur": 7872,
     "maharashtra": 7862,
     "indore": 5338,
@@ -681,5 +681,5 @@
     "zira": 1,
     "latam": 1
   },
-  "generated_at": "2026-11-04T23:54:47.063239"
+  "generated_at": "2026-11-05T01:46:32.223696"
 }
