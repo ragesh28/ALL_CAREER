@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1064991,
+  "total_jobs": 1065039,
   "sources": {
     "naukri": 362864,
     "linkedin": 265401,
@@ -40,8 +40,8 @@
     "talentcom": 9,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 560,
-    "telegram_post": 403,
+    "telegram_message": 592,
+    "telegram_post": 419,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -233,19 +233,19 @@
     "jobs_at_popvax": 1
   },
   "locations": {
-    "bangalore": 227661,
-    "mumbai": 141853,
+    "bangalore": 227678,
+    "mumbai": 141855,
     "delhi": 113701,
-    "chennai": 114439,
-    "hyderabad": 103330,
-    "pune": 86192,
+    "chennai": 114444,
+    "hyderabad": 103333,
+    "pune": 86194,
     "noida": 52485,
     "ahmedabad": 41405,
-    "kolkata": 36367,
-    "all_india": 22468,
+    "kolkata": 36368,
+    "all_india": 22483,
     "coimbatore": 21026,
     "kochi": 16416,
-    "remote": 9909,
+    "remote": 9912,
     "jaipur": 8297,
     "maharashtra": 7950,
     "indore": 5502,
@@ -1041,5 +1041,5 @@
     "tezpur": 1,
     "kodaikanal": 9
   },
-  "generated_at": "2026-11-06T08:45:17.650660"
+  "generated_at": "2026-11-06T11:27:31.386578"
 }
