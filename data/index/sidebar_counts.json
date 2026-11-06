@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1063093,
+  "total_jobs": 1063102,
   "sources": {
     "naukri": 362303,
     "linkedin": 265401,
@@ -40,8 +40,8 @@
     "talentcom": 9,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 555,
-    "telegram_post": 399,
+    "telegram_message": 560,
+    "telegram_post": 403,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -233,17 +233,17 @@
     "jobs_at_popvax": 1
   },
   "locations": {
-    "bangalore": 227099,
-    "mumbai": 141625,
+    "bangalore": 227103,
+    "mumbai": 141626,
     "delhi": 113527,
     "chennai": 114188,
-    "hyderabad": 103164,
+    "hyderabad": 103165,
     "pune": 86023,
     "noida": 52387,
     "ahmedabad": 41331,
     "kolkata": 36318,
     "all_india": 22468,
-    "coimbatore": 20994,
+    "coimbatore": 20995,
     "kochi": 16402,
     "remote": 9897,
     "jaipur": 8289,
@@ -456,7 +456,7 @@
     "mathura": 1,
     "kharghar": 8,
     "salem": 22,
-    "hubli": 9,
+    "hubli": 10,
     "lisbon": 1,
     "legans": 1,
     "angers": 1,
@@ -1035,7 +1035,8 @@
     "ashoknagar_kalyangarh": 1,
     "apcar_garden": 1,
     "industrial_area": 1,
-    "tulsi_vihar_colony": 1
+    "tulsi_vihar_colony": 1,
+    "dabolim": 1
   },
-  "generated_at": "2026-11-06T02:03:56.426676"
+  "generated_at": "2026-11-06T02:45:46.344102"
 }
