@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1062222,
+  "total_jobs": 1062330,
   "sources": {
     "naukri": 362303,
     "linkedin": 265354,
@@ -13,7 +13,7 @@
     "glassdoor": 4800,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4452,
+    "other": 4560,
     "bebee": 45,
     "jobrapidocom": 15,
     "simplyhired": 15,
@@ -44,21 +44,21 @@
     "telegram_post": 399
   },
   "locations": {
-    "bangalore": 226848,
-    "mumbai": 141444,
-    "delhi": 113522,
-    "chennai": 113994,
-    "hyderabad": 102965,
-    "pune": 86018,
-    "noida": 52386,
+    "bangalore": 226900,
+    "mumbai": 141455,
+    "delhi": 113527,
+    "chennai": 113999,
+    "hyderabad": 102990,
+    "pune": 86023,
+    "noida": 52387,
     "ahmedabad": 41331,
     "kolkata": 36318,
-    "all_india": 22466,
+    "all_india": 22468,
     "coimbatore": 20994,
     "kochi": 16402,
     "remote": 9897,
     "jaipur": 8289,
-    "maharashtra": 7948,
+    "maharashtra": 7949,
     "indore": 5491,
     "chandigarh": 5317,
     "kerala": 3681,
@@ -77,7 +77,7 @@
     "message_all_india": 530,
     "message_bangalore": 659,
     "nanakramguda": 557,
-    "tamil_nadu": 3631,
+    "tamil_nadu": 3632,
     "telangana": 3702,
     "ka": 505,
     "post_bangalore": 357,
@@ -848,5 +848,5 @@
     "industrial_area": 1,
     "tulsi_vihar_colony": 1
   },
-  "generated_at": "2026-11-05T22:13:48.137412"
+  "generated_at": "2026-11-06T02:01:19.491827"
 }
