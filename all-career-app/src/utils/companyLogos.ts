@@ -511,8 +511,7 @@ export function getCompanyLogo(name: string): LogoData {
 
   // 3. Fallback sanitized domain
   if (!domain) {
-    const slug = clean.toLowerCase().replace(/\s+/g, '').replace(/[^\w]/g, '');
-    domain = slug ? `${slug}.com` : 'direct.com';
+    domain = '';
   }
 
   const rawLower = rawKey.toLowerCase().trim();
@@ -532,10 +531,10 @@ export function getCompanyLogo(name: string): LogoData {
 
   const result: LogoData = {
     local: resolvedLocal,
-    unavatar: resolvedLocal || `https://unavatar.io/${domain}`,
-    duckduckgo: resolvedLocal || `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-    google: resolvedLocal || `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-    clearbit: resolvedLocal || `https://logo.clearbit.com/${domain}`,
+    unavatar: domain ? `https://unavatar.io/${domain}?fallback=false` : '',
+    duckduckgo: domain ? `https://icons.duckduckgo.com/ip3/${domain}.ico` : '',
+    google: domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128` : '',
+    clearbit: '',
     initial: (clean.charAt(0) || 'C').toUpperCase(),
     domain
   };

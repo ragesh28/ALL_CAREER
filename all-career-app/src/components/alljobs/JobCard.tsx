@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BriefcaseBusiness, CalendarDays, Mail, MapPin, Phone, Route, Send } from 'lucide-react';
 import { Job } from '../../types/jobs';
 import { getCompanyLogoData, getPortalLogo, formatAuthenticDate, formatWalkinDate, detectPortalInfo } from '../../utils/companyLogos';
@@ -10,59 +10,64 @@ interface JobCardProps {
   onSelectCompany?: (comp: string) => void;
 }
 
-export const AuthenticLogoBox: React.FC<{ company: string }> = ({ company }) => {
-  const [stage, setStage] = useState<number>(0);
+export const AuthenticLogoBox: React.FC<{ company: string; job?: Job }> = ({ company, job }) => {
+  const [stage, setStage] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [discovered, setDiscovered] = useState<string[]>([]);
   const logo = getCompanyLogoData(company);
-
-  return (
-    <div className="logo-box">
-      {stage === 0 && (
-        <img
-          src={logo.local || logo.unavatar}
-          alt={company}
-          className="company-logo"
-          loading="lazy"
-          decoding="async"
-          onError={() => setStage(1)}
-        />
-      )}
-      {stage === 1 && (
-        <img
-          src={logo.duckduckgo}
-          alt={company}
-          className="company-logo"
-          loading="lazy"
-          decoding="async"
-          onError={() => setStage(2)}
-        />
-      )}
-      {stage === 2 && (
-        <img
-          src={logo.google}
-          alt={company}
-          className="company-logo"
-          loading="lazy"
-          decoding="async"
-          onError={() => setStage(3)}
-        />
-      )}
-      {stage === 3 && (
-        <img
-          src={logo.clearbit}
-          alt={company}
-          className="company-logo"
-          loading="lazy"
-          decoding="async"
-          onError={() => setStage(4)}
-        />
-      )}
-      {stage >= 4 && (
-        <div className="logo-fallback" style={{ display: 'flex' }}>
-          {logo.initial}
-        </div>
-      )}
-    </div>
-  );
+  const record = job as any;
+  const safe = (value: unknown): string => {
+    if (typeof value !== 'string' || !value.trim()) return '';
+    try { const url = new URL(value, window.location.href); return ['https:', 'http:'].includes(url.protocol) ? url.href : ''; } catch { return ''; }
+  };
+  const websiteValue = record?.company_website;
+  const website = safe(typeof websiteValue === 'string' && !websiteValue.includes('://') ? `https://${websiteValue}` : websiteValue);
+  const domain = website ? new URL(website).hostname : logo.domain;
+  const candidates = useMemo(() => [...new Set([
+    safe(logo.local), safe(record?.company_logo), ...discovered,
+    domain ? `https://unavatar.io/${encodeURIComponent(domain)}?fallback=false` : '',
+    domain ? `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico` : '',
+    domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : ''
+  ].filter(Boolean))], [company, record?.company_logo, domain, logo.local, discovered]);
+  useEffect(() => { setStage(0); setLoaded(false); setDiscovered([]); }, [company, record?.company_logo, record?.company_website]);
+  useEffect(() => {
+    if (stage < candidates.length || !job?.url || discovered.length) return;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const jobUrl = safe(job.url);
+    if (!jobUrl) return () => clearTimeout(timeout);
+    fetch(jobUrl, { signal: controller.signal }).then(r => r.ok ? r.text() : '').then(html => {
+      if (!html) return;
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const found: string[] = [];
+      for (const el of doc.querySelectorAll('script[type="application/ld+json"]')) {
+        try {
+          const visit = (value: any) => {
+            if (!value || typeof value !== 'object') return;
+            if (Array.isArray(value)) { value.forEach(visit); return; }
+            const org = value.hiringOrganization;
+            if (org && typeof org === 'object') {
+              const raw = typeof org.logo === 'string' ? org.logo : org.logo?.url;
+              if (typeof raw === 'string') { const u = new URL(raw, jobUrl); if (u.protocol === 'https:' || u.protocol === 'http:') found.push(u.href); }
+            }
+            if (value['@graph']) visit(value['@graph']);
+          };
+          visit(JSON.parse(el.textContent || ''));
+        } catch { /* Ignore invalid structured data. */ }
+      }
+      if (found.length) { setDiscovered(found); setStage(0); }
+    }).catch(() => {}).finally(() => clearTimeout(timeout));
+    return () => { clearTimeout(timeout); controller.abort(); };
+  }, [stage, candidates.length, job?.url, discovered.length]);
+  useEffect(() => {
+    if (loaded || stage >= candidates.length) return;
+    const timeout = setTimeout(() => setStage(n => n + 1), 5000);
+    return () => clearTimeout(timeout);
+  }, [stage, candidates, loaded]);
+  return <div className="logo-box">{stage < candidates.length ?
+    <img key={candidates[stage]} src={candidates[stage]} alt={company} className="company-logo" loading="lazy" decoding="async" onLoad={e => { if (e.currentTarget.naturalWidth <= 1) setStage(n => n + 1); else setLoaded(true); }} onError={() => setStage(n => n + 1)} /> :
+    <div className="logo-fallback" style={{ display: 'flex', fontWeight: 700, color: '#8ea4c9' }} aria-label={`${company} logo unavailable`}>?</div>}
+  </div>;
 };
 
 export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }) => {
@@ -103,7 +108,7 @@ export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }
   return (
     <div className="job-card" style={index !== undefined ? { animationDelay: `${(index % 30) * 0.03}s` } : undefined}>
       <div className="card-top">
-        <AuthenticLogoBox company={companyName} />
+        <AuthenticLogoBox company={companyName} job={job} />
         <div className="card-info">
           <div
             className="company-name"

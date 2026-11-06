@@ -501,7 +501,6 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="roles-options">
               {visibleRoles.map(item => {
                 const isSelected = selectedRoles.has(item.id);
-                const count = roleCounts ? (roleCounts[item.id] ?? 0) : item.count;
                 return (
                   <div
                     key={item.id}
@@ -514,7 +513,6 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                       </svg>
                     </div>
                     <span className="option-label">{item.label}</span>
-                    <span className="source-count">({count.toLocaleString()})</span>
                   </div>
                 );
               })}

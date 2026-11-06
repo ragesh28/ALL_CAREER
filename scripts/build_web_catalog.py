@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
-BUILD_VERSION = 3
+BUILD_VERSION = 4
 PORTALS = ('telegram_message', 'telegram_post', 'google_images', 'freshersworld', 'internshala', 'workindia', 'timesjobs', 'linkedin', 'naukri', 'foundit', 'glassdoor', 'shine', 'hirist', 'apna')
 
 
@@ -81,6 +81,10 @@ def city_name(value):
 
 def normalize(job, source_hint=''):
     j = dict(job)
+    company_info = j.get('company') if isinstance(j.get('company'), dict) else {}
+    org = j.get('hiringOrganization') if isinstance(j.get('hiringOrganization'), dict) else {}
+    j['company_logo'] = j.get('company_logo') or j.get('company_logo_url') or j.get('logo_url') or j.get('logo') or company_info.get('logo') or org.get('logo')
+    j['company_website'] = j.get('company_website') or j.get('company_domain') or company_info.get('website') or org.get('sameAs')
     for field in ('company', 'location'):
         if isinstance(j.get(field), dict):
             j[field] = j[field].get('city' if field == 'location' else 'name') or 'Unknown'
@@ -92,7 +96,7 @@ def normalize(job, source_hint=''):
     j['date_posted'] = date[:10] if re.match(r'^\d{4}-\d{2}-\d{2}', date) else ''
     j['is_walkin'] = j.get('is_walkin') in (True, 'true') or bool(j.get('walkin_date') or j.get('walkin_dates')) or bool(WALKIN.search(j['title'] + ' ' + str(j.get('description') or ''))) or j['source'] in ('google_images', 'flyer')
     # Only display data goes into browser pages; full originals stay in source shards.
-    keys = ('title', 'role', 'company', 'location', 'source', 'url', 'date_posted', 'experience', 'salary', 'skills', 'is_walkin', 'walkin_date', 'walkin_dates', 'walkin_time', 'telegram_url', 'contact_email', 'contact_phone', 'flyer_image_url', 'venue', 'description', 'role_search', 'job_type')
+    keys = ('company_logo', 'company_website', 'title', 'role', 'company', 'location', 'source', 'url', 'date_posted', 'experience', 'salary', 'skills', 'is_walkin', 'walkin_date', 'walkin_dates', 'walkin_time', 'telegram_url', 'contact_email', 'contact_phone', 'flyer_image_url', 'venue', 'description', 'role_search', 'job_type')
     return {k: (str(j[k])[:3000] if k == 'description' else j[k]) for k in keys if j.get(k) is not None}
 
 
