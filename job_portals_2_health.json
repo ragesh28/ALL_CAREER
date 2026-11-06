@@ -1,41 +1,41 @@
 {
-  "run_id": "42152369439",
-  "updated_at": "2026-11-06T08:45:02.672509",
+  "run_id": "42189973187",
+  "updated_at": "2026-11-06T14:35:20.463537",
   "portals": {
     "apna": {
-      "scraped_total": 6618,
-      "new_stored_total": 280,
-      "requests_total": 772,
+      "scraped_total": 8018,
+      "new_stored_total": 722,
+      "requests_total": 715,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-coimbatore"
+        "requests": 3,
+        "scraped": 42,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/marketing-manager-jobs-in-bengaluru"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 405,
+      "requests_total": 361,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/marketing-manager-jobs-in-bengaluru/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 405,
+      "requests_total": 361,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-coimbatore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-bangalore"
       }
     }
   }
