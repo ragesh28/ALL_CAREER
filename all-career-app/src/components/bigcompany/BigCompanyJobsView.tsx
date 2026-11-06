@@ -751,23 +751,10 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                 ←
               </button>
 
-              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                let pageNum = i + 1;
-                if (totalPages > 7) {
-                  if (currentPage > 4) {
-                    pageNum = currentPage - 3 + i;
-                    if (pageNum > totalPages) pageNum = totalPages - (6 - i);
-                  }
-                }
-                return (
-                  <button
-                    key={pageNum}
-                    className={`page-btn ${currentPage === pageNum ? 'active' : ''}`}
-                    onClick={() => { setCurrentPage(pageNum); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  >
-                    {pageNum}
-                  </button>
-                );
+              {Array.from({ length: Math.min(7, Math.min(totalPages, currentPage + 1)) }, (_, i) => {
+                const end = Math.min(totalPages, currentPage + 1);
+                const pageNum = Math.max(1, end - 6) + i;
+                return <button key={pageNum} className={`page-btn ${currentPage === pageNum ? 'active' : ''}`} aria-current={currentPage === pageNum ? 'page' : undefined} onClick={() => { setCurrentPage(pageNum); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{pageNum}</button>;
               })}
 
               <button

@@ -128,7 +128,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
         controller.signal
       );
       if (!controller.signal.aborted) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
-      return result;
+      return controller.signal.aborted ? null : result;
     } finally { if (!controller.signal.aborted) setBatchLoading(false); }
   };
 
@@ -482,6 +482,17 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   // Pagination calculation: 50 jobs per page
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
   const safePage = Math.min(currentPage, totalPages);
+  const availablePages = Math.max(totalPages, hasMore && filteredJobs.length >= currentPage * JOBS_PER_PAGE ? currentPage + 1 : totalPages);
+  const goToPage = async (page: number) => {
+    if (batchLoading || page < 1 || page > availablePages) return;
+    if (hasMore && filteredJobs.length < page * JOBS_PER_PAGE) {
+      const result = await requestBatch();
+      if (!result || result.error || result.jobs.filter(job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim())).length <= (page - 1) * JOBS_PER_PAGE) return;
+    }
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const startIdx = (safePage - 1) * JOBS_PER_PAGE;
   const currentJobs = useMemo(() => {
     return filteredJobs.slice(startIdx, startIdx + JOBS_PER_PAGE);
@@ -803,71 +814,22 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
                 ))}
               </div>
 
-              {totalPages > 1 && (
+              {availablePages > 1 && (
                 <div className="pagination-container" role="navigation" aria-label="Pagination">
-                  <button
-                    className="page-btn"
-                    disabled={safePage === 1}
-                    onClick={() => {
-                      setCurrentPage(prev => Math.max(1, prev - 1));
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    aria-label="Previous Page"
-                  >
-                    ←
-                  </button>
-
-                  {(() => {
-                    const pages: (number | string)[] = [];
-                    if (totalPages <= 7) {
-                      for (let i = 1; i <= totalPages; i++) pages.push(i);
-                    } else {
-                      if (safePage <= 4) {
-                        pages.push(1, 2, 3, 4, 5, '...', totalPages);
-                      } else if (safePage >= totalPages - 3) {
-                        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-                      } else {
-                        pages.push(1, '...', safePage - 1, safePage, safePage + 1, '...', totalPages);
-                      }
-                    }
-                    return pages.map((p, pIdx) =>
-                      typeof p === 'number' ? (
-                        <button
-                          key={p}
-                          className={`page-btn ${p === safePage ? 'active' : ''}`}
-                          onClick={() => {
-                            setCurrentPage(p);
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }}
-                        >
-                          {p}
-                        </button>
-                      ) : (
-                        <span key={`dots-${pIdx}`} style={{ color: 'var(--text-muted)', padding: '0 4px' }}>
-                          ...
-                        </span>
-                      )
-                    );
-                  })()}
-
-                  <button
-                    className="page-btn"
-                    disabled={safePage === totalPages}
-                    onClick={() => {
-                      setCurrentPage(prev => Math.min(totalPages, prev + 1));
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    aria-label="Next Page"
-                  >
-                    →
-                  </button>
+                  <button className="page-btn" disabled={safePage === 1 || batchLoading} onClick={() => void goToPage(safePage - 1)} aria-label="Previous Page">←</button>
+                  {Array.from({ length: Math.min(7, Math.min(availablePages, safePage + 1)) }, (_, i) => {
+                    const end = Math.min(availablePages, safePage + 1);
+                    const page = Math.max(1, end - 6) + i;
+                    return <button key={page} className={`page-btn ${page === safePage ? 'active' : ''}`} aria-current={page === safePage ? 'page' : undefined} disabled={batchLoading} onClick={() => void goToPage(page)}>{page}</button>;
+                  })}
+                  <button className="page-btn" disabled={safePage >= availablePages || batchLoading} onClick={() => void goToPage(safePage + 1)} aria-label="Next Page">→</button>
                 </div>
               )}
             </>
           )}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
-            {(hasMore || batchError) && <button type="button" className="page-btn" disabled={batchLoading} onClick={requestBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
-              {batchLoading ? 'Loading jobs…' : batchError ? 'Retry loading jobs' : 'Load more matching jobs'}
+            {batchError && <button type="button" className="page-btn" disabled={batchLoading} onClick={requestBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
+              {batchLoading ? 'Loading jobs…' : 'Retry loading jobs'}
             </button>}
           </div>
         </main>
