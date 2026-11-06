@@ -550,7 +550,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
               <div
                 className={`exp-slider-bubble ${expValue === -1 ? 'is-everything' : expValue >= 10 ? 'is-ten-plus' : ''}`}
                 style={{
-                  left: `calc(${expPercent}% + ${(16 - expPercent * 0.32)}px)`
+                  left: expValue === -1 ? '50px' : `calc(${expPercent}% + ${(16 - expPercent * 0.32)}px)`
                 }}
               >
                 <span>{expValue === -1 ? 'Everything' : expValue >= 10 ? '10+' : expValue}</span>
