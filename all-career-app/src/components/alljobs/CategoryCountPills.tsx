@@ -55,14 +55,18 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         <span style={{ color: '#7c8db5', fontWeight: 600 }}>This Page ({totalOnPage}):</span>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'all'}
           onClick={() => onSelectCategory('all')} 
           className={`pill-tag ${selectedCategory === 'all' ? 'pill-others' : ''}`}
-          style={{ cursor: 'pointer', background: selectedCategory === 'all' ? 'rgba(255,255,255,0.1)' : 'transparent', border: '1px solid rgba(255,255,255,0.1)' }}
+          style={{ cursor: 'pointer' }}
         >
           All
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'sales'}
           onClick={() => onSelectCategory('sales')} 
           className="pill-tag pill-sales"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'sales' ? 0.5 : 1 }}
@@ -72,6 +76,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'technical'}
           onClick={() => onSelectCategory('technical')} 
           className="pill-tag pill-tech"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'technical' ? 0.5 : 1 }}
@@ -81,6 +87,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'non_technical'}
           onClick={() => onSelectCategory('non_technical')} 
           className="pill-tag pill-nontech"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'non_technical' ? 0.5 : 1 }}
@@ -90,6 +98,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'banking'}
           onClick={() => onSelectCategory('banking')} 
           className="pill-tag pill-finance"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'banking' ? 0.5 : 1 }}
@@ -99,6 +109,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'hr'}
           onClick={() => onSelectCategory('hr')} 
           className="pill-tag pill-hr"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'hr' ? 0.5 : 1 }}
@@ -108,6 +120,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'pharma'}
           onClick={() => onSelectCategory('pharma')} 
           className="pill-tag pill-pharma"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'pharma' ? 0.5 : 1 }}
@@ -117,6 +131,8 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
         </button>
 
         <button 
+          type="button"
+          aria-pressed={selectedCategory === 'others'}
           onClick={() => onSelectCategory('others')} 
           className="pill-tag pill-others"
           style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'others' ? 0.5 : 1 }}

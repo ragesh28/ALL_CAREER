@@ -394,7 +394,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.frequency-rate { margin-bottom: 3px; }@media (max-width: 760px) {
+.frequency-rate { margin-bottom: 3px; }
+@media (max-width: 760px) {
   .topnav { padding: 0 12px; }
   .topnav-left { min-width: auto; }
   .topnav-logo { gap: 8px; }
@@ -2064,6 +2065,24 @@ body {
 .pill-hr { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
 .pill-pharma { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 .pill-others { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+/* Raised category controls: selected, hover, and keyboard focus remain distinct. */
+.page-category-pills .pill-tag {
+  min-height: 38px;
+  padding: 7px 13px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  background-image: linear-gradient(180deg, rgba(255,255,255,.09), transparent);
+  box-shadow: inset 0 1px rgba(255,255,255,.12), 0 3px 0 rgba(0,0,0,.4), 0 5px 12px rgba(0,0,0,.2);
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+.page-category-pills .pill-tag:hover { transform: translateY(-2px); filter: brightness(1.2); }
+.page-category-pills .pill-tag:active { transform: translateY(2px); box-shadow: inset 0 2px 5px rgba(0,0,0,.35); }
+.page-category-pills .pill-tag[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor, 0 3px 0 rgba(0,0,0,.4), 0 5px 12px rgba(0,0,0,.2); }
+.page-category-pills .pill-tag:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.page-category-pills .pill-tag strong { padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,.3); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .page-category-pills .pill-tag { transition: none; } }
 
 /* Jobs Grid */
 .jobs-grid {
