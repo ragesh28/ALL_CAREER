@@ -1,41 +1,41 @@
 {
-  "run_id": "42354428061",
-  "updated_at": "2026-11-07T14:02:56.677460",
+  "run_id": "42379840586",
+  "updated_at": "2026-11-07T16:45:34.740859",
   "portals": {
     "apna": {
-      "scraped_total": 8253,
-      "new_stored_total": 512,
-      "requests_total": 735,
+      "scraped_total": 3354,
+      "new_stored_total": 93,
+      "requests_total": 361,
       "last_probe": {
-        "requests": 2,
-        "scraped": 4,
+        "requests": 3,
+        "scraped": 26,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/marketing-manager-jobs-in-chandigarh"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 370,
+      "requests_total": 168,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/marketing-manager-jobs-in-chandigarh/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 370,
+      "requests_total": 168,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-chandigarh"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
