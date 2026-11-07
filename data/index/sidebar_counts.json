@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1084093,
+  "total_jobs": 1084424,
   "sources": {
-    "naukri": 366190,
+    "naukri": 366521,
     "linkedin": 271300,
     "timesjobs": 125627,
     "indeed": 97671,
@@ -268,20 +268,20 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 231558,
-    "mumbai": 144276,
-    "delhi": 115642,
-    "chennai": 116694,
-    "hyderabad": 105339,
-    "pune": 88075,
-    "noida": 53418,
-    "ahmedabad": 41985,
-    "kolkata": 37158,
+    "bangalore": 231631,
+    "mumbai": 144305,
+    "delhi": 115689,
+    "chennai": 116726,
+    "hyderabad": 105369,
+    "pune": 88105,
+    "noida": 53448,
+    "ahmedabad": 41990,
+    "kolkata": 37189,
     "all_india": 22528,
-    "coimbatore": 21383,
-    "kochi": 16678,
-    "remote": 10047,
-    "jaipur": 8433,
+    "coimbatore": 21388,
+    "kochi": 16683,
+    "remote": 10059,
+    "jaipur": 8434,
     "maharashtra": 8118,
     "indore": 5570,
     "chandigarh": 5369,
@@ -325,7 +325,7 @@
     "thiruvananthapuram": 121,
     "dehradun": 185,
     "pimpri_chinchwad": 128,
-    "visakhapatnam": 165,
+    "visakhapatnam": 166,
     "tiruppur": 110,
     "west_bengal": 990,
     "guwahati": 167,
@@ -1106,5 +1106,5 @@
     "shujalpur": 1,
     "morabadi": 1
   },
-  "generated_at": "2026-11-07T17:12:37.321460"
+  "generated_at": "2026-11-07T19:22:53.136379"
 }
