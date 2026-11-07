@@ -1,41 +1,41 @@
 {
-  "run_id": "42328441010",
-  "updated_at": "2026-11-07T08:11:20.297384",
+  "run_id": "42354428061",
+  "updated_at": "2026-11-07T14:02:56.677460",
   "portals": {
     "apna": {
-      "scraped_total": 6631,
-      "new_stored_total": 163,
-      "requests_total": 777,
+      "scraped_total": 8253,
+      "new_stored_total": 512,
+      "requests_total": 735,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/nlp-engineer-jobs-in-chennai"
+        "requests": 2,
+        "scraped": 4,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/marketing-manager-jobs-in-chandigarh"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 407,
+      "requests_total": 370,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/nlp-engineer-jobs-in-chennai/"
+        "url": "https://www.workindia.in/marketing-manager-jobs-in-chandigarh/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 407,
+      "requests_total": 370,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/nlp-engineer-jobs-in-chennai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-chandigarh"
       }
     }
   }
