@@ -1,3 +1,4 @@
+import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect, useMemo } from 'react';
 import { BriefcaseBusiness, CalendarDays, History, Home, MapPin, RotateCcw, Search, Send, X } from 'lucide-react';
 import { AuthenticLogoBox } from '../alljobs/JobCard';
@@ -449,7 +450,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
       {/* ══ PAGE LAYOUT ══ */}
       <div className="page-layout">
         {/* ══ LEFT SIDEBAR FILTERS (ONLY Posted Date, Location, and Role Category) ══ */}
-        <aside className="sidebar">
+        <MobileFilters><aside className="sidebar">
           <div className="sidebar-header">
             <span className="sidebar-title">All Filters</span>
             {totalApplied > 0 && (
@@ -617,7 +618,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
               </div>
             </div>
           </div>
-        </aside>
+        </aside></MobileFilters>
 
         {/* ══ MAIN CONTENT ══ */}
         <main className="main-content" style={{ flex: 1, padding: '24px 32px', minWidth: 0 }}>

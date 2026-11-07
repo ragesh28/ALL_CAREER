@@ -4046,3 +4046,37 @@ select.filter-select option,
   transform: none !important;
   animation: none !important;
 }
+/* Phone layout: filters open over the content, and each panel scrolls independently. */
+.responsive-filters, .responsive-filter-content { display: contents; }
+.mobile-filter-toggle, .mobile-filter-backdrop { display: none; }
+@media (max-width: 760px) {
+  html, body, #root { max-width: 100%; overflow-x: hidden; }
+  .alljobs-layout, .page-layout { display: block; width: 100%; min-width: 0; }
+  .alljobs-main, .page-layout .main-content { width: 100%; min-width: 0; padding: 54px 14px 24px !important; box-sizing: border-box; }
+  .jobs-grid { grid-template-columns: minmax(0,1fr); }
+  .job-card { width: 100%; min-width: 0; }
+  .auto-apply-nav-btn, .topnav-auto-apply-group { display: none !important; }
+  .topnav { gap: 8px; padding: 0 10px; }
+  .topnav-left { min-width: 0; } .topnav-logo span { font-size: .8rem !important; }
+  .topnav-center { flex: 1; min-width: 42px; }
+  .topnav-search { min-width: 42px; width: 42px; margin-left: auto; padding: 8px; overflow: hidden; transition: width .2s ease; }
+  .topnav-search:focus-within { width: min(65vw, 300px); position: absolute; right: 10px; top: 8px; z-index: 20; background: #111a2c; }
+  .topnav-search input { min-width: 0; width: 100%; font-size: 16px; }
+  .topnav-right { gap: 4px; } .topnav-count-btn { display: none; }
+  .mobile-filter-toggle { display: inline-flex; position: fixed; z-index: 1202; top: 66px; left: 10px; align-items: center; gap: 6px; padding: 9px 12px; color: #e5f5ff; background: #14233a; border: 1px solid #35577a; border-radius: 10px; box-shadow: 0 4px 12px #0008; font-weight: 700; }
+  .mobile-filter-backdrop { display: block; position: fixed; z-index: 1199; inset: 0; border: 0; background: #0009; }
+  .responsive-filter-content { display: none; }
+  .filters-open > .responsive-filter-content { display: block; position: fixed; z-index: 1200; top: 0; left: 0; bottom: 0; width: min(86vw, 340px); overflow-y: auto; overscroll-behavior: contain; background: #0b1528; padding: 112px 0 24px; box-sizing: border-box; }
+  .filters-open .sidebar, .filters-open .practice-sidebar { display: flex; flex-direction: column; position: static; width: 100%; height: auto; min-height: 0; overflow: visible; padding: 0; border: 0; }
+  .filters-open .practice-company-list { flex: none; overflow: visible; }
+  .filters-open .glass-bar { display: flex; flex-direction: column; align-items: stretch; width: 100%; padding: 12px; }
+  .filters-open .directory-search-wrapper { width: 100%; }
+  .practice-page { height: 100dvh; overflow: hidden; }
+  .practice-layout { display: block; height: 100%; overflow: hidden; }
+  .practice-content { width: 100%; height: 100%; padding: 120px 14px 30px; box-sizing: border-box; overflow: auto; }
+  .practice-table-container { max-width: 100%; overflow-x: auto; }
+  .bigcompany-header h1 { font-size: clamp(1.4rem, 6vw, 2rem); }
+  .bigcompany-grid { grid-template-columns: minmax(0, 1fr) !important; padding: 12px !important; }
+  .page-category-pills { gap: 5px; } .page-category-pills .pill-tag { min-height: 32px; padding: 5px 8px; font-size: .68rem; }
+  .pagination-container { flex-wrap: wrap; }
+}

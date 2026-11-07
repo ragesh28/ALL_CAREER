@@ -66,51 +66,28 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
         ...style
       }}
     >
-      {logo.local ? (
+      {logo.local && stage === 0 ? (
         <img
           src={logo.local}
           alt={name}
           loading="lazy"
           decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => handleStageError(4)}
+          onError={() => handleStageError(1)}
         />
-      ) : stage === 0 ? (
+      ) : stage === 0 || (stage === 1 && !!logo.local) ? (
         <img
           src={logo.unavatar}
           alt={name}
           loading="lazy"
           decoding="async"
           style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => handleStageError(1)}
-        />
-      ) : stage === 1 ? (
-        <img
-          src={logo.duckduckgo}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
           onError={() => handleStageError(2)}
         />
-      ) : stage === 2 ? (
-        <img
-          src={logo.google}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '2px' : '1px' }}
-          onError={() => handleStageError(3)}
-        />
+      ) : stage === 1 || stage === 2 ? (
+        <img src={logo.duckduckgo} alt={name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => handleStageError(3)} />
       ) : stage === 3 ? (
-        <img
-          src={logo.clearbit}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => handleStageError(4)}
-        />
+        <img src={logo.google} alt={name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => handleStageError(4)} />
       ) : (
         <div
           style={{

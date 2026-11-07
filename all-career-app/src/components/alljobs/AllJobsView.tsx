@@ -1,3 +1,4 @@
+import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect, useMemo, useRef, useDeferredValue, startTransition } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Job, SidebarCounts } from '../../types/jobs';
@@ -742,7 +743,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       {/* Main Layout: Sidebar + Grid */}
       <div className="alljobs-layout">
         {/* Left Filter Sidebar with dynamic counts & independent scroll */}
-        <AllJobsSidebar
+        <MobileFilters><AllJobsSidebar
           selectedSources={selectedSources}
           onToggleSource={handleToggleSource}
           selectedDateFilter={selectedDateFilter}
@@ -773,7 +774,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           walkinDateCounts={canUseWalkinSummary ? summaryFacets?.dates : dynamicCounts.walkinDateCounts}
           walkinDateOptions={!summary && !hasActiveFilters ? [] : canUseWalkinSummary ? walkinDateOptions : dynamicCounts.walkinDateOptions}
           sidebarCounts={sidebarCounts}
-        />
+        /></MobileFilters>
 
         {/* Right Main Grid */}
         <main className="alljobs-main">

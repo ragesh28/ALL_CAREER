@@ -74,7 +74,7 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
 
       {/* Center: Search Box */}
       <div className="topnav-center">
-        <div className="topnav-search colored-search">
+        <div className="topnav-search colored-search" onClick={e => e.currentTarget.querySelector('input')?.focus()}>
           <Search size={16} aria-hidden="true" />
           <input
             type="text"

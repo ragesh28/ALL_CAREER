@@ -1,3 +1,4 @@
+import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useMemo } from 'react';
 import { Building2, MapPin, Search, SlidersHorizontal } from 'lucide-react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
@@ -78,7 +79,7 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
 
       {/* Sticky Glass Bar with Spacious Responsive Controls */}
       <div className="sticky-container">
-        <div className="glass-bar">
+        <MobileFilters><div className="glass-bar">
           {/* Search Input with Integrated Icon */}
           <div className="directory-search-wrapper">
             <Search size={15} className="directory-search-icon" aria-hidden="true" />
@@ -131,7 +132,7 @@ export const BigCompanyView: React.FC<BigCompanyViewProps> = ({ onGoHub, title =
           <div className="glass-count-badge">
             {filteredCompanies.length}
           </div>
-        </div>
+        </div></MobileFilters>
       </div>
 
       {/* Cards Grid */}

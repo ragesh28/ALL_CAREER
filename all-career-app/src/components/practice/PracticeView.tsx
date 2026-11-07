@@ -1,3 +1,4 @@
+import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect } from 'react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
@@ -106,13 +107,13 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateT
       <GlobalLogoPill onGoHome={onGoHub} />
 
       <div className="practice-layout">
-        <PracticeSidebar
+        <MobileFilters><PracticeSidebar
           selectedMode={selectedMode}
           onSelectMode={handleSelectMode}
           selectedCompany={selectedCompany}
           onSelectCompany={handleSelectCompany}
           companiesList={companies}
-        />
+        /></MobileFilters>
 
         <PracticeContent
           selectedMode={selectedMode}

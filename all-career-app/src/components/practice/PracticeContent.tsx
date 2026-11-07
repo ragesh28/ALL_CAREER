@@ -130,7 +130,9 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
 
   // Load company questions when selectedCompany changes
   useEffect(() => {
+    let cancelled = false;
     if (selectedMode === 'company' && selectedCompany) {
+      setCompanyProblems([]);
       setLoadingCompany(true);
       const compClean = selectedCompany.toLowerCase().trim();
 
@@ -141,6 +143,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
           return res.json();
         })
         .then((data: LeetCodeMasterProblem[]) => {
+          if (cancelled) return;
           if (Array.isArray(data) && data.length > 0) {
             // Deduplicate company questions by real problem ID
             const seen = new Map<number, LeetCodeMasterProblem>();
@@ -162,28 +165,27 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
           }
         })
         .catch(() => {
+          if (cancelled) return;
           // 2. Seamless local fallback filtering leetcode_master.json
           fetchJsonWithFallback<LeetCodeMasterProblem[]>('data/leetcode_master.json')
             .then((master) => {
-              if (!master || !Array.isArray(master)) return;
+              if (cancelled) return;
+              if (!master || !Array.isArray(master)) { setCompanyProblems([]); setLoadingCompany(false); return; }
               const matched = master.filter(p =>
                 Array.isArray(p.companies) &&
-                p.companies.some(c => c.toLowerCase() === compClean || c.toLowerCase().includes(compClean))
+                p.companies.some(c => c.toLowerCase().trim() === compClean)
               );
-              // Fallback to top150 slice if no specific company matches
-              if (matched.length > 0) {
-                setCompanyProblems(matched);
-              } else {
-                setCompanyProblems(master.slice(0, 30));
-              }
+              setCompanyProblems(matched);
               setLoadingCompany(false);
             })
             .catch(() => {
-              setCompanyProblems(top150Data.slice(0, 25) as unknown as LeetCodeMasterProblem[]);
+              if (cancelled) return;
+              setCompanyProblems([]);
               setLoadingCompany(false);
             });
         });
     }
+    return () => { cancelled = true; };
   }, [selectedMode, selectedCompany]);
 
   // Dynamic unique topics map with counts
