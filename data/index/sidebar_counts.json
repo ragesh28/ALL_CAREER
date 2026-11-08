@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1084429,
+  "total_jobs": 1084440,
   "sources": {
     "naukri": 366521,
     "linkedin": 271300,
@@ -13,7 +13,7 @@
     "glassdoor": 4839,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4643,
+    "other": 4654,
     "bebee": 56,
     "jobrapidocom": 65,
     "simplyhired": 60,
@@ -268,12 +268,12 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 231631,
+    "bangalore": 231636,
     "mumbai": 144305,
     "delhi": 115689,
-    "chennai": 116726,
-    "hyderabad": 105369,
-    "pune": 88105,
+    "chennai": 116730,
+    "hyderabad": 105370,
+    "pune": 88106,
     "noida": 53448,
     "ahmedabad": 41990,
     "kolkata": 37189,
@@ -1106,5 +1106,5 @@
     "shujalpur": 1,
     "morabadi": 1
   },
-  "generated_at": "2026-11-07T21:04:17.354376"
+  "generated_at": "2026-11-08T00:57:36.163509"
 }
