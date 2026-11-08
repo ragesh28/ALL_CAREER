@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1084440,
+  "total_jobs": 1084470,
   "sources": {
     "naukri": 366521,
     "linkedin": 271300,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 681,
-    "telegram_post": 454,
+    "telegram_message": 689,
+    "telegram_post": 476,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 231636,
+    "bangalore": 231650,
     "mumbai": 144305,
     "delhi": 115689,
-    "chennai": 116730,
+    "chennai": 116732,
     "hyderabad": 105370,
     "pune": 88106,
     "noida": 53448,
     "ahmedabad": 41990,
     "kolkata": 37189,
-    "all_india": 22533,
+    "all_india": 22534,
     "coimbatore": 21388,
     "kochi": 16683,
     "remote": 10059,
@@ -293,7 +293,7 @@
     "haryana": 1612,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 6809,
+    "karnataka": 6811,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -371,7 +371,7 @@
     "chikkamangalur": 1,
     "tumkur": 1,
     "ballary": 3,
-    "belgaum": 1,
+    "belgaum": 3,
     "kallapur_sk": 1,
     "field": 2,
     "sweden": 1,
@@ -512,7 +512,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 1,
-    "mangalore": 64,
+    "mangalore": 65,
     "moodbidri": 1,
     "belagavi": 11,
     "gokak": 2,
@@ -1104,7 +1104,14 @@
     "samrat_ashok_nagar": 1,
     "tirurangadi": 1,
     "shujalpur": 1,
-    "morabadi": 1
+    "morabadi": 1,
+    "bidar": 1,
+    "sarjapur_road_campus": 2,
+    "shimogga": 1,
+    "hennur": 1,
+    "singasandra": 1,
+    "sagara": 1,
+    "multiple_locations_across_india": 1
   },
-  "generated_at": "2026-11-08T00:57:36.163509"
+  "generated_at": "2026-11-08T01:05:11.296817"
 }
