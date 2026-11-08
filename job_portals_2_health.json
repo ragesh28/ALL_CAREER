@@ -1,41 +1,41 @@
 {
-  "run_id": "42435568211",
-  "updated_at": "2026-11-08T07:36:00.429587",
+  "run_id": "42459502825",
+  "updated_at": "2026-11-08T13:26:47.074008",
   "portals": {
     "apna": {
-      "scraped_total": 6632,
-      "new_stored_total": 109,
-      "requests_total": 767,
+      "scraped_total": 8115,
+      "new_stored_total": 291,
+      "requests_total": 718,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-kolkata"
+        "requests": 2,
+        "scraped": 2,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 398,
+      "requests_total": 367,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-kolkata/"
+        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 398,
+      "requests_total": 367,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-kolkata"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-coimbatore"
       }
     }
   }
