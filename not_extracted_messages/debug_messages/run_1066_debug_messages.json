@@ -1,0 +1,37 @@
+{
+  "workflow_run_number": "1066",
+  "workflow_run_id": "42494253036",
+  "timestamp": "2026-11-08T15:36:46.029295",
+  "runtime_minutes": 11.17,
+  "messages_processed": 47,
+  "new_jobs_stored": 23,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 20,
+  "text_messages_processed": 27,
+  "stored_locations": {
+    "Remote": 1,
+    "Bangalore, India": 3,
+    "Bangalore": 1,
+    "Unknown": 8,
+    "India": 2,
+    "Virtual India": 1,
+    "Karnataka (Field Role)": 1,
+    "Hyderabad, Bangalore, Chennai, Noida": 1,
+    "Bengaluru": 1,
+    "Mumbai, India": 1,
+    "Shivamogga": 1,
+    "Indiranagar, Jayanagar, Sadashivnagar, HSR Layout": 1,
+    "US": 1
+  },
+  "stored_walkins": 0,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "fresher_offcampus_drives",
+      "msg_id": 6161,
+      "text": "🪔✨ __DIWALI DHAMAKA OFFER__ ! 🎉\n\n🪔 This Diwali, invest in your career, not just celebrations! ❤️\n\nGet your complete Career Toolkit for just __₹79 instead of ₹99!__\n\n✨ What’s inside?\n\n📄 100 Resume Templates\n🏢  Top IT Company Resume Formats\n🎓 Special Templates for Freshers\n✉️   Cover Letter & Recruiter Email Templates\n\n🌍 __100+ Remote Job Collections__ (Verified From Official Sources)\n\n🔥 Special DIWALI Price: ₹79 ONLY\n\n⏳ __Offer valid TODAY ONLY!__\n\n✅Get Now: https://tinyurl.com/ymj5e226\n\n👉 Grab Your Career Toolkit Now!",
+      "timestamp": "2026-11-08T10:27:42+00:00"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1090325,
+  "total_jobs": 1090348,
   "sources": {
     "naukri": 368142,
     "linkedin": 271303,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 699,
-    "telegram_post": 477,
+    "telegram_message": 711,
+    "telegram_post": 488,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 232924,
-    "mumbai": 145120,
+    "bangalore": 232929,
+    "mumbai": 145121,
     "delhi": 116434,
-    "chennai": 117551,
+    "chennai": 117552,
     "hyderabad": 106055,
     "pune": 88625,
     "noida": 53585,
     "ahmedabad": 42164,
     "kolkata": 37427,
-    "all_india": 22534,
+    "all_india": 22544,
     "coimbatore": 21451,
     "kochi": 16730,
-    "remote": 10108,
+    "remote": 10109,
     "jaipur": 8525,
     "maharashtra": 8118,
     "indore": 5600,
@@ -293,7 +293,7 @@
     "haryana": 1620,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 6851,
+    "karnataka": 6852,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -366,7 +366,7 @@
     "pan_india": 36,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
-    "shivamogga": 5,
+    "shivamogga": 6,
     "shimoga": 2,
     "chikkamangalur": 1,
     "tumkur": 1,
@@ -833,7 +833,7 @@
     "new_windsor": 1,
     "koteshwara": 1,
     "venur": 1,
-    "us": 1,
+    "us": 2,
     "cheranallur": 1,
     "mahabubnagarbalanagar": 1,
     "angul": 1,
@@ -1140,7 +1140,9 @@
     "dargah_bazar": 1,
     "shakti_nagar": 1,
     "chopasni_housing_board": 1,
-    "avinashi": 1
+    "avinashi": 1,
+    "virtual_india": 1,
+    "indiranagar": 1
   },
-  "generated_at": "2026-11-08T13:27:29.130091"
+  "generated_at": "2026-11-08T15:37:06.571305"
 }
