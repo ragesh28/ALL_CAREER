@@ -8,7 +8,6 @@ interface CompanyLogoProps {
   style?: React.CSSProperties;
 }
 
-const logoStageCache = new Map<string, number>();
 
 export const CompanyLogo: React.FC<CompanyLogoProps> = ({
   name,
@@ -18,15 +17,14 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
 }) => {
   const logo = getCompanyLogoData(name);
   // Stage 0: Unavatar -> Stage 1: DuckDuckGo -> Stage 2: Google -> Stage 3: Clearbit -> Stage 4: Monogram
-  const [stage, setStage] = useState<number>(() => logoStageCache.get(name) ?? 0);
+  const [stage, setStage] = useState<number>(0);
 
   // Sync stage if name prop changes
   useEffect(() => {
-    setStage(logoStageCache.get(name) ?? 0);
+    setStage(0);
   }, [name]);
 
   const handleStageError = (nextStage: number) => {
-    logoStageCache.set(name, nextStage);
     setStage(nextStage);
   };
 

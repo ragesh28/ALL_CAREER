@@ -37,6 +37,14 @@ const topicTone = (topic: string) => {
   return 'topic-tag tone-slate';
 };
 
+const validAcceptance = (value?: string | number) => {
+  if (value === undefined || value === null || String(value).trim() === '') return 'N/A';
+  const raw = String(value).trim();
+  if (!/^\d+(?:\.\d+)?%?$/.test(raw)) return 'N/A';
+  const amount = Number.parseFloat(raw);
+  return amount >= 0 && amount <= 100 ? `${amount}%` : 'N/A';
+};
+
 const acceptanceTone = (value?: string) => {
   const rate = parseFloat((value || '').replace('%', ''));
   if (Number.isNaN(rate)) return 'acceptance-rate tone-slate';
@@ -504,8 +512,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               </thead>
               <tbody>
                 {pageItems.map(p => {
-                  const freq = p.frequency || (p.company_count ? Math.min(100, Math.floor((p.company_count / 250) * 100)) : 15);
-                  let barColor = freq > 70 ? '#2cbb5d' : (freq > 40 ? '#fbbf24' : '#94a3b8');
+                  const freq = typeof p.frequency === 'number' && Number.isFinite(p.frequency) && p.frequency >= 0 ? p.frequency : null;
+                  let barColor = (freq ?? 0) > 70 ? '#2cbb5d' : ((freq ?? 0) > 40 ? '#fbbf24' : '#94a3b8');
                   const topicList = Array.isArray(p.topics) ? p.topics : [];
                   const compList = Array.isArray(p.companies) ? p.companies : [];
 
@@ -525,12 +533,12 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                           <span className="topic-tag" style={{ opacity: 0.6 }}>+{topicList.length - 4}</span>
                         )}
                       </td>
-                      <td><span className={acceptanceTone(p.acceptance)}>{p.acceptance || 'N/A'}</span></td>
+                      <td><span className={acceptanceTone(validAcceptance(p.acceptance))}>{validAcceptance(p.acceptance)}</span></td>
                       <td><span className={`diff-tag diff-${p.difficulty}`}>{p.difficulty}</span></td>
                       <td>
-                      <div className={`frequency-rate ${freq > 70 ? 'tone-emerald' : freq > 40 ? 'tone-amber' : 'tone-slate'}`}>{freq}%</div>
+                      <div className={`frequency-rate ${(freq ?? 0) > 70 ? 'tone-emerald' : (freq ?? 0) > 40 ? 'tone-amber' : 'tone-slate'}`}>{freq === null ? 'N/A' : freq}</div>
                         <div className="freq-bar-container">
-                          <div className="freq-bar-fill" style={{ width: `${freq}%`, background: barColor }}></div>
+                          <div className="freq-bar-fill" style={{ width: `${Math.min(100, freq ?? 0)}%`, background: barColor }}></div>
                         </div>
                       </td>
                     </tr>
@@ -690,8 +698,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
             </thead>
             <tbody>
               {filteredCompanyQuestions.map((p, idx) => {
-                const freq = p.frequency || (p.company_count ? Math.min(100, Math.floor((p.company_count / 250) * 100)) : 40);
-                let barColor = freq > 70 ? '#2cbb5d' : (freq > 40 ? '#fbbf24' : '#94a3b8');
+                const freq = typeof p.frequency === 'number' && Number.isFinite(p.frequency) && p.frequency >= 0 ? p.frequency : null;
+                let barColor = (freq ?? 0) > 70 ? '#2cbb5d' : ((freq ?? 0) > 40 ? '#fbbf24' : '#94a3b8');
 
                 return (
                   <tr key={p.id || idx}>
@@ -701,11 +709,11 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                         {p.title}
                       </a>
                     </td>
-                    <td><span className={acceptanceTone(p.acceptance)}>{p.acceptance || 'N/A'}</span></td>
+                    <td><span className={acceptanceTone(validAcceptance(p.acceptance))}>{validAcceptance(p.acceptance)}</span></td>
                     <td><span className={`diff-tag diff-${p.difficulty || 'Medium'}`}>{p.difficulty || 'Medium'}</span></td>
                     <td>
                       <div className="freq-bar-container">
-                        <div className="freq-bar-fill" style={{ width: `${freq}%`, background: barColor }}></div>
+                        <div className="freq-bar-fill" style={{ width: `${Math.min(100, freq ?? 0)}%`, background: barColor }}></div>
                       </div>
                     </td>
                   </tr>

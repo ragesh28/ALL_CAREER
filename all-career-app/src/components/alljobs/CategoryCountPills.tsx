@@ -69,7 +69,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'sales'}
           onClick={() => onSelectCategory('sales')} 
           className="pill-tag pill-sales"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'sales' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Sales & Marketing <strong>{pageCounts.sales}</strong>
@@ -80,7 +80,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'technical'}
           onClick={() => onSelectCategory('technical')} 
           className="pill-tag pill-tech"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'technical' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Technical <strong>{pageCounts.technical}</strong>
@@ -91,7 +91,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'non_technical'}
           onClick={() => onSelectCategory('non_technical')} 
           className="pill-tag pill-nontech"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'non_technical' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Non-Technical <strong>{pageCounts.nonTechnical}</strong>
@@ -102,7 +102,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'banking'}
           onClick={() => onSelectCategory('banking')} 
           className="pill-tag pill-finance"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'banking' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Banking & Finance <strong>{pageCounts.banking}</strong>
@@ -113,7 +113,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'hr'}
           onClick={() => onSelectCategory('hr')} 
           className="pill-tag pill-hr"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'hr' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           HR & Staffing <strong>{pageCounts.hr}</strong>
@@ -124,7 +124,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'pharma'}
           onClick={() => onSelectCategory('pharma')} 
           className="pill-tag pill-pharma"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'pharma' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Pharma <strong>{pageCounts.pharma}</strong>
@@ -135,7 +135,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           aria-pressed={selectedCategory === 'others'}
           onClick={() => onSelectCategory('others')} 
           className="pill-tag pill-others"
-          style={{ cursor: 'pointer', opacity: selectedCategory !== 'all' && selectedCategory !== 'others' ? 0.5 : 1 }}
+          style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
           Others <strong>{pageCounts.others}</strong>

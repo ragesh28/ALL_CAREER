@@ -4080,3 +4080,24 @@ select.filter-select option,
   .page-category-pills { gap: 5px; } .page-category-pills .pill-tag { min-height: 32px; padding: 5px 8px; font-size: .68rem; }
   .pagination-container { flex-wrap: wrap; }
 }
+/* Opaque, high-contrast category and problem badges. */
+.page-category-pills .pill-tag { background: #cbd5e1; background-image: none; color: #101827; border: 1px solid transparent; }
+.page-category-pills .pill-sales { background: #d8b4fe; color: #35105d; }
+.page-category-pills .pill-tech { background: #67e8f9; color: #083344; }
+.page-category-pills .pill-nontech { background: #6ee7b7; color: #064e3b; }
+.page-category-pills .pill-finance { background: #fcd34d; color: #422006; }
+.page-category-pills .pill-hr { background: #fda4af; color: #4c0519; }
+.page-category-pills .pill-pharma { background: #fca5a5; color: #450a0a; }
+.page-category-pills .pill-others, .page-category-pills .pill-tag:not([class*="pill-"]) { background: #cbd5e1; color: #172033; }
+.page-category-pills .pill-tag strong { background: rgba(255,255,255,.5); color: inherit; }
+.page-category-pills .pill-tag[aria-pressed="true"] { outline: 2px solid #fff; outline-offset: 2px; }
+.practice-content .topic-tag, .practice-content .acceptance-rate, .practice-content .frequency-rate, .practice-content .diff-tag { backdrop-filter: none; box-shadow: none; font-weight: 700; }
+.practice-content .diff-Easy, .practice-content .diff-easy, .practice-content .difficulty-easy.active { background: #86efac !important; color: #052e16 !important; border-color: #86efac !important; }
+.practice-content .diff-Medium, .practice-content .diff-medium, .practice-content .difficulty-medium.active { background: #fde047 !important; color: #422006 !important; border-color: #fde047 !important; }
+.practice-content .diff-Hard, .practice-content .diff-hard, .practice-content .difficulty-hard.active { background: #fda4af !important; color: #4c0519 !important; border-color: #fda4af !important; }
+.practice-content .topic-tag.tone-emerald, .practice-content .acceptance-rate.tone-emerald, .practice-content .acceptance-rate.tone-positive { background: #a7f3d0; color: #064e3b; border-color: #a7f3d0; }
+.practice-content .topic-tag.tone-cyan, .practice-content .acceptance-rate.tone-cyan { background: #a5f3fc; color: #083344; border-color: #a5f3fc; }
+.practice-content .topic-tag.tone-violet { background: #ddd6fe; color: #2e1065; border-color: #ddd6fe; }
+.practice-content .topic-tag.tone-amber, .practice-content .acceptance-rate.tone-amber { background: #fde68a; color: #451a03; border-color: #fde68a; }
+.practice-content .topic-tag.tone-rose, .practice-content .acceptance-rate.tone-rose { background: #fecdd3; color: #4c0519; border-color: #fecdd3; }
+.practice-content .topic-tag.tone-slate, .practice-content .acceptance-rate.tone-slate { background: #cbd5e1; color: #172033; border-color: #cbd5e1; }
