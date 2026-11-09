@@ -1,41 +1,41 @@
 {
-  "run_id": "42547897555",
-  "updated_at": "2026-11-09T07:43:43.171083",
+  "run_id": "42581185850",
+  "updated_at": "2026-11-09T13:34:47.899706",
   "portals": {
     "apna": {
-      "scraped_total": 6579,
-      "new_stored_total": 69,
-      "requests_total": 776,
+      "scraped_total": 7886,
+      "new_stored_total": 316,
+      "requests_total": 738,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/nlp-engineer-jobs-in-delhi"
+        "requests": 2,
+        "scraped": 9,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/digital-marketer-jobs-in-kolkata"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 414,
+      "requests_total": 374,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/nlp-engineer-jobs-in-delhi/"
+        "url": "https://www.workindia.in/digital-marketer-jobs-in-kolkata/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 414,
+      "requests_total": 374,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/nlp-engineer-jobs-in-delhi"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-kolkata"
       }
     }
   }
