@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1102104,
+  "total_jobs": 1102115,
   "sources": {
-    "naukri": 370304,
+    "naukri": 370315,
     "linkedin": 274171,
     "timesjobs": 131846,
     "indeed": 98243,
@@ -269,18 +269,18 @@
   },
   "locations": {
     "bangalore": 235327,
-    "mumbai": 146892,
+    "mumbai": 146893,
     "delhi": 117732,
-    "chennai": 119213,
-    "hyderabad": 107618,
+    "chennai": 119214,
+    "hyderabad": 107619,
     "pune": 89620,
     "noida": 53908,
-    "ahmedabad": 42366,
-    "kolkata": 37753,
-    "all_india": 22567,
+    "ahmedabad": 42367,
+    "kolkata": 37755,
+    "all_india": 22568,
     "coimbatore": 21644,
-    "kochi": 16903,
-    "remote": 10210,
+    "kochi": 16904,
+    "remote": 10211,
     "jaipur": 8659,
     "maharashtra": 8175,
     "indore": 5648,
@@ -306,7 +306,7 @@
     "ka": 505,
     "post_bangalore": 357,
     "panchkula": 387,
-    "bhopal": 462,
+    "bhopal": 463,
     "mh": 406,
     "vadodara": 490,
     "gujarat": 1352,
@@ -468,7 +468,7 @@
     "baddi": 4,
     "mehsana": 4,
     "ankleshwar": 3,
-    "ludhianadugri": 2,
+    "ludhianadugri": 3,
     "vijayawada": 39,
     "kethepally": 2,
     "guntur": 27,
@@ -1182,5 +1182,5 @@
     "imphal": 1,
     "raipursaddu": 1
   },
-  "generated_at": "2026-11-10T07:10:58.022946"
+  "generated_at": "2026-11-10T08:04:32.253434"
 }
