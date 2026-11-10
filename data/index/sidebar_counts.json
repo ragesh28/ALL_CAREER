@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1098924,
+  "total_jobs": 1098933,
   "sources": {
     "naukri": 369300,
     "linkedin": 274171,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 738,
-    "telegram_post": 505,
+    "telegram_message": 744,
+    "telegram_post": 508,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -269,18 +269,18 @@
   },
   "locations": {
     "bangalore": 234610,
-    "mumbai": 146177,
+    "mumbai": 146178,
     "delhi": 117578,
-    "chennai": 118537,
+    "chennai": 118538,
     "hyderabad": 107023,
     "pune": 89533,
     "noida": 53844,
     "ahmedabad": 42340,
     "kolkata": 37712,
-    "all_india": 22558,
+    "all_india": 22562,
     "coimbatore": 21625,
     "kochi": 16892,
-    "remote": 10184,
+    "remote": 10185,
     "jaipur": 8655,
     "maharashtra": 8175,
     "indore": 5648,
@@ -366,7 +366,7 @@
     "pan_india": 37,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
-    "shivamogga": 6,
+    "shivamogga": 7,
     "shimoga": 2,
     "chikkamangalur": 1,
     "tumkur": 1,
@@ -378,7 +378,7 @@
     "andhra_pradesh": 42,
     "tirupur": 31,
     "nashik": 34,
-    "mysore": 83,
+    "mysore": 84,
     "karunagappally": 1,
     "palakkad": 12,
     "satara": 6,
@@ -1170,5 +1170,5 @@
     "rajendranagar": 1,
     "sonipatnathupur": 1
   },
-  "generated_at": "2026-11-10T01:12:58.624376"
+  "generated_at": "2026-11-10T02:22:52.130197"
 }
