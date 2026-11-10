@@ -1,41 +1,41 @@
 {
-  "run_id": "42796454598",
-  "updated_at": "2026-11-10T15:58:15.181850",
+  "run_id": "42850276435",
+  "updated_at": "2026-11-10T18:25:36.671911",
   "portals": {
     "apna": {
-      "scraped_total": 8148,
-      "new_stored_total": 378,
-      "requests_total": 733,
+      "scraped_total": 3148,
+      "new_stored_total": 101,
+      "requests_total": 345,
       "last_probe": {
-        "requests": 2,
-        "scraped": 11,
+        "requests": 3,
+        "scraped": 28,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/digital-marketer-jobs-in-chennai"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 369,
+      "requests_total": 163,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/digital-marketer-jobs-in-chennai/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 369,
+      "requests_total": 163,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-chennai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
