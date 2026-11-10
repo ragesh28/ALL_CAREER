@@ -1,41 +1,41 @@
 {
-  "run_id": "42626913647",
-  "updated_at": "2026-11-09T16:07:39.092794",
+  "run_id": "42754684840",
+  "updated_at": "2026-11-10T10:06:51.847335",
   "portals": {
     "apna": {
-      "scraped_total": 2979,
-      "new_stored_total": 98,
-      "requests_total": 331,
+      "scraped_total": 6819,
+      "new_stored_total": 167,
+      "requests_total": 785,
       "last_probe": {
-        "requests": 3,
-        "scraped": 26,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "http_error",
+        "http_status": 404,
+        "url": "https://apna.co/jobs/nlp-engineer-jobs-in-kolkata"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 157,
+      "requests_total": 413,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/nlp-engineer-jobs-in-kolkata/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 157,
+      "requests_total": 413,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/nlp-engineer-jobs-in-kolkata"
       }
     }
   }
