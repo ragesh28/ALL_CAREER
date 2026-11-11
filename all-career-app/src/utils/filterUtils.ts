@@ -428,16 +428,27 @@ export const ROLE_CATEGORIES_DICT: Record<string, string[]> = {
   ]
 };
 
+const generalSupport = /\b(?:customer (?:support|service|care|success)|(?:non |semi |international )?voice (?:process|support|associate|executive)|international voice|call cent(?:er|re)|contact cent(?:er|re)|bpo|kpo|ar caller|payment posting|provider calling)\b/;
+const technicalSupport = /\b(?:(?:technical|it|desktop|network|application|software|cloud|hardware|product) (?:support|help ?desk|service desk)|technical customer support|service desk (?:analyst|engineer|technician)|help ?desk (?:analyst|engineer|technician))\b/;
+const categoryPatterns = Object.entries(ROLE_CATEGORIES_DICT).map(([category, keywords]) => {
+  const terms = keywords.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return [category, new RegExp(`\\b(?:${terms.join('|')})\\b`)] as const;
+});
+const specialistCategories = categoryPatterns.filter(([category]) => category !== 'Non-Technical');
+const generalCategory = categoryPatterns.find(([category]) => category === 'Non-Technical')?.[1];
+
+function categoryForText(text: string): string | undefined {
+  const normalized = text.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ');
+  if (technicalSupport.test(normalized)) return 'Technical';
+  if (generalSupport.test(normalized)) return 'Non-Technical';
+  const match = specialistCategories.find(([, pattern]) => pattern.test(normalized));
+  return match?.[0] ?? (generalCategory?.test(normalized) ? 'Non-Technical' : undefined);
+}
+
 export function classifyJobCategory(job: any): string {
   if (!job) return 'Others';
-  const text = `${job.title || ''} ${job.role || ''} ${job.role_category || ''} ${job.company || ''} ${job.description || ''}`.toLowerCase();
-
-  for (const [cat, keywords] of Object.entries(ROLE_CATEGORIES_DICT)) {
-    for (const kw of keywords) {
-      if (text.includes(kw.toLowerCase())) return cat;
-    }
-  }
-  return 'Others';
+  const role = `${job.title || ''} ${job.role || ''} ${job.role_category || ''}`;
+  return categoryForText(role) ?? categoryForText(String(job.description || '')) ?? 'Others';
 }
 
 export const PRIMARY_PORTAL_IDS = new Set([

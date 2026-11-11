@@ -422,6 +422,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       if (cat === 'banking' && cCat !== 'Banking & Finance') return false;
       if (cat === 'hr' && cCat !== 'HR & Staffing') return false;
       if (cat === 'pharma' && cCat !== 'Pharma') return false;
+      if (cat === 'others' && cCat !== 'Others' && cCat !== 'Electrical') return false;
     }
 
     return true;

@@ -1,7 +1,18 @@
 // companyLogos.ts - Comprehensive Domain Map & Multi-tier Logo Fallback (Clearbit -> Google Favicon -> DuckDuckGo -> Monogram)
 import { resolveAssetUrl } from './urlHelper';
 
+export const COMPANY_SITE_ICONS: Record<string, string> = {
+  'neubergdiagnostics.com': 'https://www.neubergdiagnostics.com/assets/neuberg_fav_logo-C-L1AHeN.png',
+  'agshealth.com': 'https://www.agshealth.com/wp-content/uploads/2022/09/cropped-ags-siticon-192x192.png',
+  'med-metrix.com': 'https://med-metrix.com/assets/favicon/apple-touch-icon.png',
+  'enoahisolution.com': 'https://enoahisolution.com/wp-content/uploads/2022/04/cropped-favicon-192x192.png',
+  'legacyhealthllc.com': 'https://legacyhealthllc.com/wp-content/uploads/2024/02/Favicon.png',
+};
+
 export const DOMAIN_MAP: Record<string, string> = {
+  "Neuberg Diagnostics": "neubergdiagnostics.com", "AGS Health": "agshealth.com",
+  "Med-Metrix": "med-metrix.com", "Med Metrix": "med-metrix.com",
+  "ENoah iSolution": "enoahisolution.com", "Legacy Health": "legacyhealthllc.com",
   "1Kosmos": "1kosmos.com", "6sense": "6sense.com", "Accelya": "w3.accelya.com",
   "Accolite": "bounteous.com", "Acorns": "acorns.com", "Activision": "activision.com",
   "Addepar": "addepar.com",

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useId } from 'react';
 import { BriefcaseBusiness, CalendarDays, Mail, MapPin, Phone, Route, Send } from 'lucide-react';
 import { Job } from '../../types/jobs';
-import { getCompanyLogoData, getPortalLogo, formatAuthenticDate, formatWalkinDate, detectPortalInfo } from '../../utils/companyLogos';
-import { getJobWalkinDates, isWalkinJob } from '../../utils/filterUtils';
+import { COMPANY_SITE_ICONS, getCompanyLogoData, formatAuthenticDate, formatWalkinDate, detectPortalInfo } from '../../utils/companyLogos';
+import { classifyJobCategory, getJobWalkinDates, isWalkinJob } from '../../utils/filterUtils';
 
 interface JobCardProps {
   job: Job;
@@ -10,65 +10,115 @@ interface JobCardProps {
   onSelectCompany?: (comp: string) => void;
 }
 
-export const AuthenticLogoBox: React.FC<{ company: string; job?: Job }> = ({ company, job }) => {
+function imageUrl(value: unknown, base = window.location.href): string {
+  if (typeof value !== 'string' || !value.trim()) return '';
+  try {
+    const url = new URL(value, base);
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
+  } catch {
+    return '';
+  }
+}
+
+function structuredLogo(value: unknown, pageUrl: string): string[] {
+  if (Array.isArray(value)) return value.flatMap(entry => structuredLogo(entry, pageUrl));
+  if (!value || typeof value !== 'object') return [];
+  const entry = value as { hiringOrganization?: { logo?: Job['company_logo'] }; '@graph'?: unknown };
+  const logo = entry.hiringOrganization?.logo;
+  const url = imageUrl(typeof logo === 'string' ? logo : logo?.url || logo?.contentUrl, pageUrl);
+  return [url, ...structuredLogo(entry['@graph'], pageUrl)].filter(Boolean);
+}
+
+export const AuthenticLogoBox: React.FC<{ company: string; job?: Job }> = ({ company, job }) => (
+  <JobLogo key={JSON.stringify([company, job?.company_logo, job?.company_website, job?.url])} company={company} job={job} />
+);
+
+function JobLogo({ company, job }: { company: string; job?: Job }) {
   const [stage, setStage] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-  const [discovered, setDiscovered] = useState<string[]>([]);
+  const [loadedSource, setLoadedSource] = useState('');
+  const [discovered, setDiscovered] = useState<string[] | null>(null);
+  const box = useRef<HTMLDivElement>(null);
   const logo = getCompanyLogoData(company);
-  const record = job as any;
-  const safe = (value: unknown): string => {
-    if (typeof value !== 'string' || !value.trim()) return '';
-    try { const url = new URL(value, window.location.href); return ['https:', 'http:'].includes(url.protocol) ? url.href : ''; } catch { return ''; }
-  };
-  const websiteValue = record?.company_website;
-  const website = safe(typeof websiteValue === 'string' && !websiteValue.includes('://') ? `https://${websiteValue}` : websiteValue);
-  const domain = website ? new URL(website).hostname : logo.domain;
+  const jobUrl = imageUrl(job?.url);
+  const websiteValue = typeof job?.company_website === 'string' ? job.company_website.trim() : '';
+  const website = websiteValue ? imageUrl(websiteValue.includes('://') ? websiteValue : 'https://' + websiteValue) : '';
+  const websiteDomain = website ? new URL(website).hostname : '';
+  const domain = logo.domain || websiteDomain;
+  const jobLogo = job?.company_logo;
+  const suppliedLogo = imageUrl(typeof jobLogo === 'string' ? jobLogo : jobLogo?.url || jobLogo?.contentUrl, jobUrl || undefined);
   const candidates = useMemo(() => [...new Set([
-    safe(logo.local), safe(record?.company_logo), ...discovered,
-    domain ? `https://unavatar.io/${encodeURIComponent(domain)}?fallback=false` : '',
-    domain ? `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico` : '',
-    domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : ''
-  ].filter(Boolean))], [company, record?.company_logo, domain, logo.local, discovered]);
-  useEffect(() => { setStage(0); setLoaded(false); setDiscovered([]); }, [company, record?.company_logo, record?.company_website]);
+    imageUrl(logo.local),
+    suppliedLogo,
+    COMPANY_SITE_ICONS[domain],
+    domain ? 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(domain) + '&sz=128' : '',
+    domain ? 'https://icons.duckduckgo.com/ip3/' + encodeURIComponent(domain) + '.ico' : '',
+    domain ? 'https://unavatar.io/' + encodeURIComponent(domain) + '?fallback=false' : '',
+    ...(discovered ?? []),
+  ].filter(Boolean))], [logo.local, suppliedLogo, domain, discovered]);
+  const source = candidates[stage];
+  const showImage = Boolean(source && source === loadedSource);
+
   useEffect(() => {
-    if (stage < candidates.length || !job?.url || discovered.length) return;
+    if (source || !jobUrl || discovered !== null || !box.current) return;
+
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
-    const jobUrl = safe(job.url);
-    if (!jobUrl) return () => clearTimeout(timeout);
-    fetch(jobUrl, { signal: controller.signal }).then(r => r.ok ? r.text() : '').then(html => {
-      if (!html) return;
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const found: string[] = [];
-      for (const el of doc.querySelectorAll('script[type="application/ld+json"]')) {
-        try {
-          const visit = (value: any) => {
-            if (!value || typeof value !== 'object') return;
-            if (Array.isArray(value)) { value.forEach(visit); return; }
-            const org = value.hiringOrganization;
-            if (org && typeof org === 'object') {
-              const raw = typeof org.logo === 'string' ? org.logo : org.logo?.url;
-              if (typeof raw === 'string') { const u = new URL(raw, jobUrl); if (u.protocol === 'https:' || u.protocol === 'http:') found.push(u.href); }
-            }
-            if (value['@graph']) visit(value['@graph']);
-          };
-          visit(JSON.parse(el.textContent || ''));
-        } catch { /* Ignore invalid structured data. */ }
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const discover = async () => {
+      timeout = setTimeout(() => controller.abort(), 4000);
+      try {
+        const response = await fetch(jobUrl, { signal: controller.signal });
+        const html = response.ok ? await response.text() : '';
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const found: string[] = [];
+        for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
+          try {
+            found.push(...structuredLogo(JSON.parse(script.textContent || ''), response.url || jobUrl));
+          } catch { /* A page can contain unrelated or malformed structured data. */ }
+        }
+        if (!controller.signal.aborted) setDiscovered(found);
+      } catch {
+        if (!controller.signal.aborted) setDiscovered([]);
+      } finally {
+        clearTimeout(timeout);
       }
-      if (found.length) { setDiscovered(found); setStage(0); }
-    }).catch(() => {}).finally(() => clearTimeout(timeout));
-    return () => { clearTimeout(timeout); controller.abort(); };
-  }, [stage, candidates.length, job?.url, discovered.length]);
-  useEffect(() => {
-    if (loaded || stage >= candidates.length) return;
-    const timeout = setTimeout(() => setStage(n => n + 1), 5000);
-    return () => clearTimeout(timeout);
-  }, [stage, candidates, loaded]);
-  return <div className="logo-box">{stage < candidates.length ?
-    <img key={candidates[stage]} src={candidates[stage]} alt={company} className="company-logo" loading="lazy" decoding="async" onLoad={e => { if (e.currentTarget.naturalWidth <= 1) setStage(n => n + 1); else setLoaded(true); }} onError={() => setStage(n => n + 1)} /> :
-    <div className="logo-fallback" style={{ display: 'flex', fontWeight: 700, color: '#8ea4c9' }} aria-label={`${company} logo unavailable`}>?</div>}
-  </div>;
-};
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        observer.disconnect();
+        void discover();
+      }
+    }, { rootMargin: '160px' });
+    observer.observe(box.current);
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [source, jobUrl, discovered]);
+
+  return (
+    <div className="logo-box job-logo-box" ref={box}>
+      {!showImage && <div className="logo-fallback" aria-hidden="true">?</div>}
+      {source && (
+        <img
+          key={source}
+          src={source}
+          alt=""
+          className="company-logo job-logo-image"
+          style={{ opacity: showImage ? 1 : 0 }}
+          loading="lazy"
+          decoding="async"
+          onLoad={event => {
+            if (event.currentTarget.naturalWidth > 1) setLoadedSource(source);
+            else setStage(stage + 1);
+          }}
+          onError={() => setStage(stage + 1)}
+        />
+      )}
+    </div>
+  );
+}
 
 export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }) => {
   const companyName = job.company || 'DIRECT RECRUITER';
@@ -98,6 +148,20 @@ export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }
   }
   const cleanTitle = job.title || job.role || 'Position';
   const applyUrl = job.url || (job as any).apply_url || job.telegram_url || job.flyer_image_url || '';
+
+  const category = job._normCategory || classifyJobCategory(job);
+  const phoneDialog = useRef<HTMLDialogElement>(null);
+  const phoneHeadingId = useId();
+  const phoneNumbers = isWalkin ? String(job.contact_phone ?? '')
+    .split(/[,;|/\n]+/)
+    .map(number => number.trim())
+    .filter(number => {
+      const digits = number.replace(/\D/g, '');
+      return digits.length >= 7 && digits.length <= 15;
+    }) : [];
+  const phone = phoneNumbers[0];
+  const dialNumber = phone ? (phone.startsWith('+') ? '+' : '') + phone.replace(/\D/g, '') : '';
+  const email = isWalkin ? job.contact_email : undefined;
 
   const isDirectSpecialSource =
     portalInfo.id === 'telegram_message' ||
@@ -206,31 +270,47 @@ export const JobCard = React.memo<JobCardProps>(({ job, index, onSelectCompany }
         </div>
       </div>
 
-      <div className="card-footer">
-        <span className="card-role" title={cleanTitle}>
-          {cleanTitle}
-        </span>
-        {applyUrl ? (
-          <a
-            href={applyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="apply-btn"
-          >
-            <Send size={13} aria-hidden="true" /> Apply
-          </a>
-        ) : null}
-        {isWalkin && job.contact_phone ? (
-          <a className="contact-action contact-call" href={`tel:${job.contact_phone}`} title={`Call ${job.contact_phone}`}>
-            <Phone size={13} aria-hidden="true" /> Call
-          </a>
-        ) : null}
-        {isWalkin && job.contact_email ? (
-          <a className="contact-action contact-email" href={`mailto:${job.contact_email}`} title={`Email ${job.contact_email}`}>
-            <Mail size={13} aria-hidden="true" /> Email
-          </a>
-        ) : null}
+      <div className="card-footer job-card-footer">
+        <span className="card-role" title={category}>{category}</span>
+        {(applyUrl || phone || email) && (
+          <div className="job-card-actions">
+            {phone && email && (
+              <a className="contact-action contact-email job-email-icon" href={'mailto:' + email} aria-label="Email recruiter" title="Email recruiter">
+                <Mail size={15} aria-hidden="true" />
+              </a>
+            )}
+            {applyUrl ? (
+              <a href={applyUrl} target="_blank" rel="noopener noreferrer" className="apply-btn job-action">
+                <Send size={13} aria-hidden="true" /> Apply
+              </a>
+            ) : isWalkin && <span className="job-action-space" aria-hidden="true" />}
+            {phone ? (
+              <>
+                <button type="button" className="contact-action contact-call job-action call-desktop" onClick={() => phoneDialog.current?.showModal()} aria-haspopup="dialog">
+                  <Phone size={13} aria-hidden="true" /> Call
+                </button>
+                <a className="contact-action contact-call job-action call-mobile" href={'tel:' + dialNumber}>
+                  <Phone size={13} aria-hidden="true" /> Call
+                </a>
+              </>
+            ) : email ? (
+              <a className="contact-action contact-email job-action" href={'mailto:' + email}>
+                <Mail size={13} aria-hidden="true" /> Email
+              </a>
+            ) : isWalkin && <span className="job-action-space" aria-hidden="true" />}
+          </div>
+        )}
       </div>
+      {phone && (
+        <dialog className="job-phone-dialog" ref={phoneDialog} aria-labelledby={phoneHeadingId}>
+          <h2 id={phoneHeadingId}>Walk-in contact</h2>
+          <p>{companyName}</p>
+          <ul>{phoneNumbers.map((number, index) => <li key={number + index}>{number}</li>)}</ul>
+          <form method="dialog">
+            <button type="submit" autoFocus>Close</button>
+          </form>
+        </dialog>
+      )}
     </div>
   );
 });

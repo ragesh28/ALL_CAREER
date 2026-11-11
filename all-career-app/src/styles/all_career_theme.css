@@ -4222,3 +4222,67 @@ select.filter-select option,
   .practice-content .btn-view-company-jobs { width: 100%; margin-left: 0; white-space: normal; text-align: left; }
   .practice-content .btn-view-company-jobs span { overflow-wrap: anywhere; }
 }
+/* Walk-in cards keep a compact, stable action area as contact options vary. */
+.job-logo-box { position: relative; }
+.job-logo-box .job-logo-image { position: absolute; inset: 0; width: 100%; height: 100%; padding: 3px; }
+.job-card-footer { gap: 8px; }
+.job-card-footer .card-role {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  color: #a8b9d3;
+}
+.job-card-actions {
+  --job-action-width: 76px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+.job-card-actions .job-action,
+.job-card-actions .job-action-space {
+  box-sizing: border-box;
+  flex: 0 0 var(--job-action-width);
+  width: var(--job-action-width);
+}
+.job-card-actions .job-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: .75rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.job-card-actions .job-action:focus-visible,
+.job-card-actions .job-email-icon:focus-visible,
+.job-phone-dialog button:focus-visible { outline: 2px solid #a5f3fc; outline-offset: 2px; }
+.job-card-actions .job-email-icon { width: 32px; height: 34px; padding: 0; }
+.job-card-actions .call-mobile { display: none; }
+
+.job-phone-dialog {
+  width: min(360px, calc(100vw - 32px));
+  margin: auto;
+  padding: 20px;
+  color: #f1f5f9;
+  background: #111d30;
+  border: 1px solid #36516e;
+  border-radius: 14px;
+  box-shadow: 0 16px 44px #0008;
+}
+.job-phone-dialog::backdrop { background: #050a13bb; }
+.job-phone-dialog h2 { margin: 0; font-size: 1.1rem; }
+.job-phone-dialog p { color: #a8b9d3; margin: 4px 0 12px; }
+.job-phone-dialog ul { list-style: none; padding: 0; margin: 0 0 16px; }
+.job-phone-dialog li { padding: 8px 10px; margin-bottom: 6px; background: #20324a; border-radius: 6px; font-variant-numeric: tabular-nums; user-select: text; }
+.job-phone-dialog form { display: flex; justify-content: flex-end; }
+.job-phone-dialog button { cursor: pointer; padding: 7px 13px; border: 1px solid #466783; border-radius: 7px; color: #e6f3ff; background: #24425b; }
+
+@media (hover: none) and (pointer: coarse) {
+  .job-card-actions .call-desktop { display: none; }
+  .job-card-actions .call-mobile { display: inline-flex; }
+}

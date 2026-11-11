@@ -4,6 +4,8 @@ export interface Job {
   title?: string;
   role?: string;
   company?: string;
+  company_logo?: string | { url?: string; contentUrl?: string };
+  company_website?: string;
   location?: string;
   experience?: string;
   date?: string;
