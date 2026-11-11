@@ -14,7 +14,7 @@ const assert = require('node:assert/strict');
     const summary = { schema: 1, total_jobs: 100, manifest: 'data/web/manifest.json', sources: { apna: 3, naukri: 97 }, locations: { chennai: 100 }, source_locations: { apna: { chennai: 3 }, naukri: { chennai: 97 } }, walkins: { total: 3, locations: { chennai: 3 }, sources: { apna: 3 }, source_locations: { apna: { chennai: 3 } }, date_groups: [['chennai', 'apna', [interview], '2026-11-04', 3]] } };
     await page.setRequestInterception(true);
     page.on('request', request => {
-      const url = request.url();
+      const url = request.url().split('?')[0];
       if (url.includes('/data/web/')) {
         fetched.push(url);
         const rare = url.match(/rare([123])\.json$/);

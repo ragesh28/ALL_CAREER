@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { GlobalLogoPill } from '../common/GlobalLogoPill';
 import { PracticeSidebar } from './PracticeSidebar';
 import { PracticeContent } from './PracticeContent';
-import { fetchJsonWithFallback } from '../../utils/urlHelper';
+import { fetchJsonWithFallback, freshDataUrl } from '../../utils/urlHelper';
 
 interface CompanyEntry {
   name: string;
@@ -44,7 +44,7 @@ export const PracticeView: React.FC<PracticeViewProps> = ({ onGoHub, onNavigateT
   // Load complete deduplicated company list from JSON
   useEffect(() => {
     // Fetch companies: try workers API first, then local json fallbacks
-    fetch('https://leetcode-api.lragesh28.workers.dev/api/companies')
+    fetch(freshDataUrl('https://leetcode-api.lragesh28.workers.dev/api/companies'), { cache: 'no-store', credentials: 'omit' })
       .then(res => res.json())
       .then((data: any[]) => {
         if (Array.isArray(data) && data.length > 0) {

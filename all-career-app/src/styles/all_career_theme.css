@@ -4286,3 +4286,15 @@ select.filter-select option,
   .job-card-actions .call-desktop { display: none; }
   .job-card-actions .call-mobile { display: inline-flex; }
 }
+
+.walkin-catalog-status {
+  color: #a0b2cb;
+  font-size: .72rem;
+  padding: 4px;
+}
+.walkin-retry-btn {
+  margin: 5px 4px 0;
+  min-height: 32px;
+  padding: 4px 9px;
+  font-size: .72rem;
+}

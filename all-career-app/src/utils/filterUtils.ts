@@ -240,16 +240,18 @@ export function parseWalkinDates(rawStr: string | undefined | null): string[] {
 export function getWalkinDateObjects(job: any): WalkinDateItem[] {
   if (!job || !isWalkinJob(job)) return [];
 
+  const reference = job.date_posted || job.fetchedAt || job.date;
+  const rawDates: unknown[] = Array.isArray(job.walkin_dates) ? job.walkin_dates : [job.walkin_dates];
+  const dates = rawDates.flatMap((raw: unknown) =>
+    typeof raw === 'string' ? parseWalkinDateObjects(raw, reference) : []);
+  if (dates.length) return [...new Map(dates.map(item => [item.label, item])).values()];
+
   let rawDateStr = String(job.walkin_date || '').trim();
-  if (!rawDateStr && Array.isArray(job.walkin_dates) && job.walkin_dates.length > 0) {
-    const dates = job.walkin_dates.flatMap((raw: string) => parseWalkinDateObjects(raw, job.date_posted || job.fetchedAt || job.date));
-    return [...new Map(dates.map((item: WalkinDateItem) => [item.label, item])).values()] as WalkinDateItem[];
-  }
   if (!rawDateStr) {
     rawDateStr = extractWalkinDateFromText(job.title) || extractWalkinDateFromText(job.description) || '';
   }
   if (!rawDateStr) return [];
-  return parseWalkinDateObjects(rawDateStr, job.date_posted || job.fetchedAt || job.date);
+  return parseWalkinDateObjects(rawDateStr, reference);
 }
 
 export function getJobWalkinDates(job: any): string[] {

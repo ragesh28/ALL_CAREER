@@ -1,7 +1,7 @@
 import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect, useMemo, useRef, useDeferredValue, startTransition } from 'react';
 import { LoaderCircle } from 'lucide-react';
-import { Job, SidebarCounts } from '../../types/jobs';
+import { Job } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
 import { AllJobsTopNav } from './AllJobsTopNav';
 import { AllJobsSidebar } from './AllJobsSidebar';
@@ -10,7 +10,8 @@ import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
 import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
-import { CatalogSummary, catalogCity } from '../../services/catalogTypes';
+import { CatalogSummary, matchesCatalogLocation, matchesCatalogSource } from '../../services/catalogTypes';
+import { calculateWalkinFacets, WalkinFacetInput, WalkinFacets } from '../../services/walkinFacets';
 
 interface AllJobsViewProps {
   onGoHub: () => void;
@@ -19,16 +20,18 @@ interface AllJobsViewProps {
 
 export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [sidebarCounts, setSidebarCounts] = useState<SidebarCounts | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState(false);
+  const [catalogAttempt, setCatalogAttempt] = useState(0);
   const [summary, setSummary] = useState<CatalogSummary | null>(null);
-  const [summaryFacets, setSummaryFacets] = useState<{ total: number; dates: Record<string, number>; locations: Record<string, number>; sources: Record<string, number> } | null>(null);
-  const [batchLoading, setBatchLoading] = useState(false);
+  const summaryRef = useRef<CatalogSummary | null>(null);
+  const [facetResult, setFacetResult] = useState<{ input: WalkinFacetInput; facets: WalkinFacets } | null>(null);
+  const [batchLoading, setBatchLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [batchError, setBatchError] = useState(false);
-  const summaryWorker = useRef<Worker | null>(null);
-  const workerRequest = useRef(0);
+  const batchFailures = useRef(0);
+  const batchTarget = useRef(50);
+  const lastCatalogCheck = useRef(0);
 
   // Filters State
   const [searchTerm, setSearchTerm] = useState(initialSearch || '');
@@ -68,75 +71,153 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const deferredCategory = useDeferredValue(selectedCategory);
   const deferredSortBy = useDeferredValue(sortBy);
 
-  // Load initial catalog
+  const applySummary = (next: CatalogSummary) => {
+    if (summaryRef.current !== next) {
+      summaryRef.current = next;
+      setSummary(next);
+      setJobs(jobService.getAllJobs());
+    }
+    setCatalogError(false);
+    setCatalogLoading(false);
+  };
+
   useEffect(() => {
-    let isMounted = true;
-    let retry: ReturnType<typeof setTimeout> | undefined;
-    const loadCatalog = () => jobService.initCatalog(incoming => {
-      if (isMounted) {
-        setJobs(incoming);
-        setLoading(false);
-      }
-    }, (counts, nextSummary) => {
-      if (!isMounted) return;
-      setSidebarCounts(counts);
-      setSummary(nextSummary);
-      setCatalogLoading(false);
-      if (!nextSummary) retry = setTimeout(loadCatalog, 5000);
-    }).then(data => {
-      if (!isMounted) return;
-      setCatalogLoading(false);
-      setJobs(data.previewJobs);
-      if (data.sidebarCounts) {
-        setSidebarCounts(data.sidebarCounts);
-      }
-      setLoading(false);
+    let mounted = true;
+    void jobService.loadPreview().catch(() => {}).finally(() => {
+      if (!mounted) return;
+      setJobs(jobService.getAllJobs());
     });
-    loadCatalog();
+    return () => { mounted = false; };
+  }, []);
+
+  // Retry only the unavailable summary. The preview can render independently.
+  useEffect(() => {
+    let mounted = true;
+    let failures = 0;
+    let retry: ReturnType<typeof setTimeout> | undefined;
+    const refresh = async () => {
+      lastCatalogCheck.current = Date.now();
+      setCatalogLoading(true);
+      const next = await jobService.refreshSummary();
+      if (!mounted) return;
+      if (next) {
+        applySummary(next);
+        return;
+      }
+      setCatalogLoading(false);
+      setCatalogError(true);
+      retry = setTimeout(refresh, Math.min(30000, 4000 * 2 ** failures++));
+    };
+    void refresh();
     return () => {
-      isMounted = false;
-      if (retry) clearTimeout(retry);
+      mounted = false;
+      clearTimeout(retry);
+    };
+  }, [catalogAttempt]);
+
+  useEffect(() => {
+    const refresh = () => setCatalogAttempt(value => value + 1);
+    const restored = (event: PageTransitionEvent) => { if (event.persisted) refresh(); };
+    const visible = () => {
+      if (document.visibilityState === 'visible' && Date.now() - lastCatalogCheck.current >= 60000) refresh();
+    };
+    window.addEventListener('online', refresh);
+    window.addEventListener('pageshow', restored);
+    document.addEventListener('visibilitychange', visible);
+    return () => {
+      window.removeEventListener('online', refresh);
+      window.removeEventListener('pageshow', restored);
+      document.removeEventListener('visibilitychange', visible);
     };
   }, []);
 
-  // Walk-in dates are computed from the compact summary off the UI thread.
+  const facetInput = useMemo<WalkinFacetInput | null>(() => summary ? {
+    summary,
+    locations: [...selectedLocations],
+    sources: [...selectedSources],
+    dates: [...selectedWalkinDates],
+  } : null, [summary, selectedLocations, selectedSources, selectedWalkinDates]);
+  const summaryFacets = facetResult && facetResult.input === facetInput ? facetResult.facets : null;
+
+  // A failed or blocked worker can calculate the same dates from the summary
+  // on the main thread. A late response from an old filter is ignored.
   useEffect(() => {
-    const worker = new Worker(new URL('../../services/walkinSummary.worker.ts', import.meta.url), { type: 'module' });
-    summaryWorker.current = worker;
-    worker.onmessage = ({ data }) => {
-      if (data.id === workerRequest.current) setSummaryFacets(data);
+    if (!facetInput) return;
+    let worker: Worker | undefined;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    let finished = false;
+    const finish = (facets?: WalkinFacets) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      worker?.terminate();
+      setFacetResult({ input: facetInput, facets: facets ?? calculateWalkinFacets(facetInput) });
     };
-    return () => { worker.terminate(); summaryWorker.current = null; };
-  }, []);
-  useEffect(() => {
-    if (!summary) return;
-    const id = ++workerRequest.current;
-    summaryWorker.current?.postMessage({ id, summary, locations: [...selectedLocations], sources: [...selectedSources], dates: [...selectedWalkinDates] });
-  }, [summary, selectedLocations, selectedSources, selectedWalkinDates]);
+    try {
+      worker = new Worker(new URL('../../services/walkinSummary.worker.ts', import.meta.url), { type: 'module' });
+      worker.onmessage = ({ data }: MessageEvent<WalkinFacets>) => finish(data);
+      worker.onerror = event => { event.preventDefault(); finish(); };
+      worker.onmessageerror = () => finish();
+      timeout = setTimeout(() => finish(), 6000);
+      worker.postMessage(facetInput);
+    } catch {
+      finish();
+    }
+    return () => {
+      finished = true;
+      clearTimeout(timeout);
+      worker?.terminate();
+    };
+  }, [facetInput]);
 
   const loadController = useRef<AbortController | null>(null);
-  const requestBatch = async () => {
+  const requestBatch = async (target: number, refreshCatalog = false) => {
     loadController.current?.abort();
     const controller = new AbortController();
     loadController.current = controller;
+    batchTarget.current = target;
     setBatchLoading(true);
+
     try {
+      if (refreshCatalog) {
+        const latest = await jobService.refreshSummary();
+        if (controller.signal.aborted) return null;
+        if (latest) {
+          const changed = latest.manifest !== summaryRef.current?.manifest;
+          applySummary(latest);
+          if (changed) return null; // The new snapshot starts its own batch.
+        }
+      }
       const result = await jobService.loadUntil(
         { sources: [...deferredSources], locations: [...deferredLocations], walkin: deferredWalkinOnly || deferredWalkinDates.size > 0, postedDays: ({ '24h': 1, '3d': 3, '7d': 7, '15d': 15 } as Record<string, number>)[deferredDateFilter] },
         job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim()),
-        filteredJobs.length + JOBS_PER_PAGE,
+        target,
         incoming => { if (!controller.signal.aborted) setJobs(incoming); },
         controller.signal
       );
-      if (!controller.signal.aborted) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
-      return controller.signal.aborted ? null : result;
-    } finally { if (!controller.signal.aborted) setBatchLoading(false); }
+      if (controller.signal.aborted) return null;
+      setJobs(result.jobs);
+      setHasMore(result.hasMore);
+      setBatchError(result.error);
+      batchFailures.current = result.error ? batchFailures.current + 1 : 0;
+      return result;
+    } catch {
+      if (!controller.signal.aborted) {
+        batchFailures.current++;
+        setHasMore(true);
+        setBatchError(true);
+      }
+      return null;
+    } finally {
+      if (!controller.signal.aborted) setBatchLoading(false);
+    }
   };
 
-  // Retry failed catalog pages without requiring the visitor to click again.
+  const retryBatch = () => { void requestBatch(batchTarget.current, true); };
   useEffect(() => {
     if (!batchError || batchLoading || !summary) return;
-    const retry = setTimeout(() => { void requestBatch(); }, 5000);
+    const delay = Math.min(30000, 4000 * 2 ** Math.max(0, batchFailures.current - 1));
+    const retry = setTimeout(retryBatch, delay);
     return () => clearTimeout(retry);
   }, [batchError, batchLoading, summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
 
@@ -292,22 +373,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
     }
 
-    // 2. Source Filter
-    if (excludeDim !== 'source' && sources.size > 0) {
-      const src = j._normSource || (j.source || '').toLowerCase().trim();
-      let match = false;
-      if (sources.has(src)) {
-        match = true;
-      } else {
-        for (const s of sources) {
-          if (s === 'other' && (src === 'other' || isOtherSource(src))) { match = true; break; }
-          if (s === 'telegram' && src.includes('telegram')) { match = true; break; }
-          if ((s === 'images' || s === 'google_images') && (src.includes('google') || src.includes('image'))) { match = true; break; }
-          if (src === s) { match = true; break; }
-        }
-      }
-      if (!match) return false;
-    }
+    // 2. Use the same source aliases as the catalog page lookup.
+    if (excludeDim !== 'source' && !matchesCatalogSource(j._normSource || (j.source || '').toLowerCase().trim(), sources)) return false;
 
     // 3. Date Filter (Precomputed days difference)
     if (dateFilter !== 'all') {
@@ -321,15 +388,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
     }
 
-    // 4. Location Filter
-    if (excludeDim !== 'location' && locations.size > 0) {
-      const loc = (j.location || '').toLowerCase();
-      let match = false;
-      for (const l of locations) {
-        if (loc.includes(l.toLowerCase()) || (l === 'Bangalore' && loc.includes('bengaluru'))) { match = true; break; }
-      }
-      if (!match) return false;
-    }
+    // 4. Use the same location matching as the catalog page lookup.
+    if (excludeDim !== 'location' && !matchesCatalogLocation(j.location || '', locations)) return false;
 
     // 5. Role Category Filter
     if (excludeDim !== 'role' && roles.size > 0) {
@@ -462,23 +522,14 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   useEffect(() => {
     if (!summary) return;
     loadController.current?.abort();
-    const controller = new AbortController();
-    loadController.current = controller;
+    batchFailures.current = 0;
     setBatchLoading(true);
     setBatchError(false);
-    const timer = setTimeout(async () => {
-      try {
-        const result = await jobService.loadUntil(
-          { sources: [...deferredSources], locations: [...deferredLocations], walkin: deferredWalkinOnly || deferredWalkinDates.size > 0, postedDays: ({ '24h': 1, '3d': 3, '7d': 7, '15d': 15 } as Record<string, number>)[deferredDateFilter] },
-          job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim()),
-          JOBS_PER_PAGE,
-          incoming => { if (!controller.signal.aborted) setJobs(incoming); },
-          controller.signal
-        );
-        if (!controller.signal.aborted) { setJobs(result.jobs); setHasMore(result.hasMore); setBatchError(result.error); }
-      } finally { if (!controller.signal.aborted) setBatchLoading(false); }
-    }, 150);
-    return () => { controller.abort(); clearTimeout(timer); };
+    const timer = setTimeout(() => { void requestBatch(JOBS_PER_PAGE); }, 150);
+    return () => {
+      clearTimeout(timer);
+      loadController.current?.abort();
+    };
   }, [summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
 
   // Pagination calculation: 50 jobs per page
@@ -488,7 +539,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const goToPage = async (page: number) => {
     if (batchLoading || page < 1 || page > availablePages) return;
     if (hasMore && filteredJobs.length < page * JOBS_PER_PAGE) {
-      const result = await requestBatch();
+      const result = await requestBatch(page * JOBS_PER_PAGE);
       if (!result || result.error || result.jobs.filter(job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim())).length <= (page - 1) * JOBS_PER_PAGE) return;
     }
     setCurrentPage(page);
@@ -587,64 +638,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       }
     }
 
-    // Walk-in counts (ONLY scans walk-in jobs)
-    const walkinDateCounts: Record<string, number> = {};
-    const walkinDateMap: Record<string, number> = {};
-    let walkinTotalCount = 0;
-
-    for (let i = 0; i < jobs.length; i++) {
-      const j = jobs[i];
-      if (j._isWalkinJob && checkJobMatchWithout(j, 'walkin', term)) {
-        walkinTotalCount++;
-        const dates = j._walkinDatesList || [];
-        for (let dIdx = 0; dIdx < dates.length; dIdx++) {
-          const normD = dates[dIdx];
-          if (normD) {
-            walkinDateCounts[normD] = (walkinDateCounts[normD] || 0) + 1;
-            if (walkinDateMap[normD] === undefined) {
-              const parts = normD.split(' ');
-              if (parts.length === 2) {
-                const mIdx = MONTH_SHORT.indexOf(parts[0]);
-                const dayNum = parseInt(parts[1], 10);
-                if (mIdx !== -1 && !isNaN(dayNum)) {
-                  const now = new Date();
-                  let yr = now.getFullYear();
-                  if (mIdx < now.getMonth()) yr += 1;
-                  walkinDateMap[normD] = new Date(yr, mIdx, dayNum).getTime();
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    const sortedDates = Object.keys(walkinDateCounts).sort((a, b) => {
-      const da = walkinDateMap[a];
-      const db = walkinDateMap[b];
-      if (da !== undefined && db !== undefined) {
-        return da - db;
-      }
-      return a.localeCompare(b);
-    });
-
-    const walkinDateOptions = sortedDates.map(label => ({
-      id: label,
-      label,
-      count: walkinDateCounts[label] || 0
-    }));
-
-    for (const selDate of deferredWalkinDates) {
-      if (!walkinDateOptions.some(o => o.id === selDate)) {
-        walkinDateOptions.push({
-          id: selDate,
-          label: selDate,
-          count: walkinDateCounts[selDate] || 0
-        });
-      }
-    }
-
-    return { locCounts, roleCounts, srcCounts, skillCounts, walkinTotalCount, walkinDateCounts, walkinDateOptions };
+    return { locCounts, roleCounts, srcCounts, skillCounts };
   }, [
     jobs,
     deferredSearchTerm,
@@ -678,12 +672,11 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const canUseWalkinSummary = !!summary && !searchTerm.trim() && selectedRoles.size === 0 && selectedSkills.size === 0 && selectedCompanies.size === 0 && selectedDateFilter === 'all' && expValue < 0 && selectedCategory === 'all';
   const catalogFacets = useMemo(() => {
     const locations: Record<string, number> = {}, sources: Record<string, number> = {};
-    const cities = [...selectedLocations].map(catalogCity);
     for (const [source, locs] of Object.entries(summary?.source_locations || {})) {
-      const sourceMatch = !selectedSources.size || [...selectedSources].some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source)));
+      const sourceMatch = matchesCatalogSource(source, selectedSources);
       for (const [city, count] of Object.entries(locs)) {
         if (sourceMatch) locations[city] = (locations[city] || 0) + count;
-        if (!cities.length || cities.includes(city)) sources[source] = (sources[source] || 0) + count;
+        if (matchesCatalogLocation(city, selectedLocations)) sources[source] = (sources[source] || 0) + count;
       }
     }
     return { locations, sources };
@@ -694,13 +687,40 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   sourceFacets.telegram = Object.entries(displayedSources).filter(([s]) => s.includes('telegram')).reduce((sum, [, n]) => sum + n, 0);
   if (canUseWalkinSummary) sourceFacets.other = Object.entries(displayedSources).filter(([s]) => s === 'other' || isOtherSource(s)).reduce((sum, [, n]) => sum + n, 0);
   const walkinDateOptions = useMemo(() => {
-    const dates = summaryFacets?.dates || {};
-    return Object.entries(dates).map(([label, count]) => ({ id: label, label, count })).sort((a, b) => {
-      const date = (label: string) => { const [month, day] = label.split(' '); return (MONTH_SHORT.indexOf(month) * 31 + Number(day) - (new Date().getMonth() * 31 + new Date().getDate()) + 372) % 372; };
-      return date(a.id) - date(b.id);
-    });
-  }, [summaryFacets]);
-  const walkinLocations = summaryFacets ? Object.fromEntries(Object.entries(summaryFacets.locations).map(([city, count]) => [city, count])) : summary?.walkins.locations;
+    if (!summaryFacets) return [];
+    const dates = { ...summaryFacets.dates };
+    for (const selected of selectedWalkinDates) dates[selected] ??= 0;
+    const today = new Date();
+    const offset = today.getMonth() * 31 + today.getDate();
+    const dateOrder = (label: string) => {
+      const [month, day] = label.split(' ');
+      return (MONTH_SHORT.indexOf(month) * 31 + Number(day) - offset + 372) % 372;
+    };
+    return Object.entries(dates).map(([label, count]) => ({ id: label, label, count }))
+      .sort((a, b) => dateOrder(a.id) - dateOrder(b.id));
+  }, [summaryFacets, selectedWalkinDates]);
+  const walkinLocations = summaryFacets?.locations ?? summary?.walkins.locations;
+  const walkinActive = walkinOnly || selectedWalkinDates.size > 0;
+  const walkinCount = useMemo(() => {
+    if (!summary) return undefined;
+    if (!selectedLocations.size && !selectedSources.size) return summary.walkins.total;
+    let count = 0;
+    for (const [source, locations] of Object.entries(summary.walkins.source_locations)) {
+      if (!matchesCatalogSource(source, selectedSources)) continue;
+      for (const [city, total] of Object.entries(locations)) {
+        if (matchesCatalogLocation(city, selectedLocations)) count += total;
+      }
+    }
+    return count;
+  }, [summary, selectedLocations, selectedSources]);
+  const walkinRetrying = catalogError || (walkinActive && batchError);
+  const retryWalkins = () => {
+    if (summary && walkinActive) retryBatch();
+    else setCatalogAttempt(value => value + 1);
+  };
+  const reconnecting = catalogError || batchError;
+  const waitingForJobs = !summary || batchLoading ||
+    walkinOnly !== deferredWalkinOnly || selectedWalkinDates !== deferredWalkinDates;
 
   // Instantaneous reset: clears all filter states in a single atomic batch
   const clearAllFilters = () => {
@@ -765,22 +785,25 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           onToggleWalkinDate={handleToggleWalkinDate}
           sourceCounts={sourceFacets}
           sourceCountsAreCatalog={canUseWalkinSummary}
-          locationCounts={useWalkinFacets ? walkinLocations : canUseWalkinSummary ? catalogFacets.locations : hasActiveFilters ? dynamicCounts.locCounts : sidebarCounts?.locations}
+          locationCounts={useWalkinFacets ? walkinLocations : canUseWalkinSummary ? catalogFacets.locations : hasActiveFilters ? dynamicCounts.locCounts : summary?.locations}
           locationCountsAreCatalog={!hasActiveFilters || canUseWalkinSummary}
           roleCounts={dynamicCounts.roleCounts}
           skillCounts={dynamicCounts.skillCounts}
-          walkinCount={catalogLoading || (!summary && !hasActiveFilters) ? undefined : canUseWalkinSummary ? (summaryFacets?.total ?? (selectedLocations.size === 0 && selectedSources.size === 0 ? summary?.walkins.total : undefined)) : dynamicCounts.walkinTotalCount}
-          walkinSummaryLoading={catalogLoading || (!summary && !hasActiveFilters) || (canUseWalkinSummary && !summaryFacets)}
-          walkinCountsAreCatalog={canUseWalkinSummary}
-          walkinDateCounts={canUseWalkinSummary ? summaryFacets?.dates : dynamicCounts.walkinDateCounts}
-          walkinDateOptions={!summary && !hasActiveFilters ? [] : canUseWalkinSummary ? walkinDateOptions : dynamicCounts.walkinDateOptions}
-          sidebarCounts={sidebarCounts}
+          walkinCount={walkinCount}
+          walkinSummaryLoading={!summaryFacets}
+          walkinRetrying={walkinRetrying}
+          walkinRetryBusy={catalogLoading || (walkinActive && Boolean(summary) && batchLoading)}
+          onRetryWalkins={retryWalkins}
+          walkinDateOptions={walkinDateOptions}
+          sidebarCounts={summary}
         /></MobileFilters>
 
         {/* Right Main Grid */}
         <main className="alljobs-main">
           <p role="status" style={{ color: '#94a3b8', fontSize: '0.8rem', margin: '0 0 12px' }}>
-            {filteredJobs.length.toLocaleString()} matching jobs loaded · Newest first · More jobs load in small batches
+            {filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
+              ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · Newest first · More jobs load in small batches'
+              : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
           </p>
           {/* Category count pills */}
           <CategoryCountPills
@@ -794,14 +817,14 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           />
 
           {/* Cards Grid */}
-          {loading ? (
+          {waitingForJobs && !filteredJobs.length && !reconnecting ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
               <div style={{ display: 'inline-block', width: '38px', height: '38px', border: '3px solid rgba(56,189,248,0.2)', borderTopColor: '#38bdf8', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
               <p style={{ color: '#94a3b8', marginTop: '14px', fontSize: '15px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}><LoaderCircle size={16} aria-hidden="true" /> Loading matching jobs...</p>
             </div>
           ) : filteredJobs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
-              {batchLoading ? 'Loading matching jobs…' : hasMore ? 'No matches in the loaded batch. Load more jobs to continue searching.' : 'No jobs found matching your criteria.'}
+              {reconnecting ? 'Some job data could not load. Retrying automatically…' : 'No jobs found matching your criteria.'}
             </div>
           ) : (
             <>
@@ -830,7 +853,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
             </>
           )}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
-            {batchError && <button type="button" className="page-btn" disabled={batchLoading} onClick={requestBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
+            {batchError && <button type="button" className="page-btn" disabled={batchLoading} onClick={retryBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
               {batchLoading ? 'Loading jobs…' : 'Retry loading jobs'}
             </button>}
           </div>

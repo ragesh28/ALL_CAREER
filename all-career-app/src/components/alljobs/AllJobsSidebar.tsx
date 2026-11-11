@@ -39,8 +39,9 @@ interface AllJobsSidebarProps {
   skillCounts?: Record<string, number>;
   walkinCount?: number;
   walkinSummaryLoading?: boolean;
-  walkinCountsAreCatalog?: boolean;
-  walkinDateCounts?: Record<string, number>;
+  walkinRetrying?: boolean;
+  walkinRetryBusy?: boolean;
+  onRetryWalkins?: () => void;
   walkinDateOptions?: { id: string; label: string; count: number }[];
   sidebarCounts?: SidebarCounts | null;
 }
@@ -72,8 +73,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   skillCounts,
   walkinCount,
   walkinSummaryLoading,
-  walkinCountsAreCatalog,
-  walkinDateCounts,
+  walkinRetrying,
+  walkinRetryBusy,
+  onRetryWalkins,
   walkinDateOptions,
   sidebarCounts
 }) => {
@@ -710,11 +712,20 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 </svg>
               </div>
               <span className="option-label"><Route size={14} aria-hidden="true" /> All Walk-ins</span>
-              <span className="source-count">{walkinCount === undefined ? (walkinSummaryLoading ? 'Loading…' : 'Unavailable') : `(${walkinCount.toLocaleString()})`}</span>
+              <span className="source-count">{walkinCount === undefined ? (walkinRetrying ? 'Retrying…' : 'Loading…') : `(${walkinCount.toLocaleString()})`}</span>
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#94a3b8', padding: '2px 4px 0' }}>
-              {walkinCountsAreCatalog ? 'Full walk-in catalog counts' : 'Counts in loaded matching jobs'}
+            <div className="walkin-catalog-status" role="status">
+              {walkinRetrying
+                ? 'Some walk-in data could not load. Retrying automatically…'
+                : walkinCount === undefined
+                  ? 'Connecting to the walk-in catalog…'
+                  : 'Catalog counts by source and location'}
             </div>
+            {onRetryWalkins && (
+              <button type="button" className="page-btn walkin-retry-btn" onClick={onRetryWalkins} disabled={walkinRetryBusy}>
+                {walkinRetryBusy ? 'Checking walk-ins…' : walkinRetrying ? 'Retry walk-ins' : 'Refresh walk-ins'}
+              </button>
+            )}
 
             {/* Subheader: INTERVIEW DATES matching Screenshot 1 */}
             <div
@@ -736,12 +747,11 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             <div id="walkin-dates-options" style={{ maxHeight: '240px', overflowY: 'auto' }}>
               {displayWalkinDates.length === 0 ? (
                 <div style={{ fontSize: '0.75rem', color: '#94a3b8', padding: '6px 4px' }}>
-                  {walkinSummaryLoading ? 'Loading interview dates…' : 'No upcoming walk-in interview dates found'}
+                  {walkinSummaryLoading ? (walkinRetrying ? 'Waiting for interview dates…' : 'Loading interview dates…') : 'No upcoming walk-in interview dates found'}
                 </div>
               ) : (
                 displayWalkinDates.map(item => {
                   const isSelected = localWalkinDates.has(item.id);
-                  const count = walkinDateCounts ? (walkinDateCounts[item.id] ?? item.count) : item.count;
                   return (
                     <div
                       key={item.id}
@@ -754,7 +764,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                         </svg>
                       </div>
                       <span className="option-label">{item.label || item.id}</span>
-                      <span className="source-count">({count.toLocaleString()})</span>
+                      <span className="source-count">({item.count.toLocaleString()})</span>
                     </div>
                   );
                 })

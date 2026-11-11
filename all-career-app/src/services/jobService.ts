@@ -1,7 +1,6 @@
-import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, catalogCity } from './catalogTypes';
+import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, isBrowserCatalog, isCatalogSummary, isJobPage, matchesCatalogLocation, matchesCatalogSource } from './catalogTypes';
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
 import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../utils/filterUtils';
-import { formatWalkinDate } from '../utils/companyLogos';
 import { fetchCatalogJson, fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
 
 export class JobService {
@@ -9,6 +8,7 @@ export class JobService {
   private sidebarCounts: SidebarCounts | null = null;
   private allJobsMap = new Map<string, Job>();
   private loadedShards = new Set<string>();
+  private failedShards = new Set<string>();
   private roleCategoriesDict: Record<string, string[]> = {
     technical: ['developer', 'engineer', 'frontend', 'backend', 'fullstack', 'react', 'python', 'java', 'devops', 'software', 'cloud', 'data'],
     non_technical: ['bpo', 'voice', 'customer', 'sales', 'telecaller', 'recruiter', 'hr', 'support', 'operations'],
@@ -17,75 +17,109 @@ export class JobService {
   };
 
   private summary: CatalogSummary | null = null;
+  private summaryRequest: Promise<CatalogSummary | null> | null = null;
   private browserCatalog: BrowserCatalog | null = null;
-  private batchLoading = false;
+
+  refreshSummary(): Promise<CatalogSummary | null> {
+    if (this.summaryRequest) return this.summaryRequest;
+    this.summaryRequest = (async () => {
+      const next = await fetchCatalogJson('data/web/summary.json', isCatalogSummary);
+      if (!next) return null;
+
+      const previous = this.summary;
+      if (previous && Date.parse(next.generated_at) < Date.parse(previous.generated_at)) {
+        // GitHub Pages and the fallback host can publish at different times.
+        return previous;
+      }
+      if (previous && previous.manifest !== next.manifest) {
+        this.allJobsMap.clear();
+        this.loadedShards.clear();
+        this.failedShards.clear();
+        this.browserCatalog = null;
+      }
+      if (previous && previous.manifest === next.manifest &&
+          previous.generated_at === next.generated_at && previous.total_jobs === next.total_jobs) return previous;
+      this.summary = next;
+      this.sidebarCounts = next;
+      return next;
+    })().finally(() => { this.summaryRequest = null; });
+    return this.summaryRequest;
+  }
+
+  async loadPreview(): Promise<Job[]> {
+    const rows = await fetchCatalogJson('data/web/latest.json', isJobPage);
+    if (rows) this.ingestJobs(rows);
+    return rows ?? [];
+  }
 
   async initCatalog(
     onProgress?: (jobs: Job[]) => void,
     onCounts?: (counts: SidebarCounts | null, summary: CatalogSummary | null) => void
   ): Promise<{ previewJobs: Job[]; sidebarCounts: SidebarCounts | null }> {
-    // These tasks publish independently: a slow preview cannot hide counts, and
-    // counts never wait for walk-in records, manifests, categories or ATS dumps.
+    // Keep the first cards and catalog counts independent on startup.
     let previewRows: Job[] | null = null;
-    const previewTask = (async () => {
-      const rows = await fetchCatalogJson<Job[]>('data/web/latest.json')
-        ?? await fetchCatalogJson<Job[]>('data/index/latest_preview_100.json');
-      if (Array.isArray(rows)) { previewRows = rows; this.ingestJobs(rows); }
+    const preview = this.loadPreview().then(rows => {
+      previewRows = rows;
       onProgress?.(this.getAllJobs());
-    })();
-    const countsTask = (async () => {
-      const summary = await fetchCatalogJson<CatalogSummary>('data/web/summary.json');
-      if (summary?.schema === 1 && summary.walkins) {
-        if (this.summary && this.summary.manifest !== summary.manifest) {
-          this.allJobsMap.clear();
-          this.loadedShards.clear();
-          this.browserCatalog = null;
-          if (previewRows) this.ingestJobs(previewRows);
-        }
-        this.summary = summary;
-        this.sidebarCounts = summary;
-      }
-      onCounts?.(this.sidebarCounts, this.summary);
-    })();
-    await Promise.allSettled([previewTask, countsTask]);
+    });
+    const counts = this.refreshSummary().then(summary => {
+      if (summary && previewRows) this.ingestJobs(previewRows);
+      onCounts?.(this.sidebarCounts, summary);
+    });
+    await Promise.all([preview, counts]);
     return { previewJobs: this.getAllJobs(), sidebarCounts: this.sidebarCounts };
   }
 
-  private async catalog(): Promise<BrowserCatalog | null> {
-    if (!this.browserCatalog && this.summary?.manifest) {
-      this.browserCatalog = await fetchCatalogJson<BrowserCatalog>(this.summary.manifest);
-    }
-    return this.browserCatalog;
-  }
+  private async candidatePages(filters: CatalogFilters, snapshot: CatalogSummary | null): Promise<CatalogPage[] | null> {
+    if (!snapshot) return null;
+    const needsWalkins = filters.walkin && snapshot.walkins.total > 0;
+    const hasWalkins = (catalog: BrowserCatalog) => Object.values(catalog.walkins).some(rows => rows.length > 0);
+    const catalog = this.browserCatalog && (!needsWalkins || hasWalkins(this.browserCatalog))
+      ? this.browserCatalog
+      : await fetchCatalogJson(snapshot.manifest, (value): value is BrowserCatalog =>
+        isBrowserCatalog(value) && (!needsWalkins || hasWalkins(value)));
+    if (!catalog || snapshot.manifest !== this.summary?.manifest) return null;
+    this.browserCatalog = catalog;
 
-  private async candidatePages(filters: CatalogFilters): Promise<CatalogPage[] | null> {
-    const catalog = await this.catalog();
-    if (!catalog) return null;
-    const cities = filters.locations.map(catalogCity);
-    const matchesSource = (source: string) => !filters.sources.length || filters.sources.some(s => s === source || (s === 'telegram' && source.includes('telegram')) || (s === 'other' && isOtherSource(source)));
+    const matchesCity = (location: string) => matchesCatalogLocation(location, filters.locations);
+    const matchesSource = (source: string) => matchesCatalogSource(source, filters.sources);
+    const walkinPages = Object.entries(catalog.walkins);
     let pages: CatalogPage[] = filters.walkin
-      ? Object.entries(catalog.walkins).filter(([city]) => !cities.length || cities.includes(city)).flatMap(([, rows]) => rows)
+      ? walkinPages.filter(([city]) => matchesCity(city)).flatMap(([, rows]) => rows)
       : catalog.pages;
     if (!filters.walkin && filters.sources.length && filters.sources.every(source => !!catalog.sources?.[source])) {
       pages = filters.sources.flatMap(source => catalog.sources![source]);
     }
     const minimumDate = filters.postedDays === undefined ? '' : new Date(Date.now() - (filters.postedDays + 1) * 86400000).toISOString().slice(0, 10);
-    pages = pages.filter(page => (!minimumDate || (page.newest || '') >= minimumDate) && (!cities.length || page.locations.some(city => cities.includes(city))) && page.sources.some(matchesSource));
+    pages = pages.filter(page => (!minimumDate || (page.newest || '') >= minimumDate) &&
+      (!filters.locations.length || page.locations.some(matchesCity)) &&
+      (!filters.sources.length || page.sources.some(matchesSource)));
     const unique = [...new Map(pages.map(page => [page.path, page])).values()];
     return unique.sort((a, b) => (b.newest || '').localeCompare(a.newest || ''));
   }
 
-  async loadMore(filters: CatalogFilters): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
-    const pages = await this.candidatePages(filters);
-    if (!pages) return { jobs: this.getAllJobs(), hasMore: false, error: true };
-    const pending = pages.filter(page => !this.loadedShards.has(page.path));
-    const page = pending[0];
-    if (!page) return { jobs: this.getAllJobs(), hasMore: false, error: false };
-    const rows = await fetchCatalogJson<Job[]>(page.path);
-    if (!Array.isArray(rows)) return { jobs: this.getAllJobs(), hasMore: true, error: true };
+  private async loadPage(page: CatalogPage, snapshot: CatalogSummary | null, signal?: AbortSignal): Promise<boolean> {
+    const rows = await fetchCatalogJson(page.path, (value): value is Job[] =>
+      isJobPage(value) && (!page.count || value.length > 0));
+    if (signal?.aborted || snapshot?.manifest !== this.summary?.manifest) return false;
+    if (!rows) {
+      this.failedShards.add(page.path);
+      return false;
+    }
     this.ingestJobs(rows);
+    this.failedShards.delete(page.path);
     this.loadedShards.add(page.path);
-    return { jobs: this.getAllJobs(), hasMore: pending.length > 1, error: false };
+    return true;
+  }
+
+  async loadMore(filters: CatalogFilters): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
+    const snapshot = this.summary;
+    const pages = await this.candidatePages(filters, snapshot);
+    if (!pages) return { jobs: this.getAllJobs(), hasMore: true, error: true };
+    const pending = pages.filter(page => !this.loadedShards.has(page.path));
+    if (!pending.length) return { jobs: this.getAllJobs(), hasMore: false, error: false };
+    const loaded = await this.loadPage(pending[0], snapshot);
+    return { jobs: this.getAllJobs(), hasMore: !loaded || pending.length > 1, error: !loaded };
   }
 
   async loadUntil(
@@ -95,20 +129,35 @@ export class JobService {
     onProgress?: (jobs: Job[]) => void,
     signal?: AbortSignal
   ): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
+    const snapshot = this.summary;
+    const pages = await this.candidatePages(filters, snapshot);
     let jobs = this.getAllJobs();
-    const pages = await this.candidatePages(filters);
-    if (!pages) return { jobs, hasMore: false, error: true };
-    let hasMore = pages.some(page => !this.loadedShards.has(page.path));
-    // A page download is not a result page. Continue until 50 actual matches
-    // exist, or all candidate files are exhausted (including tiny sources).
-    while (!signal?.aborted && hasMore && jobs.filter(matches).length < target) {
-      const result = await this.loadMore(filters);
-      jobs = result.jobs;
-      hasMore = result.hasMore;
-      if (result.error) return result;
-      if (!signal?.aborted) onProgress?.(jobs);
+    if (!pages) return { jobs, hasMore: true, error: true };
+
+    let failures = 0;
+    let count = jobs.filter(matches).length;
+    for (const page of pages) {
+      if (signal?.aborted) break;
+      if (count >= target && !this.failedShards.has(page.path)) continue;
+      if (snapshot?.manifest !== this.summary?.manifest) {
+        return { jobs: this.getAllJobs(), hasMore: true, error: true };
+      }
+      if (this.loadedShards.has(page.path)) continue;
+      if (!await this.loadPage(page, snapshot, signal)) {
+        if (signal?.aborted) break;
+        if (snapshot?.manifest !== this.summary?.manifest) {
+          return { jobs: this.getAllJobs(), hasMore: true, error: true };
+        }
+        failures++;
+        // One missing walk-in file should not hide the healthy files behind it.
+        if (!filters.walkin || failures >= 2) break;
+        continue;
+      }
+      jobs = this.getAllJobs();
+      count = jobs.filter(matches).length;
+      onProgress?.(jobs);
     }
-    return { jobs, hasMore, error: false };
+    return { jobs, hasMore: pages.some(page => !this.loadedShards.has(page.path)), error: failures > 0 };
   }
 
   async fetchWalkinJobs(): Promise<Job[]> {

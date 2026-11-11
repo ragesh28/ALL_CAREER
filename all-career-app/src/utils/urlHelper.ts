@@ -22,40 +22,63 @@ export const resolveAssetUrl = (path: string): string => {
   return `${base}/${clean}`;
 };
 
-// Catalog requests have one published location and one bounded fallback.
-const catalogRequests = new Map<string, Promise<any>>();
-export const fetchCatalogJson = <T,>(path: string): Promise<T | null> => {
-  if (catalogRequests.has(path)) return catalogRequests.get(path)!;
-  const mutable = /(?:summary|latest|sidebar_counts|latest_preview_100)\.json$/.test(path);
+let refreshSequence = 0;
+
+export function freshDataUrl(url: string): string {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}_fresh=${Date.now()}-${++refreshSequence}`;
+}
+
+const catalogRequests = new Map<string, Promise<unknown>>();
+const failedCatalogPaths = new Set<string>();
+
+// Mutable pointers always come from the network. Retry failed immutable paths
+// with a fresh URL too, since a host can cache a 404 during publication.
+export function fetchCatalogJson<T>(path: string, accept: (value: unknown) => value is T): Promise<T | null> {
+  const clean = path.replace(/^\/+/, '');
+  const pending = catalogRequests.get(clean);
+  if (pending) return pending as Promise<T | null>;
+
+  const mutable = /(?:summary|latest|sidebar_counts|latest_preview_100)\.json$/.test(clean);
+  const fresh = mutable || failedCatalogPaths.has(clean);
   const task = (async () => {
-    const clean = path.replace(/^\/+/, '');
-    for (const url of [resolveAssetUrl(clean), `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`]) {
+    const urls = [resolveAssetUrl(clean), `https://raw.githubusercontent.com/ragesh28/ALL_CAREER/main/${clean}`];
+    for (const url of urls) {
       const controller = new AbortController();
-      // The summary can be much larger than a page; allow slower mobile links
-      // enough time to receive it before trying the fallback host.
-      const timeout = setTimeout(() => controller.abort(), clean.endsWith('/summary.json') ? 30000 : 8000);
+      const timeout = setTimeout(() => controller.abort(), clean.endsWith('/summary.json') ? 20000 : 10000);
       try {
-        const res = await fetch(url, { signal: controller.signal, cache: mutable ? 'no-cache' : 'default' });
-        if (res.ok) {
-          if (clean.endsWith('.gz')) {
-            const buffer = await res.arrayBuffer();
-            const bytes = new Uint8Array(buffer);
-            // Some static hosts send Content-Encoding and the browser unwraps it.
-            if (bytes[0] !== 31 || bytes[1] !== 139) return JSON.parse(new TextDecoder().decode(buffer)) as T;
-            return await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).json() as T;
-          }
-          return await res.json() as T;
+        const response = await fetch(fresh ? freshDataUrl(url) : url, {
+          signal: controller.signal,
+          cache: fresh ? 'no-store' : 'default',
+          credentials: 'omit',
+        });
+        if (!response.ok) continue;
+        let data: unknown;
+        if (clean.endsWith('.gz')) {
+          const buffer = await response.arrayBuffer();
+          const bytes = new Uint8Array(buffer);
+          // Some hosts unwrap gzip through Content-Encoding.
+          data = bytes[0] === 31 && bytes[1] === 139
+            ? await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))).json()
+            : JSON.parse(new TextDecoder().decode(buffer));
+        } else {
+          data = await response.json();
         }
-      } catch { /* A timeout or a failed host may use the fallback. */ }
-      finally { clearTimeout(timeout); }
+        if (!accept(data)) continue;
+        failedCatalogPaths.delete(clean);
+        return data;
+      } catch {
+        // A timeout, invalid file, or network error can use the other host.
+      } finally {
+        clearTimeout(timeout);
+      }
     }
-    catalogRequests.delete(path);
+    failedCatalogPaths.add(clean);
     return null;
-  })();
-  catalogRequests.set(path, task);
-  if (mutable) void task.finally(() => catalogRequests.delete(path));
+  })().finally(() => catalogRequests.delete(clean));
+  catalogRequests.set(clean, task);
   return task;
-};
+}
 
 export const fetchJsonWithFallback = async <T = any>(
   primaryPath: string,

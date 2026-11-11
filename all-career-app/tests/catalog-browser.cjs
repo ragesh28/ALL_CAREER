@@ -15,7 +15,7 @@ const assert = require('node:assert/strict');
     const descriptor = { path: 'data/web/testpage.json', count: 1, newest: date, sources: ['naukri'], locations: ['chennai'] };
     const summary = { schema: 1, total_jobs: 10000, manifest: 'data/web/testmanifest.json', sources: { naukri: 10000 }, locations: { chennai: 9000 }, source_locations: { naukri: { chennai: 9000 } }, walkins: { total: 1000, locations: { chennai: 1000 }, sources: { naukri: 1000 }, source_locations: { naukri: { chennai: 1000 } }, date_groups: [['chennai', 'naukri', [interview], date, 1000]] } };
     page.on('request', request => {
-      const url = request.url();
+      const url = request.url().split('?')[0];
       if (url.includes('/data/web/')) {
         requested.push(url);
         if (url.endsWith('latest.json')) { pending.push(request); return; }
