@@ -1,17 +1,17 @@
 {
-  "run_id": "42943927340",
-  "updated_at": "2026-11-11T07:59:58.312561",
+  "run_id": "42983631157",
+  "updated_at": "2026-11-11T13:50:46.742979",
   "portals": {
     "apna": {
-      "scraped_total": 6723,
-      "new_stored_total": 76,
-      "requests_total": 764,
+      "scraped_total": 8165,
+      "new_stored_total": 307,
+      "requests_total": 760,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-chennai"
+        "requests": 2,
+        "scraped": 21,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/digital-marketer-jobs-in-mumbai"
       }
     },
     "workindia": {
@@ -23,7 +23,7 @@
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-chennai/"
+        "url": "https://www.workindia.in/digital-marketer-jobs-in-mumbai/"
       }
     },
     "freshersworld": {
@@ -35,7 +35,7 @@
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-chennai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-mumbai"
       }
     }
   }
