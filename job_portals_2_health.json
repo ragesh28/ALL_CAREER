@@ -1,41 +1,41 @@
 {
-  "run_id": "42983631157",
-  "updated_at": "2026-11-11T13:50:46.742979",
+  "run_id": "43062073929",
+  "updated_at": "2026-11-11T19:17:56.478449",
   "portals": {
     "apna": {
-      "scraped_total": 8165,
-      "new_stored_total": 307,
-      "requests_total": 760,
+      "scraped_total": 3189,
+      "new_stored_total": 108,
+      "requests_total": 344,
       "last_probe": {
-        "requests": 2,
-        "scraped": 21,
+        "requests": 3,
+        "scraped": 29,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/digital-marketer-jobs-in-mumbai"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 392,
+      "requests_total": 161,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/digital-marketer-jobs-in-mumbai/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 392,
+      "requests_total": 161,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-mumbai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
