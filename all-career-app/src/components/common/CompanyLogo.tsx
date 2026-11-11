@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getCompanyLogoData } from '../../utils/companyLogos';
 
 interface CompanyLogoProps {
@@ -9,24 +9,22 @@ interface CompanyLogoProps {
 }
 
 
-export const CompanyLogo: React.FC<CompanyLogoProps> = ({
+export const CompanyLogo: React.FC<CompanyLogoProps> = props => (
+  <LogoImage key={props.name} {...props} />
+);
+
+const LogoImage: React.FC<CompanyLogoProps> = ({
   name,
   size = 'sm',
   className = '',
   style = {}
 }) => {
   const logo = getCompanyLogoData(name);
-  // Stage 0: Unavatar -> Stage 1: DuckDuckGo -> Stage 2: Google -> Stage 3: Clearbit -> Stage 4: Monogram
-  const [stage, setStage] = useState<number>(0);
-
-  // Sync stage if name prop changes
-  useEffect(() => {
-    setStage(0);
-  }, [name]);
-
-  const handleStageError = (nextStage: number) => {
-    setStage(nextStage);
-  };
+  const sources = [...new Set([logo.local, logo.google, logo.duckduckgo, logo.unavatar].filter(Boolean))];
+  const [stage, setStage] = useState(0);
+  const [loadedSource, setLoadedSource] = useState<string>();
+  const source = sources[stage];
+  const showImage = Boolean(source && loadedSource === source);
 
   // Compute pixel dimensions
   let dim = 20;
@@ -64,29 +62,7 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
         ...style
       }}
     >
-      {logo.local && stage === 0 ? (
-        <img
-          src={logo.local}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => handleStageError(1)}
-        />
-      ) : stage === 0 || (stage === 1 && !!logo.local) ? (
-        <img
-          src={logo.unavatar}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px' }}
-          onError={() => handleStageError(2)}
-        />
-      ) : stage === 1 || stage === 2 ? (
-        <img src={logo.duckduckgo} alt={name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => handleStageError(3)} />
-      ) : stage === 3 ? (
-        <img src={logo.google} alt={name} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'contain' }} onError={() => handleStageError(4)} />
-      ) : (
+      {!showImage && (
         <div
           style={{
             width: '100%',
@@ -103,6 +79,22 @@ export const CompanyLogo: React.FC<CompanyLogoProps> = ({
         >
           {logo.initial}
         </div>
+      )}
+      {source && (
+        <img
+          key={source}
+          src={source}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px', opacity: showImage ? 1 : 0 }}
+          onLoad={event => {
+            if (event.currentTarget.naturalWidth > 1) setLoadedSource(source);
+            else setStage(stage + 1);
+          }}
+          onError={() => setStage(stage + 1)}
+        />
       )}
     </div>
   );

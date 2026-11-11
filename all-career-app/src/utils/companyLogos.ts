@@ -2,6 +2,9 @@
 import { resolveAssetUrl } from './urlHelper';
 
 export const DOMAIN_MAP: Record<string, string> = {
+  "1Kosmos": "1kosmos.com", "6sense": "6sense.com", "Accelya": "w3.accelya.com",
+  "Accolite": "bounteous.com", "Acorns": "acorns.com", "Activision": "activision.com",
+  "Addepar": "addepar.com",
   // --- FAANG / BIG TECH ---
   "Google": "google.com", "Microsoft": "microsoft.com", "Amazon": "amazon.com",
   "Apple": "apple.com", "Netflix": "netflix.com", "Meta": "meta.com",

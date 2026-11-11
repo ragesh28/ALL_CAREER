@@ -12,9 +12,10 @@ export interface LeetCodeMasterProblem {
   url: string;
   slug?: string;
   topics?: string[];
+  topics_str?: string;
   companies?: string[];
   company_count?: number;
-  acceptance?: string;
+  acceptance?: string | number;
   frequency?: number;
 }
 
@@ -37,23 +38,77 @@ const topicTone = (topic: string) => {
   return 'topic-tag tone-slate';
 };
 
-const validAcceptance = (value?: string | number) => {
-  if (value === undefined || value === null || String(value).trim() === '') return 'N/A';
-  const raw = String(value).trim();
-  if (!/^\d+(?:\.\d+)?%?$/.test(raw)) return 'N/A';
-  const amount = Number.parseFloat(raw);
-  return amount >= 0 && amount <= 100 ? `${amount}%` : 'N/A';
+const topicAliases: Record<string, string> = {
+  arrays: 'Array',
+  strings: 'String',
+  trees: 'Tree',
+  graphs: 'Graph',
+  'hash tables': 'Hash Table',
 };
 
-const acceptanceTone = (value?: string) => {
-  const rate = parseFloat((value || '').replace('%', ''));
-  if (Number.isNaN(rate)) return 'acceptance-rate tone-slate';
-  if (rate < 30) return 'acceptance-rate tone-rose';
-  if (rate < 50) return 'acceptance-rate tone-amber';
-  if (rate < 70) return 'acceptance-rate tone-cyan';
-  if (rate < 90) return 'acceptance-rate tone-emerald';
-  return 'acceptance-rate tone-positive';
-};
+function normalizeTopics(value: unknown): string[] {
+  const topics = Array.isArray(value) ? value : [value];
+  const unique = new Map<string, string>();
+  for (const entry of topics) {
+    if (typeof entry !== 'string') continue;
+    for (const part of entry.split(/[,;]+/)) {
+      const topic = part.trim().replace(/\s+/g, ' ');
+      if (!topic) continue;
+      const label = topicAliases[topic.toLowerCase()] ?? topic;
+      const key = label.toLowerCase();
+      if (!unique.has(key)) unique.set(key, label);
+    }
+  }
+  return [...unique.values()];
+}
+
+function readScore(value: unknown): number | null {
+  if (typeof value !== 'string' && typeof value !== 'number') return null;
+  const raw = String(value).trim();
+  if (!/^\d+(?:\.\d+)?%?$/.test(raw)) return null;
+  const score = Number.parseFloat(raw);
+  return Number.isFinite(score) ? score : null;
+}
+
+function acceptanceScore(value: unknown): number | null {
+  const score = readScore(value);
+  return score !== null && score <= 100 ? score : null;
+}
+
+function ProblemTopics({ topics = [] }: { topics?: string[] }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? topics : topics.slice(0, 3);
+  if (!topics.length) return <span className="problem-topic-empty">—</span>;
+
+  return (
+    <div className="problem-topic-list">
+      {visible.map(topic => <span key={topic} className={topicTone(topic)}>{topic}</span>)}
+      {topics.length > 3 && (
+        <button type="button" className="problem-topic-toggle" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
+          {expanded ? 'Show less' : `+${topics.length - 3} topics`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function ProblemMetric({ value, kind }: { value: unknown; kind: 'acceptance' | 'frequency' }) {
+  const raw = kind === 'acceptance' ? acceptanceScore(value) : readScore(value);
+  const score = raw === null ? null : Math.min(100, raw);
+  return (
+    <div className={`problem-metric metric-${kind}`}>
+      <span className={kind === 'acceptance' ? 'acceptance-rate' : 'frequency-rate'}>
+        {score === null ? 'N/A' : `${score}${kind === 'acceptance' ? '%' : ''}`}
+      </span>
+      {score !== null && (
+        <span className="problem-metric-track" role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score}
+          aria-label={kind === 'acceptance' ? 'Acceptance rate' : 'Frequency score'}>
+          <span className="problem-metric-fill" style={{ width: `${score}%` }} />
+        </span>
+      )}
+    </div>
+  );
+}
 
 export const PracticeContent: React.FC<PracticeContentProps> = ({
   selectedMode,
@@ -96,8 +151,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               url: p.url,
               difficulty: p.difficulty,
               acceptance: p.acceptance,
-              frequency: p.frequency || 0,
-              topics: p.topics_str ? p.topics_str.split(',').map((t: string) => t.trim()).filter(Boolean) : (Array.isArray(p.topics) ? p.topics : [])
+              frequency: p.frequency,
+              topics: normalizeTopics([...(Array.isArray(p.topics) ? p.topics : [p.topics]), p.topics_str])
             }));
             mapped.sort((a, b) => Number(a.id) - Number(b.id));
             setAllProblems(mapped);
@@ -120,7 +175,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         ]);
         if (!isCancelled && localData && Array.isArray(localData)) {
           localData.sort((a, b) => Number(a.id) - Number(b.id));
-          setAllProblems(localData);
+          setAllProblems(localData.map(problem => ({ ...problem, topics: normalizeTopics(problem.topics) })));
         }
       } catch (err) {
         console.warn('Failed to load leetcode_master.json:', err);
@@ -159,7 +214,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               const pid = Number(item.id);
               if (!pid) continue;
               if (!seen.has(pid) || ((item.frequency || 0) > ((seen.get(pid)?.frequency) || 0))) {
-                seen.set(pid, { ...item, id: pid });
+                seen.set(pid, { ...item, id: pid, topics: normalizeTopics([...(Array.isArray(item.topics) ? item.topics : [item.topics]), item.topics_str]) });
               }
             }
             const deduplicated = Array.from(seen.values());
@@ -183,7 +238,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                 Array.isArray(p.companies) &&
                 p.companies.some(c => c.toLowerCase().trim() === compClean)
               );
-              setCompanyProblems(matched);
+              setCompanyProblems(matched.map(problem => ({ ...problem, topics: normalizeTopics(problem.topics) })));
               setLoadingCompany(false);
             })
             .catch(() => {
@@ -234,8 +289,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
     } else if (sortAll === 'freq') {
       list.sort((a, b) => (b.frequency || 0) - (a.frequency || 0));
     } else if (sortAll === 'accept') {
-      const getVal = (str?: string) => parseFloat((str || '0').replace('%', ''));
-      list.sort((a, b) => getVal(b.acceptance) - getVal(a.acceptance));
+      list.sort((a, b) => (acceptanceScore(b.acceptance) ?? -1) - (acceptanceScore(a.acceptance) ?? -1));
     }
 
     return list;
@@ -253,8 +307,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
     if (companySort === 'freq') {
       list.sort((a, b) => (b.frequency || 0) - (a.frequency || 0));
     } else if (companySort === 'accept') {
-      const getVal = (str?: string) => parseFloat((str || '0').replace('%', ''));
-      list.sort((a, b) => getVal(b.acceptance) - getVal(a.acceptance));
+      list.sort((a, b) => (acceptanceScore(b.acceptance) ?? -1) - (acceptanceScore(a.acceptance) ?? -1));
     } else {
       list.sort((a, b) => Number(a.id) - Number(b.id));
     }
@@ -499,51 +552,30 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               No problems found matching your filters.
             </div>
           ) : (
-            <table className="problem-table">
-              <thead>
-                <tr>
-                  <th style={{ width: '70px' }}>ID</th>
-                  <th>Problem Name</th>
-                  <th style={{ width: '280px' }}>Topics</th>
-                  <th style={{ width: '110px' }}>Acceptance</th>
-                  <th style={{ width: '100px' }}>Difficulty</th>
-                  <th style={{ width: '120px' }}>Frequency</th>
+            <table className="problem-table practice-metrics-table" role="table">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" scope="col">ID</th>
+                  <th role="columnheader" scope="col">Problem Name</th>
+                  <th role="columnheader" scope="col">Topics</th>
+                  <th role="columnheader" scope="col">Acceptance</th>
+                  <th role="columnheader" scope="col">Difficulty</th>
+                  <th role="columnheader" scope="col">Frequency</th>
                 </tr>
               </thead>
-              <tbody>
-                {pageItems.map(p => {
-                  const freq = typeof p.frequency === 'number' && Number.isFinite(p.frequency) && p.frequency >= 0 ? p.frequency : null;
-                  let barColor = (freq ?? 0) > 70 ? '#2cbb5d' : ((freq ?? 0) > 40 ? '#fbbf24' : '#94a3b8');
-                  const topicList = Array.isArray(p.topics) ? p.topics : [];
-                  const compList = Array.isArray(p.companies) ? p.companies : [];
-
-                  return (
-                    <tr key={p.id}>
-                      <td style={{ color: '#64748b', fontFamily: 'monospace', fontWeight: 600 }}>#{p.id}</td>
-                      <td>
-                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="problem-link">
-                          {p.title}
-                        </a>
-                      </td>
-                      <td>
-                        {topicList.slice(0, 4).map(t => (
-                          <span key={t} className={topicTone(t)}>{t}</span>
-                        ))}
-                        {topicList.length > 4 && (
-                          <span className="topic-tag" style={{ opacity: 0.6 }}>+{topicList.length - 4}</span>
-                        )}
-                      </td>
-                      <td><span className={acceptanceTone(validAcceptance(p.acceptance))}>{validAcceptance(p.acceptance)}</span></td>
-                      <td><span className={`diff-tag diff-${p.difficulty}`}>{p.difficulty}</span></td>
-                      <td>
-                      <div className={`frequency-rate ${(freq ?? 0) > 70 ? 'tone-emerald' : (freq ?? 0) > 40 ? 'tone-amber' : 'tone-slate'}`}>{freq === null ? 'N/A' : freq}</div>
-                        <div className="freq-bar-container">
-                          <div className="freq-bar-fill" style={{ width: `${Math.min(100, freq ?? 0)}%`, background: barColor }}></div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+              <tbody role="rowgroup">
+                {pageItems.map(p => (
+                  <tr role="row" key={p.id}>
+                    <td role="cell" className="problem-id">#{p.id}</td>
+                    <td role="cell" className="problem-name">
+                      <a href={p.url} target="_blank" rel="noopener noreferrer" className="problem-link">{p.title}</a>
+                    </td>
+                    <td role="cell" className="problem-topics"><ProblemTopics topics={p.topics} /></td>
+                    <td role="cell" data-label="Acceptance"><ProblemMetric value={p.acceptance} kind="acceptance" /></td>
+                    <td role="cell" data-label="Difficulty"><span className={`diff-tag diff-${p.difficulty}`}>{p.difficulty}</span></td>
+                    <td role="cell" data-label="Frequency"><ProblemMetric value={p.frequency} kind="frequency" /></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
@@ -686,39 +718,30 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
             No questions found for {selectedCompany} matching your filter.
           </div>
         ) : (
-          <table className="problem-table">
-            <thead>
-              <tr>
-                <th style={{ width: '65px' }}>ID</th>
-                <th>Title</th>
-                <th style={{ width: '120px' }}>Acceptance</th>
-                <th style={{ width: '100px' }}>Difficulty</th>
-                <th style={{ width: '140px' }}>Frequency</th>
+          <table className="problem-table practice-metrics-table" role="table">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">ID</th>
+                <th role="columnheader" scope="col">Problem Name</th>
+                <th role="columnheader" scope="col">Topics</th>
+                <th role="columnheader" scope="col">Acceptance</th>
+                <th role="columnheader" scope="col">Difficulty</th>
+                <th role="columnheader" scope="col">Frequency</th>
               </tr>
             </thead>
-            <tbody>
-              {filteredCompanyQuestions.map((p, idx) => {
-                const freq = typeof p.frequency === 'number' && Number.isFinite(p.frequency) && p.frequency >= 0 ? p.frequency : null;
-                let barColor = (freq ?? 0) > 70 ? '#2cbb5d' : ((freq ?? 0) > 40 ? '#fbbf24' : '#94a3b8');
-
-                return (
-                  <tr key={p.id || idx}>
-                    <td style={{ color: '#64748b', fontFamily: 'monospace', fontWeight: 600 }}>#{p.id}</td>
-                    <td>
-                      <a href={p.url || `https://leetcode.com/problems/${p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`} target="_blank" rel="noopener noreferrer" className="problem-link">
-                        {p.title}
-                      </a>
-                    </td>
-                    <td><span className={acceptanceTone(validAcceptance(p.acceptance))}>{validAcceptance(p.acceptance)}</span></td>
-                    <td><span className={`diff-tag diff-${p.difficulty || 'Medium'}`}>{p.difficulty || 'Medium'}</span></td>
-                    <td>
-                      <div className="freq-bar-container">
-                        <div className="freq-bar-fill" style={{ width: `${Math.min(100, freq ?? 0)}%`, background: barColor }}></div>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+            <tbody role="rowgroup">
+              {filteredCompanyQuestions.map((p, idx) => (
+                <tr role="row" key={p.id || idx}>
+                  <td role="cell" className="problem-id">#{p.id}</td>
+                  <td role="cell" className="problem-name">
+                    <a href={p.url || `https://leetcode.com/problems/${p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`} target="_blank" rel="noopener noreferrer" className="problem-link">{p.title}</a>
+                  </td>
+                  <td role="cell" className="problem-topics"><ProblemTopics topics={p.topics} /></td>
+                  <td role="cell" data-label="Acceptance"><ProblemMetric value={p.acceptance} kind="acceptance" /></td>
+                  <td role="cell" data-label="Difficulty"><span className={`diff-tag diff-${p.difficulty}`}>{p.difficulty || 'N/A'}</span></td>
+                  <td role="cell" data-label="Frequency"><ProblemMetric value={p.frequency} kind="frequency" /></td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

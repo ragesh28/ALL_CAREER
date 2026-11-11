@@ -19,7 +19,15 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
 }) => {
   const [search, setSearch] = useState('');
 
-  const filteredCompanies = companiesList.filter(c => c.name.toLowerCase().includes(search.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name));
+  const companiesByName = new Map<string, (typeof companiesList)[number]>();
+  const query = search.trim().toLowerCase();
+  for (const company of companiesList) {
+    const key = company.name.trim().toLowerCase();
+    if (!key.includes(query)) continue;
+    const existing = companiesByName.get(key);
+    if (!existing || company.count > existing.count) companiesByName.set(key, company);
+  }
+  const filteredCompanies = [...companiesByName.values()].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <aside className="practice-sidebar">
