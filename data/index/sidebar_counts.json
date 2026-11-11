@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1114359,
+  "total_jobs": 1114368,
   "sources": {
     "naukri": 370666,
     "linkedin": 279481,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 783,
-    "telegram_post": 554,
+    "telegram_message": 788,
+    "telegram_post": 558,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 237617,
+    "bangalore": 237619,
     "mumbai": 148180,
     "delhi": 118821,
-    "chennai": 120496,
+    "chennai": 120498,
     "hyderabad": 109051,
     "pune": 90504,
     "noida": 54386,
     "ahmedabad": 42602,
     "kolkata": 38242,
-    "all_india": 22600,
+    "all_india": 22602,
     "coimbatore": 21904,
     "kochi": 17143,
-    "remote": 10311,
+    "remote": 10312,
     "jaipur": 8706,
     "maharashtra": 9044,
     "indore": 5672,
@@ -297,7 +297,7 @@
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
-    "uttar_pradesh": 1327,
+    "uttar_pradesh": 1328,
     "message_all_india": 530,
     "message_bangalore": 659,
     "nanakramguda": 557,
@@ -325,7 +325,7 @@
     "thiruvananthapuram": 121,
     "dehradun": 188,
     "pimpri_chinchwad": 128,
-    "visakhapatnam": 180,
+    "visakhapatnam": 181,
     "tiruppur": 110,
     "west_bengal": 1034,
     "guwahati": 167,
@@ -1202,5 +1202,5 @@
     "sahnewal": 1,
     "all_over_india": 1
   },
-  "generated_at": "2026-11-11T01:32:29.802110"
+  "generated_at": "2026-11-11T06:57:41.704381"
 }
