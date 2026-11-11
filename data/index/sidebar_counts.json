@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1125765,
+  "total_jobs": 1125820,
   "sources": {
     "naukri": 371932,
     "linkedin": 285031,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 788,
-    "telegram_post": 558,
+    "telegram_message": 818,
+    "telegram_post": 583,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 239684,
-    "mumbai": 149313,
-    "delhi": 120250,
-    "chennai": 121791,
-    "hyderabad": 110306,
-    "pune": 91561,
-    "noida": 54870,
-    "ahmedabad": 42843,
+    "bangalore": 239710,
+    "mumbai": 149314,
+    "delhi": 120251,
+    "chennai": 121795,
+    "hyderabad": 110308,
+    "pune": 91562,
+    "noida": 54871,
+    "ahmedabad": 42844,
     "kolkata": 38664,
-    "all_india": 22602,
+    "all_india": 22612,
     "coimbatore": 22146,
     "kochi": 17394,
-    "remote": 10436,
+    "remote": 10438,
     "jaipur": 8758,
     "maharashtra": 9178,
     "indore": 5696,
@@ -363,7 +363,7 @@
     "pollachi": 67,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 37,
+    "pan_india": 38,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 7,
@@ -633,7 +633,7 @@
     "south_africa": 2,
     "bhagalpurbarari": 1,
     "dehradunjolly_grant": 1,
-    "new_york": 3,
+    "new_york": 4,
     "sanglivishrambag": 1,
     "tirupati": 19,
     "bawal": 2,
@@ -1214,7 +1214,10 @@
     "sodagaran_mohalla": 1,
     "mahbubnagar": 1,
     "forest_colony": 1,
-    "chandipur": 1
+    "chandipur": 1,
+    "chhattisgarh": 1,
+    "corporate_office": 2,
+    "electronic_city_phase_2": 1
   },
-  "generated_at": "2026-11-11T14:36:59.805252"
+  "generated_at": "2026-11-11T15:54:38.588473"
 }
