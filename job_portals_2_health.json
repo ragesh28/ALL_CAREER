@@ -1,41 +1,41 @@
 {
-  "run_id": "43147141146",
-  "updated_at": "2026-11-12T09:06:34.613211",
+  "run_id": "43188599396",
+  "updated_at": "2026-11-12T14:57:43.553444",
   "portals": {
     "apna": {
-      "scraped_total": 6718,
-      "new_stored_total": 86,
-      "requests_total": 765,
+      "scraped_total": 8899,
+      "new_stored_total": 434,
+      "requests_total": 915,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-hyderabad"
+        "requests": 4,
+        "scraped": 99,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/financial-analyst-jobs-in-bengaluru"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 393,
+      "requests_total": 478,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-hyderabad/"
+        "url": "https://www.workindia.in/financial-analyst-jobs-in-bengaluru/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 393,
+      "requests_total": 478,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-hyderabad"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/financial-analyst-jobs-in-bangalore"
       }
     }
   }
