@@ -30,14 +30,11 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install telethon pytz requests pillow paddlepaddle paddleocr
+          pip install beautifulsoup4 pytz requests pillow paddlepaddle paddleocr
 
       - name: Run Telegram Scraper Pipeline
         env:
           PYTHONUNBUFFERED: "1"
-          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
-          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
-          TELEGRAM_SESSION_BASE64: ${{ secrets.TELEGRAM_SESSION_BASE64 }}
           TELEGRAM_CHANNELS: ${{ vars.TELEGRAM_CHANNELS }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           MISTRAL_API_KEYS: ${{ secrets.MISTRAL_API_KEYS }}

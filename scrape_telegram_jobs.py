@@ -3,12 +3,12 @@ import sys
 import re
 import json
 import time
-import base64
 import shutil
-import glob
+import tempfile
 from datetime import datetime, timezone, timedelta
 import requests
 from PIL import Image
+from telegram_public_preview import channel_handle, download_public_photo, read_public_messages
 
 # Force UTF-8 stdout on Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -31,75 +31,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 WORKSPACE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 1. API Credentials (GitHub Secret / Env)
-api_id = os.environ.get("TELEGRAM_API_ID")
-api_hash = os.environ.get("TELEGRAM_API_HASH")
-
-# Fallback to local config for local runs
-if not api_id or not api_hash:
-    config_paths = [
-        os.path.join(WORKSPACE_DIR, "config_telegram.json"),
-    ]
-    for path in config_paths:
-        if os.path.exists(path):
-            try:
-                with open(path, "r") as f:
-                    config_data = json.load(f)
-                api_id = api_id or config_data.get("api_id")
-                api_hash = api_hash or config_data.get("api_hash")
-                break
-            except Exception as e:
-                print(f"⚠️ Failed to parse config file {path}: {e}")
-
-if not api_id or not api_hash:
-    raise ValueError(
-        "❌ Error: TELEGRAM_API_ID and TELEGRAM_API_HASH must be set as environment variables "
-        "or provided in a local config_telegram.json file."
-    )
-
-# Convert api_id to int
-try:
-    api_id = int(api_id)
-except Exception as e:
-    raise ValueError(f"❌ Error: TELEGRAM_API_ID must be a valid integer: {e}")
-
-# 2. Session Recovery (GitHub Secret - Base64 encoded string)
-SESSION_NAME = "secure_telegram_session"
-SESSION_FILE = os.path.join(WORKSPACE_DIR, f"{SESSION_NAME}.session")
-
-base64_session = os.environ.get("TELEGRAM_SESSION_BASE64")
-
-# Local fallback to base64_session.txt if env var is empty
-base64_file = os.path.join(WORKSPACE_DIR, "base64_session.txt")
-if not base64_session and os.path.exists(base64_file):
-    try:
-        with open(base64_file, "r") as f:
-            base64_session = f.read().strip()
-        print("✅ Loaded Base64 session string from local base64_session.txt file.")
-    except Exception as e:
-        print(f"⚠️ Failed to read local base64_session.txt: {e}")
-
-if base64_session:
-    try:
-        # Pad base64 string if needed
-        missing_padding = len(base64_session) % 4
-        if missing_padding:
-            base64_session += '=' * (4 - missing_padding)
-
-        session_bytes = base64.b64decode(base64_session)
-        with open(SESSION_FILE, "wb") as f:
-            f.write(session_bytes)
-        print("✅ Reconstructed Telegram session from Base64 string.")
-    except Exception as e:
-        print(f"❌ Failed to decode Base64 session: {e}")
-else:
-    # Local fallback: try copying from older project if running locally
-    SESSION_SOURCE = os.path.join(WORKSPACE_DIR, "session_name.session")
-    if not os.path.exists(SESSION_FILE) and os.path.exists(SESSION_SOURCE):
-        shutil.copy(SESSION_SOURCE, SESSION_FILE)
-        print("🔑 Copied local session file for development run.")
-
-# 3. Target Channels List (GitHub Variable or Env)
+# Target channels from GitHub Actions or the local configuration.
 channels_env = os.environ.get("TELEGRAM_CHANNELS")
 if channels_env:
     channels_list = [c.strip() for c in channels_env.split(",") if c.strip()]
@@ -427,22 +359,14 @@ def load_progress():
 # ---------------------------------------------------------------------------
 # MAIN SCRAPING RUNNER
 # ---------------------------------------------------------------------------
-async def run_pipeline():
-    from telethon import TelegramClient
-
-    # Use session path without .session suffix for telethon
-    session_run_path = SESSION_FILE[:-8] if SESSION_FILE.endswith(".session") else SESSION_FILE
-    print(f"🚀 Starting Telegram Jobs Pipeline using session: {session_run_path}")
+def run_pipeline():
+    print("Starting Telegram Jobs Pipeline using public channel previews")
     print(f"📋 Channels to scrape: {len(channels_list)}")
     print(f"⏰ Max runtime: {MAX_RUNTIME_SECONDS // 3600}h {(MAX_RUNTIME_SECONDS % 3600) // 60}m")
 
     # Run 20-day cleanup first
     if storage:
         cleanup_old_jobs(max_age_days=20)
-
-    # Setup temp media dir
-    temp_media_dir = os.path.join(WORKSPACE_DIR, "temp_telegram_media")
-    os.makedirs(temp_media_dir, exist_ok=True)
 
     now_ist = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
     start_of_day_ist = now_ist.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -463,9 +387,10 @@ async def run_pipeline():
     if start_channel_idx > 0:
         print(f"📍 Resuming from channel index {start_channel_idx} (skipping {start_channel_idx} already-processed channels)")
 
-    try:
-        async with TelegramClient(session_run_path, api_id, api_hash) as client:
-            for ch_idx, channel in enumerate(channels_list):
+    checkpoint_keys = {key.lower(): key for key in last_seen_ids}
+    with tempfile.TemporaryDirectory(prefix="telegram_media_") as temp_media_dir:
+        with requests.Session() as client:
+            for ch_idx, configured_channel in enumerate(channels_list):
                 # Skip already-processed channels from previous run
                 if ch_idx < start_channel_idx:
                     continue
@@ -477,26 +402,17 @@ async def run_pipeline():
                     save_progress(finished=False, current_channel_idx=ch_idx)
                     break
 
-                print(f"\n📂 [{ch_idx+1}/{len(channels_list)}] Checking channel: @{channel} ...")
                 try:
-                    entity = await client.get_entity(channel)
-                except Exception as ce:
-                    print(f"  ❌ Could not resolve channel @{channel}: {ce}")
+                    channel = channel_handle(configured_channel)
+                    checkpoint_key = checkpoint_keys.setdefault(channel.lower(), channel)
+                    print(f"\n[{ch_idx+1}/{len(channels_list)}] Checking public preview @{channel} ...")
+                    messages_to_process = read_public_messages(
+                        client, channel, last_seen_ids.get(checkpoint_key, 0), today_cutoff
+                    )
+                except (ValueError, requests.RequestException) as error:
+                    print(f"  Could not read public preview for {configured_channel}: {error}")
                     continue
 
-                last_id = last_seen_ids.get(channel, 0)
-                messages_to_process = []
-
-                # Fetch up to 50 recent messages
-                async for msg in client.iter_messages(entity, limit=50):
-                    if msg.id <= last_id:
-                        break
-                    if msg.date < today_cutoff:
-                        break
-                    messages_to_process.append(msg)
-
-                # Process oldest first to preserve timeline order
-                messages_to_process.reverse()
                 print(f"  Found {len(messages_to_process)} new messages.")
 
                 for msg in messages_to_process:
@@ -511,42 +427,33 @@ async def run_pipeline():
 
                     # Check for image media to perform OCR and QR Code extraction
                     qr_result = None
-                    if msg.media:
+                    for photo_url in msg.photo_urls:
                         try:
-                            file_path = await client.download_media(msg, file=temp_media_dir)
-                            if file_path:
-                                ext = os.path.splitext(file_path)[1].lower()
-                                if ext in (".jpg", ".jpeg", ".png", ".webp", ".bmp"):
-                                    has_image = True
-                                    
-                                    # 1. Extract text from image via PaddleOCR
-                                    ocr_text = extract_text_from_image(file_path)
-                                    if ocr_text:
-                                        raw_text = (raw_text + "\n" + ocr_text).strip()
-
-                                    # 2. Extract and decode QR codes
-                                    try:
-                                        from qr_detector import detect_and_decode_qr
-                                        qr_info = detect_and_decode_qr(file_path)
-                                        if qr_info and qr_info.get("has_qr"):
-                                            qr_result = qr_info
-                                            qr_payloads = qr_info.get("payloads", [])
-                                            qr_text_payloads = [p.get("data") for p in qr_payloads if p.get("data")]
-                                            if qr_text_payloads:
-                                                raw_text += "\n[Decoded QR Code Link/Payload]: " + " | ".join(qr_text_payloads)
-                                                print(f"  📱 Decoded {len(qr_text_payloads)} QR Code payload(s) from flyer image.")
-                                    except Exception as qr_err:
-                                        print(f"  ⚠️ QR decoding error: {qr_err}")
-
-                                try:
-                                    os.remove(file_path)
-                                except:
-                                    pass
-                        except Exception as dl_err:
+                            file_path = download_public_photo(client, photo_url, temp_media_dir)
+                        except (OSError, ValueError, requests.RequestException) as dl_err:
                             print(f"  ⚠️ Media download error: {dl_err}")
+                            continue
+
+                        has_image = True
+                        ocr_text = extract_text_from_image(file_path)
+                        if ocr_text:
+                            raw_text = (raw_text + "\n" + ocr_text).strip()
+
+                        try:
+                            from qr_detector import detect_and_decode_qr
+                            qr_info = detect_and_decode_qr(file_path)
+                            if qr_info and qr_info.get("has_qr"):
+                                qr_result = qr_info
+                                qr_payloads = qr_info.get("payloads", [])
+                                qr_text_payloads = [p.get("data") for p in qr_payloads if p.get("data")]
+                                if qr_text_payloads:
+                                    raw_text += "\n[Decoded QR Code Link/Payload]: " + " | ".join(qr_text_payloads)
+                                    print(f"  📱 Decoded {len(qr_text_payloads)} QR Code payload(s) from flyer image.")
+                        except Exception as qr_err:
+                            print(f"  ⚠️ QR decoding error: {qr_err}")
 
                     if not raw_text.strip():
-                        last_seen_ids[channel] = msg.id
+                        last_seen_ids[checkpoint_key] = msg.id
                         save_last_seen()
                         continue
 
@@ -574,7 +481,7 @@ async def run_pipeline():
                             "text": raw_text,
                             "timestamp": msg.date.isoformat() if msg.date else None
                         })
-                        last_seen_ids[channel] = msg.id
+                        last_seen_ids[checkpoint_key] = msg.id
                         save_last_seen()
                         continue
 
@@ -589,7 +496,7 @@ async def run_pipeline():
                             "text": raw_text,
                             "timestamp": msg.date.isoformat() if msg.date else None
                         })
-                        last_seen_ids[channel] = msg.id
+                        last_seen_ids[checkpoint_key] = msg.id
                         save_last_seen()
                         continue
 
@@ -667,7 +574,7 @@ async def run_pipeline():
                         else:
                             print("      ❌ Storage module not available.")
 
-                    last_seen_ids[channel] = msg.id
+                    last_seen_ids[checkpoint_key] = msg.id
                     save_last_seen()
                     time.sleep(1)  # Rate limit between Gemini API calls
 
@@ -676,20 +583,6 @@ async def run_pipeline():
             else:
                 # All channels processed without breaking
                 save_progress(finished=True)
-
-    finally:
-        # Clean up temp folder
-        try:
-            shutil.rmtree(temp_media_dir)
-        except:
-            pass
-        # Clean up temporary decrypted session file
-        if os.path.exists(SESSION_FILE):
-            try:
-                os.remove(SESSION_FILE)
-                print("🧹 Removed decrypted temporary session file.")
-            except:
-                pass
 
     # Save per-workflow run files under not_extracted_messages/ with 24-run retention policy
     run_number = os.environ.get("GITHUB_RUN_NUMBER", "local")
@@ -803,5 +696,4 @@ def save_last_seen():
         json.dump(last_seen_ids, f, indent=4)
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(run_pipeline())
+    run_pipeline()
