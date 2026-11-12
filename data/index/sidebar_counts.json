@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1130035,
+  "total_jobs": 1130167,
   "sources": {
     "naukri": 375310,
     "linkedin": 285031,
@@ -13,7 +13,7 @@
     "glassdoor": 4839,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4778,
+    "other": 4910,
     "bebee": 56,
     "jobrapidocom": 65,
     "simplyhired": 60,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 240585,
-    "mumbai": 149761,
-    "delhi": 120721,
-    "chennai": 122419,
-    "hyderabad": 110598,
-    "pune": 91914,
-    "noida": 55214,
+    "bangalore": 240644,
+    "mumbai": 149775,
+    "delhi": 120726,
+    "chennai": 122432,
+    "hyderabad": 110625,
+    "pune": 91921,
+    "noida": 55217,
     "ahmedabad": 43079,
-    "kolkata": 38902,
-    "all_india": 22617,
+    "kolkata": 38903,
+    "all_india": 22618,
     "coimbatore": 22274,
     "kochi": 17467,
     "remote": 10493,
@@ -1224,7 +1224,8 @@
     "uttorayon": 1,
     "gumanpura": 1,
     "hybrid_kondapur": 1,
-    "kondapur": 3
+    "kondapur": 3,
+    "daerah_khusus_ibukota_jakarta": 2
   },
-  "generated_at": "2026-11-12T01:28:19.565245"
+  "generated_at": "2026-11-12T02:30:47.326074"
 }
