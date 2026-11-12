@@ -290,7 +290,7 @@ def cleanup_old_jobs(max_age_days=20):
         comma = 1 if current_data else 0
 
         if current_bytes + j_bytes + comma > storage.MAX_FILE_SIZE:
-            with open(f"all_jobs_{current_chunk}.json", 'w', encoding='utf-8') as fh:
+            with open(storage.archive_chunk_path(current_chunk), 'w', encoding='utf-8') as fh:
                 json.dump(current_data, fh, separators=(',', ':'))
             current_chunk += 1
             current_data = [j]
@@ -300,7 +300,7 @@ def cleanup_old_jobs(max_age_days=20):
             current_bytes += j_bytes + comma
 
     if current_data:
-        with open(f"all_jobs_{current_chunk}.json", 'w', encoding='utf-8') as fh:
+        with open(storage.archive_chunk_path(current_chunk), 'w', encoding='utf-8') as fh:
             json.dump(current_data, fh, separators=(',', ':'))
 
     # Rebuild jobs_by_role/

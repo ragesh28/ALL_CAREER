@@ -8,6 +8,8 @@ import sys
 import json
 import glob
 
+from storage import get_all_chunk_files
+
 # Fix encoding on Windows
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -15,43 +17,39 @@ WORKSPACE = os.path.dirname(os.path.abspath(__file__))
 
 def cleanup_walking_field():
     """Remove walking_interview key from every job in all_jobs_*.json and jobs_by_role/*.json"""
-    patterns = [
-        os.path.join(WORKSPACE, "all_jobs_*.json"),
-        os.path.join(WORKSPACE, "jobs_by_role", "*.json"),
-    ]
-    
+    files = get_all_chunk_files() + glob.glob(os.path.join(WORKSPACE, "jobs_by_role", "*.json"))
+
     total_cleaned = 0
     files_modified = 0
     
-    for pattern in patterns:
-        for filepath in glob.glob(pattern):
-            try:
-                with open(filepath, 'r', encoding='utf-8') as f:
-                    jobs = json.load(f)
+    for filepath in files:
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                jobs = json.load(f)
+            
+            if not isinstance(jobs, list):
+                continue
+            
+            original_count = len(jobs)
+            modified = False
+            for job in jobs:
+                if "walking_interview" in job:
+                    del job["walking_interview"]
+                    total_cleaned += 1
+                    modified = True
+            
+            # Safety check: NEVER reduce job count
+            assert len(jobs) == original_count, f"Job count changed in {filepath}! Aborting."
+            
+            if modified:
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    json.dump(jobs, f, separators=(',', ':'))
+                files_modified += 1
+                print(f"  Cleaned {os.path.basename(filepath)} ({original_count} jobs intact)")
                 
-                if not isinstance(jobs, list):
-                    continue
-                
-                original_count = len(jobs)
-                modified = False
-                for job in jobs:
-                    if "walking_interview" in job:
-                        del job["walking_interview"]
-                        total_cleaned += 1
-                        modified = True
-                
-                # Safety check: NEVER reduce job count
-                assert len(jobs) == original_count, f"Job count changed in {filepath}! Aborting."
-                
-                if modified:
-                    with open(filepath, 'w', encoding='utf-8') as f:
-                        json.dump(jobs, f, separators=(',', ':'))
-                    files_modified += 1
-                    print(f"  Cleaned {os.path.basename(filepath)} ({original_count} jobs intact)")
-                    
-            except Exception as e:
-                print(f"  Error processing {os.path.basename(filepath)}: {e}")
-    
+        except Exception as e:
+            print(f"  Error processing {os.path.basename(filepath)}: {e}")
+
     print(f"\n{'='*50}")
     print(f"  Files modified:     {files_modified}")
     print(f"  Fields removed:     {total_cleaned}")

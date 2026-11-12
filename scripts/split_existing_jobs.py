@@ -1,6 +1,6 @@
 """
 scripts/split_existing_jobs.py
-Splits the existing monolithic job chunks (all_jobs_1.json .. all_jobs_8.json)
+Splits the numbered job archives in data/job_archives/
 into granular, lightweight JSON files partitioned by:
   data/jobs/<role_slug>/<source_slug>_<location_slug>.json
 
@@ -11,12 +11,17 @@ Also generates:
 """
 
 import os
-import glob
 import json
 import re
 import time
 from collections import defaultdict, Counter
 from datetime import datetime
+from pathlib import Path
+
+if __package__:
+    from .job_archive_paths import archive_chunks
+else:
+    from job_archive_paths import archive_chunks
 
 DATA_DIR = "data"
 JOBS_DIR = os.path.join(DATA_DIR, "jobs")
@@ -80,9 +85,9 @@ def main():
     print("=" * 70)
 
     # 1. Discover existing chunks
-    chunk_files = sorted(glob.glob("all_jobs_*.json"))
+    chunk_files = archive_chunks(Path.cwd())
     if not chunk_files:
-        print("ERROR: No all_jobs_*.json chunk files found in current directory.")
+        print("ERROR: No numbered archives found in data/job_archives/.")
         return
 
     print(f"Discovered {len(chunk_files)} chunk files: {chunk_files}")

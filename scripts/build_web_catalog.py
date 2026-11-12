@@ -16,6 +16,11 @@ from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
+if __package__:
+    from .job_archive_paths import archive_chunks
+else:
+    from job_archive_paths import archive_chunks
+
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
@@ -113,7 +118,7 @@ def build(root=ROOT, page_size=250):
     out = root / 'data/web'
     with tempfile.TemporaryDirectory() as temporary, closing(sqlite3.connect(str(Path(temporary) / 'sort.db'))) as db:
         db.execute('CREATE TABLE jobs (id TEXT PRIMARY KEY, date TEXT, payload TEXT, walkin INTEGER, city TEXT, source TEXT)')
-        archives = sorted((p for p in root.glob('all_jobs_*.json') if p.stem.removeprefix('all_jobs_').isdigit()), key=lambda p: int(p.stem.removeprefix('all_jobs_')))
+        archives = archive_chunks(root)
         shards = sorted((root / 'data/jobs').glob('*/*.json'))
         if not archives and not shards:
             raise ValueError('No job source files found; keeping the previously published catalog')
@@ -127,11 +132,14 @@ def build(root=ROOT, page_size=250):
                 continue
             # Fail rather than publishing a silently incomplete catalog.
             raw = path.read_bytes()
-            inputs_hash.update(str(path.relative_to(root)).replace('\\', '/').encode())
+            relative_path = path.relative_to(root)
+            # Keep the same fingerprint when an archive moves without changing content.
+            input_name = path.name if path in archives else relative_path.as_posix()
+            inputs_hash.update(input_name.encode())
             inputs_hash.update(raw)
-            rows, recovered = read_job_array(raw, path.relative_to(root))
+            rows, recovered = read_job_array(raw, relative_path)
             if recovered:
-                recovered_conflicts.append(path.relative_to(root).as_posix())
+                recovered_conflicts.append(relative_path.as_posix())
                 print(f'Recovered both conflict alternatives: {path.name}', flush=True)
             if not isinstance(rows, list):
                 raise ValueError(f'Expected job array: {path}')

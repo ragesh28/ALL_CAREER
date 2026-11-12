@@ -1,8 +1,10 @@
 import os
 import json
-import glob
 import re
 from datetime import datetime, timedelta
+from pathlib import Path
+
+from scripts.job_archive_paths import ARCHIVE_DIRECTORY, ARCHIVE_PREFIX, archive_chunk_number, archive_chunks
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT_DIR, "data")
@@ -71,16 +73,13 @@ def safe_write_json(file_path, data, indent=None, compact=True):
             print(f"Error direct writing {file_path}: {e2}")
 
 def get_all_chunk_files():
-    files = glob.glob(os.path.join(ROOT_DIR, "all_jobs_*.json"))
-    valid_files = []
-    for f in files:
-        parts = os.path.basename(f).split("_")
-        if len(parts) >= 3:
-            chunk_part = parts[2].split(".")[0]
-            if chunk_part.isdigit():
-                valid_files.append((f, int(chunk_part)))
-    valid_files.sort(key=lambda x: x[1])
-    return [x[0] for x in valid_files]
+    return [str(path) for path in archive_chunks(ROOT_DIR)]
+
+
+def archive_chunk_path(number):
+    path = Path(ROOT_DIR) / ARCHIVE_DIRECTORY / f"{ARCHIVE_PREFIX}{number}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 def normalize_url(url):
     if not url or not isinstance(url, str):
@@ -328,25 +327,24 @@ def append_to_archival_chunks(new_jobs):
     if not new_jobs:
         return
     chunk_files = get_all_chunk_files()
-    if not chunk_files:
-        latest_chunk = "all_jobs_1.json"
-        existing_data = []
-    else:
-        latest_chunk = chunk_files[-1]
+    latest_number = archive_chunk_number(chunk_files[-1]) if chunk_files else 1
+    latest_chunk = archive_chunk_path(latest_number)
+    existing_data = []
+    if chunk_files and (not latest_chunk.is_file() or latest_chunk.stat().st_size >= MAX_FILE_SIZE):
+        latest_chunk = archive_chunk_path(latest_number + 1)
+    elif latest_chunk.is_file():
         try:
             with open(latest_chunk, "r", encoding="utf-8") as f:
                 existing_data = json.load(f)
-        except Exception:
+            if not isinstance(existing_data, list):
+                raise ValueError("Archive must contain a job array")
+        except (OSError, ValueError):
+            # Keep the original available for catalog recovery.
+            latest_chunk = archive_chunk_path(latest_number + 1)
             existing_data = []
-            
-    current_size = os.path.getsize(latest_chunk) if os.path.exists(latest_chunk) else 0
-    if current_size >= MAX_FILE_SIZE:
-        chunk_num = len(chunk_files) + 1
-        latest_chunk = f"all_jobs_{chunk_num}.json"
-        existing_data = []
         
     existing_data.extend(new_jobs)
-    with open(latest_chunk, "w", encoding="utf-8") as f:
+    with latest_chunk.open("w", encoding="utf-8") as f:
         json.dump(existing_data, f, separators=(',', ':'))
 
 def update_indexes_after_add(newly_added_jobs, new_files_count=0):

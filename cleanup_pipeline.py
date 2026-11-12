@@ -20,7 +20,9 @@ def run_pipeline():
     backup_dir = "backup_jobs_before_cleanup"
     os.makedirs(backup_dir, exist_ok=True)
     for f in chunk_files:
-        shutil.copy(f, os.path.join(backup_dir, f))
+        backup_file = os.path.join(backup_dir, os.path.relpath(f, storage.ROOT_DIR))
+        os.makedirs(os.path.dirname(backup_file), exist_ok=True)
+        shutil.copy(f, backup_file)
         
     all_jobs = []
     for f in chunk_files:
@@ -127,7 +129,7 @@ def run_pipeline():
         
         comma_overhead = 1 if current_chunk_data else 0
         if current_chunk_bytes + j_bytes + comma_overhead > storage.MAX_FILE_SIZE:
-            chunk_file = f"all_jobs_{current_chunk}.json"
+            chunk_file = storage.archive_chunk_path(current_chunk)
             with open(chunk_file, 'w', encoding='utf-8') as fh:
                 json.dump(current_chunk_data, fh, separators=(',', ':'))
             print(f"Wrote master chunk {chunk_file} ({len(current_chunk_data)} jobs)")
@@ -140,7 +142,7 @@ def run_pipeline():
             current_chunk_bytes += j_bytes + comma_overhead
             
     if current_chunk_data:
-        chunk_file = f"all_jobs_{current_chunk}.json"
+        chunk_file = storage.archive_chunk_path(current_chunk)
         with open(chunk_file, 'w', encoding='utf-8') as fh:
             json.dump(current_chunk_data, fh, separators=(',', ':'))
         print(f"Wrote master chunk {chunk_file} ({len(current_chunk_data)} jobs)")

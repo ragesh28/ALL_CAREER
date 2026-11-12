@@ -2,6 +2,7 @@
 # The browser uses data/web and legacy data/jobs, not these archival duplicates.
 exclude:
   - 'all_jobs_*.json'
+  - data/job_archives
   - jobs_by_role
   - data/company_names_chunks
   - 'data/*.db'

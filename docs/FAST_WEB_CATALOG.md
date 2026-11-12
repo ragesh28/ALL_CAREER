@@ -1,11 +1,15 @@
 # Static web catalog
 
-Scrapers continue to own `data/jobs/`, `all_jobs_<number>.json` archives,
+Scrapers continue to own `data/jobs/`, `data/job_archives/all_jobs_<number>.json` archives,
 `scraped_image_walkin_jobs.json` and `data/index/walkin_jobs.json`.
 `Publish Fast Web Catalog` runs after scraper completions, hourly, or manually.
 It publishes a separate browser projection in `data/web/` using Python's standard library.
 No database service or paid backend is required. The temporary SQLite file only sorts
 the source records inside the GitHub Actions runner.
+
+The empty root-level archive marker lets scraper runs checked out before the
+move finish staging their results with the old wildcard. Only numbered files
+are archive inputs. New chunks are written to the archive directory.
 
 ## Browser loading
 

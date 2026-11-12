@@ -97,7 +97,7 @@ def run():
 
         comma_overhead = 1 if current_chunk_data else 0
         if current_chunk_bytes + j_bytes + comma_overhead > storage.MAX_FILE_SIZE:
-            chunk_file = f"all_jobs_{current_chunk}.json"
+            chunk_file = storage.archive_chunk_path(current_chunk)
             with open(chunk_file, 'w', encoding='utf-8') as fh:
                 json.dump(current_chunk_data, fh, separators=(',', ':'))
             print(f"  Wrote {chunk_file} ({len(current_chunk_data)} jobs)")
@@ -110,7 +110,7 @@ def run():
             current_chunk_bytes += j_bytes + comma_overhead
 
     if current_chunk_data:
-        chunk_file = f"all_jobs_{current_chunk}.json"
+        chunk_file = storage.archive_chunk_path(current_chunk)
         with open(chunk_file, 'w', encoding='utf-8') as fh:
             json.dump(current_chunk_data, fh, separators=(',', ':'))
         print(f"  Wrote {chunk_file} ({len(current_chunk_data)} jobs)")

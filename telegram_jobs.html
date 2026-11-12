@@ -763,7 +763,7 @@
 
             while (keepFetching) {
                 try {
-                    const response = await fetch(`all_jobs_${chunkNum}.json`);
+                    const response = await fetch(`data/job_archives/all_jobs_${chunkNum}.json`);
                     if (!response.ok) { keepFetching = false; break; }
                     const rows = await response.json();
                     for (const job of rows) {

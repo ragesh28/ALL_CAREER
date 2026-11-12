@@ -3,8 +3,11 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+import storage
 from scripts.build_web_catalog import build
+from scripts.job_archive_paths import ARCHIVE_DIRECTORY
 
 
 class WebCatalogTests(unittest.TestCase):
@@ -15,12 +18,13 @@ class WebCatalogTests(unittest.TestCase):
             left = {**common, 'title': 'Left', 'url': 'https://apna.co/job/2'}
             right = {**common, 'title': 'Right', 'url': 'https://apna.co/job/3'}
             raw = '<<<<<<< Updated upstream\n' + json.dumps([common, left]) + '\n=======\n' + json.dumps([common, right]) + '\n>>>>>>> Stashed changes\n'
-            archive = root / 'all_jobs_1.json'
+            archive = root / ARCHIVE_DIRECTORY / 'all_jobs_1.json'
+            archive.parent.mkdir(parents=True)
             archive.write_text(raw, encoding='utf8')
             summary = build(root)
             self.assertEqual(summary['total_jobs'], 3)
             self.assertEqual(summary['sources']['apna'], 3)
-            self.assertEqual(summary['audit']['recovered_conflict_files'], ['all_jobs_1.json'])
+            self.assertEqual(summary['audit']['recovered_conflict_files'], ['data/job_archives/all_jobs_1.json'])
             self.assertEqual(archive.read_text(encoding='utf8'), raw)
 
     def test_recovers_sources_and_archive_only_records(self):
@@ -31,13 +35,39 @@ class WebCatalogTests(unittest.TestCase):
             legacy = {'title': 'Legacy opening', 'company': 'A', 'location': 'Chennai', 'url': 'https://example.com/old', 'date_posted': '2026-07-01'}
             (shards / 'workindia_chennai.json').write_text(json.dumps([legacy]), encoding='utf-8')
             archive_only = {'title': 'Archived opening', 'company_name': 'B', 'location': 'Chennai', 'apply_link': 'https://apna.co/job/123', 'job_posted_date': '2026-11-01'}
-            (root / 'all_jobs_1.json').write_text(json.dumps([archive_only]), encoding='utf-8')
+            archive = root / ARCHIVE_DIRECTORY / 'all_jobs_1.json'
+            archive.parent.mkdir(parents=True)
+            archive.write_text(json.dumps([archive_only]), encoding='utf-8')
             summary = build(root)
             self.assertEqual(summary['total_jobs'], 2)
             self.assertEqual(summary['sources'], {'apna': 1, 'workindia': 1})
             self.assertEqual(summary['audit']['input_records'], {'archive': 1, 'shard': 1})
             manifest = json.loads(gzip.decompress((root / summary['manifest']).read_bytes()))
             self.assertEqual(manifest['sources']['apna'][0]['count'], 1)
+
+    def test_moving_archives_keeps_published_snapshot(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / 'all_jobs_37.json'
+            archive.write_text(json.dumps([{'title': 'Walk-in Engineer', 'company': 'A', 'location': 'Chennai'}]), encoding='utf-8')
+            original = build(root)
+            published = {p.relative_to(root): p.read_bytes() for p in (root / 'data/web').rglob('*') if p.is_file()}
+            archive_dir = root / ARCHIVE_DIRECTORY
+            archive_dir.mkdir(parents=True)
+            archive.rename(archive_dir / archive.name)
+            self.assertEqual(build(root), original)
+            self.assertEqual({path: (root / path).read_bytes() for path in published}, published)
+
+    def test_append_creates_next_archive_after_numbering_gap(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(storage, 'ROOT_DIR', directory):
+            with patch.object(storage, 'MAX_FILE_SIZE', 5):
+                storage.archive_chunk_path(1).write_text('[]', encoding='utf-8')
+                last = storage.archive_chunk_path(37)
+                last.write_text('[{"title":"Original"}]', encoding='utf-8')
+                storage.append_to_archival_chunks([{'title': 'New'}])
+            self.assertEqual(json.loads(last.read_bytes()), [{'title': 'Original'}])
+            self.assertEqual(json.loads(storage.archive_chunk_path(38).read_bytes()), [{'title': 'New'}])
+            self.assertEqual(list(Path(directory).glob('all_jobs_*.json')), [])
 
     def test_walkin_enrichment_keeps_posting_date_and_source_consistent(self):
         with tempfile.TemporaryDirectory() as directory:

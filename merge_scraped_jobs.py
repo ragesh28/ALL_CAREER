@@ -3,6 +3,9 @@ import json
 import subprocess
 import sys
 import glob
+from pathlib import Path
+
+from scripts.job_archive_paths import ARCHIVE_DIRECTORY, archive_chunks
 
 TEMP_FILE = "temp_new_jobs.json"
 
@@ -42,10 +45,9 @@ def main():
 
     # 1. Discard local database changes to avoid merge conflicts during pull
     print("\nStep 1: Discarding local database changes before pull...")
-    chunk_files = glob.glob("all_jobs_*.json")
+    root = Path.cwd()
     checkout_targets = ["role_index.json"]
-    if chunk_files:
-        checkout_targets.extend(chunk_files)
+    checkout_targets.extend(path.name for path in archive_chunks(root) if path.parent == root)
     if os.path.exists("data"):
         checkout_targets.append("data")
     if os.path.exists("jobs_by_role"):
@@ -55,7 +57,10 @@ def main():
             
     run_cmd(["git", "checkout", "HEAD", "--"] + checkout_targets)
     if os.path.exists(os.path.join("data", "jobs")):
-        run_cmd(["git", "clean", "-fd", "data/jobs"])
+        run_cmd(["git", "clean", "-fd", "--", "data/jobs"])
+
+    if ARCHIVE_DIRECTORY.is_dir():
+        run_cmd(["git", "clean", "-fd", "--", ARCHIVE_DIRECTORY.as_posix()])
 
     # 2. Pull latest changes from remote
     print("\nStep 2: Pulling latest changes from origin main...")
@@ -63,7 +68,7 @@ def main():
 
 
     # 3. Verify current state of database
-    chunk_files_after = sorted(glob.glob("all_jobs_*.json"))
+    chunk_files_after = archive_chunks(root)
     total_before = 0
     for f in chunk_files_after:
         try:
@@ -115,7 +120,7 @@ def main():
         print(f"Warning during index health check: {e}")
 
     # 5. Verify final state
-    chunk_files_final = sorted(glob.glob("all_jobs_*.json"))
+    chunk_files_final = archive_chunks(root)
     total_after = 0
     sources_after = {}
     for f in chunk_files_final:
