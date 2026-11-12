@@ -1,41 +1,41 @@
 {
-  "run_id": "43188599396",
-  "updated_at": "2026-11-12T14:57:43.553444",
+  "run_id": "43242875849",
+  "updated_at": "2026-11-12T16:17:17.288213",
   "portals": {
     "apna": {
-      "scraped_total": 8899,
-      "new_stored_total": 434,
-      "requests_total": 915,
+      "scraped_total": 2515,
+      "new_stored_total": 120,
+      "requests_total": 194,
       "last_probe": {
-        "requests": 4,
-        "scraped": 99,
+        "requests": 3,
+        "scraped": 28,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/financial-analyst-jobs-in-bengaluru"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 478,
+      "requests_total": 74,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/financial-analyst-jobs-in-bengaluru/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 478,
+      "requests_total": 74,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/financial-analyst-jobs-in-bangalore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
