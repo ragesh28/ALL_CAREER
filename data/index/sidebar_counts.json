@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1130167,
+  "total_jobs": 1130186,
   "sources": {
     "naukri": 375310,
     "linkedin": 285031,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 831,
-    "telegram_post": 583,
+    "telegram_message": 845,
+    "telegram_post": 588,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 240644,
-    "mumbai": 149775,
+    "bangalore": 240649,
+    "mumbai": 149776,
     "delhi": 120726,
-    "chennai": 122432,
-    "hyderabad": 110625,
-    "pune": 91921,
+    "chennai": 122433,
+    "hyderabad": 110627,
+    "pune": 91922,
     "noida": 55217,
     "ahmedabad": 43079,
     "kolkata": 38903,
-    "all_india": 22618,
+    "all_india": 22626,
     "coimbatore": 22274,
     "kochi": 17467,
     "remote": 10493,
@@ -378,7 +378,7 @@
     "andhra_pradesh": 42,
     "tirupur": 35,
     "nashik": 35,
-    "mysore": 90,
+    "mysore": 91,
     "karunagappally": 1,
     "palakkad": 15,
     "satara": 6,
@@ -1227,5 +1227,5 @@
     "kondapur": 3,
     "daerah_khusus_ibukota_jakarta": 2
   },
-  "generated_at": "2026-11-12T02:30:47.326074"
+  "generated_at": "2026-11-12T04:03:29.867143"
 }
