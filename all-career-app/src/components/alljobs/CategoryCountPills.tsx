@@ -4,7 +4,7 @@ import { RotateCcw } from 'lucide-react';
 interface CategoryCountPillsProps {
   pageCounts: {
     sales: number;
-    technical: number;
+    softwareTechnical: number;
     nonTechnical: number;
     banking: number;
     hr: number;
@@ -77,13 +77,13 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
 
         <button 
           type="button"
-          aria-pressed={selectedCategory === 'technical'}
-          onClick={() => onSelectCategory('technical')} 
+          aria-pressed={selectedCategory === 'software_technical'}
+          onClick={() => onSelectCategory('software_technical')}
           className="pill-tag pill-tech"
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Technical <strong>{pageCounts.technical}</strong>
+          Software Technical <strong>{pageCounts.softwareTechnical}</strong>
         </button>
 
         <button 

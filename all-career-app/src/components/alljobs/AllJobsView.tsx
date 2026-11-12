@@ -8,7 +8,7 @@ import { AllJobsSidebar } from './AllJobsSidebar';
 import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
-import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT } from '../../utils/filterUtils';
+import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT, SOFTWARE_TECHNICAL } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
 import { CatalogSummary, matchesCatalogLocation, matchesCatalogSource } from '../../services/catalogTypes';
 import { calculateWalkinFacets, WalkinFacetInput, WalkinFacets } from '../../services/walkinFacets';
@@ -315,10 +315,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     };
     for (let i = 0; i < jobs.length; i++) {
       const j = jobs[i];
-      const cat = (j._normCategory || j.category || 'others').toLowerCase().replace(/[^a-z0-9]/g, '_');
-      if (cat.includes('tech')) counts.technical++;
-      else if (cat.includes('pharma')) counts.pharma++;
-      else if (cat.includes('non')) counts.non_technical++;
+      const cat = j._normCategory || classifyJobCategory(j);
+      if (cat === SOFTWARE_TECHNICAL) counts.technical++;
+      else if (cat === 'Pharma') counts.pharma++;
+      else if (cat === 'Non-Technical') counts.non_technical++;
       else counts.others++;
     }
     return counts;
@@ -477,7 +477,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     if (cat !== 'all') {
       const cCat = j._normCategory || classifyJobCategory(j);
       if (cat === 'sales' && cCat !== 'Sales & Marketing') return false;
-      if (cat === 'technical' && cCat !== 'Technical') return false;
+      if (cat === 'software_technical' && cCat !== SOFTWARE_TECHNICAL) return false;
       if (cat === 'non_technical' && cCat !== 'Non-Technical') return false;
       if (cat === 'banking' && cCat !== 'Banking & Finance') return false;
       if (cat === 'hr' && cCat !== 'HR & Staffing') return false;
@@ -553,12 +553,12 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
 
   // Compute breakdown for "This Page (50)"
   const pageCategoryCounts = useMemo(() => {
-    let sales = 0, technical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
+    let sales = 0, softwareTechnical = 0, nonTechnical = 0, banking = 0, hr = 0, pharma = 0, others = 0;
     for (let i = 0; i < currentJobs.length; i++) {
       const j = currentJobs[i];
       const cat = j._normCategory || classifyJobCategory(j);
       if (cat === 'Sales & Marketing') sales++;
-      else if (cat === 'Technical') technical++;
+      else if (cat === SOFTWARE_TECHNICAL) softwareTechnical++;
       else if (cat === 'Non-Technical') nonTechnical++;
       else if (cat === 'Banking & Finance') banking++;
       else if (cat === 'HR & Staffing') hr++;
@@ -568,7 +568,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
 
     return {
       sales,
-      technical,
+      softwareTechnical,
       nonTechnical,
       banking,
       hr,

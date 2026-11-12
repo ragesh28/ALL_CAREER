@@ -402,14 +402,10 @@ export const ROLE_KEYWORDS: Record<string, string[]> = {
 };
 
 export const ROLE_CATEGORIES_DICT: Record<string, string[]> = {
-  'Technical': [
-    'software', 'developer', 'engineer', 'full stack', 'frontend', 'backend', 'java', 'python', 'react', 'node',
-    'sql', 'dba', 'devops', 'cloud', 'aws', 'azure', 'tester', 'testing', 'qa', 'quality assurance', 'sdet',
-    'automation', 'data analyst', 'data engineer', 'data scientist', 'machine learning', 'ai', 'ml'
-  ],
   'Electrical': [
-    'electrical', 'electrician', 'electronics', 'ece', 'eee', 'embedded', 'vlsi', 'panel design', 'plc', 'scada',
-    'pcb', 'mechanical', 'civil', 'autocad', 'cad', 'technician', 'assembly'
+    'electrical', 'electrician', 'electronics', 'ece', 'eee', 'embedded hardware', 'hardware engineer', 'vlsi',
+    'panel design', 'plc', 'scada', 'pcb', 'mechanical', 'civil', 'autocad', 'cad', 'cnc', 'maintenance technician', 'assembly',
+    'manufacturing', 'industrial automation', 'quality control'
   ],
   'Non-Technical': [
     'voice', 'semi voice', 'non voice', 'chat', 'chat support', 'customer support', 'customer care',
@@ -430,8 +426,17 @@ export const ROLE_CATEGORIES_DICT: Record<string, string[]> = {
   ]
 };
 
+export const SOFTWARE_TECHNICAL = 'Software Technical';
 const generalSupport = /\b(?:customer (?:support|service|care|success)|(?:non |semi |international )?voice (?:process|support|associate|executive)|international voice|call cent(?:er|re)|contact cent(?:er|re)|bpo|kpo|ar caller|payment posting|provider calling)\b/;
-const technicalSupport = /\b(?:(?:technical|it|desktop|network|application|software|cloud|hardware|product) (?:support|help ?desk|service desk)|technical customer support|service desk (?:analyst|engineer|technician)|help ?desk (?:analyst|engineer|technician))\b/;
+const softwareSupport = /\b(?:(?:it|desktop|network|application|software|cloud) (?:support|help ?desk|service desk)|service desk (?:analyst|engineer))\b/;
+const softwareRoles = [
+  /\b(?:software|web|application|mobile|frontend|front end|backend|back end|fullstack|full stack|ios|android|game|firmware|python|java|javascript|typescript|react(?:js)?|angular|php|dotnet|csharp|salesforce|ai|ml) (?:\w+ ){0,2}(?:developer|engineer|architect|programmer|tester|intern)\b/,
+  /\bsoftware (?:engineering|development)(?: internship)?$/,
+  /\b(?:sde|sdet|devops|site reliability engineer|sre|cloud (?:engineer|architect|developer)|(?:system|systems|network|database) administrator|network engineer|dba)\b/,
+  /\b(?:automation test(?:er|ing| engineer)|test automation|qa automation|qa tester|data (?:engineer|scientist|analyst)|machine learning (?:engineer|developer)|(?:soc|cybersecurity|security operations) analyst|cybersecurity engineer|penetration tester)\b/
+];
+const recruitingRole = /\b(?:recruiter|recruitment|talent acquisition|staffing)\b/;
+const salesRole = /\b(?:inside sales|software sales|sales (?:engineer|executive|representative|associate|manager|consultant|development)|business development|presales|pre sales|account executive)\b/;
 const categoryPatterns = Object.entries(ROLE_CATEGORIES_DICT).map(([category, keywords]) => {
   const terms = keywords.map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   return [category, new RegExp(`\\b(?:${terms.join('|')})\\b`)] as const;
@@ -439,18 +444,27 @@ const categoryPatterns = Object.entries(ROLE_CATEGORIES_DICT).map(([category, ke
 const specialistCategories = categoryPatterns.filter(([category]) => category !== 'Non-Technical');
 const generalCategory = categoryPatterns.find(([category]) => category === 'Non-Technical')?.[1];
 
-function categoryForText(text: string): string | undefined {
-  const normalized = text.toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ');
-  if (technicalSupport.test(normalized)) return 'Technical';
-  if (generalSupport.test(normalized)) return 'Non-Technical';
+function categoryForText(text: string, matchSoftware = true): string | undefined {
+  const normalized = text.toLowerCase().replace(/\.net\b/g, 'dotnet').replace(/\bc#/g, 'csharp').replace(/[-_/]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (recruitingRole.test(normalized)) return 'HR & Staffing';
+  if (salesRole.test(normalized)) return 'Sales & Marketing';
   const match = specialistCategories.find(([, pattern]) => pattern.test(normalized));
+  if (match?.[0] === 'Electrical') return 'Electrical';
+  if (matchSoftware && softwareSupport.test(normalized)) return SOFTWARE_TECHNICAL;
+  if (generalSupport.test(normalized)) return 'Non-Technical';
+  if (matchSoftware && softwareRoles.some(pattern => pattern.test(normalized))) {
+    return SOFTWARE_TECHNICAL;
+  }
   return match?.[0] ?? (generalCategory?.test(normalized) ? 'Non-Technical' : undefined);
 }
 
 export function classifyJobCategory(job: any): string {
   if (!job) return 'Others';
-  const role = `${job.title || ''} ${job.role || ''} ${job.role_category || ''}`;
-  return categoryForText(role) ?? categoryForText(String(job.description || '')) ?? 'Others';
+  return categoryForText(String(job.title || ''))
+    ?? categoryForText(String(job.role || ''))
+    ?? categoryForText(String(job.role_category || ''))
+    ?? categoryForText(String(job.description || ''), false)
+    ?? 'Others';
 }
 
 export const PRIMARY_PORTAL_IDS = new Set([
