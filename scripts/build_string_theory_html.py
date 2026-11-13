@@ -1055,7 +1055,7 @@ html_content = '''<!DOCTYPE html>
     }
 
     function triggerWorkflow(wfFile) {
-      if (!/^[a-zA-Z0-9_.-]+\.ya?ml$/.test(wfFile)) return;
+      if (!/^[a-zA-Z0-9_.-]+\\.ya?ml$/.test(wfFile)) return;
       window.open('https://github.com/ragesh28/ALL_CAREER/actions/workflows/' + encodeURIComponent(wfFile), '_blank', 'noopener,noreferrer');
     }
 

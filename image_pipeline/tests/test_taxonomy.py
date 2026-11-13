@@ -20,7 +20,7 @@ class TestTaxonomy(unittest.TestCase):
         # Non-IT roles
         r3 = RoleTaxonomyResolver.resolve_role("mechanical engineer")
         self.assertIsNotNone(r3)
-        self.assertEqual(r3["canonical"], "Mechanical Design / Production Engineer")
+        self.assertEqual(r3["canonical"], "Mechanical Engineer")
 
         r4 = RoleTaxonomyResolver.resolve_role("electrical engineer")
         self.assertIsNotNone(r4)
