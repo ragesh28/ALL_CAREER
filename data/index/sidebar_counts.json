@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1145372,
+  "total_jobs": 1145374,
   "sources": {
     "naukri": 378432,
     "linkedin": 291103,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 887,
-    "telegram_post": 611,
+    "telegram_message": 888,
+    "telegram_post": 612,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,7 +268,7 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 243330,
+    "bangalore": 243332,
     "mumbai": 151384,
     "delhi": 122797,
     "chennai": 123908,
@@ -1237,5 +1237,5 @@
     "aruppukkottai": 2,
     "ganeshpura": 1
   },
-  "generated_at": "2026-11-12T21:00:21.600902"
+  "generated_at": "2026-11-13T02:03:21.081362"
 }
