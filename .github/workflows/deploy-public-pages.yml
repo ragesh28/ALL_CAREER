@@ -1,0 +1,86 @@
+name: Deploy All Career Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Publish Fast Web Catalog', 'Workflow Health & Telemetry Monitor', 'Big Company Jobs Scraper']
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: all-career-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /index.html
+            /string_theory.html
+            /all_jobs.html
+            /big_company_jobs.html
+            /career_explorer.html
+            /practice.html
+            /all_questions.html
+            /granular_jobs.html
+            /top_companys.html
+            /top_companys.js
+            /String_Theory.png
+            /assets/
+            /logos/
+            /data/web/
+            /data/big_company_jobs.json
+            /data/leetcode_companies.json
+            /data/admin_metrics.json
+            /data/string_theory_metrics.json
+            /workday_scraper/big_company_jobs.json
+            /workday_scraper/companies_links.json
+            /data/index/
+            /data/jobs/
+            /all_career_auto_apply.js
+            /all_career_auto_apply.css
+            /companies.js
+            /logos.js
+            /logo3d.js
+            /logo3d.css
+            /top150.js
+            /skills_map.json
+      - name: Package public website
+        shell: bash
+        run: |
+          mkdir site
+          git sparse-checkout list | while IFS= read -r path; do
+            source=${path#/}
+            if [ -e "$source" ]; then
+              cp -r --parents -- "$source" site/
+            fi
+          done
+          test -f site/index.html
+          test -f site/data/web/summary.json
+          test -f site/data/web/latest.json
+          if find site -type f \( -name '*.py' -o -name '*.sql' -o -name '*.db' -o -name 'whoami.txt' \) | grep -q .; then
+            echo 'Unexpected source or database file in Pages artifact'
+            exit 1
+          fi
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+        id: deploy

@@ -20,7 +20,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
 
 concurrency:
   group: fast-web-catalog
@@ -52,8 +51,6 @@ jobs:
       - name: Build compressed browser pages and independent summaries
         run: python scripts/build_web_catalog.py
       - name: Publish catalog snapshot
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
@@ -64,7 +61,6 @@ jobs:
           for attempt in 1 2 3; do
             git pull --rebase --autostash origin main
             if git push origin HEAD:main; then
-              gh api --method POST "repos/${{ github.repository }}/pages/builds"
               exit 0
             fi
           done
