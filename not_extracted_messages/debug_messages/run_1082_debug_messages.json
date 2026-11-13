@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "1082",
+  "workflow_run_id": "43403246830",
+  "timestamp": "2026-11-13T09:54:51.960008",
+  "runtime_minutes": 9.21,
+  "messages_processed": 65,
+  "new_jobs_stored": 38,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 3,
+  "image_messages_processed": 10,
+  "text_messages_processed": 55,
+  "stored_locations": {
+    "Chennai & Hyderabad": 1,
+    "Pune": 3,
+    "Bengaluru": 2,
+    "Chennai": 5,
+    "Gurgaon": 2,
+    "Hyderabad": 6,
+    "Noida": 3,
+    "Unknown": 3,
+    "Noida, Gurgaon, Pune, Bengaluru": 1,
+    "Remote": 2,
+    "Bangalore/Hyderabad/Chennai/Mumbai, India": 1,
+    "Bangalore/ Chennai": 1,
+    "Pune (Ranjangaon MIDC)": 1,
+    "Ghaziabad": 1,
+    "Bangalore": 5,
+    "Kerala": 1
+  },
+  "stored_walkins": 6,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "placementdriveofficial",
+      "msg_id": 13663,
+      "text": "🚀🔥𝗚𝗢𝗢𝗚𝗟𝗘 𝗖𝗟𝗢𝗨𝗗 – 𝟰 𝗙𝗥𝗘𝗘 𝗖𝗢𝗨𝗥𝗦𝗘𝗦! ☁️📊\n\n Learn *Data Analytics, BigQuery, Data Engineering & Looker* for FREE!\n\n✅ Beginner-Friendly Learning  \n✅ Build In-Demand Tech Skills  \n✅ Boost Your Resume & Career Opportunities\n\n🎯 Perfect for Students, Freshers & Job Seekers!\n\n🔗 𝗟𝗶𝗻𝗸 :- 👇\n\nhttps://pdlink.in/4AttkUb\n\n📲 Save & Share with your friends! 🔥\n4\nFree Google Cloud\nCourses\nto Boost Your\nData Analytics Game\n二\nData\nBigQuery\nData\nData\nAnalytics\nfor Data\nEngineering\nVisualization\non GCP\nAnalysis\non GCP\nwith Looker",
+      "timestamp": "2026-11-13T07:10:09+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "fresheroffcampus",
+      "msg_id": 18181,
+      "text": "Hi guys getting more job updates daily join & share and invite your friends \n\n👉 WhatsApp Channel : https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n👉 Telegram Channel : https://t.me/fresheroffcampus",
+      "timestamp": "2026-11-13T07:29:15+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "getjobss",
+      "msg_id": 8347,
+      "text": "🚀🔥𝗚𝗢𝗢𝗚𝗟𝗘 𝗖𝗟𝗢𝗨𝗗 – 𝟰 𝗙𝗥𝗘𝗘 𝗖𝗢𝗨𝗥𝗦𝗘𝗦! ☁️📊\n\n Learn *Data Analytics, BigQuery, Data Engineering & Looker* for FREE!\n\n✅ Beginner-Friendly Learning  \n✅ Build In-Demand Tech Skills  \n✅ Boost Your Resume & Career Opportunities\n\n🎯 Perfect for Students, Freshers & Job Seekers!\n\n🔗 𝗟𝗶𝗻𝗸 :- 👇\n\nhttps://pdlink.in/4AttkUb\n\n📲 Save & Share with your friends! 🔥\nloud\n4\nFree Google Cloud\nCourses\nto Boost Your\nData Analytics Game\nData\nBigQuery\nData\nData\nAnalytics\nfor Data\nEngineering\nVisualization\non GCP\nAnalysis\non GCP\nwith Looker",
+      "timestamp": "2026-11-13T07:28:59+00:00"
+    }
+  ]
+}
