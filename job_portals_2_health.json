@@ -1,41 +1,41 @@
 {
-  "run_id": "43242875849",
-  "updated_at": "2026-11-12T16:17:17.288213",
+  "run_id": "43354943535",
+  "updated_at": "2026-11-13T08:42:05.477488",
   "portals": {
     "apna": {
-      "scraped_total": 2515,
-      "new_stored_total": 120,
-      "requests_total": 194,
+      "scraped_total": 6212,
+      "new_stored_total": 61,
+      "requests_total": 752,
       "last_probe": {
-        "requests": 3,
-        "scraped": 28,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "http_error",
+        "http_status": 404,
+        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-jaipur"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 74,
+      "requests_total": 404,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-jaipur/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 74,
+      "requests_total": 404,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-jaipur"
       }
     }
   }
