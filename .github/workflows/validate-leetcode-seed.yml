@@ -1,0 +1,26 @@
+name: Validate LeetCode Seed
+
+on:
+  push:
+    paths: [parse_leetcode.py, tests/test_leetcode_seed.py, .github/workflows/validate-leetcode-seed.yml]
+  pull_request:
+    paths: [parse_leetcode.py, tests/test_leetcode_seed.py, .github/workflows/validate-leetcode-seed.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /parse_leetcode.py
+            /tests/test_leetcode_seed.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests -p test_leetcode_seed.py
