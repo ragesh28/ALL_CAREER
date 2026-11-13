@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1161926,
+  "total_jobs": 1162856,
   "sources": {
-    "naukri": 380016,
+    "naukri": 380946,
     "linkedin": 297951,
     "timesjobs": 137338,
     "indeed": 107231,
@@ -268,20 +268,20 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 246256,
-    "mumbai": 153671,
-    "delhi": 124359,
-    "chennai": 125972,
-    "hyderabad": 113853,
-    "pune": 94565,
-    "noida": 56674,
-    "ahmedabad": 43985,
-    "kolkata": 40212,
+    "bangalore": 246447,
+    "mumbai": 153750,
+    "delhi": 124446,
+    "chennai": 126086,
+    "hyderabad": 113918,
+    "pune": 94649,
+    "noida": 56777,
+    "ahmedabad": 44047,
+    "kolkata": 40278,
     "all_india": 22654,
-    "coimbatore": 23084,
-    "kochi": 18000,
-    "remote": 10761,
-    "jaipur": 9088,
+    "coimbatore": 23111,
+    "kochi": 18035,
+    "remote": 10774,
+    "jaipur": 9090,
     "maharashtra": 9744,
     "indore": 5755,
     "chandigarh": 5523,
@@ -448,7 +448,7 @@
     "vapi": 6,
     "eu": 4,
     "across_india": 18,
-    "trichy": 60,
+    "trichy": 61,
     "perundurai": 2,
     "jhajjar": 3,
     "south_goa": 5,
@@ -512,7 +512,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 1,
-    "mangalore": 72,
+    "mangalore": 73,
     "moodbidri": 1,
     "belagavi": 11,
     "gokak": 2,
@@ -1255,5 +1255,5 @@
     "gyanoday_nagar": 1,
     "ratanada": 1
   },
-  "generated_at": "2026-11-13T17:36:45.252676"
+  "generated_at": "2026-11-13T20:16:17.502474"
 }
