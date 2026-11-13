@@ -12,6 +12,7 @@ interface AllJobsTopNavProps {
   categoryCounts: Record<string, number>;
   onGoHub: () => void;
   onAutoApply: () => void;
+  autoApplyDisabled?: boolean;
   onClearAll?: () => void;
   hasActiveFilters?: boolean;
 }
@@ -24,6 +25,7 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
   categoryCounts: _categoryCounts,
   onGoHub,
   onAutoApply,
+  autoApplyDisabled = false,
   onClearAll,
   hasActiveFilters
 }) => {
@@ -112,7 +114,8 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
         <button
           className={`auto-apply-nav-btn ${batchState.running ? 'running ring-2 ring-emerald-400 bg-rose-600/30' : ''}`}
           onClick={onAutoApply}
-          title={batchState.running ? 'Click to Stop Auto Apply' : 'Auto Apply with Extension'}
+          disabled={autoApplyDisabled && !batchState.running}
+          title={batchState.running ? 'Click to Stop Auto Apply' : autoApplyDisabled ? 'No matching jobs available' : 'Review jobs for Auto Apply'}
         >
           {batchState.running ? (
             <>

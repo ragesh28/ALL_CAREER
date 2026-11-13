@@ -739,11 +739,25 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     setCurrentPage(1);
   };
 
+  const applyDialog = useRef<HTMLDialogElement>(null);
+  const [applicationBatch, setApplicationBatch] = useState<Job[]>([]);
+  const applicationCandidates = useMemo(() => filteredJobs.filter(job =>
+    /^https?:\/\//i.test(String(job.apply_url || job.url || '').trim())
+  ).slice(0, 30), [filteredJobs]);
+  const filtersUpdating = searchTerm !== deferredSearchTerm || selectedSources !== deferredSources ||
+    selectedLocations !== deferredLocations || selectedDateFilter !== deferredDateFilter ||
+    selectedRoles !== deferredRoles || expValue !== deferredExpValue || exactExp !== deferredExactExp ||
+    selectedSkills !== deferredSkills || selectedCompanies !== deferredCompanies ||
+    walkinOnly !== deferredWalkinOnly || selectedWalkinDates !== deferredWalkinDates ||
+    selectedCategory !== deferredCategory || sortBy !== deferredSortBy;
   const handleAutoApply = () => {
-    const jobsToApply = (filteredJobs && filteredJobs.length > 0 ? filteredJobs : jobs)
-      .filter(j => (j.url || (j as any).apply_url))
-      .slice(0, 30);
-    bridgeService.startBatchAutoApply(jobsToApply);
+    if (bridgeService.getState().running) {
+      bridgeService.stopBatchAutoApply();
+      return;
+    }
+    if (filtersUpdating || applicationCandidates.length === 0) return;
+    setApplicationBatch(applicationCandidates);
+    applyDialog.current?.showModal();
   };
 
   return (
@@ -757,9 +771,28 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
         categoryCounts={categoryCounts}
         onGoHub={onGoHub}
         onAutoApply={handleAutoApply}
+        autoApplyDisabled={filtersUpdating || applicationCandidates.length === 0}
         onClearAll={clearAllFilters}
         hasActiveFilters={hasActiveFilters}
       />
+
+      <dialog ref={applyDialog} className="application-review" aria-labelledby="application-review-title">
+        <h2 id="application-review-title">Review {applicationBatch.length} jobs</h2>
+        <ol>
+          {applicationBatch.map((job, index) => (
+            <li key={index}>{job.title || job.role || 'Job Opening'} · {job.company || 'Company'} · {job.location || 'India'}</li>
+          ))}
+        </ol>
+        <div className="application-review-actions">
+          <button type="button" className="page-btn" onClick={() => applyDialog.current?.close()}>Cancel</button>
+          <button type="button" className="auto-apply-nav-btn" onClick={() => {
+            applyDialog.current?.close();
+            if (applicationBatch.length && !bridgeService.getState().running) {
+              void bridgeService.startBatchAutoApply(applicationBatch);
+            }
+          }}>Start Auto Apply</button>
+        </div>
+      </dialog>
 
       {/* Main Layout: Sidebar + Grid */}
       <div className="alljobs-layout">

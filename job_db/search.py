@@ -166,14 +166,17 @@ class JobSearchEngine:
 
         # ── 4. Keyset / Cursor Pagination ──
         cursor_clauses = list(where_clauses)
-        if cursor_date and cursor_id is not None:
-            cursor_clauses.append("(j.date_posted < :c_date OR (j.date_posted = :c_date AND j.id < :c_id))")
-            params["c_date"] = cursor_date
+        if cursor_id is not None:
             params["c_id"] = cursor_id
+            if cursor_date is None:
+                cursor_clauses.append("(j.date_posted IS NULL AND j.id < :c_id)")
+            else:
+                cursor_clauses.append("(j.date_posted < :c_date OR (j.date_posted = :c_date AND j.id < :c_id) OR j.date_posted IS NULL)")
+                params["c_date"] = cursor_date
 
         cursor_where_sql = ("WHERE " + " AND ".join(cursor_clauses)) if cursor_clauses else ""
 
-        params["limit"] = min(limit, MAX_PAGE_SIZE)
+        params["limit"] = max(1, min(limit, MAX_PAGE_SIZE)) + 1
 
         # Final select query joins dimensions only for the 30 limit rows
         select_sql = f"""
@@ -217,7 +220,7 @@ class JobSearchEngine:
         Execute high-performance indexed search with keyset pagination & total job count.
         """
         cache_key = f"{query_text}|{city}|{role}|{company}|{source}|{date_range_days}|{experience_exact_zero}|{experience_max}|{is_walkin}|{walkin_date}|{cursor_date}|{cursor_id}|{limit}"
-        if use_cache and not (cursor_date or cursor_id):
+        if use_cache and cursor_id is None:
             cached = self.cache.get(cache_key)
             if cached:
                 return cached
@@ -249,6 +252,9 @@ class JobSearchEngine:
 
         latency_ms = (time.perf_counter() - t0) * 1000.0
 
+        page_size = params["limit"] - 1
+        has_more = len(rows) > page_size
+        rows = rows[:page_size]
         jobs_list = []
         next_cursor = None
 
@@ -292,7 +298,7 @@ class JobSearchEngine:
                 "telegram_url": r["telegram_url"]
             })
 
-        if jobs_list and len(jobs_list) == limit:
+        if has_more:
             last_job = rows[-1]
             next_cursor = {
                 "cursor_date": last_job["date_posted"],
@@ -302,14 +308,14 @@ class JobSearchEngine:
         response = {
             "total_jobs": total_count,
             "count": len(jobs_list),
-            "limit": limit,
+            "limit": page_size,
             "has_more": next_cursor is not None,
             "next_cursor": next_cursor,
             "latency_ms": round(latency_ms, 2),
             "jobs": jobs_list
         }
 
-        if use_cache and not (cursor_date or cursor_id):
+        if use_cache and cursor_id is None:
             self.cache.set(cache_key, response)
 
         return response

@@ -4298,3 +4298,19 @@ select.filter-select option,
   padding: 4px 9px;
   font-size: .72rem;
 }
+
+.auto-apply-nav-btn:disabled { opacity: 0.55; cursor: default; }
+.application-review {
+  color: #e2e8f0;
+  background: #101827;
+  border: 1px solid #35435d;
+  border-radius: 16px;
+  margin: auto;
+  padding: 1.25rem;
+  width: min(36rem, calc(100% - 2rem));
+}
+.application-review::backdrop { background: rgba(3, 8, 18, 0.76); }
+.application-review h2 { font-weight: 700; font-size: 1.15rem; }
+.application-review ol { list-style: decimal; padding-left: 1.5rem; margin: 1rem 0; max-height: 45vh; overflow: auto; }
+.application-review li { padding: 0.3rem 0; }
+.application-review-actions { display: flex; justify-content: flex-end; gap: 0.75rem; }

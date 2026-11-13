@@ -62,6 +62,34 @@ class TestJobPagination(unittest.TestCase):
         p2_ids = {j["_id"] for j in p2["jobs"]}
         self.assertEqual(len(p1_ids.intersection(p2_ids)), 0)
 
+    def test_cap_and_undated_cursor(self):
+        import tempfile
+        from job_db.config import MAX_PAGE_SIZE
+        with tempfile.TemporaryDirectory() as directory:
+            database = JobDatabase(db_path=str(Path(directory) / "jobs.db"))
+            count = MAX_PAGE_SIZE + 4
+            JobImporter(db=database).import_batch([
+                {"title": f"Role {i}", "company": "Example", "location": "Chennai",
+                 "source": "naukri", "date_posted": "" if i > 0 else "2026-10-10",
+                 "url": f"https://example.com/{i}"}
+                for i in range(count)
+            ])
+            with database.get_connection() as connection:
+                connection.execute("UPDATE jobs SET date_posted = NULL WHERE id > ?", (MAX_PAGE_SIZE + 1,))
+                connection.commit()
+            search = JobSearchEngine(db=database)
+            first = search.search(limit=count)
+            self.assertEqual(first["limit"], MAX_PAGE_SIZE)
+            self.assertTrue(first["has_more"])
+            next_page = search.search(limit=2, **first["next_cursor"])
+            self.assertTrue(next_page["has_more"])
+            self.assertIsNone(next_page["next_cursor"]["cursor_date"])
+            last = search.search(limit=2, **next_page["next_cursor"])
+            self.assertFalse(last["has_more"])
+            ids = [job["_id"] for page in (first, next_page, last) for job in page["jobs"]]
+            self.assertEqual(len(ids), count)
+            self.assertEqual(len(set(ids)), count)
+
     def test_lru_caching(self):
         # 1st call (fills cache)
         res1 = self.search_engine.search(city="Chennai", limit=5, use_cache=True)

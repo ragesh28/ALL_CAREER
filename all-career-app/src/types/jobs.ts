@@ -1,4 +1,5 @@
 export interface Job {
+  apply_url?: string;
   id?: number | string;
   _id?: number;
   title?: string;

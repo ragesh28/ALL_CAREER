@@ -15,7 +15,7 @@ class TestTaxonomy(unittest.TestCase):
 
         r2 = RoleTaxonomyResolver.resolve_role("sdet")
         self.assertIsNotNone(r2)
-        self.assertEqual(r2["canonical"], "QA / Software Tester")
+        self.assertEqual(r2["canonical"], "QA / Test Automation Engineer")
 
         # Non-IT roles
         r3 = RoleTaxonomyResolver.resolve_role("mechanical engineer")

@@ -9,6 +9,12 @@ from typing import Dict, List, Optional, Tuple
 
 
 ROLE_TAXONOMY: List[Dict] = [
+    {
+        "canonical": "Software Engineer",
+        "sector": "Information Technology",
+        "category": "Software Engineering",
+        "aliases": ["software engineer", "software developer", "software development engineer", "software programmer"],
+    },
     # ── 1. IT: Python Development ──
     {
         "canonical": "Python Developer",
