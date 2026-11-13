@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1145455,
+  "total_jobs": 1147586,
   "sources": {
     "naukri": 378432,
     "linkedin": 291103,
@@ -7,7 +7,7 @@
     "indeed": 104635,
     "internshala": 88636,
     "shine": 47525,
-    "foundit": 37478,
+    "foundit": 39609,
     "apna": 23647,
     "hirist": 15478,
     "glassdoor": 4839,
@@ -268,11 +268,11 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 243363,
-    "mumbai": 151394,
+    "bangalore": 243895,
+    "mumbai": 151928,
     "delhi": 122800,
-    "chennai": 123916,
-    "hyderabad": 111970,
+    "chennai": 124448,
+    "hyderabad": 112503,
     "pune": 93314,
     "noida": 55962,
     "ahmedabad": 43571,
@@ -1238,5 +1238,5 @@
     "ganeshpura": 1,
     "findlay": 1
   },
-  "generated_at": "2026-11-13T02:10:02.650159"
+  "generated_at": "2026-11-13T02:11:41.983886"
 }
