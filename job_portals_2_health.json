@@ -1,41 +1,41 @@
 {
-  "run_id": "43354943535",
-  "updated_at": "2026-11-13T08:42:05.477488",
+  "run_id": "43395334254",
+  "updated_at": "2026-11-13T14:34:16.478325",
   "portals": {
     "apna": {
-      "scraped_total": 6212,
-      "new_stored_total": 61,
-      "requests_total": 752,
+      "scraped_total": 8012,
+      "new_stored_total": 330,
+      "requests_total": 711,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-jaipur"
+        "requests": 2,
+        "scraped": 20,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-indore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 404,
+      "requests_total": 359,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-jaipur/"
+        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-indore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 404,
+      "requests_total": 359,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-jaipur"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-indore"
       }
     }
   }
