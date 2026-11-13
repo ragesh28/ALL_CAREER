@@ -701,15 +701,12 @@
         <span id="systemStatusText">OPERATIONAL</span>
       </div>
 
-      <button class="btn-action" onclick="openTokenModal()" id="ghPatBtn" title="Configure GitHub Personal Access Token to Trigger Workflows">
-        🔑 GitHub PAT: <span id="patStatus" style="color:var(--emerald);">Configured</span>
-      </button>
 
       <button class="btn-action" onclick="openSettingsModal()" title="Telemetry Cadence & Benchmarks">
         ⚙️ Settings
       </button>
 
-      <button class="btn-action" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')" title="Run API Credits Check Workflow">
+      <button class="btn-action" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')" title="Open the API Credits workflow on GitHub">
         ⚡ Check Credits
       </button>
 
@@ -1002,37 +999,6 @@
     </div>
   </div>
 
-  <!-- GITHUB TOKEN MODAL (FOR RUNNING WORKFLOWS FROM WEB) -->
-  <div class="modal-overlay" id="tokenModal" onclick="if(event.target === this) closeTokenModal()">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 class="modal-title">🔑 GitHub Actions Dispatch Token</h3>
-        <button style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;" onclick="closeTokenModal()">✕</button>
-      </div>
-
-      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.5; margin-bottom:16px;">
-        To trigger workflows directly from this dashboard via the GitHub REST API, provide a GitHub Personal Access Token (PAT) with <code style="color:var(--cyan); background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px;">workflow</code> and <code style="color:var(--cyan); background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:4px;">repo</code> scopes.
-      </div>
-
-      <div class="input-group">
-        <label class="input-label">Personal Access Token (classic or fine-grained)</label>
-        <input type="password" id="ghTokenInput" class="st-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-        <span style="font-size: 0.72rem; color: var(--text-dim);">Stored strictly inside your browser's localStorage. Never sent to any third-party server.</span>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:20px;">
-        <button class="btn-save" style="flex:1;" onclick="saveGhToken()">Save Token</button>
-        <button class="btn-action" style="flex:1; justify-content:center;" onclick="clearGhToken()">Clear Token</button>
-      </div>
-
-      <div style="margin-top:14px; text-align:center;">
-        <a href="https://github.com/settings/tokens/new?scopes=repo,workflow&description=All+Career+String+Theory+Trigger" target="_blank" style="color:var(--cyan); font-size:0.75rem; text-decoration:none;">
-          ↗ Generate a new GitHub Token (30 seconds)
-        </a>
-      </div>
-    </div>
-  </div>
-
   <!-- TOAST NOTIFICATIONS -->
   <div class="toast-container" id="toastContainer"></div>
 
@@ -1076,51 +1042,9 @@
       }, 4000);
     }
 
-    // Trigger Workflow via GitHub Actions REST API
-    async function triggerWorkflow(wfFile, wfName) {
-      const token = localStorage.getItem('st_gh_token');
-      if (!token) {
-        openTokenModal();
-        showToast('Please enter your GitHub Personal Access Token to trigger workflows', true);
-        return;
-      }
-
-      showToast(`Dispatching workflow: ${wfName}...`);
-
-      try {
-        const repo = 'ragesh28/ALL_CAREER';
-        const url = `https://api.github.com/repos/${repo}/actions/workflows/${wfFile}/dispatches`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ ref: 'main' })
-        });
-
-        if (res.status === 204) {
-          showToast(`Successfully triggered '${wfName}' on GitHub Actions!`);
-          // Temporarily set row status to running for instant live visual feedback
-          if (currentMetrics && currentMetrics.workflows) {
-            const wf = currentMetrics.workflows.find(w => w.workflowFile === wfFile || w.name === wfName);
-            if (wf) {
-              wf.status = 'in_progress';
-              wf.isRunning = true;
-              renderWorkflowsTable();
-            }
-          }
-        } else if (res.status === 401 || res.status === 403) {
-          showToast('Authentication failed: GitHub Token expired or missing workflow scope.', true);
-          openTokenModal();
-        } else {
-          const errText = await res.text();
-          showToast(`GitHub API error (${res.status}): ${errText.slice(0, 80)}`, true);
-        }
-      } catch (err) {
-        showToast(`Network error triggering workflow: ${err.message}`, true);
-      }
+    function triggerWorkflow(wfFile) {
+      if (!/^[a-zA-Z0-9_.-]+\.ya?ml$/.test(wfFile)) return;
+      window.open('https://github.com/ragesh28/ALL_CAREER/actions/workflows/' + encodeURIComponent(wfFile), '_blank', 'noopener,noreferrer');
     }
 
     function formatTime(isoStr) {
@@ -1330,7 +1254,7 @@
             </td>
             <td style="text-align: right;">
               <button class="btn-trigger" onclick="triggerWorkflow('${escapeHtml(w.workflowFile)}', '${escapeHtml(w.name)}')">
-                ▶ Run Workflow
+                Open in GitHub
               </button>
             </td>
           </tr>
@@ -1527,7 +1451,6 @@
       renderWorkflowsTable();
       renderApiCreditsTable();
       renderCorpusTable();
-      updatePatStatusButton();
     }
 
     function escapeHtml(str) {
@@ -1561,49 +1484,6 @@
       showToast('Settings saved successfully!');
     }
 
-    function openTokenModal() {
-      const token = localStorage.getItem('st_gh_token') || '';
-      document.getElementById('ghTokenInput').value = token;
-      document.getElementById('tokenModal').classList.add('open');
-    }
-
-    function closeTokenModal() {
-      document.getElementById('tokenModal').classList.remove('open');
-    }
-
-    function saveGhToken() {
-      const token = document.getElementById('ghTokenInput').value.trim();
-      if (token) {
-        localStorage.setItem('st_gh_token', token);
-        showToast('GitHub Token saved securely in browser!');
-      } else {
-        localStorage.removeItem('st_gh_token');
-        showToast('GitHub Token removed', true);
-      }
-      updatePatStatusButton();
-      closeTokenModal();
-    }
-
-    function clearGhToken() {
-      localStorage.removeItem('st_gh_token');
-      document.getElementById('ghTokenInput').value = '';
-      updatePatStatusButton();
-      showToast('GitHub Token cleared');
-    }
-
-    function updatePatStatusButton() {
-      const token = localStorage.getItem('st_gh_token');
-      const el = document.getElementById('patStatus');
-      if (!el) return;
-      if (token) {
-        el.textContent = 'Active (Ready)';
-        el.style.color = 'var(--emerald)';
-      } else {
-        el.textContent = 'Not Set (Click to Add)';
-        el.style.color = 'var(--amber)';
-      }
-    }
-
     function initAutoRefresh(cadenceMs) {
       if (autoRefreshTimer) clearInterval(autoRefreshTimer);
       if (cadenceMs > 0) {
@@ -1624,6 +1504,7 @@
 
     // Startup
     window.addEventListener('DOMContentLoaded', async () => {
+      try { localStorage.removeItem('st_gh_token'); } catch {}
       const savedCadence = parseInt(localStorage.getItem('st_refresh_cadence') || '300000', 10);
       const sel = document.getElementById('autoRefreshSelect');
       if (sel) sel.value = String(savedCadence);

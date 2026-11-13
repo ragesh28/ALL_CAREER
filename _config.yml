@@ -1,6 +1,14 @@
 # Keep scraper storage in Git while publishing only the data the site consumes.
 # The browser uses data/web and legacy data/jobs, not these archival duplicates.
 exclude:
+  - '*.py'
+  - '**/*.py'
+  - '*.sql'
+  - '**/*.sql'
+  - leetcode-api/whoami.txt
+  - scratch
+  - api-worker
+  - workday_scraper/node_modules
   - 'all_jobs_*.json'
   - data/job_archives
   - jobs_by_role

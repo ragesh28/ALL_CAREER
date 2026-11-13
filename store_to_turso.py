@@ -5,6 +5,7 @@ Uses JobSpy (linkedin_fetch_description=True) â†’ filters to direct links only â
 Usage: py -3.11 store_to_turso.py
 """
 
+import os
 import json
 import requests
 from datetime import datetime
@@ -13,7 +14,7 @@ from jobspy import scrape_jobs
 
 # ---- TURSO CONFIG ----
 TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN") or os.environ["TURSO_AUTH_TOKEN"]
 
 # ---- SCRAPER CONFIG ----
 SEARCH_TERM = "Google"

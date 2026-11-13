@@ -27,7 +27,7 @@ from jobspy import scrape_jobs
 # CONFIG
 # ---------------------------------------------------------------------------
 TURSO_URL = "https://alljobs-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM5MDk4NjQsImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.RTp-3zplnbqlpx6qgu_XwxAWOokQIY1TmR9kQtGmC2J1tyRqy5n7LuitSbYdRmD2zBKQEnDLB_Ca4AUm7wt4CQ"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN") or os.environ["TURSO_AUTH_TOKEN"]
 
 ROLES = [
     "Frontend Developer", "Backend Developer", "Full Stack Developer",

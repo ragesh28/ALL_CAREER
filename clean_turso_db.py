@@ -3,7 +3,7 @@ import json
 import os
 
 TURSO_URL = "https://alljobs-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzM1NTM5OTksImlkIjoiMDE5Y2UxNGItMTgwMS03MmQ2LWI0MmMtOGIzYTY0NWExZjE1IiwicmlkIjoiMjgzMDA4YzMtODRhZi00M2MwLWE5ZjItNWY3ZTUwMWZkZDUzIn0.mtjC1aL0M1rcwS2pJsM70Ytqk06Jqct2dVChPGcgEV0zvcv8hAb9opCC5L76xuEXnO6ZuUZU-Edlex7ABWgVCg"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN") or os.environ["TURSO_AUTH_TOKEN"]
 
 def execute(sql):
     url = f"{TURSO_URL}/v2/pipeline"

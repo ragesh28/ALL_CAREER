@@ -4,6 +4,7 @@ Scrape 100 software jobs from LinkedIn + Indeed via JobSpy â†’ Store in Turso â†
 Usage: py -3.11 scrape_daily_jobs.py
 """
 
+import os
 import json
 import requests
 from datetime import datetime
@@ -11,7 +12,7 @@ from jobspy import scrape_jobs
 
 # ---- TURSO CONFIG ----
 TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN") or os.environ["TURSO_AUTH_TOKEN"]
 
 RESULTS_WANTED = 100
 LOCATION = "India"

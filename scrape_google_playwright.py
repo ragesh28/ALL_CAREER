@@ -7,7 +7,7 @@ import requests
 
 # Set Turso Details
 TURSO_DATABASE_URL = os.environ.get("TURSO_DATABASE_URL", "https://jobsdata-ragesh.aws-ap-south-1.turso.io")
-TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN", "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJleHAiOjE3NzM5MDA3MDAsImlhdCI6MTc3MzI5NTkwMCwiaWQiOiIwMTljZTBhYi0xZDAxLTczMGMtYTBiNS01ZWU0ZGMxZDA4ZDgiLCJyaWQiOiIwY2NlZjMxYy1lMWM3LTQwMzctODA3YS1iMWNkODJmNGQ0YTYifQ.HtmuTZP3oqCa22fOJBPneLQDzmg8G45VXtqpZ0SK4ffxryf371ohb5ir88TXjmgjjGUGwcclBEWt7t81AD0yBg")
+TURSO_AUTH_TOKEN = os.environ.get("TURSO_AUTH_TOKEN") or os.environ["TURSO_TOKEN"]
 
 def turso_execute(sql, args=None):
     url = f"{TURSO_DATABASE_URL}/v2/pipeline"

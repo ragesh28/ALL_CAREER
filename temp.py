@@ -1,10 +1,11 @@
 """Download ALL jobs data from Turso (all_jobs table only, not big_jobs)."""
+import os
 import sys, json, requests
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 TURSO_URL = "https://jobsdata-ragesh.aws-ap-south-1.turso.io"
-TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzYxNjMxNDksImlkIjoiMDE5Y2UwYWItMWQwMS03MzBjLWEwYjUtNWVlNGRjMWQwOGQ4IiwicmlkIjoiMGNjZWYzMWMtZTFjNy00MDM3LTgwN2EtYjFjZDgyZjRkNGE2In0.bFlqY1nlnLXlkvIe90aAFlz9o2Hjx1f3O2-tVQmzEMmhXxNdLee-gYwPqBWHwz-ckyVx64wy6X53RYHbu3f9AA"
+TURSO_TOKEN = os.environ.get("TURSO_TOKEN") or os.environ["TURSO_AUTH_TOKEN"]
 
 HEADERS = {"Authorization": f"Bearer {TURSO_TOKEN}", "Content-Type": "application/json"}
 

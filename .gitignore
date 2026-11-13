@@ -111,3 +111,6 @@ downloaded_walkin_images/
 
 # Graphify cache
 graphify-out/cache/
+
+/seed_leetcode.sql
+/leetcode-api/whoami.txt
