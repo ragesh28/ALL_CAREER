@@ -2700,17 +2700,26 @@ body {
 .topic-grid {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: 8px;
-  max-height: 42px;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  max-height: 7.5rem;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #5f87a6 #101a2c;
+  padding: 3px 6px 4px 3px;
 }
 
 .topic-grid.expanded {
-  max-height: 1200px;
+  max-height: min(26rem, 48vh);
 }
 
 .topic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  text-align: left;
   background: rgba(0, 0, 0, 0.3);
   color: #94a3b8;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -2719,8 +2728,31 @@ body {
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
   transition: all 0.2s ease;
+}
+
+.topic-btn .topic-count {
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #20354b;
+  color: #a7e8fa;
+  padding: 1px 6px;
+  font-size: .72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.topic-btn.active .topic-count {
+  background: #0d2744;
+  color: #d7f3ff;
+}
+
+.topic-grid:focus-visible,
+.topic-btn:focus-visible,
+.practice-language-control:focus-within {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 2px;
 }
 
 .topic-btn:hover {
@@ -2899,6 +2931,37 @@ body {
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.practice-language-control {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 42px;
+  max-width: 100%;
+  padding: .3rem .65rem .3rem .85rem;
+  border: 1px solid #34445f;
+  border-radius: 12px;
+  background: #151f33;
+  color: #a8d9ed;
+  font-size: .82rem;
+  font-weight: 600;
+}
+
+.practice-language-control select {
+  color-scheme: dark;
+  color: #f1f5f9;
+  background: transparent;
+  cursor: pointer;
+  min-height: 32px;
+  min-width: 0;
+  padding: 0 .25rem;
+}
+
+.practice-language-control option,
+.practice-language-control optgroup {
+  background: #151f33;
+  color: #f1f5f9;
 }
 
 .filter-select {

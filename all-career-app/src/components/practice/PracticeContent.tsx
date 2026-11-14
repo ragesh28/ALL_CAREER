@@ -4,6 +4,7 @@ import { CustomDropdown } from '../common/CustomDropdown';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
 import { fetchJsonWithFallback } from '../../utils/urlHelper';
+import { matchesPracticeLanguage, practiceLanguageGroups } from '../../data/practiceLanguages';
 
 export interface LeetCodeMasterProblem {
   id: number;
@@ -13,6 +14,8 @@ export interface LeetCodeMasterProblem {
   slug?: string;
   topics?: string[];
   topics_str?: string;
+  languages?: unknown;
+  codeSnippets?: unknown;
   companies?: string[];
   company_count?: number;
   acceptance?: string | number;
@@ -124,6 +127,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
   const [searchAll, setSearchAll] = useState<string>('');
   const [diffAll, setDiffAll] = useState<string>('All');
   const [sortAll, setSortAll] = useState<string>('id');
+  const [languageAll, setLanguageAll] = useState('all');
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Company questions state
@@ -152,6 +156,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               difficulty: p.difficulty,
               acceptance: p.acceptance,
               frequency: p.frequency,
+              languages: p.languages,
+              codeSnippets: p.codeSnippets,
               topics: normalizeTopics([...(Array.isArray(p.topics) ? p.topics : [p.topics]), p.topics_str])
             }));
             mapped.sort((a, b) => Number(a.id) - Number(b.id));
@@ -251,10 +257,15 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
     return () => { cancelled = true; };
   }, [selectedMode, selectedCompany]);
 
+  const languageProblems = useMemo(
+    () => allProblems.filter(problem => matchesPracticeLanguage(problem, languageAll)),
+    [allProblems, languageAll],
+  );
+
   // Dynamic unique topics map with counts
   const uniqueTopics = useMemo(() => {
     const counts = new Map<string, number>();
-    allProblems.forEach(p => {
+    languageProblems.forEach(p => {
       if (Array.isArray(p.topics)) {
         p.topics.forEach(t => {
           counts.set(t, (counts.get(t) || 0) + 1);
@@ -262,12 +273,12 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
       }
     });
     return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
-  }, [allProblems]);
+  }, [languageProblems]);
 
   // Filtered list for "All Questions"
   const filteredAllQuestions = useMemo(() => {
     const s = searchAll.toLowerCase().trim();
-    let list = allProblems.filter(p => {
+    let list = languageProblems.filter(p => {
       // Search
       if (s) {
         const matchTitle = (p.title || '').toLowerCase().includes(s);
@@ -293,7 +304,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
     }
 
     return list;
-  }, [allProblems, searchAll, diffAll, currentTopic, sortAll]);
+  }, [languageProblems, searchAll, diffAll, currentTopic, sortAll]);
 
   // Filtered list for "Company View"
   const filteredCompanyQuestions = useMemo(() => {
@@ -440,28 +451,36 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
         {/* TOPIC FILTER BAR */}
         <div className="topic-wrapper">
           <div className="topic-header-row">
-            <span className="topic-label"><Layers3 size={15} aria-hidden="true" /> Filter by Topic</span>
+            <span className="topic-label" id="practice-topic-label"><Layers3 size={15} aria-hidden="true" /> Filter by Topic</span>
             <button
               className="toggle-btn"
+              type="button"
+              aria-controls="practice-topic-list"
+              aria-expanded={topicsExpanded}
               onClick={() => setTopicsExpanded(prev => !prev)}
             >
-              {topicsExpanded ? 'Show Less ▲' : 'Show All Topics ▼'}
+              {topicsExpanded ? 'Collapse topics' : 'Expand topics'}
             </button>
           </div>
-          <div className={`topic-grid ${topicsExpanded ? 'expanded' : ''}`}>
+          <div id="practice-topic-list" className={`topic-grid ${topicsExpanded ? 'expanded' : ''}`}
+            tabIndex={0} role="region" aria-labelledby="practice-topic-label">
             <button
+              type="button"
               className={`topic-btn ${currentTopic === 'All' ? 'active' : ''}`}
+              aria-pressed={currentTopic === 'All'}
               onClick={() => handleTopicClick('All')}
             >
-              All Topics ({allProblems.length})
+              <span>All Topics</span><span className="topic-count">{languageProblems.length.toLocaleString()}</span>
             </button>
             {uniqueTopics.map(([topic, count]) => (
               <button
                 key={topic}
+                type="button"
                 className={`topic-btn ${currentTopic === topic ? 'active' : ''}`}
+                aria-pressed={currentTopic === topic}
                 onClick={() => handleTopicClick(topic)}
               >
-                {topic} ({count})
+                <span>{topic}</span><span className="topic-count">{count.toLocaleString()}</span>
               </button>
             ))}
           </div>
@@ -533,6 +552,26 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               ariaLabel="Sort practice problems"
               className="practice-sort-custom"
             />
+
+            <label className="practice-language-control">
+              <span>Language</span>
+              <select value={languageAll} onChange={event => {
+                const language = event.target.value;
+                setLanguageAll(language);
+                if (currentTopic !== 'All' && !allProblems.some(problem =>
+                  problem.topics?.includes(currentTopic) && matchesPracticeLanguage(problem, language))) {
+                  setCurrentTopic('All');
+                }
+                setCurrentPage(1);
+              }}>
+                <option value="all">All languages</option>
+                {practiceLanguageGroups.map(group => (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.options.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                  </optgroup>
+                ))}
+              </select>
+            </label>
 
             <div style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600 }}>
               Showing <span style={{ color: '#38bdf8' }}>{total > 0 ? `${startIndex + 1}-${endIndex}` : '0'}</span> of {total} problems
