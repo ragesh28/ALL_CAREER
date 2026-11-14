@@ -1,41 +1,41 @@
 {
-  "run_id": "43547390886",
-  "updated_at": "2026-11-14T08:29:54.581950",
+  "run_id": "43576136781",
+  "updated_at": "2026-11-14T14:22:38.453086",
   "portals": {
     "apna": {
-      "scraped_total": 5837,
-      "new_stored_total": 63,
-      "requests_total": 721,
+      "scraped_total": 5527,
+      "new_stored_total": 226,
+      "requests_total": 612,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-gurgaon"
+        "requests": 2,
+        "scraped": 2,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-chennai"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 397,
+      "requests_total": 355,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-gurgaon/"
+        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-chennai/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 397,
+      "scraped_total": 7696,
+      "new_stored_total": 3422,
+      "requests_total": 766,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-gurgaon"
+        "requests": 4,
+        "scraped": 72,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-chennai"
       }
     }
   }
