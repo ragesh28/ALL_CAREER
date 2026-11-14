@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowUpDown, BriefcaseBusiness, Layers3, Search, Star, X } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { ArrowUpDown, BriefcaseBusiness, Code2, Layers3, Search, Star, X } from 'lucide-react';
 import { CustomDropdown } from '../common/CustomDropdown';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
@@ -30,6 +30,10 @@ interface PracticeContentProps {
 }
 
 const ITEMS_PER_PAGE = 100;
+const languageOptions = [{ value: 'all', label: 'All languages' }];
+const languageGroups = practiceLanguageGroups.map(({ label, tone, options }) => ({
+  label, tone, options: options.map(([value, label]) => ({ value, label })),
+}));
 
 const topicTone = (topic: string) => {
   const value = topic.toLowerCase();
@@ -123,6 +127,8 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
   const [allProblems, setAllProblems] = useState<LeetCodeMasterProblem[]>([]);
   const [loadingMaster, setLoadingMaster] = useState<boolean>(false);
   const [currentTopic, setCurrentTopic] = useState<string>('All');
+  const [topicSearch, setTopicSearch] = useState('');
+  const topicGrid = useRef<HTMLDivElement>(null);
   const [topicsExpanded, setTopicsExpanded] = useState<boolean>(false);
   const [searchAll, setSearchAll] = useState<string>('');
   const [diffAll, setDiffAll] = useState<string>('All');
@@ -416,6 +422,12 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
 
   // 3. All Questions (Master List)
   if (selectedMode === 'all_questions') {
+    const topicQuery = topicSearch.trim().toLowerCase();
+    const visibleTopics = uniqueTopics.filter(([name]) => name.toLowerCase().includes(topicQuery));
+    const updateTopicSearch = (query: string) => {
+      setTopicSearch(query);
+      if (topicGrid.current) topicGrid.current.scrollTop = 0;
+    };
     const total = filteredAllQuestions.length;
     const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -462,7 +474,15 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               {topicsExpanded ? 'Collapse topics' : 'Expand topics'}
             </button>
           </div>
-          <div id="practice-topic-list" className={`topic-grid ${topicsExpanded ? 'expanded' : ''}`}
+          <div className="practice-search-input-wrapper topic-search-control">
+            <Search size={15} className="practice-search-icon" aria-hidden="true" />
+            <input type="text" className="practice-search-input" aria-label="Search topics"
+              aria-controls="practice-topic-list" placeholder="Search topics…" value={topicSearch}
+              onChange={event => updateTopicSearch(event.target.value)} autoComplete="off" />
+            {topicSearch && <button type="button" className="practice-search-clear" aria-label="Clear topic search"
+              onClick={() => updateTopicSearch('')}><X size={13} aria-hidden="true" /></button>}
+          </div>
+          <div ref={topicGrid} id="practice-topic-list" className={`topic-grid ${topicsExpanded ? 'expanded' : ''}`}
             tabIndex={0} role="region" aria-labelledby="practice-topic-label">
             <button
               type="button"
@@ -472,7 +492,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
             >
               <span>All Topics</span><span className="topic-count">{languageProblems.length.toLocaleString()}</span>
             </button>
-            {uniqueTopics.map(([topic, count]) => (
+            {visibleTopics.map(([topic, count]) => (
               <button
                 key={topic}
                 type="button"
@@ -483,6 +503,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
                 <span>{topic}</span><span className="topic-count">{count.toLocaleString()}</span>
               </button>
             ))}
+            {topicQuery && !visibleTopics.length && <p className="topic-search-empty" role="status">No matching topics.</p>}
           </div>
         </div>
 
@@ -553,25 +574,18 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
               className="practice-sort-custom"
             />
 
-            <label className="practice-language-control">
-              <span>Language</span>
-              <select value={languageAll} onChange={event => {
-                const language = event.target.value;
+            <CustomDropdown id="practice-language-all" value={languageAll}
+              ariaLabel="Language" prefix="Language" className="practice-language-control"
+              icon={<Code2 size={16} aria-hidden="true" />}
+              options={languageOptions} groups={languageGroups}
+              onChange={language => {
                 setLanguageAll(language);
                 if (currentTopic !== 'All' && !allProblems.some(problem =>
                   problem.topics?.includes(currentTopic) && matchesPracticeLanguage(problem, language))) {
                   setCurrentTopic('All');
                 }
                 setCurrentPage(1);
-              }}>
-                <option value="all">All languages</option>
-                {practiceLanguageGroups.map(group => (
-                  <optgroup key={group.label} label={group.label}>
-                    {group.options.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-                  </optgroup>
-                ))}
-              </select>
-            </label>
+              }} />
 
             <div style={{ color: '#94a3b8', fontSize: '0.85rem', fontWeight: 600 }}>
               Showing <span style={{ color: '#38bdf8' }}>{total > 0 ? `${startIndex + 1}-${endIndex}` : '0'}</span> of {total} problems

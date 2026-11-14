@@ -2706,8 +2706,20 @@ body {
   overflow-y: auto;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: #5f87a6 #101a2c;
+  scrollbar-color: #5f9db7 #101a2c;
   padding: 3px 6px 4px 3px;
+}
+
+.topic-search-control {
+  max-width: 23rem;
+  margin-bottom: 10px;
+}
+
+.topic-search-empty {
+  width: 100%;
+  color: #aebdd2;
+  font-size: .85rem;
+  padding: .25rem .4rem;
 }
 
 .topic-grid.expanded {
@@ -2933,35 +2945,64 @@ body {
   flex-wrap: wrap;
 }
 
-.practice-language-control {
-  display: inline-flex;
-  align-items: center;
-  gap: .55rem;
-  min-height: 42px;
-  max-width: 100%;
-  padding: .3rem .65rem .3rem .85rem;
-  border: 1px solid #34445f;
-  border-radius: 12px;
-  background: #151f33;
-  color: #a8d9ed;
-  font-size: .82rem;
-  font-weight: 600;
+.practice-language-control { min-width: min(12.5rem, 100%); }
+
+.practice-language-control .custom-dropdown-trigger { background: #141d30; }
+
+.practice-language-control .custom-dropdown-menu {
+  left: auto;
+  right: 0;
+  width: 100%;
+  background: #101a2d;
+  border-color: #405879;
+  backdrop-filter: none;
+  box-shadow: 0 16px 34px rgba(2, 8, 23, .65);
 }
 
-.practice-language-control select {
-  color-scheme: dark;
-  color: #f1f5f9;
-  background: transparent;
-  cursor: pointer;
-  min-height: 32px;
-  min-width: 0;
-  padding: 0 .25rem;
+.practice-language-control.opens-up .custom-dropdown-menu {
+  top: auto;
+  bottom: calc(100% + 8px);
 }
 
-.practice-language-control option,
-.practice-language-control optgroup {
-  background: #151f33;
-  color: #f1f5f9;
+.practice-language-control .custom-dropdown-menu-inner {
+  max-height: min(22rem, var(--dropdown-space, 50dvh));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #6ea9c5 #17243b;
+}
+
+.practice-language-control .custom-dropdown-group {
+  --group-text: #bde6f6;
+  --group-bg: #18344a;
+}
+
+.practice-language-control .tone-shell { --group-text: #ffe09a; --group-bg: #3b2c18; }
+.practice-language-control .tone-database { --group-text: #e1cefd; --group-bg: #312445; }
+.practice-language-control .tone-data-frame { --group-text: #a1efdd; --group-bg: #163631; }
+
+.practice-language-control .custom-dropdown-group-label {
+  display: block;
+  padding: 6px 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  background: var(--group-bg);
+  color: var(--group-text);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.practice-language-control .custom-dropdown-group .item-label { color: var(--group-text); }
+.practice-language-control .custom-dropdown-item { min-height: 36px; }
+.practice-language-control .custom-dropdown-item:focus-visible,
+.practice-language-control .custom-dropdown-trigger:focus-visible {
+  outline: 2px solid #7dd3fc !important;
+  outline-offset: -2px;
+}
+
+@media (max-width: 768px) {
+  .practice-language-control .custom-dropdown-item { min-height: 42px; }
 }
 
 .filter-select {

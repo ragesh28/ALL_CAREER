@@ -11,9 +11,10 @@ const sqlLanguages = [
 ] as const;
 
 export const practiceLanguageGroups = [
-  { label: 'Programming', options: codingLanguages },
-  { label: 'Shell', options: [['bash', 'Bash']] as const },
-  { label: 'Databases and data frames', options: [...sqlLanguages, ['pythondata', 'Pandas'] as const] },
+  { label: 'Programming', tone: 'programming', options: codingLanguages },
+  { label: 'Shell', tone: 'shell', options: [['bash', 'Bash']] as const },
+  { label: 'Databases', tone: 'database', options: sqlLanguages },
+  { label: 'Data frames', tone: 'data-frame', options: [['pythondata', 'Pandas']] as const },
 ];
 
 const optionAliases = new Map<string, string>(
