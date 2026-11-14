@@ -1,41 +1,41 @@
 {
-  "run_id": "43576136781",
-  "updated_at": "2026-11-14T14:22:38.453086",
+  "run_id": "43604668762",
+  "updated_at": "2026-11-14T17:18:30.393961",
   "portals": {
     "apna": {
-      "scraped_total": 5527,
-      "new_stored_total": 226,
-      "requests_total": 612,
+      "scraped_total": 3569,
+      "new_stored_total": 111,
+      "requests_total": 408,
       "last_probe": {
-        "requests": 2,
-        "scraped": 2,
+        "requests": 3,
+        "scraped": 26,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/pre-sales-consultant-jobs-in-chennai"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 355,
+      "requests_total": 193,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/pre-sales-consultant-jobs-in-chennai/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 7696,
-      "new_stored_total": 3422,
-      "requests_total": 766,
+      "scraped_total": 0,
+      "new_stored_total": 0,
+      "requests_total": 193,
       "last_probe": {
-        "requests": 4,
-        "scraped": 72,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/pre-sales-consultant-jobs-in-chennai"
+        "requests": 1,
+        "scraped": 0,
+        "status": "blocked",
+        "http_status": 403,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
