@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1164178,
+  "total_jobs": 1164215,
   "sources": {
     "naukri": 382176,
     "linkedin": 297951,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 928,
-    "telegram_post": 616,
+    "telegram_message": 959,
+    "telegram_post": 622,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 246715,
+    "bangalore": 246716,
     "mumbai": 153895,
-    "delhi": 124610,
+    "delhi": 124612,
     "chennai": 126243,
-    "hyderabad": 113987,
+    "hyderabad": 113989,
     "pune": 94776,
-    "noida": 56905,
+    "noida": 56906,
     "ahmedabad": 44111,
     "kolkata": 40338,
-    "all_india": 22661,
+    "all_india": 22668,
     "coimbatore": 23179,
     "kochi": 18085,
-    "remote": 10785,
+    "remote": 10807,
     "jaipur": 9090,
     "maharashtra": 9744,
     "indore": 5755,
@@ -290,7 +290,7 @@
     "dl": 3382,
     "kl": 1467,
     "thane": 1163,
-    "haryana": 1895,
+    "haryana": 1896,
     "faridabad": 1079,
     "gj": 1021,
     "karnataka": 8118,
@@ -476,7 +476,7 @@
     "shahdara": 7,
     "bangaluru": 1,
     "villupuram": 1,
-    "virtual": 2,
+    "virtual": 3,
     "multiple_locations": 3,
     "nelamangala": 3,
     "bidadi": 1,
@@ -1256,5 +1256,5 @@
     "ratanada": 1,
     "waterloo_university": 1
   },
-  "generated_at": "2026-11-14T01:41:18.325554"
+  "generated_at": "2026-11-14T06:52:50.128356"
 }
