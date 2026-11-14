@@ -1,0 +1,51 @@
+{
+  "workflow_run_number": "1086",
+  "workflow_run_id": "43603877014",
+  "timestamp": "2026-11-14T14:30:27.787184",
+  "runtime_minutes": 10.24,
+  "messages_processed": 65,
+  "new_jobs_stored": 40,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 2,
+  "image_messages_processed": 16,
+  "text_messages_processed": 49,
+  "stored_locations": {
+    "Unknown": 13,
+    "Work From Home": 2,
+    "Pune (Hybrid)": 1,
+    "Bangalore": 6,
+    "Bengaluru/ Hyderabad": 1,
+    "Pune": 1,
+    "Bengaluru & Hyderabad": 1,
+    "PAN India": 1,
+    "Bangalore / Hyderabad": 2,
+    "Bengaluru (hybrid)": 1,
+    "Chennai": 1,
+    "Bhopal": 1,
+    "HITEC City, Hyderabad": 1,
+    "Hyderabad, India": 1,
+    "Pune, India": 1,
+    "Hyderabad; Bangalore; Chennai; Noida, India": 1,
+    "Delhi": 1,
+    "Gurugram": 1,
+    "Bangalore, Mumbai": 1,
+    "Hyderabad": 2
+  },
+  "stored_walkins": 3,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31150,
+      "text": "🚀 𝐀𝐈 𝐰𝐢𝐭𝐡 𝐂𝐥𝐚𝐮𝐝𝐞 𝐒𝐩𝐞𝐜𝐢𝐚𝐥𝐢𝐳𝐚𝐭𝐢𝐨𝐧 𝐛𝐲 𝐀𝐧𝐭𝐡𝐫𝐨𝐩𝐢𝐜 🎓\n\nWant to add an official Anthropic Claude AI certificate to your resume? Learn AI directly from Anthropic experts - no technical background or coding experience needed!\n\n🤖 Introduction to AI\n⚡ Maximize Productivity with AI Tools\n✍️ Master the Art of Prompting\n🛡️ Use AI Responsibly\n📈 Stay Ahead of the AI Curve\n\n✅ Beginner-Friendly | 🕐 Self-Paced | 📜 Anthropic Claude Certificate\n\n𝐄𝐍𝐑𝐎𝐋𝐋 𝐍𝐎𝐖:  https://tinyurl.com/Free-Claude-AI-Certification",
+      "timestamp": "2026-11-14T08:32:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8453,
+      "text": "🚀 Check out new reel on Meta’s AI plans!\n\nWatch here 👇\nhttps://www.instagram.com/reel/DftXmBXBtrH/",
+      "timestamp": "2026-11-14T08:15:38+00:00"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "workflow_run_number": "1086",
+  "workflow_run_id": "43603877014",
+  "timestamp": "2026-11-14T14:30:27.787184",
+  "runtime_minutes": 10.24,
+  "messages_processed": 65,
+  "new_jobs_stored": 40,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 2,
+  "image_messages_processed": 16,
+  "text_messages_processed": 49,
+  "stored_locations": {
+    "Unknown": 13,
+    "Work From Home": 2,
+    "Pune (Hybrid)": 1,
+    "Bangalore": 6,
+    "Bengaluru/ Hyderabad": 1,
+    "Pune": 1,
+    "Bengaluru & Hyderabad": 1,
+    "PAN India": 1,
+    "Bangalore / Hyderabad": 2,
+    "Bengaluru (hybrid)": 1,
+    "Chennai": 1,
+    "Bhopal": 1,
+    "HITEC City, Hyderabad": 1,
+    "Hyderabad, India": 1,
+    "Pune, India": 1,
+    "Hyderabad; Bangalore; Chennai; Noida, India": 1,
+    "Delhi": 1,
+    "Gurugram": 1,
+    "Bangalore, Mumbai": 1,
+    "Hyderabad": 2
+  },
+  "stored_walkins": 3,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "way2freshers",
+      "msg_id": 18971,
+      "text": "Not every no is a\nclosed door. Some are\njust the wrong room.\nKeep showing up.\nKeep growing. The\nright one is coming.\n-Your Next Opportunity",
+      "timestamp": "2026-11-14T07:43:48+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "getjobss",
+      "msg_id": 8351,
+      "text": "𝟯 𝗙𝗥𝗘𝗘 𝗛𝘂𝗯𝗦𝗽𝗼𝘁 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻𝘀 𝗳𝗼𝗿 𝗦𝘁𝘂𝗱𝗲𝗻𝘁𝘀 & 𝗙𝗿𝗲𝘀𝗵𝗲𝗿𝘀 𝗶𝗻 𝟮𝟬𝟮𝟲🎓 \n\n💫HubSpot Academy offers three free online certifications that match these interests.\n\n💫Pick one free course and try it out on your next college event and the certification is free.\n\n🔗 𝗟𝗶𝗻𝗸 :- 👇\n\nhttps://pdlink.in/4iM5xaQ\n\n📲 *Save & Share with your friends! 🔥*\n3 Free HubSpot\nCertifications\nFor Students & Freshers · 2026",
+      "timestamp": "2026-11-14T07:11:49+00:00"
+    }
+  ]
+}
