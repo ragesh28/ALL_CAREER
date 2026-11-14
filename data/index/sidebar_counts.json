@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1164092,
+  "total_jobs": 1164178,
   "sources": {
     "naukri": 382176,
     "linkedin": 297951,
@@ -13,7 +13,7 @@
     "glassdoor": 4839,
     "freshersworld": 4065,
     "telegram": 3577,
-    "other": 4993,
+    "other": 5079,
     "bebee": 56,
     "jobrapidocom": 65,
     "simplyhired": 60,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 246684,
-    "mumbai": 153885,
-    "delhi": 124608,
-    "chennai": 126231,
-    "hyderabad": 113967,
-    "pune": 94769,
+    "bangalore": 246715,
+    "mumbai": 153895,
+    "delhi": 124610,
+    "chennai": 126243,
+    "hyderabad": 113987,
+    "pune": 94776,
     "noida": 56905,
     "ahmedabad": 44111,
     "kolkata": 40338,
-    "all_india": 22658,
+    "all_india": 22661,
     "coimbatore": 23179,
     "kochi": 18085,
     "remote": 10785,
@@ -302,7 +302,7 @@
     "message_bangalore": 659,
     "nanakramguda": 557,
     "tamil_nadu": 4743,
-    "telangana": 4556,
+    "telangana": 4557,
     "ka": 505,
     "post_bangalore": 357,
     "panchkula": 387,
@@ -1256,5 +1256,5 @@
     "ratanada": 1,
     "waterloo_university": 1
   },
-  "generated_at": "2026-11-14T00:19:18.655340"
+  "generated_at": "2026-11-14T01:41:18.325554"
 }
