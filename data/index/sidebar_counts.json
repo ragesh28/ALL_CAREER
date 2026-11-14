@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1182527,
+  "total_jobs": 1182538,
   "sources": {
     "naukri": 385386,
     "linkedin": 303248,
@@ -40,7 +40,7 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 987,
+    "telegram_message": 998,
     "telegram_post": 634,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
@@ -277,7 +277,7 @@
     "noida": 57831,
     "ahmedabad": 44840,
     "kolkata": 41120,
-    "all_india": 22681,
+    "all_india": 22692,
     "coimbatore": 23846,
     "kochi": 18540,
     "remote": 10911,
@@ -1270,5 +1270,5 @@
     "ramesh_vihar_colony": 1,
     "naka_madar_colony": 1
   },
-  "generated_at": "2026-11-14T17:19:05.941550"
+  "generated_at": "2026-11-14T23:15:05.533604"
 }
