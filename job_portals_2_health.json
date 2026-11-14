@@ -1,41 +1,41 @@
 {
-  "run_id": "43444217242",
-  "updated_at": "2026-11-13T17:36:15.142871",
+  "run_id": "43547390886",
+  "updated_at": "2026-11-14T08:29:54.581950",
   "portals": {
     "apna": {
-      "scraped_total": 3480,
-      "new_stored_total": 162,
-      "requests_total": 387,
+      "scraped_total": 5837,
+      "new_stored_total": 63,
+      "requests_total": 721,
       "last_probe": {
-        "requests": 3,
-        "scraped": 27,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "http_error",
+        "http_status": 404,
+        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-gurgaon"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 182,
+      "requests_total": 397,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-gurgaon/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 182,
+      "requests_total": 397,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-gurgaon"
       }
     }
   }
