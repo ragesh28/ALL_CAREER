@@ -30616,5 +30616,914 @@
         "total_jobs": 0,
         "fetched_at": "2026-11-13",
         "company": "ITC Infotech"
+    },
+    {
+        "title": "Graphics Research Engineer - Staff",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "GPU Performance Modelling Architect",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "GPU Compute & MLIR Compiler Principal Engineer   AI Workloads",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "Associate Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "NOC DV Staff Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "RFA Design Engineer, Senior",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "Director, Engineering   Hearables & Wearables Software",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://careers.qualcomm.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Qualcomm"
+    },
+    {
+        "title": "Senior DevOps Engineer II",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Lead Product AI Engineer",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Operations Manager-RAN",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Transmission SME",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Automation SME",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Senior Engineer SAPC",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Technical authority Expert",
+        "location": "Kolkata",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Sub Project Manager - HVDC Control & Protection R&D",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529452",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Power Transformer Tank - Mechanical design engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529450",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Senior Manager - Risk (Pune)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529380",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Global Audit Manager Partner Business",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529368",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Sr. Process Associate - Finance & Procurement Services",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529147",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Scrum Master",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529129",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Siemens"
+    },
+    {
+        "title": "Security Compliance Specialist",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Security-Compliance-Specialist_R38306-1",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Amadeus"
+    },
+    {
+        "title": "Team Leader",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://careers.bankofamerica.com/en-us/job-detail/26034408/team-leader-multiple-locations",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bank of America"
+    },
+    {
+        "title": "Mech Design Engr II",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160647",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Lead Mask/Layout Design Tech",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/160814",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Account Manager",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/161248",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Account Manager",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/161249",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sourcing Functional Implementation Leader",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/161317",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Finance Analyst",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/161718",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Advanced Mech Design Engr",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/161742",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Sr Strategic Sourcing Spec",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162240",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Advanced Systems Engr",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162193",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Cyber Sec Archt/Engr II",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162197",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Application Engr I",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162215",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Systems Eng Supervisor",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162217",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "Application Engr II",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/162216",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Honeywell"
+    },
+    {
+        "title": "OpenText Workflow Backend Developer   Operations Orchestration (DevOps Team)",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000161475293",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bosch"
+    },
+    {
+        "title": "Senior Solution Architect - Custom Web Aplications",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000161447519",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bosch"
+    },
+    {
+        "title": "Senior Associate - Project Management Office",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000161432058",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bosch"
+    },
+    {
+        "title": "KNIME Specialist",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000161428389",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bosch"
+    },
+    {
+        "title": "IN_Bosch Rexorth India_Manager_Service Sales_Bangalore/Chennai",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.smartrecruiters.com/BoschGroup/744000161424929",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Bosch"
+    },
+    {
+        "title": "Site Admin Executive",
+        "location": "Haryana",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "MGF Service Delivery Specialist",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "Logistics Product Development Lead - UKI",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "MGF Order to Cash Team Leader",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "Senior SAP ABAP Developer - AI & Automation",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "Commercial Excellence - FBP",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "People Operations - Global Sr. Data & Digital advisor",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Maersk"
+    },
+    {
+        "title": "Associate Analyst, Analytics & Metrics",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4477711652",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Mastercard"
+    },
+    {
+        "title": "Vice President, Full-Stack Engineer",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://eofe.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/81228",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "BNY"
+    },
+    {
+        "title": "Analyst - Compliance",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26015867",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "AI Engineer II",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26015961",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Apprentice",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016044",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Analyst-Compliance GFCSU Quality Control Review",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016100",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Analyst-Compliance GFCSU Quality Control Review",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016102",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Manager GFCSU Quality Control Review",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016103",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Manager - Data Management Strategy & Product",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016253",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Senior Analyst-Data Science",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016354",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Senior Manager-Control Management",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016433",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Analyst-Compliance",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016434",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Apprentice",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://egug.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/26016451",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "American Express"
+    },
+    {
+        "title": "Associate Security Architect",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-extu-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/4513",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Akamai"
+    },
+    {
+        "title": "Principal Software Engineer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488642121",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ABB"
+    },
+    {
+        "title": "Accounting and Reporting Analyst",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488632396",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ABB"
+    },
+    {
+        "title": "Procurement Manager",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4487731603",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ABB"
+    },
+    {
+        "title": "Applied AI Specialist-Cloud FullStack",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488540290",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "IBM"
+    },
+    {
+        "title": "Applied AI Specialist-Cloud FullStack",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488534654",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "IBM"
+    },
+    {
+        "title": "Applied AI Specialist-Cloud FullStack",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488546105",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "IBM"
+    },
+    {
+        "title": "Principal Engineer Global NPI",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41725",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Nokia"
+    },
+    {
+        "title": "Subject Matter Expert   SDM",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/41250",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Nokia"
+    },
+    {
+        "title": "Network Engineer L2   Operations - RnS",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489597236",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Cognizant"
+    },
+    {
+        "title": "DevOps Engineer 3",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://jobs.comcast.com/job/chennai/devops-engineer-3/45483/103239825616",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Comcast"
+    },
+    {
+        "title": "Global Digital Marketing Specialist, Marketing Intelligence & Insights Manager",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490338109",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Grundfos"
+    },
+    {
+        "title": "Global Digital Marketing Manager, Always on Communication",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490322607",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Grundfos"
+    },
+    {
+        "title": "Global Digital Marketing Specialist, Integrated Search & Web Experience",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490326476",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Grundfos"
+    },
+    {
+        "title": "Senior Data Scientist - R01573750",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488946952",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Brillio"
+    },
+    {
+        "title": "Senior Lead AI/ML Engineer - R01573662",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488958270",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Brillio"
+    },
+    {
+        "title": "Lead Quality Engineer - R01573517",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488967008",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Brillio"
+    },
+    {
+        "title": "Data Science Lead - R01573598",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488950656",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Brillio"
+    },
+    {
+        "title": "Senior Lead AI/ML Engineer - R01573661",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488956466",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Brillio"
+    },
+    {
+        "title": "Professional, Network Engineering",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490713194",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Danfoss"
+    },
+    {
+        "title": "SRE II (L3 Tech Support+Virtualization) 4-12yrs Pune",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489537710",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Nutanix"
+    },
+    {
+        "title": "Associate Technical Program Manager",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai-Remote/Associate-Technical-Program-Manager_JR103785",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "BrowserStack"
+    },
+    {
+        "title": "Enterprise Account Manager",
+        "location": "Remote",
+        "posted": "",
+        "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/New-York-Remote/Enterprise-Account-Manager_JR103773",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "BrowserStack"
+    },
+    {
+        "title": "Principal Technical Program Manager",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://browserstack.wd3.myworkdayjobs.com/job/Mumbai---Work-From-Office/Principal-Technical-Program-Manager_JR103784-1",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "BrowserStack"
+    },
+    {
+        "title": "CMC & Manufacturing Lead, Life Sciences",
+        "location": "Remote",
+        "posted": "",
+        "apply_url": "https://job-boards.greenhouse.io/anthropic/jobs/5481396008",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Anthropic"
+    },
+    {
+        "title": "Staff Software Engineer, Internal Products",
+        "location": "Remote",
+        "posted": "",
+        "apply_url": "https://job-boards.greenhouse.io/anthropic/jobs/5481096008",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Anthropic"
+    },
+    {
+        "title": "Software Development Engineer, CS ARIA",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "/en/jobs/10604005/software-development-engineer-cs-aria",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Amazon AI"
+    },
+    {
+        "title": "Software Development Engineer, SW-Device OS",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "/en/jobs/10605092/software-development-engineer-sw-device-os",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Amazon AI"
+    },
+    {
+        "title": "HR Business Partner",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490700718",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Societe Generale"
+    },
+    {
+        "title": "Specialist Software Engineer - .Net Developer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490708446",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Societe Generale"
+    },
+    {
+        "title": "Business analyst - IT & SQL",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490756496",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Societe Generale"
+    },
+    {
+        "title": "Sr. Consultant Expert - HR Transformation",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490592947",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Societe Generale"
+    },
+    {
+        "title": "Quality Automation Specialist, AVP",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490751667",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Quality Automation Specialist, AVP",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490741901",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Data & Analytics Analyst I B7",
+        "location": "Delhi",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490748843",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Data & Analytics Analyst I B7",
+        "location": "Chennai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4490748677",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "Customer Service & Operations Analyst",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4491002476",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "NatWest Group"
+    },
+    {
+        "title": "SharePoint Administrator - On-premises",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489556766",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ITC Infotech"
+    },
+    {
+        "title": "AEM Developer",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489575280",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ITC Infotech"
+    },
+    {
+        "title": "Anaplan Developer",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489554373",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "ITC Infotech"
+    },
+    {
+        "title": "GM India | Healthtech Company | India Business",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488904533",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-14",
+        "company": "Meta"
     }
 ]
