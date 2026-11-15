@@ -9,6 +9,7 @@ import gzip
 import json
 import re
 import sqlite3
+import subprocess
 from urllib.parse import urlsplit
 import tempfile
 from collections import Counter, defaultdict
@@ -24,8 +25,14 @@ else:
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
-BUILD_VERSION = 4
+BUILD_VERSION = 5
 PORTALS = ('telegram_message', 'telegram_post', 'google_images', 'freshersworld', 'internshala', 'workindia', 'timesjobs', 'linkedin', 'naukri', 'foundit', 'glassdoor', 'shine', 'hirist', 'apna')
+PREPARED_FILTER_BUILDER = ROOT / 'scripts/build_prepared_job_filters.mjs'
+PREPARED_FILTER_INPUTS = (
+    PREPARED_FILTER_BUILDER,
+    ROOT / 'all-career-app/src/data/preparedJobFilters.ts',
+    ROOT / 'all-career-app/src/utils/filterUtils.ts',
+)
 
 
 def read_job_array(raw, path):
@@ -125,6 +132,8 @@ def build(root=ROOT, page_size=250):
         sources = archives + shards + [root / 'data/index/walkin_jobs.json', root / 'scraped_image_walkin_jobs.json']
         inputs_hash = hashlib.sha256()
         inputs_hash.update(f'web-catalog-{BUILD_VERSION}-{page_size}'.encode())
+        for rules in PREPARED_FILTER_INPUTS:
+            inputs_hash.update(rules.read_bytes())
         input_counts = Counter()
         recovered_conflicts = []
         for path in sources:
@@ -172,6 +181,12 @@ def build(root=ROOT, page_size=250):
         db.execute('CREATE INDEX newest ON jobs(date DESC, id)')
         db.execute('CREATE INDEX walkin_city ON jobs(walkin,city,date DESC,id)')
         db.execute('CREATE INDEX source_date ON jobs(source,date DESC,id)')
+        db.commit()
+        prepared = json.loads(subprocess.run(
+            ['node', str(PREPARED_FILTER_BUILDER), str(Path(temporary) / 'sort.db'), str(out.resolve())],
+            check=True,
+            stdout=subprocess.PIPE,
+        ).stdout)
 
         def pages(query, params=()):
             descriptors, batch, size = [], [], 0
@@ -230,6 +245,7 @@ def build(root=ROOT, page_size=250):
         (out / manifest_name).parent.mkdir(parents=True, exist_ok=True)
         (out / manifest_name).write_bytes(gzip.compress(manifest_bytes, mtime=0))
         summary['manifest'] = 'data/web/' + manifest_name
+        summary['filtered_catalog'] = prepared['index']
         write_json(out / 'summary.json', summary)
         preview = [json.loads(row[0]) for row in db.execute('SELECT payload FROM jobs ORDER BY date DESC,id LIMIT 50')]
         write_json(out / 'latest.json', preview)
@@ -241,6 +257,7 @@ def build(root=ROOT, page_size=250):
         paths.update(p['path'] for rows in walkin_pages.values() for p in rows)
         paths.update(p['path'] for rows in source_pages.values() for p in rows)
         paths.add('data/web/' + manifest_name)
+        paths.update(prepared['paths'])
         for path in paths:
             retained[path] = now
         for path, referenced in list(retained.items()):

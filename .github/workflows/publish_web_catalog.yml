@@ -37,7 +37,11 @@ jobs:
           fetch-depth: 1
           sparse-checkout: |
             /scripts/build_web_catalog.py
+            /scripts/build_prepared_job_filters.mjs
             /scripts/job_archive_paths.py
+            /all-career-app/package.json
+            /all-career-app/src/data/preparedJobFilters.ts
+            /all-career-app/src/utils/filterUtils.ts
             /data/jobs/
             /data/job_archives/
             /data/index/
@@ -48,6 +52,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Build compressed browser pages and independent summaries
         run: python scripts/build_web_catalog.py
       - name: Publish catalog snapshot

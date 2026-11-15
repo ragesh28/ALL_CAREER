@@ -10,7 +10,8 @@ import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
 import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT, SOFTWARE_TECHNICAL } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
-import { CatalogSummary, matchesCatalogLocation, matchesCatalogSource } from '../../services/catalogTypes';
+import { CatalogSummary, catalogCity, matchesCatalogLocation, matchesCatalogSource } from '../../services/catalogTypes';
+import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey } from '../../data/preparedJobFilters';
 import { calculateWalkinFacets, WalkinFacetInput, WalkinFacets } from '../../services/walkinFacets';
 
 interface AllJobsViewProps {
@@ -29,6 +30,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const [batchLoading, setBatchLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [batchError, setBatchError] = useState(false);
+  const [preparedBatch, setPreparedBatch] = useState<{ key: string; catalog: string; jobs: Job[]; total?: number } | null>(null);
   const batchFailures = useRef(0);
   const batchTarget = useRef(50);
   const lastCatalogCheck = useRef(0);
@@ -54,7 +56,6 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('latest');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const JOBS_PER_PAGE = 50;
 
   // Deferred filter values for non-blocking background job filtering & 0ms UI responsiveness
   const deferredSearchTerm = useDeferredValue(searchTerm);
@@ -70,6 +71,19 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const deferredWalkinDates = useDeferredValue(selectedWalkinDates);
   const deferredCategory = useDeferredValue(selectedCategory);
   const deferredSortBy = useDeferredValue(sortBy);
+
+  const preparedSource = deferredSources.size === 1 ? deferredSources.values().next().value : '';
+  const preparedCity = deferredLocations.size === 1 ? catalogCity(deferredLocations.values().next().value || '') : '';
+  const preparedKey = summary?.filtered_catalog && deferredCategory === 'software_technical' &&
+    deferredExpValue === 0 && deferredSortBy === 'latest' && deferredDateFilter === 'all' &&
+    !deferredSearchTerm.trim() && !deferredRoles.size && !deferredSkills.size && !deferredCompanies.size &&
+    !deferredWalkinOnly && !deferredWalkinDates.size && PREPARED_SOURCES.includes(preparedSource || '') &&
+    PREPARED_CITIES.includes(preparedCity)
+    ? preparedJobFilterKey(preparedSource!, preparedCity, deferredExactExp)
+    : null;
+  const prepared = preparedBatch && preparedBatch.key === preparedKey && preparedBatch.catalog === summary?.filtered_catalog
+    ? preparedBatch
+    : null;
 
   const applySummary = (next: CatalogSummary) => {
     if (summaryRef.current !== next) {
@@ -183,20 +197,28 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
         const latest = await jobService.refreshSummary();
         if (controller.signal.aborted) return null;
         if (latest) {
-          const changed = latest.manifest !== summaryRef.current?.manifest;
+          const changed = latest.manifest !== summaryRef.current?.manifest ||
+            latest.filtered_catalog !== summaryRef.current?.filtered_catalog;
           applySummary(latest);
           if (changed) return null; // The new snapshot starts its own batch.
         }
       }
-      const result = await jobService.loadUntil(
+      const term = deferredSearchTerm.toLowerCase().trim();
+      const matches = (job: Job) => checkJobMatchWithout(job, 'none', term);
+      const snapshot = summaryRef.current;
+      const catalog = snapshot?.filtered_catalog;
+      const indexed = preparedKey ? await jobService.loadPreparedJobs(preparedKey, target, matches, controller.signal) : null;
+      if (controller.signal.aborted || snapshot !== summaryRef.current) return null;
+      const result = indexed ?? await jobService.loadUntil(
         { sources: [...deferredSources], locations: [...deferredLocations], walkin: deferredWalkinOnly || deferredWalkinDates.size > 0, postedDays: ({ '24h': 1, '3d': 3, '7d': 7, '15d': 15 } as Record<string, number>)[deferredDateFilter] },
-        job => checkJobMatchWithout(job, 'none', deferredSearchTerm.toLowerCase().trim()),
+        matches,
         target,
         incoming => { if (!controller.signal.aborted) setJobs(incoming); },
         controller.signal
       );
-      if (controller.signal.aborted) return null;
-      setJobs(result.jobs);
+      if (controller.signal.aborted || snapshot !== summaryRef.current) return null;
+      setPreparedBatch(indexed && preparedKey && catalog ? { key: preparedKey, catalog, jobs: indexed.jobs, total: indexed.total } : null);
+      setJobs(indexed ? jobService.getAllJobs() : result.jobs);
       setHasMore(result.hasMore);
       setBatchError(result.error);
       batchFailures.current = result.error ? batchFailures.current + 1 : 0;
@@ -490,6 +512,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
 
   // Filtered jobs matching all filters + search (deferred for non-blocking UI)
   const filteredJobs = useMemo(() => {
+    if (prepared) return prepared.jobs;
     const term = deferredSearchTerm.toLowerCase().trim();
     const list = jobs.filter(j => checkJobMatchWithout(j, 'none', term));
     if (deferredSortBy === 'company') {
@@ -503,6 +526,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     }
     return list;
   }, [
+    prepared,
     jobs,
     deferredSearchTerm,
     deferredSources,
@@ -530,7 +554,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
       clearTimeout(timer);
       loadController.current?.abort();
     };
-  }, [summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
+  }, [summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory, preparedKey]);
 
   // Pagination calculation: 50 jobs per page
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
@@ -834,9 +858,11 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
         {/* Right Main Grid */}
         <main className="alljobs-main">
           <p role="status" style={{ color: '#94a3b8', fontSize: '0.8rem', margin: '0 0 12px' }}>
-            {filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
-              ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · Newest first · More jobs load in small batches'
-              : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
+            {prepared?.total !== undefined
+              ? prepared.total.toLocaleString() + ' matching jobs · Newest first'
+              : filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
+                ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · Newest first · More jobs load in small batches'
+                : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
           </p>
           {/* Category count pills */}
           <CategoryCountPills

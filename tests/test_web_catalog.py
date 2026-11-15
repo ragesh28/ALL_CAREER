@@ -11,6 +11,55 @@ from scripts.job_archive_paths import ARCHIVE_DIRECTORY
 
 
 class WebCatalogTests(unittest.TestCase):
+    def test_prepares_software_jobs_that_accept_zero_years(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            archive = root / 'all_jobs_1.json'
+            base = {
+                'title': 'Software Developer',
+                'company': 'Fixture',
+                'source': 'naukri',
+                'location': 'Chennai',
+                'experience': '0 - 2 Years',
+            }
+            jobs = [
+                {**base, 'url': f'https://example.com/job/{i}', 'date_posted': f'2026-11-{i // 5 + 4:02d}'}
+                for i in range(52)
+            ]
+            jobs.extend([
+                {**base, 'url': 'https://example.com/fresher', 'experience': 'Fresher', 'date_posted': '2026-11-15'},
+                {**base, 'url': 'https://example.com/senior', 'experience': '1 - 3 Years', 'date_posted': '2026-11-16'},
+                {**base, 'url': 'https://example.com/support', 'title': 'Customer Service Executive', 'date_posted': '2026-11-16'},
+                {**base, 'url': 'https://example.com/electrical', 'title': 'Electrical Engineer', 'date_posted': '2026-11-16'},
+                {**base, 'url': 'https://example.com/other-source', 'source': 'indeed'},
+                {**base, 'url': 'https://example.com/other-city', 'location': 'Bengaluru'},
+                {**base, 'url': 'https://example.com/unspecified', 'experience': None},
+            ])
+            archive.write_text(json.dumps(jobs), encoding='utf-8')
+            summary = build(root)
+
+            def read(path):
+                return json.loads(gzip.decompress((root / path).read_bytes()))
+
+            index = read(summary['filtered_catalog'])
+            normal = index['queries']['naukri/chennai/software_technical/zero']
+            exact = index['queries']['naukri/chennai/software_technical/exact-zero']
+            self.assertEqual(index['page_size'], 50)
+            self.assertEqual(normal['count'], 53)
+            pages = [read(path) for path in normal['pages']]
+            self.assertEqual([len(rows) for rows in pages], [50, 3])
+            rows = [job for page in pages for job in page]
+            dates = [job['date_posted'] for job in rows]
+            self.assertEqual(dates, sorted(dates, reverse=True))
+            self.assertEqual(rows[0]['url'], 'https://example.com/fresher')
+            self.assertTrue(all(job['_minExp'] == 0 and job['_normCategory'] == 'Software Technical' for job in rows))
+            self.assertEqual(exact['count'], 1)
+            self.assertEqual([job['url'] for job in read(exact['pages'][0])], ['https://example.com/fresher'])
+            self.assertEqual(index['queries']['naukri/bangalore/software_technical/zero']['count'], 1)
+            self.assertEqual(index['queries']['naukri/pune/software_technical/zero'], {'count': 0, 'pages': []})
+            retention = json.loads((root / 'data/web/retention.json').read_bytes())
+            self.assertTrue({summary['filtered_catalog'], *normal['pages'], *exact['pages']} <= set(retention))
+
     def test_recovers_both_archive_conflict_alternatives(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -258,6 +258,23 @@ export function getJobWalkinDates(job: any): string[] {
   return getWalkinDateObjects(job).map(item => item.label);
 }
 
+export const catalogCity = (value: string) =>
+  value.toLowerCase().trim().replace(/\bbengaluru\b/g, 'bangalore').replace(/\bnew delhi\b/g, 'delhi');
+
+export function catalogJobKey(job: {
+  title?: string;
+  company?: string;
+  location?: string;
+  url?: unknown;
+  apply_url?: unknown;
+  telegram_url?: unknown;
+  flyer_image_url?: unknown;
+}) {
+  const details = [job.title, job.company, job.location].map(value => (value ?? '').trim().toLowerCase()).join('|');
+  const url = String(job.url || job.apply_url || job.telegram_url || job.flyer_image_url || '').trim().toLowerCase();
+  return url && url !== '#' ? 'url:' + url + '|' + details : details;
+}
+
 export function parseExperience(expStr: string | undefined | null): [number | null, number | null] {
   if (!expStr) return [null, null];
   const s = String(expStr).toLowerCase().trim();

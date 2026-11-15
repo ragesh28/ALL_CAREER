@@ -3,9 +3,9 @@
 Scrapers continue to own `data/jobs/`, `data/job_archives/all_jobs_<number>.json` archives,
 `scraped_image_walkin_jobs.json` and `data/index/walkin_jobs.json`.
 `Publish Fast Web Catalog` runs after scraper completions, hourly, or manually.
-It publishes a separate browser projection in `data/web/` using Python's standard library.
-No database service or paid backend is required. The temporary SQLite file only sorts
-the source records inside the GitHub Actions runner.
+It publishes a separate browser projection in `data/web/`. Python builds the
+temporary SQLite catalog and Node.js 24 runs the same experience and category
+rules used by the React app. The runner publishes static files to GitHub Pages.
 
 The empty root-level archive marker lets scraper runs checked out before the
 move finish staging their results with the old wildcard. Only numbered files
@@ -27,6 +27,10 @@ are archive inputs. New chunks are written to the archive directory.
   until 50 actual matches are available or the candidate files are exhausted.
   Sources with fewer than 50 matches therefore display all results without
   repeated Load more clicks. Smaller sources also get dedicated page indexes.
+- For Software Technical at 0 years with one supported portal and city, the
+  summary points to a small filtered index. The index provides the full match
+  count and one compressed file per 50 matching jobs, newest first. The catalog
+  includes both zero-year experience ranges and the exact-zero checkbox mode.
 - Walk-in pages are additionally grouped by city. Selecting Chennai walk-ins
   requests relevant city pages, rather than the entire walk-in index.
 - General source/location facets are computed from the full summary. Text,
@@ -63,7 +67,7 @@ is the React app served by root `index.html` and `#all_jobs`.
 
 ## Verification
 
-Run from repository root:
+Run from the repository root with Python 3.11 and Node.js 24.
 
 ```powershell
 python -m unittest tests.test_web_catalog

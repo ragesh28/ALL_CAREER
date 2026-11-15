@@ -1,6 +1,7 @@
-import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, isBrowserCatalog, isCatalogSummary, isJobPage, matchesCatalogLocation, matchesCatalogSource } from './catalogTypes';
+import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, PreparedJobCatalog, isBrowserCatalog, isCatalogSummary, isJobPage, isPreparedJobCatalog, matchesCatalogLocation, matchesCatalogSource } from './catalogTypes';
+import { JOBS_PER_PAGE } from '../data/preparedJobFilters';
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
-import { isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../utils/filterUtils';
+import { catalogJobKey, isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource, SOFTWARE_TECHNICAL } from '../utils/filterUtils';
 import { fetchCatalogJson, fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
 
 export class JobService {
@@ -19,6 +20,8 @@ export class JobService {
   private summary: CatalogSummary | null = null;
   private summaryRequest: Promise<CatalogSummary | null> | null = null;
   private browserCatalog: BrowserCatalog | null = null;
+  private preparedCatalog: PreparedJobCatalog | null = null;
+  private preparedPages = new Map<string, Job[]>();
 
   refreshSummary(): Promise<CatalogSummary | null> {
     if (this.summaryRequest) return this.summaryRequest;
@@ -31,13 +34,19 @@ export class JobService {
         // GitHub Pages and the fallback host can publish at different times.
         return previous;
       }
-      if (previous && previous.manifest !== next.manifest) {
+      const manifestChanged = previous && previous.manifest !== next.manifest;
+      if (manifestChanged) {
         this.allJobsMap.clear();
         this.loadedShards.clear();
         this.failedShards.clear();
         this.browserCatalog = null;
       }
+      if (manifestChanged || previous?.filtered_catalog !== next.filtered_catalog) {
+        this.preparedCatalog = null;
+        this.preparedPages.clear();
+      }
       if (previous && previous.manifest === next.manifest &&
+          previous.filtered_catalog === next.filtered_catalog &&
           previous.generated_at === next.generated_at && previous.total_jobs === next.total_jobs) return previous;
       this.summary = next;
       this.sidebarCounts = next;
@@ -50,6 +59,44 @@ export class JobService {
     const rows = await fetchCatalogJson('data/web/latest.json', isJobPage);
     if (rows) this.ingestJobs(rows);
     return rows ?? [];
+  }
+
+  async loadPreparedJobs(
+    key: string,
+    target: number,
+    matches: (job: Job) => boolean,
+    signal: AbortSignal
+  ): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean; total?: number } | null> {
+    const path = this.summary?.filtered_catalog;
+    if (!path) return null;
+    const manifest = this.summary?.manifest;
+    const current = () => !signal.aborted && this.summary?.filtered_catalog === path && this.summary.manifest === manifest;
+    const index = this.preparedCatalog ?? await fetchCatalogJson(path, isPreparedJobCatalog);
+    if (!current()) return null;
+    if (!index) return { jobs: [], hasMore: true, error: true };
+    this.preparedCatalog = index;
+    const query = index.queries[key];
+    if (!query) return null;
+
+    const jobs: Job[] = [];
+    const requested = query.pages.slice(0, Math.ceil(target / JOBS_PER_PAGE));
+    for (const [pageNumber, pagePath] of requested.entries()) {
+      const cached = this.preparedPages.get(pagePath);
+      const expected = Math.min(JOBS_PER_PAGE, query.count - pageNumber * JOBS_PER_PAGE);
+      const rows = cached ?? await fetchCatalogJson(pagePath, (value): value is Job[] =>
+        isJobPage(value) && value.length === expected && value.every(job =>
+          job._minExp === 0 && job._normCategory === SOFTWARE_TECHNICAL &&
+          (job._maxExp === null || (typeof job._maxExp === 'number' && Number.isFinite(job._maxExp))) &&
+          matches(job)));
+      if (!current()) return null;
+      if (!rows) return { jobs, hasMore: true, error: true, total: query.count };
+      if (!cached) {
+        this.ingestJobs(rows, true);
+        this.preparedPages.set(pagePath, rows);
+      }
+      jobs.push(...rows);
+    }
+    return { jobs, hasMore: jobs.length < query.count, error: false, total: query.count };
   }
 
   async initCatalog(
@@ -177,7 +224,7 @@ export class JobService {
     return this.getAllJobs();
   }
 
-  ingestJobs(rows: Job[]): number {
+  ingestJobs(rows: Job[], hasPreparedFields = false): number {
     if (!Array.isArray(rows)) return 0;
     let added = 0;
     for (const r of rows) {
@@ -200,9 +247,7 @@ export class JobService {
       }
       if (srcStr) r.source = srcStr;
 
-      const identityUrl = String(r.url || (r as any).apply_url || (r as any).telegram_url || (r as any).flyer_image_url || '').trim();
-      const detailsKey = `${titleStr.trim().toLowerCase()}|${compStr.trim().toLowerCase()}|${locStr.trim().toLowerCase()}`;
-      const key = identityUrl && identityUrl !== '#' ? `url:${identityUrl.toLowerCase()}|${detailsKey}` : detailsKey;
+      const key = catalogJobKey(r);
       if (!this.allJobsMap.has(key)) {
         r.category = this.classifyRoleCategory(titleStr || r.role || '');
 
@@ -220,12 +265,14 @@ export class JobService {
         }
         r._dateDaysAgo = daysAgo;
 
-        const [minE, maxE] = parseExperience(r.experience);
-        r._minExp = minE;
-        r._maxExp = maxE;
+        if (!hasPreparedFields) {
+          const [minE, maxE] = parseExperience(r.experience);
+          r._minExp = minE;
+          r._maxExp = maxE;
+          r._normCategory = classifyJobCategory(r);
+        }
         r._normSource = srcStr;
         r._isWalkinJob = isWalkinJob(r);
-        r._normCategory = classifyJobCategory(r);
 
         const hay = [
           titleStr,

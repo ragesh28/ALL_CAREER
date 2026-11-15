@@ -1,10 +1,14 @@
 import { Job, SidebarCounts } from '../types/jobs';
-import { isOtherSource } from '../utils/filterUtils';
+import { JOBS_PER_PAGE } from '../data/preparedJobFilters';
+import { catalogCity, isOtherSource } from '../utils/filterUtils';
+
+export { catalogCity };
 
 export interface CatalogSummary extends SidebarCounts {
   schema: number;
   generated_at: string;
   manifest: string;
+  filtered_catalog?: string;
   source_locations: Record<string, Record<string, number>>;
   walkins: {
     total: number;
@@ -37,8 +41,11 @@ export interface CatalogFilters {
   postedDays?: number;
 }
 
-export const catalogCity = (value: string) =>
-  value.toLowerCase().trim().replace(/\bbengaluru\b/g, 'bangalore').replace(/\bnew delhi\b/g, 'delhi');
+export interface PreparedJobCatalog {
+  schema: 1;
+  page_size: number;
+  queries: Record<string, { count: number; pages: string[] }>;
+}
 
 export function matchesCatalogLocation(location: string, selections: Iterable<string>): boolean {
   const actual = catalogCity(location);
@@ -83,6 +90,7 @@ function isCountMatrix(value: unknown): boolean {
 
 export function isCatalogSummary(value: unknown): value is CatalogSummary {
   if (!isRecord(value) || value.schema !== 1 || !isCatalogPath(value.manifest)) return false;
+  if (value.filtered_catalog !== undefined && !isCatalogPath(value.filtered_catalog)) return false;
   const walkins = value.walkins;
   return isCount(value.total_jobs) &&
     isCountMap(value.sources) && isCountMap(value.locations) && isCountMatrix(value.source_locations) &&
@@ -111,4 +119,12 @@ export function isBrowserCatalog(value: unknown): value is BrowserCatalog {
 export function isJobPage(value: unknown): value is Job[] {
   return Array.isArray(value) && value.every(row =>
     isRecord(row) && (typeof row.title === 'string' || typeof row.role === 'string'));
+}
+
+export function isPreparedJobCatalog(value: unknown): value is PreparedJobCatalog {
+  return isRecord(value) && value.schema === 1 && value.page_size === JOBS_PER_PAGE &&
+    isRecord(value.queries) && Object.values(value.queries).every(query =>
+      isRecord(query) && isCount(query.count) && Array.isArray(query.pages) &&
+      query.pages.length === Math.ceil(query.count / JOBS_PER_PAGE) &&
+      query.pages.every(isCatalogPath));
 }
