@@ -1,41 +1,41 @@
 {
-  "run_id": "43665958426",
-  "updated_at": "2026-11-15T07:55:26.990237",
+  "run_id": "43692147255",
+  "updated_at": "2026-11-15T13:47:34.518415",
   "portals": {
     "apna": {
-      "scraped_total": 6764,
-      "new_stored_total": 39,
-      "requests_total": 764,
+      "scraped_total": 8125,
+      "new_stored_total": 193,
+      "requests_total": 731,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-mumbai"
+        "requests": 2,
+        "scraped": 23,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/marketing-manager-jobs-in-chennai"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 394,
+      "requests_total": 373,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-mumbai/"
+        "url": "https://www.workindia.in/marketing-manager-jobs-in-chennai/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 394,
+      "requests_total": 373,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-mumbai"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-chennai"
       }
     }
   }
