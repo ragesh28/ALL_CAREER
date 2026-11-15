@@ -486,16 +486,16 @@ export function detectPortalInfo(job: any): PortalInfo {
 
 const COMPANY_LOGO_MEMO_CACHE = new Map<string, LogoData>();
 
-export function getCompanyLogo(name: string): LogoData {
+export function getCompanyLogo(name: string, verifiedDomain?: string): LogoData {
   const rawKey = String(name || 'DIRECT RECRUITER').trim();
-  if (COMPANY_LOGO_MEMO_CACHE.has(rawKey)) {
-    return COMPANY_LOGO_MEMO_CACHE.get(rawKey)!;
-  }
+  const cacheKey = verifiedDomain ? JSON.stringify([rawKey, verifiedDomain]) : rawKey;
+  const cached = COMPANY_LOGO_MEMO_CACHE.get(cacheKey);
+  if (cached) return cached;
 
   const clean = rawKey.replace(/\(.*\)/, '').replace(/\b(inc|corp|corporation|llc|pvt|ltd|limited|india)\b/gi, '').trim();
   
   // 1. Direct match in DOMAIN_MAP
-  let domain = DOMAIN_MAP[rawKey] || DOMAIN_MAP[clean];
+  let domain = verifiedDomain || DOMAIN_MAP[rawKey] || DOMAIN_MAP[clean];
 
   // 2. Case-insensitive search in DOMAIN_MAP
   if (!domain) {
@@ -532,7 +532,7 @@ export function getCompanyLogo(name: string): LogoData {
   const cleanLower = clean.toLowerCase().trim();
 
   let localLogo = LOCAL_COMPANY_LOGOS[rawLower] || LOCAL_COMPANY_LOGOS[cleanLower];
-  if (!localLogo) {
+  if (!localLogo && !verifiedDomain) {
     for (const [k, v] of Object.entries(LOCAL_COMPANY_LOGOS)) {
       if (k.length >= 3 && (rawLower.includes(k) || cleanLower.includes(k))) {
         localLogo = v;
@@ -553,7 +553,7 @@ export function getCompanyLogo(name: string): LogoData {
     domain
   };
 
-  COMPANY_LOGO_MEMO_CACHE.set(rawKey, result);
+  COMPANY_LOGO_MEMO_CACHE.set(cacheKey, result);
   return result;
 }
 

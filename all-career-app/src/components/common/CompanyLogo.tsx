@@ -6,21 +6,22 @@ interface CompanyLogoProps {
   size?: 'sm' | 'md' | 'lg' | number;
   className?: string;
   style?: React.CSSProperties;
+  brand?: { domain: string; image?: string };
 }
 
-
 export const CompanyLogo: React.FC<CompanyLogoProps> = props => (
-  <LogoImage key={props.name} {...props} />
+  <LogoImage key={JSON.stringify([props.name, props.brand?.domain, props.brand?.image])} {...props} />
 );
 
 const LogoImage: React.FC<CompanyLogoProps> = ({
   name,
   size = 'sm',
   className = '',
-  style = {}
+  style = {},
+  brand,
 }) => {
-  const logo = getCompanyLogoData(name);
-  const sources = [...new Set([logo.local, logo.google, logo.duckduckgo, logo.unavatar].filter(Boolean))];
+  const logo = getCompanyLogoData(name, brand?.domain);
+  const sources = [...new Set([logo.local, brand?.image, logo.google, logo.duckduckgo, logo.unavatar].filter(Boolean))];
   const [stage, setStage] = useState(0);
   const [loadedSource, setLoadedSource] = useState<string>();
   const source = sources[stage];
@@ -88,6 +89,7 @@ const LogoImage: React.FC<CompanyLogoProps> = ({
           aria-hidden="true"
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', padding: dim > 24 ? '3px' : '1px', opacity: showImage ? 1 : 0 }}
           onLoad={event => {
             if (event.currentTarget.naturalWidth > 1) setLoadedSource(source);

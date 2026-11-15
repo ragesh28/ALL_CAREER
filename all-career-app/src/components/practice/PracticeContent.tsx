@@ -3,6 +3,7 @@ import { ArrowUpDown, BriefcaseBusiness, Code2, Layers3, Search, Star, X } from 
 import { CustomDropdown } from '../common/CustomDropdown';
 import { top150Data, Top150Problem } from '../../data/top150Data';
 import { CompanyLogo } from '../common/CompanyLogo';
+import { getPracticeCompanyBrand } from '../../data/practiceCompanyBranding';
 import { fetchJsonWithFallback } from '../../utils/urlHelper';
 import { matchesPracticeLanguage, practiceLanguageGroups } from '../../data/practiceLanguages';
 
@@ -684,7 +685,7 @@ export const PracticeContent: React.FC<PracticeContentProps> = ({
       {/* COMPANY HEADER BAR */}
       <div className="company-header-bar">
         <div className="company-title-row">
-          <CompanyLogo name={selectedCompany} size="md" />
+          <CompanyLogo name={selectedCompany} size="md" brand={getPracticeCompanyBrand(selectedCompany)} />
           <div className="company-name-large">
             <span>{selectedCompany}</span>
             <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#fbbf24' }}>

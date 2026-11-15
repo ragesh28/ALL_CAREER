@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Layers3, Search, Star } from 'lucide-react';
 import { CompanyLogo } from '../common/CompanyLogo';
+import { getPracticeCompanyBrand } from '../../data/practiceCompanyBranding';
 
 interface PracticeSidebarProps {
   selectedMode: string;
@@ -88,7 +89,7 @@ export const PracticeSidebar: React.FC<PracticeSidebarProps> = ({
               onClick={() => onSelectCompany(c.name)}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <CompanyLogo name={c.name} size={20} />
+                <CompanyLogo name={c.name} size={20} brand={getPracticeCompanyBrand(c.name)} />
                 <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '170px' }}>
                   {c.name}
                 </span>
