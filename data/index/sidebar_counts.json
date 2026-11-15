@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1182567,
+  "total_jobs": 1184294,
   "sources": {
     "naukri": 385386,
     "linkedin": 303248,
@@ -7,7 +7,7 @@
     "indeed": 108800,
     "internshala": 91049,
     "shine": 47525,
-    "foundit": 39609,
+    "foundit": 41336,
     "apna": 24600,
     "hirist": 16486,
     "glassdoor": 4839,
@@ -268,11 +268,11 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 249887,
-    "mumbai": 156080,
+    "bangalore": 250322,
+    "mumbai": 156509,
     "delhi": 126695,
-    "chennai": 127979,
-    "hyderabad": 115853,
+    "chennai": 128406,
+    "hyderabad": 116289,
     "pune": 96271,
     "noida": 57831,
     "ahmedabad": 44840,
@@ -1270,5 +1270,5 @@
     "ramesh_vihar_colony": 1,
     "naka_madar_colony": 1
   },
-  "generated_at": "2026-11-15T01:18:15.186051"
+  "generated_at": "2026-11-15T01:22:01.969966"
 }
