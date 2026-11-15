@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1186844,
+  "total_jobs": 1186876,
   "sources": {
     "naukri": 385572,
     "linkedin": 303248,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1002,
-    "telegram_post": 636,
+    "telegram_message": 1029,
+    "telegram_post": 641,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 250895,
+    "bangalore": 250906,
     "mumbai": 156862,
     "delhi": 126988,
-    "chennai": 128706,
-    "hyderabad": 116482,
-    "pune": 96496,
+    "chennai": 128709,
+    "hyderabad": 116483,
+    "pune": 96497,
     "noida": 57894,
     "ahmedabad": 44917,
     "kolkata": 41270,
-    "all_india": 22693,
+    "all_india": 22705,
     "coimbatore": 23931,
     "kochi": 18543,
     "remote": 10920,
@@ -363,7 +363,7 @@
     "pollachi": 67,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 39,
+    "pan_india": 40,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 7,
@@ -447,7 +447,7 @@
     "kothur_formulation_division": 1,
     "vapi": 6,
     "eu": 4,
-    "across_india": 18,
+    "across_india": 20,
     "trichy": 63,
     "perundurai": 2,
     "jhajjar": 3,
@@ -526,7 +526,7 @@
     "hisar": 2,
     "panaji": 9,
     "mira_bhayandar": 12,
-    "work_from_home": 102,
+    "work_from_home": 103,
     "punjab": 4,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -1276,5 +1276,5 @@
     "kuzhithurai": 1,
     "wakad": 1
   },
-  "generated_at": "2026-11-15T07:55:47.733083"
+  "generated_at": "2026-11-15T11:27:14.629406"
 }
