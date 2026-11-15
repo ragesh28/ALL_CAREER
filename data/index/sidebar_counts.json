@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1193849,
+  "total_jobs": 1193874,
   "sources": {
     "naukri": 385813,
     "linkedin": 306753,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1029,
-    "telegram_post": 641,
+    "telegram_message": 1049,
+    "telegram_post": 646,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,23 +268,23 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 252563,
-    "mumbai": 157714,
+    "bangalore": 252569,
+    "mumbai": 157715,
     "delhi": 127953,
-    "chennai": 129362,
-    "hyderabad": 117242,
+    "chennai": 129363,
+    "hyderabad": 117243,
     "pune": 97159,
     "noida": 58150,
     "ahmedabad": 45057,
     "kolkata": 41685,
-    "all_india": 22705,
-    "coimbatore": 24084,
+    "all_india": 22716,
+    "coimbatore": 24085,
     "kochi": 18589,
-    "remote": 10948,
+    "remote": 10949,
     "jaipur": 9532,
     "maharashtra": 10010,
     "indore": 6049,
-    "chandigarh": 5816,
+    "chandigarh": 5817,
     "kerala": 4530,
     "rajasthan": 1997,
     "dl": 3508,
@@ -447,7 +447,7 @@
     "kothur_formulation_division": 1,
     "vapi": 6,
     "eu": 4,
-    "across_india": 20,
+    "across_india": 21,
     "trichy": 63,
     "perundurai": 2,
     "jhajjar": 3,
@@ -1281,7 +1281,8 @@
     "sadar_bazar": 1,
     "kalher": 1,
     "gangajalghati": 1,
-    "pal_gaon": 1
+    "pal_gaon": 1,
+    "work_from_home_virtual": 1
   },
-  "generated_at": "2026-11-15T16:48:14.617928"
+  "generated_at": "2026-11-15T18:05:08.923205"
 }

@@ -1,0 +1,38 @@
+{
+  "workflow_run_number": "1091",
+  "workflow_run_id": "43743146738",
+  "timestamp": "2026-11-15T18:04:55.231175",
+  "runtime_minutes": 11.37,
+  "messages_processed": 54,
+  "new_jobs_stored": 25,
+  "skipped_jobs_count": 11,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 10,
+  "text_messages_processed": 44,
+  "stored_locations": {
+    "Bengaluru, Karnataka": 1,
+    "Unknown": 10,
+    "Coimbatore, India": 1,
+    "Bengaluru, Hyderabad, Mumbai": 1,
+    "Across India": 1,
+    "India": 1,
+    "Work From Home (Virtual, India)": 1,
+    "Remote": 1,
+    "Hyderabad": 1,
+    "Bangalore, Chennai": 1,
+    "Mohali": 1,
+    "Navi Mumbai": 1,
+    "Bengaluru": 3,
+    "Bangalore": 1
+  },
+  "stored_walkins": 2,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "job4fresherss",
+      "msg_id": 20513,
+      "text": "P𝐚𝐲 𝐀𝐟𝐭𝐞𝐫 𝐏𝐥𝐚𝐜𝐞𝐦𝐞𝐧𝐭 𝐓𝐫𝐚𝐢𝐧𝐢𝐧𝐠 𝐏𝐫𝐨𝐠𝐫𝐚𝐦🔥\n\nLearn Full Stack Development from IIT Alumni & Top Tech Experts.\n\n🌟 Trusted by 7000+ Students\n🤝 450+ Hiring Partners\n💼 Avg. Package: ₹7.2 LPA | Highest: ₹41 LPA\n\n𝐑𝐞𝐠𝐢𝐬𝐭𝐞𝐫 𝐍𝐨𝐰 👇:-- \n https://tinyurl.com/full-stackS\n\nHurry, limited seats available!🏃‍♀️\n\n#ad",
+      "timestamp": "2026-11-15T17:56:36+00:00"
+    }
+  ]
+}
