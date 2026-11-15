@@ -30004,5 +30004,779 @@
         "total_jobs": 0,
         "fetched_at": "2026-11-14",
         "company": "Meta"
+    },
+    {
+        "title": "Senior Manager FPGA",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Senior AI Technologist",
+        "location": "Noida",
+        "posted": "",
+        "apply_url": "https://jobs.ericsson.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Ericsson"
+    },
+    {
+        "title": "Manager - Quality Control (QC) & change management",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529462",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Siemens"
+    },
+    {
+        "title": "Senior Cyber Engineer - Governance",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Maersk"
+    },
+    {
+        "title": "Associate Finance Controller",
+        "location": "Pune",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Maersk"
+    },
+    {
+        "title": "Senior Database Administrator",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://api.maersk.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Maersk"
+    },
+    {
+        "title": "Performance Test Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Fullstack Technical Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Physical Design Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "ATE Test Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Databricks Architect",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "CHANGE AND RELEASE MANAGEMENT LEAD L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "RISK COMP AND GOVERNANCE ANALYST L4",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "QUALITY ASSURANCE ANALYST L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "SRE DEVOPS ENGINEER",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "INFRASTRUCTURE AND PLATFORM ARCHITECT L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "CAPACITY AND AVAILABILITY LEAD L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "BLT Technician",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI INTEGRATION ENGINEER L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Associate Product Manager - AI-Powered Reconciliation Platform",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "ACCOUNT/CLUSTER ACCOUNT/PRACTICE HRBP L2",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI INTEGRATION ARCHITECT L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sr Underwriter-5",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "TV Python Developer (Backend)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI APPLICATION ENGINEER L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "ASSOCIATE CONSULTANT L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Quality Assurance Analyst",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Logic Monitor with Immediate joining",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Industry Platform & solution Sales Lead - Transportation / Aviation",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "SAP Successfactor Comp Variable Pay_5-8yrs_Pan India",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Technical Helpdesk Specialist",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Cloud AWS Admin",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "PRODUCT SUPPORT ENGINEER L2",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "TEST LEAD L1(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Oracle Fusion Cloud OM & Inventory",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "PARTNER - AI Advisory",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sales Director, Consumer/Retail (M/F/D)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Flexera SAM Specialist - 6+ Years of exp @Bengaluru",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI ML Engineers",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "GCP Technical Lead/ Architect",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "BMC Helix CMDB and Discovery with Immediate joining",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Openshift Baremetal",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "MIS",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI RAG Python",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "TEAMCENTER DEVELOPER L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "HR Business Partner",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Developer IHS - L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "VLSI ENGINEER L2(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "DELIVERY MANAGER L2",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Major Incident Management",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "BMC Helix ITSM with Immediate joining",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Azure KeyVault - SECURITY ANALYST L4",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Java Developer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Business Development Director (all genders) 1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Observability Developer/Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Cloud & Platform Tech Lead",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Devops Terraform",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "SAP Security,  BTP & GRC Consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "CYBER SECURITY ANALYST L4(CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Consulting Partner - CTRM",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "AI/ML engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Practice Specialist - APMEA",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Embedded Software TDR Engineer L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Architect Azure AI - L1",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Principal Consultant DATA-EPM - L2",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sap Basis Hana BTP Rise Migration Consultant",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "SOFTWARE DEVELOPER",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Senior Apigee Platform Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sap ABAP Hana RAP_6-9years_Pan India_Early Joiners",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Embedded Triage & Validation Engineer- L3",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Applied AI Leader",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Oracle Database Administration",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Mapping associate",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "SALES EXECUTIVE - Insurance",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Java Developer (CONTRACT)",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://careers.wipro.com/",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Wipro"
+    },
+    {
+        "title": "Sr Product Manager",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Sr-Product-Manager_REF090064W-1",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Visa"
+    },
+    {
+        "title": "WFP Analyst",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/WFP-Analyst_REF090166W",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Visa"
+    },
+    {
+        "title": "Manager, Workforce Planning",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Manager--Workforce-Planning_REF090164W",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Visa"
+    },
+    {
+        "title": "Applied AI Specialist-Cloud FullStack",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4488537523",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "IBM"
+    },
+    {
+        "title": "Fiber Growth : Host Engineer",
+        "location": "",
+        "posted": "",
+        "apply_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/40661",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Nokia"
+    },
+    {
+        "title": "SAP Vistex Functional",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489890992",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Cognizant"
+    },
+    {
+        "title": "SAP Vistex Functional",
+        "location": "Hyderabad",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489899689",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Cognizant"
+    },
+    {
+        "title": "Software Development Manager, AWS DynamoDB",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "/en/jobs/10605163/software-development-manager-aws-dynamodb",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Amazon AI"
+    },
+    {
+        "title": "Senior HR Business Partner, India",
+        "location": "Mumbai",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489080458",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "OpenAI"
+    },
+    {
+        "title": "Senior HR Business Partner, India",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489092136",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "OpenAI"
+    },
+    {
+        "title": "Forward Deployed Engineer, Enterprise AI (Bangalore)",
+        "location": "Bangalore",
+        "posted": "",
+        "apply_url": "https://www.linkedin.com/jobs/view/4489326909",
+        "total_jobs": 0,
+        "fetched_at": "2026-11-15",
+        "company": "Meta"
     }
 ]
