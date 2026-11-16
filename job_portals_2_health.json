@@ -1,41 +1,41 @@
 {
-  "run_id": "43791593617",
-  "updated_at": "2026-11-16T08:11:40.827880",
+  "run_id": "43829361676",
+  "updated_at": "2026-11-16T14:08:13.575947",
   "portals": {
     "apna": {
-      "scraped_total": 6066,
-      "new_stored_total": 25,
-      "requests_total": 730,
+      "scraped_total": 8179,
+      "new_stored_total": 209,
+      "requests_total": 752,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-mumbai"
+        "requests": 2,
+        "scraped": 2,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/marketing-manager-jobs-in-kochi"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 394,
+      "requests_total": 382,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-mumbai/"
+        "url": "https://www.workindia.in/marketing-manager-jobs-in-kochi/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 394,
+      "scraped_total": 8464,
+      "new_stored_total": 602,
+      "requests_total": 844,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-mumbai"
+        "requests": 2,
+        "scraped": 19,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-kochi"
       }
     }
   }
