@@ -79,5 +79,33 @@ const esbuild = require('esbuild');
   summary.generated_at = '2026-11-11T00:00:00Z';
   assert.equal((await service.refreshSummary()).total_jobs, 10001, 'an older host must not replace verified counts');
   assert.ok(requests.every(path => !/initial_jobs|big_company_jobs|walkin_jobs/.test(path)), 'no bulk startup files');
-  console.log('Independent startup, gzip, retries, newest-first order and automatic loading of all small-source/walk-in results passed');
+  const olderPages = Array.from({ length: 25 }, (_, i) => ({
+    path: 'data/web/older-' + i + '.json',
+    newest: '2025-01-01',
+    locations: ['chennai'],
+    sources: ['naukri'],
+  }));
+  const scanned = [];
+  global.fetch = async url => {
+    const path = String(url).split('?')[0];
+    if (path.endsWith('summary.json')) return Response.json({ ...summary, manifest: 'data/web/older-index.json' });
+    if (path.endsWith('older-index.json')) return Response.json({ pages: olderPages, walkins: {} });
+    const page = Number(path.match(/older-(\d+)\.json$/)[1]);
+    scanned.push(page);
+    return Response.json([job(page === 24 ? 'Matching older job' : 'Another job', '2025-01-01', 'https://example.com/older/' + page)]);
+  };
+  const olderSearch = new JobService();
+  await olderSearch.refreshSummary();
+  const matches = row => row.title === 'Matching older job';
+  const recent = await olderSearch.loadUntil(filters, matches);
+  assert.equal(recent.error, false);
+  assert.equal(recent.searchIncomplete, true);
+  assert.equal(recent.jobs.filter(matches).length, 0);
+  assert.equal(scanned.length, 24, 'a large fallback query must yield back to the page');
+  const older = await olderSearch.loadUntil(filters, matches);
+  assert.equal(older.searchIncomplete, false);
+  assert.equal(older.hasMore, false);
+  assert.equal(older.jobs.filter(matches).length, 1);
+  assert.deepEqual(scanned, Array.from({ length: 25 }, (_, i) => i), 'continuing must resume after the files already searched');
+  console.log('Startup, gzip, retries, newest-first ordering, small results, and bounded searches passed');
 })().catch(error => { console.error(error); process.exit(1); });

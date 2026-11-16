@@ -13,3 +13,7 @@ export const PREPARED_SOURCES = [
 export function preparedJobFilterKey(source: string, city: string, exactZero: boolean) {
   return source + '/' + city + '/software_technical/' + (exactZero ? 'exact-zero' : 'zero');
 }
+
+export function preparedRoleFilterKey(source: string, city: string, role: string, exactZero: boolean) {
+  return source + '/' + city + '/role/' + encodeURIComponent(role) + '/' + (exactZero ? 'exact-zero' : 'zero');
+}

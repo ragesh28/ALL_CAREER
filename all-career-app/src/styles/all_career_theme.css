@@ -2126,6 +2126,113 @@ body {
 @media (prefers-reduced-motion: reduce) { .page-category-pills .pill-tag { transition: none; } }
 
 /* Jobs Grid */
+.alljobs-active-filters,
+.alljobs-active-filter-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.alljobs-active-filters {
+  margin: 0 0 14px;
+}
+
+.alljobs-active-filter-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.alljobs-active-filter-list li {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.alljobs-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  max-width: min(100%, 19rem);
+  min-height: 36px;
+  padding: 4px 10px 4px 12px;
+  border: 1px solid #34536d;
+  border-radius: 8px;
+  background: #162738;
+  color: #e4f1fc;
+  font-size: .8rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.alljobs-filter-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alljobs-filter-chip svg {
+  flex: none;
+  color: #95c8e6;
+}
+
+.alljobs-filter-chip:hover {
+  border-color: #68b9e9;
+  background: #20374b;
+}
+
+.alljobs-filter-chip:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .alljobs-filter-chip {
+    min-height: 44px;
+  }
+}
+
+.alljobs-result-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 48px 20px 22px;
+  color: #aab8d0;
+  text-align: center;
+}
+
+.alljobs-search-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #21354a;
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+}
+
+@keyframes alljobs-search-spin {
+  to { transform: rotate(1turn); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .alljobs-search-spinner {
+    animation: alljobs-search-spin 800ms linear infinite;
+  }
+}
+
+.alljobs-result-action {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.alljobs-result-action .page-btn {
+  min-height: 44px;
+  padding-inline: 18px;
+}
+
 .jobs-grid {
   display: grid;
   gap: 14px;

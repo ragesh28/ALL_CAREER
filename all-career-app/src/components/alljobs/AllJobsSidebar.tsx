@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { postedDateOptions, skillOptions, sourceOptions } from './jobFilterOptions';
 import { BriefcaseBusiness, CalendarDays, ChevronDown, Globe2, MapPin, Route, Search, SlidersHorizontal, Tag } from 'lucide-react';
 import { formatWalkinDate } from '../../utils/companyLogos';
 import { resolveAssetUrl } from '../../utils/urlHelper';
@@ -101,35 +102,6 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   // Show more toggles
   const [showMoreRoles, setShowMoreRoles] = useState(false);
   const [showMoreSkills, setShowMoreSkills] = useState(false);
-
-  // 1. Sources List with authentic logos from logos/portals/
-  const PORTALS = [
-    { id: 'linkedin', label: 'LinkedIn', logo: './logos/portals/linkedin.png', defaultCount: 179257 },
-    { id: 'naukri', label: 'Naukri', logo: './logos/portals/naukri.png', defaultCount: 262628 },
-    { id: 'indeed', label: 'Indeed', logo: './logos/portals/indeed.png', defaultCount: 66100 },
-    { id: 'internshala', label: 'Internshala', logo: './logos/portals/internshala.png', defaultCount: 56036 },
-    { id: 'glassdoor', label: 'Glassdoor', logo: './logos/portals/glassdoor.ico', defaultCount: 4786 },
-    { id: 'shine', label: 'Shine', logo: './logos/portals/shine.ico', defaultCount: 47436 },
-    { id: 'timesjobs', label: 'TimesJobs', logo: './logos/portals/timesjobs.svg', defaultCount: 64165 },
-    { id: 'hirist', label: 'Hirist', logo: './logos/portals/hirist.ico', defaultCount: 5296 },
-    { id: 'workindia', label: 'WorkIndia', logo: './logos/portals/workindia.png', defaultCount: 15876 },
-    { id: 'foundit', label: 'Foundit', logo: './logos/portals/foundit.png', defaultCount: 8843 },
-    { id: 'apna', label: 'Apna', logo: './logos/portals/apna.png', defaultCount: 7409 },
-    { id: 'freshersworld', label: 'FreshersWorld', logo: './logos/portals/freshersworld.ico', defaultCount: 4065 },
-    { id: 'telegram_message', label: 'Messages', logo: './logos/portals/telegram.svg', defaultCount: 1450 },
-    { id: 'telegram_post', label: 'Post', logo: './logos/portals/telegram.svg', defaultCount: 1056 },
-    { id: 'google_images', label: 'Images', logo: './logos/portals/google.svg', defaultCount: 3519 },
-    { id: 'other', label: 'Other Sources', logo: '', defaultCount: 2634 }
-  ];
-
-  // 2. Date Options matching original all_jobs.html
-  const dateOptions = [
-    { id: 'all', label: 'All Time' },
-    { id: '24h', label: 'Last 24 Hours' },
-    { id: '3d', label: 'Last 3 Days' },
-    { id: '7d', label: 'Last 7 Days' },
-    { id: '15d', label: 'Last 15 Days' }
-  ];
 
   // 3. Locations List with real counts (NO search bar as requested)
   const locationsList = [
@@ -253,24 +225,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   const visibleRoles = showMoreRoles || roleSearch ? filteredRoles : filteredRoles.slice(0, 8);
 
   // 5. Skills List matching original all_jobs.html
-  const allSkillsList = [
-    { id: 'python', label: 'Python', count: 3420 },
-    { id: 'react', label: 'React.js', count: 2810 },
-    { id: 'java', label: 'Java', count: 2950 },
-    { id: 'sql', label: 'SQL', count: 2640 },
-    { id: 'javascript', label: 'JavaScript', count: 3800 },
-    { id: 'node', label: 'Node.js', count: 1920 },
-    { id: 'aws', label: 'AWS / Cloud', count: 2100 },
-    { id: 'docker', label: 'Docker / Kubernetes', count: 1140 },
-    { id: 'machine-learning', label: 'Machine Learning', count: 1230 },
-    { id: 'cpp', label: 'C++ / C', count: 1450 },
-    { id: 'html-css', label: 'HTML/CSS', count: 2400 },
-    { id: 'git', label: 'Git', count: 1850 },
-    { id: 'mongodb', label: 'MongoDB', count: 920 },
-    { id: 'spring-boot', label: 'Spring Boot', count: 840 }
-  ];
 
-  const filteredSkills = allSkillsList.filter(s =>
+
+  const filteredSkills = skillOptions.filter(s =>
     s.label.toLowerCase().includes(skillSearch.toLowerCase())
   );
   const visibleSkills = showMoreSkills || skillSearch ? filteredSkills : filteredSkills.slice(0, 8);
@@ -316,12 +273,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner" id="source-options">
-            {PORTALS.map(item => {
+            {sourceOptions.map(item => {
               const isSelected = selectedSources.has(item.id);
               const hasNarrowingFilter = selectedLocations.size > 0 || selectedRoles.size > 0 || selectedSkills.size > 0 || walkinOnly || selectedWalkinDates.size > 0 || expValue >= 0;
               const catalogSources = sidebarCounts?.sources;
               const fullCatalogCount = !catalogSources ? null : item.id === 'other'
-                ? Object.entries(catalogSources).filter(([source]) => !PORTALS.some(item => item.id === source) && !source.includes('telegram')).reduce((sum, [, count]) => sum + count, 0)
+                ? Object.entries(catalogSources).filter(([source]) => !sourceOptions.some(item => item.id === source) && !source.includes('telegram')).reduce((sum, [, count]) => sum + count, 0)
                 : item.id === 'telegram' ? Object.entries(catalogSources).filter(([source]) => source.includes('telegram')).reduce((sum, [, count]) => sum + count, 0)
                 : (catalogSources[item.id] ?? 0);
               const count = sourceCountsAreCatalog || hasNarrowingFilter ? (sourceCounts[item.id] ?? 0) : fullCatalogCount;
@@ -379,7 +336,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         </div>
         <div className="filter-body">
           <div className="filter-body-inner">
-            {dateOptions.map(item => {
+            {postedDateOptions.map(item => {
               const isSelected = selectedDateFilter === item.id;
               return (
                 <div
@@ -645,7 +602,7 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
             </div>
             {!skillSearch && (
               <span className="show-more-btn" onClick={() => setShowMoreSkills(prev => !prev)}>
-                {showMoreSkills ? '− Show less' : `+ ${allSkillsList.length - 8} more`}
+                {showMoreSkills ? '− Show less' : `+ ${skillOptions.length - 8} more`}
               </span>
             )}
           </div>

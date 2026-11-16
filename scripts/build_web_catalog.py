@@ -25,7 +25,7 @@ else:
 ROOT = Path(__file__).resolve().parents[1]
 ALIASES = {'bengaluru': 'bangalore', 'blr': 'bangalore', 'new delhi': 'delhi'}
 WALKIN = re.compile(r'\b(?:walk[ -]?in|walking interview|direct interview)\b', re.I)
-BUILD_VERSION = 5
+BUILD_VERSION = 6
 PORTALS = ('telegram_message', 'telegram_post', 'google_images', 'freshersworld', 'internshala', 'workindia', 'timesjobs', 'linkedin', 'naukri', 'foundit', 'glassdoor', 'shine', 'hirist', 'apna')
 PREPARED_FILTER_BUILDER = ROOT / 'scripts/build_prepared_job_filters.mjs'
 PREPARED_FILTER_INPUTS = (

@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 const base = process.env.ALL_CAREER_TEST_URL || 'http://127.0.0.1:5187/';
 const existingQuery = '?_release=fixture';
 const firstSearch = '#all_jobs?source=naukri&city=Chennai&experience=0&category=software_technical';
+const roleSearch = '#all_jobs?source=naukri&city=Chennai&role=Software+Engineer&experience=0';
 const today = new Date().toISOString().slice(0, 10);
 const nextDay = new Date(Date.now() + 86400000);
 const interview = nextDay.toISOString().slice(0, 10);
@@ -33,24 +34,29 @@ const files = {
   'jobs.json': [ranged, exact],
   'manifest.json': { pages: [descriptor], sources: { naukri: [descriptor] }, walkins: { chennai: [descriptor] } },
   'prepared.json': {
-    schema: 1, page_size: 50, queries: {
+    schema: 1, page_size: 50, zero_year_roles: true, queries: {
       'naukri/chennai/software_technical/zero': { count: 2, pages: ['data/web/ranged.json'] },
       'naukri/chennai/software_technical/exact-zero': { count: 1, pages: ['data/web/exact.json'] },
+      'naukri/chennai/role/Software%20Engineer/zero': { count: 2, pages: ['data/web/role-ranged.json'] },
+      'naukri/chennai/role/Software%20Engineer/exact-zero': { count: 1, pages: ['data/web/role-exact.json'] },
     },
   },
   'ranged.json': [ranged, exact],
   'exact.json': [exact],
+  'role-ranged.json': [ranged, exact],
+  'role-exact.json': [exact],
 };
 
-async function configure(page, requests, errors) {
+async function configure(page, requests, errors, preview = files['latest.json']) {
   page.on('pageerror', error => errors.push(error.message));
   await page.setRequestInterception(true);
-  page.on('request', request => {
+  page.on('request', async request => {
     const url = new URL(request.url());
     if (url.pathname.includes('/data/web/')) {
       const file = url.pathname.split('/').pop();
       requests.push(file);
-      return request.respond({ status: 200, contentType: 'application/json', body: JSON.stringify(files[file] ?? []) });
+      if (file === 'role-ranged.json') await new Promise(resolve => setTimeout(resolve, 250));
+      return request.respond({ status: 200, contentType: 'application/json', body: JSON.stringify(file === 'latest.json' ? preview : files[file] ?? []) });
     }
     if (url.hostname === 'cdn.tailwindcss.com') {
       return request.respond({ status: 200, contentType: 'application/javascript', body: 'window.tailwind={};' });
@@ -143,8 +149,41 @@ async function assertSelections(page, search) {
     await opened.click('.premium-reset-btn');
     await opened.waitForFunction(() => location.hash === '#all_jobs' && document.querySelector('.topnav input').value === '');
     assert.equal(new URL(opened.url()).search, existingQuery);
+    const rolePage = await browser.newPage();
+    await rolePage.setViewport({ width: 1440, height: 900 });
+    const roleRequests = [];
+    await configure(rolePage, roleRequests, errors, []);
+    await rolePage.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }]);
+    await rolePage.goto(base + roleSearch, { waitUntil: 'domcontentloaded' });
+    await rolePage.waitForFunction(() => {
+      const spinner = document.querySelector('.alljobs-search-spinner');
+      return spinner?.getAnimations().some(animation => animation.playState === 'running');
+    });
+    await rolePage.waitForFunction(() => document.querySelector('main [role="status"]')?.textContent === '2 matching jobs · Newest first');
+    assert.ok(roleRequests.includes('role-ranged.json'));
+    assert.ok(!roleRequests.includes('manifest.json'), 'sidebar roles must not scan the general catalog');
+    await rolePage.click('#expExactCheckboxWrap');
+    await rolePage.waitForFunction(() => document.querySelector('main [role="status"]')?.textContent === '1 matching jobs · Newest first');
+    assert.ok(roleRequests.includes('role-exact.json'));
+    const unmatched = roleSearch.replace('Software+Engineer', 'Accountant');
+    await rolePage.goto(base + unmatched, { waitUntil: 'domcontentloaded' });
+    await rolePage.waitForFunction(() => document.querySelector('main [role="status"]')?.textContent === '0 matching jobs · Newest first');
+    assert.ok(!roleRequests.includes('manifest.json'), 'an indexed combination with no matches must finish without scanning');
+
+    await rolePage.goto(base + roleSearch, { waitUntil: 'domcontentloaded' });
+    const remove = label => rolePage.click('[aria-label="Remove ' + label + ' filter"]');
+    const currentParams = () => new URLSearchParams(new URL(rolePage.url()).hash.split('?')[1]);
+    await rolePage.waitForSelector('[aria-label="Remove Software Engineer filter"]');
+    assert.deepEqual(await rolePage.$$eval('.alljobs-filter-chip span', nodes => nodes.map(node => node.textContent)),
+      ['Naukri', 'Chennai', 'Software Engineer', '0 years']);
+    await remove('Software Engineer');
+    assert.deepEqual(Object.fromEntries(currentParams()), { source: 'naukri', city: 'Chennai', experience: '0' });
+    assert.equal(await rolePage.$('[aria-label="Remove Software Engineer filter"]'), null);
+    await remove('Naukri');
+    assert.deepEqual(Object.fromEntries(currentParams()), { city: 'Chennai', experience: '0' });
+    assert.equal(await rolePage.$('[aria-label="Remove Naukri filter"]'), null);
     assert.deepEqual(errors, []);
-    console.log('Shared All Jobs links passed: prepared pages, exact zero, multi-select filters, refresh, Back, and reset.');
+    console.log('Shared filters passed, including prepared sidebar roles, exact zero, empty results, spinner motion, and independent chip removal.');
   } finally {
     await browser.close();
   }

@@ -1,8 +1,11 @@
-import { BrowserCatalog, CatalogSummary, CatalogFilters, CatalogPage, PreparedJobCatalog, isBrowserCatalog, isCatalogSummary, isJobPage, isPreparedJobCatalog, matchesCatalogLocation, matchesCatalogSource } from './catalogTypes';
+import { BrowserCatalog, CatalogBatch, CatalogSummary, CatalogFilters, CatalogPage, PreparedJobCatalog, isBrowserCatalog, isCatalogSummary, isJobPage, isPreparedJobCatalog, matchesCatalogLocation, matchesCatalogSource } from './catalogTypes';
 import { JOBS_PER_PAGE } from '../data/preparedJobFilters';
 import { Job, ManifestData, SidebarCounts } from '../types/jobs';
-import { catalogJobKey, isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource, SOFTWARE_TECHNICAL } from '../utils/filterUtils';
+import { catalogJobKey, isWalkinJob, parseExperience, classifyJobCategory, getJobWalkinDates, isOtherSource } from '../utils/filterUtils';
 import { fetchCatalogJson, fetchJsonWithFallback, resolveAssetUrl } from '../utils/urlHelper';
+
+const MAX_SEARCH_PAGES = 24;
+const SEARCH_TIME_BUDGET_MS = 8000;
 
 export class JobService {
   private manifestData: ManifestData | null = null;
@@ -66,7 +69,7 @@ export class JobService {
     target: number,
     matches: (job: Job) => boolean,
     signal: AbortSignal
-  ): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean; total?: number } | null> {
+  ): Promise<CatalogBatch | null> {
     const path = this.summary?.filtered_catalog;
     if (!path) return null;
     const manifest = this.summary?.manifest;
@@ -76,7 +79,12 @@ export class JobService {
     if (!index) return { jobs: [], hasMore: true, error: true };
     this.preparedCatalog = index;
     const query = index.queries[key];
-    if (!query) return null;
+    if (!query) {
+      // Older snapshots omit the role catalog. In a complete role catalog, a missing role key means zero matches.
+      return index.zero_year_roles && key.includes('/role/')
+        ? { jobs: [], hasMore: false, error: false, total: 0 }
+        : null;
+    }
 
     const jobs: Job[] = [];
     const requested = query.pages.slice(0, Math.ceil(target / JOBS_PER_PAGE));
@@ -85,7 +93,7 @@ export class JobService {
       const expected = Math.min(JOBS_PER_PAGE, query.count - pageNumber * JOBS_PER_PAGE);
       const rows = cached ?? await fetchCatalogJson(pagePath, (value): value is Job[] =>
         isJobPage(value) && value.length === expected && value.every(job =>
-          job._minExp === 0 && job._normCategory === SOFTWARE_TECHNICAL &&
+          job._minExp === 0 && typeof job._normCategory === 'string' &&
           (job._maxExp === null || (typeof job._maxExp === 'number' && Number.isFinite(job._maxExp))) &&
           matches(job)));
       if (!current()) return null;
@@ -175,13 +183,15 @@ export class JobService {
     target = 50,
     onProgress?: (jobs: Job[]) => void,
     signal?: AbortSignal
-  ): Promise<{ jobs: Job[]; hasMore: boolean; error: boolean }> {
+  ): Promise<CatalogBatch> {
     const snapshot = this.summary;
     const pages = await this.candidatePages(filters, snapshot);
     let jobs = this.getAllJobs();
     if (!pages) return { jobs, hasMore: true, error: true };
 
     let failures = 0;
+    let scanned = 0;
+    const startedAt = performance.now();
     let count = jobs.filter(matches).length;
     for (const page of pages) {
       if (signal?.aborted) break;
@@ -190,6 +200,8 @@ export class JobService {
         return { jobs: this.getAllJobs(), hasMore: true, error: true };
       }
       if (this.loadedShards.has(page.path)) continue;
+      if (scanned >= MAX_SEARCH_PAGES || (scanned > 0 && performance.now() - startedAt >= SEARCH_TIME_BUDGET_MS)) break;
+      scanned++;
       if (!await this.loadPage(page, snapshot, signal)) {
         if (signal?.aborted) break;
         if (snapshot?.manifest !== this.summary?.manifest) {
@@ -204,7 +216,8 @@ export class JobService {
       count = jobs.filter(matches).length;
       onProgress?.(jobs);
     }
-    return { jobs, hasMore: pages.some(page => !this.loadedShards.has(page.path)), error: failures > 0 };
+    const hasMore = pages.some(page => !this.loadedShards.has(page.path));
+    return { jobs, hasMore, error: failures > 0, searchIncomplete: hasMore && count < target && !failures && !signal?.aborted };
   }
 
   async fetchWalkinJobs(): Promise<Job[]> {

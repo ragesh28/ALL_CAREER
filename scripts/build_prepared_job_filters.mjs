@@ -3,8 +3,8 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { gzipSync } from 'node:zlib';
-import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey } from '../all-career-app/src/data/preparedJobFilters.ts';
-import { catalogCity, catalogJobKey, classifyJobCategory, parseExperience, SOFTWARE_TECHNICAL } from '../all-career-app/src/utils/filterUtils.ts';
+import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey, preparedRoleFilterKey } from '../all-career-app/src/data/preparedJobFilters.ts';
+import { catalogCity, catalogJobKey, classifyJobCategory, jobRoleText, matchesJobRole, parseExperience, ROLE_KEYWORDS, SOFTWARE_TECHNICAL } from '../all-career-app/src/utils/filterUtils.ts';
 
 const [databasePath, output] = process.argv.slice(2);
 mkdirSync(join(output, 'pages'), { recursive: true });
@@ -22,6 +22,7 @@ function publish(directory, prefix, value) {
 }
 
 const groups = new Map();
+const roleNames = Object.keys(ROLE_KEYWORDS);
 for (const source of PREPARED_SOURCES) {
   for (const city of PREPARED_CITIES) {
     for (const exactZero of [false, true]) {
@@ -36,7 +37,11 @@ function flush(group) {
 }
 
 function add(key, job) {
-  const group = groups.get(key);
+  let group = groups.get(key);
+  if (!group) {
+    group = { count: 0, pages: [], pending: [] };
+    groups.set(key, group);
+  }
   group.count++;
   group.pending.push(job);
   if (group.pending.length === JOBS_PER_PAGE) flush(group);
@@ -51,7 +56,7 @@ try {
   for (const { payload } of rows.iterate(...PREPARED_SOURCES)) {
     const job = JSON.parse(payload);
     const [min, max] = parseExperience(job.experience);
-    if (min !== 0 || classifyJobCategory(job) !== SOFTWARE_TECHNICAL) continue;
+    if (min !== 0) continue;
 
     const location = String(job.location || '');
     const city = catalogCity(location);
@@ -63,10 +68,16 @@ try {
     if (seen.has(identity)) continue;
     seen.add(identity);
 
-    const prepared = { ...job, _minExp: min, _maxExp: max, _normCategory: SOFTWARE_TECHNICAL };
+    const category = classifyJobCategory(job);
+    const text = jobRoleText(job);
+    const roles = roleNames.filter(role => matchesJobRole(text, role));
+    const prepared = { ...job, _minExp: min, _maxExp: max, _normCategory: category };
+    const experienceModes = max === 0 || max === null ? [false, true] : [false];
     for (const name of cityNames) {
-      add(preparedJobFilterKey(job.source, name, false), prepared);
-      if (max === 0 || max === null) add(preparedJobFilterKey(job.source, name, true), prepared);
+      for (const exactZero of experienceModes) {
+        if (category === SOFTWARE_TECHNICAL) add(preparedJobFilterKey(job.source, name, exactZero), prepared);
+        for (const role of roles) add(preparedRoleFilterKey(job.source, name, role, exactZero), prepared);
+      }
     }
   }
 } finally {
@@ -78,5 +89,5 @@ for (const [key, group] of groups) {
   if (group.pending.length) flush(group);
   queries[key] = { count: group.count, pages: group.pages };
 }
-const index = publish('', 'filtered-', { schema: 1, page_size: JOBS_PER_PAGE, queries });
+const index = publish('', 'filtered-', { schema: 1, page_size: JOBS_PER_PAGE, zero_year_roles: true, queries });
 process.stdout.write(JSON.stringify({ index, paths: [...paths] }));

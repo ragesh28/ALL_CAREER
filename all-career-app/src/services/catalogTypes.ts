@@ -41,9 +41,18 @@ export interface CatalogFilters {
   postedDays?: number;
 }
 
+export interface CatalogBatch {
+  jobs: Job[];
+  hasMore: boolean;
+  error: boolean;
+  total?: number;
+  searchIncomplete?: boolean;
+}
+
 export interface PreparedJobCatalog {
   schema: 1;
   page_size: number;
+  zero_year_roles?: boolean;
   queries: Record<string, { count: number; pages: string[] }>;
 }
 
@@ -123,6 +132,7 @@ export function isJobPage(value: unknown): value is Job[] {
 
 export function isPreparedJobCatalog(value: unknown): value is PreparedJobCatalog {
   return isRecord(value) && value.schema === 1 && value.page_size === JOBS_PER_PAGE &&
+    (value.zero_year_roles === undefined || typeof value.zero_year_roles === 'boolean') &&
     isRecord(value.queries) && Object.values(value.queries).every(query =>
       isRecord(query) && isCount(query.count) && Array.isArray(query.pages) &&
       query.pages.length === Math.ceil(query.count / JOBS_PER_PAGE) &&

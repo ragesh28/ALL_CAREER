@@ -418,6 +418,17 @@ export const ROLE_KEYWORDS: Record<string, string[]> = {
   'qa-tester': ['qa engineer', 'tester', 'qa', 'testing', 'qa analyst', 'automation engineer', 'selenium', 'sdet']
 };
 
+export function jobRoleText(job: { title?: unknown; role_search?: unknown }) {
+  return [String(job.title || '').toLowerCase(), String(job.role_search || '').toLowerCase()] as const;
+}
+
+export function matchesJobRole([title, roleSearch]: ReturnType<typeof jobRoleText>, role: string): boolean {
+  const keywords = Object.prototype.hasOwnProperty.call(ROLE_KEYWORDS, role)
+    ? ROLE_KEYWORDS[role]
+    : [role.toLowerCase()];
+  return keywords.some(keyword => title.includes(keyword) || roleSearch.includes(keyword));
+}
+
 export const ROLE_CATEGORIES_DICT: Record<string, string[]> = {
   'Electrical': [
     'electrical', 'electrician', 'electronics', 'ece', 'eee', 'embedded hardware', 'hardware engineer', 'vlsi',

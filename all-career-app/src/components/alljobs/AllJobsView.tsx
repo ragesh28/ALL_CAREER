@@ -1,17 +1,17 @@
 import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect, useMemo, useRef, useDeferredValue } from 'react';
-import { LoaderCircle } from 'lucide-react';
 import { Job } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
 import { AllJobsTopNav } from './AllJobsTopNav';
 import { AllJobsSidebar } from './AllJobsSidebar';
+import { ActiveJobFilters, activeJobFilters } from './ActiveJobFilters';
 import { CategoryCountPills } from './CategoryCountPills';
 import { JobCard } from './JobCard';
 import { bridgeService } from '../../services/bridgeService';
-import { isWalkinJob, parseExperience, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT, SOFTWARE_TECHNICAL } from '../../utils/filterUtils';
+import { isWalkinJob, parseExperience, jobRoleText, matchesJobRole, ROLE_KEYWORDS, classifyJobCategory, getJobWalkinDates, isOtherSource, MONTH_SHORT, SOFTWARE_TECHNICAL } from '../../utils/filterUtils';
 import { formatWalkinDate } from '../../utils/companyLogos';
 import { CatalogSummary, catalogCity, matchesCatalogLocation, matchesCatalogSource } from '../../services/catalogTypes';
-import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey } from '../../data/preparedJobFilters';
+import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey, preparedRoleFilterKey } from '../../data/preparedJobFilters';
 import { calculateWalkinFacets, WalkinFacetInput, WalkinFacets } from '../../services/walkinFacets';
 
 import { readAllJobsFilters } from './allJobsFilters';
@@ -39,6 +39,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
   const [batchLoading, setBatchLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [batchError, setBatchError] = useState(false);
+  const [searchIncomplete, setSearchIncomplete] = useState(false);
   const [preparedBatch, setPreparedBatch] = useState<{ key: string; catalog: string; jobs: Job[]; total?: number } | null>(null);
   const batchFailures = useRef(0);
   const batchTarget = useRef(50);
@@ -69,13 +70,20 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
 
   const preparedSource = deferredSources.size === 1 ? deferredSources.values().next().value : '';
   const preparedCity = deferredLocations.size === 1 ? catalogCity(deferredLocations.values().next().value || '') : '';
-  const preparedKey = summary?.filtered_catalog && deferredCategory === 'software_technical' &&
+  const preparedRole = deferredRoles.size === 1 ? deferredRoles.values().next().value : '';
+  let preparedKey: string | null = null;
+  if (
+    summary?.filtered_catalog && preparedSource && PREPARED_SOURCES.includes(preparedSource) && PREPARED_CITIES.includes(preparedCity) &&
     deferredExpValue === 0 && deferredSortBy === 'latest' && deferredDateFilter === 'all' &&
-    !deferredSearchTerm.trim() && !deferredRoles.size && !deferredSkills.size && !deferredCompanies.size &&
-    !deferredWalkinOnly && !deferredWalkinDates.size && PREPARED_SOURCES.includes(preparedSource || '') &&
-    PREPARED_CITIES.includes(preparedCity)
-    ? preparedJobFilterKey(preparedSource!, preparedCity, deferredExactExp)
-    : null;
+    !deferredSearchTerm.trim() && !deferredSkills.size && !deferredCompanies.size &&
+    !deferredWalkinOnly && !deferredWalkinDates.size
+  ) {
+    if (deferredCategory === 'software_technical' && !deferredRoles.size) {
+      preparedKey = preparedJobFilterKey(preparedSource, preparedCity, deferredExactExp);
+    } else if (deferredCategory === 'all' && preparedRole && Object.prototype.hasOwnProperty.call(ROLE_KEYWORDS, preparedRole)) {
+      preparedKey = preparedRoleFilterKey(preparedSource, preparedCity, preparedRole, deferredExactExp);
+    }
+  }
   const prepared = preparedBatch && preparedBatch.key === preparedKey && preparedBatch.catalog === summary?.filtered_catalog
     ? preparedBatch
     : null;
@@ -185,6 +193,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     const controller = new AbortController();
     loadController.current = controller;
     batchTarget.current = target;
+    setSearchIncomplete(false);
     setBatchLoading(true);
 
     try {
@@ -215,6 +224,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
       setPreparedBatch(indexed && preparedKey && catalog ? { key: preparedKey, catalog, jobs: indexed.jobs, total: indexed.total } : null);
       setJobs(indexed ? jobService.getAllJobs() : result.jobs);
       setHasMore(result.hasMore);
+      setSearchIncomplete(Boolean(result.searchIncomplete));
       setBatchError(result.error);
       batchFailures.current = result.error ? batchFailures.current + 1 : 0;
       return result;
@@ -352,17 +362,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
 
     // 5. Role Category Filter
     if (excludeDim !== 'role' && roles.size > 0) {
-      const titleLow = (j.title || '').toLowerCase();
-      const roleSearchLow = (j.role_search || '').toLowerCase();
-      let match = false;
-      for (const roleId of roles) {
-        const kws = ROLE_KEYWORDS[roleId] || [roleId.toLowerCase()];
-        if (kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw))) {
-          match = true;
-          break;
-        }
-      }
-      if (!match) return false;
+      const text = jobRoleText(j);
+      if (![...roles].some(role => matchesJobRole(text, role))) return false;
     }
 
     // 6. Experience Filter (Direct numeric comparison)
@@ -486,6 +487,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     batchFailures.current = 0;
     setBatchLoading(true);
     setBatchError(false);
+    setSearchIncomplete(false);
     const timer = setTimeout(() => { void requestBatch(JOBS_PER_PAGE); }, 150);
     return () => {
       clearTimeout(timer);
@@ -578,12 +580,10 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
       }
 
       // Role count
-      const titleLow = (j.title || '').toLowerCase();
-      const roleSearchLow = (j.role_search || '').toLowerCase();
+      const roleText = jobRoleText(j);
       for (let rIdx = 0; rIdx < roleKeys.length; rIdx++) {
         const r = roleKeys[rIdx];
-        const kws = ROLE_KEYWORDS[r];
-        if (kws && kws.some(kw => titleLow.includes(kw) || roleSearchLow.includes(kw))) {
+        if (matchesJobRole(roleText, r)) {
           roleCounts[r] = (roleCounts[r] || 0) + 1;
         }
       }
@@ -616,21 +616,8 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
     deferredCategory
   ]);
 
-  const activeFilterCount =
-    selectedSources.size +
-    (selectedDateFilter !== 'all' ? 1 : 0) +
-    selectedLocations.size +
-    selectedRoles.size +
-    (expValue >= 0 ? 1 : 0) +
-    selectedSkills.size +
-    selectedCompanies.size +
-    (walkinOnly ? 1 : 0) +
-    selectedWalkinDates.size +
-    (selectedCategory !== 'all' ? 1 : 0) +
-    (sortBy !== 'latest' ? 1 : 0) +
-    (searchTerm.trim() ? 1 : 0);
-
-  const hasActiveFilters = activeFilterCount > 0;
+  const active = useMemo(() => activeJobFilters(filters), [filters]);
+  const hasActiveFilters = active.length > 0;
   const canUseWalkinSummary = !!summary && !searchTerm.trim() && selectedRoles.size === 0 && selectedSkills.size === 0 && selectedCompanies.size === 0 && selectedDateFilter === 'all' && expValue < 0 && selectedCategory === 'all';
   const catalogFacets = useMemo(() => {
     const locations: Record<string, number> = {}, sources: Record<string, number> = {};
@@ -788,31 +775,33 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
           <p role="status" style={{ color: '#94a3b8', fontSize: '0.8rem', margin: '0 0 12px' }}>
             {prepared?.total !== undefined
               ? prepared.total.toLocaleString() + ' matching jobs · Newest first'
-              : filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
-                ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · ' + resultOrder + ' · More jobs load in small batches'
-                : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
+              : searchIncomplete
+                ? filteredJobs.length.toLocaleString() + ' matches found so far · Older listings available'
+                : filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
+                  ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · ' + resultOrder + ' · More jobs load in small batches'
+                  : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
           </p>
+          <ActiveJobFilters active={active} onRemove={updateFilters} onReset={clearAllFilters} />
+
           {/* Category count pills */}
           <CategoryCountPills
             pageCounts={pageCategoryCounts}
             totalOnPage={currentJobs.length}
             selectedCategory={selectedCategory}
             onSelectCategory={selectedCategory => updateFilters(() => ({ selectedCategory }))}
-            hasActiveFilters={hasActiveFilters}
-            activeFilterCount={activeFilterCount}
-            onClearAll={clearAllFilters}
           />
 
           {/* Cards Grid */}
           {waitingForJobs && !filteredJobs.length && !reconnecting ? (
-            <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
-              <div style={{ display: 'inline-block', width: '38px', height: '38px', border: '3px solid rgba(56,189,248,0.2)', borderTopColor: '#38bdf8', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }}></div>
-              <p style={{ color: '#94a3b8', marginTop: '14px', fontSize: '15px', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '8px' }}><LoaderCircle size={16} aria-hidden="true" /> Loading matching jobs...</p>
+            <div className="alljobs-result-state">
+              <span className="alljobs-search-spinner" aria-hidden="true" />
+              <p>Loading matching jobs…</p>
             </div>
           ) : filteredJobs.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '60px 20px', color: '#7c8db5' }}>
-              {reconnecting ? 'Some job data could not load. Retrying automatically…' : 'No jobs found matching your criteria.'}
-            </div>
+            <p className="alljobs-result-state">
+              {reconnecting ? 'Some job data could not load. Retrying automatically…' :
+                searchIncomplete ? 'No matches in the listings checked so far.' : 'No jobs found matching your filters.'}
+            </p>
           ) : (
             <>
               <div className="jobs-grid">
@@ -839,7 +828,12 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
               )}
             </>
           )}
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
+          <div className="alljobs-result-action">
+            {searchIncomplete && !batchLoading && (
+              <button type="button" className="page-btn" onClick={() => void requestBatch(batchTarget.current)}>
+                Search older listings
+              </button>
+            )}
             {batchError && <button type="button" className="page-btn" disabled={batchLoading} onClick={retryBatch} style={{ minWidth: 210, padding: '12px 20px' }}>
               {batchLoading ? 'Loading jobs…' : 'Retry loading jobs'}
             </button>}

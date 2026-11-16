@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw } from 'lucide-react';
+import { categoryLabels } from './jobFilterOptions';
 
 interface CategoryCountPillsProps {
   pageCounts: {
@@ -14,42 +14,16 @@ interface CategoryCountPillsProps {
   totalOnPage: number;
   selectedCategory: string;
   onSelectCategory: (cat: string) => void;
-  hasActiveFilters?: boolean;
-  activeFilterCount?: number;
-  onClearAll?: () => void;
 }
 
 export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
   pageCounts,
   totalOnPage,
   selectedCategory,
-  onSelectCategory,
-  hasActiveFilters,
-  activeFilterCount = 0,
-  onClearAll
+  onSelectCategory
 }) => {
   return (
     <div className="sort-category-bar">
-      {/* Premium Redesigned Reset Button (sleek obsidian glass with micro-counter) */}
-      {hasActiveFilters && onClearAll ? (
-        <button
-          type="button"
-          className="premium-reset-btn"
-          onClick={onClearAll}
-          title="Reset all active filters"
-        >
-          <span className="reset-icon-halo">
-            <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
-          </span>
-          <span className="reset-btn-label">Reset Filters</span>
-          {activeFilterCount > 0 && (
-            <span className="reset-count-badge">{activeFilterCount}</span>
-          )}
-        </button>
-      ) : (
-        <div style={{ minWidth: 0 }} />
-      )}
-
       {/* This Page (50) and Category Pills */}
       <div className="page-category-pills">
         <span style={{ color: '#7c8db5', fontWeight: 600 }}>This Page ({totalOnPage}):</span>
@@ -61,7 +35,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           className={`pill-tag ${selectedCategory === 'all' ? 'pill-others' : ''}`}
           style={{ cursor: 'pointer' }}
         >
-          All
+          {categoryLabels.all}
         </button>
 
         <button 
@@ -72,7 +46,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Sales & Marketing <strong>{pageCounts.sales}</strong>
+          {categoryLabels.sales} <strong>{pageCounts.sales}</strong>
         </button>
 
         <button 
@@ -83,7 +57,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Software Technical <strong>{pageCounts.softwareTechnical}</strong>
+          {categoryLabels.software_technical} <strong>{pageCounts.softwareTechnical}</strong>
         </button>
 
         <button 
@@ -94,7 +68,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Non-Technical <strong>{pageCounts.nonTechnical}</strong>
+          {categoryLabels.non_technical} <strong>{pageCounts.nonTechnical}</strong>
         </button>
 
         <button 
@@ -105,7 +79,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Banking & Finance <strong>{pageCounts.banking}</strong>
+          {categoryLabels.banking} <strong>{pageCounts.banking}</strong>
         </button>
 
         <button 
@@ -116,7 +90,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          HR & Staffing <strong>{pageCounts.hr}</strong>
+          {categoryLabels.hr} <strong>{pageCounts.hr}</strong>
         </button>
 
         <button 
@@ -127,7 +101,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Pharma <strong>{pageCounts.pharma}</strong>
+          {categoryLabels.pharma} <strong>{pageCounts.pharma}</strong>
         </button>
 
         <button 
@@ -138,7 +112,7 @@ export const CategoryCountPills: React.FC<CategoryCountPillsProps> = ({
           style={{ cursor: 'pointer' }}
         >
           <span className="category-mark" aria-hidden="true" />
-          Others <strong>{pageCounts.others}</strong>
+          {categoryLabels.others} <strong>{pageCounts.others}</strong>
         </button>
       </div>
     </div>

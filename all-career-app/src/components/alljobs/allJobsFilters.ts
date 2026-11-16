@@ -1,3 +1,5 @@
+import { categoryLabels, postedDateOptions } from './jobFilterOptions';
+
 export interface AllJobsFilters {
   searchTerm: string;
   selectedSources: Set<string>;
@@ -15,8 +17,8 @@ export interface AllJobsFilters {
 }
 
 const route = '#all_jobs';
-const postedDates = ['all', '24h', '3d', '7d', '15d'];
-const categories = ['all', 'sales', 'software_technical', 'non_technical', 'banking', 'hr', 'pharma', 'others'];
+const postedDates = postedDateOptions.map(option => option.id);
+const categories = Object.keys(categoryLabels);
 const sortOptions = ['latest', 'oldest', 'company'];
 const walkinDateLabel = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?:[1-9]|[12][0-9]|3[01])$/;
 
