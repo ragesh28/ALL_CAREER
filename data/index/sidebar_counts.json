@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1197652,
+  "total_jobs": 1197701,
   "sources": {
     "naukri": 387417,
     "linkedin": 306753,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1057,
-    "telegram_post": 650,
+    "telegram_message": 1095,
+    "telegram_post": 661,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 253307,
-    "mumbai": 158414,
-    "delhi": 128329,
-    "chennai": 129937,
-    "hyderabad": 117731,
-    "pune": 97367,
+    "bangalore": 253316,
+    "mumbai": 158416,
+    "delhi": 128330,
+    "chennai": 129941,
+    "hyderabad": 117733,
+    "pune": 97369,
     "noida": 58268,
     "ahmedabad": 45133,
-    "kolkata": 41796,
-    "all_india": 22725,
-    "coimbatore": 24133,
+    "kolkata": 41797,
+    "all_india": 22746,
+    "coimbatore": 24134,
     "kochi": 18602,
-    "remote": 10985,
+    "remote": 10987,
     "jaipur": 9584,
     "maharashtra": 10010,
     "indore": 6079,
@@ -363,7 +363,7 @@
     "pollachi": 67,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 40,
+    "pan_india": 41,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 7,
@@ -1200,7 +1200,7 @@
     "jalna": 1,
     "kundli": 1,
     "sahnewal": 1,
-    "all_over_india": 2,
+    "all_over_india": 3,
     "gurgoan": 1,
     "ambad": 1,
     "tricity": 1,
@@ -1331,7 +1331,9 @@
     "taloja": 1,
     "alwaralwar_tijara_road": 1,
     "udaipurbedla": 1,
-    "tambaram": 1
+    "tambaram": 1,
+    "latin_america": 1,
+    "apac": 1
   },
-  "generated_at": "2026-11-16T09:10:24.455339"
+  "generated_at": "2026-11-16T11:57:22.196797"
 }

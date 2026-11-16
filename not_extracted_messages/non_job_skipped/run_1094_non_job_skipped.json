@@ -1,0 +1,75 @@
+{
+  "workflow_run_number": "1094",
+  "workflow_run_id": "43859703500",
+  "timestamp": "2026-11-16T11:57:06.269509",
+  "runtime_minutes": 12.11,
+  "messages_processed": 68,
+  "new_jobs_stored": 49,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 19,
+  "text_messages_processed": 49,
+  "stored_locations": {
+    "Chennai or Bengaluru": 1,
+    "Unknown": 18,
+    "Pune": 2,
+    "Pune, Bengaluru, Chennai, Hyderabad, Gurugram": 1,
+    "Bengaluru, Hyderabad, Pune, Chennai, Kolkata, Kochi, Coimbatore": 1,
+    "India": 3,
+    "Pan India": 1,
+    "Remote": 2,
+    "Ahmedabad, Bengaluru, Chennai, Gurugram, Hyderabad, Jaipur, Kochi, Kolkata, Mumbai, Noida, Pune": 1,
+    "All Over India": 1,
+    "Bangalore": 5,
+    "Bengaluru": 1,
+    "Bengaluru, Karnataka": 1,
+    "Kolkata": 1,
+    "Bengaluru, Hyderabad": 1,
+    "Chennai": 1,
+    "Mumbai": 1,
+    "Hyderabad": 2,
+    "Mumbai, India": 1,
+    "Bangalore, India": 1,
+    "Latin America": 1,
+    "APAC": 1,
+    "Gurugram": 1
+  },
+  "stored_walkins": 3,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "Internshipsworld",
+      "msg_id": 6683,
+      "text": "𝗧𝗢𝗣 𝟱 𝗙𝗥𝗘𝗘 𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟𝗦 𝗧𝗢 𝗟𝗘𝗔𝗥𝗡 𝗗𝗔𝗧𝗔 𝗦𝗖𝗜𝗘𝗡𝗖𝗘! 📊\n\n🎓 Explore 5 FREE YouTube channels to learn:\n\n🐍 Python Programming  \n📊 Data Analytics & Visualization  \n🤖 Machine Learning & AI  \n🗄️ SQL & Data Handling  \n🚀 Real-World Data Science Projects  \n\n🎯 Perfect for Students, Freshers & Aspiring Data Scientists!\n\n🔗 𝗟𝗶𝗻𝗸 👇:- \n\nhttps://pdlink.in/3VucWE3\n\n📌 SAVE & SHARE with friends interested in Data Science! 🔥\nTop 5 Free\nI\nYouTube\ndata science\nYouTube Channels\nHame\nPython\nMachine Leaming\nData Science\nProjects\nCourses\nShorts\nPython\nMachine\nfor\nLearning\nSubscriptions\nData Science\nto Learn Data Science\nBasics\n2:15:24\n1:48:07\n因\nYou\nData\nSQL\nHistory\nAnalysis\nwith Python\nData Science\nfor\n1:32:10\nData Science\n1:20:36\nEnd-to-End\nData\nData Science\nMachine Learning\nScience\nProject\n2:05:18\nPython\nData\nMachine\nPython\nSQL\nReal-World\nAnalytics\nLearning\nProjects",
+      "timestamp": "2026-11-16T07:25:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "placementdriveofficial",
+      "msg_id": 13702,
+      "text": "𝗧𝗢𝗣 𝟱 𝗙𝗥𝗘𝗘 𝗬𝗢𝗨𝗧𝗨𝗕𝗘 𝗖𝗛𝗔𝗡𝗡𝗘𝗟𝗦 𝗧𝗢 𝗟𝗘𝗔𝗥𝗡 𝗗𝗔𝗧𝗔 𝗦𝗖𝗜𝗘𝗡𝗖𝗘! 📊\n\n🎓 Explore 5 FREE YouTube channels to learn:\n\n🐍 Python Programming  \n📊 Data Analytics & Visualization  \n🤖 Machine Learning & AI  \n🗄️ SQL & Data Handling  \n🚀 Real-World Data Science Projects  \n\n🎯 Perfect for Students, Freshers & Aspiring Data Scientists!\n\n🔗 𝗟𝗶𝗻𝗸 👇:- \n\nhttps://pdlink.in/3VucWE3\n\n📌 SAVE & SHARE with friends interested in Data Science! 🔥\nTop 5 Free\nI\nYouTube\ndata science\nYouTube Channels\nHame\nPython\nMachine Leaming\nData Science\nProjects\nCourses\nShorts\nPython\nMachine\nfor\nLearning\nSubscriptions\nData Science\nto Learn Data Science\nBasics\n2:15:24\n1:48:07\n因\nYou\nData\nSQL\nHistory\nAnalysis\nwith Python\nData Science\nfor\n1:32:10\nData Science\n1:20:36\nEnd-to-End\nData\nData Science\nMachine Learning\nScience\nProject\n2:05:18\nPython\nData\nMachine\nPython\nSQL\nReal-World\nAnalytics\nLearning\nProjects",
+      "timestamp": "2026-11-16T07:25:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31187,
+      "text": "🤖 𝗖𝗹𝗮𝘂𝗱𝗲 𝗔𝗜 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 — 𝗙𝗥𝗘𝗘! 🚀\n\n💸 Cost:  ₹0 (FREE!)\n\n🎓 Earn an official certificate from Anthropic, the company behind Claude!\n\n𝗪𝗵𝗮𝘁 𝘆𝗼𝘂'𝗹𝗹 𝗹𝗲𝗮𝗿𝗻:\n✅ Use Claude AI for everyday tasks\n✅ Boost productivity with AI\n✅ Build smarter workflows\n✅ Apply AI skills in work and learning\n\n🎯 Perfect for Students, Freshers & Professionals!\n\n𝗘𝗻𝗿𝗼𝗹𝗹 𝗙𝗿𝗲𝗲: https://tinyurl.com/Free-Claude-AI-Certification\n\n⚡ Don't miss this opportunity!",
+      "timestamp": "2026-11-16T10:43:50+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18981,
+      "text": "NETFLIX doesn't cost Rs.499,\nIt costs you your time.\nCoke doesn't cost Rs.30,\nIt costs you your health.\nSocial media isn't free,\nIt costs you your focus.\nTHERE IS ALWAYS A HIDDEN COST\nRemember the\nGolden Management Quote;\n\"When something is free,\nYou are the Product.\"",
+      "timestamp": "2026-11-16T08:37:34+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "getjobss",
+      "msg_id": 8363,
+      "text": "𝗠𝗜𝗖𝗥𝗢𝗦𝗢𝗙𝗧 𝗣𝗢𝗪𝗘𝗥 𝗕𝗜 – 𝗙𝗥𝗘𝗘 𝗖𝗢𝗨𝗥𝗦𝗘! 📊\n\n😍 Want to master Power BI & Data Analytics without spending ₹1?\n\n🎓 Explore Microsoft's FREE Power BI learning resources!\n\n✅ Data Visualization & Dashboards  \n✅ Power Query & Data Cleaning  \n✅ DAX Formulas & Data Modeling  \n✅ Business Intelligence Skills  \n\n🎯 Perfect for Students, Freshers & Aspiring Data Analysts!\n\n🔗 𝗟𝗶𝗻𝗸 👇:- \n\nhttps://pdlink.in/4t3Jl0E\n\n📌 SAVE & SHARE with friends interested in Data Analytics! 🔥\nMicrosoft\nPower BI\nFree Certification Course\n圆\na8\nPueish\n国\nSales Performance Dashboard\nData Visualization\n回\n08\nTutal Jales\nPuule Mtarpie\n12.5K\nTheal Oréen\n$2.4M\n$482K\n20.1%\nSakes Trend\nSeles by Region\nPower Query\n504M\n10.3M\nNorth\n10.2M\n0W\nEas\n50.0M\nWen\n国\nDAX & Data Modeling\nSales by Category\n044\nPower BI\n102M\nDC\nInteractive Dashboards",
+      "timestamp": "2026-11-16T06:18:15+00:00"
+    }
+  ]
+}
