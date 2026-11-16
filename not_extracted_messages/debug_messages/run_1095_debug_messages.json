@@ -1,0 +1,18 @@
+{
+  "workflow_run_number": "1095",
+  "workflow_run_id": "43968288884",
+  "timestamp": "2026-11-16T22:21:43.465469",
+  "runtime_minutes": 1.33,
+  "messages_processed": 7,
+  "new_jobs_stored": 16,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 0,
+  "text_messages_processed": 7,
+  "stored_locations": {
+    "Unknown": 15,
+    "Bengaluru, India (Hybrid)": 1
+  },
+  "stored_walkins": 10,
+  "debug_failed_messages": []
+}

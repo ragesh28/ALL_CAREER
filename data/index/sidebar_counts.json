@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1206808,
+  "total_jobs": 1206824,
   "sources": {
     "naukri": 387417,
     "linkedin": 311274,
@@ -40,7 +40,7 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1095,
+    "telegram_message": 1111,
     "telegram_post": 661,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
@@ -268,7 +268,7 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 254778,
+    "bangalore": 254779,
     "mumbai": 159434,
     "delhi": 129711,
     "chennai": 130663,
@@ -277,7 +277,7 @@
     "noida": 58674,
     "ahmedabad": 45629,
     "kolkata": 42140,
-    "all_india": 22746,
+    "all_india": 22761,
     "coimbatore": 24331,
     "kochi": 18826,
     "remote": 11053,
@@ -1345,5 +1345,5 @@
     "brahmpuri": 1,
     "shastri_nagar": 1
   },
-  "generated_at": "2026-11-16T16:46:28.759853"
+  "generated_at": "2026-11-16T22:21:56.119244"
 }
