@@ -5,6 +5,14 @@ import fs from 'fs';
 
 export default defineConfig({
   base: './',
+  build: {
+    rollupOptions: {
+      input: {
+        index: path.resolve(__dirname, 'index.html'),
+        about: path.resolve(__dirname, 'about.html'),
+      },
+    },
+  },
   plugins: [
     react(),
     {

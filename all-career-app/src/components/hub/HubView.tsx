@@ -203,6 +203,9 @@ export const HubView: React.FC<HubViewProps> = ({ onNavigate }) => {
 
       {/* Top-left Global Logo Pill */}
       <GlobalLogoPill onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+      <a className="hub-about-link" href="./about.html">
+        About <span aria-hidden="true">↗</span>
+      </a>
 
       <main className="career-stage">
         {/* Screenshot 1: Hero Section */}

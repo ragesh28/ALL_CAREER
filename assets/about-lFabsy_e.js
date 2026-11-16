@@ -1,0 +1,1 @@
+import"./modulepreload-polyfill-B5Qt9EMX.js";if("IntersectionObserver"in window&&window.matchMedia("(prefers-reduced-motion: no-preference)").matches){const t=new IntersectionObserver(e=>{for(const r of e)r.isIntersecting&&(r.target.classList.add("is-revealed"),t.unobserve(r.target))},{threshold:.15});document.querySelectorAll("[data-reveal]").forEach(e=>t.observe(e))}

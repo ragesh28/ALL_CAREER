@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="220" viewBox="0 0 1040 220" role="img">
+  <title>A shareable All Jobs filter selection</title>
+  <defs>
+    <linearGradient id="surface" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#0b1716"/>
+      <stop offset="1" stop-color="#1b3329"/>
+    </linearGradient>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#476759" opacity=".45"/>
+    </pattern>
+  </defs>
+  <style>
+  text { font-family: 'Segoe UI', system-ui, sans-serif; }
+  .arrive { animation: arrive 850ms cubic-bezier(.22,.78,.25,1) 160ms both; }
+  .later { animation-delay: 480ms; }
+  .signal {
+    stroke-dasharray: 7 93;
+    opacity: 0;
+    animation: send 1550ms cubic-bezier(.22,.78,.25,1) 350ms 2;
+  }
+  .signal-later { animation-delay: 680ms; }
+  .highlight { animation: highlight 1.3s cubic-bezier(.22,.78,.25,1) 540ms both; }
+  @keyframes arrive {
+    from { opacity: .35; transform: translateY(9px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes send {
+    0% { opacity: 0; stroke-dashoffset: 7; }
+    12%, 78% { opacity: 1; }
+    100% { opacity: 0; stroke-dashoffset: -100; }
+  }
+  @keyframes highlight {
+    0% { opacity: .3; }
+    45%, 100% { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .arrive, .signal, .highlight { animation: none; }
+  }
+  </style>
+  <rect x="0.5" y="0.5" width="1039" height="219" rx="27" fill="url(#surface)" stroke="#345348"/>
+  <text x="40" y="57" fill="#eef7ed" font-size="34" font-weight="700" letter-spacing="-1.1">Same link. Same filters.</text>
+  <text x="42" y="91" fill="#b5c9bd" font-size="16" font-weight="400" >Save the search or share it with someone.</text>
+  <rect x="42" y="118" width="955" height="75" rx="14" fill="#101e1a" stroke="#345348"/>
+  <g class="arrive" style="animation-delay:140ms">
+  <rect x="61" y="137" width="115" height="36" rx="8" fill="#294739" stroke="#49725a"/>
+  <text x="74" y="160" fill="#eef7ed" font-size="16" font-weight="600" >Chennai</text>
+</g>
+  <g class="arrive" style="animation-delay:260ms">
+  <rect x="187" y="137" width="107" height="36" rx="8" fill="#294739" stroke="#49725a"/>
+  <text x="200" y="160" fill="#eef7ed" font-size="16" font-weight="600" >Naukri</text>
+</g>
+  <g class="arrive" style="animation-delay:380ms">
+  <rect x="305" y="137" width="110" height="36" rx="8" fill="#294739" stroke="#49725a"/>
+  <text x="318" y="160" fill="#eef7ed" font-size="16" font-weight="600" >0 years</text>
+</g>
+  <g class="arrive" style="animation-delay:500ms">
+  <rect x="426" y="137" width="216" height="36" rx="8" fill="#294739" stroke="#49725a"/>
+  <text x="439" y="160" fill="#eef7ed" font-size="16" font-weight="600" >Software Technical</text>
+</g>
+<g class="arrive later">
+  <rect x="796" y="134" width="182" height="42" rx="21" fill="#bcf2a6"/>
+  <text x="816" y="161" fill="#172b12" font-size="16" font-weight="700" >Try this search</text>
+  <path d="M946 158 l8 -8 m-7 0 h7 v7" fill="none" stroke="#172b12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

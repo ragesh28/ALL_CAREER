@@ -1,5 +1,5 @@
 import { MobileFilters } from '../common/MobileFilters';
-import React, { useState, useEffect, useMemo, useRef, useDeferredValue, startTransition } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useDeferredValue } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { Job } from '../../types/jobs';
 import { jobService } from '../../services/jobService';
@@ -14,12 +14,21 @@ import { CatalogSummary, catalogCity, matchesCatalogLocation, matchesCatalogSour
 import { JOBS_PER_PAGE, PREPARED_CITIES, PREPARED_SOURCES, preparedJobFilterKey } from '../../data/preparedJobFilters';
 import { calculateWalkinFacets, WalkinFacetInput, WalkinFacets } from '../../services/walkinFacets';
 
-interface AllJobsViewProps {
-  onGoHub: () => void;
-  initialSearch?: string;
+import { readAllJobsFilters } from './allJobsFilters';
+import { useAllJobsFilters } from './useAllJobsFilters';
+
+function toggleSelection(current: Set<string>, value: string): Set<string> {
+  const next = new Set(current);
+  if (next.has(value)) next.delete(value);
+  else next.add(value);
+  return next;
 }
 
-export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch }) => {
+interface AllJobsViewProps {
+  onGoHub: () => void;
+}
+
+export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [catalogError, setCatalogError] = useState(false);
@@ -35,26 +44,12 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
   const batchTarget = useRef(50);
   const lastCatalogCheck = useRef(0);
 
-  // Filters State
-  const [searchTerm, setSearchTerm] = useState(initialSearch || '');
-
-  useEffect(() => {
-    if (initialSearch) {
-      setSearchTerm(initialSearch);
-    }
-  }, [initialSearch]);
-  const [selectedSources, setSelectedSources] = useState<Set<string>>(new Set());
-  const [selectedDateFilter, setSelectedDateFilter] = useState('all');
-  const [selectedLocations, setSelectedLocations] = useState<Set<string>>(new Set());
-  const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
-  const [expValue, setExpValue] = useState<number>(-1);
-  const [exactExp, setExactExp] = useState<boolean>(false);
-  const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
-  const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set());
-  const [walkinOnly, setWalkinOnly] = useState(false);
-  const [selectedWalkinDates, setSelectedWalkinDates] = useState<Set<string>>(new Set());
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [sortBy, setSortBy] = useState('latest');
+  const [filters, updateFilters] = useAllJobsFilters();
+  const {
+    searchTerm, selectedSources, selectedDateFilter, selectedLocations, selectedRoles,
+    expValue, exactExp, selectedSkills, selectedCompanies, walkinOnly, selectedWalkinDates,
+    selectedCategory, sortBy,
+  } = filters;
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Deferred filter values for non-blocking background job filtering & 0ms UI responsiveness
@@ -243,89 +238,31 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     return () => clearTimeout(retry);
   }, [batchError, batchLoading, summary, deferredSources, deferredLocations, deferredWalkinOnly, deferredWalkinDates, deferredSearchTerm, deferredRoles, deferredSkills, deferredCompanies, deferredDateFilter, deferredExpValue, deferredExactExp, deferredCategory]);
 
-  // Filter Toggles
-  const handleToggleSource = (source: string) => {
-    setSelectedSources(prev => {
-      const next = new Set(prev);
-      if (next.has(source)) next.delete(source);
-      else next.add(source);
-      return next;
-    });
-  };
-
-  const handleToggleLocation = (loc: string) => {
-    setSelectedLocations(prev => {
-      const next = new Set(prev);
-      if (next.has(loc)) next.delete(loc);
-      else next.add(loc);
-      return next;
-    });
-  };
-
-  const handleToggleRole = (role: string) => {
-    setSelectedRoles(prev => {
-      const next = new Set(prev);
-      if (next.has(role)) next.delete(role);
-      else next.add(role);
-      return next;
-    });
-  };
-
-  const handleToggleSkill = (skill: string) => {
-    setSelectedSkills(prev => {
-      const next = new Set(prev);
-      if (next.has(skill)) next.delete(skill);
-      else next.add(skill);
-      return next;
-    });
-  };
-
-  const handleExpChange = (val: number) => {
-    startTransition(() => {
-      setExpValue(val);
-      if (val === -1) {
-        setExactExp(false);
-      }
-    });
-  };
-
-  const handleToggleExactExp = () => {
-    startTransition(() => {
-      setExactExp(prev => !prev);
-    });
-  };
-
-  const handleToggleCompany = (company: string) => {
-    setSelectedCompanies(prev => {
-      const next = new Set(prev);
-      if (next.has(company)) next.delete(company);
-      else next.add(company);
-      return next;
-    });
-  };
-
-  const handleToggleWalkin = () => {
-    startTransition(() => {
-      setWalkinOnly(prev => {
-        const next = !prev;
-        if (next && selectedCategory !== 'all') {
-          setSelectedCategory('all');
-        }
-        return next;
-      });
-    });
-  };
-
-  const handleToggleWalkinDate = (date: string) => {
-    startTransition(() => {
-      setSelectedWalkinDates(prev => {
-        const next = new Set(prev);
-        if (next.has(date)) next.delete(date);
-        else next.add(date);
-        return next;
-      });
-    });
-  };
+  const setSearchTerm = (searchTerm: string) => updateFilters(() => ({ searchTerm }));
+  const handleToggleSource = (source: string) => updateFilters(current => ({
+    selectedSources: toggleSelection(current.selectedSources, source),
+  }));
+  const handleToggleLocation = (location: string) => updateFilters(current => ({
+    selectedLocations: toggleSelection(current.selectedLocations, location),
+  }));
+  const handleToggleRole = (role: string) => updateFilters(current => ({
+    selectedRoles: toggleSelection(current.selectedRoles, role),
+  }));
+  const handleToggleSkill = (skill: string) => updateFilters(current => ({
+    selectedSkills: toggleSelection(current.selectedSkills, skill),
+  }));
+  const handleExpChange = (expValue: number) => updateFilters(current => ({
+    expValue,
+    exactExp: expValue >= 0 && current.exactExp,
+  }));
+  const handleToggleExactExp = () => updateFilters(current => ({ exactExp: !current.exactExp }));
+  const handleToggleWalkin = () => updateFilters(current => ({
+    walkinOnly: !current.walkinOnly,
+    selectedCategory: current.walkinOnly ? current.selectedCategory : 'all',
+  }));
+  const handleToggleWalkinDate = (date: string) => updateFilters(current => ({
+    selectedWalkinDates: toggleSelection(current.selectedWalkinDates, date),
+  }));
 
   // Compute category counts for breakdown using pre-indexed _normCategory
   const categoryCounts = useMemo(() => {
@@ -690,6 +627,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     (walkinOnly ? 1 : 0) +
     selectedWalkinDates.size +
     (selectedCategory !== 'all' ? 1 : 0) +
+    (sortBy !== 'latest' ? 1 : 0) +
     (searchTerm.trim() ? 1 : 0);
 
   const hasActiveFilters = activeFilterCount > 0;
@@ -743,23 +681,13 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
     else setCatalogAttempt(value => value + 1);
   };
   const reconnecting = catalogError || batchError;
+  const resultOrder = deferredSortBy === 'oldest' ? 'Oldest loaded first' :
+    deferredSortBy === 'company' ? 'By company' : 'Newest first';
   const waitingForJobs = !summary || batchLoading ||
     walkinOnly !== deferredWalkinOnly || selectedWalkinDates !== deferredWalkinDates;
 
-  // Instantaneous reset: clears all filter states in a single atomic batch
   const clearAllFilters = () => {
-    setSelectedSources(new Set());
-    setSelectedDateFilter('all');
-    setSelectedLocations(new Set());
-    setSelectedRoles(new Set());
-    setExpValue(-1);
-    setExactExp(false);
-    setSelectedSkills(new Set());
-    setSelectedCompanies(new Set());
-    setWalkinOnly(false);
-    setSelectedWalkinDates(new Set());
-    setSelectedCategory('all');
-    setSearchTerm('');
+    updateFilters(() => readAllJobsFilters(''));
     setCurrentPage(1);
   };
 
@@ -825,7 +753,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
           selectedSources={selectedSources}
           onToggleSource={handleToggleSource}
           selectedDateFilter={selectedDateFilter}
-          onSelectDateFilter={setSelectedDateFilter}
+          onSelectDateFilter={selectedDateFilter => updateFilters(() => ({ selectedDateFilter }))}
           selectedLocations={selectedLocations}
           onToggleLocation={handleToggleLocation}
           selectedRoles={selectedRoles}
@@ -861,7 +789,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
             {prepared?.total !== undefined
               ? prepared.total.toLocaleString() + ' matching jobs · Newest first'
               : filteredJobs.length > 0 || (!waitingForJobs && !reconnecting)
-                ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · Newest first · More jobs load in small batches'
+                ? filteredJobs.length.toLocaleString() + ' matching jobs loaded · ' + resultOrder + ' · More jobs load in small batches'
                 : reconnecting ? 'Retrying job downloads…' : walkinActive ? 'Loading walk-in jobs…' : 'Loading jobs…'}
           </p>
           {/* Category count pills */}
@@ -869,7 +797,7 @@ export const AllJobsView: React.FC<AllJobsViewProps> = ({ onGoHub, initialSearch
             pageCounts={pageCategoryCounts}
             totalOnPage={currentJobs.length}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            onSelectCategory={selectedCategory => updateFilters(() => ({ selectedCategory }))}
             hasActiveFilters={hasActiveFilters}
             activeFilterCount={activeFilterCount}
             onClearAll={clearAllFilters}

@@ -595,6 +595,47 @@ body {
   overflow-x: hidden;
 }
 
+.hub-about-link {
+  position: absolute;
+  z-index: 1000;
+  top: 18px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 16px;
+  border: 1px solid rgba(210, 234, 245, 0.24);
+  border-radius: 12px;
+  background: rgba(12, 22, 35, 0.88);
+  color: #f1f8f8;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 180ms, border-color 180ms;
+}
+
+.hub-about-link span {
+  color: #7ce6c2;
+}
+
+.hub-about-link:hover {
+  background: #182d37;
+  border-color: #7ce6c2;
+}
+
+.hub-about-link:focus-visible {
+  outline: 2px solid #7ce6c2;
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .hub-about-link {
+    top: 12px;
+    right: 14px;
+  }
+}
+
 .hub-container::before {
   width: 620px;
   height: 620px;

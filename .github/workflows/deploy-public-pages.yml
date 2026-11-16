@@ -33,6 +33,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /index.html
+            /about.html
             /string_theory.html
             /all_jobs.html
             /big_company_jobs.html
@@ -73,6 +74,7 @@ jobs:
             fi
           done
           test -f site/index.html
+          test -f site/about.html
           test -f site/data/web/summary.json
           test -f site/data/web/latest.json
           if find site -type f \( -name '*.py' -o -name '*.sql' -o -name '*.db' -o -name 'whoami.txt' \) | grep -q .; then

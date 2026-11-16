@@ -1,0 +1,38 @@
+name: Refresh README animations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/readme/**'
+      - '.github/workflows/refresh-readme-animations.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-animations
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /docs/readme/
+      - name: Render animations
+        run: python3 docs/readme/generate.py
+      - name: Publish updated images
+        run: |
+          git add -- docs/readme/overview.svg docs/readme/job-card.svg docs/readme/shared-filters.svg
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'docs: refresh All Career animations'
+          git push origin HEAD:main

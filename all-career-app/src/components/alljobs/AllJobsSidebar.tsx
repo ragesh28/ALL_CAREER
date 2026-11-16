@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BriefcaseBusiness, CalendarDays, ChevronDown, Globe2, MapPin, Route, Search, SlidersHorizontal, Tag } from 'lucide-react';
 import { formatWalkinDate } from '../../utils/companyLogos';
 import { resolveAssetUrl } from '../../utils/urlHelper';
@@ -101,36 +101,6 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
   // Show more toggles
   const [showMoreRoles, setShowMoreRoles] = useState(false);
   const [showMoreSkills, setShowMoreSkills] = useState(false);
-
-  // Optimistic local state for walk-in filters for instant 0ms color feedback
-  const [localWalkinOnly, setLocalWalkinOnly] = useState(walkinOnly);
-  useEffect(() => {
-    setLocalWalkinOnly(walkinOnly);
-  }, [walkinOnly]);
-
-  const [localWalkinDates, setLocalWalkinDates] = useState<Set<string>>(selectedWalkinDates);
-  useEffect(() => {
-    setLocalWalkinDates(selectedWalkinDates);
-  }, [selectedWalkinDates]);
-
-  const handleWalkinClick = () => {
-    setLocalWalkinOnly(prev => !prev);
-    setTimeout(() => {
-      onToggleWalkin();
-    }, 0);
-  };
-
-  const handleWalkinDateClick = (dateId: string) => {
-    setLocalWalkinDates(prev => {
-      const next = new Set(prev);
-      if (next.has(dateId)) next.delete(dateId);
-      else next.add(dateId);
-      return next;
-    });
-    setTimeout(() => {
-      onToggleWalkinDate(dateId);
-    }, 0);
-  };
 
   // 1. Sources List with authentic logos from logos/portals/
   const PORTALS = [
@@ -690,9 +660,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
         >
           <span className="filter-section-label">
             <Route size={14} aria-hidden="true" /> Walk-in Interview
-            {(localWalkinOnly || localWalkinDates.size > 0) && (
+            {(walkinOnly || selectedWalkinDates.size > 0) && (
               <span className="filter-count show">
-                {(localWalkinOnly ? 1 : 0) + localWalkinDates.size}
+                {(walkinOnly ? 1 : 0) + selectedWalkinDates.size}
               </span>
             )}
           </span>
@@ -702,9 +672,9 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
           <div className="filter-body-inner">
             {/* Top Option: All Walk-ins with dynamic count & instant color feedback */}
             <div
-              className={`filter-option ${localWalkinOnly ? 'checked' : ''}`}
+              className={`filter-option ${walkinOnly ? 'checked' : ''}`}
               id="walkinOpt"
-              onClick={handleWalkinClick}
+              onClick={onToggleWalkin}
             >
               <div className="custom-checkbox">
                 <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -751,12 +721,12 @@ export const AllJobsSidebar: React.FC<AllJobsSidebarProps> = ({
                 </div>
               ) : (
                 displayWalkinDates.map(item => {
-                  const isSelected = localWalkinDates.has(item.id);
+                  const isSelected = selectedWalkinDates.has(item.id);
                   return (
                     <div
                       key={item.id}
                       className={`filter-option ${isSelected ? 'checked' : ''}`}
-                      onClick={() => handleWalkinDateClick(item.id)}
+                      onClick={() => onToggleWalkinDate(item.id)}
                     >
                       <div className="custom-checkbox">
                         <svg width="10" height="10" fill="none" stroke="white" strokeWidth="2.5" viewBox="0 0 24 24">

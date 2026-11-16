@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="352" viewBox="0 0 1040 352" role="img">
+  <title>All Career brings job listings together</title>
+  <defs>
+    <linearGradient id="surface" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#0b1716"/>
+      <stop offset="1" stop-color="#1b3329"/>
+    </linearGradient>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#476759" opacity=".45"/>
+    </pattern>
+  </defs>
+  <style>
+  text { font-family: 'Segoe UI', system-ui, sans-serif; }
+  .arrive { animation: arrive 850ms cubic-bezier(.22,.78,.25,1) 160ms both; }
+  .later { animation-delay: 480ms; }
+  .signal {
+    stroke-dasharray: 7 93;
+    opacity: 0;
+    animation: send 1550ms cubic-bezier(.22,.78,.25,1) 350ms 2;
+  }
+  .signal-later { animation-delay: 680ms; }
+  .highlight { animation: highlight 1.3s cubic-bezier(.22,.78,.25,1) 540ms both; }
+  @keyframes arrive {
+    from { opacity: .35; transform: translateY(9px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes send {
+    0% { opacity: 0; stroke-dashoffset: 7; }
+    12%, 78% { opacity: 1; }
+    100% { opacity: 0; stroke-dashoffset: -100; }
+  }
+  @keyframes highlight {
+    0% { opacity: .3; }
+    45%, 100% { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .arrive, .signal, .highlight { animation: none; }
+  }
+  </style>
+  <rect x="0.5" y="0.5" width="1039" height="351" rx="27" fill="url(#surface)" stroke="#345348"/>
+  <rect x="515" y="29" width="498" height="294" rx="22" fill="url(#dots)"/>
+<g class="arrive">
+  <text x="53" y="70" fill="#bcf2a6" font-size="17" font-weight="700" letter-spacing="2.5">ALL CAREER</text>
+  <text x="49" y="150" fill="#eef7ed" font-size="64" font-weight="700" letter-spacing="-3.5">Find the jobs</text>
+  <text x="50" y="215" fill="#bcf2a6" font-size="64" font-weight="700" letter-spacing="-3.5">that fit.</text>
+  <text x="54" y="264" fill="#b5c9bd" font-size="19" font-weight="500" >Stay on top of new openings across India.</text>
+  <text x="54" y="289" fill="#b5c9bd" font-size="19" font-weight="500" >See the date posted and experience together.</text>
+</g>
+  <rect x="540" y="71" width="170" height="58" rx="11" fill="#1a2c25" stroke="#345348"/>
+  <text x="553" y="96" fill="#eef7ed" font-size="15" font-weight="650" >Job boards</text>
+  <text x="553" y="115" fill="#b5c9bd" font-size="12" font-weight="400" >LinkedIn · Naukri · Indeed</text>
+  <path d="M709 100 H743 Q767 100 767 125 V158 Q767 182 791 182 H805" fill="none" stroke="#577a64" stroke-width="1.2"/>
+  <path class="signal" d="M709 100 H743 Q767 100 767 125 V158 Q767 182 791 182 H805" pathLength="100" fill="none" stroke="#bcf2a6" stroke-width="2.7" stroke-linecap="round"/>
+  <rect x="540" y="151" width="170" height="58" rx="11" fill="#1a2c25" stroke="#345348"/>
+  <text x="553" y="176" fill="#eef7ed" font-size="15" font-weight="650" >Career sites</text>
+  <text x="553" y="195" fill="#b5c9bd" font-size="12" font-weight="400" >Company openings</text>
+  <path d="M709 180 H805" fill="none" stroke="#577a64" stroke-width="1.2"/>
+  <path class="signal" d="M709 180 H805" pathLength="100" fill="none" stroke="#bcf2a6" stroke-width="2.7" stroke-linecap="round"/>
+  <rect x="540" y="231" width="170" height="58" rx="11" fill="#1a2c25" stroke="#345348"/>
+  <text x="553" y="256" fill="#eef7ed" font-size="15" font-weight="650" >Telegram &amp; flyers</text>
+  <text x="553" y="275" fill="#b5c9bd" font-size="12" font-weight="400" >Public hiring posts</text>
+  <path d="M709 260 H743 Q767 260 767 235 V205 Q767 182 791 182 H805" fill="none" stroke="#577a64" stroke-width="1.2"/>
+  <path class="signal signal-later" d="M709 260 H743 Q767 260 767 235 V205 Q767 182 791 182 H805" pathLength="100" fill="none" stroke="#bcf2a6" stroke-width="2.7" stroke-linecap="round"/>
+<g class="arrive later">
+  <rect x="804" y="117" width="190" height="130" rx="16" fill="#1f3b2c" stroke="#648b6b"/>
+  <text x="822" y="145" fill="#bcf2a6" font-size="11" font-weight="650" letter-spacing="1">EXAMPLE JOB CARD</text>
+  <text x="822" y="179" fill="#eef7ed" font-size="17" font-weight="700" >Software Engineer</text>
+  <text x="822" y="202" fill="#b5c9bd" font-size="14" font-weight="400" >Chennai · Naukri</text>
+  <text x="822" y="225" fill="#bcf2a6" font-size="13" font-weight="600" >2 days ago · 0–2 years</text>
+</g>
+</svg>

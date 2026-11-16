@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { History, RotateCcw, Search, Send, Square, X } from 'lucide-react';
-import { resolveAssetUrl } from '../../utils/urlHelper';
 import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 import { bridgeService, BatchState } from '../../services/bridgeService';
 
@@ -29,40 +28,11 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
   onClearAll,
   hasActiveFilters
 }) => {
-  // Local instant state for silky-smooth 60fps typing without any blocking lag
-  const [localSearch, setLocalSearch] = useState(searchTerm);
   const [batchState, setBatchState] = useState<BatchState>(bridgeService.getState());
-  const debounceTimerRef = useRef<any>(null);
 
   useEffect(() => {
-    return bridgeService.subscribe((s) => setBatchState(s));
+    return bridgeService.subscribe(setBatchState);
   }, []);
-
-  useEffect(() => {
-    setLocalSearch(searchTerm);
-  }, [searchTerm]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setLocalSearch(val);
-    clearTimeout(debounceTimerRef.current);
-    debounceTimerRef.current = setTimeout(() => {
-      onSearchChange(val);
-    }, 120);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      clearTimeout(debounceTimerRef.current);
-      onSearchChange(localSearch);
-    }
-  };
-
-  const handleClearSearch = () => {
-    setLocalSearch('');
-    clearTimeout(debounceTimerRef.current);
-    onSearchChange('');
-  };
 
   return (
     <header className="topnav">
@@ -81,14 +51,14 @@ export const AllJobsTopNav: React.FC<AllJobsTopNavProps> = ({
           <input
             type="text"
             placeholder="Search jobs, companies, skills..."
-            value={localSearch}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
+            value={searchTerm}
+            onChange={event => onSearchChange(event.target.value)}
+            aria-label="Search jobs, companies, and skills"
           />
-          {localSearch && (
+          {searchTerm && (
             <button
               type="button"
-              onClick={handleClearSearch}
+              onClick={() => onSearchChange('')}
               className="search-clear-btn"
               aria-label="Clear search text"
               style={{
