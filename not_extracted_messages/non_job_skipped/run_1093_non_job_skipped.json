@@ -1,0 +1,28 @@
+{
+  "workflow_run_number": "1093",
+  "workflow_run_id": "43794424201",
+  "timestamp": "2026-11-16T02:56:59.299071",
+  "runtime_minutes": 2.29,
+  "messages_processed": 11,
+  "new_jobs_stored": 7,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 5,
+  "text_messages_processed": 6,
+  "stored_locations": {
+    "Unknown": 4,
+    "Kakori": 1,
+    "Noida": 1,
+    "Bengaluru, Bangalore": 1
+  },
+  "stored_walkins": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18979,
+      "text": "G\nood morning,\nMonday.\nChoose one brave step\nand build from there.",
+      "timestamp": "2026-11-16T01:45:10+00:00"
+    }
+  ]
+}
