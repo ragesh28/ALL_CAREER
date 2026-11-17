@@ -42,7 +42,7 @@ STYLE = """
 """
 
 
-def svg(title, height, body, *, width=WIDTH, radius=27, style=STYLE):
+def svg(title, height, body, *, width=WIDTH, radius=27, style=STYLE, trailing_space=0):
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img">
   <title>{escape(title)}</title>
   <defs>
@@ -56,7 +56,7 @@ def svg(title, height, body, *, width=WIDTH, radius=27, style=STYLE):
   </defs>
   <style>{style.rstrip()}
   </style>
-  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="{radius}" fill="url(#surface)" stroke="{LINE}"/>
+  <rect x="0.5" y="0.5" width="{width - trailing_space - 1}" height="{height - 1}" rx="{radius}" fill="url(#surface)" stroke="{LINE}"/>
 {body}
 </svg>
 """
@@ -203,7 +203,7 @@ def section_accent():
         '<circle cx="5" cy="15" r="1.5" fill="#bcf2a6"/>',
         '<path class="trace" d="M5 15h6" fill="none" stroke="#bcf2a6" stroke-width="2.5" stroke-linecap="round"/>',
     ]
-    return svg("Section accent", 22, frame(parts), width=32, radius=7, style=NAV_STYLE)
+    return svg("Section accent", 22, frame(parts), width=38, radius=7, style=NAV_STYLE, trailing_space=6)
 
 
 def navigation_card(title, accent, delay):
