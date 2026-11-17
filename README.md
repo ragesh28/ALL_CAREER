@@ -1,10 +1,12 @@
 # All Career
 
-<a href="https://ragesh28.github.io/ALL_CAREER/about.html">
+<a href="https://ragesh28.github.io/ALL_CAREER/">
   <img src="./docs/readme/overview.svg" width="1040" alt="Find the jobs that fit. All Career brings listings from job boards, employer websites, Telegram, and public hiring flyers into one search." />
 </a>
 
-**[Browse All Jobs](https://ragesh28.github.io/ALL_CAREER/#all_jobs)** · **[About All Career](https://ragesh28.github.io/ALL_CAREER/about.html)**
+<p><a href="https://ragesh28.github.io/ALL_CAREER/">
+  <img src="./docs/readme/open-all-career.svg" width="204" height="44" alt="Open the All Career website" />
+</a></p>
 
 ## See when a job was posted and what it requires
 
@@ -17,6 +19,12 @@ Job openings are spread across portals, employer career pages, and community pos
 1. **Find jobs across sources.** All Career collects openings from Naukri, LinkedIn, Indeed, other job boards, employer career sites, public Telegram posts, and hiring flyers throughout the day.
 2. **Narrow the list.** Search by keyword or company. Filter by source, city, time posted, role, skills, experience, and job category. Walk-ins can also be filtered by interview date.
 3. **Open the original listing.** Review the full requirements and apply through the listing. For walk-ins, use the original flyer or contact details when available.
+
+## Try your first search
+
+- **New to work?** Choose a city and select **0 years** to find listings that accept zero years of experience, including ranges such as **0–2 years**. Select **Exactly 0 years only** for the narrower search.
+- **Looking for a walk-in?** Open **Walk-in Interview** and pick an interview date and a city. If few listings appear, clear the experience filter to see listings where the employer hasn’t specified years.
+- **Checking when a job appeared?** Use **Posted Date** to narrow the results. Open the original listing to confirm the role is still accepting applications.
 
 ## Save or share a search
 

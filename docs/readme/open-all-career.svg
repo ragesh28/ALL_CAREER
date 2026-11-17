@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="204" height="44" viewBox="0 0 204 44" role="img" aria-labelledby="title">
+  <title id="title">Open All Career</title>
+  <rect x=".5" y=".5" width="203" height="43" rx="10" fill="#1c382c" stroke="#60896d"/>
+  <text x="20" y="22" dominant-baseline="central" fill="#e4f6e4" font-family="system-ui, sans-serif" font-size="16" font-weight="650">Open All Career</text>
+  <path d="M168 22h15m-6-6 6 6-6 6" fill="none" stroke="#b8eea5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
