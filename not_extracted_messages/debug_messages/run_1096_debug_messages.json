@@ -1,0 +1,23 @@
+{
+  "workflow_run_number": "1096",
+  "workflow_run_id": "44018416764",
+  "timestamp": "2026-11-17T04:49:06.471439",
+  "runtime_minutes": 6.67,
+  "messages_processed": 24,
+  "new_jobs_stored": 14,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 7,
+  "text_messages_processed": 17,
+  "stored_locations": {
+    "Remote (India)": 1,
+    "India": 1,
+    "Bengaluru": 1,
+    "Unknown": 6,
+    "Bangalore": 2,
+    "Chennai": 2,
+    "NYC": 1
+  },
+  "stored_walkins": 1,
+  "debug_failed_messages": []
+}

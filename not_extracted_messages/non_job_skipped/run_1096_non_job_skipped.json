@@ -1,0 +1,45 @@
+{
+  "workflow_run_number": "1096",
+  "workflow_run_id": "44018416764",
+  "timestamp": "2026-11-17T04:49:06.471439",
+  "runtime_minutes": 6.67,
+  "messages_processed": 24,
+  "new_jobs_stored": 14,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 7,
+  "text_messages_processed": 17,
+  "stored_locations": {
+    "Remote (India)": 1,
+    "India": 1,
+    "Bengaluru": 1,
+    "Unknown": 6,
+    "Bangalore": 2,
+    "Chennai": 2,
+    "NYC": 1
+  },
+  "stored_walkins": 1,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "placementdriveofficial",
+      "msg_id": 13709,
+      "text": "🎯 𝐘𝐨𝐮𝐫 𝐍𝐞𝐱𝐭 𝐂𝐚𝐫𝐞𝐞𝐫 𝐎𝐩𝐩𝐨𝐫𝐭𝐮𝐧𝐢𝐭𝐲 𝐒𝐭𝐚𝐫𝐭𝐬 𝐇𝐞𝐫𝐞\n\nCheck the skills, experience and location for each role\n\n💼 𝐙𝐲𝐜𝐮𝐬 \nhttps://pdlink.in/4t40O9j\n\n🏦 𝐒𝐭𝐚𝐧𝐝𝐚𝐫𝐝 𝐂𝐡𝐚𝐫𝐭𝐞𝐫𝐞𝐝 \nhttps://pdlink.in/4t182uN\n\n📌 Save these openings or share them with a friend looking for a job.\nYour Next Career\nKick\nYour\nOpportunity Starts Here\nCheck the skills, experience and location for each role\nZYCÚS\nstandard\nchartered\nZycus\nStandard Chartered\nhttps://pdlink.in/4t4009j\nhttps://pdlink.in/4t182uN\nSave these openings or share them\nwith a friend looking for a job.",
+      "timestamp": "2026-11-17T01:36:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18984,
+      "text": "\"Your success will be\ndetermined by your own\nconfidence and fortitude.\"\n-Michelle Obama",
+      "timestamp": "2026-11-17T01:43:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6442,
+      "text": "I have worked on SSDs at Samsung and this is why it matters?\n\nhttps://www.linkedin.com/posts/arshgoyal_ad-wasabipartner-share-7528315601900130304-_zAo",
+      "timestamp": "2026-11-17T04:43:19+00:00"
+    }
+  ]
+}
