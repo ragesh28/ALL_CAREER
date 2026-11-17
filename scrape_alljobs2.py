@@ -679,6 +679,8 @@ def main():
                     print(f"📊 Total new jobs this run: {total_new}")
                     return  # Exit → workflow will auto-restart with new IP
 
+            except storage.JobStorageError:
+                raise
             except Exception as e:
                 err = str(e)
                 if "block" in err.lower() or "429" in err or "403" in err:

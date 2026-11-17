@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC previous day)
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   scrape-job-portals:
     runs-on: ubuntu-latest
@@ -36,19 +40,16 @@ jobs:
 
       # Always commit and push progress to save state (even on timeout/failure)
       - name: Commit and Push Scrape Progress
-        if: always()
+        id: save_checkpoint
+        if: always() && !cancelled()
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          python merge_scraped_jobs.py || true
-          git add job_portals_progress.json data/ || true
-          git commit -m "chore: save job portals scraper progress [skip ci]" || echo "No progress changes to commit"
-          git pull --rebase -X theirs --autostash origin main
-          git push
+          python merge_scraped_jobs.py --commit-message "chore: save job portals scraper progress [skip ci]" job_portals_progress.json
 
       # Auto-restart if stopped mid-run (only if not cancelled manually)
       - name: Auto-Restart if Not Finished
-        if: always() && !cancelled()
+        if: always() && !cancelled() && steps.save_checkpoint.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

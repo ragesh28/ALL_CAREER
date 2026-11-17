@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '30 1 * * *'  # 7:00 AM IST (1:30 AM UTC)
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   scrape-linkedin-indeed:
     runs-on: ubuntu-latest
@@ -33,22 +37,18 @@ jobs:
 
       # Always save progress (even on timeout/failure)
       - name: Commit and Push Scrape Progress
-        if: always()
+        id: save_checkpoint
+        if: always() && !cancelled()
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          python merge_scraped_jobs.py || true
-          git add alljobs2_progress.json role_index.json jobs_by_role/*.json data/ || true
-          git commit -m "chore: save alljobs2 scraper progress [skip ci]" || echo "No changes to commit"
-          git pull --rebase -X theirs --autostash origin main
-          git push
+          python merge_scraped_jobs.py --commit-message "chore: save alljobs2 scraper progress [skip ci]" alljobs2_progress.json
 
       # Auto-restart if stopped mid-run
       # NOTE: No sleep here — sleeping inside a dying job causes "Operation canceled".
       #       We trigger the restart immediately; GitHub queues it and runs it fresh.
       - name: Auto-Restart if Not Finished
-        # Use always() WITHOUT !cancelled() so it runs even on timeout-triggered cancellation
-        if: always()
+        if: always() && !cancelled() && steps.save_checkpoint.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

@@ -572,7 +572,7 @@ def run_pipeline():
                             else:
                                 print("      ⚠️ Duplicate — already exists.")
                         else:
-                            print("      ❌ Storage module not available.")
+                            raise RuntimeError("Storage module unavailable; Telegram checkpoint was not advanced")
 
                     last_seen_ids[checkpoint_key] = msg.id
                     save_last_seen()

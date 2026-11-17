@@ -1,4 +1,6 @@
 import os
+import hashlib
+import tempfile
 import json
 import re
 from datetime import datetime, timedelta
@@ -47,30 +49,21 @@ def safe_load_json(file_path, default=None):
         return default if default is not None else {}
 
 def safe_write_json(file_path, data, indent=None, compact=True):
-    """
-    Safely write JSON using atomic write (.tmp + os.replace) to avoid partial or corrupt files.
-    """
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    tmp_path = file_path + ".tmp"
-    try:
-        with open(tmp_path, "w", encoding="utf-8") as f:
-            if indent is not None:
-                json.dump(data, f, indent=indent, ensure_ascii=False)
-            elif compact:
-                json.dump(data, f, separators=(',', ':'), ensure_ascii=False)
-            else:
-                json.dump(data, f, ensure_ascii=False)
-        os.replace(tmp_path, file_path)
-    except Exception as e:
-        print(f"Warning: atomic write error on {file_path} ({e}), falling back to direct write")
+    """Replace a complete JSON file atomically or report the error to the caller."""
+    path = Path(file_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                     suffix=".tmp", delete=False) as file:
+        temporary = Path(file.name)
         try:
-            with open(file_path, "w", encoding="utf-8") as f:
-                if indent is not None:
-                    json.dump(data, f, indent=indent, ensure_ascii=False)
-                else:
-                    json.dump(data, f, separators=(',', ':'), ensure_ascii=False)
-        except Exception as e2:
-            print(f"Error direct writing {file_path}: {e2}")
+            separators = (",", ":") if compact and indent is None else None
+            json.dump(data, file, indent=indent, separators=separators, ensure_ascii=False)
+            file.close()
+            os.replace(temporary, path)
+        finally:
+            file.close()
+            temporary.unlink(missing_ok=True)
+
 
 def get_all_chunk_files():
     return [str(path) for path in archive_chunks(ROOT_DIR)]
@@ -344,8 +337,49 @@ def append_to_archival_chunks(new_jobs):
             existing_data = []
         
     existing_data.extend(new_jobs)
-    with latest_chunk.open("w", encoding="utf-8") as f:
-        json.dump(existing_data, f, separators=(',', ':'))
+    safe_write_json(latest_chunk, existing_data)
+
+
+def archive_key(job):
+    from scripts.build_web_catalog import city_name
+
+    company = job.get("company")
+    if isinstance(company, dict):
+        company = company.get("name") or "Unknown"
+    identity = [
+        get_job_url(job) or job.get("telegram_url") or job.get("flyer_image_url") or "",
+        str(job.get("title") or job.get("role") or "Position").strip().lower(),
+        str(company or job.get("company_name") or job.get("company_canonical") or "").strip().lower(),
+        city_name(job.get("location")),
+    ]
+    return hashlib.sha256(json.dumps(identity, ensure_ascii=False).encode()).digest()
+
+
+def read_saved_jobs(path):
+    from scripts.build_web_catalog import read_job_array
+
+    rows, _ = read_job_array(Path(path).read_bytes(), path)
+    if not isinstance(rows, list):
+        raise ValueError(f"Expected a job array in {path}")
+    return rows
+
+
+_archive_root = None
+_archived_keys = set()
+
+
+def archived_keys(refresh=False):
+    # Each scraper has a single writer in its checkout. A replay after a Git pull
+    # uses a fresh process against the current archives.
+    global _archive_root, _archived_keys
+    if refresh or _archive_root != ROOT_DIR:
+        _archived_keys = {
+            archive_key(job) for path in get_all_chunk_files()
+            for job in read_saved_jobs(path) if isinstance(job, dict)
+        }
+        _archive_root = ROOT_DIR
+    return _archived_keys
+
 
 def update_indexes_after_add(newly_added_jobs, new_files_count=0):
     if not newly_added_jobs:
@@ -449,24 +483,22 @@ def update_indexes_after_add(newly_added_jobs, new_files_count=0):
         except Exception as e:
             print(f"Error updating walkin_jobs.json: {e}")
 
+class JobStorageError(RuntimeError):
+    """A required job save failed. Keep the scraper checkpoint on the current batch."""
+
+
 def store_jobs_batch(jobs):
-    """
-    Main entry point for scrapers to save jobs.
-    Uses ultra-fast granular shard storage (<30ms) instead of rewriting 335 MB monolithic chunks.
-    Also updates indexes and appends to the current archival chunk.
-    """
-    return store_jobs_granular(jobs)
+    try:
+        return store_jobs_granular(jobs)
+    except (OSError, ValueError, TypeError) as error:
+        raise JobStorageError("Could not save the job batch") from error
+
 
 def store_jobs_granular(jobs):
-    """
-    Directly upserts scraped jobs into targeted granular shards:
-    data/jobs/<role_slug>/<source>_<location>.json
-    Instead of rewriting 335 MB across monolithic chunks, this only opens and updates
-    the matching small JSON files in milliseconds.
-    """
     if not jobs:
         return 0
         
+    merging = bool(os.environ.get("IS_MERGING_TEMP"))
     cutoff_date = (datetime.now() - timedelta(days=25)).strftime("%Y-%m-%d")
     
     from collections import defaultdict
@@ -497,7 +529,10 @@ def store_jobs_granular(jobs):
                 description=str(j.get("description") or j.get("other_details") or "")
             )
             src_val = str(j.get("source") or "").lower()
-            is_explicit_walkin = ("google" in src_val or "flyer" in src_val or "walkin" in src_val)
+            is_explicit_walkin = (
+                j.get("is_walkin") in (True, "true") or j.get("walkin_date") or j.get("walkin_dates")
+                or src_val == "google_images" or "flyer" in src_val or "walkin" in src_val
+            )
             if w_info.get("is_walkin") or is_explicit_walkin:
                 j["is_walkin"] = True
                 if w_info.get("walkin_date") and not j.get("walkin_date"):
@@ -514,7 +549,7 @@ def store_jobs_granular(jobs):
             date_str = datetime.now().strftime("%Y-%m-%d")
             j["date_posted"] = date_str
             
-        if date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
+        if not merging and date_str and len(date_str) >= 10 and date_str[:10] < cutoff_date:
             continue
             
         if not j.get("role_category"):
@@ -529,77 +564,60 @@ def store_jobs_granular(jobs):
     if not grouped:
         return 0
         
-    jobs_dir = os.path.join("data", "jobs")
-    total_added = 0
-    updated_files = 0
-    new_files_created = 0
-    all_truly_added = []
-    
-    # Process only the targeted shard files
-    for (role_slug, src_slug, loc_slug), new_items in grouped.items():
-        role_dir = os.path.join(JOBS_DIR, role_slug)
-        os.makedirs(role_dir, exist_ok=True)
-        shard_path = os.path.join(role_dir, f"{src_slug}_{loc_slug}.json")
-        
-        is_new_file = not os.path.exists(shard_path)
-        existing_shard = []
-        if not is_new_file:
-            loaded = safe_load_json(shard_path, default=[])
-            if isinstance(loaded, list):
-                existing_shard = loaded
-                
-        # Index existing shard jobs
-        url_set = {get_job_url(item) for item in existing_shard if get_job_url(item)}
-        tc_set = {get_job_title_company_key(item) for item in existing_shard if get_job_title_company_key(item)}
-        
-        items_to_add = []
-        for item in new_items:
-            u = get_job_url(item)
-            tc = get_job_title_company_key(item)
-            if (u and u in url_set) or (tc and tc in tc_set):
-                continue
-            items_to_add.append(item)
-            if u:
-                url_set.add(u)
-            if tc:
-                tc_set.add(tc)
-                
-        if items_to_add:
-            # Prepend new jobs
-            combined = items_to_add + existing_shard
-            from scripts.optimize_shards import compact_job
-            compacted = [compact_job(x) for x in combined]
-            
-            safe_write_json(shard_path, compacted, compact=True)
-                
-            total_added += len(items_to_add)
-            updated_files += 1
-            if is_new_file:
-                new_files_created += 1
-            all_truly_added.extend(items_to_add)
-            
-    if all_truly_added:
-        # 1. Update preview and counts
-        update_indexes_after_add(all_truly_added, new_files_count=new_files_created)
-        
-        # 2. Append to archival chunk
-        try:
-            append_to_archival_chunks(all_truly_added)
-        except Exception as e:
-            print(f"Error appending to archival chunk: {e}")
-            
-        # 3. Save newly added jobs to temp_new_jobs.json if not in merging mode
-        if not os.environ.get("IS_MERGING_TEMP"):
-            temp_file = os.path.join(ROOT_DIR, "temp_new_jobs.json")
-            existing_temp = safe_load_json(temp_file, default=[])
-            if not isinstance(existing_temp, list):
-                existing_temp = []
-            existing_temp.extend(all_truly_added)
-            safe_write_json(temp_file, existing_temp, compact=True)
-            print(f"      Saved {len(all_truly_added)} jobs to temporary buffer temp_new_jobs.json.")
+    from scripts.optimize_shards import compact_job
 
-    print(f"[store_jobs_granular] Added {total_added} new jobs across {updated_files} shards.")
-    return total_added
+    complete = archived_keys()
+    additions = {}
+    shard_changes = {}
+    new_to_shards = []
+    new_files = 0
+    for (role, source, location), incoming in grouped.items():
+        path = Path(JOBS_DIR) / role / f"{source}_{location}.json"
+        exists = path.is_file()
+        previous = read_saved_jobs(path) if exists else []
+        by_url = {get_job_url(job): job for job in previous}
+        by_title = {get_job_title_company_key(job): job for job in previous}
+        new_rows = []
+        for job in incoming:
+            url, title = get_job_url(job), get_job_title_company_key(job)
+            prior = (by_url.get(url) if url else None) or (by_title.get(title) if title else None)
+            if prior is None:
+                new_rows.append(job)
+                if url:
+                    by_url[url] = job
+                if title:
+                    by_title[title] = job
+            # A legacy shard can contain a job that never made it into an archive.
+            # A replay also preserves distinct jobs accepted before a concurrent push.
+            candidate = job
+            if prior is not None and not merging and archive_key(prior) != archive_key(job):
+                candidate = prior
+            key = archive_key(candidate)
+            if key not in complete:
+                additions.setdefault(key, candidate)
+        if new_rows:
+            shard_changes[path] = [compact_job(job) for job in new_rows + previous]
+            new_to_shards.extend(new_rows)
+            new_files += int(not exists)
+
+    if not merging and (additions or new_to_shards):
+        # Journal before changing any shard or archive. The workflow replays this
+        # buffer against the upstream snapshot before committing the checkpoint.
+        buffer = Path(ROOT_DIR) / "temp_new_jobs.json"
+        pending = {archive_key(job): job for job in read_saved_jobs(buffer)} if buffer.is_file() else {}
+        pending.update(additions)
+        for job in new_to_shards:
+            pending[archive_key(job)] = job
+        safe_write_json(buffer, list(pending.values()))
+
+    append_to_archival_chunks(list(additions.values()))
+    complete.update(additions)
+    for path, rows in shard_changes.items():
+        safe_write_json(path, rows)
+    update_indexes_after_add(new_to_shards, new_files_count=new_files)
+
+    print(f"[store_jobs_granular] Archived {len(additions)} jobs, updated {len(shard_changes)} shards.")
+    return len(additions)
 
 
 

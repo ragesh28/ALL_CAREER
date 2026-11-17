@@ -1,0 +1,208 @@
+name: All Career Quick Tunnel Search Pilot
+
+on:
+  push:
+    branches: [codex/quick-tunnel-search-pilot]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: all-career-quick-tunnel-search-pilot
+  cancel-in-progress: true
+
+env:
+  CATALOG_REF: 89cf3612f56142e2404fd68f0da45962901c5922
+  CLOUDFLARED_VERSION: 2026.11.0
+  CLOUDFLARED_SHA256: 51f7c68b57ed7269164075d7e789efce5b59355982f06392deeb037d982a51fd
+  TZ: Asia/Kolkata
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /all-career-app/src/
+            /all-career-app/package*.json
+            /all-career-app/tsconfig*.json
+            /all-career-app/vite.config.ts
+            /all-career-app/index.html
+            /all-career-app/about.html
+            /all-career-app/public/String_Theory.png
+            /scripts/
+            /tests/
+            /storage.py
+            /merge_scraped_jobs.py
+            /scrape_alljobs2.py
+            /scrape_google_jobs.py
+            /role_classifier.py
+            /extractor_utils.py
+            /skills_dictionary.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Test search and job-save recovery
+        run: |
+          pip install requests beautifulsoup4 pandas playwright
+          python -m unittest discover -s tests -p '*pilot.py'
+      - name: Build the production frontend with the pilot disabled
+        env:
+          VITE_PILOT_SEARCH_URL: https://preview-only.invalid
+        working-directory: all-career-app
+        run: |
+          npm ci
+          npm run build
+          python - <<'PY'
+          from pathlib import Path
+          assert all(b"preview-only.invalid" not in f.read_bytes() for f in Path("dist").rglob("*.js"))
+          PY
+
+  runners:
+    name: Search runner (${{ matrix.runner }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        runner: [primary, replacement]
+    steps:
+      - name: Start the readiness clock
+        run: echo "PILOT_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/
+            /all-career-app/src/utils/filterUtils.ts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Load the same pinned public snapshot on each runner
+        env:
+          PILOT_RUNNER: ${{ matrix.runner }}
+        run: |
+          if [ "$PILOT_RUNNER" = replacement ]; then sleep 30; fi
+          catalog="$RUNNER_TEMP/catalog"
+          git init -q "$catalog"
+          git -C "$catalog" remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+          git -C "$catalog" config remote.origin.promisor true
+          git -C "$catalog" config remote.origin.partialclonefilter blob:none
+          git -C "$catalog" sparse-checkout set --no-cone '/data/web/summary.json'
+          git -C "$catalog" fetch --depth=1 --no-tags --filter=blob:none origin "$CATALOG_REF"
+          git -C "$catalog" checkout --detach FETCH_HEAD
+
+          python - "$catalog" <<'PY'
+          import json
+          from pathlib import Path
+          import subprocess
+          import sys
+          from scripts.build_search_pilot import read_catalog
+          from scripts.check_search_pilot import prepared_queries
+
+          root = Path(sys.argv[1])
+          summary = json.loads((root / "data/web/summary.json").read_bytes())
+
+          def materialize(paths):
+              subprocess.run(["git", "-C", str(root), "sparse-checkout", "add", "--stdin"],
+                             input="\n".join("/" + path for path in paths) + "\n", text=True, check=True)
+
+          materialize([summary["manifest"], summary["filtered_catalog"]])
+          _, feed = read_catalog(root)
+          prepared = prepared_queries(root)
+          prefixes = ("naukri/chennai/role/Software%20Engineer/", "naukri/chennai/software_technical/")
+          samples = [page for key, group in prepared.items() if key.startswith(prefixes) for page in group["pages"][:2]]
+          materialize(sorted({row["path"] for row in feed}.union(samples)))
+          print(f"Read {len(feed):,} canonical pages at the pinned catalog commit.")
+          PY
+      - name: Build and verify SQLite snapshot
+        run: |
+          python -m scripts.build_search_pilot "$RUNNER_TEMP/catalog" "$RUNNER_TEMP/jobs.sqlite" > "$RUNNER_TEMP/build-report.json"
+          cat "$RUNNER_TEMP/build-report.json"
+      - name: Download the pinned Cloudflare client
+        run: |
+          curl --retry 2 --fail --silent --show-error --location \
+            "https://github.com/cloudflare/cloudflared/releases/download/$CLOUDFLARED_VERSION/cloudflared-linux-amd64" \
+            --output "$RUNNER_TEMP/cloudflared"
+          echo "$CLOUDFLARED_SHA256  $RUNNER_TEMP/cloudflared" | sha256sum --check
+          chmod 700 "$RUNNER_TEMP/cloudflared"
+      - name: Check parity, probe the tunnel and measure loopback performance
+        env:
+          PILOT_RUNNER: ${{ matrix.runner }}
+        run: |
+          python -m scripts.check_search_pilot "$RUNNER_TEMP/catalog" "$RUNNER_TEMP/jobs.sqlite" "$RUNNER_TEMP/build-report.json" \
+            --runner "$PILOT_RUNNER" --cloudflared "$RUNNER_TEMP/cloudflared" --hold-seconds 120 \
+            --output "$RUNNER_TEMP/report-$PILOT_RUNNER.json"
+      - name: Upload metrics only
+        uses: actions/upload-artifact@v4
+        with:
+          name: quick-search-${{ matrix.runner }}
+          path: ${{ runner.temp }}/report-${{ matrix.runner }}.json
+          retention-days: 1
+
+  report:
+    name: Verify the two-runner readiness window
+    needs: [tests, runners]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: quick-search-*
+          path: reports
+          merge-multiple: true
+      - name: Report readiness and capacity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq '.created_at' > reports/queued.txt
+          python - <<'PY'
+          from datetime import datetime
+          import json
+          import os
+          from pathlib import Path
+
+          primary, replacement = [json.loads(Path(f"reports/report-{name}.json").read_bytes())
+                                  for name in ("primary", "replacement")]
+          assert primary["catalog_version"] == replacement["catalog_version"]
+          assert primary["database_sha256"] == replacement["database_sha256"]
+          assert primary["parity"] == replacement["parity"]
+          queued = datetime.fromisoformat(Path("reports/queued.txt").read_text().strip().replace("Z", "+00:00")).timestamp()
+          overlap = min(primary["last_ready_at"], replacement["last_ready_at"]) - max(primary["ready_at"], replacement["ready_at"])
+          passing = [row for row in primary["benchmark"] if row["failures"] == 0 and row["p95_ms"] <= 2000]
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as out:
+              print("## All Career search pilot\n", file=out)
+              print(f"{primary['jobs']:,} jobs and {primary['walkins']:,} walk-ins validated against the published catalog.", file=out)
+              print(f"SQLite size {primary['database_bytes'] / (1024 ** 3):.2f} GiB.\n", file=out)
+              for run in (primary, replacement):
+                  cold = run["ready_at"] - queued
+                  print(f"- {run['runner'].title()} ready {cold:.1f}s after workflow creation "
+                        f"({run['ready_at'] - run['runner_started_at']:.1f}s after the first runner step). "
+                        f"Build {run['build_seconds']:.1f}s, tunnel {run['tunnel_seconds']:.1f}s.", file=out)
+              print(f"- Overlapping verified readiness {max(overlap, 0):.1f}s.\n", file=out)
+              print("| Parallel searches | Requests | Failures | Requests/s | p95 |", file=out)
+              print("| ---: | ---: | ---: | ---: | ---: |", file=out)
+              for row in primary["benchmark"]:
+                  print(f"| {row['concurrency']} | {row['requests']} | {row['failures']} | "
+                        f"{row['requests_per_second']} | {row['p95_ms']} ms |", file=out)
+              if passing:
+                  best = max(passing, key=lambda row: row["requests_per_second"])
+                  print(f"\nBest observed rate within the 2s p95 target {best['requests_per_second']} searches/s.", file=out)
+              else:
+                  print("\nNo tested level met the latency target with all requests passing.", file=out)
+          if overlap <= 0:
+              raise SystemExit("Verified Quick Tunnel readiness intervals did not overlap.")
+          PY
