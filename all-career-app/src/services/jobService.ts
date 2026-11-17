@@ -50,7 +50,8 @@ export class JobService {
       }
       if (previous && previous.manifest === next.manifest &&
           previous.filtered_catalog === next.filtered_catalog &&
-          previous.generated_at === next.generated_at && previous.total_jobs === next.total_jobs) return previous;
+          previous.generated_at === next.generated_at && previous.total_jobs === next.total_jobs &&
+          previous.inputs_hash === next.inputs_hash) return previous;
       this.summary = next;
       this.sidebarCounts = next;
       return next;

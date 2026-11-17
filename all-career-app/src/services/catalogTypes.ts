@@ -7,6 +7,7 @@ export { catalogCity };
 export interface CatalogSummary extends SidebarCounts {
   schema: number;
   generated_at: string;
+  inputs_hash?: string;
   manifest: string;
   filtered_catalog?: string;
   source_locations: Record<string, Record<string, number>>;

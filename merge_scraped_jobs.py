@@ -1,153 +1,80 @@
+"""Replay the scraper journal on current Git data and save the checkpoint."""
+import argparse
 import os
-import json
-import subprocess
-import sys
-import glob
 from pathlib import Path
+import subprocess
 
-from scripts.job_archive_paths import ARCHIVE_DIRECTORY, archive_chunks
+from scripts.job_archive_paths import ARCHIVE_DIRECTORY
 
-TEMP_FILE = "temp_new_jobs.json"
 
-def run_cmd(args):
-    print(f"Running: {' '.join(args)}")
-    res = subprocess.run(args, capture_output=True, text=True)
-    if res.returncode != 0:
-        print(f"Error: {res.stderr}")
-    else:
-        if res.stdout.strip():
-            print(res.stdout.strip())
-    return res.returncode == 0
+TEMP_FILE = Path("temp_new_jobs.json")
+SHARD_PATHS = ("data/jobs", "data/index", ARCHIVE_DIRECTORY.as_posix())
+JOB_PATHS = (*SHARD_PATHS, ":(glob)all_jobs_*.json", "role_index.json", "jobs_by_role")
 
-def main():
-    if not os.path.exists(TEMP_FILE):
-        print(f"No temporary jobs file found ({TEMP_FILE}). Nothing to merge.")
+
+def git(*args):
+    return subprocess.run(["git", *args], check=True, text=True, stdout=subprocess.PIPE).stdout
+
+
+def merge_checkpoint(message=None, checkpoint_paths=()):
+    import storage
+
+    jobs = storage.read_saved_jobs(TEMP_FILE) if TEMP_FILE.is_file() else []
+    if not jobs and not message:
+        print("No pending jobs to merge.")
         return
 
-    try:
-        with open(TEMP_FILE, "r", encoding="utf-8") as f:
-            new_jobs = json.load(f)
-        print(f"Loaded {len(new_jobs)} new/updated jobs from {TEMP_FILE}.")
-    except Exception as e:
-        print(f"Error reading {TEMP_FILE}: {e}")
-        return
+    branch = git("branch", "--show-current").strip()
+    if not branch:
+        raise RuntimeError("A scraper must run on a checked-out branch to save progress")
+    if jobs:
+        # Rebuild the generated files from the journal after bringing in other
+        # scrapers' commits. Checkpoint and debug files stay in the worktree.
+        paths = [path for path in JOB_PATHS if git("ls-files", "--", path)]
+        if paths:
+            git("restore", "--source=HEAD", "--staged", "--worktree", "--", *paths)
+        untracked = git("ls-files", "--others", "--exclude-standard", "-z", "--", *SHARD_PATHS)
+        for path in untracked.rstrip("\0").split("\0") if untracked else []:
+            Path(path).unlink()
 
-    if not new_jobs:
-        print("No jobs to merge.")
-        return
+    git("pull", "--rebase", "--autostash", "origin", branch)
+    if git("diff", "--name-only", "--diff-filter=U"):
+        raise RuntimeError("Scraper files conflicted with another commit")
 
-    # Count sources in temp file
-    temp_sources = {}
-    for j in new_jobs:
-        src = j.get("source") or j.get("platform") or "unknown"
-        temp_sources[src] = temp_sources.get(src, 0) + 1
-    print(f"Temp file sources: {temp_sources}")
-
-    # 1. Discard local database changes to avoid merge conflicts during pull
-    print("\nStep 1: Discarding local database changes before pull...")
-    root = Path.cwd()
-    checkout_targets = ["role_index.json"]
-    checkout_targets.extend(path.name for path in archive_chunks(root) if path.parent == root)
-    if os.path.exists("data"):
-        checkout_targets.append("data")
-    if os.path.exists("jobs_by_role"):
-        role_files = glob.glob("jobs_by_role/*.json")
-        if role_files:
-            checkout_targets.extend(role_files)
-            
-    run_cmd(["git", "checkout", "HEAD", "--"] + checkout_targets)
-    if os.path.exists(os.path.join("data", "jobs")):
-        run_cmd(["git", "clean", "-fd", "--", "data/jobs"])
-
-    if ARCHIVE_DIRECTORY.is_dir():
-        run_cmd(["git", "clean", "-fd", "--", ARCHIVE_DIRECTORY.as_posix()])
-
-    # 2. Pull latest changes from remote
-    print("\nStep 2: Pulling latest changes from origin main...")
-    run_cmd(["git", "pull", "--rebase", "-X", "theirs", "--autostash", "origin", "main"])
-
-
-    # 3. Verify current state of database
-    chunk_files_after = archive_chunks(root)
-    total_before = 0
-    for f in chunk_files_after:
+    if jobs:
+        storage.archived_keys(refresh=True)
+        previous = os.environ.get("IS_MERGING_TEMP")
+        os.environ["IS_MERGING_TEMP"] = "1"
         try:
-            data = json.load(open(f, encoding="utf-8"))
-            total_before += len(data)
-        except:
-            pass
-    print(f"\nDatabase state after pull: {total_before} total jobs in {len(chunk_files_after)} chunks")
+            storage.store_jobs_batch(jobs)
+        finally:
+            if previous is None:
+                os.environ.pop("IS_MERGING_TEMP")
+            else:
+                os.environ["IS_MERGING_TEMP"] = previous
+        expected = {storage.archive_key(job) for job in jobs}
+        if not expected.issubset(storage.archived_keys()):
+            raise RuntimeError("Some journaled jobs are missing from the archive")
+        print(f"Verified {len(expected)} journaled jobs in the archive.")
 
-    # 4. Force-reload storage module to clear any cached state
-    print("\nStep 3: Merging new jobs into the latest database state...")
-    os.environ["IS_MERGING_TEMP"] = "1"
-    
-    # Remove storage from sys.modules to force a fresh import
-    if "storage" in sys.modules:
-        del sys.modules["storage"]
-    if "role_classifier" in sys.modules:
-        del sys.modules["role_classifier"]
-    
-    try:
-        import storage
-        stored_count = storage.store_jobs_batch(new_jobs)
-        print(f"Successfully merged {stored_count} new jobs into database.")
-    except Exception as e:
-        print(f"Error during merge: {e}")
-        import traceback
-        traceback.print_exc()
-        return
+    if message:
+        paths = [path for path in (*SHARD_PATHS, *checkpoint_paths)
+                 if Path(path).exists() or git("ls-files", "--", path)]
+        if paths:
+            git("add", "-A", "--", *paths)
+        if git("diff", "--cached", "--name-only"):
+            git("commit", "-m", message)
+        # The checkpoint only counts as saved once the same commit, with its
+        # job records, reaches GitHub. A racing push leaves the journal intact.
+        git("push", "origin", f"HEAD:refs/heads/{branch}")
+        print(f"Checkpoint is saved at {git('rev-parse', '--short', 'HEAD').strip()}.")
 
-    # Verify and ensure index files are 100% valid JSON, self-heal if corrupted
-    try:
-        import scripts.rebuild_index_files as rif
-        needs_rebuild = False
-        for fname in ["manifest.json", "sidebar_counts.json", "latest_preview_100.json"]:
-            p = os.path.join("data", "index", fname)
-            if not os.path.exists(p):
-                needs_rebuild = True
-                break
-            try:
-                with open(p, "r", encoding="utf-8") as fh:
-                    json.load(fh)
-            except Exception:
-                print(f"Detected invalid JSON in {p}, initiating automatic index rebuild...")
-                needs_rebuild = True
-                break
-        if needs_rebuild:
-            rif.rebuild_all()
-    except Exception as e:
-        print(f"Warning during index health check: {e}")
+    TEMP_FILE.unlink(missing_ok=True)
 
-    # 5. Verify final state
-    chunk_files_final = archive_chunks(root)
-    total_after = 0
-    sources_after = {}
-    for f in chunk_files_final:
-        try:
-            data = json.load(open(f, encoding="utf-8"))
-            total_after += len(data)
-            for j in data:
-                src = j.get("source") or j.get("platform") or "unknown"
-                sources_after[src] = sources_after.get(src, 0) + 1
-        except:
-            pass
-    print(f"\nFinal database state: {total_after} total jobs (+{total_after - total_before} new)")
-    print(f"Final sources: {dict(sorted(sources_after.items(), key=lambda x: -x[1]))}")
-    
-    # Check that our target portals made it in
-    for portal in ["workindia", "internshala", "glassdoor"]:
-        count = sources_after.get(portal, 0)
-        temp_count = temp_sources.get(portal, 0)
-        status = "OK" if count > 0 else ("MISSING!" if temp_count > 0 else "none in temp")
-        print(f"  {portal}: {count} in DB, {temp_count} in temp file -> {status}")
-
-    # 6. Clean up temp file
-    try:
-        os.remove(TEMP_FILE)
-        print(f"\nRemoved temporary file {TEMP_FILE}.")
-    except Exception as e:
-        print(f"Error removing {TEMP_FILE}: {e}")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--commit-message")
+    parser.add_argument("checkpoint_paths", nargs="*")
+    args = parser.parse_args()
+    merge_checkpoint(args.commit_message, args.checkpoint_paths)
