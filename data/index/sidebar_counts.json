@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1206824,
+  "total_jobs": 1206946,
   "sources": {
     "naukri": 387417,
     "linkedin": 311274,
@@ -13,7 +13,7 @@
     "glassdoor": 4839,
     "freshersworld": 8089,
     "telegram": 3577,
-    "other": 5126,
+    "other": 5248,
     "bebee": 56,
     "jobrapidocom": 65,
     "simplyhired": 60,
@@ -268,16 +268,16 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 254779,
-    "mumbai": 159434,
-    "delhi": 129711,
-    "chennai": 130663,
-    "hyderabad": 118588,
-    "pune": 98158,
-    "noida": 58674,
+    "bangalore": 254830,
+    "mumbai": 159447,
+    "delhi": 129712,
+    "chennai": 130668,
+    "hyderabad": 118624,
+    "pune": 98164,
+    "noida": 58675,
     "ahmedabad": 45629,
     "kolkata": 42140,
-    "all_india": 22761,
+    "all_india": 22764,
     "coimbatore": 24331,
     "kochi": 18826,
     "remote": 11053,
@@ -293,7 +293,7 @@
     "haryana": 1997,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 8598,
+    "karnataka": 8600,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -375,7 +375,7 @@
     "kallapur_sk": 1,
     "field": 2,
     "sweden": 1,
-    "andhra_pradesh": 44,
+    "andhra_pradesh": 45,
     "tirupur": 42,
     "nashik": 38,
     "mysore": 104,
@@ -570,7 +570,7 @@
     "dharuhera": 1,
     "athirappilly": 3,
     "bhatkal": 1,
-    "indianapolis": 5,
+    "indianapolis": 6,
     "kalburagi": 2,
     "haldwani": 1,
     "belgium": 2,
@@ -1343,7 +1343,9 @@
     "bokaro_steel_city": 1,
     "ramesh_nagar": 1,
     "brahmpuri": 1,
-    "shastri_nagar": 1
+    "shastri_nagar": 1,
+    "east_windsor": 1,
+    "indian_land": 1
   },
-  "generated_at": "2026-11-16T22:21:56.119244"
+  "generated_at": "2026-11-17T04:13:11.168543"
 }
