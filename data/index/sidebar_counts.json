@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1208584,
+  "total_jobs": 1208645,
   "sources": {
     "naukri": 387417,
     "linkedin": 311274,
@@ -13,7 +13,7 @@
     "glassdoor": 4839,
     "freshersworld": 8089,
     "telegram": 3577,
-    "other": 5248,
+    "other": 5252,
     "bebee": 56,
     "jobrapidocom": 65,
     "simplyhired": 60,
@@ -40,8 +40,8 @@
     "talentcom": 10,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1123,
-    "telegram_post": 663,
+    "telegram_message": 1169,
+    "telegram_post": 674,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -268,19 +268,19 @@
     "renesas_careers": 1
   },
   "locations": {
-    "bangalore": 255240,
-    "mumbai": 159851,
-    "delhi": 129712,
-    "chennai": 131079,
-    "hyderabad": 119028,
-    "pune": 98164,
+    "bangalore": 255249,
+    "mumbai": 159852,
+    "delhi": 129714,
+    "chennai": 131087,
+    "hyderabad": 119032,
+    "pune": 98167,
     "noida": 58675,
     "ahmedabad": 45629,
     "kolkata": 42140,
-    "all_india": 22771,
+    "all_india": 22799,
     "coimbatore": 24331,
-    "kochi": 18826,
-    "remote": 11054,
+    "kochi": 18827,
+    "remote": 11059,
     "jaipur": 9680,
     "maharashtra": 10188,
     "indore": 6123,
@@ -1348,5 +1348,5 @@
     "indian_land": 1,
     "nyc": 1
   },
-  "generated_at": "2026-11-17T04:49:24.201689"
+  "generated_at": "2026-11-17T14:58:10.356079"
 }

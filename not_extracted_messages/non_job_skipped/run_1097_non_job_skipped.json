@@ -1,0 +1,74 @@
+{
+  "workflow_run_number": "1097",
+  "workflow_run_id": "44104755311",
+  "timestamp": "2026-11-17T14:57:45.452897",
+  "runtime_minutes": 16.84,
+  "messages_processed": 88,
+  "new_jobs_stored": 76,
+  "skipped_jobs_count": 4,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 20,
+  "text_messages_processed": 68,
+  "stored_locations": {
+    "Navi Mumbai, Mumbai, Pune": 1,
+    "Bengaluru": 3,
+    "Chennai": 7,
+    "Unknown": 28,
+    "Gurugram, Bangalore": 1,
+    "Remote": 4,
+    "Mumbai, Chennai, Pune, Bengaluru, Noida, Ahmedabad, Bhopal, Coimbatore": 1,
+    "Bengaluru, Hyderabad, Mumbai, Delhi": 1,
+    "Chandigarh, Gurgaon, Jaipur, Kolkata, Pune, Bengaluru": 1,
+    "India": 3,
+    "Bengaluru (Hybrid / Remote)": 1,
+    "Pune (Hybrid)": 1,
+    "Pan India": 1,
+    "PAN India": 2,
+    "Hyderabad, India": 2,
+    "Bangalore/Hyderabad/Chennai/Noida, India": 1,
+    "Remote (Hybrid)": 1,
+    "Remote (India)": 1,
+    "Across India": 2,
+    "Bangalore": 3,
+    "Hyderabad / Bengaluru": 1,
+    "Hyderabad / Bangalore": 1,
+    "Hyderabad": 2,
+    "Delhi": 1,
+    "Kalamassery, Kochi": 1,
+    "Chennai, Tamil Nadu": 1,
+    "Pune": 2,
+    "Gurgaon, India": 1,
+    "Bangalore, Karnataka, India": 1
+  },
+  "stored_walkins": 6,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31207,
+      "text": "🤖 𝗖𝗹𝗮𝘂𝗱𝗲 𝗔𝗜 𝗖𝗲𝗿𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 — 𝗙𝗥𝗘𝗘! 🚀\n\n💸 Cost:  ₹0 (FREE!)\n\n🎓 Earn an official certificate from Anthropic, the company behind Claude!\n\n𝗪𝗵𝗮𝘁 𝘆𝗼𝘂'𝗹𝗹 𝗹𝗲𝗮𝗿𝗻:\n✅ Use Claude AI for everyday tasks\n✅ Boost productivity with AI\n✅ Build smarter workflows\n✅ Apply AI skills in work and learning\n\n🎯 Perfect for Students, Freshers & Professionals!\n\n𝗘𝗻𝗿𝗼𝗹𝗹 𝗙𝗿𝗲𝗲: https://tinyurl.com/Free-Claude-AI-Certification\n\n⚡ Don't miss this opportunity!",
+      "timestamp": "2026-11-17T08:32:08+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31209,
+      "text": "Hey! 👋 Our new app tradG: Indian Board Games is now live on the Play Store and App Store! 🎲\n\nIt brings back 18 traditional Indian board games we grew up with, like Pagade, Adu Huli and Chowka Bara, which you can play with friends and family or against the computer. There's also tradG Connect, a fun way to learn to read and write Kannada, Hindi, Tamil and Telugu.\n\n✨ Free to download\n🌐 15 languages\n📴 Works offline\n\n📱 Android: https://play.google.com/store/apps/details?id=com.saaranga.tradg.tradg\n🍎 iPhone: https://apps.apple.com/app/id6760351019\n\nPlease download it, give it a try, and leave a rating and review. It would mean a lot! 🙏 Share it with anyone who loves these games too.",
+      "timestamp": "2026-11-17T10:35:38+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18987,
+      "text": "55\n\"Strengthdoes not\ncome from winning.\nYour struggles develop\nyour strengths.\"",
+      "timestamp": "2026-11-17T12:00:53+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "fresheroffcampus",
+      "msg_id": 18233,
+      "text": "Hi guys! 👋\nMany job portals and channels share repeated job updates. If you want to stay updated with new off-campus job opportunities daily, follow our FresherOffCampus channels below. We share fresh job openings regularly! 😊\n📢 WhatsApp: https://www.whatsapp.com/channel/0029Va98A52ISTkImuigwW3B\n📢 Telegram: https://t.me/fresheroffcampus",
+      "timestamp": "2026-11-17T11:30:43+00:00"
+    }
+  ]
+}
