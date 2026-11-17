@@ -42,8 +42,8 @@ STYLE = """
 """
 
 
-def svg(title, height, body):
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{height}" viewBox="0 0 {WIDTH} {height}" role="img">
+def svg(title, height, body, *, width=WIDTH, radius=27, style=STYLE):
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img">
   <title>{escape(title)}</title>
   <defs>
     <linearGradient id="surface" x2="1" y2="1" gradientUnits="objectBoundingBox">
@@ -54,9 +54,9 @@ def svg(title, height, body):
       <circle cx="2" cy="2" r="1" fill="#476759" opacity=".45"/>
     </pattern>
   </defs>
-  <style>{STYLE.rstrip()}
+  <style>{style.rstrip()}
   </style>
-  <rect x="0.5" y="0.5" width="{WIDTH - 1}" height="{height - 1}" rx="27" fill="url(#surface)" stroke="{LINE}"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="{radius}" fill="url(#surface)" stroke="{LINE}"/>
 {body}
 </svg>
 """
@@ -170,10 +170,65 @@ def shared_filters():
     return svg("A shareable All Jobs filter selection", 220, frame(parts))
 
 
+
+NAV_STYLE = """
+  text { font-family: 'Segoe UI', system-ui, sans-serif; }
+  .trace {
+    opacity: 0;
+    animation: travel 5.4s cubic-bezier(.28,.74,.36,1) infinite;
+  }
+  @keyframes travel {
+    0%, 68%, 100% { opacity: 0; transform: translateX(0); }
+    74% { opacity: 1; }
+    87% { opacity: 1; transform: translateX(12px); }
+    93% { opacity: 0; transform: translateX(12px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .trace { animation: none; }
+  }
+"""
+
+NAVIGATION = [
+    ("all-jobs", "All Jobs", MINT),
+    ("walk-ins", "Walk-in Interviews", "#f1d398"),
+    ("big-company", "Big Company Jobs", "#a8e6dc"),
+    ("company-directory", "Company Directory", "#c8c9ff"),
+    ("learn-coding", "Learn Coding", "#e6b9f0"),
+]
+
+
+def section_accent():
+    parts = [
+        '<path d="M5 7h11M5 15h20" fill="none" stroke="#6d9178" stroke-width="1.5" stroke-linecap="round"/>',
+        '<circle cx="5" cy="15" r="1.5" fill="#bcf2a6"/>',
+        '<path class="trace" d="M5 15h6" fill="none" stroke="#bcf2a6" stroke-width="2.5" stroke-linecap="round"/>',
+    ]
+    return svg("Section accent", 22, frame(parts), width=32, radius=7, style=NAV_STYLE)
+
+
+def navigation_card(title, accent, delay):
+    parts = [
+        rect(12, 12, 34, 34, 9, "#223a2f"),
+        f'<path d="M18 29h22" fill="none" stroke="{accent}" stroke-width="1" stroke-opacity=".45" stroke-linecap="round"/>',
+        f'<circle cx="18" cy="29" r="2" fill="{accent}"/>',
+        f'<path class="trace" style="animation-delay:{delay}ms" d="M18 29h8" fill="none" stroke="{accent}" stroke-width="2.5" stroke-linecap="round"/>',
+        text(58, 36, title, 19, TEXT, 700, 'letter-spacing="-.25"'),
+        rect(282, 12, 34, 34, 9, "#223a2f", "#466656"),
+        f'<path d="M292 35l12-12m-11 0h11v11" fill="none" stroke="{accent}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    ]
+    return svg(title, 58, frame(parts), width=328, radius=13, style=NAV_STYLE)
+
+
 if __name__ == "__main__":
-    for name, artwork in [
+    artwork = [
         ("overview.svg", overview()),
         ("job-card.svg", job_card()),
         ("shared-filters.svg", shared_filters()),
-    ]:
-        (HERE / name).write_bytes(artwork.encode("utf-8"))
+        ("section-accent.svg", section_accent()),
+    ]
+    artwork.extend(
+        (f"nav-{slug}.svg", navigation_card(title, accent, index * 230))
+        for index, (slug, title, accent) in enumerate(NAVIGATION)
+    )
+    for name, illustration in artwork:
+        (HERE / name).write_bytes(illustration.encode("utf-8"))
