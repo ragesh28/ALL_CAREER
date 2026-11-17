@@ -2343,7 +2343,17 @@
         "563121777588257",
         "563121777354980",
         "563121777590686",
-        "563121777355794"
+        "563121777355794",
+        "563121777377491",
+        "563121777560297",
+        "563121777546924",
+        "563121777394706",
+        "563121777438095",
+        "563121777586841",
+        "563121777586842",
+        "563121777587353",
+        "563121777597814",
+        "563121777594716"
     ],
     "Siemens": [
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/504774",
@@ -3071,7 +3081,13 @@
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529147",
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529129",
         "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529462",
-        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529467"
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529467",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529646",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529645",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529623",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529622",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529618",
+        "https://jobs.siemens.com/en_US/externaljobs/JobDetail/529592"
     ],
     "Amadeus": [
         "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Service-Management-Lead_R35060",
@@ -3301,7 +3317,10 @@
         "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/SOFTWARE-DEVELOPMENT-ENGINEER-4_R38560",
         "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Product-Definition-Analyst-2_R38093-1",
         "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Product-Definition-Analyst-2_R38092-1",
-        "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Security-Compliance-Specialist_R38306-1"
+        "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Security-Compliance-Specialist_R38306-1",
+        "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/SRE-DevOps-Engineer_R37150-1",
+        "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/Position-Security-Compliance-Specialist_R38910-1",
+        "https://amadeus.wd502.myworkdayjobs.com/job/Bangalore/QA-Engineer-4_R37268-2"
     ],
     "GE Healthcare": [
         "https://careers.gehealthcare.com/"
@@ -5743,7 +5762,42 @@
         "162216",
         "159720",
         "162264",
-        "162274"
+        "162274",
+        "162572",
+        "159462",
+        "160611",
+        "161151",
+        "161293",
+        "161362",
+        "161452",
+        "161468",
+        "161549",
+        "161646",
+        "161693",
+        "161799",
+        "161845",
+        "162062",
+        "162064",
+        "162231",
+        "162233",
+        "162225",
+        "162436",
+        "162254",
+        "162255",
+        "162256",
+        "162257",
+        "162258",
+        "162263",
+        "162486",
+        "162487",
+        "162488",
+        "162405",
+        "162511",
+        "162489",
+        "162490",
+        "162491",
+        "162492",
+        "162493"
     ],
     "Bosch": [
         "https://jobs.smartrecruiters.com/BoschGroup/744000127859844",
@@ -7866,7 +7920,30 @@
         "https://jobs.smartrecruiters.com/BoschGroup/744000161424929",
         "https://jobs.smartrecruiters.com/BoschGroup/744000161679769",
         "https://jobs.smartrecruiters.com/BoschGroup/744000161679729",
-        "https://jobs.smartrecruiters.com/BoschGroup/744000161679689"
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161679689",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161992419",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161873610",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161870411",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161870869",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161872778",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161870456",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161839999",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161786424",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161785289",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161774699",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161773044",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161764199",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161763793",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161763630",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161763598",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161763178",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161751224",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161735789",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161732674",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161730939",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161725418",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161724733",
+        "https://jobs.smartrecruiters.com/BoschGroup/744000161725173"
     ],
     "Maersk": [],
     "Wipro": [
@@ -16389,7 +16466,43 @@
         "213000",
         "214921",
         "216693",
-        "218782"
+        "218782",
+        "213666",
+        "218248",
+        "218637",
+        "207338",
+        "214385",
+        "218663",
+        "211599",
+        "214386",
+        "213546",
+        "217527",
+        "216291",
+        "219262",
+        "215073",
+        "219652",
+        "219672",
+        "219673",
+        "219002",
+        "219364",
+        "217945",
+        "214804",
+        "219276",
+        "218764",
+        "219423",
+        "195290",
+        "218632",
+        "219690",
+        "197585",
+        "216802",
+        "204307",
+        "219065",
+        "219137",
+        "219726",
+        "219326",
+        "217406",
+        "218603",
+        "219139"
     ],
     "Arcesium": [
         "https://job-boards.greenhouse.io/arcesiumllc/jobs/5017849007",
@@ -16451,7 +16564,8 @@
         "https://job-boards.greenhouse.io/arcesiumllc/jobs/5274791007",
         "https://job-boards.greenhouse.io/arcesiumllc/jobs/5212169007",
         "https://job-boards.greenhouse.io/arcesiumllc/jobs/5284040007",
-        "https://job-boards.greenhouse.io/arcesiumllc/jobs/5035942007"
+        "https://job-boards.greenhouse.io/arcesiumllc/jobs/5035942007",
+        "https://job-boards.greenhouse.io/arcesiumllc/jobs/5295941007"
     ],
     "Juniper Networks / HPE": [
         "https://www.linkedin.com/jobs/view/4417709044",
@@ -19340,7 +19454,8 @@
         "https://www.linkedin.com/jobs/view/4464218258",
         "https://www.linkedin.com/jobs/view/4480659079",
         "https://www.linkedin.com/jobs/view/4477711652",
-        "https://www.linkedin.com/jobs/view/4477095912"
+        "https://www.linkedin.com/jobs/view/4477095912",
+        "https://www.linkedin.com/jobs/view/4468916469"
     ],
     "Barclays": [
         "https://search.jobs.barclays/"
@@ -20050,7 +20165,8 @@
         "80789",
         "81683",
         "83690",
-        "81228"
+        "81228",
+        "83540"
     ],
     "American Express": [
         "26008237",
@@ -20891,7 +21007,24 @@
         "26016433",
         "26016434",
         "26016451",
-        "26016518"
+        "26016518",
+        "26016647",
+        "26013309",
+        "26014305",
+        "26016043",
+        "26016312",
+        "26016425",
+        "26016431",
+        "26016459",
+        "26016472",
+        "26016500",
+        "26016502",
+        "26016589",
+        "26016601",
+        "26016648",
+        "26016649",
+        "26016665",
+        "26016675"
     ],
     "Visa": [
         "https://visa.wd5.myworkdayjobs.com/job/IN---Bengaluru-India/Software-Engineer---Senior-Consultant-level_REF080698W",
@@ -21493,7 +21626,11 @@
         "4341",
         "4362",
         "4408",
-        "4513"
+        "4513",
+        "3746",
+        "4292",
+        "4527",
+        "4557"
     ],
     "ABB": [
         "https://www.linkedin.com/jobs/view/4413097345",
@@ -23779,7 +23916,8 @@
         "2026-174318-principal-java-engineer---capital-markets-boston",
         "2026-174321-java-application-support-engineer-boston",
         "2026-175026-enterprise-java-architect---arlington-hybrid-arlington",
-        "2026-175183-senior-associate-power-platform---sharepoint-developer-arlington"
+        "2026-175183-senior-associate-power-platform---sharepoint-developer-arlington",
+        "2025-130981-sr--client-partner--financial-services-new-york"
     ],
     "IBM": [
         "https://www.linkedin.com/jobs/view/4414347086",
@@ -27754,7 +27892,9 @@
         "https://www.linkedin.com/jobs/view/4485812411",
         "https://www.linkedin.com/jobs/view/4485809536",
         "https://www.linkedin.com/jobs/view/4486223721",
-        "https://www.linkedin.com/jobs/view/4486232243"
+        "https://www.linkedin.com/jobs/view/4486232243",
+        "https://www.linkedin.com/jobs/view/4490677929",
+        "https://www.linkedin.com/jobs/view/4490682686"
     ],
     "Continental": [
         "https://www.linkedin.com/jobs/view/4418087257",
@@ -29068,7 +29208,23 @@
         "41725",
         "41250",
         "40661",
-        "41356"
+        "41356",
+        "39366",
+        "40514",
+        "40734",
+        "39089",
+        "39150",
+        "39744",
+        "39748",
+        "40366",
+        "40662",
+        "41828",
+        "41893",
+        "41896",
+        "41897",
+        "41898",
+        "41894",
+        "41900"
     ],
     "Cognizant": [
         "https://www.linkedin.com/jobs/view/4407641345",
@@ -31630,7 +31786,11 @@
         "103118661184",
         "103103647472",
         "103148051392",
-        "103239825616"
+        "103239825616",
+        "93005912000",
+        "103377283888",
+        "103368629184",
+        "103368615168"
     ],
     "Grundfos": [
         "https://www.linkedin.com/jobs/view/4418095137",
@@ -33106,7 +33266,9 @@
         "REF81462M",
         "REF83057N",
         "REF83083B",
-        "REF82946A"
+        "REF82946A",
+        "REF83194C",
+        "REF79509D"
     ],
     "Sabre": [
         "https://sabre.wd1.myworkdayjobs.com/job/Mumbai-Maharashtra-India/Principal-Commercial-Contracts-Manager_JR107989",
@@ -34058,7 +34220,8 @@
         "https://www.linkedin.com/jobs/view/4490323456",
         "https://www.linkedin.com/jobs/view/4490336073",
         "https://www.linkedin.com/jobs/view/4490335081",
-        "https://www.linkedin.com/jobs/view/4490713194"
+        "https://www.linkedin.com/jobs/view/4490713194",
+        "https://www.linkedin.com/jobs/view/4491291435"
     ],
     "HackerRank": [
         "https://job-boards.greenhouse.io/hackerrank/jobs/7100792",
@@ -34108,7 +34271,8 @@
         "https://job-boards.greenhouse.io/hackerrank/jobs/8273522",
         "https://job-boards.greenhouse.io/hackerrank/jobs/8276017",
         "https://job-boards.greenhouse.io/hackerrank/jobs/8281055",
-        "https://job-boards.greenhouse.io/hackerrank/jobs/8358510"
+        "https://job-boards.greenhouse.io/hackerrank/jobs/8358510",
+        "https://job-boards.greenhouse.io/hackerrank/jobs/8394096"
     ],
     "Crossover": [],
     "Sarvam AI": [
@@ -34225,7 +34389,8 @@
         "a0ccec8b-c0da-4394-b29c-f4a98c4e514d",
         "4c7378a7-6736-4038-b584-f2dc242d756c",
         "98a3eeee-68b8-4555-bdc6-3dd683980343",
-        "b3c328f9-39b2-4b60-b7f2-76253d1ec481"
+        "b3c328f9-39b2-4b60-b7f2-76253d1ec481",
+        "fa96b55d-0c77-423d-8eef-f579c8496adb"
     ],
     "Cohesity": [
         "https://www.linkedin.com/jobs/view/4376801004",
@@ -35378,7 +35543,8 @@
         "https://www.linkedin.com/jobs/view/4486765172",
         "https://www.linkedin.com/jobs/view/4486953525",
         "https://www.linkedin.com/jobs/view/4487623062",
-        "https://www.linkedin.com/jobs/view/4489537710"
+        "https://www.linkedin.com/jobs/view/4489537710",
+        "https://www.linkedin.com/jobs/view/4490278121"
     ],
     "BrowserStack": [
         "https://browserstack.wd3.myworkdayjobs.com/job/India-Remote/Consultant---Content-Strategist_JR103350",
@@ -35658,7 +35824,8 @@
         "https://job-boards.greenhouse.io/anthropic/jobs/5454474008",
         "https://job-boards.greenhouse.io/anthropic/jobs/5477753008",
         "https://job-boards.greenhouse.io/anthropic/jobs/5481396008",
-        "https://job-boards.greenhouse.io/anthropic/jobs/5481096008"
+        "https://job-boards.greenhouse.io/anthropic/jobs/5481096008",
+        "https://job-boards.greenhouse.io/anthropic/jobs/5484171008"
     ],
     "Amazon AI": [
         "/en/jobs/10427783/oracle-applications-functional-analyst-fintech-cash-application-ofa-cash-application",
@@ -37229,7 +37396,11 @@
         "https://www.linkedin.com/jobs/view/4491264790",
         "https://www.linkedin.com/jobs/view/4491268650",
         "https://www.linkedin.com/jobs/view/4491280110",
-        "https://www.linkedin.com/jobs/view/4491269595"
+        "https://www.linkedin.com/jobs/view/4491269595",
+        "https://www.linkedin.com/jobs/view/4490119145",
+        "https://www.linkedin.com/jobs/view/4490108651",
+        "https://www.linkedin.com/jobs/view/4489751337",
+        "https://www.linkedin.com/jobs/view/4489761156"
     ],
     "NatWest Group": [
         "https://www.linkedin.com/jobs/view/4409128826",
@@ -38787,7 +38958,11 @@
         "https://www.linkedin.com/jobs/view/4490741901",
         "https://www.linkedin.com/jobs/view/4490748843",
         "https://www.linkedin.com/jobs/view/4490748677",
-        "https://www.linkedin.com/jobs/view/4491002476"
+        "https://www.linkedin.com/jobs/view/4491002476",
+        "https://www.linkedin.com/jobs/view/4490696668",
+        "https://www.linkedin.com/jobs/view/4490905033",
+        "https://www.linkedin.com/jobs/view/4490682942",
+        "https://www.linkedin.com/jobs/view/4490687855"
     ],
     "ITC Infotech": [
         "https://www.linkedin.com/jobs/view/4406765659",
@@ -39592,7 +39767,8 @@
         "https://www.linkedin.com/jobs/view/4480263405",
         "https://www.linkedin.com/jobs/view/4489556766",
         "https://www.linkedin.com/jobs/view/4489575280",
-        "https://www.linkedin.com/jobs/view/4489554373"
+        "https://www.linkedin.com/jobs/view/4489554373",
+        "https://jobs.itcinfotech.com/"
     ],
     "OpenAI": [
         "#main",
@@ -40047,7 +40223,8 @@
         "https://www.linkedin.com/jobs/view/4484145654",
         "https://www.linkedin.com/jobs/view/4484160175",
         "https://www.linkedin.com/jobs/view/4489080458",
-        "https://www.linkedin.com/jobs/view/4489092136"
+        "https://www.linkedin.com/jobs/view/4489092136",
+        "https://www.linkedin.com/jobs/view/4489758367"
     ],
     "Meta": [
         "https://www.linkedin.com/jobs/view/4398877886",
@@ -41186,6 +41363,7 @@
         "https://www.linkedin.com/jobs/view/4485041951",
         "https://www.linkedin.com/jobs/view/4485053467",
         "https://www.linkedin.com/jobs/view/4488904533",
-        "https://www.linkedin.com/jobs/view/4489326909"
+        "https://www.linkedin.com/jobs/view/4489326909",
+        "https://www.linkedin.com/jobs/view/4490114641"
     ]
 }
