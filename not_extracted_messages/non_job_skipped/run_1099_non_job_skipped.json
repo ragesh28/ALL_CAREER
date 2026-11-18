@@ -1,0 +1,44 @@
+{
+  "workflow_run_number": "1099",
+  "workflow_run_id": "44237747143",
+  "timestamp": "2026-11-18T04:41:38.074213",
+  "runtime_minutes": 4.94,
+  "messages_processed": 25,
+  "new_jobs_stored": 26,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 7,
+  "text_messages_processed": 18,
+  "stored_locations": {
+    "Unknown": 11,
+    "Bangalore, Chennai, Gurugram": 1,
+    "Remote, India": 1,
+    "India": 2,
+    "Hyderabad": 1,
+    "PAN India": 1,
+    "Chennai, India": 1,
+    "Remote": 3,
+    "Remote (India)": 1,
+    "Mumbai": 1,
+    "Pune": 1,
+    "Shivaji Nagar, Pune": 1,
+    "Bengaluru, Bangalore": 1
+  },
+  "stored_walkins": 2,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18988,
+      "text": "\"Good Morning\"\nJust believe in yourself\nand you would be able to\naccomplish anything in life.",
+      "timestamp": "2026-11-18T01:45:07+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8463,
+      "text": "Topics to learn as a fresher in backend development 📍 \n\nhttps://lnkd.in/p/gmkquZeB",
+      "timestamp": "2026-11-18T04:26:49+00:00"
+    }
+  ]
+}
