@@ -1,0 +1,54 @@
+{
+  "workflow_run_number": "1103",
+  "workflow_run_id": "44533319669",
+  "timestamp": "2026-11-19T13:44:24.017270",
+  "runtime_minutes": 11.92,
+  "messages_processed": 73,
+  "new_jobs_stored": 56,
+  "skipped_jobs_count": 7,
+  "failed_extractions_count": 2,
+  "image_messages_processed": 21,
+  "text_messages_processed": 52,
+  "stored_locations": {
+    "Unknown": 19,
+    "New Delhi": 1,
+    "Chennai": 1,
+    "India": 2,
+    "Bengaluru, Mumbai, Pune": 1,
+    "Ahmedabad, Bengaluru, Chennai, Gurugram, Hyderabad, Kolkata, Mumbai, Pune": 1,
+    "Hyderabad & Bangalore": 1,
+    "Bangalore": 5,
+    "Gachibowli, Hyderabad": 1,
+    "Kochi": 1,
+    "Gurgaon & Bangalore": 1,
+    "Bangalore (Hybrid)": 1,
+    "Bangalore, Chennai, Mysore, Hyderabad, Pune, Mumbai, Vadodara, Delhi": 1,
+    "Hyderabad, India": 3,
+    "Bangalore, India": 4,
+    "Remote (India)": 2,
+    "Bengaluru": 4,
+    "PAN India": 1,
+    "Noida, Chennai, Pune, Hyderabad, Bangalore": 1,
+    "Pune": 2,
+    "Noida": 1,
+    "Hyderabad": 1,
+    "Multiple Locations / Hybrid Opportunities": 1
+  },
+  "stored_walkins": 10,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8467,
+      "text": "check out this opportunity 📍 \n\nhttps://lnkd.in/p/grjSrSCq",
+      "timestamp": "2026-11-19T05:05:09+00:00"
+    },
+    {
+      "type": "failed_extraction",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8469,
+      "text": "Big tech companies hiring freshers and experienced folks 🚀\n\nhttps://jobsinternshipswale.com/?q=LLMs&category=Software+Engineering#jobs\n\nApply now ❤️",
+      "timestamp": "2026-11-19T09:25:06+00:00"
+    }
+  ]
+}

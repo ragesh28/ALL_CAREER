@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1223783,
+  "total_jobs": 1223826,
   "sources": {
     "naukri": 388186,
     "linkedin": 317635,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1240,
-    "telegram_post": 691,
+    "telegram_message": 1277,
+    "telegram_post": 697,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 258383,
+    "bangalore": 258396,
     "mumbai": 161637,
-    "delhi": 131232,
-    "chennai": 132483,
-    "hyderabad": 120649,
-    "pune": 99511,
-    "noida": 59274,
+    "delhi": 131233,
+    "chennai": 132486,
+    "hyderabad": 120652,
+    "pune": 99513,
+    "noida": 59275,
     "ahmedabad": 46177,
     "kolkata": 42605,
-    "all_india": 22844,
+    "all_india": 22862,
     "coimbatore": 24574,
     "kochi": 19028,
-    "remote": 11197,
+    "remote": 11198,
     "jaipur": 9786,
     "maharashtra": 10519,
     "indore": 6165,
@@ -1405,7 +1405,8 @@
     "vallikavu": 1,
     "uttar_gauripur": 1,
     "cheharta": 1,
-    "thullur": 1
+    "thullur": 1,
+    "multiple_locations_hybrid_opportunities": 1
   },
-  "generated_at": "2026-11-19T09:38:16.098255"
+  "generated_at": "2026-11-19T13:44:55.123555"
 }
