@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1222902,
+  "total_jobs": 1222916,
   "sources": {
     "naukri": 388186,
     "linkedin": 317635,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 8089,
     "telegram": 3577,
-    "other": 5554,
+    "other": 5555,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1232,
-    "telegram_post": 686,
+    "telegram_message": 1240,
+    "telegram_post": 691,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 258081,
-    "mumbai": 161558,
+    "bangalore": 258084,
+    "mumbai": 161559,
     "delhi": 131134,
     "chennai": 132404,
     "hyderabad": 120553,
-    "pune": 99441,
+    "pune": 99442,
     "noida": 59253,
     "ahmedabad": 46153,
     "kolkata": 42590,
-    "all_india": 22838,
+    "all_india": 22844,
     "coimbatore": 24566,
     "kochi": 19026,
-    "remote": 11196,
+    "remote": 11197,
     "jaipur": 9772,
     "maharashtra": 10508,
     "indore": 6157,
@@ -859,7 +859,7 @@
     "new_windsor": 1,
     "koteshwara": 1,
     "venur": 1,
-    "us": 2,
+    "us": 3,
     "cheranallur": 1,
     "mahabubnagarbalanagar": 1,
     "angul": 2,
@@ -1400,7 +1400,8 @@
     "civil_line": 1,
     "dad_village": 1,
     "sector_7": 1,
-    "ganj": 1
+    "ganj": 1,
+    "uk_eu": 1
   },
-  "generated_at": "2026-11-19T02:54:54.057393"
+  "generated_at": "2026-11-19T03:49:09.058745"
 }
