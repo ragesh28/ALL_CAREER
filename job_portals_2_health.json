@@ -1,41 +1,41 @@
 {
-  "run_id": "44669314324",
-  "updated_at": "2026-11-20T09:31:39.495069",
+  "run_id": "44711535203",
+  "updated_at": "2026-11-20T15:24:39.551340",
   "portals": {
     "apna": {
-      "scraped_total": 6840,
-      "new_stored_total": 141,
-      "requests_total": 776,
+      "scraped_total": 8584,
+      "new_stored_total": 420,
+      "requests_total": 775,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-delhi"
+        "requests": 2,
+        "scraped": 11,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/digital-marketer-jobs-in-noida"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 399,
+      "requests_total": 387,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-delhi/"
+        "url": "https://www.workindia.in/digital-marketer-jobs-in-noida/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 399,
+      "requests_total": 387,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-delhi"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-noida"
       }
     }
   }
