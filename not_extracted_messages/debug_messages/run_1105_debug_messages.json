@@ -1,0 +1,30 @@
+{
+  "workflow_run_number": "1105",
+  "workflow_run_id": "44668275611",
+  "timestamp": "2026-11-20T03:40:56.634576",
+  "runtime_minutes": 2.87,
+  "messages_processed": 14,
+  "new_jobs_stored": 8,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 3,
+  "text_messages_processed": 11,
+  "stored_locations": {
+    "Unknown": 3,
+    "Mumbai": 1,
+    "Hyderabad": 1,
+    "Remote": 1,
+    "Chennai, Pune, India": 1,
+    "Gurugram, India": 1
+  },
+  "stored_walkins": 1,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "freshershunt",
+      "msg_id": 31253,
+      "text": "💼 Experienced Candidates? Join Our WhatsApp Channel for the Latest Experienced Job Updates!\n\n📢 Join Now: https://whatsapp.com/channel/0029VbEXhUCEVccCMbtLt912 https://whatsapp.com/channel/0029VbEXhUCEVccCMbtLt912?utm_source=chatgpt.com⁠",
+      "timestamp": "2026-11-20T02:43:09+00:00"
+    }
+  ]
+}

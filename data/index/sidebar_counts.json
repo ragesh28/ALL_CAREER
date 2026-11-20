@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1233421,
+  "total_jobs": 1233427,
   "sources": {
     "naukri": 388186,
     "linkedin": 321978,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 8089,
     "telegram": 3577,
-    "other": 5702,
+    "other": 5703,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -40,7 +40,7 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1284,
+    "telegram_message": 1289,
     "telegram_post": 697,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
@@ -295,15 +295,15 @@
   },
   "locations": {
     "bangalore": 260160,
-    "mumbai": 162598,
+    "mumbai": 162599,
     "delhi": 132250,
-    "chennai": 133222,
-    "hyderabad": 121718,
+    "chennai": 133223,
+    "hyderabad": 121719,
     "pune": 100373,
     "noida": 59648,
     "ahmedabad": 46574,
     "kolkata": 42854,
-    "all_india": 22867,
+    "all_india": 22870,
     "coimbatore": 24764,
     "kochi": 19228,
     "remote": 11305,
@@ -1416,5 +1416,5 @@
     "raisen": 1,
     "jodhewal": 1
   },
-  "generated_at": "2026-11-20T02:40:36.676552"
+  "generated_at": "2026-11-20T03:41:24.659219"
 }
