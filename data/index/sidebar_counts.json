@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1235007,
+  "total_jobs": 1235039,
   "sources": {
     "naukri": 388857,
     "linkedin": 321978,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1289,
-    "telegram_post": 697,
+    "telegram_message": 1311,
+    "telegram_post": 707,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,17 +294,17 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 260559,
+    "bangalore": 260563,
     "mumbai": 162761,
     "delhi": 132412,
-    "chennai": 133441,
+    "chennai": 133451,
     "hyderabad": 121834,
-    "pune": 100547,
-    "noida": 59755,
+    "pune": 100548,
+    "noida": 59756,
     "ahmedabad": 46618,
-    "kolkata": 42884,
-    "all_india": 22870,
-    "coimbatore": 24817,
+    "kolkata": 42886,
+    "all_india": 22880,
+    "coimbatore": 24818,
     "kochi": 19243,
     "remote": 11315,
     "jaipur": 9851,
@@ -319,7 +319,7 @@
     "haryana": 2169,
     "faridabad": 1079,
     "gj": 1021,
-    "karnataka": 9307,
+    "karnataka": 9308,
     "wb": 825,
     "ghaziabad": 824,
     "mohali": 808,
@@ -552,7 +552,7 @@
     "hisar": 2,
     "panaji": 9,
     "mira_bhayandar": 16,
-    "work_from_home": 122,
+    "work_from_home": 123,
     "punjab": 4,
     "ahemdabad": 1,
     "ambernath": 1,
@@ -1226,7 +1226,7 @@
     "jalna": 1,
     "kundli": 2,
     "sahnewal": 1,
-    "all_over_india": 3,
+    "all_over_india": 4,
     "gurgoan": 1,
     "ambad": 1,
     "tricity": 1,
@@ -1417,5 +1417,5 @@
     "jodhewal": 1,
     "ambarnath": 1
   },
-  "generated_at": "2026-11-20T09:31:58.828517"
+  "generated_at": "2026-11-20T13:28:05.771190"
 }

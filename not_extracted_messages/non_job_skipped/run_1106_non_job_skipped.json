@@ -1,0 +1,62 @@
+{
+  "workflow_run_number": "1106",
+  "workflow_run_id": "44741244864",
+  "timestamp": "2026-11-20T13:27:28.967478",
+  "runtime_minutes": 13.83,
+  "messages_processed": 70,
+  "new_jobs_stored": 44,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 20,
+  "text_messages_processed": 50,
+  "stored_locations": {
+    "Pune": 2,
+    "Noida": 1,
+    "Bangalore": 3,
+    "Chennai": 4,
+    "Bengaluru / Hyderabad / Chennai / Pune": 1,
+    "Unknown": 13,
+    "Chennai, Bengaluru, Hyderabad, Coimbatore": 1,
+    "Bengaluru, Hyderabad, Pune, Mumbai, Gurgaon, Noida, Chennai, Trivandrum": 1,
+    "Noida, Bangalore, Pune, Chennai, Hyderabad, Ahmedabad, Jaipur, Delhi-NCR, Thane, Mumbai, Kolkata, Kavali, Chittoor, Surat, Kurnool": 1,
+    "Madurai, Bengaluru, Pune, Gurugram, Hyderabad, Chennai, Mumbai, Ahmedabad": 1,
+    "All Over India": 2,
+    "PAN India": 1,
+    "India": 2,
+    "Remote": 1,
+    "Remote (Across India)": 1,
+    "Remote (India)": 1,
+    "Karnataka": 1,
+    "Kolkata": 1,
+    "Chennai, Tamil Nadu": 1,
+    "CIF Kancheepuram / Coimbatore campus, Tamil Nadu": 1,
+    "Bengaluru": 1,
+    "Chennai, India": 1,
+    "Work From Home": 1,
+    "Kolkata, India": 1
+  },
+  "stored_walkins": 3,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31262,
+      "text": "🚀 𝗚𝗼𝘁 𝗮 𝘀𝘁𝗮𝗿𝘁𝘂𝗽 𝗶𝗱𝗲𝗮? 𝗕𝘂𝗶𝗹𝗱 𝗮𝗻𝗱 𝗹𝗮𝘂𝗻𝗰𝗵 𝘆𝗼𝘂𝗿 𝗠𝗩𝗣 𝗶𝗻 𝗺𝗶𝗻𝘂𝘁𝗲𝘀 - 𝘄𝗶𝘁𝗵𝗼𝘂𝘁 𝗮 𝘁𝗲𝗰𝗵 𝘁𝗲𝗮𝗺.\n\n𝗦𝘁𝗮𝗿𝘁 𝘄𝗶𝘁𝗵 𝗠𝗮𝘆𝘀𝗼𝗻 𝗮𝗻𝗱 𝗰𝗿𝗲𝗮𝘁𝗲 𝘀𝗼𝗺𝗲𝘁𝗵𝗶𝗻𝗴 𝗿𝗲𝗮𝗹? 👇\n\n📌 𝗦𝘁𝗮𝗿𝘁 𝗡𝗼𝘄:  https://fhlinks.in/N0RjVq\n\n💡 𝗪𝗵𝘆 𝘁𝗿𝘆 𝗶𝘁?\n⚡ Save hours of work\n🤖 Build real platforms fast\n💼 Perfect for testing side projects & startup concepts\n\n🔥 𝗦𝘁𝗮𝗿𝘁 𝗻𝗼𝘄 - 𝘁𝘂𝗿𝗻 𝘆𝗼𝘂𝗿 𝗶𝗱𝗲𝗮 𝗶𝗻𝘁𝗼 𝗿𝗲𝗮𝗹𝗶𝘁𝘆.",
+      "timestamp": "2026-11-20T10:39:32+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 18998,
+      "text": "Choose a career\nwhere the\ndifficult days\nstill feel worth it.",
+      "timestamp": "2026-11-20T09:32:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15228,
+      "text": "GeeksforGeeks × OpenAI presents Build with Codex – an exclusive, invite-only program for working tech professionals!\n\n🔥 How It Works:\n\n📝 Register: Apply for an invitation to participate in the program.\n1️⃣ Learn: Set up OpenAI Codex and use it for real-world engineering tasks.\n2️⃣ Build: Ship a complete project in one 90-minute live session.\n3️⃣ Submit: Earn a co-branded certificate from GeeksforGeeks and OpenAI.\n\n🏆 Win Big – ₹6,00,000 Prize Pool!\n\nA contest organised by GeeksforGeeks, with prizes for the top 3 projects:\n\n🥇 1st Prize: ₹3,00,000\n🥈 2nd Prize: ₹2,00,000\n🥉 3rd Prize: ₹1,00,000\n\n🎯 Only 50,000 tech professionals will be invited!\n\nLink: https://gfgcdn.com/tu/12kt\n\n⚡ Selected applicants will receive an invitation via email.",
+      "timestamp": "2026-11-20T07:48:58+00:00"
+    }
+  ]
+}

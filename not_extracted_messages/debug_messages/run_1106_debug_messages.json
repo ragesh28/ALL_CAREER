@@ -1,0 +1,48 @@
+{
+  "workflow_run_number": "1106",
+  "workflow_run_id": "44741244864",
+  "timestamp": "2026-11-20T13:27:28.967478",
+  "runtime_minutes": 13.83,
+  "messages_processed": 70,
+  "new_jobs_stored": 44,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 20,
+  "text_messages_processed": 50,
+  "stored_locations": {
+    "Pune": 2,
+    "Noida": 1,
+    "Bangalore": 3,
+    "Chennai": 4,
+    "Bengaluru / Hyderabad / Chennai / Pune": 1,
+    "Unknown": 13,
+    "Chennai, Bengaluru, Hyderabad, Coimbatore": 1,
+    "Bengaluru, Hyderabad, Pune, Mumbai, Gurgaon, Noida, Chennai, Trivandrum": 1,
+    "Noida, Bangalore, Pune, Chennai, Hyderabad, Ahmedabad, Jaipur, Delhi-NCR, Thane, Mumbai, Kolkata, Kavali, Chittoor, Surat, Kurnool": 1,
+    "Madurai, Bengaluru, Pune, Gurugram, Hyderabad, Chennai, Mumbai, Ahmedabad": 1,
+    "All Over India": 2,
+    "PAN India": 1,
+    "India": 2,
+    "Remote": 1,
+    "Remote (Across India)": 1,
+    "Remote (India)": 1,
+    "Karnataka": 1,
+    "Kolkata": 1,
+    "Chennai, Tamil Nadu": 1,
+    "CIF Kancheepuram / Coimbatore campus, Tamil Nadu": 1,
+    "Bengaluru": 1,
+    "Chennai, India": 1,
+    "Work From Home": 1,
+    "Kolkata, India": 1
+  },
+  "stored_walkins": 3,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8470,
+      "text": "2027 mein kya chaiye?\n\nhttps://www.instagram.com/reel/Df9KX3Lhifa/\n\nsupport kro ♥️ \nlet's crack job offers 🫴",
+      "timestamp": "2026-11-20T08:39:31+00:00"
+    }
+  ]
+}
