@@ -1,41 +1,41 @@
 {
-  "run_id": "44763086902",
-  "updated_at": "2026-11-20T17:47:40.441319",
+  "run_id": "44860883559",
+  "updated_at": "2026-11-21T09:16:24.031021",
   "portals": {
     "apna": {
-      "scraped_total": 3425,
-      "new_stored_total": 150,
-      "requests_total": 344,
+      "scraped_total": 6901,
+      "new_stored_total": 124,
+      "requests_total": 746,
       "last_probe": {
-        "requests": 3,
-        "scraped": 35,
+        "requests": 2,
+        "scraped": 1,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://apna.co/jobs/ai-engineer-jobs-in-chandigarh"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 159,
+      "requests_total": 372,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/ai-engineer-jobs-in-chandigarh/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 159,
+      "scraped_total": 8094,
+      "new_stored_total": 514,
+      "requests_total": 806,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "requests": 2,
+        "scraped": 19,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/ai-engineer-jobs-in-chandigarh"
       }
     }
   }
