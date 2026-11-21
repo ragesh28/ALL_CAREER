@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1241780,
+  "total_jobs": 1241815,
   "sources": {
     "naukri": 391108,
     "linkedin": 321978,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1318,
-    "telegram_post": 707,
+    "telegram_message": 1348,
+    "telegram_post": 712,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,17 +294,17 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 262235,
+    "bangalore": 262242,
     "mumbai": 163574,
-    "delhi": 133164,
-    "chennai": 134187,
-    "hyderabad": 122411,
-    "pune": 101159,
-    "noida": 60158,
+    "delhi": 133166,
+    "chennai": 134190,
+    "hyderabad": 122415,
+    "pune": 101161,
+    "noida": 60161,
     "ahmedabad": 46877,
     "kolkata": 43100,
-    "all_india": 22883,
-    "coimbatore": 24991,
+    "all_india": 22895,
+    "coimbatore": 24992,
     "kochi": 19314,
     "remote": 11373,
     "jaipur": 9938,
@@ -704,7 +704,7 @@
     "gwalior": 20,
     "jamshedpur": 6,
     "sunguvarchatram": 1,
-    "online": 7,
+    "online": 8,
     "indrakaran": 1,
     "ambala_cantt": 6,
     "virar": 11,
@@ -1425,5 +1425,5 @@
     "north": 1,
     "vehele": 1
   },
-  "generated_at": "2026-11-21T09:16:48.079941"
+  "generated_at": "2026-11-21T11:36:51.645184"
 }
