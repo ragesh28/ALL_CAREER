@@ -1,41 +1,41 @@
 {
-  "run_id": "44888831524",
-  "updated_at": "2026-11-21T15:09:11.486635",
+  "run_id": "44917776690",
+  "updated_at": "2026-11-21T18:15:31.597538",
   "portals": {
     "apna": {
-      "scraped_total": 8000,
-      "new_stored_total": 355,
-      "requests_total": 708,
+      "scraped_total": 4183,
+      "new_stored_total": 164,
+      "requests_total": 440,
       "last_probe": {
-        "requests": 4,
-        "scraped": 74,
+        "requests": 3,
+        "scraped": 40,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/business-development-manager-jobs-in-pune"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 368,
+      "requests_total": 205,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/business-development-manager-jobs-in-pune/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 368,
+      "requests_total": 205,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-pune"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
