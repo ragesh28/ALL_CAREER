@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1238586,
+  "total_jobs": 1239183,
   "sources": {
-    "naukri": 390142,
+    "naukri": 390736,
     "linkedin": 321978,
     "timesjobs": 150641,
     "indeed": 115850,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 8089,
     "telegram": 3577,
-    "other": 5724,
+    "other": 5727,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 261429,
-    "mumbai": 163170,
-    "delhi": 132867,
-    "chennai": 133814,
-    "hyderabad": 122096,
-    "pune": 100912,
-    "noida": 59990,
-    "ahmedabad": 46733,
-    "kolkata": 42972,
+    "bangalore": 261597,
+    "mumbai": 163254,
+    "delhi": 132933,
+    "chennai": 133883,
+    "hyderabad": 122131,
+    "pune": 100952,
+    "noida": 60030,
+    "ahmedabad": 46751,
+    "kolkata": 42999,
     "all_india": 22880,
-    "coimbatore": 24904,
-    "kochi": 19275,
-    "remote": 11354,
+    "coimbatore": 24928,
+    "kochi": 19292,
+    "remote": 11363,
     "jaipur": 9903,
     "maharashtra": 10839,
     "indore": 6228,
@@ -1423,5 +1423,5 @@
     "wankaner": 1,
     "jagraon": 1
   },
-  "generated_at": "2026-11-20T20:28:23.329216"
+  "generated_at": "2026-11-21T02:21:00.105030"
 }
