@@ -1,0 +1,24 @@
+{
+  "workflow_run_number": "1108",
+  "workflow_run_id": "44856292661",
+  "timestamp": "2026-11-21T02:39:28.456128",
+  "runtime_minutes": 2.01,
+  "messages_processed": 7,
+  "new_jobs_stored": 9,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 1,
+  "text_messages_processed": 6,
+  "stored_locations": {
+    "Gurgaon & Bangalore": 1,
+    "Hyderabad": 1,
+    "Gurgaon": 1,
+    "Bangalore (Onsite)": 2,
+    "Pune (Hybrid)": 1,
+    "Chennai (Hybrid)": 1,
+    "Bangalore": 1,
+    "Chennai": 1
+  },
+  "stored_walkins": 1,
+  "debug_failed_messages": []
+}
