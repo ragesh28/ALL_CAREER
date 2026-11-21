@@ -1,41 +1,41 @@
 {
-  "run_id": "44860883559",
-  "updated_at": "2026-11-21T09:16:24.031021",
+  "run_id": "44888831524",
+  "updated_at": "2026-11-21T15:09:11.486635",
   "portals": {
     "apna": {
-      "scraped_total": 6901,
-      "new_stored_total": 124,
-      "requests_total": 746,
+      "scraped_total": 8000,
+      "new_stored_total": 355,
+      "requests_total": 708,
       "last_probe": {
-        "requests": 2,
-        "scraped": 1,
+        "requests": 4,
+        "scraped": 74,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/ai-engineer-jobs-in-chandigarh"
+        "url": "https://apna.co/jobs/business-development-manager-jobs-in-pune"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 372,
+      "requests_total": 368,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/ai-engineer-jobs-in-chandigarh/"
+        "url": "https://www.workindia.in/business-development-manager-jobs-in-pune/"
       }
     },
     "freshersworld": {
-      "scraped_total": 8094,
-      "new_stored_total": 514,
-      "requests_total": 806,
+      "scraped_total": 0,
+      "new_stored_total": 0,
+      "requests_total": 368,
       "last_probe": {
-        "requests": 2,
-        "scraped": 19,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/ai-engineer-jobs-in-chandigarh"
+        "requests": 1,
+        "scraped": 0,
+        "status": "blocked",
+        "http_status": 403,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-pune"
       }
     }
   }
