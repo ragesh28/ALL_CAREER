@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1254003,
+  "total_jobs": 1254224,
   "sources": {
-    "naukri": 395234,
+    "naukri": 395454,
     "linkedin": 324900,
     "timesjobs": 152931,
     "indeed": 117407,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 9050,
     "telegram": 3577,
-    "other": 5897,
+    "other": 5898,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 264562,
-    "mumbai": 165070,
-    "delhi": 134606,
-    "chennai": 135357,
-    "hyderabad": 123492,
-    "pune": 102283,
-    "noida": 60875,
-    "ahmedabad": 47431,
-    "kolkata": 43583,
+    "bangalore": 264601,
+    "mumbai": 165100,
+    "delhi": 134628,
+    "chennai": 135389,
+    "hyderabad": 123500,
+    "pune": 102300,
+    "noida": 60888,
+    "ahmedabad": 47441,
+    "kolkata": 43607,
     "all_india": 22911,
-    "coimbatore": 25298,
-    "kochi": 19520,
-    "remote": 11487,
+    "coimbatore": 25310,
+    "kochi": 19527,
+    "remote": 11491,
     "jaipur": 10008,
     "maharashtra": 11057,
     "indore": 6299,
@@ -351,7 +351,7 @@
     "thiruvananthapuram": 121,
     "dehradun": 197,
     "pimpri_chinchwad": 152,
-    "visakhapatnam": 199,
+    "visakhapatnam": 202,
     "tiruppur": 110,
     "west_bengal": 1306,
     "guwahati": 176,
@@ -1438,5 +1438,5 @@
     "eu_uk": 1,
     "chhatrapati_sambhajinagarshendra_midc": 1
   },
-  "generated_at": "2026-11-22T08:26:50.684282"
+  "generated_at": "2026-11-22T09:54:59.903125"
 }
