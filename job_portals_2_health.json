@@ -1,41 +1,41 @@
 {
-  "run_id": "45002857221",
-  "updated_at": "2026-11-22T14:18:38.153999",
+  "run_id": "45032228530",
+  "updated_at": "2026-11-22T16:32:32.485237",
   "portals": {
     "apna": {
-      "scraped_total": 8826,
-      "new_stored_total": 237,
-      "requests_total": 779,
+      "scraped_total": 3300,
+      "new_stored_total": 79,
+      "requests_total": 319,
       "last_probe": {
-        "requests": 2,
-        "scraped": 2,
+        "requests": 3,
+        "scraped": 40,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/seo-specialist-jobs-in-pune"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 382,
+      "requests_total": 145,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/seo-specialist-jobs-in-pune/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 382,
+      "requests_total": 145,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/seo-specialist-jobs-in-pune"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
