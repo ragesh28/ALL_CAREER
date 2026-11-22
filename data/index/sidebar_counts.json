@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1253058,
+  "total_jobs": 1253089,
   "sources": {
     "naukri": 395234,
     "linkedin": 324900,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1353,
-    "telegram_post": 712,
+    "telegram_message": 1371,
+    "telegram_post": 725,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 264315,
+    "bangalore": 264319,
     "mumbai": 164983,
-    "delhi": 134495,
-    "chennai": 135255,
-    "hyderabad": 123389,
-    "pune": 102201,
-    "noida": 60833,
+    "delhi": 134497,
+    "chennai": 135258,
+    "hyderabad": 123392,
+    "pune": 102202,
+    "noida": 60834,
     "ahmedabad": 47403,
-    "kolkata": 43554,
-    "all_india": 22899,
-    "coimbatore": 25264,
+    "kolkata": 43555,
+    "all_india": 22911,
+    "coimbatore": 25266,
     "kochi": 19519,
-    "remote": 11486,
+    "remote": 11487,
     "jaipur": 9985,
     "maharashtra": 11050,
     "indore": 6288,
@@ -389,7 +389,7 @@
     "pollachi": 67,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 42,
+    "pan_india": 43,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 7,
@@ -1438,5 +1438,5 @@
     "eu_uk": 1,
     "chhatrapati_sambhajinagarshendra_midc": 1
   },
-  "generated_at": "2026-11-22T07:45:15.862946"
+  "generated_at": "2026-11-22T08:19:22.061111"
 }
