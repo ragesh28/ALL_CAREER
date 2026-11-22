@@ -1,41 +1,41 @@
 {
-  "run_id": "44976728604",
-  "updated_at": "2026-11-22T08:26:27.874680",
+  "run_id": "45002857221",
+  "updated_at": "2026-11-22T14:18:38.153999",
   "portals": {
     "apna": {
-      "scraped_total": 6929,
-      "new_stored_total": 109,
-      "requests_total": 798,
+      "scraped_total": 8826,
+      "new_stored_total": 237,
+      "requests_total": 779,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/nlp-engineer-jobs-in-indore"
+        "requests": 2,
+        "scraped": 2,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/seo-specialist-jobs-in-pune"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 418,
+      "requests_total": 382,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/nlp-engineer-jobs-in-indore/"
+        "url": "https://www.workindia.in/seo-specialist-jobs-in-pune/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 418,
+      "requests_total": 382,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/nlp-engineer-jobs-in-indore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/seo-specialist-jobs-in-pune"
       }
     }
   }
