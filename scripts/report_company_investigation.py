@@ -5,6 +5,7 @@ from collections import Counter
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from scripts.company_job_details import confirmed_india_location
 from scripts.company_recovery import NAVIGATION, posting_url, safe_url
@@ -40,7 +41,12 @@ def clean_attempt(attempt):
 
 
 def usable(sample):
-    return bool(sample and sample.get("title") and not NAVIGATION.search(sample["title"]) and posting_url(sample.get("apply_url") or sample.get("url") or ""))
+    if not sample or not sample.get("title") or NAVIGATION.search(sample["title"]):
+        return False
+    # Structured portal results can use legitimate tracking/redirect links. The
+    # career-page discovery heuristic must not reject those already parsed jobs.
+    parsed = urlsplit(sample.get("apply_url") or sample.get("url") or "")
+    return bool(parsed.scheme in ("http", "https") and parsed.hostname and not parsed.hostname.endswith(".onetrust.com") and "/webform/" not in parsed.path)
 
 
 def has_description(sample):

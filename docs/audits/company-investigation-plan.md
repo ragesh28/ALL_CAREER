@@ -11,11 +11,11 @@ Started 23 November 2026. Baseline includes 244 company/source entries across th
 - [x] Check direct HTML, structured data, rendered HTML and observed public APIs for linked jobs.
 - [x] Check recovered samples for descriptions and explicitly available experience, salary and posted dates.
 - [x] Try healthy configured proxy transports for blocked requests.
-- [ ] Diagnose sources that previously worked using saved samples and their current official pages.
+- [x] Diagnose sources that previously worked using saved samples and their current official pages.
 - [x] Implement verified parser, URL, API and description fixes in the production scraper entry points.
-- [ ] Compare corrected samples locally and on GitHub Actions.
-- [ ] Write a final row for every company/source with successful methods and remaining failures.
-- [ ] Commit the code and reports and update PR #2.
+- [x] Compare corrected samples locally and on GitHub Actions.
+- [x] Write a final row for every company/source with successful methods and remaining failures.
+- [x] Commit the code and reports and update PR #2.
 
 ## Recorded evidence
 

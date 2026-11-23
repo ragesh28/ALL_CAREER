@@ -46,7 +46,7 @@ def posting_url(url):
         return False
     if re.search(r"\.(?:svg|png|jpe?g|webp|gif|css|js|woff2?|pdf)$", path):
         return False
-    if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid") and value for key, value in parse_qsl(parsed.query)):
+    if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid", "career_job_req_id", "jobreferencecode", "rx_jobid") and value for key, value in parse_qsl(parsed.query)):
         return True
     if re.search(r"(?:^|/)(?:saved-jobs|saved|job-alerts|sign-in|register)(?:/|$)", path):
         return False
@@ -64,7 +64,7 @@ def posting_url(url):
         return True
     if parsed.hostname in ("jobs.lever.co", "jobs.eu.lever.co", "jobs.ashbyhq.com", "jobs.gem.com", "jobs.smartrecruiters.com") and re.search(r"[a-f0-9]{8}-[a-f0-9-]{20,}", path):
         return True
-    return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|jobdetail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/[a-z0-9]+", "/" + path))
+    return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|job[-_]?detail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/[a-z0-9]+", "/" + path))
 
 
 def records_from_json(payload, source_url):
