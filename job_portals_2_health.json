@@ -1,41 +1,41 @@
 {
-  "run_id": "45103423492",
-  "updated_at": "2026-11-23T08:51:43.772782",
+  "run_id": "45142084934",
+  "updated_at": "2026-11-23T14:44:23.574867",
   "portals": {
     "apna": {
-      "scraped_total": 6984,
-      "new_stored_total": 32,
-      "requests_total": 782,
+      "scraped_total": 8735,
+      "new_stored_total": 278,
+      "requests_total": 771,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "http_error",
         "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-chandigarh"
+        "url": "https://apna.co/jobs/digital-marketer-jobs-in-gurgaon"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 402,
+      "requests_total": 385,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-chandigarh/"
+        "url": "https://www.workindia.in/digital-marketer-jobs-in-gurgaon/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 402,
+      "requests_total": 385,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-chandigarh"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-gurgaon"
       }
     }
   }
