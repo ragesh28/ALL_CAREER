@@ -1,0 +1,27 @@
+{
+  "workflow_run_number": "1115",
+  "workflow_run_id": "45107823178",
+  "timestamp": "2026-11-23T03:55:16.509584",
+  "runtime_minutes": 3.71,
+  "messages_processed": 13,
+  "new_jobs_stored": 17,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 5,
+  "text_messages_processed": 8,
+  "stored_locations": {
+    "Across India": 1,
+    "Noida": 2,
+    "Bengaluru": 1,
+    "Chennai": 1,
+    "Coimbatore": 1,
+    "Pune": 2,
+    "Hyderabad": 2,
+    "Secunderabad": 1,
+    "Chennai, Tamil Nadu": 1,
+    "Unknown": 4,
+    "Southeast Asia": 1
+  },
+  "stored_walkins": 8,
+  "debug_failed_messages": []
+}

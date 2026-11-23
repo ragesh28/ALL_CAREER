@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1257604,
+  "total_jobs": 1257616,
   "sources": {
     "naukri": 395454,
     "linkedin": 326181,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1397,
-    "telegram_post": 735,
+    "telegram_message": 1407,
+    "telegram_post": 737,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -297,14 +297,14 @@
     "bangalore": 265327,
     "mumbai": 165483,
     "delhi": 135078,
-    "chennai": 135662,
-    "hyderabad": 123848,
-    "pune": 102635,
-    "noida": 61036,
+    "chennai": 135663,
+    "hyderabad": 123850,
+    "pune": 102636,
+    "noida": 61037,
     "ahmedabad": 47562,
     "kolkata": 43732,
-    "all_india": 22939,
-    "coimbatore": 25389,
+    "all_india": 22943,
+    "coimbatore": 25390,
     "kochi": 19557,
     "remote": 11504,
     "jaipur": 10050,
@@ -473,7 +473,7 @@
     "kothur_formulation_division": 1,
     "vapi": 7,
     "eu": 4,
-    "across_india": 21,
+    "across_india": 22,
     "trichy": 75,
     "perundurai": 2,
     "jhajjar": 4,
@@ -1443,7 +1443,8 @@
     "himmat_nagar": 1,
     "farukh_nagar": 1,
     "koppal": 1,
-    "kotputli": 1
+    "kotputli": 1,
+    "southeast_asia": 1
   },
-  "generated_at": "2026-11-23T02:02:17.821205"
+  "generated_at": "2026-11-23T03:55:53.568352"
 }
