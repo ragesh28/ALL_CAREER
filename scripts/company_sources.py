@@ -206,6 +206,13 @@ def scrape_verified_company(name, limit=1000, allow_browser=True):
         jobs.extend(found)
         if any(confirmed_india_location(job.get("location")) for job in jobs):
             break
+    if not jobs and config.get("career_url"):
+        try:
+            response = public_request("GET", config["career_url"], headers=HEADERS, timeout=(5, 12))
+            if response.status_code == 200:
+                jobs = jobs_from_html(response.text, response.url)
+        except requests.RequestException:
+            pass
     browser_url = config["career_url"]
     workday = next((feed for feed in config.get("feeds", []) if "/wday/cxs/" in feed["url"]), None)
     if workday:

@@ -251,6 +251,25 @@ def fetch_details(url):
         return {}
     headers = {"User-Agent": "Mozilla/5.0", "Accept": "application/json,text/html"}
     candidates = [url]
+    if parsed.hostname == "higher.gs.com":
+        identifier = re.search(r"/roles/(\d+)", parsed.path)
+        if identifier:
+            try:
+                # This query and external-source ID were observed on the public
+                # career site. Its internal roleId suffix is not a browser URL.
+                query = "query GetRoleById($externalSourceId: String!, $externalSourceFetch: Boolean) { role(externalSourceId: $externalSourceId, externalSourceFetch: $externalSourceFetch) { jobTitle descriptionHtml locations { city state country } compensation { minSalary maxSalary currency } } }"
+                import uuid
+                response = requests.post("https://api-higher.gs.com/gateway/api/v1/graphql", headers={"User-Agent": "Mozilla/5.0", "Origin": "https://higher.gs.com", "Referer": "https://higher.gs.com/", "x-higher-session-id": str(uuid.uuid4())}, json={"operationName": "GetRoleById", "variables": {"externalSourceId": identifier[1], "externalSourceFetch": True}, "query": query}, timeout=(5, 15))
+                role = response.json().get("data", {}).get("role") if response.status_code == 200 else None
+                if isinstance(role, dict):
+                    details = details_from_record(role)
+                    compensation = role.get("compensation") or {}
+                    if compensation.get("minSalary") is not None or compensation.get("maxSalary") is not None:
+                        details.update(details_from_record({"baseSalary": {"currency": compensation.get("currency"), "value": {"minValue": compensation.get("minSalary"), "maxValue": compensation.get("maxSalary")}}}))
+                    if details.get("description"):
+                        return {**details, "description_source": f"https://higher.gs.com/roles/{identifier[1]}"}
+            except (requests.RequestException, ValueError, TypeError):
+                pass
     if parsed.hostname == "careers.turing.com":
         identifier = re.search(r"/job/(\d+)", parsed.path)
         if identifier:

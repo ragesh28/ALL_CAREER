@@ -1619,11 +1619,12 @@ def scrape_goldmansachs(url, limit=2):
             for j in items:
                 locs = j.get('locations', [])
                 city = locs[0].get('city', 'India') if locs else 'India'
+                source_id = (j.get('externalSource') or {}).get('sourceId') or str(j.get('roleId', '')).split('_')[0]
                 jobs.append({
                     "title": clean(j.get("jobTitle", "")),
                     "location": clean(city),
                     "posted": "",
-                    "apply_url": f"https://higher.gs.com/roles/{j.get('roleId', '')}",
+                    "apply_url": f"https://higher.gs.com/roles/{source_id}",
                     "total_jobs": total_count
                 })
                 

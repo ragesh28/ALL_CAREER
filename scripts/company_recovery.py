@@ -54,6 +54,8 @@ def posting_url(url):
         return True
     if parsed.hostname == "jobs.smartrecruiters.com" and re.fullmatch(r"[^/]+/\d+(?:-[^/]+)?", path):
         return True
+    if parsed.hostname == "careers.societegenerale.com" and re.search(r"/job-offers/[^/]*\d[^/]+$", "/" + path):
+        return True
     if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid") and value for key, value in parse_qsl(parsed.query)):
         return True
     return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|jobdetail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/\d+|[a-f0-9]{8}-[a-f0-9-]{20,}", "/" + path))
@@ -372,4 +374,4 @@ def add_descriptions(jobs, count=2):
             for key, value in recovered.items():
                 if not job.get(key) or (key == "description" and len(value) > len(job.get(key, ""))):
                     job[key] = value
-    return chosen
+    return sorted(chosen, key=lambda job: (confirmed_india_location(job.get("location")), len(job.get("description", "")) >= 150 and not job.get("description", "").rstrip().endswith(("...", "…"))), reverse=True)

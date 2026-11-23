@@ -127,6 +127,16 @@ class CareerRecoveryTests(unittest.TestCase):
         self.assertEqual(rows[0]["title"], "Auditor")
         self.assertEqual(rows[0]["apply_url"], "https://jobs.citi.com/job/mumbai/auditor/287/123")
 
+    @patch("scripts.company_job_details.requests.post")
+    def test_goldman_uses_external_id_and_preserves_description(self, post):
+        response = Mock(status_code=200)
+        response.json.return_value = {"data": {"role": {"descriptionHtml": "<p>Actual role requirements</p>", "locations": [{"city": "Bengaluru", "country": "India"}]}}}
+        post.return_value = response
+        details = fetch_details("https://higher.gs.com/roles/189275_GS_MID_CAREER")
+        self.assertEqual(post.call_args.kwargs["json"]["variables"]["externalSourceId"], "189275")
+        self.assertEqual(details["description"], "Actual role requirements")
+        self.assertEqual(details["description_source"], "https://higher.gs.com/roles/189275")
+
 
 if __name__ == "__main__":
     unittest.main()

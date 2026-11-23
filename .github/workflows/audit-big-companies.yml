@@ -52,7 +52,7 @@ jobs:
           COMPANY_AUDIT_ONLY: ${{ inputs.companies }}
         run: python scripts/audit_big_companies.py --engine ${{ matrix.engine }} --output audit-results --timeout 120 --workers 3
       - name: Verify detail parsing and saving
-        run: python -m unittest tests.test_company_job_details tests.test_company_recovery
+        run: python -m unittest tests.test_company_job_details tests.test_company_recovery tests.test_company_investigation_report
       - uses: actions/upload-artifact@v4
         if: always()
         with:
