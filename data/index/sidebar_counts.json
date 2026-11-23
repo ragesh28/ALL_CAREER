@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1257596,
+  "total_jobs": 1257604,
   "sources": {
     "naukri": 395454,
     "linkedin": 326181,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 9050,
     "telegram": 3577,
-    "other": 5916,
+    "other": 5924,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -294,11 +294,11 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 265324,
-    "mumbai": 165482,
+    "bangalore": 265327,
+    "mumbai": 165483,
     "delhi": 135078,
-    "chennai": 135661,
-    "hyderabad": 123845,
+    "chennai": 135662,
+    "hyderabad": 123848,
     "pune": 102635,
     "noida": 61036,
     "ahmedabad": 47562,
@@ -1445,5 +1445,5 @@
     "koppal": 1,
     "kotputli": 1
   },
-  "generated_at": "2026-11-22T22:38:52.640089"
+  "generated_at": "2026-11-23T02:02:17.821205"
 }
