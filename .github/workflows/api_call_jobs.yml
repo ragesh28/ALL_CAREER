@@ -16,12 +16,16 @@ on:
         description: Optional comma separated company names to retest
         type: string
         default: ''
+      investigate_companies:
+        description: Inspect every employer with a browser and configured providers
+        type: boolean
+        default: false
   schedule:
     - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC) daily
 
 jobs:
   scrape-api-jobs:
-    if: inputs.audit_only != true
+    if: inputs.audit_only != true && inputs.investigate_companies != true
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -56,9 +60,14 @@ jobs:
           git push
 
   audit-companies:
-    if: inputs.audit_only == true
+    if: inputs.audit_only == true && inputs.investigate_companies != true
     uses: ./.github/workflows/audit-big-companies.yml
     with:
       engine: ${{ inputs.audit_engine || 'all' }}
       companies: ${{ inputs.audit_companies || '' }}
+    secrets: inherit
+
+  investigate-companies:
+    if: inputs.investigate_companies == true
+    uses: ./.github/workflows/company-browser-investigation.yml
     secrets: inherit
