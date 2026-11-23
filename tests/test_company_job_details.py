@@ -35,6 +35,25 @@ class CompanyDetailsTests(unittest.TestCase):
         self.assertEqual(rows[0]["apply_url"], "https://example.com/careers/job/1")
         self.assertEqual(rows[0]["description"], "Actual duties")
         self.assertEqual(jobs_from_payload({"total": 200}, "https://example.com"), [])
+        self.assertEqual(jobs_from_payload({"name": "Company", "url": "https://example.com"}, "https://example.com"), [])
+
+    @patch("scripts.company_job_details.requests.get")
+    def test_siemens_uses_full_article_and_explicit_posted_date(self, get):
+        description = "Engineering requirements and responsibilities. " * 40
+        get.return_value = Mock(status_code=200, headers={"Content-Type": "text/html"}, text='<p>Posted since 21-Nov-2026</p><article class="article--details"><div class="article__content__view"><div class="article__content__view__field__value">Label:</div>'+description+'</div></article>')
+        details = fetch_details("https://jobs.siemens.com/en_US/externaljobs/JobDetail/1")
+        self.assertGreater(len(details["description"]), 1000)
+        self.assertEqual(details["date_posted"], "21-Nov-2026")
+
+    def test_wipro_stops_repeated_pages_and_keeps_job_links(self):
+        import scrape_from_md as scraper
+        payload = {"jobSearchResult": [{"response": {"id": "123", "unifiedStandardTitle": "Engineer", "jobLocationShort": ["Chennai"]}}]}
+        response = Mock(status_code=200, text=json.dumps(payload))
+        with patch.object(scraper.requests, "post", return_value=response) as post, patch.object(scraper.time, "sleep"):
+            rows = scraper._scrape_wipro_paginated({})["all_jobs"]
+        self.assertEqual(post.call_count, 2)
+        self.assertEqual(rows[0]["apply_url"], "https://careers.wipro.com/jobs/123")
+        self.assertEqual(rows[0]["location"], "Chennai")
 
     @patch("scripts.company_job_details.requests.get")
     def test_workday_detail_route_and_structured_metadata(self, get):

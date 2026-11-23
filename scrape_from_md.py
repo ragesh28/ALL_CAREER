@@ -13,7 +13,7 @@ except ImportError:
 from datetime import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload, normalize_job_links
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -460,37 +460,46 @@ def scrape_wipro(info):
 
 
 def _scrape_wipro_paginated(info):
-    """Wipro SAP SuccessFactors - full pagination by pageNumber."""
+    """Collect linked postings; stop on a repeated page or the sample budget."""
     try:
         h = {**HEADERS, "Content-Type": "application/json",
              "Origin": "https://careers.wipro.com",
              "Referer": "https://careers.wipro.com/en-US/search"}
-        all_jobs = []
-        page = 0
-        total = 0
+        jobs, seen = [], set()
+        page, total = 0, 0
+        sample_limit = int(os.environ.get("COMPANY_SAMPLE_LIMIT", "0"))
         while True:
             r = requests.post("https://careers.wipro.com/services/recruiting/v1/jobs",
                               headers=h, json={"pageNumber": page, "locale": "en_US"}, timeout=20)
-            if r.status_code != 200:
-                break
+            r.raise_for_status()
             data = json.loads(r.text.lstrip("\ufeff"))
-            if page == 0:
-                total = data.get("totalJobs", 0)
+            total = data.get("totalJobs", total)
             batch = data.get("jobSearchResult", [])
-            if not batch:
+            before = len(jobs)
+            for item in batch:
+                row = item.get("response", {})
+                job_id = str(row.get("id") or row.get("jobReqId") or "")
+                if not job_id or job_id in seen:
+                    continue
+                seen.add(job_id)
+                title = row.get("unifiedStandardTitle") or row.get("jobTitle") or ""
+                location = row.get("sfstd_jobLocation_obj") or row.get("jobLocationShort") or ""
+                if isinstance(title, list): title = title[0] if title else ""
+                if isinstance(location, list): location = ", ".join(str(x) for x in location)
+                jobs.append({"title": clean(title), "job_id": job_id,
+                             "location": clean(re.sub(r"<[^>]+>", " ", str(location))),
+                             "apply_url": f"https://careers.wipro.com/jobs/{job_id}",
+                             **details_from_record(row)})
+                if sample_limit and len(jobs) >= sample_limit:
+                    break
+            if len(jobs) == before or (total and len(jobs) >= total) or (sample_limit and len(jobs) >= sample_limit):
                 break
-            for j in batch:
-                all_jobs.append({
-                    "title": clean(j.get("response", {}).get("unifiedStandardTitle", "")),
-                    "job_id": str(j.get("response", {}).get("id", j.get("response", {}).get("jobReqId", "")))
-                })
             page += 1
-            if total and len(all_jobs) >= total:
-                break
             time.sleep(0.2)
-        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
+        return {"status": "OK", "total": total or len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
+
 
 def scrape_maersk(info):
     """Maersk - full pagination by offset=24."""
@@ -1270,6 +1279,7 @@ def update_big_company_jobs(all_results, company_info_map):
         if not isinstance(jobs_list, list):
             continue
             
+        normalize_job_links(jobs_list, company_url)
         enrich_jobs(jobs_list)
         for raw_job in jobs_list:
             if not isinstance(raw_job, dict):
@@ -1286,7 +1296,9 @@ def update_big_company_jobs(all_results, company_info_map):
                 continue
                 
             total_india += 1
-            apply_url = raw_job.get("apply_url") or raw_job.get("url") or company_url or ""
+            apply_url = raw_job.get("apply_url") or raw_job.get("url") or ""
+            if not apply_url:
+                continue
             unique_job_id = str(raw_job.get("job_id", apply_url)).strip()
             if apply_url in existing_by_url:
                 updated_details = upgrade_details(existing_by_url[apply_url], raw_job) or updated_details

@@ -32,7 +32,23 @@ def text(value):
     value = str(value)
     if value.lower().strip() in ("nan", "none", "null", "nat"):
         return ""
-    return re.sub(r"[ \t]+", " ", BeautifulSoup(html.unescape(value), "html.parser").get_text(" ", strip=True)).strip()
+    value = html.unescape(value)
+    if "<" in value and ">" in value:
+        value = BeautifulSoup(value, "html.parser").get_text(" ", strip=True)
+    return re.sub(r"[ \t]+", " ", value).strip()
+
+
+def normalize_job_links(jobs, page_url):
+    for job in jobs:
+        if not isinstance(job, dict):
+            continue
+        link = text(job.get("apply_url") or job.get("url"))
+        if not link or link.startswith("#") or urlparse(link).scheme not in ("", "http", "https"):
+            job["apply_url"] = ""
+            job["url"] = ""
+        else:
+            job["apply_url"] = urljoin(page_url, link)
+    return jobs
 
 
 def details_from_record(record):

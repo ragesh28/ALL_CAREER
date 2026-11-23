@@ -18,7 +18,7 @@ from functools import wraps
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.company_job_details import details_from_record, enrich_jobs
+from scripts.company_job_details import details_from_record, enrich_jobs, normalize_job_links
 
 
 def load(path, name):
@@ -40,6 +40,7 @@ def companies(engine):
 
 def probe(engine, index, output):
     started = time.monotonic()
+    os.environ["COMPANY_SAMPLE_LIMIT"] = "5"
     # Do not emit secret Markdown configuration, HTTP headers or raw logs.
     with open(os.devnull, "w", encoding="utf-8") as sink, contextlib.redirect_stdout(sink), contextlib.redirect_stderr(sink):
         config = companies(engine)[index]
@@ -86,6 +87,8 @@ def probe(engine, index, output):
                 jobs = result.get("all_jobs") or result.get("sample_jobs") or []
                 error = result.get("error") or result.get("reason") or ""
                 in_india = [j for j in jobs if module.is_india(j.get("location", ""))]
+            base_url = config.get("url") or (config.get("urls") or [""])[0]
+            normalize_job_links(in_india, base_url)
             valid = [j for j in in_india if (j.get("title") or "").strip() and (j.get("apply_url") or j.get("url"))]
             sample = dict(valid[0]) if valid else None
             had_description = bool(sample and details_from_record(sample).get("description"))
