@@ -95,7 +95,7 @@ def probe(engine, index, output):
             if sample:
                 enrich_jobs([sample], limit=1)
             row = {"engine": engine, "company": name, "index": index,
-                   "status": "sample_found" if sample else "no_india_sample" if jobs else "no_jobs_returned",
+                   "status": "sample_found" if sample else "invalid_job_links" if in_india else "no_india_sample" if jobs else "no_jobs_returned",
                    "returned": len(jobs), "india_returned": len(in_india),
                    "description_before": had_description,
                    "description_after": bool(sample and sample.get("description")),

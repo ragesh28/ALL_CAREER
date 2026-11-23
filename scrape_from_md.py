@@ -665,6 +665,9 @@ def jobspy_fallback_result(company_name):
 
 def scrape_with_browser(info):
     """Use Playwright headless browser for blocked sites."""
+    if "openai" in info.get("name", "").lower():
+        # The official board exposes linked postings and full descriptions.
+        return scrape_generic_api({**info, "url": "https://api.ashbyhq.com/posting-api/job-board/openai", "method": "GET", "payload": None, "mandatory_headers": {}})
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:

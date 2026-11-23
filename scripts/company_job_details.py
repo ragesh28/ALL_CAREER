@@ -43,7 +43,8 @@ def normalize_job_links(jobs, page_url):
         if not isinstance(job, dict):
             continue
         link = text(job.get("apply_url") or job.get("url"))
-        if not link or link.startswith("#") or urlparse(link).scheme not in ("", "http", "https"):
+        navigation = text(job.get("title")).lower() in ("skip to main content", "skip to content", "view all jobs", "search jobs", "careers", "job search")
+        if navigation or not link or link.startswith("#") or urlparse(link).fragment in ("main", "main-content", "content", "top") or urlparse(link).scheme not in ("", "http", "https"):
             job["apply_url"] = ""
             job["url"] = ""
         else:
@@ -65,8 +66,8 @@ def details_from_record(record):
                 result["salary"] = " ".join(str(v) for v in (salary.get("currency"), low, "–" if high is not None else None, high, value.get("unitText")) if v is not None)
     if not result.get("salary") and (text(record.get("min_amount")) or text(record.get("max_amount"))):
         result["salary"] = " ".join(filter(None, [text(record.get("currency")), text(record.get("min_amount")), "to" if text(record.get("max_amount")) else "", text(record.get("max_amount")), text(record.get("interval"))]))
-    if not result.get("date_posted") and record.get("datePosted"):
-        result["date_posted"] = text(record["datePosted"])
+    if not result.get("date_posted") and (record.get("datePosted") or record.get("publishedAt")):
+        result["date_posted"] = text(record.get("datePosted") or record["publishedAt"])
     if not result.get("job_type") and record.get("employmentType"):
         result["job_type"] = text(record["employmentType"])
     if not result.get("date_posted") and record.get("postedTs"):
