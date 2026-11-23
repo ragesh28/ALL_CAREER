@@ -551,9 +551,14 @@
   {
     "company": "Elastic",
     "career_url": "https://www.elastic.co/careers/jobs",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/elastic/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Emerson",
@@ -1275,9 +1280,14 @@
   {
     "company": "Pinterest",
     "career_url": "https://www.pinterestcareers.com/en/jobs/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/pinterest/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Postman",
@@ -1610,9 +1620,14 @@
   {
     "company": "Thoughtworks",
     "career_url": "https://www.thoughtworks.com/careers/jobs",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/thoughtworks/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Tiger Analytics",
@@ -1834,8 +1849,13 @@
   {
     "company": "Zscaler",
     "career_url": "https://www.zscaler.com/careers",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/zscaler/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   }
 ]

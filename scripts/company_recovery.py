@@ -44,6 +44,8 @@ def posting_url(url):
     path = parsed.path.lower().strip("/")
     if re.search(r"\.(?:svg|png|jpe?g|webp|gif|css|js|woff2?|pdf)$", path):
         return False
+    if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid") and value for key, value in parse_qsl(parsed.query)):
+        return True
     if re.search(r"(?:^|/)(?:saved-jobs|saved|job-alerts|sign-in|register)(?:/|$)", path):
         return False
     if not path or path in ("careers", "jobs", "careers/search", "job-search", "search-results", "jobs/india"):
@@ -55,8 +57,6 @@ def posting_url(url):
     if parsed.hostname == "jobs.smartrecruiters.com" and re.fullmatch(r"[^/]+/\d+(?:-[^/]+)?", path):
         return True
     if parsed.hostname == "careers.societegenerale.com" and re.search(r"/job-offers/[^/]*\d[^/]+$", "/" + path):
-        return True
-    if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid") and value for key, value in parse_qsl(parsed.query)):
         return True
     return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|jobdetail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/\d+|[a-f0-9]{8}-[a-f0-9-]{20,}", "/" + path))
 
@@ -331,11 +331,14 @@ def browser_observe(url, evidence_directory, proxy=None, expected_title=None):
                     search.click(timeout=3000)
                     page.wait_for_timeout(2500)
             if not jobs:
-                openings = page.get_by_text(re.compile(r"^(See Open Roles|View Open Roles|View open positions|View current openings|Explore jobs)$", re.I))
-                if openings.count() == 1 and openings.is_visible():
-                    openings.click(timeout=5000)
-                    page.wait_for_timeout(3000)
-                    page = context.pages[-1]
+                openings = page.get_by_text(re.compile(r"^(See Open Roles|View Open Roles|View open positions|View current openings|Explore jobs|View openings|View all jobs|See all jobs|Search open positions)$", re.I))
+                for index in range(min(openings.count(), 6)):
+                    target = openings.nth(index)
+                    if target.is_visible():
+                        target.click(timeout=5000)
+                        page.wait_for_timeout(3000)
+                        page = context.pages[-1]
+                        break
             content = page.content()
             jobs.extend(jobs_from_html(content, page.url))
             result["page_title"] = page.title()

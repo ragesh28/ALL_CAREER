@@ -16,6 +16,7 @@ class CareerRecoveryTests(unittest.TestCase):
         for url in ["https://example.com/careers/life-at-company", "https://example.com/jobs/saved", "https://example.com/go/India/9553955", "https://cdn.example.com/7beb5311-75a4-0049-50f5-8f58fd55aba7/icon.svg", "https://example.com/company/careers/all-jobs"]:
             self.assertFalse(posting_url(url), url)
         self.assertTrue(posting_url("https://jobs.example.com/job/chennai/engineer/123"))
+        self.assertTrue(posting_url("https://www.pinterestcareers.com/jobs/?gh_jid=123"))
         self.assertEqual(jobs_from_html('<a href="/jobs/saved">0 Saved Jobs</a>', "https://example.com/"), [])
 
     def test_smartrecruiters_preserves_country_and_links_to_posting(self):

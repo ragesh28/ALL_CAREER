@@ -50,6 +50,17 @@ def investigate(company, output, pool):
             feeds.extend(public_feeds(response.url, response.text))
         entry["jobs"] = len(jobs)
         attempts.append(entry)
+        if response.status_code in (403, 429) and not response.headers.get("Retry-After"):
+            try:
+                from curl_cffi import requests as browser_http
+                alternate = browser_http.get(url, impersonate="chrome", timeout=18)
+                found = jobs_from_html(alternate.text, alternate.url) if alternate.status_code == 200 else []
+                jobs.extend(found)
+                if alternate.status_code == 200:
+                    feeds.extend(public_feeds(alternate.url, alternate.text))
+                attempts.append({"method": "curl-http", "url": safe_url(url), "http_status": alternate.status_code, "jobs": len(found)})
+            except Exception as error:
+                attempts.append({"method": "curl-http", "outcome": type(error).__name__})
     except requests.RequestException as error:
         attempts.append({"method": "direct-html", "outcome": type(error).__name__})
     for source in company["sources"]:
