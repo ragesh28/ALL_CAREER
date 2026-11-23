@@ -17,6 +17,16 @@ DETAIL_KEYS = ("description", "experience", "salary", "job_type", "work_mode",
                "employment_type", "date_posted", "description_source")
 
 
+def is_india_location(location):
+    value = text(location).lower()
+    if not value:
+        return True  # Keep unknown locations available, as the existing store does.
+    if re.search(r"\b(?:india|bangalore|bengaluru|chennai|hyderabad|mumbai|pune|noida|gurgaon|gurugram|delhi|kolkata|coimbatore|ahmedabad|karnataka|maharashtra|telangana|tamil nadu|haryana)\b", value):
+        return True
+    # A foreign location containing 'Remote' is not an India opening.
+    return value.strip(" ,-") in ("remote", "ind", "in")
+
+
 def upgrade_details(existing, incoming):
     changed = False
     for key, value in details_from_record(incoming).items():

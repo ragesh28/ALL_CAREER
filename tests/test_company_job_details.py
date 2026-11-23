@@ -5,12 +5,18 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
-from scripts.company_job_details import details_from_record, fetch_details, jobspy_options, upgrade_details, jobs_from_payload
+from scripts.company_job_details import details_from_record, fetch_details, jobspy_options, upgrade_details, jobs_from_payload, is_india_location
 
 
 class CompanyDetailsTests(unittest.TestCase):
     def tearDown(self):
         fetch_details.cache_clear()
+
+    def test_foreign_remote_and_indiana_are_not_india(self):
+        for place in ("US - Remote", "London, United Kingdom", "Indianapolis, Indiana", "Indonesia"):
+            self.assertFalse(is_india_location(place), place)
+        self.assertTrue(is_india_location("Chennai, Tamil Nadu, India"))
+        self.assertTrue(is_india_location("Bengaluru, Karnataka"))
 
     def test_missing_salary_stays_missing_and_experience_is_explicit(self):
         details = details_from_record({"description": "We require 3-5 years of experience in HR operations."})

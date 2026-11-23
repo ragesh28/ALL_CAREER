@@ -18,7 +18,7 @@ from playwright.sync_api import sync_playwright
 from jobspy import scrape_jobs
 import pandas as pd
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details
+from scripts.company_job_details import is_india_location, details_from_record, enrich_jobs, jobspy_options, upgrade_details
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -39,14 +39,8 @@ def save_jobs(jobs):
         json.dump(jobs, f, indent=4)
 
 def is_india(location):
-    if not location: return True
-    loc = location.lower()
-    indian_keywords = [
-        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
-        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
-        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
-    ]
-    return any(k in loc for k in indian_keywords)
+    return is_india_location(location)
+
 
 def store_jobs_local(jobs, existing_jobs, company_name):
     if not jobs:

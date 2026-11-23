@@ -13,7 +13,7 @@ except ImportError:
 from datetime import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload, normalize_job_links
+from scripts.company_job_details import is_india_location, details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload, normalize_job_links
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -1190,15 +1190,7 @@ def save_checkpoint(next_index, results, completed=False):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 def is_india(location):
-    if not location:
-        return True
-    loc = location.lower()
-    indian_keywords = [
-        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
-        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
-        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
-    ]
-    return any(k in loc for k in indian_keywords)
+    return is_india_location(location)
 
 
 def clean_company_name(name):
