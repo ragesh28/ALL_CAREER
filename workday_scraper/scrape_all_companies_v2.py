@@ -1638,6 +1638,21 @@ def scrape_goldmansachs(url, limit=2):
 # ============================================================================
 
 def detect_and_scrape(company_name, ats_type, url, limit=2):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(company_name) or {}
+    if config.get("prefer_verified"):
+        recovered = scrape_verified_company(company_name, limit)
+        if recovered:
+            return recovered
+    rows = _detect_and_scrape(company_name, ats_type, url, limit)
+    valid = [job for job in rows if posting_url(job.get("apply_url") or job.get("url") or "")]
+    if valid:
+        return valid
+    return scrape_verified_company(company_name, limit)
+
+
+def _detect_and_scrape(company_name, ats_type, url, limit=2):
     if not url: return []
     url_lower = url.lower()
     name_lower = company_name.lower()

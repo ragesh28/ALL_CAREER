@@ -1,0 +1,1747 @@
+[
+  {
+    "company": "3M",
+    "career_url": "https://3m.wd1.myworkdayjobs.com/Search",
+    "feeds": [
+      {
+        "url": "https://3m.wd1.myworkdayjobs.com/wday/cxs/3m/Search/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "ABB",
+    "career_url": "https://careers.abb/global/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://abb.wd3.myworkdayjobs.com/wday/cxs/abb/External_Career_Page/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Accenture",
+    "career_url": "https://www.accenture.com/in-en/careers/jobsearch",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Adobe",
+    "career_url": "https://careers.adobe.com/us/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external_experienced/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Akamai",
+    "career_url": "https://www.akamai.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Alstom",
+    "career_url": "https://jobsearch.alstom.com/search/?q=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Amadeus",
+    "career_url": "https://amadeus.wd502.myworkdayjobs.com/jobs",
+    "feeds": [
+      {
+        "url": "https://amadeus.wd502.myworkdayjobs.com/wday/cxs/amadeus/jobs/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Amazon",
+    "career_url": "https://www.amazon.jobs/en/search?country=IND",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "American Express",
+    "career_url": "https://aexp.eightfold.ai/careers?location=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Anthropic",
+    "career_url": "https://www.anthropic.com/careers",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Appian",
+    "career_url": "https://careers.appian.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Apple",
+    "career_url": "https://jobs.apple.com/en-in/search?location=india-INDC",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Arcesium",
+    "career_url": "https://www.arcesium.com/careers",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/arcesiumllc/jobs?content=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Athenahealth",
+    "career_url": "https://careers.athenahealth.com/",
+    "feeds": [
+      {
+        "url": "https://athenahealth.wd1.myworkdayjobs.com/wday/cxs/athenahealth/External/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Atlassian",
+    "career_url": "https://www.atlassian.com/company/careers/all-jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Automation Anywhere",
+    "career_url": "https://www.automationanywhere.com/company/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Bain & Company",
+    "career_url": "https://www.bain.com/careers/find-a-role/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Baker Hughes",
+    "career_url": "https://careers.bakerhughes.com/global/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://bakerhughes.wd5.myworkdayjobs.com/wday/cxs/bakerhughes/BakerHughes/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Bank of America",
+    "career_url": "https://careers.bankofamerica.com/en-us/job-search",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Barclays",
+    "career_url": "https://search.jobs.barclays/search-jobs/India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "BigBasket",
+    "career_url": "https://careers.bigbasket.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Blue Prism",
+    "career_url": "https://www.blueprism.com/company/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "BMW",
+    "career_url": "https://www.bmwgroup.jobs/en.html",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "BNY",
+    "career_url": "https://www.bny.com/corporate/global/en/careers.html",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Bosch",
+    "career_url": "https://jobs.bosch.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Boston Consulting Group",
+    "career_url": "https://careers.bcg.com/global/en/search-results?keywords=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Brillio",
+    "career_url": "https://www.brillio.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Broadcom",
+    "career_url": "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+    "feeds": [
+      {
+        "url": "https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "BrowserStack",
+    "career_url": "https://www.browserstack.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Capgemini",
+    "career_url": "https://careers.capgemini.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Caterpillar",
+    "career_url": "https://careers.caterpillar.com/en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Celonis",
+    "career_url": "https://www.celonis.com/careers/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Chargebee",
+    "career_url": "https://www.chargebee.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cisco",
+    "career_url": "https://careers.cisco.com/global/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://cisco.wd5.myworkdayjobs.com/wday/cxs/cisco/Cisco_Careers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Citi",
+    "career_url": "https://jobs.citi.com/search-jobs/India",
+    "feeds": [],
+    "browser_verified": true,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cloudera",
+    "career_url": "https://cloudera.wd5.myworkdayjobs.com/External_Career",
+    "feeds": [
+      {
+        "url": "https://cloudera.wd5.myworkdayjobs.com/wday/cxs/cloudera/External_Career/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cognizant",
+    "career_url": "https://careers.cognizant.com/india-en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cohesity",
+    "career_url": "https://careers.cohesity.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Comcast",
+    "career_url": "https://jobs.comcast.com/search-jobs/India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Confluent",
+    "career_url": "https://careers.confluent.io/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Continental",
+    "career_url": "https://jobs.continental.com/en/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "CRED",
+    "career_url": "https://jobs.lever.co/cred",
+    "feeds": [
+      {
+        "url": "https://api.lever.co/v0/postings/cred?mode=json",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Crossover",
+    "career_url": "https://www.crossover.com/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "CrowdStrike",
+    "career_url": "https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers",
+    "feeds": [
+      {
+        "url": "https://crowdstrike.wd5.myworkdayjobs.com/wday/cxs/crowdstrike/crowdstrikecareers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cummins",
+    "career_url": "https://cummins.jobs/ind/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Cure.fit",
+    "career_url": "https://careers.cult.fit/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Danfoss",
+    "career_url": "https://jobs.danfoss.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Databricks",
+    "career_url": "https://www.databricks.com/company/careers/open-positions",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Datadog",
+    "career_url": "https://careers.datadoghq.com/all-jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Dell",
+    "career_url": "https://jobs.dell.com/en/search-jobs/India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Deloitte",
+    "career_url": "https://southasiacareers.deloitte.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Deutsche Bank",
+    "career_url": "https://careers.db.com/professionals/search-roles/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "EA Sports",
+    "career_url": "https://jobs.ea.com/en_US/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Eaton",
+    "career_url": "https://jobs.eaton.com/",
+    "feeds": [
+      {
+        "url": "https://eaton.eightfold.ai/api/pcsx/search?domain=eaton.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Elastic",
+    "career_url": "https://www.elastic.co/careers/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Emerson",
+    "career_url": "https://www.emerson.com/en-us/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Epic Games",
+    "career_url": "https://www.epicgames.com/site/en-US/careers/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Ericsson",
+    "career_url": "https://jobs.ericsson.com/careers?location=India",
+    "feeds": [
+      {
+        "url": "https://jobs.ericsson.com/api/pcsx/search?domain=ericsson.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Eurofins IT",
+    "career_url": "https://careers.eurofins.com/",
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/Eurofins/postings?limit=100",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "EY",
+    "career_url": "https://careers.ey.com/ey/search/?q=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Fidelity Investments",
+    "career_url": "https://jobs.fidelity.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Flipkart",
+    "career_url": "https://www.flipkartcareers.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Ford",
+    "career_url": "https://efds.fa.em5.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Fortinet",
+    "career_url": "https://www.fortinet.com/corporate/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Fractal Analytics",
+    "career_url": "https://fractal.wd1.myworkdayjobs.com/Fractalcareers",
+    "feeds": [
+      {
+        "url": "https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Fractalcareers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Freshworks",
+    "career_url": "https://careers.smartrecruiters.com/Freshworks",
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/Freshworks/postings?limit=100",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "GE",
+    "career_url": "https://careers.gevernova.com/global/en/search-results?keywords=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "GE Healthcare",
+    "career_url": "https://careers.gehealthcare.com/global/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://gehc.wd5.myworkdayjobs.com/wday/cxs/gehc/GEHC_ExternalSite/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Goldman Sachs",
+    "career_url": "https://higher.gs.com/results?COUNTRY=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Google",
+    "career_url": "https://www.google.com/about/careers/applications/jobs/results/?location=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Groww",
+    "career_url": "https://groww.in/careers",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/groww/jobs",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Grundfos",
+    "career_url": "https://jobs.grundfos.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "HackerRank",
+    "career_url": "https://www.hackerrank.com/careers/",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/hackerrank/jobs?content=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Halliburton",
+    "career_url": "https://jobs.halliburton.com/search/?q=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Hasura",
+    "career_url": "https://hasura.io/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "HCLTech",
+    "career_url": "https://www.hcltech.com/careers/careers-in-india",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Hexaware",
+    "career_url": "https://fa-etqo-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Honeywell",
+    "career_url": "https://careers.honeywell.com/us/en/search-results?keywords=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "HP",
+    "career_url": "https://apply.hp.com/careers?location=India",
+    "feeds": [
+      {
+        "url": "https://apply.hp.com/api/pcsx/search?domain=hp.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "HSBC",
+    "career_url": "https://mycareer.hsbc.com/en_GB/external/SearchJobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "IBM",
+    "career_url": "https://www.ibm.com/careers/search?field_keyword_05[0]=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Infosys",
+    "career_url": "https://career.infosys.com/joblist",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "InMobi",
+    "career_url": "https://www.inmobi.com/company/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Intel",
+    "career_url": "https://jobs.intel.com/en/search-jobs/India",
+    "feeds": [
+      {
+        "url": "https://intel.wd1.myworkdayjobs.com/wday/cxs/intel/External/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Intellect Design",
+    "career_url": "https://www.intellectdesign.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Intuit",
+    "career_url": "https://jobs.intuit.com/search-jobs/India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "ITC Infotech",
+    "career_url": "https://jobs.itcinfotech.com/itcinfotech/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "John Deere",
+    "career_url": "https://jobs.deere.com/search/?q=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Johnson Controls",
+    "career_url": "https://jobs.johnsoncontrols.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "JPMorgan Chase",
+    "career_url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Juniper Networks",
+    "career_url": "https://careers.hpe.com/us/en/search-results?keywords=Juniper",
+    "feeds": [
+      {
+        "url": "https://hpe.wd5.myworkdayjobs.com/wday/cxs/hpe/Jobsathpe/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Juniper Networks / HPE",
+    "career_url": "https://careers.hpe.com/us/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://hpe.wd5.myworkdayjobs.com/wday/cxs/hpe/Jobsathpe/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "KPIT Technologies",
+    "career_url": "https://www.kpit.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "KPMG",
+    "career_url": "https://kpmg.com/in/en/home/careers.html",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "LatentView Analytics",
+    "career_url": "",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Lenovo",
+    "career_url": "https://jobs.lenovo.com/en_US/careers/SearchJobs/India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "LinkedIn",
+    "career_url": "https://careers.linkedin.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "LTIMindtree",
+    "career_url": "https://ltimindtree.ripplehire.com/candidate/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Maersk",
+    "career_url": "https://www.maersk.com/careers/vacancies",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Marvell",
+    "career_url": "https://marvell.wd1.myworkdayjobs.com/MarvellCareers",
+    "feeds": [
+      {
+        "url": "https://marvell.wd1.myworkdayjobs.com/wday/cxs/marvell/MarvellCareers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Mastercard",
+    "career_url": "https://careers.mastercard.com/us/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://mastercard.wd1.myworkdayjobs.com/wday/cxs/mastercard/CorporateCareers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "McKinsey",
+    "career_url": "https://www.mckinsey.com/careers/search-jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Meesho",
+    "career_url": "https://www.meesho.io/jobs",
+    "feeds": [
+      {
+        "url": "https://api.lever.co/v0/postings/meesho?mode=json",
+        "method": "GET"
+      },
+      {
+        "url": "https://api.lever.co/v0/postings/meesho/?/?&limit=15",
+        "method": "GET"
+      },
+      {
+        "url": "https://api.lever.co/v0/postings/meesho/?",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Mercedes Benz",
+    "career_url": "https://jobs.mercedes-benz.com/en/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Meta",
+    "career_url": "https://www.metacareers.com/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Microsoft",
+    "career_url": "https://apply.careers.microsoft.com/careers?location=India",
+    "feeds": [
+      {
+        "url": "https://apply.careers.microsoft.com/api/pcsx/search?domain=microsoft.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "MongoDB",
+    "career_url": "https://www.mongodb.com/company/careers/teams",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Morgan Stanley",
+    "career_url": "https://www.morganstanley.com/careers/career-opportunities-search",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Mu Sigma",
+    "career_url": "https://www.mu-sigma.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Myntra",
+    "career_url": "https://careers.myntra.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "NatWest Group",
+    "career_url": "https://jobs.natwestgroup.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Netflix",
+    "career_url": "https://explore.jobs.netflix.net/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "New Relic",
+    "career_url": "https://newrelic.com/careers",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/newrelic/jobs?content=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Nokia",
+    "career_url": "https://careers.nokia.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Nutanix",
+    "career_url": "https://nutanix.eightfold.ai/careers?location=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "NVIDIA",
+    "career_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+    "feeds": [
+      {
+        "url": "https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Nykaa",
+    "career_url": "https://www.nykaa.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Okta",
+    "career_url": "https://www.okta.com/company/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Ola",
+    "career_url": "https://www.olacabs.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "OpenAI",
+    "career_url": "https://openai.com/careers/search/",
+    "feeds": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/openai?includeCompensation=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Oracle",
+    "career_url": "https://careers.oracle.com/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "PagerDuty",
+    "career_url": "https://careers.pagerduty.com/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Palo Alto Networks",
+    "career_url": "https://jobs.paloaltonetworks.com/en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "PayPal",
+    "career_url": "https://paypal.eightfold.ai/careers?location=India",
+    "feeds": [
+      {
+        "url": "https://paypal.eightfold.ai/api/pcsx/search?domain=paypal.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Paytm",
+    "career_url": "https://jobs.lever.co/paytm",
+    "feeds": [
+      {
+        "url": "https://api.lever.co/v0/postings/paytm?mode=json",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Persistent Systems",
+    "career_url": "https://careers.persistent.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Philips",
+    "career_url": "https://www.careers.philips.com/global/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://philips.wd3.myworkdayjobs.com/wday/cxs/philips/jobs-and-careers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "PhonePe",
+    "career_url": "https://www.phonepe.com/careers/job-openings/",
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/PHONEPELIMITED/postings?limit=100",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Pinterest",
+    "career_url": "https://www.pinterestcareers.com/en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Postman",
+    "career_url": "https://postman.wd108.myworkdayjobs.com/careers",
+    "feeds": [
+      {
+        "url": "https://postman.wd108.myworkdayjobs.com/wday/cxs/postman/careers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Publicis Sapient",
+    "career_url": "https://careers.publicissapient.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "PwC",
+    "career_url": "https://jobs.in.pwc.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Qualcomm",
+    "career_url": "https://careers.qualcomm.com/careers?location=India",
+    "feeds": [
+      {
+        "url": "https://careers.qualcomm.com/api/pcsx/search?domain=qualcomm.com&location=India&start=0&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Ramco Systems",
+    "career_url": "https://www.ramco.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Razorpay",
+    "career_url": "https://razorpay.com/jobs/",
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/razorpaysoftwareprivatelimited/jobs?content=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Riot Games",
+    "career_url": "https://www.riotgames.com/en/work-with-us/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Rocketlane",
+    "career_url": "https://careers.kula.ai/rocketlane",
+    "feeds": [
+      {
+        "url": "https://careers.kula.ai/api/internal/ats_job_posts?accountName=rocketlane&page=1&type=ats_job_post.index&items=99",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Rubrik",
+    "career_url": "https://www.rubrik.com/company/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Sabre",
+    "career_url": "https://sabre.wd1.myworkdayjobs.com/SabreJobs",
+    "feeds": [
+      {
+        "url": "https://sabre.wd1.myworkdayjobs.com/wday/cxs/sabre/SabreJobs/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Salesforce",
+    "career_url": "https://careers.salesforce.com/en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Samsung",
+    "career_url": "https://sec.wd3.myworkdayjobs.com/Samsung_Careers",
+    "feeds": [
+      {
+        "url": "https://sec.wd3.myworkdayjobs.com/wday/cxs/sec/Samsung_Careers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "SAP",
+    "career_url": "https://jobs.sap.com/search/?q=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Sarvam AI",
+    "career_url": "https://www.sarvam.ai/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Schlumberger",
+    "career_url": "https://careers.slb.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Schneider Electric",
+    "career_url": "https://careers.se.com/jobs?location=India",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "ServiceNow",
+    "career_url": "https://careers.servicenow.com/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Shell",
+    "career_url": "https://shell.wd3.myworkdayjobs.com/ShellCareers",
+    "feeds": [
+      {
+        "url": "https://shell.wd3.myworkdayjobs.com/wday/cxs/shell/ShellCareers/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Siemens",
+    "career_url": "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?21178=%5B%226006%22%5D",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Sify Tech",
+    "career_url": "https://www.sifytechnologies.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Snap",
+    "career_url": "https://careers.snap.com/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Snowflake",
+    "career_url": "https://careers.snowflake.com/us/en/search-results?keywords=India",
+    "feeds": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/snowflake?includeCompensation=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Societe Generale",
+    "career_url": "https://careers.societegenerale.com/en/job-offers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Sony",
+    "career_url": "https://www.sonyjobs.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Splunk",
+    "career_url": "https://www.splunk.com/en_us/careers/search-jobs.html",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Spotify",
+    "career_url": "https://www.lifeatspotify.com/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Standard Chartered",
+    "career_url": "https://jobs.standardchartered.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Stripe",
+    "career_url": "https://stripe.com/jobs/search?office_locations=Asia+Pacific--Bengaluru",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Subex",
+    "career_url": "https://www.subex.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Swiggy",
+    "career_url": "https://careers.swiggy.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Tally Solutions",
+    "career_url": "https://tallysolutions.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Target",
+    "career_url": "https://corporate.target.com/careers/job-search",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Tata Elxsi",
+    "career_url": "https://www.tataelxsi.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "TCS",
+    "career_url": "https://ibegin.tcsapps.com/candidate/next/en-IN/jobs",
+    "feeds": [],
+    "browser_verified": true,
+    "prefer_verified": true
+  },
+  {
+    "company": "Tech Mahindra",
+    "career_url": "https://careers.techmahindra.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Thoughtworks",
+    "career_url": "https://www.thoughtworks.com/careers/jobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Tiger Analytics",
+    "career_url": "https://www.tigeranalytics.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "TotalEnergies",
+    "career_url": "https://careers.totalenergies.com/en_US/careers/SearchJobs",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Toyota",
+    "career_url": "https://www.toyotabharat.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Turing",
+    "career_url": "https://careers.turing.com/",
+    "feeds": [
+      {
+        "url": "https://careers.turing.com/api/v3/job-posts",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Twilio",
+    "career_url": "https://www.twilio.com/en-us/company/jobs",
+    "feeds": [
+      {
+        "url": "https://jobs.twilio.com/api/pcsx/search?domain=twilio.com&start=0&location=India&num=10",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Twitter",
+    "career_url": "https://careers.x.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Uber",
+    "career_url": "https://www.uber.com/global/en/careers/list/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Ubisoft",
+    "career_url": "https://www.ubisoft.com/en-us/company/careers/search",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "UiPath",
+    "career_url": "https://careers.uipath.com/careers/jobs",
+    "feeds": [
+      {
+        "url": "https://api.ashbyhq.com/posting-api/job-board/uipath?includeCompensation=true",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Unity",
+    "career_url": "https://unity.com/careers/positions",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Virtusa",
+    "career_url": "https://www.virtusa.com/careers/job-search",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Visa",
+    "career_url": "https://corporate.visa.com/en/careers.html",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "VMware",
+    "career_url": "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+    "feeds": [
+      {
+        "url": "https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Volkswagen",
+    "career_url": "https://www.volkswagen-group.com/en/careers-15757",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Walmart",
+    "career_url": "https://careers.walmart.com/technology",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Wells Fargo",
+    "career_url": "https://www.wellsfargojobs.com/en/jobs/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Wipro",
+    "career_url": "https://careers.wipro.com/en-US/search",
+    "feeds": [
+      {
+        "url": "https://careers.wipro.com/services/recruiting/v1/jobs",
+        "method": "POST",
+        "payload": {
+          "pageNumber": 0,
+          "locale": "en_US"
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Workday",
+    "career_url": "https://workday.wd5.myworkdayjobs.com/Workday",
+    "feeds": [
+      {
+        "url": "https://workday.wd5.myworkdayjobs.com/wday/cxs/workday/Workday/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Zerodha",
+    "career_url": "https://zerodha.com/careers/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Zeta Suite",
+    "career_url": "https://jobs.lever.co/zeta",
+    "feeds": [
+      {
+        "url": "https://api.lever.co/v0/postings/zeta?mode=json",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Zoho",
+    "career_url": "https://careers.zohocorp.com/jobs/careers",
+    "feeds": [
+      {
+        "url": "https://careers.zohocorp.com/recruit/v2/public/Job_Openings?pagename=Careers&source=CareerSite&extra_fields=%5B%22Remote_Job%22%2C%22Job_Description%22%5D",
+        "method": "GET"
+      }
+    ],
+    "browser_verified": false,
+    "prefer_verified": true
+  },
+  {
+    "company": "Zomato",
+    "career_url": "https://www.zomato.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "ZS Associates",
+    "career_url": "https://jobs.zs.com/",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  },
+  {
+    "company": "Zscaler",
+    "career_url": "https://www.zscaler.com/careers",
+    "feeds": [],
+    "browser_verified": false,
+    "prefer_verified": false
+  }
+]

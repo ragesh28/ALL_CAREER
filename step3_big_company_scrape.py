@@ -215,6 +215,21 @@ def is_blocked(error):
 
 
 def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
+    """Keep Indeed's recent-job search, with verified official career recovery."""
+    jobs, blocked = _scrape_company(company_name, locations, results_wanted, proxy_list)
+    if jobs:
+        return jobs, blocked
+    from scripts.company_sources import scrape_verified_company
+    recovered = scrape_verified_company(company_name, results_wanted)
+    if recovered:
+        print(f"   Official career fallback: {len(recovered)} linked jobs")
+        # The company has been processed through a different source; do not retry
+        # the blocked Indeed request and save the same records repeatedly.
+        return recovered, False
+    return [], blocked
+
+
+def _scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
     """
     Scrape jobs for a single company from Indeed ONLY.
     Uses job_url_direct for original company apply links.

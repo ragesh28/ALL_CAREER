@@ -5,6 +5,7 @@ budget bounds extra requests per company, not the number of jobs saved.
 """
 import html
 import inspect
+import json
 import os
 import re
 import time
@@ -29,6 +30,32 @@ def is_india_location(location):
     return value.strip(" ,-") in ("remote", "ind", "in")
 
 
+def confirmed_india_location(location):
+    """Unlike the storage policy, an unknown/remote-only location is not proof."""
+    value = text(location)
+    return bool(value and value.lower().strip(" ,-") != "remote" and is_india_location(value))
+
+
+def location_text(value):
+    """Keep explicit city/country values from ATS objects and multi-site lists."""
+    if isinstance(value, list):
+        return "; ".join(dict.fromkeys(filter(None, (location_text(v) for v in value))))
+    if not isinstance(value, dict):
+        return text(value)
+    if isinstance(value.get("address"), dict):
+        return location_text(value["address"])
+    parts = []
+    for names in (("addressLocality", "city"), ("addressRegion", "region", "state"), ("addressCountry", "country", "countryName")):
+        part = next((value[k] for k in names if value.get(k)), "")
+        if isinstance(part, dict):
+            part = part.get("name") or part.get("code") or ""
+        if names[0] == "addressCountry" and text(part).casefold() in ("in", "ind"):
+            part = "India"
+        if text(part):
+            parts.append(text(part))
+    return ", ".join(dict.fromkeys(parts)) or text(value.get("location") or value.get("name") or value.get("label"))
+
+
 def upgrade_details(existing, incoming):
     changed = False
     for key, value in details_from_record(incoming).items():
@@ -50,6 +77,21 @@ def text(value):
     return re.sub(r"[ \t]+", " ", value).strip()
 
 
+def inline_job_data(soup):
+    """Decode public JSON.parse string literals without executing JavaScript."""
+    decoder = re.compile(r"\\(?:x([0-9a-fA-F]{2})|u([0-9a-fA-F]{4})|([\s\S]))")
+    def unescape(match):
+        if match[1] or match[2]:
+            return chr(int(match[1] or match[2], 16))
+        return {"n": "\n", "r": "\r", "t": "\t", "b": "\b", "f": "\f"}.get(match[3], match[3])
+    for script in soup.find_all("script", src=False):
+        for match in re.finditer(r"\b(?:var\s+)?jobs\s*=\s*JSON\.parse\('((?:\\.|[^'\\])*)'\)", script.string or ""):
+            try:
+                yield json.loads(decoder.sub(unescape, match[1]))
+            except (ValueError, TypeError):
+                continue
+
+
 def normalize_job_links(jobs, page_url):
     for job in jobs:
         if not isinstance(job, dict):
@@ -66,7 +108,7 @@ def normalize_job_links(jobs, page_url):
 
 def details_from_record(record):
     result = {key: text(record.get(key)) for key in DETAIL_KEYS if text(record.get(key))}
-    for key in ("jobDescription", "job_description", "descriptionHtml", "descriptionPlain", "content", "ExternalDescriptionStr"):
+    for key in ("jobDescription", "job_description", "descriptionHtml", "descriptionPlain", "Job_Description", "content", "ExternalDescriptionStr"):
         if not result.get("description") and text(record.get(key)):
             result["description"] = text(record[key])
     salary = record.get("baseSalary") or record.get("salaryRange")
@@ -82,6 +124,12 @@ def details_from_record(record):
         result["date_posted"] = text(record.get("datePosted") or record["publishedAt"])
     if not result.get("job_type") and record.get("employmentType"):
         result["job_type"] = text(record["employmentType"])
+    location = location_text(record.get("jobLocation") or record.get("location") or record.get("locations"))
+    if location:
+        result["location"] = location
+    if record.get("minimumExperienceInYears") is not None:
+        low, high = record["minimumExperienceInYears"], record.get("maximumExperienceInYears")
+        result.setdefault("experience", f"{low}-{high} years" if high is not None else f"Minimum {low} years")
     if not result.get("date_posted") and record.get("postedTs"):
         from datetime import datetime, timezone
         try:
@@ -165,6 +213,13 @@ def fetch_details(url):
     microsoft = parsed.hostname == "apply.careers.microsoft.com" and re.search(r"/careers/job/(\d+)", parsed.path)
     if microsoft:
         candidates.insert(0, f"https://{parsed.netloc}/api/pcsx/position_details?position_id={microsoft.group(1)}&domain=microsoft.com")
+    domains = {"careers.qualcomm.com": "qualcomm.com", "jobs.ericsson.com": "ericsson.com"}
+    eightfold = re.search(r"/careers/job/(\d+)", parsed.path)
+    if eightfold and parsed.hostname in domains:
+        candidates.insert(0, f"https://{parsed.netloc}/api/pcsx/position_details?position_id={eightfold.group(1)}&domain={domains[parsed.hostname]}")
+    greenhouse = parsed.hostname in ("job-boards.greenhouse.io", "boards.greenhouse.io") and re.match(r"/([^/]+)/jobs/(\d+)", parsed.path)
+    if greenhouse:
+        candidates.insert(0, f"https://boards-api.greenhouse.io/v1/boards/{greenhouse.group(1)}/jobs/{greenhouse.group(2)}?content=true")
     oracle = parsed.hostname.endswith("oraclecloud.com") and re.search(r"/job/(\d+)", parsed.path)
     if oracle:
         candidates.insert(0, f"https://{parsed.netloc}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?finder=ById;Id={oracle.group(1)}")
@@ -173,6 +228,8 @@ def fetch_details(url):
         candidates.insert(0, f"https://api.smartrecruiters.com/v1/companies/{smart.group(1)}/postings/{smart.group(2)}")
     if parsed.hostname.endswith("myworkdayjobs.com"):
         parts = [p for p in parsed.path.split("/") if p]
+        if parts and parts[-1] == "apply":
+            parts.pop()
         if "job" in parts and len(parts) > 2:
             idx = parts.index("job")
             site = parts[idx - 1]
@@ -202,6 +259,18 @@ def fetch_details(url):
                     return {**details, "description_source": candidate}
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
+            if parsed.hostname == "careers.zohocorp.com":
+                for records in inline_job_data(soup):
+                    for row in records if isinstance(records, list) else []:
+                        if str(row.get("id", "")) in parsed.path.split("/"):
+                            details = details_from_record(row)
+                            if details.get("description"):
+                                return {**details, "description_source": candidate}
+            if parsed.hostname == "careers.wipro.com" and re.search(r"/jobs?/", parsed.path):
+                nodes = [node for node in soup.select(".joblayouttoken") if re.search(r"Job Description\s*(?:Role|Purpose|The purpose)", node.get_text(" ", strip=True), re.I)]
+                if nodes:
+                    description = max(nodes, key=lambda n: len(n.get_text())).get_text(" ", strip=True)
+                    return {**details_from_record({"description": description}), "description_source": candidate}
             if parsed.hostname == "jobs.siemens.com" and "/JobDetail/" in parsed.path:
                 nodes = soup.select("article.article--details .article__content__view")
                 node = max(nodes, key=lambda n: len(n.get_text()), default=None)
@@ -247,7 +316,7 @@ def enrich_jobs(jobs, limit=None):
     budget = float(os.environ.get("COMPANY_DETAIL_BUDGET_SECONDS", "180"))
     for job in jobs:
         job.update(details_from_record(job))
-        if not job.get("description") and remaining > 0 and _detail_seconds_used < budget:
+        if (not job.get("description") or job["description"].rstrip().endswith(("...", "…"))) and remaining > 0 and _detail_seconds_used < budget:
             url = job.get("apply_url") or job.get("url") or ""
             if url:
                 remaining -= 1

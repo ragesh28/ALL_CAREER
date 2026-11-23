@@ -138,7 +138,8 @@ class ProxyPool:
                 pass
         return response
 
-    def fetch(self, url, render=False):
+    def fetch(self, url, render=False, excluded=None):
+        excluded = excluded or set()
         with self.lock:
             budget = int(os.environ.get("COMPANY_PROXY_MAX_REQUESTS", "100"))
             if self.requests_used >= budget:
@@ -146,7 +147,7 @@ class ProxyPool:
             self.requests_used += 1
         if not render:
             for label, address in self.proxies:
-                if not self.health.get(label, {}).get("available"):
+                if label in excluded or not self.health.get(label, {}).get("available"):
                     continue
                 try:
                     response = requests.get(url, proxies={"http": address, "https": address}, headers={"User-Agent": "Mozilla/5.0"}, timeout=(8, 30))
@@ -156,7 +157,7 @@ class ProxyPool:
         for index, key in enumerate(self.keys):
             label = f"scraperapi-{index + 1}"
             info = self.health.get(label, {})
-            if not info.get("available"):
+            if label in excluded or not info.get("available"):
                 continue
             params = {"api_key": key, "url": url, "max_cost": 10 if render else 1}
             if render:
@@ -169,7 +170,7 @@ class ProxyPool:
             except requests.RequestException as error:
                 return None, {"method": label, "outcome": type(error).__name__}
         for label, provider, key in self.services:
-            if not self.health.get(label, {}).get("available"):
+            if label in excluded or not self.health.get(label, {}).get("available"):
                 continue
             try:
                 response = self.service_request(provider, key, url, render)
@@ -177,6 +178,23 @@ class ProxyPool:
             except requests.RequestException as error:
                 return None, {"method": label, "outcome": type(error).__name__}
         return None, {"method": "proxy-render" if render else "proxy-http", "outcome": "no_healthy_configured_provider"}
+
+    def attempts(self, url, render=False):
+        excluded = set()
+        services_tried = set()
+        while True:
+            response, entry = self.fetch(url, render=render, excluded=excluded)
+            yield response, entry
+            if entry.get("outcome") in ("no_healthy_configured_provider", "run_request_budget_spent"):
+                break
+            provider = entry["method"].removesuffix("-render").removesuffix("-http")
+            if provider in excluded:
+                break
+            excluded.add(provider)
+            family = provider.split("-")[0]
+            if family in ("hasdata", "scrapingant"):
+                services_tried.add(family)
+                excluded.update(label for label, service, _ in self.services if service == family)
 
 
 if __name__ == "__main__":

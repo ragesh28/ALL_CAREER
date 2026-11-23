@@ -664,6 +664,23 @@ def jobspy_fallback_result(company_name):
 # ---------------------------------------------------------------------------
 
 def scrape_with_browser(info):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(info["name"]) or {}
+    if config.get("prefer_verified"):
+        jobs = scrape_verified_company(info["name"])
+        if jobs:
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
+    result = _scrape_with_browser(info)
+    jobs = result.get("all_jobs") or result.get("sample_jobs") or []
+    valid = [j for j in jobs if posting_url(j.get("apply_url") or j.get("url") or "")]
+    if valid:
+        return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
+    jobs = scrape_verified_company(info["name"])
+    return {"status": "OK" if jobs else result.get("status", "EMPTY"), "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-fallback", "previous_status": result.get("status")}
+
+
+def _scrape_with_browser(info):
     """Use Playwright headless browser for blocked sites."""
     if "openai" in info.get("name", "").lower():
         # The official board exposes linked postings and full descriptions.
@@ -782,7 +799,9 @@ def scrape_qualcomm_phenom(info):
                 all_jobs.append({
                     "title": clean(p.get("name", "")),
                     "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India"),
-                    "job_id": str(p.get("jobSeqNo", p.get("id", "")))
+                    "job_id": str(p.get("jobSeqNo", p.get("id", ""))),
+                    "apply_url": p.get("positionUrl") or f"https://careers.qualcomm.com/careers/job/{p.get('id', '')}",
+                    **details_from_record(p),
                 })
             start += 10
             time.sleep(0.2)
@@ -813,7 +832,9 @@ def scrape_ericsson_phenom(info):
                 all_jobs.append({
                     "title": clean(p.get("name", "")),
                     "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India"),
-                    "job_id": str(p.get("jobSeqNo", p.get("id", "")))
+                    "job_id": str(p.get("jobSeqNo", p.get("id", ""))),
+                    "apply_url": p.get("positionUrl") or f"https://jobs.ericsson.com/careers/job/{p.get('id', '')}",
+                    **details_from_record(p),
                 })
             start += 10
             time.sleep(0.2)
@@ -1065,6 +1086,23 @@ def scrape_publicis(info):
 # ---------------------------------------------------------------------------
 
 def dispatch_api(info):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(info["name"]) or {}
+    if config.get("prefer_verified"):
+        jobs = scrape_verified_company(info["name"])
+        if jobs:
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
+    result = _dispatch_api(info)
+    jobs = result.get("all_jobs") or result.get("sample_jobs") or []
+    valid = [j for j in jobs if posting_url(j.get("apply_url") or j.get("url") or "")]
+    if valid:
+        return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
+    jobs = scrape_verified_company(info["name"])
+    return {"status": "OK" if jobs else result.get("status", "EMPTY"), "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-fallback", "previous_status": result.get("status")}
+
+
+def _dispatch_api(info):
     """Route a company to the correct scraper engine based on its config."""
     name = info["name"]
     name_lower = name.lower()

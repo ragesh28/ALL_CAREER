@@ -16,7 +16,8 @@ sys.path.insert(0, str(ROOT))
 import requests
 from scripts.company_proxy_transport import ProxyPool
 from scripts.company_recovery import HEADERS, add_descriptions, browser_observe, description_from_html, jobs_from_html, public_feeds, request_feed, safe_url, unique_jobs
-from scripts.company_job_details import is_india_location
+from scripts.company_job_details import confirmed_india_location
+from scripts.company_sources import configuration
 
 
 def load_json(path, default):
@@ -37,7 +38,8 @@ def investigate(company, output, pool):
             super().append(entry)
             write_json(output / f"{company['id']}.json", {**company, "state": "in_progress", "attempts": list(self)})
     attempts = AttemptLog()
-    jobs, feeds, validated_feeds = [], [], []
+    config = configuration(company["company"]) or {}
+    jobs, feeds, validated_feeds = [], list(config.get("feeds", [])), []
     evidence = output / company["id"]
     url = company["career_url"]
     try:
@@ -81,7 +83,8 @@ def investigate(company, output, pool):
     except Exception as error:
         attempts.append({"method": "playwright", "outcome": type(error).__name__})
     jobs = add_descriptions(unique_jobs(jobs))
-    india = [job for job in jobs if job.get("location") and is_india_location(job["location"])]
+    attempts.append({"method": "posting-detail-api-or-html", "samples_checked": min(2, len(jobs)), "description_chars": [len(job.get("description", "")) for job in jobs[:2]]})
+    india = [job for job in jobs if confirmed_india_location(job.get("location"))]
     selected = india or jobs
     if not selected:
         label, proxy = pool.browser_proxy()
@@ -96,21 +99,23 @@ def investigate(company, output, pool):
             except Exception as error:
                 attempts.append({"method": "proxy-browser", "provider": label, "outcome": type(error).__name__})
         for render in (False, True):
-            response, entry = pool.fetch(url, render=render)
-            if response is not None and response.status_code == 200:
-                found = jobs_from_html(response.text, url)
-                entry["jobs"] = len(found)
-                jobs.extend(found)
-            attempts.append(entry)
+            for response, entry in pool.attempts(url, render=render):
+                if response is not None and response.status_code == 200:
+                    found = jobs_from_html(response.text, url)
+                    entry["jobs"] = len(found)
+                    jobs.extend(found)
+                attempts.append(entry)
+                if jobs:
+                    break
             if jobs:
                 break
         jobs = add_descriptions(unique_jobs(jobs))
-        india = [job for job in jobs if job.get("location") and is_india_location(job["location"])]
+        india = [job for job in jobs if confirmed_india_location(job.get("location"))]
         selected = india or jobs
     description_attempted = False
     if selected:
         sample = selected[0]
-        if len(sample.get("description", "")) < 80:
+        if len(sample.get("description", "")) < 500:
             description_attempted = True
             try:
                 _, entry = browser_observe(sample["apply_url"], evidence / "description", expected_title=sample["title"])
@@ -118,24 +123,28 @@ def investigate(company, output, pool):
                 entry.pop("observed_feeds", None)
                 entry.pop("discovered_feeds", None)
                 entry["method"] = "browser-description"
-                sample.update(details)
+                for key, value in details.items():
+                    if not sample.get(key) or key != "description" or len(value) > len(sample.get(key, "")):
+                        sample[key] = value
                 entry["description_chars"] = len(sample.get("description", ""))
                 attempts.append(entry)
             except Exception as error:
                 attempts.append({"method": "browser-description", "outcome": type(error).__name__})
-        if len(sample.get("description", "")) < 80:
+        if len(sample.get("description", "")) < 500:
             for render in (False, True):
-                response, entry = pool.fetch(sample["apply_url"], render=render)
-                if response is not None and response.status_code == 200:
-                    sample.update(description_from_html(response.text, sample["apply_url"], sample["title"]))
-                entry["purpose"] = "description"
-                entry["description_chars"] = len(sample.get("description", ""))
-                attempts.append(entry)
-                if len(sample.get("description", "")) >= 80:
+                for response, entry in pool.attempts(sample["apply_url"], render=render):
+                    if response is not None and response.status_code == 200:
+                        sample.update(description_from_html(response.text, sample["apply_url"], sample["title"]))
+                    entry["purpose"] = "description"
+                    entry["description_chars"] = len(sample.get("description", ""))
+                    attempts.append(entry)
+                    if len(sample.get("description", "")) >= 500:
+                        break
+                if len(sample.get("description", "")) >= 500:
                     break
     else:
         sample = None
-    has_description = bool(sample and len(sample.get("description", "")) >= 80)
+    has_description = bool(sample and len(sample.get("description", "")) >= 150 and not sample.get("description", "").rstrip().endswith(("...", "…")))
     state = "india_job_description" if india and has_description else "india_job_missing_description" if india else "job_location_unconfirmed" if sample else "unresolved"
     result = {**company, "state": state, "checked_at": datetime.now(timezone.utc).isoformat(), "seconds": round(time.monotonic() - started, 2), "attempts": attempts, "jobs_found": len(jobs), "india_jobs_found": len(india), "description_found": has_description, "description_browser_attempted": description_attempted, "sample": sample, "validated_feeds": validated_feeds}
     write_json(output / f"{company['id']}.json", result)
@@ -177,7 +186,7 @@ def main():
     names = {name.strip().lower() for name in args.only.split(",") if name.strip()}
     companies = [company for index, company in enumerate(inventory) if index % args.shards == args.shard and (not names or company["company"].lower() in names)]
     unfinished = {"pending", "in_progress", "worker_error", "time_budget_reached"}
-    pending = [company for company in companies if not args.resume or load_json(output / f"{company['id']}.json", company).get("state") in unfinished]
+    pending = [company for company in companies if not args.resume or not (output / f"{company['id']}.json").exists() or load_json(output / f"{company['id']}.json", company).get("state") in unfinished]
 
     def run(company):
         command = [sys.executable, str(Path(__file__).resolve()), "--output", str(output), "--worker", company["id"]]
