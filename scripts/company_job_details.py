@@ -92,6 +92,43 @@ def inline_job_data(soup):
                 continue
 
 
+def public_request(method, url, **kwargs):
+    """Use the normal client first; Workday also needs a browser TLS client on CI.
+
+    One alternate client is attempted only for public Workday URLs, and never
+    when the server supplies Retry-After. This does not use a login or disable TLS.
+    """
+    response = requests.request(method, url, **kwargs)
+    host = urlparse(url).hostname or ""
+    if host.endswith(".myworkdayjobs.com") and response.status_code in (403, 429) and not response.headers.get("Retry-After"):
+        try:
+            from curl_cffi import requests as browser_http
+            alternate = browser_http.request(method, url, impersonate="chrome", **kwargs)
+            if alternate.status_code == 200:
+                alternate.career_http_client = "curl_cffi-chrome"
+                return alternate
+        except Exception:
+            pass
+    return response
+
+
+def wipro_details(soup):
+    nodes = [node for node in soup.select(".joblayouttoken") if re.search(r"\bJob Description\b", node.get_text(" ", strip=True), re.I)]
+    if not nodes:
+        return {}
+    result = details_from_record({"description": max(nodes, key=lambda n: len(n.get_text())).get_text(" ", strip=True)})
+    posted = re.search(r"Posting Start Date:\s*(\d{1,2}/\d{1,2}/\d{2,4})", soup.get_text(" ", strip=True))
+    if posted:
+        from datetime import datetime
+        for fmt in ("%m/%d/%y", "%m/%d/%Y"):
+            try:
+                result["date_posted"] = datetime.strptime(posted[1], fmt).date().isoformat()
+                break
+            except ValueError:
+                continue
+    return result
+
+
 def normalize_job_links(jobs, page_url):
     for job in jobs:
         if not isinstance(job, dict):
@@ -124,6 +161,10 @@ def details_from_record(record):
         result["date_posted"] = text(record.get("datePosted") or record["publishedAt"])
     if not result.get("job_type") and record.get("employmentType"):
         result["job_type"] = text(record["employmentType"])
+    if not result.get("job_type") and text(record.get("timeType")):
+        result["job_type"] = text(record["timeType"])
+    if not result.get("date_posted") and (record.get("jobPostingId") or record.get("jobReqId")) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", text(record.get("startDate"))):
+        result["date_posted"] = text(record["startDate"])
     location = location_text(record.get("jobLocation") or record.get("location") or record.get("locations"))
     if location:
         result["location"] = location
@@ -210,6 +251,10 @@ def fetch_details(url):
         return {}
     headers = {"User-Agent": "Mozilla/5.0", "Accept": "application/json,text/html"}
     candidates = [url]
+    if parsed.hostname == "careers.turing.com":
+        identifier = re.search(r"/job/(\d+)", parsed.path)
+        if identifier:
+            candidates.insert(0, f"https://careers.turing.com/api/v3/job-posts/{identifier.group(1)}")
     microsoft = parsed.hostname == "apply.careers.microsoft.com" and re.search(r"/careers/job/(\d+)", parsed.path)
     if microsoft:
         candidates.insert(0, f"https://{parsed.netloc}/api/pcsx/position_details?position_id={microsoft.group(1)}&domain=microsoft.com")
@@ -237,7 +282,10 @@ def fetch_details(url):
             candidates.insert(0, f"https://{parsed.netloc}/wday/cxs/{tenant}/{site}/" + "/".join(parts[idx:]))
     for candidate in candidates:
         try:
-            response = requests.get(candidate, headers=headers, timeout=(5, 15))
+            if (urlparse(candidate).hostname or "").endswith(".myworkdayjobs.com"):
+                response = public_request("GET", candidate, headers=headers, timeout=(5, 15))
+            else:
+                response = requests.get(candidate, headers=headers, timeout=(5, 15))
             if response.status_code != 200:
                 continue
             if "json" in response.headers.get("Content-Type", ""):
@@ -267,10 +315,10 @@ def fetch_details(url):
                             if details.get("description"):
                                 return {**details, "description_source": candidate}
             if parsed.hostname == "careers.wipro.com" and re.search(r"/jobs?/", parsed.path):
-                nodes = [node for node in soup.select(".joblayouttoken") if re.search(r"Job Description\s*(?:Role|Purpose|The purpose)", node.get_text(" ", strip=True), re.I)]
-                if nodes:
-                    description = max(nodes, key=lambda n: len(n.get_text())).get_text(" ", strip=True)
-                    return {**details_from_record({"description": description}), "description_source": candidate}
+                details = wipro_details(soup)
+                if details:
+                    return {**details, "description_source": candidate}
+                continue  # The generic company introduction is not a role description.
             if parsed.hostname == "jobs.siemens.com" and "/JobDetail/" in parsed.path:
                 nodes = soup.select("article.article--details .article__content__view")
                 node = max(nodes, key=lambda n: len(n.get_text()), default=None)
@@ -326,6 +374,6 @@ def enrich_jobs(jobs, limit=None):
                 finally:
                     _detail_seconds_used += time.monotonic() - started
                 for key, value in recovered.items():
-                    if not job.get(key):
+                    if not job.get(key) or (key == "description" and len(value) > len(job.get(key, ""))):
                         job[key] = value
     return jobs

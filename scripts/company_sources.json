@@ -62,10 +62,15 @@
   },
   {
     "company": "Akamai",
-    "career_url": "https://www.akamai.com/careers",
-    "feeds": [],
+    "career_url": "https://jobs.akamai.com/en/sites/CX_1/jobs",
+    "feeds": [
+      {
+        "url": "https://fa-extu-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList&finder=findReqs;siteNumber=CX_1,limit=25,sortBy=POSTING_DATES_DESC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Alstom",
@@ -101,10 +106,15 @@
   },
   {
     "company": "American Express",
-    "career_url": "https://aexp.eightfold.ai/careers?location=India",
-    "feeds": [],
+    "career_url": "https://careers.americanexpress.com/en/sites/CX_1/jobs?location=India&locationId=300000000228786&locationLevel=country&mode=location",
+    "feeds": [
+      {
+        "url": "https://egug.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList&finder=findReqs;siteNumber=CX_1,limit=25,sortBy=POSTING_DATES_DESC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Anthropic",
@@ -121,7 +131,12 @@
   {
     "company": "Appian",
     "career_url": "https://careers.appian.com/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/appian/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -246,9 +261,14 @@
   {
     "company": "Bosch",
     "career_url": "https://jobs.bosch.com/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings?limit=100&country=in&destination=PUBLIC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Boston Consulting Group",
@@ -284,17 +304,33 @@
   },
   {
     "company": "BrowserStack",
-    "career_url": "https://www.browserstack.com/careers",
-    "feeds": [],
+    "career_url": "https://browserstack.wd3.myworkdayjobs.com/External",
+    "feeds": [
+      {
+        "url": "https://browserstack.wd3.myworkdayjobs.com/wday/cxs/browserstack/External/jobs",
+        "method": "POST",
+        "payload": {
+          "limit": 20,
+          "offset": 0,
+          "searchText": "India",
+          "appliedFacets": {}
+        }
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
   {
     "company": "Capgemini",
-    "career_url": "https://careers.capgemini.com/",
-    "feeds": [],
+    "career_url": "https://www.capgemini.com/in-en/careers/join-capgemini/job-search/?country_code=in-en",
+    "feeds": [
+      {
+        "url": "https://cg-jobstream-api.azurewebsites.net/api/job-search?page=1&size=100&country_code=in-en",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Caterpillar",
@@ -463,7 +499,12 @@
   {
     "company": "Datadog",
     "career_url": "https://careers.datadoghq.com/all-jobs/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/datadog/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -524,7 +565,12 @@
   {
     "company": "Epic Games",
     "career_url": "https://www.epicgames.com/site/en-US/careers/jobs",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/epicgames/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -589,10 +635,10 @@
   },
   {
     "company": "Fractal Analytics",
-    "career_url": "https://fractal.wd1.myworkdayjobs.com/Fractalcareers",
+    "career_url": "https://fractal.wd1.myworkdayjobs.com/Careers",
     "feeds": [
       {
-        "url": "https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Fractalcareers/jobs",
+        "url": "https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Careers/jobs",
         "method": "POST",
         "payload": {
           "limit": 20,
@@ -696,7 +742,7 @@
   },
   {
     "company": "Hasura",
-    "career_url": "https://hasura.io/careers/",
+    "career_url": "https://promptql.io/careers",
     "feeds": [],
     "browser_verified": false,
     "prefer_verified": false
@@ -758,7 +804,12 @@
   {
     "company": "InMobi",
     "career_url": "https://www.inmobi.com/company/careers",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/inmobi/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -874,7 +925,7 @@
   },
   {
     "company": "LatentView Analytics",
-    "career_url": "",
+    "career_url": "https://www.latentview.com/career/",
     "feeds": [],
     "browser_verified": false,
     "prefer_verified": false
@@ -999,7 +1050,12 @@
   {
     "company": "MongoDB",
     "career_url": "https://www.mongodb.com/company/careers/teams",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/mongodb/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -1052,22 +1108,31 @@
   },
   {
     "company": "Nokia",
-    "career_url": "https://careers.nokia.com/",
-    "feeds": [],
+    "career_url": "https://jobs.nokia.com/en/sites/CX_1/jobs",
+    "feeds": [
+      {
+        "url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList&finder=findReqs;siteNumber=CX_1,limit=25,sortBy=POSTING_DATES_DESC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Nutanix",
-    "career_url": "https://nutanix.eightfold.ai/careers?location=India",
+    "career_url": "https://careers.nutanix.com/en/jobs",
     "feeds": [],
     "browser_verified": false,
     "prefer_verified": false
   },
   {
     "company": "NVIDIA",
-    "career_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+    "career_url": "https://jobs.nvidia.com/careers?location=India",
     "feeds": [
+      {
+        "url": "https://jobs.nvidia.com/api/pcsx/search?domain=nvidia.com&location=India&start=0&num=10",
+        "method": "GET"
+      },
       {
         "url": "https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/NVIDIAExternalCareerSite/jobs",
         "method": "POST",
@@ -1080,7 +1145,7 @@
       }
     ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Nykaa",
@@ -1092,7 +1157,12 @@
   {
     "company": "Okta",
     "career_url": "https://www.okta.com/company/careers/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/okta/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -1125,7 +1195,12 @@
   {
     "company": "PagerDuty",
     "career_url": "https://careers.pagerduty.com/jobs/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/pagerduty/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -1289,7 +1364,12 @@
   {
     "company": "Rubrik",
     "career_url": "https://www.rubrik.com/company/careers",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://boards-api.greenhouse.io/v1/boards/rubrik/jobs?content=true",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
     "prefer_verified": false
   },
@@ -1367,9 +1447,14 @@
   {
     "company": "ServiceNow",
     "career_url": "https://careers.servicenow.com/jobs/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings?limit=100&country=in&destination=PUBLIC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Shell",
@@ -1473,10 +1558,19 @@
   },
   {
     "company": "Swiggy",
-    "career_url": "https://careers.swiggy.com/",
-    "feeds": [],
+    "career_url": "https://careers.swiggy.in/explore-jobs",
+    "feeds": [
+      {
+        "url": "https://api.smartrecruiters.com/v1/companies/SWIGGY/postings?limit=100&country=in&destination=PUBLIC",
+        "method": "GET"
+      },
+      {
+        "url": "https://careers.swiggy.in/api/jobs.json",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Tally Solutions",

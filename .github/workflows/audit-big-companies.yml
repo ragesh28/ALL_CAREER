@@ -39,7 +39,7 @@ jobs:
           python-version: '3.11'
       - name: Install scraper dependencies
         run: |
-          pip install requests beautifulsoup4 pandas python-jobspy playwright
+          pip install curl_cffi requests beautifulsoup4 pandas python-jobspy playwright
           playwright install --with-deps chromium
       - name: Read private company configuration
         if: matrix.engine == 'md'

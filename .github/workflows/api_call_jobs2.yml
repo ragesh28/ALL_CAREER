@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4 playwright pandas python-jobspy
+          pip install curl_cffi requests beautifulsoup4 playwright pandas python-jobspy
           playwright install --with-deps chromium
 
       - name: Write job_api_calls.md from Secret

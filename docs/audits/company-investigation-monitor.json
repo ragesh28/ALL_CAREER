@@ -335,7 +335,7 @@
     {
       "id": "akamai",
       "company": "Akamai",
-      "career_url": "https://www.akamai.com/careers",
+      "career_url": "https://jobs.akamai.com/en/sites/CX_1/jobs",
       "sources": [
         {
           "engine": "md",
@@ -608,7 +608,7 @@
     {
       "id": "american-express",
       "company": "American Express",
-      "career_url": "https://aexp.eightfold.ai/careers?location=India",
+      "career_url": "https://careers.americanexpress.com/en/sites/CX_1/jobs?location=India&locationId=300000000228786&locationLevel=country&mode=location",
       "sources": [
         {
           "engine": "md",
@@ -1973,7 +1973,7 @@
     {
       "id": "browserstack",
       "company": "BrowserStack",
-      "career_url": "https://www.browserstack.com/careers",
+      "career_url": "https://browserstack.wd3.myworkdayjobs.com/External",
       "sources": [
         {
           "engine": "md",
@@ -4672,7 +4672,7 @@
     {
       "id": "fractal-analytics",
       "company": "Fractal Analytics",
-      "career_url": "https://fractal.wd1.myworkdayjobs.com/Fractalcareers",
+      "career_url": "https://fractal.wd1.myworkdayjobs.com/Careers",
       "sources": [
         {
           "engine": "md",
@@ -5409,7 +5409,7 @@
     {
       "id": "hasura",
       "company": "Hasura",
-      "career_url": "https://hasura.io/careers/",
+      "career_url": "https://promptql.io/careers",
       "sources": [
         {
           "engine": "indeed",
@@ -6908,7 +6908,7 @@
     {
       "id": "latentview-analytics",
       "company": "LatentView Analytics",
-      "career_url": "",
+      "career_url": "https://www.latentview.com/career/",
       "sources": [
         {
           "engine": "direct",
@@ -8132,7 +8132,7 @@
     {
       "id": "nokia",
       "company": "Nokia",
-      "career_url": "https://careers.nokia.com/",
+      "career_url": "https://jobs.nokia.com/en/sites/CX_1/jobs",
       "sources": [
         {
           "engine": "md",
@@ -8195,7 +8195,7 @@
     {
       "id": "nutanix",
       "company": "Nutanix",
-      "career_url": "https://nutanix.eightfold.ai/careers?location=India",
+      "career_url": "https://careers.nutanix.com/en/jobs",
       "sources": [
         {
           "engine": "md",
@@ -8258,7 +8258,7 @@
     {
       "id": "nvidia",
       "company": "NVIDIA",
-      "career_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+      "career_url": "https://jobs.nvidia.com/careers?location=India",
       "sources": [
         {
           "engine": "indeed",
@@ -11190,7 +11190,7 @@
     {
       "id": "swiggy",
       "company": "Swiggy",
-      "career_url": "https://careers.swiggy.com/",
+      "career_url": "https://careers.swiggy.in/explore-jobs",
       "sources": [
         {
           "engine": "direct",

@@ -135,14 +135,14 @@ def scrape_citi_html(url, limit=2):
         total = int(total_match.group(1).replace(",","")) if total_match else len(items)
         jobs = []
         for item in items[:limit]:
-            t = item.select_one("h2")
+            t = item.select_one("h2, h3.sr-job-item__title")
             l = item.select_one(".job-location, [class*=location]")
-            a = item.select_one("a")
+            a = item.select_one("a[data-job-id], h2 a, h3 a")
             jobs.append({
                 "title": clean(t.get_text(strip=True) if t else ""),
                 "location": clean(l.get_text(strip=True) if l else ""),
                 "posted": "",
-                "apply_url": f"https://jobs.citi.com{a['href']}" if a and a.get("href") else url,
+                "apply_url": urljoin("https://jobs.citi.com", a['href']) if a and a.get("href") else "",
                 "total_jobs": total
             })
         return jobs
@@ -581,8 +581,9 @@ def scrape_capgemini(url, limit=2):
                 "title": clean(str(title)),
                 "location": clean(str(loc)),
                 "posted": "",
-                "apply_url": j.get("url", j.get("link", url)),
+                "apply_url": j.get("apply_job_url") or j.get("url") or j.get("link") or "",
                 "total_jobs": total,
+                **details_from_record(j),
             })
         if jobs:
             break
@@ -906,7 +907,8 @@ def scrape_wipro(url, limit=2):
             "title": clean(str(title)),
             "location": clean(loc),
             "posted": "",
-            "apply_url": f"https://careers.wipro.com/jobs/{rd.get('id', '')}",
+            "apply_url": (f"https://careers.wipro.com/job/{rd['unifiedUrlTitle']}/{rd.get('id', '')}-en_US" if rd.get("unifiedUrlTitle") else f"https://careers.wipro.com/jobs/{rd.get('id', '')}"),
+            **details_from_record(rd),
             "total_jobs": total,
         }
 
@@ -1646,7 +1648,7 @@ def detect_and_scrape(company_name, ats_type, url, limit=2):
         if recovered:
             return recovered
     rows = _detect_and_scrape(company_name, ats_type, url, limit)
-    valid = [job for job in rows if posting_url(job.get("apply_url") or job.get("url") or "")]
+    valid = [job for job in rows if job.get("title") and posting_url(job.get("apply_url") or job.get("url") or "")]
     if valid:
         return valid
     return scrape_verified_company(company_name, limit)

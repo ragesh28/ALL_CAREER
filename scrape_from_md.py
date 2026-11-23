@@ -488,7 +488,7 @@ def _scrape_wipro_paginated(info):
                 if isinstance(location, list): location = ", ".join(str(x) for x in location)
                 jobs.append({"title": clean(title), "job_id": job_id,
                              "location": clean(re.sub(r"<[^>]+>", " ", str(location))),
-                             "apply_url": f"https://careers.wipro.com/jobs/{job_id}",
+                             "apply_url": (f"https://careers.wipro.com/job/{row['unifiedUrlTitle']}/{job_id}-en_US" if row.get("unifiedUrlTitle") else f"https://careers.wipro.com/jobs/{job_id}"),
                              **details_from_record(row)})
                 if sample_limit and len(jobs) >= sample_limit:
                     break
@@ -673,7 +673,7 @@ def scrape_with_browser(info):
             return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
     result = _scrape_with_browser(info)
     jobs = result.get("all_jobs") or result.get("sample_jobs") or []
-    valid = [j for j in jobs if posting_url(j.get("apply_url") or j.get("url") or "")]
+    valid = [j for j in jobs if j.get("title") and posting_url(j.get("apply_url") or j.get("url") or "")]
     if valid:
         return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
     jobs = scrape_verified_company(info["name"])
@@ -1095,7 +1095,7 @@ def dispatch_api(info):
             return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
     result = _dispatch_api(info)
     jobs = result.get("all_jobs") or result.get("sample_jobs") or []
-    valid = [j for j in jobs if posting_url(j.get("apply_url") or j.get("url") or "")]
+    valid = [j for j in jobs if j.get("title") and posting_url(j.get("apply_url") or j.get("url") or "")]
     if valid:
         return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
     jobs = scrape_verified_company(info["name"])

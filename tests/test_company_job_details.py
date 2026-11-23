@@ -69,12 +69,12 @@ class CompanyDetailsTests(unittest.TestCase):
         self.assertEqual(rows[0]["apply_url"], "https://careers.wipro.com/jobs/123")
         self.assertEqual(rows[0]["location"], "Chennai")
 
-    @patch("scripts.company_job_details.requests.get")
+    @patch("scripts.company_job_details.requests.request")
     def test_workday_detail_route_and_structured_metadata(self, get):
         get.return_value = Mock(status_code=200, headers={"Content-Type": "application/json"})
         get.return_value.json.return_value = {"jobPostingInfo": {"jobDescription": "<p>Minimum 5 years of experience</p>", "datePosted": "2026-11-21", "employmentType": "Full-time"}}
         details = fetch_details("https://acme.wd1.myworkdayjobs.com/en-US/External/job/Chennai/Engineer_R1")
-        self.assertIn("/wday/cxs/acme/External/job/Chennai/Engineer_R1", get.call_args.args[0])
+        self.assertIn("/wday/cxs/acme/External/job/Chennai/Engineer_R1", get.call_args.args[1])
         self.assertEqual(details["date_posted"], "2026-11-21")
         self.assertEqual(details["description"], "Minimum 5 years of experience")
 

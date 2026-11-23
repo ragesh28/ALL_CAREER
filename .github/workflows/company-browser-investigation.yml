@@ -51,7 +51,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: |
-          pip install requests beautifulsoup4 playwright
+          pip install curl_cffi requests beautifulsoup4 playwright
           playwright install --with-deps chromium
       - uses: actions/download-artifact@v4
         with:

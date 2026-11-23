@@ -7,7 +7,7 @@ from urllib.parse import urljoin, urlsplit, urlunsplit, parse_qsl, urlencode
 import requests
 from bs4 import BeautifulSoup
 
-from scripts.company_job_details import details_from_record, fetch_details, confirmed_india_location, inline_job_data, location_text, normalize_job_links, text
+from scripts.company_job_details import details_from_record, fetch_details, confirmed_india_location, inline_job_data, location_text, normalize_job_links, public_request, text, wipro_details
 
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json,text/html,*/*"}
 NAVIGATION = re.compile(r"^(?:search|guided search|view|browse|all|find|explore|join|sign|learn|skip|career|job alert|privacy|cookie|apply now|read more|current openings|open positions|my saved jobs|saved jobs|\d+ saved jobs)(?:\b|$)", re.I)
@@ -74,13 +74,19 @@ def records_from_json(payload, source_url):
             return
         row = value.get("response") if isinstance(value.get("response"), dict) else value
         title = first(row, ("title", "jobTitle", "Title", "postingTitle", "unifiedStandardTitle", "JobTitle", "Posting_Title", "Job_Opening_Name", "post_title", "name", "text"))
-        link = first(row, ("jobUrl", "jobURL", "postingUrl", "absolute_url", "absoluteUrl", "positionUrl", "canonicalPositionUrl", "careerSiteUrl", "hostedUrl", "apply_url", "url", "URL", "$url", "applyUrl", "jcrURL", "externalPath", "DetailUrl", "JobUrl", "ref"))
+        link = first(row, ("jobUrl", "jobURL", "postingUrl", "absolute_url", "absoluteUrl", "positionUrl", "canonicalPositionUrl", "careerSiteUrl", "hostedUrl", "apply_url", "apply_job_url", "url", "URL", "$url", "applyUrl", "jcrURL", "externalPath", "DetailUrl", "JobUrl", "ref"))
         identifier = first(row, ("id", "Id", "jobId", "job_id", "jobReqId", "Key", "post_id"))
         if row.get("isListed") is False or row.get("Publish") is False or row.get("is_confidential") is True or row.get("on_career_page") is False:
             title = ""
+        if parsed.hostname == "cg-jobstream-api.azurewebsites.net" and (row.get("deleted_at") or str(row.get("status", "1")) != "1"):
+            title = ""
         if parsed.hostname == "www.phonepe.com" and parsed.path.endswith("/latest.json") and row.get("status") != "PUBLIC":
             title = ""
-        details_record = row
+        if parsed.hostname == "careers.swiggy.in" and parsed.path == "/api/jobs.json" and row.get("t") and row.get("u"):
+            title, link = text(row["t"]), text(row["u"])
+            details_record = {**row, "location": row.get("l"), "employment_type": row.get("e")}
+        else:
+            details_record = row
         if parsed.hostname == "careers.kula.ai" and row.get("id") and isinstance(row.get("ats_job"), dict):
             board = dict(parse_qsl(parsed.query)).get("accountName")
             if board:
@@ -97,7 +103,7 @@ def records_from_json(payload, source_url):
         if not link and identifier and "/api/pcsx/" in parsed.path:
             link = f"/careers/job/{identifier}"
         if not link and identifier and parsed.hostname == "careers.wipro.com":
-            link = f"/jobs/{identifier}"
+            link = f"/job/{row['unifiedUrlTitle']}/{identifier}-en_US" if row.get("unifiedUrlTitle") else f"/jobs/{identifier}"
         smart = re.match(r"/v1/companies/([^/]+)/postings", parsed.path)
         if identifier and parsed.hostname == "api.smartrecruiters.com" and smart:
             link = f"https://jobs.smartrecruiters.com/{smart.group(1)}/{identifier}"
@@ -194,6 +200,10 @@ def public_feeds(url, html=""):
         host = parts.hostname or ""
         if host == "careers.wipro.com":
             feeds.append({"url": "https://careers.wipro.com/services/recruiting/v1/jobs", "method": "POST", "payload": {"pageNumber": 0, "locale": "en_US"}})
+        if host.endswith("oraclecloud.com") and "/sites/" in parts.path:
+            site = re.search(r"/sites/([^/]+)", parts.path)
+            if site:
+                feeds.append({"url": f"https://{host}/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList&finder=findReqs;siteNumber={site[1]},limit=25,sortBy=POSTING_DATES_DESC", "method": "GET"})
         if host in ("boards.greenhouse.io", "job-boards.greenhouse.io") and path:
             feeds.append({"url": f"https://boards-api.greenhouse.io/v1/boards/{path[0]}/jobs?content=true", "method": "GET"})
         if host in ("jobs.lever.co", "jobs.eu.lever.co") and path:
@@ -215,8 +225,8 @@ def request_feed(feed, transport=None):
         if response is None:
             return [], evidence
     else:
-        response = requests.request(feed.get("method", "GET"), feed["url"], json=feed.get("payload"), headers=HEADERS, timeout=(6, 20))
-        evidence = {"method": "public-api", "url": safe_url(feed["url"]), "http_status": response.status_code}
+        response = public_request(feed.get("method", "GET"), feed["url"], json=feed.get("payload"), headers=HEADERS, timeout=(6, 20))
+        evidence = {"method": "public-api", "url": safe_url(feed["url"]), "http_status": response.status_code, "http_client": getattr(response, "career_http_client", "requests")}
     if response.status_code != 200:
         return [], evidence
     try:
@@ -230,9 +240,7 @@ def request_feed(feed, transport=None):
 def description_from_html(content, page_url, expected_title):
     soup = BeautifulSoup(content, "html.parser")
     if urlsplit(page_url).hostname == "careers.wipro.com":
-        nodes = [node for node in soup.select(".joblayouttoken") if re.search(r"Job Description\s*(?:Role|Purpose|The purpose)", node.get_text(" ", strip=True), re.I)]
-        if nodes:
-            return details_from_record({"description": max(nodes, key=lambda n: len(n.get_text())).get_text(" ", strip=True)})
+        return wipro_details(soup)
     jobs = jobs_from_html(content, page_url)
     for job in jobs:
         if job["apply_url"].split("?")[0].rstrip("/") == page_url.split("?")[0].rstrip("/") and job.get("description"):
@@ -321,7 +329,7 @@ def browser_observe(url, evidence_directory, proxy=None, expected_title=None):
                     search.click(timeout=3000)
                     page.wait_for_timeout(2500)
             if not jobs:
-                openings = page.get_by_text(re.compile(r"^(See Open Roles|View Open Roles|View current openings|Explore jobs)$", re.I))
+                openings = page.get_by_text(re.compile(r"^(See Open Roles|View Open Roles|View open positions|View current openings|Explore jobs)$", re.I))
                 if openings.count() == 1 and openings.is_visible():
                     openings.click(timeout=5000)
                     page.wait_for_timeout(3000)

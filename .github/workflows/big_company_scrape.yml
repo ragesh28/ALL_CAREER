@@ -21,7 +21,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install python-jobspy pandas requests beautifulsoup4 playwright
+          pip install curl_cffi python-jobspy pandas requests beautifulsoup4 playwright
           playwright install --with-deps chromium
 
       # Scrape 150 top companies from Indeed with direct apply links

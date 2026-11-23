@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import Mock, patch
 
-from scripts.company_job_details import confirmed_india_location, details_from_record, fetch_details, inline_job_data
+from scripts.company_job_details import confirmed_india_location, details_from_record, enrich_jobs, fetch_details, inline_job_data, public_request
 from scripts.company_recovery import jobs_from_html, posting_url, records_from_json
 from scripts.company_sources import fetch_feed_pages, next_page
 from bs4 import BeautifulSoup
@@ -43,21 +43,22 @@ class CareerRecoveryTests(unittest.TestCase):
         self.assertEqual(jobs[0]["experience"], "0-3 years")
         self.assertNotIn("date_posted", jobs[0])
 
-    @patch("scripts.company_job_details.requests.get")
+    @patch("scripts.company_job_details.requests.request")
     def test_workday_apply_url_requests_description_without_apply_suffix(self, get):
         response = Mock(status_code=200, headers={"Content-Type": "application/json"})
         response.json.return_value = {"jobPostingInfo": {"jobDescription": "Full duties for this job"}}
         get.return_value = response
         result = fetch_details("https://adobe.wd5.myworkdayjobs.com/external/job/India/Engineer_R1/apply")
-        self.assertEqual(get.call_args.args[0], "https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external/job/India/Engineer_R1")
+        self.assertEqual(get.call_args.args[1], "https://adobe.wd5.myworkdayjobs.com/wday/cxs/adobe/external/job/India/Engineer_R1")
         self.assertEqual(result["description"], "Full duties for this job")
 
     @patch("scripts.company_job_details.requests.get")
     def test_wipro_uses_role_description_instead_of_company_intro(self, get):
-        get.return_value = Mock(status_code=200, headers={"Content-Type": "text/html"}, text='<div class="joblayouttoken">About Wipro '+('company ' * 100)+'</div><div class="joblayouttoken">Job Description Role: Engineer, requirements and duties</div>')
+        get.return_value = Mock(status_code=200, headers={"Content-Type": "text/html"}, text='<div class="joblayouttoken">About Wipro '+('company ' * 100)+'</div><div class="joblayouttoken">Location Bangalore Job Description Role: Engineer, requirements and duties</div><p>Posting Start Date: 1/15/26</p>')
         result = fetch_details("https://careers.wipro.com/jobs/123")
         self.assertIn("Role: Engineer", result["description"])
         self.assertNotIn("About Wipro", result["description"])
+        self.assertEqual(result["date_posted"], "2026-01-15")
 
     def test_zoho_public_inline_json_is_decoded_without_running_script(self):
         data = [{"id": "123", "Posting_Title": "Engineer", "Job_Description": "Full duties", "Publish": True, "Keep_on_Career_Site": False}]
@@ -83,6 +84,48 @@ class CareerRecoveryTests(unittest.TestCase):
         for location in ["", "Remote", "US - Remote", "Indiana", "Indonesia"]:
             self.assertFalse(confirmed_india_location(location))
         self.assertEqual(details_from_record({"location": {"name": "Chennai, India"}})["location"], "Chennai, India")
+
+    @patch("scripts.company_job_details.requests.get")
+    def test_turing_uses_observed_public_detail_api(self, get):
+        response = Mock(status_code=200, headers={"Content-Type": "application/json"})
+        response.json.return_value = {"id": "6192725004", "content": "<p>Full job duties and qualifications</p>"}
+        get.return_value = response
+        self.assertEqual(fetch_details("https://careers.turing.com/job/6192725004")["description"], "Full job duties and qualifications")
+        self.assertEqual(get.call_args.args[0], "https://careers.turing.com/api/v3/job-posts/6192725004")
+
+    @patch("scripts.company_job_details.requests.request")
+    def test_workday_retry_after_does_not_trigger_another_http_client(self, request):
+        response = Mock(status_code=429, headers={"Retry-After": "60"})
+        request.return_value = response
+        alternate = Mock()
+        import types
+        with patch.dict("sys.modules", {"curl_cffi": types.SimpleNamespace(requests=alternate)}):
+            self.assertIs(public_request("GET", "https://acme.wd1.myworkdayjobs.com/careers"), response)
+        alternate.request.assert_not_called()
+
+    def test_capgemini_keeps_inline_description_and_individual_apply_link(self):
+        payload = {"data": [{"title": "Software Engineer", "location": "Pune", "description": "Full duties", "apply_job_url": "https://careers.capgemini.com/job/Pune-Engineer/123/", "status": "1"}]}
+        rows = records_from_json(payload, "https://cg-jobstream-api.azurewebsites.net/api/job-search?page=1")
+        self.assertEqual(rows[0]["description"], "Full duties")
+        self.assertIn("/job/Pune-Engineer/123/", rows[0]["apply_url"])
+
+    def test_explicit_zoho_summary_is_upgraded_by_detail_page(self):
+        rows = [{"apply_url": "https://example.com/jobs/1", "description": "Truncated source text..."}]
+        with patch("scripts.company_job_details._detail_seconds_used", 0), patch("scripts.company_job_details.fetch_details", return_value={"description": "Actual full responsibilities and qualifications"}):
+            enrich_jobs(rows, limit=1)
+        self.assertEqual(rows[0]["description"], "Actual full responsibilities and qualifications")
+
+    def test_wipro_posting_uses_public_slug_when_available(self):
+        rows = records_from_json({"jobSearchResult": [{"response": {"id": "40585", "unifiedUrlTitle": "Configurator-L4", "unifiedStandardTitle": "Configurator - L4"}}]}, "https://careers.wipro.com/services/recruiting/v1/jobs")
+        self.assertEqual(rows[0]["apply_url"], "https://careers.wipro.com/job/Configurator-L4/40585-en_US")
+
+    def test_citi_updated_heading_is_a_real_job_title(self):
+        from workday_scraper import scrape_all_companies_v2 as scraper
+        response = Mock(text='<div id="search-results-list"><li><h3 class="sr-job-item__title"><a data-job-id="123" href="/job/mumbai/auditor/287/123">Auditor</a></h3><span class="sr-job-location">Mumbai, India</span></li></div>')
+        with patch.object(scraper.requests, "get", return_value=response):
+            rows = scraper.scrape_citi_html("https://jobs.citi.com", limit=1)
+        self.assertEqual(rows[0]["title"], "Auditor")
+        self.assertEqual(rows[0]["apply_url"], "https://jobs.citi.com/job/mumbai/auditor/287/123")
 
 
 if __name__ == "__main__":

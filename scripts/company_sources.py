@@ -14,7 +14,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import requests
 
-from scripts.company_job_details import confirmed_india_location, enrich_jobs
+from scripts.company_job_details import confirmed_india_location, enrich_jobs, public_request
 from scripts.company_recovery import HEADERS, browser_observe, jobs_from_html, public_feeds, records_from_json, safe_url, unique_jobs
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,6 +70,20 @@ def next_page(feed, payload, count):
         if page.get("last", True):
             return None
         body["page"] = int(body.get("page", 1)) + 1
+    elif "recruitingCEJobRequisitions" in parts.path:
+        total = (payload.get("items") or [{}])[0].get("TotalJobsCount", 0)
+        finder = query.get("finder", "")
+        previous = re.search(r"(?:^|,)offset=(\d+)", finder)
+        offset = (int(previous[1]) if previous else 0) + count
+        if offset >= total:
+            return None
+        query["finder"] = re.sub(r",offset=\d+", "", finder) + f",offset={offset}"
+    elif parts.hostname == "cg-jobstream-api.azurewebsites.net" and parts.path == "/api/job-search":
+        page = int(query.get("page", 1))
+        size = int(query.get("size", 11))
+        if page * size >= payload.get("total", 0):
+            return None
+        query["page"] = str(page + 1)
     else:
         return None
     result["url"] = urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), ""))
@@ -81,10 +95,11 @@ def fetch_feed_pages(feed, limit=1000, budget=90, session=None):
     deadline = time.monotonic() + budget
     current = deepcopy(feed)
     seen = set()
-    requester = session or requests
+    requester = session
     while current and time.monotonic() < deadline and len(jobs) < limit:
         try:
-            response = requester.request(current.get("method", "GET"), current["url"], json=current.get("payload"), headers=HEADERS, timeout=(6, min(20, max(1, deadline - time.monotonic()))))
+            request = requester.request if requester else public_request
+            response = request(current.get("method", "GET"), current["url"], json=current.get("payload"), headers=HEADERS, timeout=(6, min(20, max(1, deadline - time.monotonic()))))
             entry = {"method": "verified-public-api", "url": safe_url(current["url"]), "http_status": response.status_code}
             attempts.append(entry)
             if response.status_code != 200:
@@ -191,9 +206,15 @@ def scrape_verified_company(name, limit=1000, allow_browser=True):
         jobs.extend(found)
         if any(confirmed_india_location(job.get("location")) for job in jobs):
             break
-    if not jobs and allow_browser and config.get("browser_verified"):
+    browser_url = config["career_url"]
+    workday = next((feed for feed in config.get("feeds", []) if "/wday/cxs/" in feed["url"]), None)
+    if workday:
+        parsed = urlsplit(workday["url"])
+        site = parsed.path.strip("/").split("/")[3]
+        browser_url = f"{parsed.scheme}://{parsed.netloc}/{site}"
+    if not jobs and allow_browser and (config.get("browser_verified") or workday):
         try:
-            jobs = browser_listing(config["company"], config["career_url"], limit)
+            jobs = browser_listing(config["company"], browser_url, limit)
         except Exception as error:
             print(f"    Public career browser: {type(error).__name__}")
     # Never turn a fallback failure or HTTP 200 landing page into a job.

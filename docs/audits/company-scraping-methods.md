@@ -40,3 +40,16 @@ Research recorded 23 November 2026.
 - Missing description/detail fetches or fields dropped during persistence.
 - HTTP 403/429, proxy authentication errors, exhausted quota and plan restrictions.
 - Repeated pages, empty cursors, timeouts and missing browser dependencies.
+
+
+## Additional methods verified during the second pass
+
+- **Workday HTTP compatibility:** a normal requests client can receive an edge 429 while a browser TLS client returns the public listing. Use one optional `curl_cffi` Chrome request for public Workday URLs, keep certificate verification enabled, and do not make this alternate request when the response supplies `Retry-After`. [curl_cffi quick start](https://curl-cffi.readthedocs.io/en/stable/quick_start.html).
+- **India-first native searches:** use the documented SmartRecruiters `country=in`, public destination, limit 100 and offset pagination. Bosch and ServiceNow have global first pages that otherwise conceal their India openings. [Official posting API filters](https://developers.smartrecruiters.com/reference/v1listpostings).
+- **TCS browser session:** observe the public `/candidate/next/api/en-IN/search/jobs` POST. Its response contains job IDs, locations and explicit experience ranges; `/job/desc/{id}` supplies descriptions. When a bare HTTP replay is rejected, use a fresh browser session. `applyBy` is a deadline, not a posting date.
+- **Zoho embedded data:** some public detail pages embed the complete record in a `jobs = JSON.parse(...)` string. Decode only that JSON string; do not execute page JavaScript in Python. The public Zoho board returns visible jobs with `Keep_on_Career_Site=false`, so that flag alone is not evidence of a hidden job. A separate `Publish=false` record is excluded.
+- **Source migrations:** PhonePe to the PHONEPELIMITED SmartRecruiters board; Razorpay to the razorpaysoftwareprivatelimited Greenhouse board; Postman to its wd108 Workday site; NVIDIA to jobs.nvidia.com; Swiggy to careers.swiggy.in and the SWIGGY public board; American Express, Nokia and Akamai to their current Oracle career sites.
+- **Individual links:** Turing uses `/job/{id}`, not `/jobs/{id}`. Rocketlane's Kula records require their individual ID/title link and nested ATS office/description data. Wipro supplies `unifiedUrlTitle`; use the corresponding `/job/{slug}/{id}-en_US` page when present. Citi's listing heading changed from h2 to h3.
+- **Description preservation:** Capgemini's job-search JSON already contains descriptions and `apply_job_url`; preserve those fields. Workday `/apply` links require removing that suffix for the public detail API. Short truncated summaries are upgraded when a longer posting-specific description is recovered.
+
+The production registry in `scripts/company_sources.json` contains public career URLs and reusable listing endpoints. A company is enabled for a new primary route only after a live posting was verified. A generic HTTP 200, saved-job link, media asset, company-introduction paragraph or search total is not a verified posting. Raw browser evidence stays in the workflow artifacts; reports contain statuses and short excerpts, not credentials.
