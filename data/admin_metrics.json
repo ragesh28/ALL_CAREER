@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T19:21:41.384976+00:00",
+  "generatedAt": "2026-11-23T00:45:33.051153+00:00",
   "systemStatus": "HEALTHY",
   "activeScrapersRunning": 1,
   "totalWorkflows": 22,
@@ -13,7 +13,7 @@
     "peakDay": "Wed (Oct 14)",
     "peakCount": 6420,
     "calculatedEvery7Days": true,
-    "nextCalculationDate": "2026-11-29"
+    "nextCalculationDate": "2026-11-30"
   },
   "apiCredits": [
     {
@@ -325,7 +325,7 @@
     }
   ],
   "jobMetrics": {
-    "totalJobs": 1014678,
+    "totalJobs": 1014684,
     "todayScraped": 6420,
     "yesterdayScraped": 5890,
     "newJobsAdded": 5940,
@@ -626,7 +626,7 @@
       "tathyagrid": 1,
       "td_synnex_careers": 3,
       "teacheron": 1,
-      "telegram_message": 3121,
+      "telegram_message": 3127,
       "telegram_post": 2187,
       "telus_digital": 1,
       "teva_careers": 1,
@@ -3433,7 +3433,7 @@
       "united states of america": 3,
       "university of mysore": 1,
       "unjha": 2,
-      "unknown": 10234,
+      "unknown": 10240,
       "unnao": 1,
       "up": 126,
       "uppal": 30,
@@ -3623,30 +3623,30 @@
     }
   },
   "visitorMetrics": {
-    "todayVisitors": 1754,
-    "yesterdayVisitors": 1669,
-    "totalPageviews": 7336,
+    "todayVisitors": 1451,
+    "yesterdayVisitors": 1366,
+    "totalPageviews": 6124,
     "avgSessionSeconds": 265,
     "topPages": [
       {
         "path": "#all_jobs",
         "name": "All Jobs Portal",
-        "views": 947
+        "views": 783
       },
       {
         "path": "#practice",
         "name": "Learn Coding (LeetCode)",
-        "views": 491
+        "views": 406
       },
       {
         "path": "#career_explorer",
         "name": "Big Company Directory",
-        "views": 210
+        "views": 174
       },
       {
         "path": "#hub",
         "name": "Career Command Center Hub",
-        "views": 105
+        "views": 87
       }
     ],
     "deviceBreakdown": {
@@ -3771,13 +3771,13 @@
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "6m 40s",
-      "durationSeconds": 400,
-      "accumulatedDuration": "28m 43s",
-      "accumulatedSeconds": 1723,
-      "lastRunTime": "2026-11-22T17:36:42Z",
+      "duration": "6m 41s",
+      "durationSeconds": 401,
+      "accumulatedDuration": "27m 0s",
+      "accumulatedSeconds": 1620,
+      "lastRunTime": "2026-11-22T23:01:06Z",
       "trigger": "workflow_run",
-      "runId": 45050422517,
+      "runId": 45080893638,
       "runMetrics": null,
       "newJobsScraped": null,
       "jobsDeleted": null
@@ -3935,13 +3935,13 @@
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "15m 11s",
-      "durationSeconds": 911,
-      "accumulatedDuration": "48m 13s",
-      "accumulatedSeconds": 2893,
-      "lastRunTime": "2026-11-22T17:21:25Z",
+      "duration": "16m 2s",
+      "durationSeconds": 962,
+      "accumulatedDuration": "53m 56s",
+      "accumulatedSeconds": 3236,
+      "lastRunTime": "2026-11-22T22:44:58Z",
       "trigger": "schedule",
-      "runId": 45048979634,
+      "runId": 45079432915,
       "runMetrics": null,
       "newJobsScraped": null,
       "jobsDeleted": null
@@ -4007,42 +4007,26 @@
       "status": "completed",
       "conclusion": "success",
       "isRunning": false,
-      "duration": "18m 49s",
-      "durationSeconds": 1129,
-      "accumulatedDuration": "50m 45s",
-      "accumulatedSeconds": 3045,
-      "lastRunTime": "2026-11-22T16:21:49Z",
+      "duration": "8m 56s",
+      "durationSeconds": 536,
+      "accumulatedDuration": "51m 4s",
+      "accumulatedSeconds": 3064,
+      "lastRunTime": "2026-11-22T22:30:06Z",
       "trigger": "schedule",
-      "runId": 45043410704,
+      "runId": 45078053285,
       "runMetrics": {
-        "messagesProcessed": 55,
-        "newJobsStored": 41,
-        "nonJobMessages": 2,
+        "messagesProcessed": 2,
+        "newJobsStored": 7,
+        "nonJobMessages": 1,
         "failedExtractions": 0,
-        "imageMessages": 14,
-        "textMessages": 41,
-        "walkinsStored": 2,
+        "imageMessages": 0,
+        "textMessages": 2,
+        "walkinsStored": 7,
         "locations": {
-          "Unknown": 22,
-          "Gurgaon, Bangalore, Mumbai, Noida, Kolkata, Kochi, Hyderabad, Gandhinagar, Ahmedabad": 1,
-          "Bengaluru": 1,
-          "Pune & Mumbai, Maharashtra": 1,
-          "Chennai, India": 1,
-          "Bangalore, India": 2,
-          "Remote": 1,
-          "Pune": 1,
-          "Gurugram": 1,
-          "Bangalore": 1,
-          "PAN India": 1,
-          "India": 3,
-          "Remote, India": 1,
-          "Whitefield, Bengaluru": 1,
-          "Chennai": 1,
-          "Chennai, India (Hybrid)": 1,
-          "Noida, India": 1
+          "Unknown": 7
         }
       },
-      "newJobsScraped": 41,
+      "newJobsScraped": 7,
       "jobsDeleted": null
     },
     {
@@ -4088,13 +4072,13 @@
       "status": "in_progress",
       "conclusion": "in_progress",
       "isRunning": true,
-      "duration": "5m 49s",
-      "durationSeconds": 349,
-      "accumulatedDuration": "18m 30s",
-      "accumulatedSeconds": 1110,
-      "lastRunTime": "2026-11-22T19:15:51Z",
+      "duration": "5m 59s",
+      "durationSeconds": 359,
+      "accumulatedDuration": "17m 53s",
+      "accumulatedSeconds": 1073,
+      "lastRunTime": "2026-11-23T00:39:32Z",
       "trigger": "schedule",
-      "runId": 45059752251,
+      "runId": 45090054066,
       "runMetrics": null,
       "newJobsScraped": null,
       "jobsDeleted": null
