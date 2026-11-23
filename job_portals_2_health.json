@@ -1,41 +1,41 @@
 {
-  "run_id": "45142084934",
-  "updated_at": "2026-11-23T14:44:23.574867",
+  "run_id": "45197517422",
+  "updated_at": "2026-11-23T17:14:28.794606",
   "portals": {
     "apna": {
-      "scraped_total": 8735,
-      "new_stored_total": 278,
-      "requests_total": 771,
+      "scraped_total": 3526,
+      "new_stored_total": 123,
+      "requests_total": 346,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/digital-marketer-jobs-in-gurgaon"
+        "requests": 3,
+        "scraped": 41,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 385,
+      "requests_total": 158,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/digital-marketer-jobs-in-gurgaon/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 385,
+      "requests_total": 158,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/digital-marketer-jobs-in-gurgaon"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
