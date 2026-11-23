@@ -174,7 +174,8 @@ def fetch_details(url):
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
             if parsed.hostname == "jobs.siemens.com" and "/JobDetail/" in parsed.path:
-                node = soup.select_one("article.article--details .article__content__view__field__value")
+                nodes = soup.select("article.article--details .article__content__view")
+                node = max(nodes, key=lambda n: len(n.get_text()), default=None)
                 if node:
                     details = details_from_record({"description": node.get_text(" ", strip=True)})
                     posted = re.search(r"Posted since\s+(\d{1,2}-[A-Za-z]{3}-\d{4})", soup.get_text(" ", strip=True))
