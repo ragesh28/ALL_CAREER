@@ -18,7 +18,7 @@ from playwright.sync_api import sync_playwright
 from jobspy import scrape_jobs
 import pandas as pd
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -60,9 +60,12 @@ def store_jobs_local(jobs, existing_jobs, company_name):
     total_inserted = 0
     
     existing_urls = {j.get("apply_url") for j in existing_jobs if j.get("apply_url")}
+    by_url = {j.get("apply_url"): j for j in existing_jobs if j.get("apply_url")}
     
     for job in india_jobs:
         url = job.get("apply_url", "")
+        if url in by_url:
+            upgrade_details(by_url[url], job)
         if url and url not in existing_urls:
             job["company"] = company_name
             job["fetched_at"] = fetched_at
@@ -295,7 +298,6 @@ def scrape_microsoft_api(url, limit=2):
                 "domain": "microsoft.com",
                 "location": "India",
                 "start": offset,
-                "sort_by": "timestamp",
             }
             resp = requests.get(
                 f"{BASE}/api/pcsx/search",

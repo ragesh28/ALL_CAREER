@@ -28,7 +28,7 @@ import traceback
 from datetime import datetime, timedelta
 
 import pandas as pd
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details
 
 # ---------------------------------------------------------------------------
 # TIMER — gracefully stop before GitHub's 6-hour hard kill
@@ -161,10 +161,14 @@ def save_jobs(all_jobs):
             print(f"Error loading existing big_company_jobs.json: {e}")
             
     existing_urls = {str(j.get("apply_url", "")) for j in existing_jobs if j.get("apply_url")}
+    existing_by_url = {str(j.get("apply_url")): j for j in existing_jobs if j.get("apply_url")}
+    updated = False
     
     new_jobs_added = 0
     for job in all_jobs:
         u = str(job.get("url", ""))
+        if u in existing_by_url:
+            updated = upgrade_details(existing_by_url[u], job) or updated
         if u and u not in existing_urls:
             # Clean up incorrect OpenAI jobs (from LinkedIn search with general matches)
             company_name = str(job.get("company", ""))
@@ -184,7 +188,7 @@ def save_jobs(all_jobs):
             existing_urls.add(u)
             new_jobs_added += 1
 
-    if new_jobs_added > 0:
+    if new_jobs_added > 0 or updated:
         print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
         try:
             os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)

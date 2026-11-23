@@ -8,13 +8,22 @@ import inspect
 import os
 import re
 from functools import lru_cache
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 import requests
 from bs4 import BeautifulSoup
 
 DETAIL_KEYS = ("description", "experience", "salary", "job_type", "work_mode",
                "employment_type", "date_posted", "description_source")
+
+
+def upgrade_details(existing, incoming):
+    changed = False
+    for key, value in details_from_record(incoming).items():
+        if not existing.get(key) or (key == "description" and len(value) > len(existing[key])):
+            existing[key] = value
+            changed = True
+    return changed
 
 
 def text(value):
@@ -38,6 +47,8 @@ def details_from_record(record):
             low, high = value.get("minValue"), value.get("maxValue")
             if low is not None or high is not None:
                 result["salary"] = " ".join(str(v) for v in (salary.get("currency"), low, "–" if high is not None else None, high, value.get("unitText")) if v is not None)
+    if not result.get("salary") and (text(record.get("min_amount")) or text(record.get("max_amount"))):
+        result["salary"] = " ".join(filter(None, [text(record.get("currency")), text(record.get("min_amount")), "to" if text(record.get("max_amount")) else "", text(record.get("max_amount")), text(record.get("interval"))]))
     if not result.get("date_posted") and record.get("datePosted"):
         result["date_posted"] = text(record["datePosted"])
     if not result.get("job_type") and record.get("employmentType"):
@@ -56,6 +67,33 @@ def details_from_record(record):
         if match:
             result["experience"] = match.group(0)
     return result
+
+
+def jobs_from_payload(payload, base_url):
+    """Extract actual linked postings, rather than treating a total as jobs."""
+    jobs, seen = [], set()
+    def visit(value):
+        if isinstance(value, list):
+            for child in value:
+                visit(child)
+        elif isinstance(value, dict):
+            title = next((text(value.get(k)) for k in ("title", "jobTitle", "Title", "postingTitle", "JobTitle", "name") if text(value.get(k))), "")
+            link = next((text(value.get(k)) for k in ("apply_url", "url", "jobUrl", "absolute_url", "absoluteUrl", "positionUrl", "job_url", "hostedUrl", "applyUrl") if text(value.get(k))), "")
+            if title and link:
+                url = urljoin(base_url, link)
+                if url not in seen:
+                    seen.add(url)
+                    location = next((value.get(k) for k in ("location", "locationsText", "locations", "PrimaryLocation", "jobLocation") if value.get(k)), "")
+                    if isinstance(location, list):
+                        location = ", ".join(text(x.get("name")) if isinstance(x, dict) else text(x) for x in location)
+                    if isinstance(location, dict):
+                        location = location.get("name", "")
+                    jobs.append({"title": title, "apply_url": url, "location": text(location), "posted": text(value.get("datePosted") or value.get("postedDate") or value.get("publishedDate")), **details_from_record(value)})
+            for child in value.values():
+                if isinstance(child, (dict, list)):
+                    visit(child)
+    visit(payload)
+    return jobs
 
 
 def jobspy_options(scrape_function, proxies=None):

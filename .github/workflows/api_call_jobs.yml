@@ -12,6 +12,10 @@ on:
         type: choice
         options: [all, direct, md, indeed]
         default: all
+      audit_companies:
+        description: Optional comma separated company names to retest
+        type: string
+        default: ''
   schedule:
     - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC) daily
 
@@ -56,4 +60,5 @@ jobs:
     uses: ./.github/workflows/audit-big-companies.yml
     with:
       engine: ${{ inputs.audit_engine || 'all' }}
+      companies: ${{ inputs.audit_companies || '' }}
     secrets: inherit

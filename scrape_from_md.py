@@ -13,7 +13,7 @@ except ImportError:
 from datetime import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -439,7 +439,8 @@ def scrape_generic_api(info):
                 elif isinstance(data, list):
                     total = len(data)
 
-                return {"status": "OK", "total": total, "response_type": "JSON"}
+                jobs = jobs_from_payload(data, info["url"])
+                return {"status": "OK" if jobs else "NO_JOB_RECORDS", "total": total, "response_type": "JSON", "sample_jobs": jobs[:5], "all_jobs": jobs}
             except Exception:
                 # It's HTML or XML
                 return {"status": "OK", "total": "html/xml", "response_type": "HTML"}
@@ -716,7 +717,8 @@ def scrape_with_browser(info):
                 link = item.find("a", href=True)
                 if not link and t and t.name == "a":
                     link = t
-                apply_url = link.get("href", "") if link else ""
+                from urllib.parse import urljoin
+                apply_url = urljoin(url, link.get("href", "")) if link else ""
 
                 if text and len(text) > 3:
                     parsed_jobs.append({
@@ -1249,6 +1251,8 @@ def update_big_company_jobs(all_results, company_info_map):
     total_scraped = 0
     total_india = 0
     new_jobs_added = 0
+    updated_details = False
+    existing_by_url = {job.get("apply_url"): job for job in existing_jobs if job.get("apply_url")}
     
     for raw_company_name, result in all_results.items():
         if result.get("status") != "OK":
@@ -1284,6 +1288,8 @@ def update_big_company_jobs(all_results, company_info_map):
             total_india += 1
             apply_url = raw_job.get("apply_url") or raw_job.get("url") or company_url or ""
             unique_job_id = str(raw_job.get("job_id", apply_url)).strip()
+            if apply_url in existing_by_url:
+                updated_details = upgrade_details(existing_by_url[apply_url], raw_job) or updated_details
             
             # Check if we have seen this ID permanently
             if unique_job_id in seen_ids_db[clean_name] and unique_job_id != "":
@@ -1315,7 +1321,7 @@ def update_big_company_jobs(all_results, company_info_map):
                     seen_ids_db[clean_name].append(unique_job_id)
                 new_jobs_added += 1
                 
-    if new_jobs_added > 0:
+    if new_jobs_added > 0 or updated_details:
         print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
         os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)
         try:

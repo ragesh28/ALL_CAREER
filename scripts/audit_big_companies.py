@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import wraps
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -44,9 +45,33 @@ def probe(engine, index, output):
         config = companies(engine)[index]
         name = config["company"]
         error = ""
+        http_results = []
+        import requests
+        real_request = requests.sessions.Session.request
+        def observed_request(session, method, url, **kwargs):
+            from urllib.parse import urlparse
+            try:
+                response = real_request(session, method, url, **kwargs)
+                http_results.append(f"{urlparse(url).hostname}: HTTP {response.status_code}")
+                return response
+            except requests.RequestException as exc:
+                http_results.append(f"{urlparse(url).hostname}: {type(exc).__name__}")
+                raise
+        requests.sessions.Session.request = observed_request
+
+        def bound_jobspy(module):
+            if not hasattr(module, "scrape_jobs"):
+                return
+            original = module.scrape_jobs
+            @wraps(original)
+            def small_search(*args, **kwargs):
+                kwargs["results_wanted"] = min(5, kwargs.get("results_wanted", 5))
+                return original(*args, **kwargs)
+            module.scrape_jobs = small_search
         try:
             if engine == "direct":
                 module = load("workday_scraper/scrape_all_companies_v2.py", "direct")
+                bound_jobspy(module)
                 jobs = module.detect_and_scrape(name, config.get("ats", ""), (config.get("urls") or [""])[0], limit=20)
                 in_india = [j for j in jobs if module.is_india(j.get("location", ""))]
             elif engine == "indeed":
@@ -56,6 +81,7 @@ def probe(engine, index, output):
                 in_india = jobs
             else:
                 module = load("scrape_from_md.py", "md")
+                bound_jobspy(module)
                 result = module.scrape_with_browser(config) if config.get("browser") else module.dispatch_api(config)
                 jobs = result.get("all_jobs") or result.get("sample_jobs") or []
                 error = result.get("error") or result.get("reason") or ""
@@ -75,6 +101,7 @@ def probe(engine, index, output):
             row = {"engine": engine, "company": name, "index": index, "status": "error", "sample": None,
                    "error": re.sub(r"https?://\S+", "[endpoint]", str(exc))[:300]}
         row["seconds"] = round(time.monotonic() - started, 2)
+        row["http_results"] = list(dict.fromkeys(http_results))[-10:]
         Path(output).write_text(json.dumps(row, ensure_ascii=False, default=str), encoding="utf-8")
 
 
@@ -112,7 +139,8 @@ def main():
 
     rows = []
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
-        futures = [executor.submit(run, i, config) for i, config in enumerate(configs)]
+        names = {n.strip().lower() for n in os.environ.get("COMPANY_AUDIT_ONLY", "").split(",") if n.strip()}
+        futures = [executor.submit(run, i, config) for i, config in enumerate(configs) if not names or config["company"].lower() in names]
         for future in as_completed(futures):
             rows.append(future.result())
     rows.sort(key=lambda row: row["index"])

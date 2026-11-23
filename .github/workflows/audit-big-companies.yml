@@ -6,6 +6,9 @@ on:
       engine:
         type: string
         default: all
+      companies:
+        type: string
+        default: ''
 permissions:
   contents: read
 jobs:
@@ -22,6 +25,7 @@ jobs:
           sparse-checkout: |
             scripts
             workday_scraper
+            tests
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -36,7 +40,11 @@ jobs:
         run: |
           python -c "import os; from pathlib import Path; Path('job_api_calls.md').write_text(os.environ['JOB_API_CALLS'], encoding='utf-8')"
       - name: Get a live sample from every configured company
+        env:
+          COMPANY_AUDIT_ONLY: ${{ inputs.companies }}
         run: python scripts/audit_big_companies.py --engine ${{ matrix.engine }} --output audit-results --timeout 120 --workers 3
+      - name: Verify detail parsing and saving
+        run: python -m unittest discover -s tests -p test_company_job_details.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
