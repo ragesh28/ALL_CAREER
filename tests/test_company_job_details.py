@@ -18,6 +18,14 @@ class CompanyDetailsTests(unittest.TestCase):
         self.assertTrue(is_india_location("Chennai, Tamil Nadu, India"))
         self.assertTrue(is_india_location("Bengaluru, Karnataka"))
 
+    def test_spent_detail_budget_still_preserves_inline_descriptions(self):
+        import scripts.company_job_details as details
+        rows = [{"url": "https://example.com/jobs/1"}, {"jobDescription": "Inline source content"}]
+        with patch.object(details, "_detail_seconds_used", 9999), patch.object(details, "fetch_details") as fetch:
+            details.enrich_jobs(rows)
+            fetch.assert_not_called()
+        self.assertEqual(rows[1]["description"], "Inline source content")
+
     def test_missing_salary_stays_missing_and_experience_is_explicit(self):
         details = details_from_record({"description": "We require 3-5 years of experience in HR operations."})
         self.assertEqual(details["experience"], "3-5 years of experience")

@@ -7,6 +7,7 @@ import html
 import inspect
 import os
 import re
+import time
 from functools import lru_cache
 from urllib.parse import urlparse, urljoin
 
@@ -15,6 +16,7 @@ from bs4 import BeautifulSoup
 
 DETAIL_KEYS = ("description", "experience", "salary", "job_type", "work_mode",
                "employment_type", "date_posted", "description_source")
+_detail_seconds_used = 0.0
 
 
 def is_india_location(location):
@@ -240,14 +242,20 @@ def fetch_details(url):
 
 
 def enrich_jobs(jobs, limit=None):
+    global _detail_seconds_used
     remaining = int(os.environ.get("COMPANY_DETAIL_LIMIT", "3")) if limit is None else limit
+    budget = float(os.environ.get("COMPANY_DETAIL_BUDGET_SECONDS", "180"))
     for job in jobs:
         job.update(details_from_record(job))
-        if not job.get("description") and remaining > 0:
+        if not job.get("description") and remaining > 0 and _detail_seconds_used < budget:
             url = job.get("apply_url") or job.get("url") or ""
             if url:
                 remaining -= 1
-                recovered = fetch_details(url)
+                started = time.monotonic()
+                try:
+                    recovered = fetch_details(url)
+                finally:
+                    _detail_seconds_used += time.monotonic() - started
                 for key, value in recovered.items():
                     if not job.get(key):
                         job[key] = value
