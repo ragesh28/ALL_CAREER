@@ -147,6 +147,41 @@ function formatDate(dateStr?: string) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+const FILTER_BADGES = {
+  date: { label: 'Posted Date', Icon: CalendarDays },
+  location: { label: 'Location', Icon: MapPin },
+  role: { label: 'Role', Icon: BriefcaseBusiness },
+  search: { label: 'Search', Icon: Search },
+};
+
+function FilterBadge({ kind, value, onRemove }: {
+  kind: keyof typeof FILTER_BADGES;
+  value: string;
+  onRemove: () => void;
+}) {
+  const { label, Icon } = FILTER_BADGES[kind];
+  const removeLabel = 'Remove ' + label.toLowerCase() + ' filter for ' + value;
+
+  return (
+    <li className={'bigcompany-filter-item bigcompany-filter-item--' + kind}>
+      <button
+        type="button"
+        className="bigcompany-filter-badge"
+        aria-label={removeLabel}
+        title={removeLabel}
+        onClick={onRemove}
+      >
+        <span className="bigcompany-filter-icon"><Icon size={16} aria-hidden="true" /></span>
+        <span className="bigcompany-filter-label">
+          <span className="bigcompany-filter-type">{label}</span>
+          <span className="bigcompany-filter-value">{value}</span>
+        </span>
+        <span className="bigcompany-filter-remove"><X size={14} aria-hidden="true" /></span>
+      </button>
+    </li>
+  );
+}
+
 export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub }) => {
   const [jobs, setJobs] = useState<BigCompanyJob[]>([]);
   const [loading, setLoading] = useState(true);
@@ -369,7 +404,9 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
   }, [filteredJobs, currentPage]);
 
   const totalApplied = (selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size;
-  const hasActiveFilters = totalApplied > 0 || Boolean(searchTerm);
+  const query = searchTerm.trim();
+  const activeCount = totalApplied + (query ? 1 : 0);
+  const postedDate = DATE_RANGES.find(option => option.id === selectedDateFilter)?.label;
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -384,13 +421,6 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
       .filter(j => (j.apply_url || j.url))
       .slice(0, 30);
     bridgeService.startBatchAutoApply(jobsToApply);
-  };
-
-  const dateLabels: Record<string, string> = {
-    '24h': 'Last 24 Hours',
-    '3d': 'Last 3 Days',
-    '7d': 'Last 7 Days',
-    '15d': 'Last 15 Days'
   };
 
   return (
@@ -622,55 +652,41 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
         {/* ══ MAIN CONTENT ══ */}
         <main className="main-content" style={{ flex: 1, padding: '24px 32px', minWidth: 0 }}>
-          {/* Reset Button (replaces Sort dropdown, shown only when any filter is active) */}
-          {hasActiveFilters && (
-            <div className="filter-reset-bar" style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-              <button
-                type="button"
-                className="premium-reset-btn"
-                onClick={clearAllFilters}
-                title="Reset all active filters"
-              >
+          {activeCount > 0 && (
+            <div className="bigcompany-active-filters">
+              <ul className="bigcompany-filter-list" id="activeChips" aria-label="Active filters">
+                {selectedDateFilter !== 'all' && postedDate && (
+                  <FilterBadge kind="date" value={postedDate} onRemove={() => {
+                    setSelectedDateFilter('all');
+                    setCurrentPage(1);
+                  }} />
+                )}
+                {[...selectedLocations].map(location => (
+                  <FilterBadge key={location} kind="location" value={location} onRemove={() => {
+                    setSelectedLocations(previous => new Set([...previous].filter(value => value !== location)));
+                    setCurrentPage(1);
+                  }} />
+                ))}
+                {[...selectedRoles].map(role => (
+                  <FilterBadge key={role} kind="role" value={role} onRemove={() => {
+                    setSelectedRoles(previous => new Set([...previous].filter(value => value !== role)));
+                    setCurrentPage(1);
+                  }} />
+                ))}
+                {query && (
+                  <FilterBadge kind="search" value={query} onRemove={() => {
+                    setSearchTerm('');
+                    setCurrentPage(1);
+                  }} />
+                )}
+              </ul>
+              <button type="button" className="premium-reset-btn" onClick={clearAllFilters}>
                 <span className="reset-icon-halo">
                   <RotateCcw size={13} className="reset-spin-icon" aria-hidden="true" />
                 </span>
                 <span className="reset-btn-label">Reset Filters</span>
-                {((selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (searchTerm ? 1 : 0)) > 0 && (
-                  <span className="reset-count-badge">
-                    {(selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (searchTerm ? 1 : 0)}
-                  </span>
-                )}
+                <span className="reset-count-badge">{activeCount}</span>
               </button>
-            </div>
-          )}
-
-          {/* Active Filter Chips */}
-          {hasActiveFilters && (
-            <div className="active-chips" id="activeChips" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
-              {selectedDateFilter !== 'all' && (
-                <div className="chip">
-                  <CalendarDays size={13} aria-hidden="true" /><span>{dateLabels[selectedDateFilter] || selectedDateFilter}</span>
-                  <span className="chip-x" onClick={() => setSelectedDateFilter('all')}><X size={13} aria-label="Remove date filter" /></span>
-                </div>
-              )}
-              {Array.from(selectedLocations).map(loc => (
-                <div key={loc} className="chip">
-                  <MapPin size={13} aria-hidden="true" /><span>{loc}</span>
-                  <span className="chip-x" onClick={() => setSelectedLocations(prev => { const n = new Set(prev); n.delete(loc); return n; })}><X size={13} aria-label={`Remove ${loc} filter`} /></span>
-                </div>
-              ))}
-              {Array.from(selectedRoles).map(role => (
-                <div key={role} className="chip">
-                  <BriefcaseBusiness size={13} aria-hidden="true" /><span>{role}</span>
-                  <span className="chip-x" onClick={() => setSelectedRoles(prev => { const n = new Set(prev); n.delete(role); return n; })}><X size={13} aria-label={`Remove ${role} filter`} /></span>
-                </div>
-              ))}
-              {searchTerm && (
-                <div className="chip">
-                  <Search size={13} aria-hidden="true" /><span>"{searchTerm}"</span>
-                  <span className="chip-x" onClick={() => setSearchTerm('')}><X size={13} aria-label="Clear search" /></span>
-                </div>
-              )}
             </div>
           )}
 

@@ -2194,6 +2194,145 @@ body {
   }
 }
 
+/* Big Company Jobs applied filters */
+.bigcompany-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.bigcompany-filter-list {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  gap: 9px;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bigcompany-filter-item {
+  min-width: 0;
+  max-width: min(100%, 19rem);
+}
+
+.bigcompany-filter-item--date {
+  --filter-accent: #f4ca81;
+  --filter-surface: #221c15;
+  --filter-border: #69502f;
+  --filter-icon-bg: #3a2e1d;
+}
+
+.bigcompany-filter-item--location {
+  --filter-accent: #7fdfce;
+  --filter-surface: #112323;
+  --filter-border: #345e57;
+  --filter-icon-bg: #203c39;
+}
+
+.bigcompany-filter-item--role {
+  --filter-accent: #d3b9fa;
+  --filter-surface: #211b30;
+  --filter-border: #574574;
+  --filter-icon-bg: #382b4e;
+}
+
+.bigcompany-filter-item--search {
+  --filter-accent: #a5cdff;
+  --filter-surface: #152135;
+  --filter-border: #405d80;
+  --filter-icon-bg: #253b56;
+}
+
+.bigcompany-filter-badge {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 48px;
+  padding: 6px 8px;
+  border: 1px solid var(--filter-border);
+  border-radius: 10px;
+  background: var(--filter-surface);
+  color: #f1f5fb;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms cubic-bezier(.22, .72, .26, 1);
+}
+
+.bigcompany-filter-icon,
+.bigcompany-filter-remove {
+  display: grid;
+  flex: none;
+  place-items: center;
+  color: var(--filter-accent);
+}
+
+.bigcompany-filter-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--filter-icon-bg);
+}
+
+.bigcompany-filter-label {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.bigcompany-filter-type {
+  color: var(--filter-accent);
+  font-size: .67rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.bigcompany-filter-value {
+  overflow: hidden;
+  font-size: .82rem;
+  font-weight: 650;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bigcompany-filter-remove {
+  width: 23px;
+  height: 23px;
+  margin-left: auto;
+  border-radius: 6px;
+  color: #aab8cd;
+  transition: color 160ms cubic-bezier(.22, .72, .26, 1), background-color 160ms cubic-bezier(.22, .72, .26, 1);
+}
+
+.bigcompany-filter-badge:hover,
+.bigcompany-filter-badge:focus-visible {
+  border-color: var(--filter-accent);
+}
+
+.bigcompany-filter-badge:hover .bigcompany-filter-remove,
+.bigcompany-filter-badge:focus-visible .bigcompany-filter-remove {
+  background: var(--filter-icon-bg);
+  color: var(--filter-accent);
+}
+
+.bigcompany-filter-badge:focus-visible {
+  outline: 2px solid var(--filter-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bigcompany-filter-badge,
+  .bigcompany-filter-remove {
+    transition: none;
+  }
+}
+
 .alljobs-result-state {
   display: flex;
   flex-direction: column;
