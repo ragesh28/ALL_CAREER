@@ -1,0 +1,74 @@
+{
+  "workflow_run_number": "1116",
+  "workflow_run_id": "45198620785",
+  "timestamp": "2026-11-23T15:16:20.744903",
+  "runtime_minutes": 18.66,
+  "messages_processed": 93,
+  "new_jobs_stored": 63,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 26,
+  "text_messages_processed": 67,
+  "stored_locations": {
+    "Chennai": 1,
+    "Hyderabad": 3,
+    "Chennai, Jaipur": 1,
+    "Unknown": 37,
+    "Noida, Thane, Gurugram, Bangalore, Chennai, Pune, Vadodara, Ahmedabad, Kolkata, Mumbai": 1,
+    "Bengaluru, Mysuru, Chennai, Coimbatore, Kochi, Hyderabad, Visakhapatnam, Pune, Mumbai, Jaipur, Kolkata": 1,
+    "Gurgaon, Bangalore, Pune, Chennai, Hyderabad, Noida, Vadodara, Aurangabad, Kolkata": 1,
+    "Bengaluru, Hyderabad, Chennai": 1,
+    "Work From Home": 1,
+    "Bangalore, India": 1,
+    "Across India": 1,
+    "Remote": 2,
+    "PAN India": 2,
+    "Online": 1,
+    "Pune": 1,
+    "Bangalore": 2,
+    "Mumbai": 1,
+    "Navi Mumbai": 1,
+    "Bangalore, Karnataka": 1,
+    "Gurugram": 1,
+    "Mumbai, India": 1,
+    "NYC": 1
+  },
+  "stored_walkins": 3,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "seekeras",
+      "msg_id": 19078,
+      "text": "🔥 AI Is Becoming a Must-Have Skill. Here's Where You Can Start!\n\nNo need to learn every AI tool through separate courses. GrowthSchool brings 20+ AI tools, practical projects and workflows together in one 7-day challenge.\n\nJoin GrowthSchool's 7-Day AI Mastery Challenge at 100% OFF! 🎁\n\n👉 Register FREE: https://links.growthschool.io/tfjfree1\n🎟️ Use this code: TFJFREE\n\nHere's what you'll get:\n\n🚀 10+ hands-on projects, from presentations to AI agents.\n🤖 Learn to build AI agents and automate everyday tasks without coding.\n🛠️ Explore 20+ AI tools with practical, ready-to-use workflows.\n🎓 Learn from industry experts with experience at Microsoft, Google, Amazon and NVIDIA.\n📚 Get exclusive workbooks, content libraries and bonus resources.\nMaster Al Systems,\nSchool\nNot Just Al Tools\nGo Beyond Prompts.\nLearn How To Actually Build With Al\n10 Million+\nLeamers Globally\nRated4.8\nJoin 7-Day AI Challenge\nRegister Now",
+      "timestamp": "2026-11-23T14:27:55+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31311,
+      "text": "🔥 Learn AI for FREE! 🚀\n\nMaster 20+ AI tools, build practical projects, and learn AI automation with GrowthSchool’s 7-Day AI Mastery Challenge – 100% FREE! 🎁\n\n✅ 10+ Hands-on Projects\n🤖 Build AI Agents Without Coding\n🚀 Explore 20+ AI Tools\n🎓 Learn from Industry Experts\n\n👉 Register FREE: https://links.growthschool.io/tfjfree1\n\n🎟️ Use Code: TFJFREE\n\nStart learning AI today! 🔥\nLEARN AI FORFREE\n7-DAYAI\nMASTERY CHALLENGE\n20+ Al Tools\nHands-on\nLearn from\nProjects\nIndustry Expert\nGet Job-Ready with Al",
+      "timestamp": "2026-11-23T14:47:16+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 19015,
+      "text": "Read until\nyou understand\nYou can't change the people\naround you, but you can change\nthe people around you.",
+      "timestamp": "2026-11-23T10:45:21+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "dot_aware",
+      "msg_id": 15238,
+      "text": "GeeksforGeeks × OpenAI presents *Build with Codex* – an exclusive, invite-only program for working tech professionals!\n\n🔥 *How It Works:*\n\n📝 *Register:* Apply for an invitation to participate in the program.\n1️⃣ *Learn:* Set up OpenAI Codex and use it for real-world engineering tasks.\n2️⃣ *Build:* Ship a complete project in one 90-minute live session.\n3️⃣ *Submit:* Earn a co-branded certificate from *GeeksforGeeks and OpenAI*.\n\n🏆 *Win Big – ₹6,00,000 Prize Pool!*\n\nA contest organised by *GeeksforGeeks*, with prizes for the top 3 projects:\n\n🥇 1st Prize: ₹3,00,000\n🥈 2nd Prize: ₹2,00,000\n🥉 3rd Prize: ₹1,00,000\n\n🎯 Only *50,000 tech professionals* will be invited!\n\nLink: https://gfgcdn.com/tu/12kt\n\n⚡ Selected applicants will receive an invitation via email.",
+      "timestamp": "2026-11-23T07:25:26+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6448,
+      "text": "How can you run AI on your phone? Open-Source and FREE!\n\nhttps://www.linkedin.com/feed/update/urn:li:ugcPost:7530618054192357376/",
+      "timestamp": "2026-11-23T13:19:58+00:00"
+    }
+  ]
+}
