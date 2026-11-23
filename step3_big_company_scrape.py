@@ -28,6 +28,7 @@ import traceback
 from datetime import datetime, timedelta
 
 import pandas as pd
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
 
 # ---------------------------------------------------------------------------
 # TIMER — gracefully stop before GitHub's 6-hour hard kill
@@ -148,7 +149,7 @@ def save_jobs(all_jobs):
     if not all_jobs:
         return 0
 
-    all_jobs = clean_old_jobs(all_jobs)
+    all_jobs = enrich_jobs(clean_old_jobs(all_jobs))
     
     big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
     existing_jobs = []
@@ -172,6 +173,7 @@ def save_jobs(all_jobs):
                 
             import storage
             existing_jobs.append({
+                **details_from_record(job),
                 "title": str(job.get("title", "")),
                 "location": storage.normalize_location(str(job.get("location", ""))),
                 "posted": str(job.get("date", "")),
@@ -236,7 +238,7 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
                 country_indeed="India",
                 hours_old=72,                   # Last 3 days
                 verbose=0,
-                proxy=proxy_url
+                **jobspy_options(scrape_jobs, [proxy_url] if proxy_url else None)
             )
 
             if jobs_df is None or jobs_df.empty:
@@ -272,6 +274,7 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
                     "date":       str(row.get("date_posted", "None")),
                     "fetchedAt":  date_stamp,
                     "source":     "indeed",
+                    **details_from_record(row.to_dict()),
                 })
                 count += 1
 

@@ -2,11 +2,17 @@ name: API Call Jobs Scraper
 
 on:
   workflow_dispatch:
+    inputs:
+      audit_only:
+        description: Collect one live sample per company without saving production jobs
+        type: boolean
+        default: false
   schedule:
     - cron: '30 21 * * *'  # 3:00 AM IST (9:30 PM UTC) daily
 
 jobs:
   scrape-api-jobs:
+    if: inputs.audit_only != true
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -39,3 +45,8 @@ jobs:
           git commit -m "chore(jobs): Update scraped jobs chunks [skip ci]" || echo "No new jobs to commit"
           git pull --rebase -X theirs --autostash origin main
           git push
+
+  audit-companies:
+    if: inputs.audit_only == true
+    uses: ./.github/workflows/audit-big-companies.yml
+    secrets: inherit

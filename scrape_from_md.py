@@ -13,6 +13,7 @@ except ImportError:
 from datetime import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -156,6 +157,7 @@ def scrape_workday(info):
                 break
             for j in postings:
                 all_jobs.append({
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")),
                     "location": clean(j.get("locationsText", "")),
                     "apply_url": f"https://{urlparse(info['url']).netloc}{j.get('externalPath', '')}",
@@ -184,7 +186,8 @@ def scrape_greenhouse(info):
                 for d in deps:
                     for j in d.get("jobs", []):
                         jobs.append({
-                            "title": clean(j.get("title", "")), 
+                            **details_from_record(j),
+                    "title": clean(j.get("title", "")), 
                             "location": clean(j.get("location", {}).get("name", "")),
                             "apply_url": clean(j.get("absolute_url", ""))
                         })
@@ -193,6 +196,7 @@ def scrape_greenhouse(info):
                 all_jobs = data.get("jobs", [])
                 total = data.get("meta", {}).get("total", len(all_jobs))
                 parsed_jobs = [{
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")), 
                     "location": clean(j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else ""),
                     "apply_url": clean(j.get("absolute_url", ""))
@@ -554,6 +558,7 @@ def scrape_ibm(info):
                 break
             for j in hits:
                 all_jobs.append({
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")),
                     "apply_url": clean(j.get("url", ""))
                 })
@@ -614,7 +619,8 @@ def jobspy_fallback_result(company_name):
             search_term=clean_company,
             location="India",
             results_wanted=100,
-            country_indeed="India"
+            country_indeed="India",
+            **jobspy_options(scrape_jobs)
         )
         jobs = []
         seen = set()
@@ -630,6 +636,7 @@ def jobspy_fallback_result(company_name):
                 
             seen.add(url)
             jobs.append({
+                **details_from_record(row.to_dict()),
                 "title": clean(str(row.get("title", ""))),
                 "location": clean(str(row.get("location", "India"))),
                 "apply_url": url
@@ -838,7 +845,8 @@ def scrape_amazon_ai(info):
             jobs = data.get("jobs", [])
             total = hits if hits else len(jobs)
             sample = [{
-                "title": clean(j.get("title", "")),
+                **details_from_record(j),
+                    "title": clean(j.get("title", "")),
                 "location": clean(j.get("location", "India")),
                 "apply_url": clean(j.get("job_path", j.get("id_icims", "")))
             } for j in jobs[:5]]
@@ -1258,6 +1266,7 @@ def update_big_company_jobs(all_results, company_info_map):
         if not isinstance(jobs_list, list):
             continue
             
+        enrich_jobs(jobs_list)
         for raw_job in jobs_list:
             if not isinstance(raw_job, dict):
                 continue
@@ -1292,7 +1301,8 @@ def update_big_company_jobs(all_results, company_info_map):
                 new_job = {
                     "title": title,
                     "location": storage.normalize_location(location or "India"),
-                    "posted": "",
+                    "posted": raw_job.get("posted") or raw_job.get("date_posted") or "",
+                    **details_from_record(raw_job),
                     "apply_url": apply_url,
                     "total_jobs": 0,
                     "fetched_at": fetched_at,

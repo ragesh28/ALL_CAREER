@@ -17,6 +17,8 @@ from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 from jobspy import scrape_jobs
 import pandas as pd
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -202,6 +204,7 @@ def scrape_zerodha(url, limit=2):
         jobs = []
         for j in items[:limit]:
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(j.get("location", "")),
                 "posted": "",
@@ -316,6 +319,7 @@ def scrape_microsoft_api(url, limit=2):
                 locs = p.get("locations", [])
                 loc_str = ", ".join(locs) if isinstance(locs, list) else str(locs)
                 jobs.append({
+                    **details_from_record(p),
                     "title": clean(p.get("name", "")),
                     "location": clean(loc_str),
                     "posted": "",
@@ -364,6 +368,7 @@ def scrape_greenhouse(url, limit=2):
         for j in all_jobs[:limit]:
             loc = j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else ""
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(str(j.get("updated_at", ""))[:10]),
@@ -399,6 +404,7 @@ def scrape_lever(url, limit=2):
             cats = j.get("categories", {})
             loc = cats.get("location", cats.get("allLocations", [""])[0] if cats.get("allLocations") else "")
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("text", j.get("title", ""))),
                 "location": clean(loc),
                 "posted": "",
@@ -629,6 +635,7 @@ def scrape_accenture(url, limit=2):
             loc_list = j.get("location", j.get("feedCity", ""))
             loc = ", ".join(loc_list) if isinstance(loc_list, list) else str(loc_list)
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(j.get("postedDateText", "")[:10]),
@@ -666,6 +673,7 @@ def scrape_tiger_analytics(url, limit=2):
         for j in items[:limit]:
             loc = j.get("location", j.get("office", {}).get("city", ""))
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": "",
@@ -729,6 +737,7 @@ def scrape_virtusa(url, limit=2):
             link = j.get("careerCtaLink", "")
             apply_url = f"https://www.virtusa.com{link}" if link.startswith("/") else link
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(str(j.get("postedDate", ""))[:10]),
@@ -995,6 +1004,7 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
                     location=f"{city}, India",
                     results_wanted=min(5, limit - len(jobs)),
                     country_indeed="India",
+                    **jobspy_options(scrape_jobs),
                 )
                 if df.empty:
                     continue
@@ -1015,6 +1025,7 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
                     if not loc or loc == "nan":
                         loc = f"{city}, India"
                     jobs.append({
+                        **details_from_record(row.to_dict()),
                         "title": str(row.get("title", "")),
                         "location": loc,
                         "posted": str(row.get("date_posted", "")),
@@ -1368,7 +1379,8 @@ def scrape_phenom(url, limit=2):
             for j in hits[:limit]:
                 loc = f"{j.get('city', '')}, {j.get('country', '')}".strip(", ")
                 jobs.append({
-                    "title": clean(j.get("title", "")),
+                    **details_from_record(j),
+                "title": clean(j.get("title", "")),
                     "location": clean(loc),
                     "posted": "",
                     "apply_url": f"{base}{j.get('canonicalPositionUrl', '')}",
@@ -1400,7 +1412,8 @@ def scrape_amazon(url, limit=2):
                 
             for j in batch_jobs:
                 jobs.append({
-                    "title": clean(j.get("title", "")),
+                    **details_from_record(j),
+                "title": clean(j.get("title", "")),
                     "location": clean(j.get("normalized_location", "")),
                     "posted": clean(j.get("posted_date", "")),
                     "apply_url": f"https://www.amazon.jobs{j.get('job_path', '')}",
@@ -1428,6 +1441,7 @@ def scrape_uber(url, limit=2):
             locs = j.get("allLocations", [])
             loc_str = ", ".join([f"{l.get('city','')} {l.get('country','')}".strip() for l in locs]) if locs else ""
             jobs.append({
+                **details_from_record(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc_str),
                 "posted": "",
@@ -1792,7 +1806,7 @@ def main():
             continue
 
         url = urls[0]
-        jobs = detect_and_scrape(name, ats, url, limit=1000)
+        jobs = enrich_jobs(detect_and_scrape(name, ats, url, limit=1000))
 
         if jobs:
             # Format jobs for storage.py
@@ -1807,6 +1821,7 @@ def main():
                         "url": j.get("apply_url", ""),
                         "date": j.get("posted") or fetched_at,
                         "source": "other",
+                        **details_from_record(j),
                         "experience": j.get("experience", ""),
                         "fetchedAt": fetched_at
                     })

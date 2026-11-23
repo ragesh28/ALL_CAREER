@@ -1,0 +1,41 @@
+name: Audit Big Company Samples and Descriptions
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [direct, md, indeed]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            workday_scraper
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scraper dependencies
+        run: |
+          pip install requests beautifulsoup4 pandas python-jobspy playwright
+          playwright install --with-deps chromium
+      - name: Read private company configuration
+        if: matrix.engine == 'md'
+        env:
+          JOB_API_CALLS: ${{ secrets.job_api_calls }}
+        run: |
+          python -c "import os; from pathlib import Path; Path('job_api_calls.md').write_text(os.environ['JOB_API_CALLS'], encoding='utf-8')"
+      - name: Get a live sample from every configured company
+        run: python scripts/audit_big_companies.py --engine ${{ matrix.engine }} --output audit-results --timeout 120 --workers 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: company-audit-${{ matrix.engine }}
+          path: audit-results/
+          retention-days: 7
