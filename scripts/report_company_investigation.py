@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from scripts.company_job_details import confirmed_india_location
-from scripts.company_recovery import NAVIGATION, safe_url
+from scripts.company_recovery import NAVIGATION, posting_url, safe_url
 from scripts.company_sources import configuration
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,7 +40,7 @@ def clean_attempt(attempt):
 
 
 def usable(sample):
-    return bool(sample and sample.get("title") and not NAVIGATION.search(sample["title"]) and (sample.get("apply_url") or sample.get("url")))
+    return bool(sample and sample.get("title") and not NAVIGATION.search(sample["title"]) and posting_url(sample.get("apply_url") or sample.get("url") or ""))
 
 
 def has_description(sample):
@@ -123,10 +123,11 @@ def build(args):
     summary = {"employers": len(rows), "configured_source_entries": sum(len(r["sources"]) for r in rows), "source_entries_retested": len(source_checks), "company_results": dict(counts), "engines": {}}
     for engine in ("direct", "md", "indeed"):
         checks = [r for r in source_checks.values() if r["engine"] == engine]
-        summary["engines"][engine] = {"checked": len(checks), "linked_samples": sum(r["status"] == "sample_found" for r in checks), "descriptions": sum(has_description(r.get("sample")) for r in checks)}
+        summary["engines"][engine] = {"checked": len(checks), "linked_samples": sum(r["status"] == "sample_found" and usable(r.get("sample")) for r in checks), "descriptions": sum(usable(r.get("sample")) and has_description(r.get("sample")) for r in checks)}
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
-    result = {"started": baseline.get("started"), "phase": "investigation_complete_with_documented_gaps", "generated_at": datetime.now(timezone.utc).isoformat(), "summary": summary, "workflow_runs": args.run_url, "companies": rows}
+    health = read(args.health) if getattr(args, "health", None) else {}
+    result = {"started": baseline.get("started"), "phase": "investigation_complete_with_documented_gaps", "generated_at": datetime.now(timezone.utc).isoformat(), "summary": summary, "workflow_runs": args.run_url, "provider_health": health, "companies": rows}
     (output / "company-investigation-monitor.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     lines = ["# Company investigation results", "", "Checked 23 November 2026. These are bounded live samples, not a claim that every job, application form, or historical listing was verified.", "", f"**{len(rows)} employer names, {summary['configured_source_entries']} overlapping company/source entries.**", "", "| Employer result | Count |", "|---|---:|"]
     lines += [f"| {status.replace('_', ' ')} | {count} |" for status, count in counts.items()]
@@ -135,6 +136,13 @@ def build(args):
         lines.append(f"| {engine} | {stat['checked']} | {stat['linked_samples']} | {stat['descriptions']} |")
     lines += ["", "An empty Indeed search uses an India/72-hour/five-result scope and does not mean the employer has no openings. A first global page can contain no India jobs. Remote-only and missing locations are not counted as confirmed India. Salary, experience and posted date remain 'not extracted' unless explicitly supplied by the source. A title/link sample does not test the application form. Description coverage refers to checked samples; extra detail retrieval is bounded to protect workflow runtime.", "", "## Verification runs", ""]
     lines += [f"- [GitHub Actions run {url.rsplit('/', 1)[-1]}]({url})" for url in args.run_url]
+    if health:
+        lines += ["", "## Configured provider checks", "", "These are authentication/connectivity/account checks at run time. A healthy provider can still fail to retrieve a particular website. Credential values are excluded.", "", "| Provider label | Available | HTTP / proxy status | Observed reason / credits |", "|---|---|---|---|"]
+        for provider, check in health.items():
+            reason = check.get("reason", "")
+            if "remaining" in check:
+                reason += f"; {check['remaining']} credits remaining at this check"
+            lines.append(f"| {provider} | {check.get('available', False)} | {cell(check.get('http_status') or check.get('proxy_http_status'))} | {cell(reason)} |")
     lines += ["", "## Every employer", "", "| Company | Current result | Browser records / confirmed India | Description characters | Remaining finding |", "|---|---|---:|---:|---|"]
     for row in rows:
         sample = row["representative_sample"] or {}
@@ -153,7 +161,7 @@ def build(args):
         sample = row["representative_sample"]
         if sample:
             url = sample.get("apply_url") or sample.get("url")
-            lines += ["", f"Sample: [{cell(sample['title'])}]({safe_url(url)}). Location: {cell(sample.get('location'))}. Description: {sample.get('description_chars', 0)} characters.", "", f"Experience: {cell(sample.get('experience') or 'not extracted')}. Salary: {cell(sample.get('salary') or 'not extracted')}. Posted date: {cell(sample.get('date_posted') or sample.get('posted') or 'not extracted')}."]
+            lines += ["", f"Sample: [{cell(sample['title'])}]({safe_url(url)}). Location: {cell(sample.get('location'))}. Description: {sample.get('description_chars', 0)} characters.", "", f"Experience: {cell(sample.get('experience') or 'not extracted')}. Salary: {cell(sample.get('salary') or 'not extracted')}. Posted date: {cell(sample.get('date_posted') or sample.get('posted') or sample.get('date') or 'not extracted')}."]
         lines.append("")
     (output / "company-investigation-results.md").write_text("\n".join(lines), encoding="utf-8")
     print(json.dumps(summary, indent=2))
@@ -165,5 +173,6 @@ if __name__ == "__main__":
     parser.add_argument("--browser", action="append", default=[])
     parser.add_argument("--source-audit", action="append", default=[])
     parser.add_argument("--run-url", action="append", default=[])
+    parser.add_argument("--health")
     parser.add_argument("--output", default=str(ROOT / "docs/audits"))
     build(parser.parse_args())

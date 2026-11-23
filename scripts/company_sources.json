@@ -634,9 +634,14 @@
   {
     "company": "Fortinet",
     "career_url": "https://www.fortinet.com/corporate/careers",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://edel.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList&finder=findReqs;siteNumber=CX_2001,limit=25,sortBy=POSTING_DATES_DESC",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "Fractal Analytics",
@@ -1310,9 +1315,14 @@
   {
     "company": "Publicis Sapient",
     "career_url": "https://careers.publicissapient.com/",
-    "feeds": [],
+    "feeds": [
+      {
+        "url": "https://careers.publicissapient.com/bin/ps-redesign/careersJobsearch?searchType=%2Fsearch&lang=en&q=&start=0&rows=20&country=India",
+        "method": "GET"
+      }
+    ],
     "browser_verified": false,
-    "prefer_verified": false
+    "prefer_verified": true
   },
   {
     "company": "PwC",

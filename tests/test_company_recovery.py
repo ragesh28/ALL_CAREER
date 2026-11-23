@@ -13,7 +13,7 @@ class CareerRecoveryTests(unittest.TestCase):
         fetch_details.cache_clear()
 
     def test_navigation_and_media_cannot_be_postings(self):
-        for url in ["https://example.com/careers/life-at-company", "https://example.com/jobs/saved", "https://example.com/go/India/9553955", "https://cdn.example.com/7beb5311-75a4-0049-50f5-8f58fd55aba7/icon.svg", "https://example.com/company/careers/all-jobs"]:
+        for url in ["https://example.com/careers/life-at-company", "https://example.com/jobs/saved", "https://example.com/go/India/9553955", "https://cdn.example.com/7beb5311-75a4-0049-50f5-8f58fd55aba7/icon.svg", "https://example.com/company/careers/all-jobs", "https://privacy.my.onetrust.com/webform/a57c3297-68d3-4bc0-8843-262957a92400/5aedb450-5a2e-4d7c-b25e-51d838384c25"]:
             self.assertFalse(posting_url(url), url)
         self.assertTrue(posting_url("https://jobs.example.com/job/chennai/engineer/123"))
         self.assertTrue(posting_url("https://www.pinterestcareers.com/jobs/?gh_jid=123"))
@@ -109,6 +109,13 @@ class CareerRecoveryTests(unittest.TestCase):
         rows = records_from_json(payload, "https://cg-jobstream-api.azurewebsites.net/api/job-search?page=1")
         self.assertEqual(rows[0]["description"], "Full duties")
         self.assertIn("/job/Pune-Engineer/123/", rows[0]["apply_url"])
+
+    def test_publicis_uses_job_detail_instead_of_login_or_privacy_form(self):
+        payload = {"response": {"docs": [{"title": "Data Engineer", "jobUrl": "https://sapient-publicisgroupe.icims.com/jobs/144904/job/login", "jobDetailUrl": "/job-details/2026-144904-data-engineer-gurgaon", "city": "Gurgaon", "countryName": "India", "releasedDate": "2026-11-20T12:00:00Z"}]}}
+        rows = records_from_json(payload, "https://careers.publicissapient.com/bin/ps-redesign/careersJobsearch?country=India")
+        self.assertEqual(rows[0]["apply_url"], "https://careers.publicissapient.com/job-details/2026-144904-data-engineer-gurgaon")
+        self.assertEqual(rows[0]["location"], "Gurgaon, India")
+        self.assertEqual(rows[0]["date_posted"], "2026-11-20T12:00:00Z")
 
     def test_explicit_zoho_summary_is_upgraded_by_detail_page(self):
         rows = [{"apply_url": "https://example.com/jobs/1", "description": "Truncated source text..."}]

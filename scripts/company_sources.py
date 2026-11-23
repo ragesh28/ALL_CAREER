@@ -84,6 +84,11 @@ def next_page(feed, payload, count):
         if page * size >= payload.get("total", 0):
             return None
         query["page"] = str(page + 1)
+    elif parts.hostname == "careers.publicissapient.com" and "careersJobsearch" in parts.path:
+        offset = int(query.get("start", 0)) + count
+        if offset >= payload.get("response", {}).get("numFound", 0):
+            return None
+        query["start"] = str(offset)
     else:
         return None
     result["url"] = urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), ""))

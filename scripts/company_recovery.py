@@ -42,6 +42,8 @@ def posting_url(url):
     if parsed.scheme not in ("http", "https") or parsed.fragment in ("main", "content"):
         return False
     path = parsed.path.lower().strip("/")
+    if (parsed.hostname or "").endswith(".onetrust.com") or "/webform/" in "/" + path:
+        return False
     if re.search(r"\.(?:svg|png|jpe?g|webp|gif|css|js|woff2?|pdf)$", path):
         return False
     if any(key.lower() in ("jobid", "job_id", "jk", "gh_jid", "requisitionid") and value for key, value in parse_qsl(parsed.query)):
@@ -58,7 +60,11 @@ def posting_url(url):
         return True
     if parsed.hostname == "careers.societegenerale.com" and re.search(r"/job-offers/[^/]*\d[^/]+$", "/" + path):
         return True
-    return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|jobdetail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/\d+|[a-f0-9]{8}-[a-f0-9-]{20,}", "/" + path))
+    if parsed.hostname == "careers.publicissapient.com" and re.search(r"/job-details/\d{4}-\d+-", "/" + path):
+        return True
+    if parsed.hostname in ("jobs.lever.co", "jobs.eu.lever.co", "jobs.ashbyhq.com", "jobs.gem.com", "jobs.smartrecruiters.com") and re.search(r"[a-f0-9]{8}-[a-f0-9-]{20,}", path):
+        return True
+    return bool(re.search(r"/jobs/results/\d+|/jobs?/(?!results(?:/|$)|search(?:/|$)|all(?:/|$))[^/]+|jobdetail/[^/]+|/postings?/[^/]+|/positions?/[^/]+|/requisitions?/[^/]+|/roles/[^/]+|/vacancies/[^/]+|/openings/[^/]+|/j/[a-z0-9]+", "/" + path))
 
 
 def records_from_json(payload, source_url):
@@ -78,6 +84,8 @@ def records_from_json(payload, source_url):
         title = first(row, ("title", "jobTitle", "Title", "postingTitle", "unifiedStandardTitle", "JobTitle", "Posting_Title", "Job_Opening_Name", "post_title", "name", "text"))
         link = first(row, ("jobUrl", "jobURL", "postingUrl", "absolute_url", "absoluteUrl", "positionUrl", "canonicalPositionUrl", "careerSiteUrl", "hostedUrl", "apply_url", "apply_job_url", "url", "URL", "$url", "applyUrl", "jcrURL", "externalPath", "DetailUrl", "JobUrl", "ref"))
         identifier = first(row, ("id", "Id", "jobId", "job_id", "jobReqId", "Key", "post_id"))
+        if parsed.hostname == "careers.publicissapient.com" and row.get("jobDetailUrl"):
+            link = scalar(row["jobDetailUrl"])
         if row.get("isListed") is False or row.get("Publish") is False or row.get("is_confidential") is True or row.get("on_career_page") is False:
             title = ""
         if parsed.hostname == "cg-jobstream-api.azurewebsites.net" and (row.get("deleted_at") or str(row.get("status", "1")) != "1"):
@@ -120,8 +128,8 @@ def records_from_json(payload, source_url):
         if title and link and not NAVIGATION.search(title):
             absolute = urljoin(origin + "/", link)
             if posting_url(absolute) and absolute not in seen:
-                location = next((location_text(details_record.get(key)) for key in ("location", "locationsText", "locations", "jobLocation", "PrimaryLocation", "City", "city", "post_location_name", "jobLocationShort", "sfstd_jobLocation_obj", "address") if location_text(details_record.get(key))), "")
-                country = row.get("Country") or row.get("Country1") or row.get("country")
+                location = next((location_text(details_record.get(key)) for key in ("location", "locationsText", "locations", "jobLocation", "PrimaryLocation", "displayLocation", "City", "city", "post_location_name", "jobLocationShort", "sfstd_jobLocation_obj", "address") if location_text(details_record.get(key))), "")
+                country = row.get("Country") or row.get("Country1") or row.get("country") or row.get("countryName")
                 if country and not isinstance(country, (list, dict)) and text(country) not in location:
                     location = ", ".join(filter(None, [location, text(row.get("State")), text(country)]))
                 if not location and isinstance(row.get("categories"), dict):
@@ -129,7 +137,7 @@ def records_from_json(payload, source_url):
                 job = {"title": title, "apply_url": absolute, "location": location, **details_from_record(details_record)}
                 if row.get("Job_Description"):
                     job.update(details_from_record({"description": row["Job_Description"]}))
-                posted = first(row, ("datePosted", "publishedAt", "postedDate", "PostedDate", "postedOn", "Date_Opened", "launch_at"))
+                posted = first(row, ("datePosted", "publishedAt", "postedDate", "PostedDate", "postedOn", "Date_Opened", "launch_at", "releasedDate"))
                 if posted:
                     job.setdefault("date_posted", posted)
                 jobs.append(job)
