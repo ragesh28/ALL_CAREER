@@ -1,0 +1,4461 @@
+{
+  "started": "2026-11-23",
+  "companies": [
+    {
+      "id": "google",
+      "company": "Google",
+      "career_url": "https://www.google.com/about/careers/applications/jobs/results/?location=India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 0,
+          "company_label": "Google",
+          "source_url": "https://www.google.com/about/careers/applications/apply/496f0279-75f0-4954-81e7-2336c966d3a7/role?src=Online%2FLinkedIn%2Flinkedin_us",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 0,
+          "company_label": "Google",
+          "source_url": "https://in.indeed.com/jobs?q=Google&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.google.com/about/careers/applications/jobs/results/?location=India",
+        "https://www.google.com/about/careers/applications/apply/496f0279-75f0-4954-81e7-2336c966d3a7/role?src=Online%2FLinkedIn%2Flinkedin_us",
+        "https://www.google.com/about/careers/applications/apply?jobId=CiUAL2Fckf_-oSzX2oXhQNVmOTTIsknJN98VaOfVKvNVtC__qGSDEjsACxwdTE7E4FXSTBYkM_9wSEtFfP_caJBn7VdQ3H0twpE9biJZLqLlgycUU2aEDAyzSUt1U29y_jtQ9w%3D%3D_V2&loc=IN&title=Strategic+Partnerships+Development+Manager&src=Online%2FLinkedIn%2Flinkedin_us",
+        "https://in.indeed.com/jobs?q=Google&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "microsoft",
+      "company": "Microsoft",
+      "career_url": "https://apply.careers.microsoft.com/careers?location=India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 1,
+          "company_label": "Microsoft",
+          "source_url": "https://apply.careers.microsoft.com/careers/apply?pid=1970393556860541&utm_source=linkedin&domain=microsoft.com&src=LinkedIn",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 1,
+          "company_label": "Microsoft",
+          "source_url": "https://in.indeed.com/jobs?q=Microsoft&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://apply.careers.microsoft.com/careers?location=India",
+        "https://apply.careers.microsoft.com/careers/apply?pid=1970393556860541&utm_source=linkedin&domain=microsoft.com&src=LinkedIn",
+        "https://in.indeed.com/jobs?q=Microsoft&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "paypal",
+      "company": "PayPal",
+      "career_url": "https://paypal.eightfold.ai/careers?location=India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 2,
+          "company_label": "PayPal",
+          "source_url": "https://paypal.eightfold.ai/careers/apply?pid=274919406617&domain=paypal.com",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 70,
+          "company_label": "PayPal",
+          "source_url": "https://in.indeed.com/jobs?q=PayPal&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://paypal.eightfold.ai/careers?location=India",
+        "https://paypal.eightfold.ai/careers/apply?pid=274919406617&domain=paypal.com",
+        "https://in.indeed.com/jobs?q=PayPal&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "amazon",
+      "company": "Amazon",
+      "career_url": "https://www.amazon.jobs/en/search?country=IND",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 3,
+          "company_label": "Amazon",
+          "source_url": "https://www.amazon.jobs/en/jobs/10406385/sr-product-manager-forecasting-tools-demand-planning-workforce-intelligence",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "md",
+          "index": 45,
+          "company_label": "Amazon AI",
+          "source_url": "https://www.amazon.jobs/en/search.json?category%5B%5D=artificial-intelligence&normalized_country_code%5B%5D=IND&offset=0&result_limit=10&sort=recent",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 2,
+          "company_label": "Amazon",
+          "source_url": "https://in.indeed.com/jobs?q=Amazon&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.amazon.jobs/en/search?country=IND",
+        "https://www.amazon.jobs/en/jobs/10406385/sr-product-manager-forecasting-tools-demand-planning-workforce-intelligence",
+        "https://www.amazon.jobs/en/search.json?category%5B%5D=artificial-intelligence&normalized_country_code%5B%5D=IND&offset=0&result_limit=10&sort=recent",
+        "https://in.indeed.com/jobs?q=Amazon&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "tcs",
+      "company": "TCS",
+      "career_url": "https://ibegin.tcsapps.com/candidate/jobs/search",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 4,
+          "company_label": "TCS (Prime/Digital)",
+          "source_url": "https://www.tcsion.com/EForms/configuredHtml/1016/2000054/application.html",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 21,
+          "company_label": "TCS",
+          "source_url": "https://in.indeed.com/jobs?q=TCS&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://ibegin.tcsapps.com/candidate/jobs/search",
+        "https://www.tcsion.com/EForms/configuredHtml/1016/2000054/application.html",
+        "https://in.indeed.com/jobs?q=TCS&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "infosys",
+      "company": "Infosys",
+      "career_url": "https://career.infosys.com/joblist",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 5,
+          "company_label": "Infosys (SP/DSE)",
+          "source_url": "https://career.infosys.com/jobdesc?jobReferenceCode=INFSYS-EXTERNAL-244361&rc=0&jobType=normal",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 22,
+          "company_label": "Infosys",
+          "source_url": "https://in.indeed.com/jobs?q=Infosys&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://career.infosys.com/joblist",
+        "https://career.infosys.com/jobdesc?jobReferenceCode=INFSYS-EXTERNAL-244361&rc=0&jobType=normal",
+        "https://in.indeed.com/jobs?q=Infosys&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "chargebee",
+      "company": "Chargebee",
+      "career_url": "https://www.chargebee.com/careers/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 6,
+          "company_label": "Chargebee",
+          "source_url": "https://linkedin.com/company/chargebee",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 87,
+          "company_label": "Chargebee",
+          "source_url": "https://in.indeed.com/jobs?q=Chargebee&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.chargebee.com/careers/",
+        "https://linkedin.com/company/chargebee",
+        "https://in.indeed.com/jobs?q=Chargebee&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "swiggy",
+      "company": "Swiggy",
+      "career_url": "https://careers.swiggy.com/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 7,
+          "company_label": "Swiggy",
+          "source_url": "https://careers.swiggy.com/",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 31,
+          "company_label": "Swiggy",
+          "source_url": "https://in.indeed.com/jobs?q=Swiggy&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.swiggy.com/",
+        "https://in.indeed.com/jobs?q=Swiggy&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "uber",
+      "company": "Uber",
+      "career_url": "https://www.uber.com/global/en/careers/list/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 8,
+          "company_label": "Uber",
+          "source_url": "https://www.uber.com/in/en/careers/list/?location=IND-Karn%C4%81taka-Bangalore",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 40,
+          "company_label": "Uber",
+          "source_url": "https://in.indeed.com/jobs?q=Uber&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.uber.com/global/en/careers/list/",
+        "https://www.uber.com/in/en/careers/list/?location=IND-Karn%C4%81taka-Bangalore",
+        "https://in.indeed.com/jobs?q=Uber&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "salesforce",
+      "company": "Salesforce",
+      "career_url": "https://careers.salesforce.com/en/jobs/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 9,
+          "company_label": "Salesforce",
+          "source_url": "https://careers.salesforce.com/en/jobs/?country=India&pagesize=20",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 7,
+          "company_label": "Salesforce",
+          "source_url": "https://in.indeed.com/jobs?q=Salesforce&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.salesforce.com/en/jobs/",
+        "https://careers.salesforce.com/en/jobs/?country=India&pagesize=20",
+        "https://in.indeed.com/jobs?q=Salesforce&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "rocketlane",
+      "company": "Rocketlane",
+      "career_url": "https://careers.kula.ai/rocketlane",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 10,
+          "company_label": "Rocketlane",
+          "source_url": "https://careers.kula.ai/rocketlane",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.kula.ai/rocketlane"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "walmart",
+      "company": "Walmart",
+      "career_url": "https://careers.walmart.com/technology",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 11,
+          "company_label": "Walmart Global Tech",
+          "source_url": "https://careers.walmart.com/us/en/results",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 65,
+          "company_label": "Walmart",
+          "source_url": "https://in.indeed.com/jobs?q=Walmart&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.walmart.com/technology",
+        "https://careers.walmart.com/us/en/results",
+        "https://in.indeed.com/jobs?q=Walmart&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "jpmorgan-chase",
+      "company": "JPMorgan Chase",
+      "career_url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 12,
+          "company_label": "JPMorgan Chase",
+          "source_url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 45,
+          "company_label": "JPMorgan Chase",
+          "source_url": "https://in.indeed.com/jobs?q=JPMorgan+Chase&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/jobs",
+        "https://in.indeed.com/jobs?q=JPMorgan+Chase&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "wells-fargo",
+      "company": "Wells Fargo",
+      "career_url": "https://www.wellsfargojobs.com/en/jobs/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 13,
+          "company_label": "Wells Fargo",
+          "source_url": "https://www.wellsfargojobs.com/en/jobs/",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 50,
+          "company_label": "Wells Fargo",
+          "source_url": "https://in.indeed.com/jobs?q=Wells+Fargo&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.wellsfargojobs.com/en/jobs/",
+        "https://in.indeed.com/jobs?q=Wells+Fargo&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "citi",
+      "company": "Citi",
+      "career_url": "https://jobs.citi.com/search-jobs/India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 14,
+          "company_label": "Citi",
+          "source_url": "https://jobs.citi.com/location/karnataka-india-jobs/287/1269750-1267701/3",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 49,
+          "company_label": "Citibank",
+          "source_url": "https://in.indeed.com/jobs?q=Citibank&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.citi.com/search-jobs/India",
+        "https://jobs.citi.com/location/karnataka-india-jobs/287/1269750-1267701/3",
+        "https://in.indeed.com/jobs?q=Citibank&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "latentview-analytics",
+      "company": "LatentView Analytics",
+      "career_url": "",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 15,
+          "company_label": "LatentView Analytics",
+          "source_url": "https://latentview.darwinbox.in/ms/candidatev2/main/careers/allJobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "",
+        "https://latentview.darwinbox.in/ms/candidatev2/main/careers/allJobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "tiger-analytics",
+      "company": "Tiger Analytics",
+      "career_url": "https://www.tigeranalytics.com/careers/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 16,
+          "company_label": "Tiger Analytics",
+          "source_url": "https://www.tigeranalytics.com/about-us/current-openings/",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 64,
+          "company_label": "Tiger Analytics",
+          "source_url": "https://in.indeed.com/jobs?q=Tiger+Analytics&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.tigeranalytics.com/careers/",
+        "https://www.tigeranalytics.com/about-us/current-openings/",
+        "https://in.indeed.com/jobs?q=Tiger+Analytics&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "comcast",
+      "company": "Comcast",
+      "career_url": "",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 17,
+          "company_label": "Comcast",
+          "source_url": "https://jobs.comcast.com/job/chennai/development-engineer-3/45483/94509760128",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "md",
+          "index": 29,
+          "company_label": "Comcast",
+          "source_url": "https://jobs.comcast.com/module/postmodule",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "",
+        "https://jobs.comcast.com/job/chennai/development-engineer-3/45483/94509760128",
+        "https://jobs.comcast.com/module/postmodule"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "turing",
+      "company": "Turing",
+      "career_url": "https://www.turing.com/careers",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 18,
+          "company_label": "Turing",
+          "source_url": "https://careers.turing.com/",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.turing.com/careers",
+        "https://careers.turing.com/"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "accenture",
+      "company": "Accenture",
+      "career_url": "https://www.accenture.com/in-en/careers/jobsearch",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 19,
+          "company_label": "Accenture",
+          "source_url": "https://www.accenture.com/in-en/careers/jobsearch",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 20,
+          "company_label": "Accenture",
+          "source_url": "https://in.indeed.com/jobs?q=Accenture&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.accenture.com/in-en/careers/jobsearch",
+        "https://in.indeed.com/jobs?q=Accenture&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "wipro",
+      "company": "Wipro",
+      "career_url": "https://careers.wipro.com/en-US/search",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 20,
+          "company_label": "Wipro",
+          "source_url": "https://career55.sapsf.eu/careers?company=wiprolimitP2",
+          "previous_status": "sample_found",
+          "previous_description": false
+        },
+        {
+          "engine": "md",
+          "index": 9,
+          "company_label": "Wipro",
+          "source_url": "https://careers.wipro.com/services/recruiting/v1/jobs",
+          "previous_status": "sample_found",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 23,
+          "company_label": "Wipro",
+          "source_url": "https://in.indeed.com/jobs?q=Wipro&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.wipro.com/en-US/search",
+        "https://career55.sapsf.eu/careers?company=wiprolimitP2",
+        "https://careers.wipro.com/services/recruiting/v1/jobs",
+        "https://in.indeed.com/jobs?q=Wipro&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ltimindtree",
+      "company": "LTIMindtree",
+      "career_url": "https://ltimindtree.ripplehire.com/candidate/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 21,
+          "company_label": "LTIMindtree",
+          "source_url": "https://career5.successfactors.eu/careers?company=larsentoub",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 27,
+          "company_label": "LTIMindtree",
+          "source_url": "https://in.indeed.com/jobs?q=LTIMindtree&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://ltimindtree.ripplehire.com/candidate/",
+        "https://career5.successfactors.eu/careers?company=larsentoub",
+        "https://in.indeed.com/jobs?q=LTIMindtree&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "capgemini",
+      "company": "Capgemini",
+      "career_url": "https://careers.capgemini.com/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 22,
+          "company_label": "Capgemini",
+          "source_url": "https://careers.capgemini.com/job/Mumbai-%28ex-Bombay%29-Senior-Software-Engineer/1387990233/?feedId=388633&utm_source=CareerSite&tcsource=apply",
+          "previous_status": "sample_found",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 26,
+          "company_label": "Capgemini",
+          "source_url": "https://in.indeed.com/jobs?q=Capgemini&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.capgemini.com/",
+        "https://careers.capgemini.com/job/Mumbai-%28ex-Bombay%29-Senior-Software-Engineer/1387990233/?feedId=388633&utm_source=CareerSite&tcsource=apply",
+        "https://in.indeed.com/jobs?q=Capgemini&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "virtusa",
+      "company": "Virtusa",
+      "career_url": "https://www.virtusa.com/careers/job-search",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 23,
+          "company_label": "Virtusa",
+          "source_url": "https://www.virtusa.com/careers/job-search",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.virtusa.com/careers/job-search"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hcltech",
+      "company": "HCLTech",
+      "career_url": "https://www.hcltech.com/careers/careers-in-india",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 24,
+          "company_label": "HCLTech",
+          "source_url": "https://career55.sapsf.eu/careers?company=HCLPRD",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 24,
+          "company_label": "HCLTech",
+          "source_url": "https://in.indeed.com/jobs?q=HCLTech&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.hcltech.com/careers/careers-in-india",
+        "https://career55.sapsf.eu/careers?company=HCLPRD",
+        "https://in.indeed.com/jobs?q=HCLTech&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hexaware",
+      "company": "Hexaware",
+      "career_url": "https://fa-etqo-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 25,
+          "company_label": "Hexaware",
+          "source_url": "https://jobs.hexaware.com/",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://fa-etqo-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+        "https://jobs.hexaware.com/"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "athenahealth",
+      "company": "Athenahealth",
+      "career_url": "https://careers.athenahealth.com/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 26,
+          "company_label": "Athenahealth",
+          "source_url": "https://careers.athenahealth.com/us/en/search-results",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.athenahealth.com/",
+        "https://careers.athenahealth.com/us/en/search-results"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ramco-systems",
+      "company": "Ramco Systems",
+      "career_url": "https://www.ramco.com/careers",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 27,
+          "company_label": "Ramco Systems",
+          "source_url": "https://www.ramco.com/careers/jobs-by-locations",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.ramco.com/careers",
+        "https://www.ramco.com/careers/jobs-by-locations"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "intellect-design",
+      "company": "Intellect Design",
+      "career_url": "https://www.intellectdesign.com/careers/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 28,
+          "company_label": "Intellect Design",
+          "source_url": "https://cloud.myadrenalin.com/CandidateMAX/",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.intellectdesign.com/careers/",
+        "https://cloud.myadrenalin.com/CandidateMAX/"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "sify-tech",
+      "company": "Sify Tech",
+      "career_url": "https://www.sifytechnologies.com/careers/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 29,
+          "company_label": "Sify Tech",
+          "source_url": "https://sifycareer.tallite.com/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.sifytechnologies.com/careers/",
+        "https://sifycareer.tallite.com/jobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "tata-elxsi",
+      "company": "Tata Elxsi",
+      "career_url": "https://www.tataelxsi.com/careers",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 30,
+          "company_label": "Tata Elxsi",
+          "source_url": "https://tataelxsi.ramcoes.com/RVW/hub/index.html?portal=true&RVWRTQS_REQID=492b9010-bcb9-41c5-ba69-04935205b380&_dc=1777457819691",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.tataelxsi.com/careers",
+        "https://tataelxsi.ramcoes.com/RVW/hub/index.html?portal=true&RVWRTQS_REQID=492b9010-bcb9-41c5-ba69-04935205b380&_dc=1777457819691"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "phonepe",
+      "company": "PhonePe",
+      "career_url": "https://www.phonepe.com/careers/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 31,
+          "company_label": "PhonePe",
+          "source_url": "https://job-boards.greenhouse.io/phonepe/jobs/7616612003",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 34,
+          "company_label": "PhonePe",
+          "source_url": "https://in.indeed.com/jobs?q=PhonePe&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.phonepe.com/careers/",
+        "https://job-boards.greenhouse.io/phonepe/jobs/7616612003",
+        "https://in.indeed.com/jobs?q=PhonePe&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "razorpay",
+      "company": "Razorpay",
+      "career_url": "https://razorpay.com/jobs/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 32,
+          "company_label": "Razorpay",
+          "source_url": "https://razorpay.com/jobs/jobs-all/detail/?gh_jid=4685992005",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 35,
+          "company_label": "Razorpay",
+          "source_url": "https://in.indeed.com/jobs?q=Razorpay&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://razorpay.com/jobs/",
+        "https://razorpay.com/jobs/jobs-all/detail/?gh_jid=4685992005",
+        "https://in.indeed.com/jobs?q=Razorpay&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "postman",
+      "company": "Postman",
+      "career_url": "https://www.postman.com/company/careers/open-positions/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 33,
+          "company_label": "Postman",
+          "source_url": "https://job-boards.greenhouse.io/postman/jobs/7689314003",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 83,
+          "company_label": "Postman",
+          "source_url": "https://in.indeed.com/jobs?q=Postman&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.postman.com/company/careers/open-positions/",
+        "https://job-boards.greenhouse.io/postman/jobs/7689314003",
+        "https://in.indeed.com/jobs?q=Postman&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zeta-suite",
+      "company": "Zeta Suite",
+      "career_url": "https://jobs.lever.co/zeta",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 34,
+          "company_label": "Zeta Suite",
+          "source_url": "https://api.lever.co/v0/postings/zeta?group=team&mode=json",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.lever.co/zeta",
+        "https://api.lever.co/v0/postings/zeta?group=team&mode=json"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "meesho",
+      "company": "Meesho",
+      "career_url": "https://www.meesho.io/jobs",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 35,
+          "company_label": "Meesho",
+          "source_url": "https://api.lever.co/v0/postings/meesho/",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 37,
+          "company_label": "Meesho",
+          "source_url": "https://in.indeed.com/jobs?q=Meesho&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.meesho.io/jobs",
+        "https://api.lever.co/v0/postings/meesho/",
+        "https://in.indeed.com/jobs?q=Meesho&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "groww",
+      "company": "Groww",
+      "career_url": "https://groww.in/careers",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 36,
+          "company_label": "Groww",
+          "source_url": "https://boards-api.greenhouse.io/v1/boards/groww/jobs",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 39,
+          "company_label": "Groww",
+          "source_url": "https://in.indeed.com/jobs?q=Groww&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://groww.in/careers",
+        "https://boards-api.greenhouse.io/v1/boards/groww/jobs",
+        "https://in.indeed.com/jobs?q=Groww&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "shell",
+      "company": "Shell",
+      "career_url": "https://shell.wd3.myworkdayjobs.com/ShellCareers",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 37,
+          "company_label": "Shell",
+          "source_url": "https://shell.wd3.myworkdayjobs.com/wday/cxs/shell/shellcareers/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 109,
+          "company_label": "Shell",
+          "source_url": "https://in.indeed.com/jobs?q=Shell&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://shell.wd3.myworkdayjobs.com/ShellCareers",
+        "https://shell.wd3.myworkdayjobs.com/wday/cxs/shell/shellcareers/jobs",
+        "https://in.indeed.com/jobs?q=Shell&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "oracle",
+      "company": "Oracle",
+      "career_url": "https://careers.oracle.com/jobs/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 38,
+          "company_label": "Oracle",
+          "source_url": "https://eeho.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 8,
+          "company_label": "Oracle",
+          "source_url": "https://in.indeed.com/jobs?q=Oracle&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.oracle.com/jobs/",
+        "https://eeho.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions",
+        "https://in.indeed.com/jobs?q=Oracle&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cure-fit",
+      "company": "Cure.fit",
+      "career_url": "https://careers.cult.fit/",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 39,
+          "company_label": "Cure.fit",
+          "source_url": "https://public.zwayam.com/jobs/search",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.cult.fit/",
+        "https://public.zwayam.com/jobs/search"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "goldman-sachs",
+      "company": "Goldman Sachs",
+      "career_url": "https://higher.gs.com/results?COUNTRY=India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 40,
+          "company_label": "Goldman Sachs",
+          "source_url": "https://api-higher.gs.com/gateway/api/v1/graphql",
+          "previous_status": "sample_found",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 46,
+          "company_label": "Goldman Sachs",
+          "source_url": "https://in.indeed.com/jobs?q=Goldman+Sachs&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://higher.gs.com/results?COUNTRY=India",
+        "https://api-higher.gs.com/gateway/api/v1/graphql",
+        "https://in.indeed.com/jobs?q=Goldman+Sachs&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "intuit",
+      "company": "Intuit",
+      "career_url": "https://jobs.intuit.com/search-jobs/India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 41,
+          "company_label": "Intuit",
+          "source_url": "https://jobs.intuit.com/search-jobs/India/27595/2/1269750/22/79/0/2",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 72,
+          "company_label": "Intuit",
+          "source_url": "https://in.indeed.com/jobs?q=Intuit&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.intuit.com/search-jobs/India",
+        "https://jobs.intuit.com/search-jobs/India/27595/2/1269750/22/79/0/2",
+        "https://in.indeed.com/jobs?q=Intuit&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "target",
+      "company": "Target",
+      "career_url": "https://corporate.target.com/careers/job-search",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 42,
+          "company_label": "Target",
+          "source_url": "https://indiajobs.target.com/search-jobs/india/1118/2/1269750/22/79/50/2",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 66,
+          "company_label": "Target",
+          "source_url": "https://in.indeed.com/jobs?q=Target&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://corporate.target.com/careers/job-search",
+        "https://indiajobs.target.com/search-jobs/india/1118/2/1269750/22/79/50/2",
+        "https://in.indeed.com/jobs?q=Target&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "sap",
+      "company": "SAP",
+      "career_url": "https://jobs.sap.com/search/?q=India",
+      "sources": [
+        {
+          "engine": "direct",
+          "index": 43,
+          "company_label": "SAP Labs",
+          "source_url": "https://jobs.sap.com/search/?locationsearch=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 9,
+          "company_label": "SAP",
+          "source_url": "https://in.indeed.com/jobs?q=SAP&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.sap.com/search/?q=India",
+        "https://jobs.sap.com/search/?locationsearch=India",
+        "https://in.indeed.com/jobs?q=SAP&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "qualcomm",
+      "company": "Qualcomm",
+      "career_url": "https://careers.qualcomm.com/careers?location=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 0,
+          "company_label": "Qualcomm",
+          "source_url": "https://careers.qualcomm.com/api/pcsx/search?domain=qualcomm.com&location=india&start=0&num=10",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 13,
+          "company_label": "Qualcomm",
+          "source_url": "https://in.indeed.com/jobs?q=Qualcomm&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.qualcomm.com/careers?location=India",
+        "https://careers.qualcomm.com/api/pcsx/search?domain=qualcomm.com&location=india&start=0&num=10",
+        "https://in.indeed.com/jobs?q=Qualcomm&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ericsson",
+      "company": "Ericsson",
+      "career_url": "https://jobs.ericsson.com/careers?location=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 1,
+          "company_label": "Ericsson",
+          "source_url": "https://jobs.ericsson.com/api/pcsx/search?domain=ericsson.com&location=India&start=0&num=10",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 114,
+          "company_label": "Ericsson",
+          "source_url": "https://in.indeed.com/jobs?q=Ericsson&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.ericsson.com/careers?location=India",
+        "https://jobs.ericsson.com/api/pcsx/search?domain=ericsson.com&location=India&start=0&num=10",
+        "https://in.indeed.com/jobs?q=Ericsson&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "siemens",
+      "company": "Siemens",
+      "career_url": "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?21178=%5B%226006%22%5D",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 2,
+          "company_label": "Siemens",
+          "source_url": "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?42414=%5B812053%5D&folderRecordsPerPage=10",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 91,
+          "company_label": "Siemens",
+          "source_url": "https://in.indeed.com/jobs?q=Siemens&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?21178=%5B%226006%22%5D",
+        "https://jobs.siemens.com/en_US/externaljobs/SearchJobs/?42414=%5B812053%5D&folderRecordsPerPage=10",
+        "https://in.indeed.com/jobs?q=Siemens&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "amadeus",
+      "company": "Amadeus",
+      "career_url": "https://amadeus.wd502.myworkdayjobs.com/jobs",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 3,
+          "company_label": "Amadeus",
+          "source_url": "https://amadeus.wd502.myworkdayjobs.com/wday/cxs/amadeus/jobs/jobs",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://amadeus.wd502.myworkdayjobs.com/jobs",
+        "https://amadeus.wd502.myworkdayjobs.com/wday/cxs/amadeus/jobs/jobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ge-healthcare",
+      "company": "GE Healthcare",
+      "career_url": "https://careers.gehealthcare.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 4,
+          "company_label": "GE Healthcare",
+          "source_url": "https://careers.gehealthcare.com/global/en/search-results?from=0&location=India",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.gehealthcare.com/global/en/search-results?keywords=India",
+        "https://careers.gehealthcare.com/global/en/search-results?from=0&location=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bank-of-america",
+      "company": "Bank of America",
+      "career_url": "https://careers.bankofamerica.com/en-us/job-search",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 5,
+          "company_label": "Bank of America",
+          "source_url": "https://careers.bankofamerica.com/services/jobssearchservlet?start=0&rows=10&search=jobsByLocation&searchstring=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 48,
+          "company_label": "Bank of America",
+          "source_url": "https://in.indeed.com/jobs?q=Bank+of+America&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.bankofamerica.com/en-us/job-search",
+        "https://careers.bankofamerica.com/services/jobssearchservlet?start=0&rows=10&search=jobsByLocation&searchstring=India",
+        "https://in.indeed.com/jobs?q=Bank+of+America&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "honeywell",
+      "company": "Honeywell",
+      "career_url": "https://careers.honeywell.com/us/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 6,
+          "company_label": "Honeywell",
+          "source_url": "https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations%2CflexFieldsFacet.values&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000469485%2CsortBy%3DPOSTING_DATES_DESC%2Climit%3D25",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 89,
+          "company_label": "Honeywell",
+          "source_url": "https://in.indeed.com/jobs?q=Honeywell&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.honeywell.com/us/en/search-results?keywords=India",
+        "https://ibqbjb.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.secondaryLocations%2CflexFieldsFacet.values&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000469485%2CsortBy%3DPOSTING_DATES_DESC%2Climit%3D25",
+        "https://in.indeed.com/jobs?q=Honeywell&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bosch",
+      "company": "Bosch",
+      "career_url": "https://jobs.bosch.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 7,
+          "company_label": "Bosch",
+          "source_url": "https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/?filter=%7B%22location.country%22%3A%22in%22%7D",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 90,
+          "company_label": "Bosch",
+          "source_url": "https://in.indeed.com/jobs?q=Bosch&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.bosch.com/",
+        "https://bosch-i3-caas-api.e-spirit.cloud/bosch-i3-prod/bosch-de.jobs.content/?filter=%7B%22location.country%22%3A%22in%22%7D",
+        "https://in.indeed.com/jobs?q=Bosch&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "maersk",
+      "company": "Maersk",
+      "career_url": "https://www.maersk.com/careers/vacancies",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 8,
+          "company_label": "Maersk",
+          "source_url": "https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.maersk.com/careers/vacancies",
+        "https://api.maersk.com/careers/vacancies?limit=24&offset=0&city=india"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "arcesium",
+      "company": "Arcesium",
+      "career_url": "https://www.arcesium.com/careers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 10,
+          "company_label": "Arcesium",
+          "source_url": "https://boards-api.greenhouse.io/v1/boards/arcesiumllc/jobs?content=true",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.arcesium.com/careers",
+        "https://boards-api.greenhouse.io/v1/boards/arcesiumllc/jobs?content=true"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "juniper-networks-hpe",
+      "company": "Juniper Networks / HPE",
+      "career_url": "https://careers.hpe.com/us/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 11,
+          "company_label": "Juniper Networks / HPE",
+          "source_url": "https://careers.hpe.com/widgets",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.hpe.com/us/en/search-results?keywords=India",
+        "https://careers.hpe.com/widgets"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "mastercard",
+      "company": "Mastercard",
+      "career_url": "https://careers.mastercard.com/us/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 12,
+          "company_label": "Mastercard",
+          "source_url": "https://careers.mastercard.com/widgets",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 68,
+          "company_label": "Mastercard",
+          "source_url": "https://in.indeed.com/jobs?q=Mastercard&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.mastercard.com/us/en/search-results?keywords=India",
+        "https://careers.mastercard.com/widgets",
+        "https://in.indeed.com/jobs?q=Mastercard&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "barclays",
+      "company": "Barclays",
+      "career_url": "https://search.jobs.barclays/search-jobs/India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 13,
+          "company_label": "Barclays",
+          "source_url": "https://search.jobs.barclays/search-jobs/India",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 51,
+          "company_label": "Barclays",
+          "source_url": "https://in.indeed.com/jobs?q=Barclays&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://search.jobs.barclays/search-jobs/India",
+        "https://in.indeed.com/jobs?q=Barclays&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "fidelity-investments",
+      "company": "Fidelity Investments",
+      "career_url": "https://jobs.fidelity.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 14,
+          "company_label": "Fidelity Investments",
+          "source_url": "https://jobs.fidelity.com/in/jobs/",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.fidelity.com/",
+        "https://jobs.fidelity.com/in/jobs/"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bny",
+      "company": "BNY",
+      "career_url": "https://www.bny.com/corporate/global/en/careers.html",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 15,
+          "company_label": "BNY",
+          "source_url": "https://eofe.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1001%2ClocationId%3D300000000378365%2Climit%3D25",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.bny.com/corporate/global/en/careers.html",
+        "https://eofe.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1001%2ClocationId%3D300000000378365%2Climit%3D25"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "american-express",
+      "company": "American Express",
+      "career_url": "https://aexp.eightfold.ai/careers?location=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 16,
+          "company_label": "American Express",
+          "source_url": "https://egug.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000228786%2Climit%3D10",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 69,
+          "company_label": "American Express",
+          "source_url": "https://in.indeed.com/jobs?q=American+Express&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://aexp.eightfold.ai/careers?location=India",
+        "https://egug.fa.us2.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000228786%2Climit%3D10",
+        "https://in.indeed.com/jobs?q=American+Express&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "visa",
+      "company": "Visa",
+      "career_url": "https://corporate.visa.com/en/careers.html",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 17,
+          "company_label": "Visa",
+          "source_url": "https://visa.wd5.myworkdayjobs.com/wday/cxs/visa/Visa/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 67,
+          "company_label": "Visa",
+          "source_url": "https://in.indeed.com/jobs?q=Visa&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://corporate.visa.com/en/careers.html",
+        "https://visa.wd5.myworkdayjobs.com/wday/cxs/visa/Visa/jobs",
+        "https://in.indeed.com/jobs?q=Visa&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "fractal-analytics",
+      "company": "Fractal Analytics",
+      "career_url": "https://fractal.wd1.myworkdayjobs.com/Fractalcareers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 18,
+          "company_label": "Fractal Analytics",
+          "source_url": "https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Careers/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 63,
+          "company_label": "Fractal Analytics",
+          "source_url": "https://in.indeed.com/jobs?q=Fractal+Analytics&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://fractal.wd1.myworkdayjobs.com/Fractalcareers",
+        "https://fractal.wd1.myworkdayjobs.com/wday/cxs/fractal/Careers/jobs",
+        "https://in.indeed.com/jobs?q=Fractal+Analytics&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "broadcom",
+      "company": "Broadcom",
+      "career_url": "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 19,
+          "company_label": "Broadcom",
+          "source_url": "https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 117,
+          "company_label": "Broadcom",
+          "source_url": "https://in.indeed.com/jobs?q=Broadcom&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+        "https://broadcom.wd1.myworkdayjobs.com/wday/cxs/broadcom/External_Career/jobs",
+        "https://in.indeed.com/jobs?q=Broadcom&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "akamai",
+      "company": "Akamai",
+      "career_url": "https://www.akamai.com/careers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 20,
+          "company_label": "Akamai",
+          "source_url": "https://fa-extu-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000469285%2Climit%3D25",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.akamai.com/careers",
+        "https://fa-extu-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000469285%2Climit%3D25"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "abb",
+      "company": "ABB",
+      "career_url": "https://careers.abb/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 21,
+          "company_label": "ABB",
+          "source_url": "https://careers.abb/widgets",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 92,
+          "company_label": "ABB",
+          "source_url": "https://in.indeed.com/jobs?q=ABB&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.abb/global/en/search-results?keywords=India",
+        "https://careers.abb/widgets",
+        "https://in.indeed.com/jobs?q=ABB&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "publicis-sapient",
+      "company": "Publicis Sapient",
+      "career_url": "https://careers.publicissapient.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 22,
+          "company_label": "Publicis Sapient",
+          "source_url": "https://careers.publicissapient.com/apps/ps-rebrand/careersJobsearch?country=India&start=0&rows=10",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.publicissapient.com/",
+        "https://careers.publicissapient.com/apps/ps-rebrand/careersJobsearch?country=India&start=0&rows=10"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ibm",
+      "company": "IBM",
+      "career_url": "https://www.ibm.com/careers/search?field_keyword_05[0]=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 23,
+          "company_label": "IBM",
+          "source_url": "https://www-api.ibm.com/search/api/v2",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 10,
+          "company_label": "IBM",
+          "source_url": "https://in.indeed.com/jobs?q=IBM&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.ibm.com/careers/search?field_keyword_05[0]=India",
+        "https://www-api.ibm.com/search/api/v2",
+        "https://in.indeed.com/jobs?q=IBM&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zs-associates",
+      "company": "ZS Associates",
+      "career_url": "https://jobs.zs.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 24,
+          "company_label": "ZS Associates",
+          "source_url": "https://jobs.zs.com/api/jobs?locations=India&page=1",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.zs.com/",
+        "https://jobs.zs.com/api/jobs?locations=India&page=1"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "continental",
+      "company": "Continental",
+      "career_url": "https://jobs.continental.com/en/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 25,
+          "company_label": "Continental",
+          "source_url": "https://jobs.continental.com/en/api/result-list/pagetype-jobs/",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 104,
+          "company_label": "Continental",
+          "source_url": "https://in.indeed.com/jobs?q=Continental&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.continental.com/en/",
+        "https://jobs.continental.com/en/api/result-list/pagetype-jobs/",
+        "https://in.indeed.com/jobs?q=Continental&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "nokia",
+      "company": "Nokia",
+      "career_url": "https://careers.nokia.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 26,
+          "company_label": "Nokia",
+          "source_url": "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.workLocation&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000471745%2Climit%3D23",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 115,
+          "company_label": "Nokia",
+          "source_url": "https://in.indeed.com/jobs?q=Nokia&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.nokia.com/",
+        "https://fa-evmr-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/latest/recruitingCEJobRequisitions?onlyData=true&expand=requisitionList.workLocation&finder=findReqs%3BsiteNumber%3DCX_1%2ClocationId%3D300000000471745%2Climit%3D23",
+        "https://in.indeed.com/jobs?q=Nokia&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cognizant",
+      "company": "Cognizant",
+      "career_url": "https://careers.cognizant.com/india-en/jobs/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 27,
+          "company_label": "Cognizant",
+          "source_url": "https://careers.cognizant.com/india-en/jobs/",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 25,
+          "company_label": "Cognizant",
+          "source_url": "https://in.indeed.com/jobs?q=Cognizant&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.cognizant.com/india-en/jobs/",
+        "https://in.indeed.com/jobs?q=Cognizant&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "kpit-technologies",
+      "company": "KPIT Technologies",
+      "career_url": "https://www.kpit.com/careers/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 28,
+          "company_label": "KPIT Technologies",
+          "source_url": "https://www.kpit.com/job-listing/?country=India&show_all=1",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.kpit.com/careers/",
+        "https://www.kpit.com/job-listing/?country=India&show_all=1"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "grundfos",
+      "company": "Grundfos",
+      "career_url": "https://jobs.grundfos.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 30,
+          "company_label": "Grundfos",
+          "source_url": "https://jobs.grundfos.com/services/recruiting/v1/jobs",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.grundfos.com/",
+        "https://jobs.grundfos.com/services/recruiting/v1/jobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "tally-solutions",
+      "company": "Tally Solutions",
+      "career_url": "https://tallysolutions.com/careers/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 31,
+          "company_label": "Tally Solutions",
+          "source_url": "https://tallysolutions.com/wp-content/themes/tally/api/api-careers-job-listing.php",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://tallysolutions.com/careers/",
+        "https://tallysolutions.com/wp-content/themes/tally/api/api-careers-job-listing.php"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "subex",
+      "company": "Subex",
+      "career_url": "https://www.subex.com/careers/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 32,
+          "company_label": "Subex",
+          "source_url": "https://subex.darwinbox.in/ms/candidateapi/job/alljobs?companyId=main",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.subex.com/careers/",
+        "https://subex.darwinbox.in/ms/candidateapi/job/alljobs?companyId=main"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "brillio",
+      "company": "Brillio",
+      "career_url": "https://www.brillio.com/careers/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 33,
+          "company_label": "Brillio",
+          "source_url": "https://careers.brillio.com/job-listing/",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.brillio.com/careers/",
+        "https://careers.brillio.com/job-listing/"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "eurofins-it",
+      "company": "Eurofins IT",
+      "career_url": "https://careers.eurofins.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 34,
+          "company_label": "Eurofins IT",
+          "source_url": "https://atsintegration.eurofins.com/ATSWebService.asmx/GetJobs?language=en",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.eurofins.com/",
+        "https://atsintegration.eurofins.com/ATSWebService.asmx/GetJobs?language=en"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "sabre",
+      "company": "Sabre",
+      "career_url": "https://sabre.wd1.myworkdayjobs.com/SabreJobs",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 35,
+          "company_label": "Sabre",
+          "source_url": "https://sabre.wd1.myworkdayjobs.com/wday/cxs/sabre/SabreJobs/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://sabre.wd1.myworkdayjobs.com/SabreJobs",
+        "https://sabre.wd1.myworkdayjobs.com/wday/cxs/sabre/SabreJobs/jobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "alstom",
+      "company": "Alstom",
+      "career_url": "https://jobsearch.alstom.com/search/?q=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 36,
+          "company_label": "Alstom",
+          "source_url": "https://jobsearch.alstom.com/search/?locationsearch=india",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobsearch.alstom.com/search/?q=India",
+        "https://jobsearch.alstom.com/search/?locationsearch=india"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "danfoss",
+      "company": "Danfoss",
+      "career_url": "https://jobs.danfoss.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 37,
+          "company_label": "Danfoss",
+          "source_url": "https://jobs.danfoss.com/services/recruiting/v1/jobs",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.danfoss.com/",
+        "https://jobs.danfoss.com/services/recruiting/v1/jobs"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hackerrank",
+      "company": "HackerRank",
+      "career_url": "https://www.hackerrank.com/careers/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 38,
+          "company_label": "HackerRank",
+          "source_url": "https://boards-api.greenhouse.io/v1/boards/hackerrank/departments?render_as=list",
+          "previous_status": "sample_found",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.hackerrank.com/careers/",
+        "https://boards-api.greenhouse.io/v1/boards/hackerrank/departments?render_as=list"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "crossover",
+      "company": "Crossover",
+      "career_url": "https://www.crossover.com/jobs",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 39,
+          "company_label": "Crossover",
+          "source_url": "https://profile-api.crossover.com/pipelines?status=Active",
+          "previous_status": "invalid_job_links",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.crossover.com/jobs",
+        "https://profile-api.crossover.com/pipelines?status=Active"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "sarvam-ai",
+      "company": "Sarvam AI",
+      "career_url": "https://www.sarvam.ai/careers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 40,
+          "company_label": "Sarvam AI",
+          "source_url": "https://www.sarvam.ai/careers",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.sarvam.ai/careers"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cohesity",
+      "company": "Cohesity",
+      "career_url": "https://careers.cohesity.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 41,
+          "company_label": "Cohesity",
+          "source_url": "https://www.cohesity.com/bin/cohesity/open-positions/",
+          "previous_status": "sample_found",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 121,
+          "company_label": "Cohesity",
+          "source_url": "https://in.indeed.com/jobs?q=Cohesity&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.cohesity.com/",
+        "https://www.cohesity.com/bin/cohesity/open-positions/",
+        "https://in.indeed.com/jobs?q=Cohesity&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "nutanix",
+      "company": "Nutanix",
+      "career_url": "https://nutanix.eightfold.ai/careers?location=India",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 42,
+          "company_label": "Nutanix",
+          "source_url": "https://careers.nutanix.com/en/jobs/?location=India&pagesize=20",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 119,
+          "company_label": "Nutanix",
+          "source_url": "https://in.indeed.com/jobs?q=Nutanix&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://nutanix.eightfold.ai/careers?location=India",
+        "https://careers.nutanix.com/en/jobs/?location=India&pagesize=20",
+        "https://in.indeed.com/jobs?q=Nutanix&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "browserstack",
+      "company": "BrowserStack",
+      "career_url": "https://www.browserstack.com/careers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 43,
+          "company_label": "BrowserStack",
+          "source_url": "https://browserstack.wd3.myworkdayjobs.com/wday/cxs/browserstack/External/jobs",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        },
+        {
+          "engine": "indeed",
+          "index": 84,
+          "company_label": "BrowserStack",
+          "source_url": "https://in.indeed.com/jobs?q=BrowserStack&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.browserstack.com/careers",
+        "https://browserstack.wd3.myworkdayjobs.com/wday/cxs/browserstack/External/jobs",
+        "https://in.indeed.com/jobs?q=BrowserStack&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "anthropic",
+      "company": "Anthropic",
+      "career_url": "https://www.anthropic.com/careers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 44,
+          "company_label": "Anthropic",
+          "source_url": "https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.anthropic.com/careers",
+        "https://boards-api.greenhouse.io/v1/boards/anthropic/jobs?content=true"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "societe-generale",
+      "company": "Societe Generale",
+      "career_url": "https://careers.societegenerale.com/en/job-offers",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 46,
+          "company_label": "Societe Generale",
+          "source_url": "https://careers.societegenerale.com/search-proxy.php",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.societegenerale.com/en/job-offers",
+        "https://careers.societegenerale.com/search-proxy.php"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "natwest-group",
+      "company": "NatWest Group",
+      "career_url": "https://jobs.natwestgroup.com/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 47,
+          "company_label": "NatWest Group",
+          "source_url": "https://jobs.natwestgroup.com/search/jobs/in/country/india",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.natwestgroup.com/",
+        "https://jobs.natwestgroup.com/search/jobs/in/country/india"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "itc-infotech",
+      "company": "ITC Infotech",
+      "career_url": "https://jobs.itcinfotech.com/itcinfotech/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 48,
+          "company_label": "ITC Infotech",
+          "source_url": "https://jobs.itcinfotech.com/itcinfotech/jobslist",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.itcinfotech.com/itcinfotech/",
+        "https://jobs.itcinfotech.com/itcinfotech/jobslist"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "openai",
+      "company": "OpenAI",
+      "career_url": "https://openai.com/careers/search/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 49,
+          "company_label": "OpenAI",
+          "source_url": "https://openai.com/careers/search/?_rsc=SUl3vEdiUOxaRb-N",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://openai.com/careers/search/",
+        "https://openai.com/careers/search/?_rsc=SUl3vEdiUOxaRb-N"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "meta",
+      "company": "Meta",
+      "career_url": "https://www.metacareers.com/jobs/",
+      "sources": [
+        {
+          "engine": "md",
+          "index": 50,
+          "company_label": "Meta",
+          "source_url": "https://www.metacareers.com/graphql",
+          "previous_status": "sample_found",
+          "previous_description": true
+        },
+        {
+          "engine": "indeed",
+          "index": 4,
+          "company_label": "Meta",
+          "source_url": "https://in.indeed.com/jobs?q=Meta&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.metacareers.com/jobs/",
+        "https://www.metacareers.com/graphql",
+        "https://in.indeed.com/jobs?q=Meta&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "apple",
+      "company": "Apple",
+      "career_url": "https://jobs.apple.com/en-in/search?location=india-INDC",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 3,
+          "company_label": "Apple",
+          "source_url": "https://in.indeed.com/jobs?q=Apple&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.apple.com/en-in/search?location=india-INDC",
+        "https://in.indeed.com/jobs?q=Apple&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "netflix",
+      "company": "Netflix",
+      "career_url": "https://explore.jobs.netflix.net/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 5,
+          "company_label": "Netflix",
+          "source_url": "https://in.indeed.com/jobs?q=Netflix&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://explore.jobs.netflix.net/careers",
+        "https://in.indeed.com/jobs?q=Netflix&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "adobe",
+      "company": "Adobe",
+      "career_url": "https://careers.adobe.com/us/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 6,
+          "company_label": "Adobe",
+          "source_url": "https://in.indeed.com/jobs?q=Adobe&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.adobe.com/us/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Adobe&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "intel",
+      "company": "Intel",
+      "career_url": "https://jobs.intel.com/en/search-jobs/India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 11,
+          "company_label": "Intel",
+          "source_url": "https://in.indeed.com/jobs?q=Intel&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.intel.com/en/search-jobs/India",
+        "https://in.indeed.com/jobs?q=Intel&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cisco",
+      "company": "Cisco",
+      "career_url": "https://careers.cisco.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 12,
+          "company_label": "Cisco",
+          "source_url": "https://in.indeed.com/jobs?q=Cisco&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.cisco.com/global/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Cisco&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "nvidia",
+      "company": "NVIDIA",
+      "career_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 14,
+          "company_label": "NVIDIA",
+          "source_url": "https://in.indeed.com/jobs?q=NVIDIA&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite",
+        "https://in.indeed.com/jobs?q=NVIDIA&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "samsung",
+      "company": "Samsung",
+      "career_url": "https://sec.wd3.myworkdayjobs.com/Samsung_Careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 15,
+          "company_label": "Samsung",
+          "source_url": "https://in.indeed.com/jobs?q=Samsung&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://sec.wd3.myworkdayjobs.com/Samsung_Careers",
+        "https://in.indeed.com/jobs?q=Samsung&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "sony",
+      "company": "Sony",
+      "career_url": "https://www.sonyjobs.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 16,
+          "company_label": "Sony",
+          "source_url": "https://in.indeed.com/jobs?q=Sony&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.sonyjobs.com/",
+        "https://in.indeed.com/jobs?q=Sony&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "dell",
+      "company": "Dell",
+      "career_url": "https://jobs.dell.com/en/search-jobs/India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 17,
+          "company_label": "Dell",
+          "source_url": "https://in.indeed.com/jobs?q=Dell&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.dell.com/en/search-jobs/India",
+        "https://in.indeed.com/jobs?q=Dell&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hp",
+      "company": "HP",
+      "career_url": "https://apply.hp.com/careers?location=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 18,
+          "company_label": "HP",
+          "source_url": "https://in.indeed.com/jobs?q=HP&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://apply.hp.com/careers?location=India",
+        "https://in.indeed.com/jobs?q=HP&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "lenovo",
+      "company": "Lenovo",
+      "career_url": "https://jobs.lenovo.com/en_US/careers/SearchJobs/India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 19,
+          "company_label": "Lenovo",
+          "source_url": "https://in.indeed.com/jobs?q=Lenovo&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.lenovo.com/en_US/careers/SearchJobs/India",
+        "https://in.indeed.com/jobs?q=Lenovo&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "tech-mahindra",
+      "company": "Tech Mahindra",
+      "career_url": "https://careers.techmahindra.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 28,
+          "company_label": "Tech Mahindra",
+          "source_url": "https://in.indeed.com/jobs?q=Tech+Mahindra&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.techmahindra.com/",
+        "https://in.indeed.com/jobs?q=Tech+Mahindra&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "persistent-systems",
+      "company": "Persistent Systems",
+      "career_url": "https://careers.persistent.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 29,
+          "company_label": "Persistent Systems",
+          "source_url": "https://in.indeed.com/jobs?q=Persistent+Systems&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.persistent.com/",
+        "https://in.indeed.com/jobs?q=Persistent+Systems&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "flipkart",
+      "company": "Flipkart",
+      "career_url": "https://www.flipkartcareers.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 30,
+          "company_label": "Flipkart",
+          "source_url": "https://in.indeed.com/jobs?q=Flipkart&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.flipkartcareers.com/",
+        "https://in.indeed.com/jobs?q=Flipkart&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zomato",
+      "company": "Zomato",
+      "career_url": "https://www.zomato.com/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 32,
+          "company_label": "Zomato",
+          "source_url": "https://in.indeed.com/jobs?q=Zomato&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.zomato.com/careers",
+        "https://in.indeed.com/jobs?q=Zomato&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "paytm",
+      "company": "Paytm",
+      "career_url": "https://jobs.lever.co/paytm",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 33,
+          "company_label": "Paytm",
+          "source_url": "https://in.indeed.com/jobs?q=Paytm&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.lever.co/paytm",
+        "https://in.indeed.com/jobs?q=Paytm&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cred",
+      "company": "CRED",
+      "career_url": "https://jobs.lever.co/cred",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 36,
+          "company_label": "CRED",
+          "source_url": "https://in.indeed.com/jobs?q=CRED&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.lever.co/cred",
+        "https://in.indeed.com/jobs?q=CRED&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zerodha",
+      "company": "Zerodha",
+      "career_url": "https://zerodha.com/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 38,
+          "company_label": "Zerodha",
+          "source_url": "https://in.indeed.com/jobs?q=Zerodha&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://zerodha.com/careers/",
+        "https://in.indeed.com/jobs?q=Zerodha&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ola",
+      "company": "Ola",
+      "career_url": "https://www.olacabs.com/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 41,
+          "company_label": "Ola",
+          "source_url": "https://in.indeed.com/jobs?q=Ola&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.olacabs.com/careers",
+        "https://in.indeed.com/jobs?q=Ola&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "myntra",
+      "company": "Myntra",
+      "career_url": "https://careers.myntra.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 42,
+          "company_label": "Myntra",
+          "source_url": "https://in.indeed.com/jobs?q=Myntra&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.myntra.com/",
+        "https://in.indeed.com/jobs?q=Myntra&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "nykaa",
+      "company": "Nykaa",
+      "career_url": "https://www.nykaa.com/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 43,
+          "company_label": "Nykaa",
+          "source_url": "https://in.indeed.com/jobs?q=Nykaa&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.nykaa.com/careers",
+        "https://in.indeed.com/jobs?q=Nykaa&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bigbasket",
+      "company": "BigBasket",
+      "career_url": "https://careers.bigbasket.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 44,
+          "company_label": "BigBasket",
+          "source_url": "https://in.indeed.com/jobs?q=BigBasket&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.bigbasket.com/",
+        "https://in.indeed.com/jobs?q=BigBasket&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "morgan-stanley",
+      "company": "Morgan Stanley",
+      "career_url": "https://www.morganstanley.com/careers/career-opportunities-search",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 47,
+          "company_label": "Morgan Stanley",
+          "source_url": "https://in.indeed.com/jobs?q=Morgan+Stanley&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.morganstanley.com/careers/career-opportunities-search",
+        "https://in.indeed.com/jobs?q=Morgan+Stanley&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hsbc",
+      "company": "HSBC",
+      "career_url": "https://mycareer.hsbc.com/en_GB/external/SearchJobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 52,
+          "company_label": "HSBC",
+          "source_url": "https://in.indeed.com/jobs?q=HSBC&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://mycareer.hsbc.com/en_GB/external/SearchJobs",
+        "https://in.indeed.com/jobs?q=HSBC&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "deutsche-bank",
+      "company": "Deutsche Bank",
+      "career_url": "https://careers.db.com/professionals/search-roles/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 53,
+          "company_label": "Deutsche Bank",
+          "source_url": "https://in.indeed.com/jobs?q=Deutsche+Bank&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.db.com/professionals/search-roles/",
+        "https://in.indeed.com/jobs?q=Deutsche+Bank&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "standard-chartered",
+      "company": "Standard Chartered",
+      "career_url": "https://jobs.standardchartered.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 54,
+          "company_label": "Standard Chartered",
+          "source_url": "https://in.indeed.com/jobs?q=Standard+Chartered&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.standardchartered.com/",
+        "https://in.indeed.com/jobs?q=Standard+Chartered&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "deloitte",
+      "company": "Deloitte",
+      "career_url": "https://southasiacareers.deloitte.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 55,
+          "company_label": "Deloitte",
+          "source_url": "https://in.indeed.com/jobs?q=Deloitte&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://southasiacareers.deloitte.com/",
+        "https://in.indeed.com/jobs?q=Deloitte&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "pwc",
+      "company": "PwC",
+      "career_url": "https://jobs.in.pwc.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 56,
+          "company_label": "PwC",
+          "source_url": "https://in.indeed.com/jobs?q=PwC&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.in.pwc.com/",
+        "https://in.indeed.com/jobs?q=PwC&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ey",
+      "company": "EY",
+      "career_url": "https://careers.ey.com/ey/search/?q=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 57,
+          "company_label": "EY",
+          "source_url": "https://in.indeed.com/jobs?q=EY&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.ey.com/ey/search/?q=India",
+        "https://in.indeed.com/jobs?q=EY&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "kpmg",
+      "company": "KPMG",
+      "career_url": "https://kpmg.com/in/en/home/careers.html",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 58,
+          "company_label": "KPMG",
+          "source_url": "https://in.indeed.com/jobs?q=KPMG&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://kpmg.com/in/en/home/careers.html",
+        "https://in.indeed.com/jobs?q=KPMG&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "mckinsey",
+      "company": "McKinsey",
+      "career_url": "https://www.mckinsey.com/careers/search-jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 59,
+          "company_label": "McKinsey",
+          "source_url": "https://in.indeed.com/jobs?q=McKinsey&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.mckinsey.com/careers/search-jobs",
+        "https://in.indeed.com/jobs?q=McKinsey&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "boston-consulting-group",
+      "company": "Boston Consulting Group",
+      "career_url": "https://careers.bcg.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 60,
+          "company_label": "Boston Consulting Group",
+          "source_url": "https://in.indeed.com/jobs?q=Boston+Consulting+Group&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.bcg.com/global/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Boston+Consulting+Group&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bain-company",
+      "company": "Bain & Company",
+      "career_url": "https://www.bain.com/careers/find-a-role/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 61,
+          "company_label": "Bain & Company",
+          "source_url": "https://in.indeed.com/jobs?q=Bain+%26+Company&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.bain.com/careers/find-a-role/",
+        "https://in.indeed.com/jobs?q=Bain+%26+Company&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "mu-sigma",
+      "company": "Mu Sigma",
+      "career_url": "https://www.mu-sigma.com/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 62,
+          "company_label": "Mu Sigma",
+          "source_url": "https://in.indeed.com/jobs?q=Mu+Sigma&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.mu-sigma.com/careers/",
+        "https://in.indeed.com/jobs?q=Mu+Sigma&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "stripe",
+      "company": "Stripe",
+      "career_url": "https://stripe.com/jobs/search?office_locations=Asia+Pacific--Bengaluru",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 71,
+          "company_label": "Stripe",
+          "source_url": "https://in.indeed.com/jobs?q=Stripe&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://stripe.com/jobs/search?office_locations=Asia+Pacific--Bengaluru",
+        "https://in.indeed.com/jobs?q=Stripe&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "servicenow",
+      "company": "ServiceNow",
+      "career_url": "https://careers.servicenow.com/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 73,
+          "company_label": "ServiceNow",
+          "source_url": "https://in.indeed.com/jobs?q=ServiceNow&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.servicenow.com/jobs/",
+        "https://in.indeed.com/jobs?q=ServiceNow&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "workday",
+      "company": "Workday",
+      "career_url": "https://workday.wd5.myworkdayjobs.com/Workday",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 74,
+          "company_label": "Workday",
+          "source_url": "https://in.indeed.com/jobs?q=Workday&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://workday.wd5.myworkdayjobs.com/Workday",
+        "https://in.indeed.com/jobs?q=Workday&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "snowflake",
+      "company": "Snowflake",
+      "career_url": "https://careers.snowflake.com/us/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 75,
+          "company_label": "Snowflake",
+          "source_url": "https://in.indeed.com/jobs?q=Snowflake&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.snowflake.com/us/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Snowflake&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "databricks",
+      "company": "Databricks",
+      "career_url": "https://www.databricks.com/company/careers/open-positions",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 76,
+          "company_label": "Databricks",
+          "source_url": "https://in.indeed.com/jobs?q=Databricks&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.databricks.com/company/careers/open-positions",
+        "https://in.indeed.com/jobs?q=Databricks&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cloudera",
+      "company": "Cloudera",
+      "career_url": "https://cloudera.wd5.myworkdayjobs.com/External_Career",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 77,
+          "company_label": "Cloudera",
+          "source_url": "https://in.indeed.com/jobs?q=Cloudera&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://cloudera.wd5.myworkdayjobs.com/External_Career",
+        "https://in.indeed.com/jobs?q=Cloudera&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "confluent",
+      "company": "Confluent",
+      "career_url": "https://careers.confluent.io/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 78,
+          "company_label": "Confluent",
+          "source_url": "https://in.indeed.com/jobs?q=Confluent&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.confluent.io/",
+        "https://in.indeed.com/jobs?q=Confluent&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "mongodb",
+      "company": "MongoDB",
+      "career_url": "https://www.mongodb.com/company/careers/teams",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 79,
+          "company_label": "MongoDB",
+          "source_url": "https://in.indeed.com/jobs?q=MongoDB&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.mongodb.com/company/careers/teams",
+        "https://in.indeed.com/jobs?q=MongoDB&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "atlassian",
+      "company": "Atlassian",
+      "career_url": "https://www.atlassian.com/company/careers/all-jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 80,
+          "company_label": "Atlassian",
+          "source_url": "https://in.indeed.com/jobs?q=Atlassian&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.atlassian.com/company/careers/all-jobs",
+        "https://in.indeed.com/jobs?q=Atlassian&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "freshworks",
+      "company": "Freshworks",
+      "career_url": "https://careers.smartrecruiters.com/Freshworks",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 81,
+          "company_label": "Freshworks",
+          "source_url": "https://in.indeed.com/jobs?q=Freshworks&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.smartrecruiters.com/Freshworks",
+        "https://in.indeed.com/jobs?q=Freshworks&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zoho",
+      "company": "Zoho",
+      "career_url": "https://www.zoho.com/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 82,
+          "company_label": "Zoho",
+          "source_url": "https://in.indeed.com/jobs?q=Zoho&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.zoho.com/careers/",
+        "https://in.indeed.com/jobs?q=Zoho&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "thoughtworks",
+      "company": "Thoughtworks",
+      "career_url": "https://www.thoughtworks.com/careers/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 85,
+          "company_label": "Thoughtworks",
+          "source_url": "https://in.indeed.com/jobs?q=Thoughtworks&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.thoughtworks.com/careers/jobs",
+        "https://in.indeed.com/jobs?q=Thoughtworks&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "hasura",
+      "company": "Hasura",
+      "career_url": "https://hasura.io/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 86,
+          "company_label": "Hasura",
+          "source_url": "https://in.indeed.com/jobs?q=Hasura&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://hasura.io/careers/",
+        "https://in.indeed.com/jobs?q=Hasura&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "inmobi",
+      "company": "InMobi",
+      "career_url": "https://www.inmobi.com/company/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 88,
+          "company_label": "InMobi",
+          "source_url": "https://in.indeed.com/jobs?q=InMobi&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.inmobi.com/company/careers",
+        "https://in.indeed.com/jobs?q=InMobi&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "schneider-electric",
+      "company": "Schneider Electric",
+      "career_url": "https://careers.se.com/jobs?location=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 93,
+          "company_label": "Schneider Electric",
+          "source_url": "https://in.indeed.com/jobs?q=Schneider+Electric&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.se.com/jobs?location=India",
+        "https://in.indeed.com/jobs?q=Schneider+Electric&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ge",
+      "company": "GE",
+      "career_url": "https://careers.gevernova.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 94,
+          "company_label": "GE",
+          "source_url": "https://in.indeed.com/jobs?q=GE&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.gevernova.com/global/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=GE&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "philips",
+      "company": "Philips",
+      "career_url": "https://www.careers.philips.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 95,
+          "company_label": "Philips",
+          "source_url": "https://in.indeed.com/jobs?q=Philips&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.careers.philips.com/global/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Philips&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "3m",
+      "company": "3M",
+      "career_url": "https://3m.wd1.myworkdayjobs.com/Search",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 96,
+          "company_label": "3M",
+          "source_url": "https://in.indeed.com/jobs?q=3M&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://3m.wd1.myworkdayjobs.com/Search",
+        "https://in.indeed.com/jobs?q=3M&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "johnson-controls",
+      "company": "Johnson Controls",
+      "career_url": "https://jobs.johnsoncontrols.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 97,
+          "company_label": "Johnson Controls",
+          "source_url": "https://in.indeed.com/jobs?q=Johnson+Controls&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.johnsoncontrols.com/",
+        "https://in.indeed.com/jobs?q=Johnson+Controls&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "emerson",
+      "company": "Emerson",
+      "career_url": "https://www.emerson.com/en-us/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 98,
+          "company_label": "Emerson",
+          "source_url": "https://in.indeed.com/jobs?q=Emerson&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.emerson.com/en-us/careers",
+        "https://in.indeed.com/jobs?q=Emerson&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "mercedes-benz",
+      "company": "Mercedes Benz",
+      "career_url": "https://jobs.mercedes-benz.com/en/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 99,
+          "company_label": "Mercedes Benz",
+          "source_url": "https://in.indeed.com/jobs?q=Mercedes+Benz&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.mercedes-benz.com/en/",
+        "https://in.indeed.com/jobs?q=Mercedes+Benz&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "bmw",
+      "company": "BMW",
+      "career_url": "https://www.bmwgroup.jobs/en.html",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 100,
+          "company_label": "BMW",
+          "source_url": "https://in.indeed.com/jobs?q=BMW&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.bmwgroup.jobs/en.html",
+        "https://in.indeed.com/jobs?q=BMW&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "volkswagen",
+      "company": "Volkswagen",
+      "career_url": "https://www.volkswagen-group.com/en/careers-15757",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 101,
+          "company_label": "Volkswagen",
+          "source_url": "https://in.indeed.com/jobs?q=Volkswagen&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.volkswagen-group.com/en/careers-15757",
+        "https://in.indeed.com/jobs?q=Volkswagen&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "toyota",
+      "company": "Toyota",
+      "career_url": "https://www.toyotabharat.com/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 102,
+          "company_label": "Toyota",
+          "source_url": "https://in.indeed.com/jobs?q=Toyota&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.toyotabharat.com/careers/",
+        "https://in.indeed.com/jobs?q=Toyota&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ford",
+      "company": "Ford",
+      "career_url": "https://efds.fa.em5.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 103,
+          "company_label": "Ford",
+          "source_url": "https://in.indeed.com/jobs?q=Ford&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://efds.fa.em5.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs",
+        "https://in.indeed.com/jobs?q=Ford&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "caterpillar",
+      "company": "Caterpillar",
+      "career_url": "https://careers.caterpillar.com/en/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 105,
+          "company_label": "Caterpillar",
+          "source_url": "https://in.indeed.com/jobs?q=Caterpillar&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.caterpillar.com/en/jobs/",
+        "https://in.indeed.com/jobs?q=Caterpillar&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "john-deere",
+      "company": "John Deere",
+      "career_url": "https://jobs.deere.com/search/?q=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 106,
+          "company_label": "John Deere",
+          "source_url": "https://in.indeed.com/jobs?q=John+Deere&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.deere.com/search/?q=India",
+        "https://in.indeed.com/jobs?q=John+Deere&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "cummins",
+      "company": "Cummins",
+      "career_url": "https://cummins.jobs/ind/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 107,
+          "company_label": "Cummins",
+          "source_url": "https://in.indeed.com/jobs?q=Cummins&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://cummins.jobs/ind/jobs/",
+        "https://in.indeed.com/jobs?q=Cummins&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "eaton",
+      "company": "Eaton",
+      "career_url": "https://jobs.eaton.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 108,
+          "company_label": "Eaton",
+          "source_url": "https://in.indeed.com/jobs?q=Eaton&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.eaton.com/",
+        "https://in.indeed.com/jobs?q=Eaton&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "schlumberger",
+      "company": "Schlumberger",
+      "career_url": "https://careers.slb.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 110,
+          "company_label": "Schlumberger",
+          "source_url": "https://in.indeed.com/jobs?q=Schlumberger&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.slb.com/",
+        "https://in.indeed.com/jobs?q=Schlumberger&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "baker-hughes",
+      "company": "Baker Hughes",
+      "career_url": "https://careers.bakerhughes.com/global/en/search-results?keywords=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 111,
+          "company_label": "Baker Hughes",
+          "source_url": "https://in.indeed.com/jobs?q=Baker+Hughes&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.bakerhughes.com/global/en/search-results?keywords=India",
+        "https://in.indeed.com/jobs?q=Baker+Hughes&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "halliburton",
+      "company": "Halliburton",
+      "career_url": "https://jobs.halliburton.com/search/?q=India",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 112,
+          "company_label": "Halliburton",
+          "source_url": "https://in.indeed.com/jobs?q=Halliburton&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.halliburton.com/search/?q=India",
+        "https://in.indeed.com/jobs?q=Halliburton&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "totalenergies",
+      "company": "TotalEnergies",
+      "career_url": "https://careers.totalenergies.com/en_US/careers/SearchJobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 113,
+          "company_label": "TotalEnergies",
+          "source_url": "https://in.indeed.com/jobs?q=TotalEnergies&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.totalenergies.com/en_US/careers/SearchJobs",
+        "https://in.indeed.com/jobs?q=TotalEnergies&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "juniper-networks",
+      "company": "Juniper Networks",
+      "career_url": "https://careers.hpe.com/us/en/search-results?keywords=Juniper",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 116,
+          "company_label": "Juniper Networks",
+          "source_url": "https://in.indeed.com/jobs?q=Juniper+Networks&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.hpe.com/us/en/search-results?keywords=Juniper",
+        "https://in.indeed.com/jobs?q=Juniper+Networks&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "marvell",
+      "company": "Marvell",
+      "career_url": "https://marvell.wd1.myworkdayjobs.com/MarvellCareers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 118,
+          "company_label": "Marvell",
+          "source_url": "https://in.indeed.com/jobs?q=Marvell&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://marvell.wd1.myworkdayjobs.com/MarvellCareers",
+        "https://in.indeed.com/jobs?q=Marvell&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "rubrik",
+      "company": "Rubrik",
+      "career_url": "https://www.rubrik.com/company/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 120,
+          "company_label": "Rubrik",
+          "source_url": "https://in.indeed.com/jobs?q=Rubrik&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.rubrik.com/company/careers",
+        "https://in.indeed.com/jobs?q=Rubrik&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "vmware",
+      "company": "VMware",
+      "career_url": "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 122,
+          "company_label": "VMware",
+          "source_url": "https://in.indeed.com/jobs?q=VMware&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://broadcom.wd1.myworkdayjobs.com/External_Career",
+        "https://in.indeed.com/jobs?q=VMware&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "palo-alto-networks",
+      "company": "Palo Alto Networks",
+      "career_url": "https://jobs.paloaltonetworks.com/en/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 123,
+          "company_label": "Palo Alto Networks",
+          "source_url": "https://in.indeed.com/jobs?q=Palo+Alto+Networks&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.paloaltonetworks.com/en/jobs/",
+        "https://in.indeed.com/jobs?q=Palo+Alto+Networks&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "crowdstrike",
+      "company": "CrowdStrike",
+      "career_url": "https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 124,
+          "company_label": "CrowdStrike",
+          "source_url": "https://in.indeed.com/jobs?q=CrowdStrike&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://crowdstrike.wd5.myworkdayjobs.com/crowdstrikecareers",
+        "https://in.indeed.com/jobs?q=CrowdStrike&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "fortinet",
+      "company": "Fortinet",
+      "career_url": "https://www.fortinet.com/corporate/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 125,
+          "company_label": "Fortinet",
+          "source_url": "https://in.indeed.com/jobs?q=Fortinet&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://www.fortinet.com/corporate/careers",
+        "https://in.indeed.com/jobs?q=Fortinet&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "zscaler",
+      "company": "Zscaler",
+      "career_url": "https://www.zscaler.com/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 126,
+          "company_label": "Zscaler",
+          "source_url": "https://in.indeed.com/jobs?q=Zscaler&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.zscaler.com/careers",
+        "https://in.indeed.com/jobs?q=Zscaler&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "splunk",
+      "company": "Splunk",
+      "career_url": "https://www.splunk.com/en_us/careers/search-jobs.html",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 127,
+          "company_label": "Splunk",
+          "source_url": "https://in.indeed.com/jobs?q=Splunk&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.splunk.com/en_us/careers/search-jobs.html",
+        "https://in.indeed.com/jobs?q=Splunk&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "elastic",
+      "company": "Elastic",
+      "career_url": "https://www.elastic.co/careers/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 128,
+          "company_label": "Elastic",
+          "source_url": "https://in.indeed.com/jobs?q=Elastic&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.elastic.co/careers/jobs",
+        "https://in.indeed.com/jobs?q=Elastic&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "twilio",
+      "company": "Twilio",
+      "career_url": "https://www.twilio.com/en-us/company/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 129,
+          "company_label": "Twilio",
+          "source_url": "https://in.indeed.com/jobs?q=Twilio&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.twilio.com/en-us/company/jobs",
+        "https://in.indeed.com/jobs?q=Twilio&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "datadog",
+      "company": "Datadog",
+      "career_url": "https://careers.datadoghq.com/all-jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 130,
+          "company_label": "Datadog",
+          "source_url": "https://in.indeed.com/jobs?q=Datadog&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.datadoghq.com/all-jobs/",
+        "https://in.indeed.com/jobs?q=Datadog&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "new-relic",
+      "company": "New Relic",
+      "career_url": "https://newrelic.com/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 131,
+          "company_label": "New Relic",
+          "source_url": "https://in.indeed.com/jobs?q=New+Relic&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://newrelic.com/careers",
+        "https://in.indeed.com/jobs?q=New+Relic&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "pagerduty",
+      "company": "PagerDuty",
+      "career_url": "https://careers.pagerduty.com/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 132,
+          "company_label": "PagerDuty",
+          "source_url": "https://in.indeed.com/jobs?q=PagerDuty&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.pagerduty.com/jobs/",
+        "https://in.indeed.com/jobs?q=PagerDuty&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "okta",
+      "company": "Okta",
+      "career_url": "https://www.okta.com/company/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 133,
+          "company_label": "Okta",
+          "source_url": "https://in.indeed.com/jobs?q=Okta&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.okta.com/company/careers/",
+        "https://in.indeed.com/jobs?q=Okta&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "uipath",
+      "company": "UiPath",
+      "career_url": "https://careers.uipath.com/careers/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 134,
+          "company_label": "UiPath",
+          "source_url": "https://in.indeed.com/jobs?q=UiPath&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.uipath.com/careers/jobs",
+        "https://in.indeed.com/jobs?q=UiPath&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "automation-anywhere",
+      "company": "Automation Anywhere",
+      "career_url": "https://www.automationanywhere.com/company/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 135,
+          "company_label": "Automation Anywhere",
+          "source_url": "https://in.indeed.com/jobs?q=Automation+Anywhere&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.automationanywhere.com/company/careers",
+        "https://in.indeed.com/jobs?q=Automation+Anywhere&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "blue-prism",
+      "company": "Blue Prism",
+      "career_url": "https://www.blueprism.com/company/careers/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 136,
+          "company_label": "Blue Prism",
+          "source_url": "https://in.indeed.com/jobs?q=Blue+Prism&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.blueprism.com/company/careers/",
+        "https://in.indeed.com/jobs?q=Blue+Prism&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "celonis",
+      "company": "Celonis",
+      "career_url": "https://www.celonis.com/careers/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 137,
+          "company_label": "Celonis",
+          "source_url": "https://in.indeed.com/jobs?q=Celonis&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.celonis.com/careers/jobs/",
+        "https://in.indeed.com/jobs?q=Celonis&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "appian",
+      "company": "Appian",
+      "career_url": "https://careers.appian.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 138,
+          "company_label": "Appian",
+          "source_url": "https://in.indeed.com/jobs?q=Appian&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.appian.com/",
+        "https://in.indeed.com/jobs?q=Appian&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "epic-games",
+      "company": "Epic Games",
+      "career_url": "https://www.epicgames.com/site/en-US/careers/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 139,
+          "company_label": "Epic Games",
+          "source_url": "https://in.indeed.com/jobs?q=Epic+Games&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.epicgames.com/site/en-US/careers/jobs",
+        "https://in.indeed.com/jobs?q=Epic+Games&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "unity",
+      "company": "Unity",
+      "career_url": "https://unity.com/careers/positions",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 140,
+          "company_label": "Unity",
+          "source_url": "https://in.indeed.com/jobs?q=Unity&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://unity.com/careers/positions",
+        "https://in.indeed.com/jobs?q=Unity&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ea-sports",
+      "company": "EA Sports",
+      "career_url": "https://jobs.ea.com/en_US/careers",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 141,
+          "company_label": "EA Sports",
+          "source_url": "https://in.indeed.com/jobs?q=EA+Sports&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://jobs.ea.com/en_US/careers",
+        "https://in.indeed.com/jobs?q=EA+Sports&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "riot-games",
+      "company": "Riot Games",
+      "career_url": "https://www.riotgames.com/en/work-with-us/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 142,
+          "company_label": "Riot Games",
+          "source_url": "https://in.indeed.com/jobs?q=Riot+Games&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.riotgames.com/en/work-with-us/jobs",
+        "https://in.indeed.com/jobs?q=Riot+Games&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "ubisoft",
+      "company": "Ubisoft",
+      "career_url": "https://www.ubisoft.com/en-us/company/careers/search",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 143,
+          "company_label": "Ubisoft",
+          "source_url": "https://in.indeed.com/jobs?q=Ubisoft&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.ubisoft.com/en-us/company/careers/search",
+        "https://in.indeed.com/jobs?q=Ubisoft&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "spotify",
+      "company": "Spotify",
+      "career_url": "https://www.lifeatspotify.com/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 144,
+          "company_label": "Spotify",
+          "source_url": "https://in.indeed.com/jobs?q=Spotify&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.lifeatspotify.com/jobs",
+        "https://in.indeed.com/jobs?q=Spotify&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "twitter",
+      "company": "Twitter",
+      "career_url": "https://careers.x.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 145,
+          "company_label": "Twitter",
+          "source_url": "https://in.indeed.com/jobs?q=Twitter&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.x.com/",
+        "https://in.indeed.com/jobs?q=Twitter&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "linkedin",
+      "company": "LinkedIn",
+      "career_url": "https://careers.linkedin.com/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 146,
+          "company_label": "LinkedIn",
+          "source_url": "https://in.indeed.com/jobs?q=LinkedIn&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.linkedin.com/",
+        "https://in.indeed.com/jobs?q=LinkedIn&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "pinterest",
+      "company": "Pinterest",
+      "career_url": "https://www.pinterestcareers.com/en/jobs/",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 147,
+          "company_label": "Pinterest",
+          "source_url": "https://in.indeed.com/jobs?q=Pinterest&l=India",
+          "previous_status": "no_jobs_returned",
+          "previous_description": false
+        }
+      ],
+      "candidate_urls": [
+        "https://www.pinterestcareers.com/en/jobs/",
+        "https://in.indeed.com/jobs?q=Pinterest&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    },
+    {
+      "id": "snap",
+      "company": "Snap",
+      "career_url": "https://careers.snap.com/jobs",
+      "sources": [
+        {
+          "engine": "indeed",
+          "index": 148,
+          "company_label": "Snap",
+          "source_url": "https://in.indeed.com/jobs?q=Snap&l=India",
+          "previous_status": "sample_found",
+          "previous_description": true
+        }
+      ],
+      "candidate_urls": [
+        "https://careers.snap.com/jobs",
+        "https://in.indeed.com/jobs?q=Snap&l=India"
+      ],
+      "state": "pending",
+      "attempts": []
+    }
+  ]
+}
