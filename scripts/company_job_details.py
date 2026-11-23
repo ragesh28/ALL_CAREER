@@ -79,6 +79,8 @@ def jobs_from_payload(payload, base_url):
         elif isinstance(value, dict):
             title = next((text(value.get(k)) for k in ("title", "jobTitle", "Title", "postingTitle", "JobTitle", "name") if text(value.get(k))), "")
             link = next((text(value.get(k)) for k in ("apply_url", "url", "jobUrl", "absolute_url", "absoluteUrl", "positionUrl", "job_url", "hostedUrl", "applyUrl") if text(value.get(k))), "")
+            if title == text(value.get("name")) and not any(value.get(k) for k in ("title", "jobTitle", "Title", "postingTitle", "JobTitle", "positionUrl", "jobUrl", "hostedUrl", "jobDescription", "jobAd")):
+                title = ""
             if title and link:
                 url = urljoin(base_url, link)
                 if url not in seen:
@@ -137,6 +139,9 @@ def fetch_details(url):
     oracle = parsed.hostname.endswith("oraclecloud.com") and re.search(r"/job/(\d+)", parsed.path)
     if oracle:
         candidates.insert(0, f"https://{parsed.netloc}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?finder=ById;Id={oracle.group(1)}")
+    smart = parsed.hostname == "jobs.smartrecruiters.com" and re.match(r"/([^/]+)/(\d+)", parsed.path)
+    if smart:
+        candidates.insert(0, f"https://api.smartrecruiters.com/v1/companies/{smart.group(1)}/postings/{smart.group(2)}")
     if parsed.hostname.endswith("myworkdayjobs.com"):
         parts = [p for p in parsed.path.split("/") if p]
         if "job" in parts and len(parts) > 2:
@@ -156,6 +161,11 @@ def fetch_details(url):
                     record = record["items"][0]
                 if not isinstance(record, dict):
                     continue
+                sections = record.get("jobAd", {}).get("sections", {})
+                if isinstance(sections, dict):
+                    blocks = [text(sections.get(key, {}).get("text")) for key in ("jobDescription", "qualifications", "additionalInformation") if isinstance(sections.get(key), dict)]
+                    if any(blocks):
+                        record = {**record, "description": "\n".join(filter(None, blocks))}
                 details = details_from_record(record)
                 if record.get("ExternalQualificationsStr"):
                     details["description"] = " ".join(filter(None, [details.get("description"), text(record["ExternalQualificationsStr"])]))
@@ -163,6 +173,14 @@ def fetch_details(url):
                     return {**details, "description_source": candidate}
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
+            if parsed.hostname == "jobs.siemens.com" and "/JobDetail/" in parsed.path:
+                node = soup.select_one("article.article--details .article__content__view__field__value")
+                if node:
+                    details = details_from_record({"description": node.get_text(" ", strip=True)})
+                    posted = re.search(r"Posted since\s+(\d{1,2}-[A-Za-z]{3}-\d{4})", soup.get_text(" ", strip=True))
+                    if posted:
+                        details["date_posted"] = posted.group(1)
+                    return {**details, "description_source": candidate}
             if parsed.hostname in ("www.google.com", "google.com") and "/careers/applications/jobs/results/" in parsed.path:
                 sections = []
                 for heading in soup.find_all(["h2", "h3"]):

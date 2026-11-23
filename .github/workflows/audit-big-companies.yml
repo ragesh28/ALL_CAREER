@@ -1,6 +1,14 @@
 name: Audit Big Company Samples and Descriptions
 on:
   workflow_dispatch:
+    inputs:
+      engine:
+        type: choice
+        options: [all, direct, md, indeed]
+        default: all
+      companies:
+        type: string
+        default: ''
   workflow_call:
     inputs:
       engine:
