@@ -2,6 +2,10 @@ name: Investigate Company Career Pages
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      companies:
+        type: string
+        default: ''
 permissions:
   contents: read
 env:
@@ -58,7 +62,9 @@ jobs:
           name: investigation-provider-health
           path: investigation-health
       - name: Open each employer and inspect jobs, APIs and descriptions
-        run: python -m scripts.investigate_company_sources --output investigation --health investigation-health/investigation-health.json --shard ${{ matrix.shard }} --shards 4 --workers 2 --timeout 240
+        env:
+          COMPANY_INVESTIGATE_ONLY: ${{ inputs.companies }}
+        run: python -m scripts.investigate_company_sources --output investigation --health investigation-health/investigation-health.json --shard ${{ matrix.shard }} --shards 4 --workers 2 --timeout 240 --only "$COMPANY_INVESTIGATE_ONLY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

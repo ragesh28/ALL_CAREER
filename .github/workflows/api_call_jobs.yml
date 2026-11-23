@@ -70,4 +70,6 @@ jobs:
   investigate-companies:
     if: inputs.investigate_companies == true
     uses: ./.github/workflows/company-browser-investigation.yml
+    with:
+      companies: ${{ inputs.audit_companies || '' }}
     secrets: inherit
