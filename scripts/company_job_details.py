@@ -28,7 +28,7 @@ def text(value):
 
 def details_from_record(record):
     result = {key: text(record.get(key)) for key in DETAIL_KEYS if text(record.get(key))}
-    for key in ("jobDescription", "job_description", "descriptionHtml", "descriptionPlain", "content"):
+    for key in ("jobDescription", "job_description", "descriptionHtml", "descriptionPlain", "content", "ExternalDescriptionStr"):
         if not result.get("description") and text(record.get(key)):
             result["description"] = text(record[key])
     salary = record.get("baseSalary") or record.get("salaryRange")
@@ -42,6 +42,12 @@ def details_from_record(record):
         result["date_posted"] = text(record["datePosted"])
     if not result.get("job_type") and record.get("employmentType"):
         result["job_type"] = text(record["employmentType"])
+    if not result.get("date_posted") and record.get("postedTs"):
+        from datetime import datetime, timezone
+        try:
+            result["date_posted"] = datetime.fromtimestamp(float(record["postedTs"]), timezone.utc).date().isoformat()
+        except (ValueError, TypeError, OverflowError, OSError):
+            pass
     desc = result.get("description", "")
     if not result.get("experience"):
         match = re.search(r"\b(?:minimum\s+(?:of\s+)?)?\d{1,2}\s*(?:[-–—]|to)\s*\d{1,2}\s*years?\s*(?:of\s+)?(?:relevant\s+|professional\s+|work\s+)?experience\b", desc, re.I)
@@ -87,6 +93,12 @@ def fetch_details(url):
         return {}
     headers = {"User-Agent": "Mozilla/5.0", "Accept": "application/json,text/html"}
     candidates = [url]
+    microsoft = parsed.hostname == "apply.careers.microsoft.com" and re.search(r"/careers/job/(\d+)", parsed.path)
+    if microsoft:
+        candidates.insert(0, f"https://{parsed.netloc}/api/pcsx/position_details?position_id={microsoft.group(1)}&domain=microsoft.com")
+    oracle = parsed.hostname.endswith("oraclecloud.com") and re.search(r"/job/(\d+)", parsed.path)
+    if oracle:
+        candidates.insert(0, f"https://{parsed.netloc}/hcmRestApi/resources/latest/recruitingCEJobRequisitionDetails?finder=ById;Id={oracle.group(1)}")
     if parsed.hostname.endswith("myworkdayjobs.com"):
         parts = [p for p in parsed.path.split("/") if p]
         if "job" in parts and len(parts) > 2:
@@ -101,12 +113,27 @@ def fetch_details(url):
                 continue
             if "json" in response.headers.get("Content-Type", ""):
                 raw = response.json()
-                record = raw.get("jobPostingInfo", raw) if isinstance(raw, dict) else {}
+                record = raw.get("jobPostingInfo", raw.get("data", raw)) if isinstance(raw, dict) else {}
+                if isinstance(record, dict) and isinstance(record.get("items"), list) and record["items"]:
+                    record = record["items"][0]
+                if not isinstance(record, dict):
+                    continue
                 details = details_from_record(record)
+                if record.get("ExternalQualificationsStr"):
+                    details["description"] = " ".join(filter(None, [details.get("description"), text(record["ExternalQualificationsStr"])]))
                 if details.get("description"):
                     return {**details, "description_source": candidate}
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
+            if parsed.hostname in ("www.google.com", "google.com") and "/careers/applications/jobs/results/" in parsed.path:
+                sections = []
+                for heading in soup.find_all(["h2", "h3"]):
+                    label = heading.get_text(" ", strip=True).lower().rstrip(":")
+                    if label in ("minimum qualifications", "preferred qualifications", "about the job", "responsibilities"):
+                        sections.append(heading.parent.get_text(" ", strip=True))
+                description = "\n".join(sections)
+                if len(description) >= 100:
+                    return {**details_from_record({"description": description}), "description_source": candidate}
             for script in soup.select('script[type="application/ld+json"]'):
                 try:
                     for job in _jobpostings(json.loads(script.string or script.get_text())):

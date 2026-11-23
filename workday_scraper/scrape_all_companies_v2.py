@@ -293,7 +293,6 @@ def scrape_microsoft_api(url, limit=2):
             fetch_size = min(batch_size, limit - len(jobs))
             params = {
                 "domain": "microsoft.com",
-                "query": "",
                 "location": "India",
                 "start": offset,
                 "sort_by": "timestamp",
@@ -428,7 +427,7 @@ def scrape_oracle_cloud(url, limit=2):
     # Map known career portal URLs to their actual Oracle Cloud API base
     domain = parsed.netloc.lower()
     if "hexaware" in domain or "jobs.hexaware" in domain:
-        base = "https://eeho.fa.us2.oraclecloud.com"
+        base = "https://fa-etqo-saasfaprod1.fa.ocs.oraclecloud.com"
         site_number = "CX_1"
     else:
         base = f"{parsed.scheme}://{parsed.netloc}"
@@ -1785,7 +1784,7 @@ def main():
         print("  Error: companies_links.json not found.")
         return
 
-    existing_jobs = []
+    existing_jobs = load_existing_jobs()
     print("  Initializing local storage chunk updates...")
 
     all_results = []
@@ -1809,6 +1808,8 @@ def main():
         jobs = enrich_jobs(detect_and_scrape(name, ats, url, limit=1000))
 
         if jobs:
+            store_jobs_local(jobs, existing_jobs, name)
+            save_jobs(existing_jobs)
             # Format jobs for storage.py
             formatted_jobs = []
             fetched_at = datetime.now().strftime("%Y-%m-%d")

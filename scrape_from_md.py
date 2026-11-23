@@ -160,7 +160,7 @@ def scrape_workday(info):
                     **details_from_record(j),
                     "title": clean(j.get("title", "")),
                     "location": clean(j.get("locationsText", "")),
-                    "apply_url": f"https://{urlparse(info['url']).netloc}{j.get('externalPath', '')}",
+                    "apply_url": f"https://{urlparse(info['url']).netloc}/en-US/{urlparse(info['url']).path.rstrip('/').split('/')[-2]}{j.get('externalPath', '')}",
                 })
             offset += limit
             if total and offset >= total:

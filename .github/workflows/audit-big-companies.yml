@@ -2,6 +2,10 @@ name: Audit Big Company Samples and Descriptions
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      engine:
+        type: string
+        default: all
 permissions:
   contents: read
 jobs:
@@ -11,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        engine: [direct, md, indeed]
+        engine: ${{ inputs.engine == 'all' && fromJSON('["direct","md","indeed"]') || fromJSON(format('["{0}"]', inputs.engine || 'direct')) }}
     steps:
       - uses: actions/checkout@v4
         with:
