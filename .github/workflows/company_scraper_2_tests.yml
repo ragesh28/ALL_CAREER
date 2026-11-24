@@ -1,0 +1,42 @@
+name: Company Scraper 2 Checks
+on:
+  pull_request:
+    paths: ['scripts/company*', 'scripts/publish_company_catalog.py', 'tests/test_company*', 'scrape_from_md.py', 'step3_big_company_scrape.py', 'workday_scraper/**', 'all-career-app/**', '.github/workflows/*company*']
+  push:
+    paths: ['scripts/company*', 'scripts/publish_company_catalog.py', 'tests/test_company*', 'scrape_from_md.py', 'step3_big_company_scrape.py', 'workday_scraper/**', 'all-career-app/**', '.github/workflows/*company*']
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      COMPANY_AI_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            tests
+            workday_scraper
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4 curl_cffi playwright pandas python-jobspy
+      - run: python -m unittest tests.test_company_publication tests.test_company_scraper2 tests.test_company_job_details tests.test_company_recovery tests.test_company_investigation_report -v
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: all-career-app
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: all-career-app
+      - run: npm run build
+        working-directory: all-career-app
+      - run: node --experimental-strip-types scripts/test-company-experience.mjs
+        working-directory: all-career-app

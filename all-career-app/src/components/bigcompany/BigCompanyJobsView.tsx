@@ -1,13 +1,22 @@
 import { MobileFilters } from '../common/MobileFilters';
 import React, { useState, useEffect, useMemo } from 'react';
-import { BriefcaseBusiness, CalendarDays, History, Home, MapPin, RotateCcw, Search, Send, X } from 'lucide-react';
+import { Banknote, Route, BriefcaseBusiness, CalendarDays, History, Home, MapPin, RotateCcw, Search, Send, X } from 'lucide-react';
 import { AuthenticLogoBox } from '../alljobs/JobCard';
 import { ROLE_KEYWORDS } from '../../utils/filterUtils';
+import { matchesCompanyExperience } from '../../utils/companyExperience';
 import { bridgeService } from '../../services/bridgeService';
 import { resolveAssetUrl, fetchJsonWithFallback } from '../../utils/urlHelper';
 import { STRING_THEORY_LOGO } from '../../utils/brandLogo';
 
 interface BigCompanyJob {
+  experience?: string;
+  salary?: string;
+  date_posted?: string;
+  first_seen?: string;
+  is_walkin?: boolean;
+  walkin_date?: string;
+  company_logo?: string;
+  company_website?: string;
   title: string;
   company: string;
   location: string;
@@ -136,9 +145,12 @@ const DATE_RANGES = [
 function formatDate(dateStr?: string) {
   if (!dateStr) return '';
   const clean = dateStr.replace(/[^a-zA-Z0-9\s-:,]/g, '').trim();
-  const d = new Date(clean);
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(clean);
+  const [year, month, day] = clean.split('-').map(Number);
+  const d = dateOnly ? new Date(year, month - 1, day) : new Date(clean);
   if (isNaN(d.getTime())) return clean;
   const now = new Date();
+  if (dateOnly) now.setHours(0, 0, 0, 0);
   const diffMs = now.getTime() - d.getTime();
   const diffDays = Math.floor(diffMs / 86400000);
   if (diffDays === 0) return 'Today';
@@ -152,6 +164,7 @@ const FILTER_BADGES = {
   location: { label: 'Location', Icon: MapPin },
   role: { label: 'Role', Icon: BriefcaseBusiness },
   search: { label: 'Search', Icon: Search },
+  experience: { label: 'Experience', Icon: BriefcaseBusiness },
 };
 
 function FilterBadge({ kind, value, onRemove }: {
@@ -191,6 +204,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
   const [selectedLocations, setSelectedLocations] = useState<Set<string>>(new Set());
   const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
+  const [experience, setExperience] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'company'>('date');
   const [currentPage, setCurrentPage] = useState(1);
   const JOBS_PER_PAGE = 50;
@@ -207,7 +221,8 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
   const [openSections, setOpenSections] = useState({
     date: true,
     location: true,
-    roles: true
+    roles: true,
+    experience: true
   });
 
   const toggleSection = (s: keyof typeof openSections) => {
@@ -281,6 +296,9 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
     excludeDim: 'none' | 'location' | 'role' | 'date',
     term: string
   ): boolean => {
+    if (experience !== '') {
+      if (!matchesCompanyExperience(j.experience, Number(experience))) return false;
+    }
     // 1. Search Query
     if (term) {
       const hay = [j.title, j.company, j.location].filter(Boolean).join(' ').toLowerCase();
@@ -289,7 +307,8 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
 
     // 2. Date Filter
     if (excludeDim !== 'date' && selectedDateFilter !== 'all') {
-      const dateStr = (j.fetched_at || j.fetchedAt || j.date || '').slice(0, 10);
+      const dateStr = (j.date_posted || j.posted || j.date || '').slice(0, 10);
+      if (!dateStr) return false;
       if (dateStr) {
         const jd = new Date(dateStr);
         if (!isNaN(jd.getTime())) {
@@ -349,9 +368,9 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
       if (sortBy === 'company') {
         return (a.company || '').localeCompare(b.company || '');
       }
-      return (b.fetched_at || b.fetchedAt || b.date || '').localeCompare(a.fetched_at || a.fetchedAt || a.date || '');
+      return (b.first_seen || b.fetched_at || b.fetchedAt || b.date || '').localeCompare(a.first_seen || a.fetched_at || a.fetchedAt || a.date || '');
     });
-  }, [jobs, searchTerm, selectedDateFilter, selectedLocations, selectedRoles, sortBy]);
+  }, [jobs, searchTerm, selectedDateFilter, selectedLocations, selectedRoles, sortBy, experience]);
 
   // Dynamic Faceted Counts for real-time counts across filters
   const dynamicCounts = useMemo(() => {
@@ -394,7 +413,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
     }
 
     return { locCounts, roleCounts };
-  }, [jobs, searchTerm, selectedDateFilter, selectedLocations, selectedRoles]);
+  }, [jobs, searchTerm, selectedDateFilter, selectedLocations, selectedRoles, experience]);
 
   // Pagination slice
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / JOBS_PER_PAGE));
@@ -403,13 +422,14 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
     return filteredJobs.slice(start, start + JOBS_PER_PAGE);
   }, [filteredJobs, currentPage]);
 
-  const totalApplied = (selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size;
+  const totalApplied = (selectedDateFilter !== 'all' ? 1 : 0) + selectedLocations.size + selectedRoles.size + (experience !== '' ? 1 : 0);
   const query = searchTerm.trim();
   const activeCount = totalApplied + (query ? 1 : 0);
   const postedDate = DATE_RANGES.find(option => option.id === selectedDateFilter)?.label;
 
   const clearAllFilters = () => {
     setSearchTerm('');
+    setExperience('');
     setSelectedDateFilter('all');
     setSelectedLocations(new Set());
     setSelectedRoles(new Set());
@@ -516,6 +536,21 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
               </div>
             </div>
           </div>
+
+          <section className={`filter-section ${openSections.experience ? 'open' : ''}`}>
+            <button type="button" className="filter-section-header company-experience-header" onClick={() => toggleSection('experience')} aria-expanded={openSections.experience}>
+              <span className="filter-section-label"><BriefcaseBusiness size={14} aria-hidden="true" /> Experience</span>
+              <span aria-hidden="true">{openSections.experience ? '−' : '+'}</span>
+            </button>
+            {openSections.experience && <div className="company-experience-control">
+              <label htmlFor="company-experience">Your work experience</label>
+              <select id="company-experience" value={experience} onChange={event => { setExperience(event.target.value); setCurrentPage(1); }}>
+                <option value="">Any experience</option>
+                {Array.from({ length: 31 }, (_, years) => <option value={years} key={years}>{years === 0 ? '0 years / Fresher' : `${years} ${years === 1 ? 'year' : 'years'}`}</option>)}
+              </select>
+              <p>Shows jobs whose stated experience range includes yours. Jobs without a known requirement are excluded when this filter is selected.</p>
+            </div>}
+          </section>
 
           {/* 2. Location */}
           <div className={`filter-section ${openSections.location ? 'open' : ''}`} id="sec-location">
@@ -661,6 +696,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                     setCurrentPage(1);
                   }} />
                 )}
+                {experience !== '' && <FilterBadge kind="experience" value={`${experience} years`} onRemove={() => { setExperience(''); setCurrentPage(1); }} />}
                 {[...selectedLocations].map(location => (
                   <FilterBadge key={location} kind="location" value={location} onRemove={() => {
                     setSelectedLocations(previous => new Set([...previous].filter(value => value !== location)));
@@ -709,7 +745,8 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
           {!loading && pageJobs.length > 0 && (
             <div className="jobs-grid" id="jobsGrid">
               {pageJobs.map((job, idx) => {
-                const date = formatDate(job.date || job.fetched_at || job.fetchedAt);
+                const posted = job.date_posted || job.posted || job.date;
+                const date = posted ? formatDate(posted) : `Found ${formatDate(job.first_seen || job.fetched_at || job.fetchedAt).toLowerCase()}`;
                 const applyUrl = job.apply_url || job.url || '';
                 const rawLoc = job.location && job.location !== 'nan' && job.location !== 'None' ? job.location : 'India';
                 const cityLoc = rawLoc.split(',')[0].trim();
@@ -717,7 +754,7 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                 return (
                   <div key={`${job.company}-${job.title}-${idx}`} className="job-card" style={{ animationDelay: `${(idx % 30) * 0.03}s` }}>
                     <div className="card-top">
-                      <AuthenticLogoBox company={job.company} />
+                      <AuthenticLogoBox company={job.company} job={{ ...job, url: job.apply_url || job.url }} />
                       <div className="card-info">
                         <div className="company-name">{job.company}</div>
                         <div className="job-title" title={job.title}>{job.title || 'Open Position'}</div>
@@ -734,6 +771,12 @@ export const BigCompanyJobsView: React.FC<BigCompanyJobsViewProps> = ({ onGoHub 
                           Direct Apply
                         </div>
                       </div>
+                    </div>
+
+                    <div className="company-job-facts" aria-label="Verified job details">
+                      {job.experience && <span className="company-job-fact company-job-fact--experience"><BriefcaseBusiness size={14} aria-hidden="true" />{job.experience}</span>}
+                      {job.salary && <span className="company-job-fact company-job-fact--salary"><Banknote size={14} aria-hidden="true" />{job.salary}</span>}
+                      {(job.is_walkin || job.walkin_date) && <span className="company-job-fact company-job-fact--walkin"><Route size={14} aria-hidden="true" />Walk-in{job.walkin_date ? ` · ${job.walkin_date}` : ''}</span>}
                     </div>
 
                     <div className="card-footer">

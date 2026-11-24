@@ -1,0 +1,434 @@
+[
+  {
+    "company": "Airbnb",
+    "domain": "airbnb.com",
+    "asset": "/logos/company-scraper2/airbnb.png",
+    "source": "https://www.google.com/s2/favicons?domain=airbnb.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Agoda",
+    "domain": "agoda.com",
+    "asset": "/logos/company-scraper2/agoda.png",
+    "source": "https://www.google.com/s2/favicons?domain=agoda.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Cloudflare",
+    "domain": "cloudflare.com",
+    "asset": "/logos/company-scraper2/cloudflare.png",
+    "source": "https://www.google.com/s2/favicons?domain=cloudflare.com&sz=128",
+    "kind": "website_favicon",
+    "width": 99,
+    "height": 96
+  },
+  {
+    "company": "Graviton Research Capital",
+    "domain": "gravitonresearch.com",
+    "asset": "/logos/company-scraper2/graviton-research-capital.png",
+    "source": "https://www.google.com/s2/favicons?domain=gravitonresearch.com&sz=128",
+    "kind": "website_favicon",
+    "width": 80,
+    "height": 80
+  },
+  {
+    "company": "Tower Research Capital",
+    "domain": "tower-research.com",
+    "asset": "/logos/company-scraper2/tower-research-capital.png",
+    "source": "https://www.google.com/s2/favicons?domain=tower-research.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Cadence Design Systems",
+    "domain": "cadence.com",
+    "asset": "/logos/company-scraper2/cadence-design-systems.png",
+    "source": "https://www.google.com/s2/favicons?domain=cadence.com&sz=128",
+    "kind": "website_favicon",
+    "width": 16,
+    "height": 16
+  },
+  {
+    "company": "Expedia Group",
+    "domain": "expediagroup.com",
+    "asset": "/logos/company-scraper2/expedia-group.png",
+    "source": "https://www.google.com/s2/favicons?domain=expediagroup.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Autodesk",
+    "domain": "autodesk.com",
+    "asset": "/logos/company-scraper2/autodesk.png",
+    "source": "https://www.google.com/s2/favicons?domain=autodesk.com&sz=128",
+    "kind": "website_favicon",
+    "width": 32,
+    "height": 32
+  },
+  {
+    "company": "BlackRock",
+    "domain": "blackrock.com",
+    "asset": "/logos/company-scraper2/blackrock.png",
+    "source": "https://www.google.com/s2/favicons?domain=blackrock.com&sz=128",
+    "kind": "website_favicon",
+    "width": 16,
+    "height": 16
+  },
+  {
+    "company": "S&P Global",
+    "domain": "spglobal.com",
+    "asset": "/logos/company-scraper2/s-p-global.png",
+    "source": "https://www.google.com/s2/favicons?domain=spglobal.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Sprinklr",
+    "domain": "sprinklr.com",
+    "asset": "/logos/company-scraper2/sprinklr.png",
+    "source": "https://www.google.com/s2/favicons?domain=sprinklr.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Alvarez & Marsal",
+    "domain": "alvarezandmarsal.com",
+    "asset": "/logos/company-scraper2/alvarez-marsal.png",
+    "source": "https://www.google.com/s2/favicons?domain=alvarezandmarsal.com&sz=128",
+    "kind": "website_favicon",
+    "width": 64,
+    "height": 64
+  },
+  {
+    "company": "Eli Lilly",
+    "domain": "lilly.com",
+    "asset": "/logos/company-scraper2/eli-lilly.png",
+    "source": "https://www.google.com/s2/favicons?domain=lilly.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Novartis",
+    "domain": "novartis.com",
+    "asset": "/logos/company-scraper2/novartis.png",
+    "source": "https://www.google.com/s2/favicons?domain=novartis.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Nagarro",
+    "domain": "nagarro.com",
+    "asset": "/logos/company-scraper2/nagarro.png",
+    "source": "https://www.google.com/s2/favicons?domain=nagarro.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "GlobalLogic",
+    "domain": "globallogic.com",
+    "asset": "/logos/company-scraper2/globallogic.png",
+    "source": "https://www.google.com/s2/favicons?domain=globallogic.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "AMD",
+    "domain": "amd.com",
+    "asset": "/logos/company-scraper2/amd.png",
+    "source": "https://www.google.com/s2/favicons?domain=amd.com&sz=128",
+    "kind": "website_favicon",
+    "width": 16,
+    "height": 16
+  },
+  {
+    "company": "Booking Holdings COE",
+    "domain": "bookingholdings.com",
+    "asset": "/logos/company-scraper2/booking-holdings-coe.png",
+    "source": "https://www.google.com/s2/favicons?domain=bookingholdings.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Texas Instruments",
+    "domain": "ti.com",
+    "asset": "/logos/company-scraper2/texas-instruments.png",
+    "source": "https://www.google.com/s2/favicons?domain=ti.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Micron Technology",
+    "domain": "micron.com",
+    "asset": "/logos/company-scraper2/micron-technology.png",
+    "source": "https://www.google.com/s2/favicons?domain=micron.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Rippling",
+    "domain": "rippling.com",
+    "asset": "/logos/company-scraper2/rippling.png",
+    "source": "https://www.google.com/s2/favicons?domain=rippling.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Zepto",
+    "domain": "zeptonow.com",
+    "asset": "/logos/company-scraper2/zepto.png",
+    "source": "https://www.google.com/s2/favicons?domain=zeptonow.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Lowe's India",
+    "domain": "lowes.com",
+    "asset": "/logos/company-scraper2/lowe-s-india.png",
+    "source": "https://www.google.com/s2/favicons?domain=lowes.com&sz=128",
+    "kind": "website_favicon",
+    "width": 16,
+    "height": 16
+  },
+  {
+    "company": "Applied Materials",
+    "domain": "appliedmaterials.com",
+    "asset": "/logos/company-scraper2/applied-materials.png",
+    "source": "https://www.google.com/s2/favicons?domain=appliedmaterials.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Tesco Bengaluru",
+    "domain": "tesco.com",
+    "asset": "/logos/company-scraper2/tesco-bengaluru.png",
+    "source": "https://www.google.com/s2/favicons?domain=tesco.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Bloomberg",
+    "domain": "bloomberg.com",
+    "asset": "/logos/company-scraper2/bloomberg.png",
+    "source": "https://www.google.com/s2/favicons?domain=bloomberg.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "D. E. Shaw",
+    "domain": "deshawindia.com",
+    "asset": "/logos/company-scraper2/d-e-shaw.png",
+    "source": "https://www.google.com/s2/favicons?domain=deshawindia.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Globant",
+    "domain": "globant.com",
+    "asset": "/logos/company-scraper2/globant.png",
+    "source": "https://www.google.com/s2/favicons?domain=globant.com&sz=128",
+    "kind": "website_favicon",
+    "width": 64,
+    "height": 64
+  },
+  {
+    "company": "MakeMyTrip",
+    "domain": "makemytrip.com",
+    "asset": "/logos/company-scraper2/makemytrip.png",
+    "source": "https://www.google.com/s2/favicons?domain=makemytrip.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "UBS",
+    "domain": "ubs.com",
+    "asset": "/logos/company-scraper2/ubs.png",
+    "source": "https://www.google.com/s2/favicons?domain=ubs.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Kearney",
+    "domain": "kearney.com",
+    "asset": "/logos/company-scraper2/kearney.png",
+    "source": "https://www.google.com/s2/favicons?domain=kearney.com&sz=128",
+    "kind": "website_favicon",
+    "width": 96,
+    "height": 96
+  },
+  {
+    "company": "LinkedIn",
+    "domain": "linkedin.com",
+    "asset": "/logos/company-scraper2/linkedin.png",
+    "source": "https://www.google.com/s2/favicons?domain=linkedin.com&sz=128",
+    "kind": "website_favicon",
+    "width": 64,
+    "height": 64
+  },
+  {
+    "company": "Continental",
+    "domain": "continental.com",
+    "asset": "/logos/company-scraper2/continental.png",
+    "source": "https://www.google.com/s2/favicons?domain=continental.com&sz=128",
+    "kind": "website_favicon",
+    "width": 32,
+    "height": 32
+  },
+  {
+    "company": "Ubisoft",
+    "domain": "ubisoft.com",
+    "asset": "/logos/company-scraper2/ubisoft.png",
+    "source": "https://www.google.com/s2/favicons?domain=ubisoft.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Stripe",
+    "domain": "stripe.com",
+    "asset": "/logos/company-scraper2/stripe.png",
+    "source": "https://www.google.com/s2/favicons?domain=stripe.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Spotify",
+    "domain": "spotify.com",
+    "asset": "/logos/company-scraper2/spotify.png",
+    "source": "https://www.google.com/s2/favicons?domain=spotify.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Hasura",
+    "domain": "promptql.io",
+    "asset": "/logos/company-scraper2/hasura.png",
+    "source": "https://www.google.com/s2/favicons?domain=promptql.io&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "KPIT Technologies",
+    "domain": "kpit.com",
+    "asset": "/logos/company-scraper2/kpit-technologies.png",
+    "source": "https://www.google.com/s2/favicons?domain=kpit.com&sz=128",
+    "kind": "website_favicon",
+    "width": 100,
+    "height": 100
+  },
+  {
+    "company": "Zerodha",
+    "domain": "zerodha.com",
+    "asset": "/logos/company-scraper2/zerodha.png",
+    "source": "https://www.google.com/s2/favicons?domain=zerodha.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Tata Elxsi",
+    "domain": "tataelxsi.com",
+    "asset": "/logos/company-scraper2/tata-elxsi.png",
+    "source": "https://www.google.com/s2/favicons?domain=tataelxsi.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  },
+  {
+    "company": "Ramco Systems",
+    "domain": "ramco.com",
+    "asset": "/logos/company-scraper2/ramco-systems.png",
+    "source": "https://www.google.com/s2/favicons?domain=ramco.com&sz=128",
+    "kind": "website_favicon",
+    "width": 27,
+    "height": 25
+  },
+  {
+    "company": "Tiger Analytics",
+    "domain": "tigeranalytics.com",
+    "asset": "/logos/company-scraper2/tiger-analytics.png",
+    "source": "https://www.google.com/s2/favicons?domain=tigeranalytics.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "SAP",
+    "domain": "sap.com",
+    "asset": "/logos/company-scraper2/sap.png",
+    "source": "https://www.google.com/s2/favicons?domain=sap.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "LTIMindtree",
+    "domain": "ltm.com",
+    "asset": "/logos/company-scraper2/ltimindtree.png",
+    "source": "https://www.google.com/s2/favicons?domain=ltm.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Schlumberger",
+    "domain": "slb.com",
+    "asset": "/logos/company-scraper2/schlumberger.png",
+    "source": "https://www.google.com/s2/favicons?domain=slb.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Maersk",
+    "domain": "maersk.com",
+    "asset": "/logos/company-scraper2/maersk.png",
+    "source": "https://www.google.com/s2/favicons?domain=maersk.com&sz=128",
+    "kind": "website_favicon",
+    "width": 64,
+    "height": 64
+  },
+  {
+    "company": "Unity",
+    "domain": "unity.com",
+    "asset": "/logos/company-scraper2/unity.png",
+    "source": "https://www.google.com/s2/favicons?domain=unity.com&sz=128",
+    "kind": "website_favicon",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "company": "Walmart",
+    "domain": "walmart.com",
+    "asset": "/logos/company-scraper2/walmart.png",
+    "source": "https://www.google.com/s2/favicons?domain=walmart.com&sz=128",
+    "kind": "website_favicon",
+    "width": 48,
+    "height": 48
+  }
+]

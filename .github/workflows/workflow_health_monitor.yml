@@ -3,6 +3,10 @@ name: Workflow Health & Telemetry Monitor
 on:
   schedule:
     - cron: '0 * * * *'    # Runs every 1 hour
+  workflow_run:
+    workflows: ['Big Company Scraper 2', 'API Call Jobs Scraper', 'api_call_jobs2', 'Big Company Jobs Scraper', 'Check Company AI Health']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:        # Manual trigger anytime
 
 permissions:

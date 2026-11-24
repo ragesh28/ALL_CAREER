@@ -1,0 +1,108 @@
+name: Big Company Scraper 2
+
+on:
+  schedule:
+    - cron: '30 21 * * *' # 03:00 Asia/Kolkata; GitHub can delay scheduled runs.
+  workflow_dispatch:
+    inputs:
+      audit_only:
+        description: Test public boards without saving jobs
+        type: boolean
+        default: false
+      companies:
+        description: Optional comma-separated company names (blank runs all boards)
+        type: string
+        default: ''
+      continuation:
+        description: Internal bounded continuation counter
+        type: number
+        default: 0
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: big-company-${{ inputs.audit_only && 'audit' || github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      PYTHONUNBUFFERED: '1'
+      CLOUDFLARE_WORKERS_AI_ACCOUNTS: ${{ secrets.CLOUDFLARE_WORKERS_AI_ACCOUNTS }}
+      GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
+      GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
+      MISTRAL_API_KEYS: ${{ secrets.MISTRAL_API_KEYS }}
+      OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
+      COMPANY_AI_MAX_CALLS: '3000'
+      COMPANY_AI_MAX_SECONDS: '14400'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            workday_scraper
+            data/company_scraper2
+            data/company_job_history
+            data/big_company_jobs.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install public-board readers
+        run: |
+          pip install requests beautifulsoup4 curl_cffi playwright
+          playwright install --with-deps chromium
+      - name: Audit one page and a description per board
+        if: inputs.audit_only == true
+        env:
+          COMPANIES: ${{ inputs.companies }}
+        run: python -m scripts.company_scraper2 --audit --browser --companies "$COMPANIES" --output company_scraper2_audit.json
+      - name: Scrape and checkpoint before the six-hour limit
+        if: inputs.audit_only != true && github.ref_name == 'main'
+        id: scrape
+        env:
+          COMPANIES: ${{ inputs.companies }}
+        # 5h45m process budget leaves time for checkpoint publication and dispatch.
+        run: python -m scripts.company_scraper2 --browser --companies "$COMPANIES" --max-seconds 20700
+        timeout-minutes: 350
+      - name: Publish results and checkpoint
+        if: always() && inputs.audit_only != true && github.ref_name == 'main'
+        id: save
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in workday_scraper/big_company_jobs.json data/big_company_jobs.json data/company_job_history data/company_scraper2; do
+            if [ -e "$path" ] || git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+              git add -A -- "$path"
+            fi
+          done
+          python -m scripts.publish_company_catalog
+          echo 'saved=true' >> "$GITHUB_OUTPUT"
+
+      - name: Preserve sanitized audit and recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: company-scraper-2-${{ github.run_id }}
+          retention-days: 7
+          if-no-files-found: ignore
+          path: |
+            company_scraper2_audit.json
+            data/company_scraper2/
+      - name: Continue unfinished scraping after a successful save
+        if: steps.scrape.outputs.needs_resume == 'true' && steps.save.outputs.saved == 'true' && success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTINUATION: ${{ inputs.continuation || 0 }}
+        shell: bash
+        run: |
+          next=$(python -c 'import os; print(int(os.environ["CONTINUATION"])+1)')
+          if [ "$next" -le 4 ]; then
+            gh workflow run big_company_scraper_2.yml --ref main --field continuation="$next"
+          else
+            echo 'Continuation budget reached; saved work resumes on the next scheduled run.' >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -4705,3 +4705,35 @@ select.filter-select option,
 .application-review ol { list-style: decimal; padding-left: 1.5rem; margin: 1rem 0; max-height: 45vh; overflow: auto; }
 .application-review li { padding: 0.3rem 0; }
 .application-review-actions { display: flex; justify-content: flex-end; gap: 0.75rem; }
+
+/* Company metadata uses solid, readable surfaces; missing facts render nothing. */
+.company-experience-header { width:100%; border:0; background:transparent; color:inherit; text-align:left; }
+.company-experience-control { padding:0 20px 20px; display:grid; gap:10px; }
+.company-experience-control label { font-size:.82rem; color:#e2e8f0; font-weight:650; }
+.company-experience-control select { width:100%; min-height:44px; padding:10px 12px; background:#16243a; border:1px solid #3e5875; color:#f8fafc; border-radius:10px; font:inherit; }
+.company-experience-control select:focus-visible { outline:2px solid #67e8f9; outline-offset:3px; }
+.company-experience-control p { margin:0; color:#a8b8ce; line-height:1.5; font-size:.76rem; }
+.company-job-facts { display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 12px; }
+.company-job-fact { display:inline-flex; align-items:center; gap:6px; padding:7px 9px; border-radius:7px; font-size:.75rem; font-weight:650; overflow-wrap:anywhere; }
+.company-job-fact svg { flex-shrink:0; }
+.company-job-fact--experience { background:#f7d787; color:#352206; }
+.company-job-fact--salary { background:#a7f3d0; color:#064e3b; }
+.company-job-fact--walkin { background:#bae6fd; color:#0c4a6e; }
+.bigcompany-jobs-page .job-card { height:auto; min-height:270px; }
+.bigcompany-jobs-page .card-footer { flex-shrink:0; gap:12px; }
+.bigcompany-jobs-page .company-job-facts { flex-shrink:0; }
+.bigcompany-jobs-page .bigcompany-filter-badge { display:inline-flex; align-items:center; gap:10px; padding:9px 12px; border:1px solid #385775; border-radius:11px; background:#18283c; color:#e8f3ff; cursor:pointer; transition:transform 180ms,background 180ms; }
+.bigcompany-jobs-page .bigcompany-filter-badge:hover { background:#233c57; }
+.bigcompany-jobs-page .bigcompany-filter-badge:active { transform:translateY(1px); }
+.bigcompany-jobs-page .bigcompany-filter-badge:focus-visible { outline:2px solid #67e8f9; outline-offset:3px; }
+.bigcompany-jobs-page .bigcompany-filter-label { display:grid; gap:2px; text-align:left; }
+.bigcompany-jobs-page .bigcompany-filter-type { font-size:.65rem; color:#a8bdd5; }
+.bigcompany-jobs-page .bigcompany-filter-value { font-size:.82rem; font-weight:700; }
+.bigcompany-jobs-page .bigcompany-filter-icon { display:grid; place-items:center; padding:7px; border-radius:7px; }
+.bigcompany-jobs-page .bigcompany-filter-remove { display:grid; place-items:center; margin-left:4px; }
+.bigcompany-filter-item--experience .bigcompany-filter-icon { background:#f7d787; color:#352206; }
+@media(max-width:640px) { .company-experience-control { padding:0 16px 18px; } .company-job-fact { font-size:.73rem; } }
+@media(max-width:640px) {
+  .bigcompany-jobs-page .topnav-logo > span:last-child { display:none; }
+  .bigcompany-jobs-page .topnav-count { white-space:nowrap; font-size:.75rem; }
+}

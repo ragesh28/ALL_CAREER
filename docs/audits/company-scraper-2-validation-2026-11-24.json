@@ -1,0 +1,3911 @@
+{
+  "date": "2026-11-24",
+  "scope": "55 configured boards; repeated local API/browser samples. Success means at least one actual India record, not HTTP 200. Counts are observed samples, not complete vacancy totals. Some Workday requests were intermittent. No full descriptions or credentials are included.",
+  "summary": {
+    "new_35": {
+      "boards": 36,
+      "returned_india_at_least_once": 27,
+      "description_checked": 25
+    },
+    "recovered": {
+      "boards": 19,
+      "returned_india_at_least_once": 19,
+      "description_checked": 19
+    }
+  },
+  "companies": [
+    {
+      "company": "Airbnb",
+      "group": "new_35",
+      "board_id": "airbnb",
+      "career_url": "https://careers.airbnb.com/positions/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Airbnb",
+        "board_id": "airbnb",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 198,
+        "india_samples": 11,
+        "rejected_locations": 187,
+        "description_checked": true,
+        "sample": {
+          "title": "Emergency Response Manager, APAC",
+          "apply_url": "https://careers.airbnb.com/positions/8327789?gh_jid=8327789",
+          "location": "Gurugram, India; Gurugram, India",
+          "job_id": "8327789"
+        },
+        "duration_seconds": 6.62,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Airbnb",
+          "board_id": "airbnb",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 198,
+          "india_samples": 10,
+          "rejected_locations": 188,
+          "description_checked": true,
+          "sample": {
+            "title": "Emergency Response Manager, APAC",
+            "apply_url": "https://careers.airbnb.com/positions/8327789?gh_jid=8327789",
+            "location": "Gurugram, India",
+            "job_id": "8327789"
+          },
+          "duration_seconds": 8.73,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Airbnb",
+          "board_id": "airbnb",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 198,
+          "india_samples": 11,
+          "rejected_locations": 187,
+          "description_checked": true,
+          "sample": {
+            "title": "Emergency Response Manager, APAC",
+            "apply_url": "https://careers.airbnb.com/positions/8327789?gh_jid=8327789",
+            "location": "Gurugram, India; Gurugram, India",
+            "job_id": "8327789"
+          },
+          "duration_seconds": 6.62,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Agoda",
+      "group": "new_35",
+      "board_id": "agoda",
+      "career_url": "https://careersatagoda.com/tech-in-india/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Agoda",
+        "board_id": "agoda",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 332,
+        "india_samples": 13,
+        "rejected_locations": 319,
+        "description_checked": true,
+        "sample": {
+          "title": "Account Manager â€“ Gurgaon Based (Tamil/Malayalam speaking)",
+          "apply_url": "https://job-boards.greenhouse.io/agoda/jobs/7532687",
+          "location": "Gurgaon, India; Gurgaon, India",
+          "job_id": "7532687"
+        },
+        "duration_seconds": 16.09,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Agoda",
+          "board_id": "agoda",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 332,
+          "india_samples": 12,
+          "rejected_locations": 320,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Manager â€“ Gurgaon Based (Tamil/Malayalam speaking)",
+            "apply_url": "https://job-boards.greenhouse.io/agoda/jobs/7532687",
+            "location": "Gurgaon, India",
+            "job_id": "7532687"
+          },
+          "duration_seconds": 19.63,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Agoda",
+          "board_id": "agoda",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 332,
+          "india_samples": 13,
+          "rejected_locations": 319,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Manager â€“ Gurgaon Based (Tamil/Malayalam speaking)",
+            "apply_url": "https://job-boards.greenhouse.io/agoda/jobs/7532687",
+            "location": "Gurgaon, India; Gurgaon, India",
+            "job_id": "7532687"
+          },
+          "duration_seconds": 16.09,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Cloudflare",
+      "group": "new_35",
+      "board_id": "cloudflare",
+      "career_url": "https://www.cloudflare.com/en-in/careers/jobs/?location=India",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Cloudflare",
+        "board_id": "cloudflare",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 504,
+        "india_samples": 24,
+        "rejected_locations": 480,
+        "description_checked": true,
+        "sample": {
+          "title": "Data Scientist",
+          "apply_url": "https://boards.greenhouse.io/cloudflare/jobs/8275927?gh_jid=8275927",
+          "location": "In-Office; Remote India",
+          "job_id": "8275927"
+        },
+        "duration_seconds": 21.3,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Cloudflare",
+          "board_id": "cloudflare",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 504,
+          "india_samples": 0,
+          "rejected_locations": 504,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 14.2,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Cloudflare",
+          "board_id": "cloudflare",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 504,
+          "india_samples": 24,
+          "rejected_locations": 480,
+          "description_checked": true,
+          "sample": {
+            "title": "Data Scientist",
+            "apply_url": "https://boards.greenhouse.io/cloudflare/jobs/8275927?gh_jid=8275927",
+            "location": "In-Office; Remote India",
+            "job_id": "8275927"
+          },
+          "duration_seconds": 10.67,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Cloudflare",
+          "board_id": "cloudflare",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 504,
+          "india_samples": 24,
+          "rejected_locations": 480,
+          "description_checked": true,
+          "sample": {
+            "title": "Data Scientist",
+            "apply_url": "https://boards.greenhouse.io/cloudflare/jobs/8275927?gh_jid=8275927",
+            "location": "In-Office; Remote India",
+            "job_id": "8275927"
+          },
+          "duration_seconds": 21.3,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Graviton Research Capital",
+      "group": "new_35",
+      "board_id": "graviton-research-capital",
+      "career_url": "https://job-boards.greenhouse.io/gravitonresearchcapital",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Graviton Research Capital",
+        "board_id": "graviton-research-capital",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 11,
+        "rejected_locations": 9,
+        "description_checked": true,
+        "sample": {
+          "title": "Application Reliability Engineer",
+          "apply_url": "https://job-boards.greenhouse.io/gravitonresearchcapital/jobs/8781321002",
+          "location": "Gurugram, Haryana, India; Gurugram, Haryana, India",
+          "job_id": "8781321002"
+        },
+        "duration_seconds": 2.0,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Graviton Research Capital",
+          "board_id": "graviton-research-capital",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 11,
+          "rejected_locations": 9,
+          "description_checked": true,
+          "sample": {
+            "title": "Application Reliability Engineer",
+            "apply_url": "https://job-boards.greenhouse.io/gravitonresearchcapital/jobs/8781321002",
+            "location": "Gurugram, Haryana, India",
+            "job_id": "8781321002"
+          },
+          "duration_seconds": 0.44,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Graviton Research Capital",
+          "board_id": "graviton-research-capital",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 11,
+          "rejected_locations": 9,
+          "description_checked": true,
+          "sample": {
+            "title": "Application Reliability Engineer",
+            "apply_url": "https://job-boards.greenhouse.io/gravitonresearchcapital/jobs/8781321002",
+            "location": "Gurugram, Haryana, India; Gurugram, Haryana, India",
+            "job_id": "8781321002"
+          },
+          "duration_seconds": 2.0,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Tower Research Capital",
+      "group": "new_35",
+      "board_id": "tower-research-capital",
+      "career_url": "https://tower-research.com/open-positions/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Tower Research Capital",
+        "board_id": "tower-research-capital",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 93,
+        "india_samples": 14,
+        "rejected_locations": 79,
+        "description_checked": true,
+        "sample": {
+          "title": "Associate, Payroll and Benefits",
+          "apply_url": "https://www.tower-research.com/open-positions/?gh_jid=8377330",
+          "location": "Gurgaon; Gurgaon, Haryana, India",
+          "job_id": "8377330"
+        },
+        "duration_seconds": 2.32,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Tower Research Capital",
+          "board_id": "tower-research-capital",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 93,
+          "india_samples": 11,
+          "rejected_locations": 82,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate, Payroll and Benefits",
+            "apply_url": "https://www.tower-research.com/open-positions/?gh_jid=8377330",
+            "location": "Gurgaon",
+            "job_id": "8377330"
+          },
+          "duration_seconds": 0.95,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Tower Research Capital",
+          "board_id": "tower-research-capital",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 93,
+          "india_samples": 14,
+          "rejected_locations": 79,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate, Payroll and Benefits",
+            "apply_url": "https://www.tower-research.com/open-positions/?gh_jid=8377330",
+            "location": "Gurgaon; Gurgaon, Haryana, India",
+            "job_id": "8377330"
+          },
+          "duration_seconds": 2.32,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "WorldQuant",
+      "group": "new_35",
+      "board_id": "worldquant",
+      "career_url": "https://job-boards.greenhouse.io/worldquant",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "WorldQuant",
+        "board_id": "worldquant",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 79,
+        "india_samples": 8,
+        "rejected_locations": 71,
+        "description_checked": true,
+        "sample": {
+          "title": "Analyst - Portfolio and Treasury Services",
+          "apply_url": "https://job-boards.greenhouse.io/worldquant/jobs/4709490006",
+          "location": "Mumbai; Mumbai, Maharashtra, India",
+          "job_id": "4709490006"
+        },
+        "duration_seconds": 2.84,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "WorldQuant",
+          "board_id": "worldquant",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 79,
+          "india_samples": 8,
+          "rejected_locations": 71,
+          "description_checked": true,
+          "sample": {
+            "title": "Analyst - Portfolio and Treasury Services",
+            "apply_url": "https://job-boards.greenhouse.io/worldquant/jobs/4709490006",
+            "location": "Mumbai",
+            "job_id": "4709490006"
+          },
+          "duration_seconds": 2.37,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "WorldQuant",
+          "board_id": "worldquant",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 79,
+          "india_samples": 8,
+          "rejected_locations": 71,
+          "description_checked": true,
+          "sample": {
+            "title": "Analyst - Portfolio and Treasury Services",
+            "apply_url": "https://job-boards.greenhouse.io/worldquant/jobs/4709490006",
+            "location": "Mumbai; Mumbai, Maharashtra, India",
+            "job_id": "4709490006"
+          },
+          "duration_seconds": 2.84,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Cadence Design Systems",
+      "group": "new_35",
+      "board_id": "cadence-design-systems",
+      "career_url": "https://cadence.wd1.myworkdayjobs.com/External_Careers",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Cadence Design Systems",
+        "board_id": "cadence-design-systems",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 429,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 26.01,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Cadence Design Systems",
+          "board_id": "cadence-design-systems",
+          "group": "new_35",
+          "status": "browser_ok",
+          "http_status": 400,
+          "returned_records": 20,
+          "india_samples": 3,
+          "rejected_locations": 17,
+          "description_checked": true,
+          "sample": {
+            "title": "Lead Functional Product Engineer, Power Analysis",
+            "apply_url": "https://cadence.wd1.myworkdayjobs.com/en-US/External_Careers/job/NOIDA/Lead-Functional-Product-Engineer--Power-Analysis_R56886",
+            "location": "NOIDA"
+          },
+          "duration_seconds": 31.04,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Cadence Design Systems",
+          "board_id": "cadence-design-systems",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 429,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 26.01,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Expedia Group",
+      "group": "new_35",
+      "board_id": "expedia-group",
+      "career_url": "https://expedia.wd108.myworkdayjobs.com/search",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Expedia Group",
+        "board_id": "expedia-group",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 2,
+        "rejected_locations": 18,
+        "description_checked": true,
+        "sample": {
+          "title": "Senior Applied Scientist (Machine Learning)",
+          "location": "India - Bangalore",
+          "apply_url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Senior-Applied-Scientist--Machine-Learning-_R-111151-1",
+          "job_id": "R-111151"
+        },
+        "duration_seconds": 3.61,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Expedia Group",
+          "board_id": "expedia-group",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 2,
+          "rejected_locations": 18,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior Applied Scientist (Machine Learning)",
+            "location": "India - Bangalore",
+            "apply_url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Senior-Applied-Scientist--Machine-Learning-_R-111151-1",
+            "job_id": "R-111151"
+          },
+          "duration_seconds": 3.27,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Expedia Group",
+          "board_id": "expedia-group",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 2,
+          "rejected_locations": 18,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior Applied Scientist (Machine Learning)",
+            "location": "India - Bangalore",
+            "apply_url": "https://expedia.wd108.myworkdayjobs.com/search/job/India---Bangalore/Senior-Applied-Scientist--Machine-Learning-_R-111151-1",
+            "job_id": "R-111151"
+          },
+          "duration_seconds": 3.61,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Autodesk",
+      "group": "new_35",
+      "board_id": "autodesk",
+      "career_url": "https://autodesk.wd1.myworkdayjobs.com/Ext",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Autodesk",
+        "board_id": "autodesk",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 429,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 21.21,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Autodesk",
+          "board_id": "autodesk",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 1,
+          "india_samples": 1,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Apprentice, Talent Acquisition & People Experience",
+            "location": "Bengaluru, IND",
+            "apply_url": "https://autodesk.wd1.myworkdayjobs.com/Ext/job/Bengaluru-IND/Apprentice--Talent-Acquisition---People-Experience_23WD73769-1",
+            "job_id": "23WD73769"
+          },
+          "duration_seconds": 9.42,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Autodesk",
+          "board_id": "autodesk",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 429,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 21.21,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "BlackRock",
+      "group": "new_35",
+      "board_id": "blackrock",
+      "career_url": "https://blackrock.wd1.myworkdayjobs.com/BlackRock_Professional",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "BlackRock",
+        "board_id": "blackrock",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 3,
+        "rejected_locations": 17,
+        "description_checked": true,
+        "sample": {
+          "title": "Vice President, IT Data Analytics",
+          "location": "Mumbai, India",
+          "apply_url": "https://blackrock.wd1.myworkdayjobs.com/BlackRock_Professional/job/Mumbai-India/Vice-President--IT-Data-Analytics_R263879",
+          "job_id": "R263879"
+        },
+        "duration_seconds": 4.32,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "BlackRock",
+          "board_id": "blackrock",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 3,
+          "rejected_locations": 17,
+          "description_checked": true,
+          "sample": {
+            "title": "Vice President, IT Data Analytics",
+            "location": "Mumbai, India",
+            "apply_url": "https://blackrock.wd1.myworkdayjobs.com/BlackRock_Professional/job/Mumbai-India/Vice-President--IT-Data-Analytics_R263879",
+            "job_id": "R263879"
+          },
+          "duration_seconds": 3.05,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "BlackRock",
+          "board_id": "blackrock",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 3,
+          "rejected_locations": 17,
+          "description_checked": true,
+          "sample": {
+            "title": "Vice President, IT Data Analytics",
+            "location": "Mumbai, India",
+            "apply_url": "https://blackrock.wd1.myworkdayjobs.com/BlackRock_Professional/job/Mumbai-India/Vice-President--IT-Data-Analytics_R263879",
+            "job_id": "R263879"
+          },
+          "duration_seconds": 4.32,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "S&P Global",
+      "group": "new_35",
+      "board_id": "s-p-global",
+      "career_url": "https://spgi.wd5.myworkdayjobs.com/SPGI_Careers",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "S&P Global",
+        "board_id": "s-p-global",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 429,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 12.66,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "S&P Global",
+          "board_id": "s-p-global",
+          "group": "new_35",
+          "status": "browser_ok",
+          "http_status": 400,
+          "returned_records": 20,
+          "india_samples": 7,
+          "rejected_locations": 13,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate Director, Energy Program Management Office",
+            "apply_url": "https://spgi.wd5.myworkdayjobs.com/en-US/SPGI_Careers/job/Mumbai-Maharastra/Associate-Director--Energy-Program-Management-Office_332790-1",
+            "location": "Mumbai, Maharastra"
+          },
+          "duration_seconds": 17.27,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "S&P Global",
+          "board_id": "s-p-global",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 429,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.66,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Sprinklr",
+      "group": "new_35",
+      "board_id": "sprinklr",
+      "career_url": "https://sprinklr.wd1.myworkdayjobs.com/careers",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Sprinklr",
+        "board_id": "sprinklr",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 15,
+        "india_samples": 8,
+        "rejected_locations": 7,
+        "description_checked": true,
+        "sample": {
+          "title": "Internal Communications Manager",
+          "location": "India - Haryana - Gurgaon",
+          "apply_url": "https://sprinklr.wd1.myworkdayjobs.com/careers/job/India---Haryana---Gurgaon/Internal-Communications-Manager_113430-JOB",
+          "job_id": "113430-JOB"
+        },
+        "duration_seconds": 3.61,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Sprinklr",
+          "board_id": "sprinklr",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 8,
+          "rejected_locations": 7,
+          "description_checked": true,
+          "sample": {
+            "title": "Internal Communications Manager",
+            "location": "India - Haryana - Gurgaon",
+            "apply_url": "https://sprinklr.wd1.myworkdayjobs.com/careers/job/India---Haryana---Gurgaon/Internal-Communications-Manager_113430-JOB",
+            "job_id": "113430-JOB"
+          },
+          "duration_seconds": 2.46,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Sprinklr",
+          "board_id": "sprinklr",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 8,
+          "rejected_locations": 7,
+          "description_checked": true,
+          "sample": {
+            "title": "Internal Communications Manager",
+            "location": "India - Haryana - Gurgaon",
+            "apply_url": "https://sprinklr.wd1.myworkdayjobs.com/careers/job/India---Haryana---Gurgaon/Internal-Communications-Manager_113430-JOB",
+            "job_id": "113430-JOB"
+          },
+          "duration_seconds": 3.61,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Alvarez & Marsal",
+      "group": "new_35",
+      "board_id": "alvarez-marsal",
+      "career_url": "https://alvarezandmarsal.wd1.myworkdayjobs.com/alvarezandmarsal",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Alvarez & Marsal",
+        "board_id": "alvarez-marsal",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 400,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 12.15,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Alvarez & Marsal",
+          "board_id": "alvarez-marsal",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 400,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.1,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Alvarez & Marsal",
+          "board_id": "alvarez-marsal",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 400,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.15,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Eli Lilly",
+      "group": "new_35",
+      "board_id": "eli-lilly",
+      "career_url": "https://lilly.wd115.myworkdayjobs.com/LLY",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Eli Lilly",
+        "board_id": "eli-lilly",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 19,
+        "rejected_locations": 1,
+        "description_checked": true,
+        "sample": {
+          "title": "Lead Data Modeller - CTI, Medicine Development",
+          "location": "India, Bangalore",
+          "apply_url": "https://lilly.wd115.myworkdayjobs.com/LLY/job/India-Bangalore/Lead-Data-Modeller---CTI--Medicine-Development_R-115649-1",
+          "job_id": "R-115649"
+        },
+        "duration_seconds": 4.52,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Eli Lilly",
+          "board_id": "eli-lilly",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "Lead Data Modeller - CTI, Medicine Development",
+            "location": "India, Bangalore",
+            "apply_url": "https://lilly.wd115.myworkdayjobs.com/LLY/job/India-Bangalore/Lead-Data-Modeller---CTI--Medicine-Development_R-115649-1",
+            "job_id": "R-115649"
+          },
+          "duration_seconds": 2.33,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Eli Lilly",
+          "board_id": "eli-lilly",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "Lead Data Modeller - CTI, Medicine Development",
+            "location": "India, Bangalore",
+            "apply_url": "https://lilly.wd115.myworkdayjobs.com/LLY/job/India-Bangalore/Lead-Data-Modeller---CTI--Medicine-Development_R-115649-1",
+            "job_id": "R-115649"
+          },
+          "duration_seconds": 4.52,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Novartis",
+      "group": "new_35",
+      "board_id": "novartis",
+      "career_url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Novartis",
+        "board_id": "novartis",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 18,
+        "rejected_locations": 2,
+        "description_checked": true,
+        "sample": {
+          "title": "Senior Specialist, Patient Safety",
+          "location": "Mumbai (Head Office)",
+          "apply_url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Mumbai-Head-Office/Senior-Specialist--Patient-Safety_REQ-10093026",
+          "job_id": "REQ-10093026"
+        },
+        "duration_seconds": 6.35,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Novartis",
+          "board_id": "novartis",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 18,
+          "rejected_locations": 2,
+          "description_checked": false,
+          "sample": {
+            "title": "Senior Specialist, Patient Safety",
+            "location": "Mumbai (Head Office)",
+            "apply_url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Mumbai-Head-Office/Senior-Specialist--Patient-Safety_REQ-10093026",
+            "job_id": "REQ-10093026"
+          },
+          "duration_seconds": 3.32,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Novartis",
+          "board_id": "novartis",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 18,
+          "rejected_locations": 2,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior Specialist, Patient Safety",
+            "location": "Mumbai (Head Office)",
+            "apply_url": "https://novartis.wd3.myworkdayjobs.com/Novartis_Careers/job/Mumbai-Head-Office/Senior-Specialist--Patient-Safety_REQ-10093026",
+            "job_id": "REQ-10093026"
+          },
+          "duration_seconds": 6.35,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Nagarro",
+      "group": "new_35",
+      "board_id": "nagarro",
+      "career_url": "https://careers.smartrecruiters.com/Nagarro1",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Nagarro",
+        "board_id": "nagarro",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 100,
+        "india_samples": 100,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Associate Principal Engineer (APIGEE / API Gateway, ESB)",
+          "apply_url": "https://jobs.smartrecruiters.com/Nagarro1/744000163288659",
+          "location": "Hyderabad, India",
+          "job_id": "744000163288659"
+        },
+        "duration_seconds": 2.68,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Nagarro",
+          "board_id": "nagarro",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 100,
+          "india_samples": 100,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate Principal Engineer (APIGEE / API Gateway, ESB)",
+            "apply_url": "https://jobs.smartrecruiters.com/Nagarro1/744000163288659",
+            "location": "Hyderabad, India",
+            "job_id": "744000163288659"
+          },
+          "duration_seconds": 1.37,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Nagarro",
+          "board_id": "nagarro",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 100,
+          "india_samples": 100,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate Principal Engineer (APIGEE / API Gateway, ESB)",
+            "apply_url": "https://jobs.smartrecruiters.com/Nagarro1/744000163288659",
+            "location": "Hyderabad, India",
+            "job_id": "744000163288659"
+          },
+          "duration_seconds": 2.68,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "GlobalLogic",
+      "group": "new_35",
+      "board_id": "globallogic",
+      "career_url": "https://careers.smartrecruiters.com/GlobalLogic4",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "GlobalLogic",
+        "board_id": "globallogic",
+        "group": "new_35",
+        "status": "no_india_sample",
+        "http_status": 200,
+        "returned_records": 8,
+        "india_samples": 0,
+        "rejected_locations": 8,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 26.96,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "GlobalLogic",
+          "board_id": "globallogic",
+          "group": "new_35",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 8,
+          "india_samples": 0,
+          "rejected_locations": 8,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 14.64,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "GlobalLogic",
+          "board_id": "globallogic",
+          "group": "new_35",
+          "status": "no_india_sample",
+          "http_status": 200,
+          "returned_records": 8,
+          "india_samples": 0,
+          "rejected_locations": 8,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 26.96,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "AMD",
+      "group": "new_35",
+      "board_id": "amd",
+      "career_url": "https://careers.amd.com/careers-home/jobs",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "AMD",
+        "board_id": "amd",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 20,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Lead Physical Design Engineer (IR Drop analysis)",
+          "location": "Bangalore, India",
+          "apply_url": "https://careers.amd.com/jobs/93022?lang=en-us",
+          "job_id": "93022"
+        },
+        "duration_seconds": 2.45,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "AMD",
+          "board_id": "amd",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Lead Physical Design Engineer (IR Drop analysis)",
+            "location": "Bangalore, India",
+            "apply_url": "https://careers.amd.com/jobs/93022?lang=en-us",
+            "job_id": "93022"
+          },
+          "duration_seconds": 1.43,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "AMD",
+          "board_id": "amd",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Lead Physical Design Engineer (IR Drop analysis)",
+            "location": "Bangalore, India",
+            "apply_url": "https://careers.amd.com/jobs/93022?lang=en-us",
+            "job_id": "93022"
+          },
+          "duration_seconds": 2.45,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Booking Holdings COE",
+      "group": "new_35",
+      "board_id": "booking-holdings-coe",
+      "career_url": "https://www.bookingholdings-coe.com/bookingholdings-coe/jobs",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Booking Holdings COE",
+        "board_id": "booking-holdings-coe",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 20,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "IT Support Technician",
+          "location": "Bangalore, India",
+          "apply_url": "https://www.bookingholdings-coe.com/bookingholdings-coe/jobs/30675?lang=en-us",
+          "job_id": "30675"
+        },
+        "duration_seconds": 2.27,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Booking Holdings COE",
+          "board_id": "booking-holdings-coe",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "IT Support Technician",
+            "location": "Bangalore, India",
+            "apply_url": "https://www.bookingholdings-coe.com/bookingholdings-coe/jobs/30675?lang=en-us",
+            "job_id": "30675"
+          },
+          "duration_seconds": 1.14,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Booking Holdings COE",
+          "board_id": "booking-holdings-coe",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "IT Support Technician",
+            "location": "Bangalore, India",
+            "apply_url": "https://www.bookingholdings-coe.com/bookingholdings-coe/jobs/30675?lang=en-us",
+            "job_id": "30675"
+          },
+          "duration_seconds": 2.27,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Texas Instruments",
+      "group": "new_35",
+      "board_id": "texas-instruments",
+      "career_url": "https://careers.ti.com/en/sites/CX/pages/ti-india",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Texas Instruments",
+        "board_id": "texas-instruments",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 18,
+        "india_samples": 12,
+        "rejected_locations": 6,
+        "description_checked": true,
+        "sample": {
+          "title": "Test Engineer",
+          "location": "Bengaluru, Karnataka, India",
+          "apply_url": "https://careers.ti.com/en/sites/CX/job/25020422",
+          "job_id": "25020422"
+        },
+        "duration_seconds": 2.42,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Texas Instruments",
+          "board_id": "texas-instruments",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 18,
+          "india_samples": 12,
+          "rejected_locations": 6,
+          "description_checked": false,
+          "sample": {
+            "title": "Test Engineer",
+            "location": "Bengaluru, Karnataka, India",
+            "apply_url": "https://careers.ti.com/en/sites/CX/job/25020422",
+            "job_id": "25020422"
+          },
+          "duration_seconds": 2.56,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Texas Instruments",
+          "board_id": "texas-instruments",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 18,
+          "india_samples": 12,
+          "rejected_locations": 6,
+          "description_checked": true,
+          "sample": {
+            "title": "Test Engineer",
+            "location": "Bengaluru, Karnataka, India",
+            "apply_url": "https://careers.ti.com/en/sites/CX/job/25020422",
+            "job_id": "25020422"
+          },
+          "duration_seconds": 2.27,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Texas Instruments",
+          "board_id": "texas-instruments",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 18,
+          "india_samples": 12,
+          "rejected_locations": 6,
+          "description_checked": true,
+          "sample": {
+            "title": "Test Engineer",
+            "location": "Bengaluru, Karnataka, India",
+            "apply_url": "https://careers.ti.com/en/sites/CX/job/25020422",
+            "job_id": "25020422"
+          },
+          "duration_seconds": 2.42,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Micron Technology",
+      "group": "new_35",
+      "board_id": "micron-technology",
+      "career_url": "https://micron.eightfold.ai/careers?location=India&domain=micron.com",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Micron Technology",
+        "board_id": "micron-technology",
+        "group": "new_35",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 10,
+        "india_samples": 10,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "location": "Hyderabad, Telangana, India",
+          "title": "STAFF ENGINEER, Design Verification",
+          "apply_url": "https://micron.eightfold.ai/careers/job/44634676",
+          "job_id": "44634676"
+        },
+        "duration_seconds": 2.38,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Micron Technology",
+          "board_id": "micron-technology",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 10,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {
+            "location": "Hyderabad, TS, IN",
+            "title": "STAFF ENGINEER, Design Verification",
+            "apply_url": "/careers/job/44634676",
+            "job_id": "44634676"
+          },
+          "duration_seconds": 1.23,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Micron Technology",
+          "board_id": "micron-technology",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 10,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Hyderabad, Telangana, India",
+            "title": "STAFF ENGINEER, Design Verification",
+            "apply_url": "https://micron.eightfold.ai/careers/job/44634676",
+            "job_id": "44634676"
+          },
+          "duration_seconds": 2.76,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Micron Technology",
+          "board_id": "micron-technology",
+          "group": "new_35",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 10,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Hyderabad, Telangana, India",
+            "title": "STAFF ENGINEER, Design Verification",
+            "apply_url": "https://micron.eightfold.ai/careers/job/44634676",
+            "job_id": "44634676"
+          },
+          "duration_seconds": 2.38,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Rippling",
+      "group": "new_35",
+      "board_id": "rippling",
+      "career_url": "https://www.rippling.com/en-IN/careers/open-roles",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Rippling",
+        "board_id": "rippling",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 747,
+        "india_samples": 98,
+        "rejected_locations": 321,
+        "description_checked": true,
+        "sample": {
+          "title": "Account Executive - New Logo Sales, NAMER (ESB)",
+          "location": "Bangalore, India",
+          "apply_url": "https://ats.rippling.com/rippling/jobs/a1d75550-0c0d-43dd-acd1-1358f2d3b7b2",
+          "job_id": "a1d75550-0c0d-43dd-acd1-1358f2d3b7b2"
+        },
+        "duration_seconds": 2.95,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Rippling",
+          "board_id": "rippling",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 747,
+          "india_samples": 98,
+          "rejected_locations": 321,
+          "description_checked": false,
+          "sample": {
+            "title": "Account Executive - New Logo Sales, NAMER (ESB)",
+            "location": "Bangalore, India",
+            "apply_url": "https://ats.rippling.com/rippling/jobs/a1d75550-0c0d-43dd-acd1-1358f2d3b7b2",
+            "job_id": "a1d75550-0c0d-43dd-acd1-1358f2d3b7b2"
+          },
+          "duration_seconds": 1.47,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Rippling",
+          "board_id": "rippling",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 747,
+          "india_samples": 98,
+          "rejected_locations": 321,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Executive - New Logo Sales, NAMER (ESB)",
+            "location": "Bangalore, India",
+            "apply_url": "https://ats.rippling.com/rippling/jobs/a1d75550-0c0d-43dd-acd1-1358f2d3b7b2",
+            "job_id": "a1d75550-0c0d-43dd-acd1-1358f2d3b7b2"
+          },
+          "duration_seconds": 4.01,
+          "note": "",
+          "checked_at": "2026-11-24T04:58:40.961428+00:00"
+        },
+        {
+          "company": "Rippling",
+          "board_id": "rippling",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 747,
+          "india_samples": 98,
+          "rejected_locations": 321,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Executive - New Logo Sales, NAMER (ESB)",
+            "location": "Bangalore, India",
+            "apply_url": "https://ats.rippling.com/rippling/jobs/a1d75550-0c0d-43dd-acd1-1358f2d3b7b2",
+            "job_id": "a1d75550-0c0d-43dd-acd1-1358f2d3b7b2"
+          },
+          "duration_seconds": 2.95,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Zepto",
+      "group": "new_35",
+      "board_id": "zepto",
+      "career_url": "https://www.zepto.com/s/careers",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Zepto",
+        "board_id": "zepto",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 403,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 13.19,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Zepto",
+          "board_id": "zepto",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 403,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 8.52,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Zepto",
+          "board_id": "zepto",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 403,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 13.19,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Lowe's India",
+      "group": "new_35",
+      "board_id": "lowe-s-india",
+      "career_url": "https://talent.lowes.com/in/en/search-results",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Lowe's India",
+        "board_id": "lowe-s-india",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 20,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "location": "Bengaluru",
+          "title": "Senior Auditor - Business SOX",
+          "apply_url": "https://lowes.wd5.myworkdayjobs.com/LWS_External_CS/job/Bengaluru/Senior-Auditor---Business-SOX_JR-02615382/apply",
+          "job_id": "LOWEUSJR02615382EXTERNALENIN"
+        },
+        "duration_seconds": 14.14,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Lowe's India",
+          "board_id": "lowe-s-india",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bengaluru",
+            "title": "Senior Auditor - Business SOX",
+            "apply_url": "https://lowes.wd5.myworkdayjobs.com/LWS_External_CS/job/Bengaluru/Senior-Auditor---Business-SOX_JR-02615382/apply",
+            "job_id": "LOWEUSJR02615382EXTERNALENIN"
+          },
+          "duration_seconds": 4.3,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Lowe's India",
+          "board_id": "lowe-s-india",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bengaluru",
+            "title": "Senior Auditor - Business SOX",
+            "apply_url": "https://lowes.wd5.myworkdayjobs.com/LWS_External_CS/job/Bengaluru/Senior-Auditor---Business-SOX_JR-02615382/apply",
+            "job_id": "LOWEUSJR02615382EXTERNALENIN"
+          },
+          "duration_seconds": 14.14,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Synopsys",
+      "group": "new_35",
+      "board_id": "synopsys",
+      "career_url": "https://careers.synopsys.com/location/india-jobs/44408/1269750/2",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Synopsys",
+        "board_id": "synopsys",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 18,
+        "india_samples": 15,
+        "rejected_locations": 3,
+        "description_checked": true,
+        "sample": {
+          "title": "Director - SoC Verification",
+          "apply_url": "https://careers.synopsys.com/job/noida/director-soc-verification/44408/102470445632",
+          "location": "Noida, India"
+        },
+        "duration_seconds": 12.02,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Synopsys",
+          "board_id": "synopsys",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 18,
+          "india_samples": 15,
+          "rejected_locations": 3,
+          "description_checked": true,
+          "sample": {
+            "title": "Director - SoC Verification",
+            "apply_url": "https://careers.synopsys.com/job/noida/director-soc-verification/44408/102470445632",
+            "location": "Noida, India"
+          },
+          "duration_seconds": 3.62,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Synopsys",
+          "board_id": "synopsys",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 18,
+          "india_samples": 15,
+          "rejected_locations": 3,
+          "description_checked": true,
+          "sample": {
+            "title": "Director - SoC Verification",
+            "apply_url": "https://careers.synopsys.com/job/noida/director-soc-verification/44408/102470445632",
+            "location": "Noida, India"
+          },
+          "duration_seconds": 12.02,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Applied Materials",
+      "group": "new_35",
+      "board_id": "applied-materials",
+      "career_url": "https://jobs.appliedmaterials.com/location/india-jobs/95/1269750/2",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Applied Materials",
+        "board_id": "applied-materials",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 15,
+        "india_samples": 14,
+        "rejected_locations": 1,
+        "description_checked": true,
+        "sample": {
+          "title": "Manufacturing Engineer",
+          "apply_url": "https://jobs.appliedmaterials.com/job/bengaluru/manufacturing-engineer/95/100380330352",
+          "location": "Bangalore, India"
+        },
+        "duration_seconds": 8.48,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Applied Materials",
+          "board_id": "applied-materials",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 14,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "Manufacturing Engineer",
+            "apply_url": "https://jobs.appliedmaterials.com/job/bengaluru/manufacturing-engineer/95/100380330352",
+            "location": "Bangalore, India"
+          },
+          "duration_seconds": 0.78,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Applied Materials",
+          "board_id": "applied-materials",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 14,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "Manufacturing Engineer",
+            "apply_url": "https://jobs.appliedmaterials.com/job/bengaluru/manufacturing-engineer/95/100380330352",
+            "location": "Bangalore, India"
+          },
+          "duration_seconds": 8.48,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Optum (UnitedHealth Group)",
+      "group": "new_35",
+      "board_id": "optum-unitedhealth-group",
+      "career_url": "https://careers.unitedhealthgroup.com/location/india-jobs/34088/1269750/2",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Optum (UnitedHealth Group)",
+        "board_id": "optum-unitedhealth-group",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 15,
+        "india_samples": 15,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Senior Software Engineer",
+          "apply_url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-software-engineer/34088/103708681728",
+          "location": "Hyderabad, Telangana, India"
+        },
+        "duration_seconds": 5.6,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Optum (UnitedHealth Group)",
+          "board_id": "optum-unitedhealth-group",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 15,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior Software Engineer",
+            "apply_url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-software-engineer/34088/103708681728",
+            "location": "Hyderabad, Telangana, India"
+          },
+          "duration_seconds": 1.69,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Optum (UnitedHealth Group)",
+          "board_id": "optum-unitedhealth-group",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 15,
+          "india_samples": 15,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior Software Engineer",
+            "apply_url": "https://careers.unitedhealthgroup.com/job/hyderabad/senior-software-engineer/34088/103708681728",
+            "location": "Hyderabad, Telangana, India"
+          },
+          "duration_seconds": 5.6,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Tesco Bengaluru",
+      "group": "new_35",
+      "board_id": "tesco-bengaluru",
+      "career_url": "https://careers.tesco.com/en_GB/careers/SearchJobs/?12328=%5B587056%5D&12328_format=7246&listFilterMode=1&jobRecordsPerPage=10",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Tesco Bengaluru",
+        "board_id": "tesco-bengaluru",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 20,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Software Development Engineer II",
+          "apply_url": "https://careers.tesco.com/en_GB/careers/JobDetail/Software-Development-Engineer-II/218796",
+          "location": "Bengaluru, Karnataka, India, India"
+        },
+        "duration_seconds": 8.86,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Tesco Bengaluru",
+          "board_id": "tesco-bengaluru",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Software Development Engineer II",
+            "apply_url": "https://careers.tesco.com/en_GB/careers/JobDetail/Software-Development-Engineer-II/218796",
+            "location": "Bengaluru, Karnataka, India, India"
+          },
+          "duration_seconds": 4.91,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Tesco Bengaluru",
+          "board_id": "tesco-bengaluru",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 20,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Software Development Engineer II",
+            "apply_url": "https://careers.tesco.com/en_GB/careers/JobDetail/Software-Development-Engineer-II/218796",
+            "location": "Bengaluru, Karnataka, India, India"
+          },
+          "duration_seconds": 8.86,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Bloomberg",
+      "group": "new_35",
+      "board_id": "bloomberg",
+      "career_url": "https://bloomberg.avature.net/careers/SearchJobs",
+      "india_returned_in_test": true,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Bloomberg",
+        "board_id": "bloomberg",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 24,
+        "india_samples": 2,
+        "rejected_locations": 22,
+        "description_checked": false,
+        "sample": {
+          "title": "Senior Software Engineer - Data License Analytics, Pune",
+          "apply_url": "https://bloomberg.avature.net/careers/JobDetail/Senior-Software-Engineer-Data-License-Analytics-Pune/46263",
+          "location": "Pune, India"
+        },
+        "duration_seconds": 25.26,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Bloomberg",
+          "board_id": "bloomberg",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 2,
+          "rejected_locations": 22,
+          "description_checked": false,
+          "sample": {
+            "title": "Senior Software Engineer - Data License Analytics, Pune",
+            "apply_url": "https://bloomberg.avature.net/careers/JobDetail/Senior-Software-Engineer-Data-License-Analytics-Pune/46263",
+            "location": "Pune, India"
+          },
+          "duration_seconds": 5.85,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Bloomberg",
+          "board_id": "bloomberg",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 2,
+          "rejected_locations": 22,
+          "description_checked": false,
+          "sample": {
+            "title": "Senior Software Engineer - Data License Analytics, Pune",
+            "apply_url": "https://bloomberg.avature.net/careers/JobDetail/Senior-Software-Engineer-Data-License-Analytics-Pune/46263",
+            "location": "Pune, India"
+          },
+          "duration_seconds": 25.26,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Dream11",
+      "group": "new_35",
+      "board_id": "dream11",
+      "career_url": "https://dream11.hire.trakstar.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Dream11",
+        "board_id": "dream11",
+        "group": "new_35",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 3,
+        "india_samples": 3,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {
+          "title": "Android Developer",
+          "apply_url": "https://dream11.hire.trakstar.com/jobs/fk0holz/",
+          "location": "Mumbai"
+        },
+        "duration_seconds": 15.09,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Dream11",
+          "board_id": "dream11",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 3,
+          "india_samples": 3,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {
+            "title": "Android Developer",
+            "apply_url": "https://dream11.hire.trakstar.com/jobs/fk0holz/",
+            "location": "Mumbai"
+          },
+          "duration_seconds": 3.19,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Dream11",
+          "board_id": "dream11",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 3,
+          "india_samples": 3,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {
+            "title": "Android Developer",
+            "apply_url": "https://dream11.hire.trakstar.com/jobs/fk0holz/",
+            "location": "Mumbai"
+          },
+          "duration_seconds": 15.09,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "D. E. Shaw",
+      "group": "new_35",
+      "board_id": "d-e-shaw",
+      "career_url": "https://www.deshawindia.com/careers/work-with-us",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "D. E. Shaw",
+        "board_id": "d-e-shaw",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 200,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 16.33,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "D. E. Shaw",
+          "board_id": "d-e-shaw",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 14.34,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "D. E. Shaw",
+          "board_id": "d-e-shaw",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 16.33,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "EPAM Systems",
+      "group": "new_35",
+      "board_id": "epam-systems",
+      "career_url": "https://careers.epam.com/en/jobs/india",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "EPAM Systems",
+        "board_id": "epam-systems",
+        "group": "new_35",
+        "status": "no_india_sample",
+        "http_status": 200,
+        "returned_records": 24,
+        "india_samples": 0,
+        "rejected_locations": 24,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 50.8,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "EPAM Systems",
+          "board_id": "epam-systems",
+          "group": "new_35",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 0,
+          "rejected_locations": 24,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 51.63,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "EPAM Systems",
+          "board_id": "epam-systems",
+          "group": "new_35",
+          "status": "no_india_sample",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 0,
+          "rejected_locations": 24,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 50.8,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Globant",
+      "group": "new_35",
+      "board_id": "globant",
+      "career_url": "https://career.globant.com/",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Globant",
+        "board_id": "globant",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 200,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 30.64,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Globant",
+          "board_id": "globant",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.02,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Globant",
+          "board_id": "globant",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 30.64,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "MakeMyTrip",
+      "group": "new_35",
+      "board_id": "makemytrip",
+      "career_url": "https://careers.makemytrip.com/prod/jobs",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "MakeMyTrip",
+        "board_id": "makemytrip",
+        "group": "new_35",
+        "status": "browser_failed",
+        "http_status": 200,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 36.78,
+        "note": "TimeoutError",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "MakeMyTrip",
+          "board_id": "makemytrip",
+          "group": "new_35",
+          "status": "browser_failed",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 32.71,
+          "note": "TimeoutError",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "MakeMyTrip",
+          "board_id": "makemytrip",
+          "group": "new_35",
+          "status": "browser_failed",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 36.78,
+          "note": "TimeoutError",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "UBS",
+      "group": "new_35",
+      "board_id": "ubs",
+      "career_url": "https://jobs.ubs.com/TGnewUI/Search/home/Home?partnerid=25008&siteid=5012",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "UBS",
+        "board_id": "ubs",
+        "group": "new_35",
+        "status": "browser_failed",
+        "http_status": 404,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 33.27,
+        "note": "TimeoutError",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "UBS",
+          "board_id": "ubs",
+          "group": "new_35",
+          "status": "browser_ok",
+          "http_status": 404,
+          "returned_records": 10,
+          "india_samples": 0,
+          "rejected_locations": 10,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 45.14,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "UBS",
+          "board_id": "ubs",
+          "group": "new_35",
+          "status": "browser_failed",
+          "http_status": 404,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 33.27,
+          "note": "TimeoutError",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Kearney",
+      "group": "new_35",
+      "board_id": "kearney",
+      "career_url": "https://www.kearney.com/about/locations/india/careers",
+      "india_returned_in_test": false,
+      "sample_description_checked": false,
+      "latest": {
+        "company": "Kearney",
+        "board_id": "kearney",
+        "group": "new_35",
+        "status": "no_usable_sample",
+        "http_status": 400,
+        "returned_records": 0,
+        "india_samples": 0,
+        "rejected_locations": 0,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 42.0,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Kearney",
+          "board_id": "kearney",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 400,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 11.64,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Kearney",
+          "board_id": "kearney",
+          "group": "new_35",
+          "status": "no_usable_sample",
+          "http_status": 400,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 42.0,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "LinkedIn",
+      "group": "recovered",
+      "board_id": "linkedin",
+      "career_url": "https://jobs.smartrecruiters.com/LinkedIn3",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "LinkedIn",
+        "board_id": "linkedin",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 44,
+        "india_samples": 44,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Talent Account Executive [Chennai]",
+          "apply_url": "https://jobs.smartrecruiters.com/LinkedIn3/744000163379860",
+          "location": "Chennai, TN, India",
+          "job_id": "744000163379860"
+        },
+        "duration_seconds": 3.43,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "LinkedIn",
+          "board_id": "linkedin",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 44,
+          "india_samples": 44,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Talent Account Executive [Chennai]",
+            "apply_url": "https://jobs.smartrecruiters.com/LinkedIn3/744000163379860",
+            "location": "Chennai, TN, India",
+            "job_id": "744000163379860"
+          },
+          "duration_seconds": 1.14,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "LinkedIn",
+          "board_id": "linkedin",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 44,
+          "india_samples": 44,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Talent Account Executive [Chennai]",
+            "apply_url": "https://jobs.smartrecruiters.com/LinkedIn3/744000163379860",
+            "location": "Chennai, TN, India",
+            "job_id": "744000163379860"
+          },
+          "duration_seconds": 3.43,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Continental",
+      "group": "recovered",
+      "board_id": "continental",
+      "career_url": "https://jobs.smartrecruiters.com/Continental",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Continental",
+        "board_id": "continental",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 13,
+        "india_samples": 13,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Senior BPM Solution Consultant",
+          "apply_url": "https://jobs.smartrecruiters.com/Continental/744000162662309",
+          "location": "Bangaluru, Karnataka, India",
+          "job_id": "744000162662309"
+        },
+        "duration_seconds": 2.61,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Continental",
+          "board_id": "continental",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 13,
+          "india_samples": 13,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior BPM Solution Consultant",
+            "apply_url": "https://jobs.smartrecruiters.com/Continental/744000162662309",
+            "location": "Bangaluru, Karnataka, India",
+            "job_id": "744000162662309"
+          },
+          "duration_seconds": 1.18,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Continental",
+          "board_id": "continental",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 13,
+          "india_samples": 13,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior BPM Solution Consultant",
+            "apply_url": "https://jobs.smartrecruiters.com/Continental/744000162662309",
+            "location": "Bangaluru, Karnataka, India",
+            "job_id": "744000162662309"
+          },
+          "duration_seconds": 2.61,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Ubisoft",
+      "group": "recovered",
+      "board_id": "ubisoft",
+      "career_url": "https://jobs.smartrecruiters.com/Ubisoft2",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Ubisoft",
+        "board_id": "ubisoft",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 7,
+        "india_samples": 7,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Associate Director Quality",
+          "apply_url": "https://jobs.smartrecruiters.com/Ubisoft2/744000162496479",
+          "location": "Pune, MH, India",
+          "job_id": "744000162496479"
+        },
+        "duration_seconds": 24.02,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Ubisoft",
+          "board_id": "ubisoft",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 7,
+          "india_samples": 7,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate Director Quality",
+            "apply_url": "https://jobs.smartrecruiters.com/Ubisoft2/744000162496479",
+            "location": "Pune, MH, India",
+            "job_id": "744000162496479"
+          },
+          "duration_seconds": 1.04,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Ubisoft",
+          "board_id": "ubisoft",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 7,
+          "india_samples": 7,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Associate Director Quality",
+            "apply_url": "https://jobs.smartrecruiters.com/Ubisoft2/744000162496479",
+            "location": "Pune, MH, India",
+            "job_id": "744000162496479"
+          },
+          "duration_seconds": 24.02,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Stripe",
+      "group": "recovered",
+      "board_id": "stripe",
+      "career_url": "https://stripe.com/jobs",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Stripe",
+        "board_id": "stripe",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 770,
+        "india_samples": 47,
+        "rejected_locations": 723,
+        "description_checked": true,
+        "sample": {
+          "title": "Account Executive, Commercial & SMB (India)",
+          "apply_url": "https://stripe.com/jobs/search?gh_jid=8352489",
+          "location": "Bangalore; India Locations",
+          "job_id": "8352489"
+        },
+        "duration_seconds": 41.98,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Stripe",
+          "board_id": "stripe",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 770,
+          "india_samples": 44,
+          "rejected_locations": 726,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Executive, Commercial & SMB (India)",
+            "apply_url": "https://stripe.com/jobs/search?gh_jid=8352489",
+            "location": "Bangalore",
+            "job_id": "8352489"
+          },
+          "duration_seconds": 6.15,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Stripe",
+          "board_id": "stripe",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 770,
+          "india_samples": 47,
+          "rejected_locations": 723,
+          "description_checked": true,
+          "sample": {
+            "title": "Account Executive, Commercial & SMB (India)",
+            "apply_url": "https://stripe.com/jobs/search?gh_jid=8352489",
+            "location": "Bangalore; India Locations",
+            "job_id": "8352489"
+          },
+          "duration_seconds": 41.98,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Spotify",
+      "group": "recovered",
+      "board_id": "spotify",
+      "career_url": "https://jobs.lever.co/spotify",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Spotify",
+        "board_id": "spotify",
+        "group": "recovered",
+        "status": "no_india_sample",
+        "http_status": 0,
+        "returned_records": 88,
+        "india_samples": 0,
+        "rejected_locations": 88,
+        "description_checked": false,
+        "sample": {},
+        "duration_seconds": 60.05,
+        "note": "ReadTimeout",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Spotify",
+          "board_id": "spotify",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 88,
+          "india_samples": 1,
+          "rejected_locations": 87,
+          "description_checked": true,
+          "sample": {
+            "title": "Retention & Engagement Marketing Lead",
+            "apply_url": "https://jobs.lever.co/spotify/9057bb9b-3aa2-49ba-9fd0-a9395018d0ea",
+            "location": "IN"
+          },
+          "duration_seconds": 2.46,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Spotify",
+          "board_id": "spotify",
+          "group": "recovered",
+          "status": "no_india_sample",
+          "http_status": 0,
+          "returned_records": 88,
+          "india_samples": 0,
+          "rejected_locations": 88,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 60.05,
+          "note": "ReadTimeout",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Hasura",
+      "group": "recovered",
+      "board_id": "hasura",
+      "career_url": "https://jobs.gem.com/promptql",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Hasura",
+        "board_id": "hasura",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 4,
+        "india_samples": 1,
+        "rejected_locations": 3,
+        "description_checked": true,
+        "sample": {
+          "location": "Bengaluru, India",
+          "title": "Forward Deployed Analyst, Bangalore",
+          "apply_url": "https://jobs.gem.com/promptql/am9icG9zdDqFcCqALL3yOrMp6tFzI6t8",
+          "job_id": "am9icG9zdDqFcCqALL3yOrMp6tFzI6t8"
+        },
+        "duration_seconds": 2.26,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Hasura",
+          "board_id": "hasura",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 4,
+          "india_samples": 1,
+          "rejected_locations": 3,
+          "description_checked": true,
+          "sample": {
+            "location": "Bengaluru, India",
+            "title": "Forward Deployed Analyst, Bangalore",
+            "apply_url": "https://jobs.gem.com/promptql/am9icG9zdDqFcCqALL3yOrMp6tFzI6t8",
+            "job_id": "am9icG9zdDqFcCqALL3yOrMp6tFzI6t8"
+          },
+          "duration_seconds": 1.0,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Hasura",
+          "board_id": "hasura",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 4,
+          "india_samples": 1,
+          "rejected_locations": 3,
+          "description_checked": true,
+          "sample": {
+            "location": "Bengaluru, India",
+            "title": "Forward Deployed Analyst, Bangalore",
+            "apply_url": "https://jobs.gem.com/promptql/am9icG9zdDqFcCqALL3yOrMp6tFzI6t8",
+            "job_id": "am9icG9zdDqFcCqALL3yOrMp6tFzI6t8"
+          },
+          "duration_seconds": 2.26,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "KPIT Technologies",
+      "group": "recovered",
+      "board_id": "kpit-technologies",
+      "career_url": "https://talentojo.kpit.com/tojo/app/career-portal/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "KPIT Technologies",
+        "board_id": "kpit-technologies",
+        "group": "recovered",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 24,
+        "india_samples": 2,
+        "rejected_locations": 22,
+        "description_checked": true,
+        "sample": {
+          "location": "Pune",
+          "title": "Executive-Corporate Accounts & Finance",
+          "apply_url": "https://talentojo.kpit.com/tojo/app/job-apply/",
+          "job_id": "85505"
+        },
+        "duration_seconds": 1.94,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "KPIT Technologies",
+          "board_id": "kpit-technologies",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 2,
+          "rejected_locations": 22,
+          "description_checked": true,
+          "sample": {
+            "location": "Pune",
+            "title": "Executive-Corporate Accounts & Finance",
+            "apply_url": "https://talentojo.kpit.com/tojo/app/job-apply/",
+            "job_id": "85505"
+          },
+          "duration_seconds": 1.13,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "KPIT Technologies",
+          "board_id": "kpit-technologies",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 24,
+          "india_samples": 2,
+          "rejected_locations": 22,
+          "description_checked": true,
+          "sample": {
+            "location": "Pune",
+            "title": "Executive-Corporate Accounts & Finance",
+            "apply_url": "https://talentojo.kpit.com/tojo/app/job-apply/",
+            "job_id": "85505"
+          },
+          "duration_seconds": 1.94,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Zerodha",
+      "group": "recovered",
+      "board_id": "zerodha",
+      "career_url": "https://careers.zerodha.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Zerodha",
+        "board_id": "zerodha",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 2,
+        "india_samples": 2,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "location": "Bangalore",
+          "title": "Legal Manager -Peakst8",
+          "apply_url": "https://careers.zerodha.com/",
+          "job_id": "legal-manager-peakst8"
+        },
+        "duration_seconds": 1.34,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Zerodha",
+          "board_id": "zerodha",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 2,
+          "india_samples": 1,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore",
+            "title": "Legal Manager -Peakst8",
+            "apply_url": "https://careers.zerodha.com/",
+            "job_id": "legal-manager-peakst8"
+          },
+          "duration_seconds": 0.21,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Zerodha",
+          "board_id": "zerodha",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 2,
+          "india_samples": 2,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore",
+            "title": "Legal Manager -Peakst8",
+            "apply_url": "https://careers.zerodha.com/",
+            "job_id": "legal-manager-peakst8"
+          },
+          "duration_seconds": 0.46,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Zerodha",
+          "board_id": "zerodha",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 2,
+          "india_samples": 2,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore",
+            "title": "Legal Manager -Peakst8",
+            "apply_url": "https://careers.zerodha.com/",
+            "job_id": "legal-manager-peakst8"
+          },
+          "duration_seconds": 1.34,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Tata Elxsi",
+      "group": "recovered",
+      "board_id": "tata-elxsi",
+      "career_url": "https://www.tataelxsi.com/careers/job-openings",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Tata Elxsi",
+        "board_id": "tata-elxsi",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 8,
+        "india_samples": 3,
+        "rejected_locations": 5,
+        "description_checked": true,
+        "sample": {
+          "title": "DevOps Engineer",
+          "location": "Bangalore/Chennai/Trivandrum / Pune / Hyderabad |\n 3 - 4 years | \n B.E, B.Tech, MCA, M.E, M.Tech \n | DevOps Engineers",
+          "apply_url": "https://www.tataelxsi.com/careers/job-openings/devops-engineer",
+          "job_id": ""
+        },
+        "duration_seconds": 4.14,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Tata Elxsi",
+          "board_id": "tata-elxsi",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 8,
+          "india_samples": 3,
+          "rejected_locations": 5,
+          "description_checked": true,
+          "sample": {
+            "title": "DevOps Engineer",
+            "location": "Bangalore/Chennai/Trivandrum / Pune / Hyderabad |\n 3 - 4 years | \n B.E, B.Tech, MCA, M.E, M.Tech \n | DevOps Engineers",
+            "apply_url": "https://www.tataelxsi.com/careers/job-openings/devops-engineer",
+            "job_id": ""
+          },
+          "duration_seconds": 1.83,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Tata Elxsi",
+          "board_id": "tata-elxsi",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 8,
+          "india_samples": 3,
+          "rejected_locations": 5,
+          "description_checked": true,
+          "sample": {
+            "title": "DevOps Engineer",
+            "location": "Bangalore/Chennai/Trivandrum / Pune / Hyderabad |\n 3 - 4 years | \n B.E, B.Tech, MCA, M.E, M.Tech \n | DevOps Engineers",
+            "apply_url": "https://www.tataelxsi.com/careers/job-openings/devops-engineer",
+            "job_id": ""
+          },
+          "duration_seconds": 4.14,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Ramco Systems",
+      "group": "recovered",
+      "board_id": "ramco-systems",
+      "career_url": "https://www.ramco.com/careers/jobs-by-locations",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Ramco Systems",
+        "board_id": "ramco-systems",
+        "group": "recovered",
+        "status": "browser_ok",
+        "http_status": 200,
+        "returned_records": 14,
+        "india_samples": 7,
+        "rejected_locations": 7,
+        "description_checked": true,
+        "sample": {
+          "title": "Regional Sales (Hunting Role) - India",
+          "location": "India",
+          "apply_url": "https://www.ramco.com/careers/jobs-by-locations/sa",
+          "job_id": ""
+        },
+        "duration_seconds": 42.41,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Ramco Systems",
+          "board_id": "ramco-systems",
+          "group": "recovered",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 13.02,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Ramco Systems",
+          "board_id": "ramco-systems",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 14,
+          "india_samples": 7,
+          "rejected_locations": 7,
+          "description_checked": true,
+          "sample": {
+            "title": "Regional Sales (Hunting Role) - India",
+            "location": "India",
+            "apply_url": "https://www.ramco.com/careers/jobs-by-locations/sa",
+            "job_id": ""
+          },
+          "duration_seconds": 23.86,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Ramco Systems",
+          "board_id": "ramco-systems",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 14,
+          "india_samples": 7,
+          "rejected_locations": 7,
+          "description_checked": true,
+          "sample": {
+            "title": "Regional Sales (Hunting Role) - India",
+            "location": "India",
+            "apply_url": "https://www.ramco.com/careers/jobs-by-locations/sa",
+            "job_id": ""
+          },
+          "duration_seconds": 42.41,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Tiger Analytics",
+      "group": "recovered",
+      "board_id": "tiger-analytics",
+      "career_url": "https://apply.workable.com/tiger-analytics/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Tiger Analytics",
+        "board_id": "tiger-analytics",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 3,
+        "india_samples": 3,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "location": "India",
+          "title": "Senior HR Associate",
+          "apply_url": "https://apply.workable.com/j/7AAD2A3169/",
+          "job_id": "7AAD2A3169"
+        },
+        "duration_seconds": 7.69,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Tiger Analytics",
+          "board_id": "tiger-analytics",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 3,
+          "india_samples": 3,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "India",
+            "title": "Senior HR Associate",
+            "apply_url": "https://apply.workable.com/j/7AAD2A3169/",
+            "job_id": "7AAD2A3169"
+          },
+          "duration_seconds": 0.73,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Tiger Analytics",
+          "board_id": "tiger-analytics",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 3,
+          "india_samples": 3,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "India",
+            "title": "Senior HR Associate",
+            "apply_url": "https://apply.workable.com/j/7AAD2A3169/",
+            "job_id": "7AAD2A3169"
+          },
+          "duration_seconds": 7.69,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "SAP",
+      "group": "recovered",
+      "board_id": "sap",
+      "career_url": "https://careers.sap.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "SAP",
+        "board_id": "sap",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 511,
+        "india_samples": 36,
+        "rejected_locations": 475,
+        "description_checked": true,
+        "sample": {
+          "location": "Bangalore, IN, 560066, India",
+          "title": "IT Technology Services Senior Specialist - Linux Administration, Hyperscaler, Pacemaker operations (Bangalore, IN, 560066)",
+          "apply_url": "https://careers.sap.com/job/Bangalore-IT-Technology-Services-Senior-Specialist-Linux-Administration%2C-Hyperscaler%2C-Pacemaker-operations-560066/1429724433/",
+          "job_id": "1429724433"
+        },
+        "duration_seconds": 96.96,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "SAP",
+          "board_id": "sap",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 512,
+          "india_samples": 36,
+          "rejected_locations": 476,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore, IN, 560066, India",
+            "title": "IT Technology Services Senior Specialist - Linux Administration, Hyperscaler, Pacemaker operations (Bangalore, IN, 560066)",
+            "apply_url": "https://careers.sap.com/job/Bangalore-IT-Technology-Services-Senior-Specialist-Linux-Administration%2C-Hyperscaler%2C-Pacemaker-operations-560066/1429724433/",
+            "job_id": "1429724433"
+          },
+          "duration_seconds": 17.87,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "SAP",
+          "board_id": "sap",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 511,
+          "india_samples": 36,
+          "rejected_locations": 475,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore, IN, 560066, India",
+            "title": "IT Technology Services Senior Specialist - Linux Administration, Hyperscaler, Pacemaker operations (Bangalore, IN, 560066)",
+            "apply_url": "https://careers.sap.com/job/Bangalore-IT-Technology-Services-Senior-Specialist-Linux-Administration%2C-Hyperscaler%2C-Pacemaker-operations-560066/1429724433/",
+            "job_id": "1429724433"
+          },
+          "duration_seconds": 96.96,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "LTIMindtree",
+      "group": "recovered",
+      "board_id": "ltimindtree",
+      "career_url": "https://careers.ltm.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "LTIMindtree",
+        "board_id": "ltimindtree",
+        "group": "recovered",
+        "status": "ok",
+        "http_status": 200,
+        "returned_records": 37,
+        "india_samples": 2,
+        "rejected_locations": 35,
+        "description_checked": true,
+        "sample": {
+          "location": "Chennai, TN, IN, India",
+          "title": "Specialist - Software Engineering (Chennai, TN, IN)",
+          "apply_url": "https://careers.ltm.com/job/Chennai-Specialist-Software-Engineering-TN/870365101/",
+          "job_id": "870365101"
+        },
+        "duration_seconds": 3.66,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "LTIMindtree",
+          "board_id": "ltimindtree",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 37,
+          "india_samples": 2,
+          "rejected_locations": 35,
+          "description_checked": true,
+          "sample": {
+            "location": "Chennai, TN, IN, India",
+            "title": "Specialist - Software Engineering (Chennai, TN, IN)",
+            "apply_url": "https://careers.ltm.com/job/Chennai-Specialist-Software-Engineering-TN/870365101/",
+            "job_id": "870365101"
+          },
+          "duration_seconds": 2.33,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "LTIMindtree",
+          "board_id": "ltimindtree",
+          "group": "recovered",
+          "status": "ok",
+          "http_status": 200,
+          "returned_records": 37,
+          "india_samples": 2,
+          "rejected_locations": 35,
+          "description_checked": true,
+          "sample": {
+            "location": "Chennai, TN, IN, India",
+            "title": "Specialist - Software Engineering (Chennai, TN, IN)",
+            "apply_url": "https://careers.ltm.com/job/Chennai-Specialist-Software-Engineering-TN/870365101/",
+            "job_id": "870365101"
+          },
+          "duration_seconds": 3.66,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Schlumberger",
+      "group": "recovered",
+      "board_id": "schlumberger",
+      "career_url": "https://apply.slb.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Schlumberger",
+        "board_id": "schlumberger",
+        "group": "recovered",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 10,
+        "india_samples": 7,
+        "rejected_locations": 3,
+        "description_checked": true,
+        "sample": {
+          "location": "Multi-Location, India",
+          "title": "Early Careers - Geoscience&Petrotechnical",
+          "apply_url": "https://apply.slb.com/careers/job/563499730906613",
+          "job_id": "563499730906613"
+        },
+        "duration_seconds": 5.32,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Schlumberger",
+          "board_id": "schlumberger",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 7,
+          "rejected_locations": 3,
+          "description_checked": false,
+          "sample": {
+            "location": "IN",
+            "title": "Early Careers - Geoscience&Petrotechnical",
+            "apply_url": "/careers/job/563499730906613",
+            "job_id": "563499730906613"
+          },
+          "duration_seconds": 1.26,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Schlumberger",
+          "board_id": "schlumberger",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 7,
+          "rejected_locations": 3,
+          "description_checked": true,
+          "sample": {
+            "location": "Multi-Location, India",
+            "title": "Early Careers - Geoscience&Petrotechnical",
+            "apply_url": "https://apply.slb.com/careers/job/563499730906613",
+            "job_id": "563499730906613"
+          },
+          "duration_seconds": 5.32,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Sify Tech",
+      "group": "recovered",
+      "board_id": "sify-tech",
+      "career_url": "https://sifycareer.tallite.com/",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Sify Tech",
+        "board_id": "sify-tech",
+        "group": "recovered",
+        "status": "browser_ok",
+        "http_status": 200,
+        "returned_records": 5,
+        "india_samples": 5,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "title": "Operations Manager",
+          "location": "Mumbai, India",
+          "apply_url": "https://sifycareer.tallite.com/job/21303?name=Operations+Manager",
+          "job_id": "21303"
+        },
+        "duration_seconds": 36.57,
+        "note": "Browser-rendered job list and individual descriptions; current visible page only.",
+        "checked_at": "2026-11-24T05:25:47.868721+00:00"
+      },
+      "observations": [
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.14,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "browser_failed",
+          "http_status": 0,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 29.05,
+          "note": "TimeoutError",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 9,
+          "rejected_locations": 1,
+          "description_checked": false,
+          "sample": {
+            "title": "Operations Manager",
+            "location": "Mumbai",
+            "apply_url": "https://sifycareer.tallite.com/job/21303?name=Operations+Manager",
+            "job_id": "21303"
+          },
+          "duration_seconds": 34.61,
+          "note": "Browser-rendered job list and individual descriptions; current visible page only.",
+          "checked_at": "2026-11-24T04:58:40.961428+00:00"
+        },
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 3,
+          "india_samples": 2,
+          "rejected_locations": 1,
+          "description_checked": false,
+          "sample": {
+            "title": "Operations Manager",
+            "location": "Mumbai",
+            "apply_url": "https://sifycareer.tallite.com/job/21303?name=Operations+Manager",
+            "job_id": "21303"
+          },
+          "duration_seconds": 69.41,
+          "note": "Browser-rendered job list and individual descriptions; current visible page only.",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        },
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 10,
+          "india_samples": 9,
+          "rejected_locations": 1,
+          "description_checked": false,
+          "sample": {
+            "title": "Operations Manager",
+            "location": "Mumbai",
+            "apply_url": "https://sifycareer.tallite.com/job/21303?name=Operations+Manager",
+            "job_id": "21303"
+          },
+          "duration_seconds": 27.84,
+          "note": "Browser-rendered job list and individual descriptions; current visible page only.",
+          "checked_at": "2026-11-24T05:13:44.996406+00:00"
+        },
+        {
+          "company": "Sify Tech",
+          "board_id": "sify-tech",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 5,
+          "india_samples": 5,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "title": "Operations Manager",
+            "location": "Mumbai, India",
+            "apply_url": "https://sifycareer.tallite.com/job/21303?name=Operations+Manager",
+            "job_id": "21303"
+          },
+          "duration_seconds": 36.57,
+          "note": "Browser-rendered job list and individual descriptions; current visible page only.",
+          "checked_at": "2026-11-24T05:25:47.868721+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Myntra",
+      "group": "recovered",
+      "board_id": "myntra",
+      "career_url": "https://jobs.myntra.com/home",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Myntra",
+        "board_id": "myntra",
+        "group": "recovered",
+        "status": "browser_ok",
+        "http_status": 200,
+        "returned_records": 6,
+        "india_samples": 6,
+        "rejected_locations": 0,
+        "description_checked": true,
+        "sample": {
+          "location": "Bangalore, Karnataka, India",
+          "title": "Lead Associate Demand",
+          "apply_url": "https://jobs.myntra.com/home",
+          "job_id": "r_684543e029d93b96a0a3671617a4fa4a"
+        },
+        "duration_seconds": 41.92,
+        "note": "Public requisition API; first page only. Apply opens the official board because no stable individual link was observed.",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Myntra",
+          "board_id": "myntra",
+          "group": "recovered",
+          "status": "no_usable_sample",
+          "http_status": 200,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 10.21,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Myntra",
+          "board_id": "myntra",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 6,
+          "india_samples": 6,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore, Karnataka, India",
+            "title": "Lead Associate Demand",
+            "apply_url": "https://jobs.myntra.com/home",
+            "job_id": "r_684543e029d93b96a0a3671617a4fa4a"
+          },
+          "duration_seconds": 22.91,
+          "note": "Public requisition API; first page only. Apply opens the official board because no stable individual link was observed.",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Myntra",
+          "board_id": "myntra",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 200,
+          "returned_records": 6,
+          "india_samples": 6,
+          "rejected_locations": 0,
+          "description_checked": true,
+          "sample": {
+            "location": "Bangalore, Karnataka, India",
+            "title": "Lead Associate Demand",
+            "apply_url": "https://jobs.myntra.com/home",
+            "job_id": "r_684543e029d93b96a0a3671617a4fa4a"
+          },
+          "duration_seconds": 41.92,
+          "note": "Public requisition API; first page only. Apply opens the official board because no stable individual link was observed.",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Maersk",
+      "group": "recovered",
+      "board_id": "maersk",
+      "career_url": "https://maersk.wd3.myworkdayjobs.com/Maersk_Careers",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Maersk",
+        "board_id": "maersk",
+        "group": "recovered",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 19,
+        "rejected_locations": 1,
+        "description_checked": true,
+        "sample": {
+          "title": "Senior specialist FNA (ATR) FA",
+          "location": "India, Pune, 411014",
+          "apply_url": "https://maersk.wd3.myworkdayjobs.com/Maersk_Careers/job/India-Pune-411014/Senior-specialist-FNA--ATR--FA_R202113",
+          "job_id": "R202113"
+        },
+        "duration_seconds": 6.46,
+        "note": "",
+        "checked_at": "2026-11-24T05:13:44.996406+00:00"
+      },
+      "observations": [
+        {
+          "company": "Maersk",
+          "board_id": "maersk",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 0,
+          "rejected_locations": 20,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 1.18,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Maersk",
+          "board_id": "maersk",
+          "group": "recovered",
+          "status": "no_usable_sample",
+          "http_status": 429,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 11.51,
+          "note": "",
+          "checked_at": "2026-11-24T04:54:33.642081+00:00"
+        },
+        {
+          "company": "Maersk",
+          "board_id": "maersk",
+          "group": "recovered",
+          "status": "no_usable_sample",
+          "http_status": 429,
+          "returned_records": 0,
+          "india_samples": 0,
+          "rejected_locations": 0,
+          "description_checked": false,
+          "sample": {},
+          "duration_seconds": 12.51,
+          "note": "",
+          "checked_at": "2026-11-24T04:58:40.961428+00:00"
+        },
+        {
+          "company": "Maersk",
+          "board_id": "maersk",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": false,
+          "sample": {
+            "title": "Senior specialist FNA (ATR) FA",
+            "location": "India, Pune, 411014",
+            "apply_url": "https://maersk.wd3.myworkdayjobs.com/Maersk_Careers/job/India-Pune-411014/Senior-specialist-FNA--ATR--FA_R202113",
+            "job_id": "R202113"
+          },
+          "duration_seconds": 19.05,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        },
+        {
+          "company": "Maersk",
+          "board_id": "maersk",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "Senior specialist FNA (ATR) FA",
+            "location": "India, Pune, 411014",
+            "apply_url": "https://maersk.wd3.myworkdayjobs.com/Maersk_Careers/job/India-Pune-411014/Senior-specialist-FNA--ATR--FA_R202113",
+            "job_id": "R202113"
+          },
+          "duration_seconds": 6.46,
+          "note": "",
+          "checked_at": "2026-11-24T05:13:44.996406+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Unity",
+      "group": "recovered",
+      "board_id": "unity",
+      "career_url": "https://unitytech.wd1.myworkdayjobs.com/Unity",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Unity",
+        "board_id": "unity",
+        "group": "recovered",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 1,
+        "rejected_locations": 19,
+        "description_checked": true,
+        "sample": {
+          "title": "Travel Specialist",
+          "location": "Bengaluru, India",
+          "apply_url": "https://unitytech.wd1.myworkdayjobs.com/Unity/job/Bengaluru-India/Travel-Specialist_JOBREQ-2616748",
+          "job_id": "JOBREQ-2616748"
+        },
+        "duration_seconds": 3.85,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Unity",
+          "board_id": "unity",
+          "group": "recovered",
+          "status": "browser_ok",
+          "http_status": 429,
+          "returned_records": 20,
+          "india_samples": 1,
+          "rejected_locations": 19,
+          "description_checked": true,
+          "sample": {
+            "title": "Travel Specialist",
+            "apply_url": "https://unitytech.wd1.myworkdayjobs.com/en-US/Unity/job/Bengaluru-India/Travel-Specialist_JOBREQ-2616748",
+            "location": "Bengaluru, India"
+          },
+          "duration_seconds": 10.82,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Unity",
+          "board_id": "unity",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 1,
+          "rejected_locations": 19,
+          "description_checked": true,
+          "sample": {
+            "title": "Travel Specialist",
+            "location": "Bengaluru, India",
+            "apply_url": "https://unitytech.wd1.myworkdayjobs.com/Unity/job/Bengaluru-India/Travel-Specialist_JOBREQ-2616748",
+            "job_id": "JOBREQ-2616748"
+          },
+          "duration_seconds": 3.85,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    },
+    {
+      "company": "Walmart",
+      "group": "recovered",
+      "board_id": "walmart",
+      "career_url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal",
+      "india_returned_in_test": true,
+      "sample_description_checked": true,
+      "latest": {
+        "company": "Walmart",
+        "board_id": "walmart",
+        "group": "recovered",
+        "status": "partial",
+        "http_status": 200,
+        "returned_records": 20,
+        "india_samples": 19,
+        "rejected_locations": 1,
+        "description_checked": true,
+        "sample": {
+          "title": "(IND) PRINCIPAL, SOFTWARE ENGINEER",
+          "location": "IN KA BANGALORE Home Office PTPP2",
+          "apply_url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP2/XMLNAME--IND--PRINCIPAL--SOFTWARE-ENGINEER_R-2650514",
+          "job_id": "R-2650514"
+        },
+        "duration_seconds": 8.71,
+        "note": "",
+        "checked_at": "2026-11-24T05:04:12.774760+00:00"
+      },
+      "observations": [
+        {
+          "company": "Walmart",
+          "board_id": "walmart",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "(IND) PRINCIPAL, SOFTWARE ENGINEER",
+            "location": "IN KA BANGALORE Home Office PTPP2",
+            "apply_url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP2/XMLNAME--IND--PRINCIPAL--SOFTWARE-ENGINEER_R-2650514",
+            "job_id": "R-2650514"
+          },
+          "duration_seconds": 3.5,
+          "note": "",
+          "checked_at": "2026-11-24T04:39:35.128667+00:00"
+        },
+        {
+          "company": "Walmart",
+          "board_id": "walmart",
+          "group": "recovered",
+          "status": "partial",
+          "http_status": 200,
+          "returned_records": 20,
+          "india_samples": 19,
+          "rejected_locations": 1,
+          "description_checked": true,
+          "sample": {
+            "title": "(IND) PRINCIPAL, SOFTWARE ENGINEER",
+            "location": "IN KA BANGALORE Home Office PTPP2",
+            "apply_url": "https://walmart.wd504.myworkdayjobs.com/WalmartExternal/job/IN-KA-BANGALORE-Home-Office-PTPP2/XMLNAME--IND--PRINCIPAL--SOFTWARE-ENGINEER_R-2650514",
+            "job_id": "R-2650514"
+          },
+          "duration_seconds": 8.71,
+          "note": "",
+          "checked_at": "2026-11-24T05:04:12.774760+00:00"
+        }
+      ]
+    }
+  ]
+}

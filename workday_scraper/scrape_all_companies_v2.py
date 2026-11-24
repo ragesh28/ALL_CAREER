@@ -17,6 +17,9 @@ from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 from jobspy import scrape_jobs
 import pandas as pd
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from scripts.company_job_store import public_job, identity
+from scripts.company_job_details import is_india_location, details_from_record, enrich_jobs, jobspy_options, upgrade_details
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -34,46 +37,20 @@ def load_existing_jobs():
 
 def save_jobs(jobs):
     with open(DB_FILE, "w", encoding="utf-8") as f:
-        json.dump(jobs, f, indent=4)
+        json.dump([public_job(j) for j in jobs], f, indent=4)
 
 def is_india(location):
-    if not location: return True
-    loc = location.lower()
-    indian_keywords = [
-        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
-        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
-        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
-    ]
-    return any(k in loc for k in indian_keywords)
+    return is_india_location(location)
+
 
 def store_jobs_local(jobs, existing_jobs, company_name):
-    if not jobs:
-        return 0
-    
-    india_jobs = [j for j in jobs if is_india(j.get("location", ""))]
-    if not india_jobs:
-        return 0
-        
-    fetched_at = datetime.now().strftime("%Y-%m-%d")
-    total_inserted = 0
-    
-    existing_urls = {j.get("apply_url") for j in existing_jobs if j.get("apply_url")}
-    
-    for job in india_jobs:
-        url = job.get("apply_url", "")
-        if url and url not in existing_urls:
-            job["company"] = company_name
-            job["fetched_at"] = fetched_at
-            existing_jobs.append(job)
-            existing_urls.add(url)
-            total_inserted += 1
-            
-    return total_inserted
+    from pathlib import Path
+    from scripts.company_job_store import save_legacy_batch
+    root = Path.cwd().parent if Path.cwd().name == 'workday_scraper' else Path.cwd()
+    return save_legacy_batch(jobs, existing=existing_jobs, company=company_name, root=root)
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "Accept": "application/json, text/html, */*",
-}
+HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json,text/html,*/*"}
+
 
 def clean(text):
     if not text:
@@ -136,14 +113,14 @@ def scrape_citi_html(url, limit=2):
         total = int(total_match.group(1).replace(",","")) if total_match else len(items)
         jobs = []
         for item in items[:limit]:
-            t = item.select_one("h2")
+            t = item.select_one("h2, h3.sr-job-item__title")
             l = item.select_one(".job-location, [class*=location]")
-            a = item.select_one("a")
+            a = item.select_one("a[data-job-id], h2 a, h3 a")
             jobs.append({
                 "title": clean(t.get_text(strip=True) if t else ""),
                 "location": clean(l.get_text(strip=True) if l else ""),
                 "posted": "",
-                "apply_url": f"https://jobs.citi.com{a['href']}" if a and a.get("href") else url,
+                "apply_url": urljoin("https://jobs.citi.com", a['href']) if a and a.get("href") else "",
                 "total_jobs": total
             })
         return jobs
@@ -202,6 +179,7 @@ def scrape_zerodha(url, limit=2):
         jobs = []
         for j in items[:limit]:
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(j.get("location", "")),
                 "posted": "",
@@ -290,10 +268,8 @@ def scrape_microsoft_api(url, limit=2):
             fetch_size = min(batch_size, limit - len(jobs))
             params = {
                 "domain": "microsoft.com",
-                "query": "",
                 "location": "India",
                 "start": offset,
-                "sort_by": "timestamp",
             }
             resp = requests.get(
                 f"{BASE}/api/pcsx/search",
@@ -316,6 +292,7 @@ def scrape_microsoft_api(url, limit=2):
                 locs = p.get("locations", [])
                 loc_str = ", ".join(locs) if isinstance(locs, list) else str(locs)
                 jobs.append({
+                    **details_from_record(p),
                     "title": clean(p.get("name", "")),
                     "location": clean(loc_str),
                     "posted": "",
@@ -364,6 +341,7 @@ def scrape_greenhouse(url, limit=2):
         for j in all_jobs[:limit]:
             loc = j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else ""
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(str(j.get("updated_at", ""))[:10]),
@@ -399,6 +377,7 @@ def scrape_lever(url, limit=2):
             cats = j.get("categories", {})
             loc = cats.get("location", cats.get("allLocations", [""])[0] if cats.get("allLocations") else "")
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("text", j.get("title", ""))),
                 "location": clean(loc),
                 "posted": "",
@@ -422,7 +401,7 @@ def scrape_oracle_cloud(url, limit=2):
     # Map known career portal URLs to their actual Oracle Cloud API base
     domain = parsed.netloc.lower()
     if "hexaware" in domain or "jobs.hexaware" in domain:
-        base = "https://eeho.fa.us2.oraclecloud.com"
+        base = "https://fa-etqo-saasfaprod1.fa.ocs.oraclecloud.com"
         site_number = "CX_1"
     else:
         base = f"{parsed.scheme}://{parsed.netloc}"
@@ -580,8 +559,9 @@ def scrape_capgemini(url, limit=2):
                 "title": clean(str(title)),
                 "location": clean(str(loc)),
                 "posted": "",
-                "apply_url": j.get("url", j.get("link", url)),
+                "apply_url": j.get("apply_job_url") or j.get("url") or j.get("link") or "",
                 "total_jobs": total,
+                **public_job(j),
             })
         if jobs:
             break
@@ -629,6 +609,7 @@ def scrape_accenture(url, limit=2):
             loc_list = j.get("location", j.get("feedCity", ""))
             loc = ", ".join(loc_list) if isinstance(loc_list, list) else str(loc_list)
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(j.get("postedDateText", "")[:10]),
@@ -666,6 +647,7 @@ def scrape_tiger_analytics(url, limit=2):
         for j in items[:limit]:
             loc = j.get("location", j.get("office", {}).get("city", ""))
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": "",
@@ -729,6 +711,7 @@ def scrape_virtusa(url, limit=2):
             link = j.get("careerCtaLink", "")
             apply_url = f"https://www.virtusa.com{link}" if link.startswith("/") else link
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc),
                 "posted": clean(str(j.get("postedDate", ""))[:10]),
@@ -902,7 +885,8 @@ def scrape_wipro(url, limit=2):
             "title": clean(str(title)),
             "location": clean(loc),
             "posted": "",
-            "apply_url": f"https://careers.wipro.com/jobs/{rd.get('id', '')}",
+            "apply_url": (f"https://careers.wipro.com/job/{rd['unifiedUrlTitle']}/{rd.get('id', '')}-en_US" if rd.get("unifiedUrlTitle") else f"https://careers.wipro.com/jobs/{rd.get('id', '')}"),
+            **details_from_record(rd),
             "total_jobs": total,
         }
 
@@ -995,6 +979,7 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
                     location=f"{city}, India",
                     results_wanted=min(5, limit - len(jobs)),
                     country_indeed="India",
+                    **jobspy_options(scrape_jobs),
                 )
                 if df.empty:
                     continue
@@ -1015,6 +1000,7 @@ def scrape_jobspy_multi_city(company_keyword, limit=2):
                     if not loc or loc == "nan":
                         loc = f"{city}, India"
                     jobs.append({
+                        **details_from_record(row.to_dict()),
                         "title": str(row.get("title", "")),
                         "location": loc,
                         "posted": str(row.get("date_posted", "")),
@@ -1368,7 +1354,8 @@ def scrape_phenom(url, limit=2):
             for j in hits[:limit]:
                 loc = f"{j.get('city', '')}, {j.get('country', '')}".strip(", ")
                 jobs.append({
-                    "title": clean(j.get("title", "")),
+                    **public_job(j),
+                "title": clean(j.get("title", "")),
                     "location": clean(loc),
                     "posted": "",
                     "apply_url": f"{base}{j.get('canonicalPositionUrl', '')}",
@@ -1400,7 +1387,8 @@ def scrape_amazon(url, limit=2):
                 
             for j in batch_jobs:
                 jobs.append({
-                    "title": clean(j.get("title", "")),
+                    **public_job(j),
+                "title": clean(j.get("title", "")),
                     "location": clean(j.get("normalized_location", "")),
                     "posted": clean(j.get("posted_date", "")),
                     "apply_url": f"https://www.amazon.jobs{j.get('job_path', '')}",
@@ -1428,6 +1416,7 @@ def scrape_uber(url, limit=2):
             locs = j.get("allLocations", [])
             loc_str = ", ".join([f"{l.get('city','')} {l.get('country','')}".strip() for l in locs]) if locs else ""
             jobs.append({
+                **public_job(j),
                 "title": clean(j.get("title", "")),
                 "location": clean(loc_str),
                 "posted": "",
@@ -1608,11 +1597,12 @@ def scrape_goldmansachs(url, limit=2):
             for j in items:
                 locs = j.get('locations', [])
                 city = locs[0].get('city', 'India') if locs else 'India'
+                source_id = (j.get('externalSource') or {}).get('sourceId') or str(j.get('roleId', '')).split('_')[0]
                 jobs.append({
                     "title": clean(j.get("jobTitle", "")),
                     "location": clean(city),
                     "posted": "",
-                    "apply_url": f"https://higher.gs.com/roles/{j.get('roleId', '')}",
+                    "apply_url": f"https://higher.gs.com/roles/{source_id}",
                     "total_jobs": total_count
                 })
                 
@@ -1629,6 +1619,21 @@ def scrape_goldmansachs(url, limit=2):
 # ============================================================================
 
 def detect_and_scrape(company_name, ats_type, url, limit=2):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(company_name) or {}
+    if config.get("prefer_verified"):
+        recovered = scrape_verified_company(company_name, limit)
+        if recovered:
+            return recovered
+    rows = _detect_and_scrape(company_name, ats_type, url, limit)
+    valid = [job for job in rows if job.get("title") and posting_url(job.get("apply_url") or job.get("url") or "")]
+    if valid:
+        return valid
+    return scrape_verified_company(company_name, limit)
+
+
+def _detect_and_scrape(company_name, ats_type, url, limit=2):
     if not url: return []
     url_lower = url.lower()
     name_lower = company_name.lower()
@@ -1771,7 +1776,7 @@ def main():
         print("  Error: companies_links.json not found.")
         return
 
-    existing_jobs = []
+    existing_jobs = load_existing_jobs()
     print("  Initializing local storage chunk updates...")
 
     all_results = []
@@ -1792,14 +1797,16 @@ def main():
             continue
 
         url = urls[0]
-        jobs = detect_and_scrape(name, ats, url, limit=1000)
+        jobs = enrich_jobs(detect_and_scrape(name, ats, url, limit=1000))
 
         if jobs:
+            store_jobs_local(jobs, existing_jobs, name)
+            save_jobs(existing_jobs)
             # Format jobs for storage.py
             formatted_jobs = []
             fetched_at = datetime.now().strftime("%Y-%m-%d")
-            for j in jobs:
-                if is_india(j.get("location", "")):
+            for j in existing_jobs:
+                if j.get("company") == name and is_india(j.get("location", "")):
                     formatted_jobs.append({
                         "title": j.get("title", ""),
                         "company": name,
@@ -1807,6 +1814,7 @@ def main():
                         "url": j.get("apply_url", ""),
                         "date": j.get("posted") or fetched_at,
                         "source": "other",
+                        **public_job(j),
                         "experience": j.get("experience", ""),
                         "fetchedAt": fetched_at
                     })

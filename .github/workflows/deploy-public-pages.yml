@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   workflow_run:
-    workflows: ['Publish Fast Web Catalog', 'Workflow Health & Telemetry Monitor', 'Big Company Jobs Scraper']
+    workflows: ['Publish Fast Web Catalog', 'Workflow Health & Telemetry Monitor', 'Big Company Jobs Scraper', 'Big Company Scraper 2', 'API Call Jobs Scraper', 'api_call_jobs2', 'Check Company AI Health']
     types: [completed]
     branches: [main]
 
@@ -49,6 +49,8 @@ jobs:
             /data/web/
             /data/big_company_jobs.json
             /data/leetcode_companies.json
+            /data/company_scraper2/latest.json
+            /data/company_scraper2/ai_status.json
             /data/admin_metrics.json
             /data/string_theory_metrics.json
             /workday_scraper/big_company_jobs.json
