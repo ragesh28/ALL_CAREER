@@ -67,6 +67,10 @@ jobs:
           cp workday_scraper/big_company_jobs.json data/big_company_jobs.json || true
 
       - name: Commit and Push Database
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPANY_PUBLISH_GITHUB_API: '1'
         run: |
           set -euo pipefail
           for path in workday_scraper/big_company_jobs.json data/big_company_jobs.json data/company_job_history data/company_scraper2 data/job_archives role_index.json jobs_by_role; do

@@ -1,12 +1,14 @@
 import json
+import hashlib
 import os
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from scripts.publish_company_catalog import merge_json, merge_job_lists, publish
+from scripts.publish_company_catalog import merge_json, merge_job_lists, publish, MISSING
+from scripts.company_github_publication import GitHubPublication
 from scripts.company_job_store import india_today
 
 
@@ -58,6 +60,92 @@ class MergeTests(unittest.TestCase):
             self.assertEqual({j['job_id'] for j in json.loads((b/path).read_text())},{'1','2','3'})
             self.assertEqual((b/'source.py').read_text(),'version = 2\n')
             self.assertEqual((a/'source.py').read_text(),'version = 1\n')
+
+    def test_api_publication_retries_race_without_fetching_or_repacking_git(self):
+        import scripts.publish_company_catalog as publisher
+        def git(root,*args):
+            result=subprocess.run(['git','-C',str(root),*args],capture_output=True)
+            if result.returncode:raise RuntimeError(result.stderr.decode(errors='replace'))
+            return result.stdout
+        class Remote:
+            def __init__(self):self.attempts=0;self.saved=None
+            def snapshot(self,paths,base,hashes,missing):
+                self.attempts+=1
+                rows=[job(1),job(3)] + ([job(4)] if self.attempts>1 else [])
+                return 'latest','tree',{path:rows for path in paths}
+            def commit(self,parent,tree,merged,remote,missing):
+                self.saved=merged
+                return self.attempts>1
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);git(root,'init','-b','main');git(root,'config','user.name','test');git(root,'config','user.email','test@example.test')
+            path='workday_scraper/big_company_jobs.json';(root/'workday_scraper').mkdir()
+            (root/path).write_text(json.dumps([job(1)]));(root/'source.py').write_text('original\n')
+            git(root,'add','.');git(root,'commit','-m','base')
+            (root/path).write_text(json.dumps([job(1),job(2)]));git(root,'add',path)
+            remote=Remote()
+            with patch.dict(os.environ,{'GITHUB_ACTIONS':'true'}),patch.object(publisher,'git',wraps=publisher.git) as calls:
+                publish(root,api_client=remote)
+            self.assertEqual({j['job_id'] for j in remote.saved[path]},{'1','2','3','4'})
+            self.assertEqual(remote.attempts,2)
+            self.assertEqual((root/'source.py').read_text(),'original\n')
+            self.assertFalse(any(call.args[1] in ('fetch','push','worktree','read-tree') for call in calls.call_args_list))
+
+
+def api_response(payload=None,status=200,headers=None):
+    result=Mock(status_code=status,ok=200<=status<300,headers=headers or {})
+    result.json.return_value=payload or {}
+    return result
+
+
+class GitHubPublicationTests(unittest.TestCase):
+    def test_unchanged_remote_blob_reuses_baseline_without_downloading_catalog(self):
+        session=Mock();session.request.side_effect=[
+            api_response({'object':{'sha':'parent'}}),api_response({'tree':{'sha':'root'}}),
+            api_response({'tree':[{'path':'data','sha':'data-tree'}]}),
+            api_response({'tree':[{'path':'big_company_jobs.json','sha':'catalog'}]})]
+        client=GitHubPublication('owner/repo','test-token',session)
+        path='data/big_company_jobs.json';base={path:[job(1)]}
+        parent,tree,values=client.snapshot([path],base,{path:'catalog'},MISSING)
+        self.assertIs(values[path],base[path])
+        self.assertFalse(any('/git/blobs/' in call.args[1] for call in session.request.call_args_list))
+
+    def test_identical_large_catalog_mirrors_upload_one_blob_and_use_nonforced_update(self):
+        value={'data':'x'*210000};data=json.dumps(value,ensure_ascii=False,separators=(',',':')).encode()
+        sha=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+        session=Mock();session.request.side_effect=[api_response({'sha':sha}),api_response({'sha':'new-tree'}),api_response({'sha':'new-commit'}),api_response({'object':{'sha':'new-commit'}})]
+        client=GitHubPublication('owner/repo','test-token',session)
+        merged={'data/big_company_jobs.json':value,'workday_scraper/big_company_jobs.json':value}
+        self.assertTrue(client.commit('parent','tree',merged,{p:{} for p in merged},MISSING))
+        calls=session.request.call_args_list
+        self.assertEqual(sum(call.args[1].endswith('/git/blobs') for call in calls),1)
+        self.assertEqual(calls[-1].kwargs['json'],{'sha':'new-commit','force':False})
+
+    def test_branch_race_returns_false_for_three_way_retry(self):
+        session=Mock();session.request.side_effect=[api_response({'sha':'tree'}),api_response({'sha':'commit'}),api_response(status=422)]
+        client=GitHubPublication('owner/repo','test-token',session)
+        self.assertFalse(client.commit('parent','tree',{'data/big_company_jobs.json':[]},{},MISSING))
+
+    def test_provider_retry_time_beyond_save_budget_fails_without_bypassing_limit(self):
+        session=Mock();session.request.return_value=api_response(status=429,headers={'Retry-After':'900'})
+        client=GitHubPublication('owner/repo','test-token',session,max_seconds=60)
+        with patch('scripts.company_github_publication.time.sleep') as wait:
+            with self.assertRaisesRegex(RuntimeError,'rate limit'):
+                client.request('GET','/git/ref/heads/main')
+            wait.assert_not_called()
+        self.assertEqual(session.request.call_count,1)
+
+    def test_truncated_tree_cannot_be_mistaken_for_a_missing_file(self):
+        session=Mock();session.request.return_value=api_response({'truncated':True,'tree':[]})
+        client=GitHubPublication('owner/repo','test-token',session)
+        with self.assertRaisesRegex(RuntimeError,'Incomplete'):
+            client.entry('tree','data/big_company_jobs.json')
+
+    def test_secondary_limit_without_retry_header_waits_one_minute(self):
+        session=Mock();session.request.side_effect=[api_response({'message':'Secondary rate limit'},status=403),api_response({'ok':True})]
+        client=GitHubPublication('owner/repo','test-token',session,max_seconds=180)
+        with patch('scripts.company_github_publication.time.sleep') as wait:
+            self.assertEqual(client.request('GET','/git/ref/heads/main'),{'ok':True})
+            wait.assert_called_once_with(60)
 
 
 if __name__=='__main__':unittest.main()
