@@ -1,0 +1,48 @@
+{
+  "workflow_run_number": "1117",
+  "workflow_run_id": "45311298843",
+  "timestamp": "2026-11-24T02:31:12.386924",
+  "runtime_minutes": 5.87,
+  "messages_processed": 23,
+  "new_jobs_stored": 30,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 3,
+  "text_messages_processed": 20,
+  "stored_locations": {
+    "Unknown": 15,
+    "India": 1,
+    "Chandigarh": 1,
+    "London": 1,
+    "Bangalore": 2,
+    "Mumbai": 4,
+    "Pune": 2,
+    "Chennai": 1,
+    "Hyderabad": 1,
+    "Multiple": 2
+  },
+  "stored_walkins": 9,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "freshershunt",
+      "msg_id": 31315,
+      "text": "𝗙𝗼𝗹𝗹𝗼𝘄 𝗨𝘀 𝗼𝗻 𝗢𝘂𝗿 𝗦𝗼𝗰𝗶𝗮𝗹 𝗠𝗲𝗱𝗶𝗮 𝗛𝗮𝗻𝗱𝗹𝗲𝘀 \n\n𝗝𝗼𝗶𝗻 𝗢𝘂𝗿 𝗜𝗻𝘀𝘁𝗮𝗴𝗿𝗮𝗺 𝗕𝗿𝗼𝗮𝗱𝗰𝗮𝘀𝘁: https://www.instagram.com/channel/AbaM1FRuQQsdx6kV/\n\n𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱 𝘁𝗵𝗲 𝗔𝗽𝗽: https://fhlinks.in/freshershunt-app\n\n𝗙𝗼𝗹𝗹𝗼𝘄 𝘂𝘀 𝗼𝗻 𝗜𝗻𝘁𝘀𝗮: https://www.instagram.com/kareerpath.in\n\n𝗝𝗼𝗶𝗻 𝗢𝘂𝗿 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽: https://freshershunt.in/WhatsApp\n\n𝗝𝗼𝗶𝗻 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺:  https://telegram.me/freshershunt\n\n𝗝𝗼𝗶𝗻 𝗢𝘂𝗿 𝗬𝗼𝘂𝘁𝘂𝗯𝗲: https://yt.openinapp.co/svsuh",
+      "timestamp": "2026-11-23T18:35:34+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 19017,
+      "text": "There is no elephant\nthat complains about\nthe weight of its trunk.\nMEANING\nAccept your responsibilities and\nchallenges in life as part of your\njourney, they exist to make you\nstronger and more resilient.",
+      "timestamp": "2026-11-24T01:45:12+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6449,
+      "text": "Have your tried and checked out QVAC?\n\nhttps://get. https://www.google.com/url?q=https://get.qvac.tether.io/arsh-li&amp;sa=D&amp;source=docs&amp;ust=1795201073435522&amp;usg=AOvVaw17dSLUd2PAYtud4KDiQZufqvac https://www.google.com/url?q=https://get.qvac.tether.io/arsh-li&amp;sa=D&amp;source=docs&amp;ust=1795201073435522&amp;usg=AOvVaw17dSLUd2PAYtud4KDiQZuf.tether.io/arsh-li https://www.google.com/url?q=https://get.qvac.tether.io/arsh-li&amp;sa=D&amp;source=docs&amp;ust=1795201073435522&amp;usg=AOvVaw17dSLUd2PAYtud4KDiQZuf",
+      "timestamp": "2026-11-23T18:51:14+00:00"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1266485,
+  "total_jobs": 1266509,
   "sources": {
     "naukri": 396370,
     "linkedin": 329854,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1440,
-    "telegram_post": 751,
+    "telegram_message": 1462,
+    "telegram_post": 753,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,23 +294,23 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 266943,
-    "mumbai": 166377,
+    "bangalore": 266944,
+    "mumbai": 166381,
     "delhi": 136124,
     "chennai": 136429,
-    "hyderabad": 124653,
-    "pune": 103454,
+    "hyderabad": 124654,
+    "pune": 103456,
     "noida": 61452,
     "ahmedabad": 47954,
     "kolkata": 44062,
-    "all_india": 22971,
+    "all_india": 22983,
     "coimbatore": 25593,
     "kochi": 19699,
     "remote": 11632,
     "jaipur": 10112,
     "maharashtra": 11319,
     "indore": 6350,
-    "chandigarh": 6088,
+    "chandigarh": 6089,
     "kerala": 5032,
     "rajasthan": 2005,
     "dl": 4115,
@@ -528,7 +528,7 @@
     "melbourne": 4,
     "greater_london": 1,
     "singapore": 13,
-    "london": 3,
+    "london": 4,
     "brussels": 1,
     "herndon": 1,
     "paris": 1,
@@ -709,7 +709,7 @@
     "ambala_cantt": 6,
     "virar": 12,
     "kolhapur": 30,
-    "multiple": 2,
+    "multiple": 4,
     "lakshadweep": 3,
     "daman_diu": 5,
     "kishangarh": 2,
@@ -1457,5 +1457,5 @@
     "hiran_magri": 1,
     "csmt_fort": 1
   },
-  "generated_at": "2026-11-24T01:40:25.217870"
+  "generated_at": "2026-11-24T02:31:55.374730"
 }
