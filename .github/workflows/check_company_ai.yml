@@ -31,6 +31,9 @@ jobs:
           COMPANY_AI_MAX_CALLS: '80'
         run: python -m scripts.company_scraper2 --check-ai
       - name: Save measured status
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPANY_PUBLISH_GITHUB_API: '1'
         run: |
           set -euo pipefail
           for path in data/company_scraper2/ai_status.json; do

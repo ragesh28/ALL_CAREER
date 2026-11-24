@@ -72,6 +72,9 @@ jobs:
       - name: Publish results and checkpoint
         if: always() && inputs.audit_only != true && github.ref_name == 'main'
         id: save
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPANY_PUBLISH_GITHUB_API: '1'
         shell: bash
         run: |
           set -euo pipefail
@@ -93,6 +96,9 @@ jobs:
           path: |
             company_scraper2_audit.json
             data/company_scraper2/
+            data/company_job_history/
+            data/big_company_jobs.json
+            workday_scraper/big_company_jobs.json
       - name: Continue unfinished scraping after a successful save
         if: steps.scrape.outputs.needs_resume == 'true' && steps.save.outputs.saved == 'true' && success()
         env:

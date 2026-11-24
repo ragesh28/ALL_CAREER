@@ -99,7 +99,7 @@ def merge_json(base, ours, theirs, path=''):
     return without_descriptions(ours)
 
 
-def publish(repo='.', runner_temp=None):
+def publish(repo='.', runner_temp=None, api_client=None):
     if os.environ.get('GITHUB_ACTIONS')!='true':
         raise RuntimeError('Publishing runs only inside a GitHub Actions checkout')
     repo=Path(repo).resolve()
@@ -111,10 +111,22 @@ def publish(repo='.', runner_temp=None):
         raise RuntimeError('Only approved generated JSON may be published')
     base={p:at(repo,'HEAD',p) for p in paths}
     ours={p:json.loads((repo/p).read_text(encoding='utf-8')) if (repo/p).exists() else MISSING for p in paths}
+    if api_client is None and os.environ.get('COMPANY_PUBLISH_GITHUB_API')=='1':
+        from scripts.company_github_publication import GitHubPublication
+        api_client=GitHubPublication.from_environment()
+    baseline_hashes={}
+    if api_client:
+        for row in git(repo,'ls-tree','-r','HEAD','--',*paths).decode().splitlines():
+            metadata,path=row.split('\t',1)
+            baseline_hashes[path]=metadata.split()[2]
     for attempt in range(3):
-        git(repo,'fetch','origin','main')
-        latest=git(repo,'rev-parse','origin/main').decode().strip()
-        remote={p:at(repo,latest,p) for p in paths}
+        print(f'Reading current main for generated-data publication (attempt {attempt+1})',flush=True)
+        if api_client:
+            latest,tree,remote=api_client.snapshot(paths,base,baseline_hashes,MISSING)
+        else:
+            git(repo,'fetch','origin','main')
+            latest=git(repo,'rev-parse','origin/main').decode().strip()
+            remote={p:at(repo,latest,p) for p in paths}
         merged={p:merge_json(base[p],ours[p],remote[p],p) for p in paths}
         for p in ('data/big_company_jobs.json','workday_scraper/big_company_jobs.json'):
             rows=merged.get(p)
@@ -144,6 +156,13 @@ def publish(repo='.', runner_temp=None):
                     for entry in report.get('companies',[]):
                         own=[j for j in actual_new if j.get('company')==entry.get('company')]
                         entry.update(new_jobs=by_company[entry.get('company')],locations=dict(Counter(j.get('location','Unknown') for j in own)))
+        if api_client:
+            if api_client.commit(latest,tree,merged,remote,MISSING):
+                for p,value in merged.items():
+                    if p.startswith('data/company_scraper2/') and value is not MISSING:atomic_json(repo/p,value)
+                print('Published company JSON through GitHub API without repacking repository history',flush=True)
+                return
+            continue
         destination=Path(tempfile.mkdtemp(prefix='company-publish-',dir=runner_temp or os.environ.get('RUNNER_TEMP'))).resolve()
         git(repo,'worktree','add','--no-checkout','--detach',str(destination),latest)
         git(destination,'read-tree',latest)

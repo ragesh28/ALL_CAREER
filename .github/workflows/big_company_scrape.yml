@@ -47,6 +47,9 @@ jobs:
       # Save progress checkpoint so it can resume if rate limited/timeout
       - name: Commit and Push Scrape Progress
         if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPANY_PUBLISH_GITHUB_API: '1'
         run: |
           set -euo pipefail
           for path in workday_scraper/big_company_jobs.json data/big_company_jobs.json data/company_job_history data/company_scraper2 scrape_progress.json; do
