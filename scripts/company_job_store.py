@@ -2,6 +2,7 @@
 import hashlib
 import json
 import re
+import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -166,18 +167,28 @@ class CompanyJobStore:
         self.new_count += 1
         return 'new'
 
-    def reconcile(self, company, present_keys, complete=False, verify_closed=None):
+    def reconcile(self, company, present_keys, complete=False, verify_closed=None,
+                  deadline=None, max_verifications=20):
         """Failures, pagination caps and partial pages never delete history IDs."""
         if not complete:
             return 0
         entries = self.history(company)['entries']
         removed = 0
+        candidates = []
         for key, entry in list(entries.items()):
             if key in present_keys:
                 entry['missing_scans'] = 0
                 continue
             entry['missing_scans'] = entry.get('missing_scans', 0) + 1
-            if entry['missing_scans'] >= 2 and verify_closed and verify_closed(entry['url']):
+            if entry['missing_scans'] >= 2:
+                candidates.append((key, entry))
+        # Rotate deferred checks fairly and leave time to save the checkpoint.
+        candidates.sort(key=lambda item: item[1].get('last_closure_check', ''))
+        for key, entry in candidates[:max(0, max_verifications)]:
+            if not verify_closed or (deadline is not None and time.monotonic() >= deadline):
+                break
+            entry['last_closure_check'] = datetime.now(timezone.utc).isoformat()
+            if verify_closed(entry['url']):
                 del entries[key]
                 self.jobs.pop(key, None)
                 removed += 1

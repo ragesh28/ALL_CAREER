@@ -28,9 +28,12 @@ def stop_requested(*_):
     STOP = True
 
 
-def closed_posting(url):
+def closed_posting(url, deadline=None):
+    remaining = min(10, deadline-time.monotonic()) if deadline is not None else 10
+    if remaining < 1:
+        return False
     try:
-        return requests.get(url, timeout=(5, 10), headers={'User-Agent':'Mozilla/5.0'}).status_code in (404, 410)
+        return requests.get(url, timeout=(min(5,remaining), remaining), headers={'User-Agent':'Mozilla/5.0'}).status_code in (404, 410)
     except requests.RequestException:
         return False
 
@@ -151,7 +154,9 @@ def run(configs, root, max_seconds=20700, browser=True, max_jobs=None):
             # Zero/partial/broken extraction cannot retire history. Two full absence
             # checks plus a confirmed 404/410 are required before deleting an ID.
             if result.complete and result.status in ('ok','empty_confirmed'):
-                entry['retired_ids'] = store.reconcile(config['company'],present,complete=True,verify_closed=closed_posting)
+                deadline = started + max_seconds - 30
+                entry['retired_ids'] = store.reconcile(config['company'],present,complete=True,
+                    verify_closed=lambda url: closed_posting(url,deadline),deadline=deadline)
             checkpoint['completed_boards'].append(board_id)
             checkpoint.update(active_board=None,processed_ids=[])
         save()

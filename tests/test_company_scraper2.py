@@ -132,6 +132,27 @@ class IdentityTests(unittest.TestCase):
             self.assertEqual(store.reconcile('Example',set(),complete=True,verify_closed=verify),0)
             self.assertEqual(store.reconcile('Example',set(),complete=True,verify_closed=verify),1)
 
+    def test_closed_listing_verification_is_bounded_and_deferred_fairly(self):
+        with tempfile.TemporaryDirectory() as d:
+            store=CompanyJobStore(d,date(2026,11,24))
+            for number in range(5):
+                store.upsert(job(job_id=str(number),apply_url=f'https://example.test/jobs/{number}'))
+            verify=Mock(return_value=False)
+            store.reconcile('Example',set(),complete=True,verify_closed=verify,max_verifications=2)
+            verify.assert_not_called()
+            store.reconcile('Example',set(),complete=True,verify_closed=verify,max_verifications=2)
+            first_urls={call.args[0] for call in verify.call_args_list}
+            self.assertEqual(len(first_urls),2)
+            verify.reset_mock()
+            store.reconcile('Example',set(),complete=True,verify_closed=verify,max_verifications=2)
+            second_urls={call.args[0] for call in verify.call_args_list}
+            self.assertEqual(len(second_urls),2)
+            self.assertFalse(first_urls & second_urls)
+            verify.reset_mock()
+            store.reconcile('Example',set(),complete=True,verify_closed=verify,deadline=time.monotonic()-1)
+            verify.assert_not_called()
+            self.assertEqual(len(store.jobs),5)
+
     def test_descriptions_are_not_saved_to_catalog_or_history(self):
         with tempfile.TemporaryDirectory() as d:
             store=CompanyJobStore(d,date(2026,11,24));store.upsert(job(description='Private original full description',salary='INR 5 LPA'));store.save()

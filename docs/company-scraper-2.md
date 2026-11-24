@@ -17,7 +17,7 @@ Native job/requisition ID plus company identifies a listing. Canonical URL is th
 
 The catalog retains a listing for 30 days using its original publication date when known and its first-seen date. Re-scraping never resets `first_seen` or `fetched_at`. An expired listing's identity remains in `data/company_job_history/` while the posting stays online, so it cannot be reintroduced as a new job after retention removes it.
 
-Only a complete, successful board scan can mark IDs missing. After two such missing snapshots, a confirmed HTTP 404/410 on the individual posting is required to retire its identity. A timeout, rate limit, empty unrecognized response, browser-only page or pagination cap cannot delete IDs. Some career sites return HTTP 200 for closed postings; those identities are conservatively retained until closure can be verified.
+Only a complete, successful board scan can mark IDs missing. After two such missing snapshots, a confirmed HTTP 404/410 on the individual posting is required to retire its identity. Closure verification checks at most 20 postings per board per run, rotates deferred candidates fairly, and stops before the checkpoint deadline. A timeout, rate limit, empty unrecognized response, browser-only page or pagination cap cannot delete IDs. Some career sites return HTTP 200 for closed postings; those identities are conservatively retained until closure can be verified.
 
 Cards sort by first discovery, newest first. The original posting date is separate. A missing original date is displayed as **Found â€¦**, not falsely labeled as posted today. Experience, salary and walk-in badges appear only when corresponding metadata exists. The experience filter excludes unknown requirements rather than guessing from company or title.
 
