@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1266509,
+  "total_jobs": 1266557,
   "sources": {
     "naukri": 396370,
     "linkedin": 329854,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 9050,
     "telegram": 3577,
-    "other": 6031,
+    "other": 6079,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -294,16 +294,16 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 266944,
-    "mumbai": 166381,
+    "bangalore": 266967,
+    "mumbai": 166384,
     "delhi": 136124,
-    "chennai": 136429,
-    "hyderabad": 124654,
-    "pune": 103456,
-    "noida": 61452,
-    "ahmedabad": 47954,
-    "kolkata": 44062,
-    "all_india": 22983,
+    "chennai": 136434,
+    "hyderabad": 124664,
+    "pune": 103457,
+    "noida": 61453,
+    "ahmedabad": 47955,
+    "kolkata": 44063,
+    "all_india": 22984,
     "coimbatore": 25593,
     "kochi": 19699,
     "remote": 11632,
@@ -327,8 +327,8 @@
     "message_all_india": 530,
     "message_bangalore": 659,
     "nanakramguda": 557,
-    "tamil_nadu": 5746,
-    "telangana": 5191,
+    "tamil_nadu": 5747,
+    "telangana": 5192,
     "ka": 505,
     "post_bangalore": 357,
     "panchkula": 406,
@@ -1457,5 +1457,5 @@
     "hiran_magri": 1,
     "csmt_fort": 1
   },
-  "generated_at": "2026-11-24T02:31:55.374730"
+  "generated_at": "2026-11-24T05:35:15.936926"
 }
