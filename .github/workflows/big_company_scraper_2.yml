@@ -70,6 +70,7 @@ jobs:
         run: python -m scripts.company_scraper2 --browser --companies "$COMPANIES" --max-seconds 20700
         timeout-minutes: 350
       - name: Publish results and checkpoint
+        timeout-minutes: 10
         if: always() && inputs.audit_only != true && github.ref_name == 'main'
         id: save
         env:

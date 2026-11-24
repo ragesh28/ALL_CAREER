@@ -46,6 +46,7 @@ jobs:
 
       # Save progress checkpoint so it can resume if rate limited/timeout
       - name: Commit and Push Scrape Progress
+        timeout-minutes: 10
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,6 +5,7 @@ import json
 import os
 import re
 import time
+from email.utils import parsedate_to_datetime
 
 import requests
 
@@ -40,15 +41,17 @@ class GitHubPublication:
             if response.status_code == 422 and conflict:
                 return None
             limited = response.status_code == 429 or (response.status_code == 403 and
-                (response.headers.get('Retry-After') or response.headers.get('X-RateLimit-Remaining') == '0'))
+                (response.headers.get('Retry-After') or response.headers.get('X-RateLimit-Remaining') == '0' or
+                 'rate limit' in str(response.json().get('message','')).lower()))
             if limited:
                 retry = response.headers.get('Retry-After','')
                 if retry.isdigit():
                     delay = max(1,int(retry))
                 else:
                     try:
-                        delay = max(1,int(response.headers.get('X-RateLimit-Reset','0'))-time.time())
-                    except ValueError:
+                        delay = max(1,parsedate_to_datetime(retry).timestamp()-time.time()) if retry else max(60,
+                            int(response.headers.get('X-RateLimit-Reset','0'))-time.time())
+                    except (ValueError,TypeError,OverflowError):
                         delay = 60
                 if time.monotonic()+delay+2 >= self.deadline:
                     raise RuntimeError('GitHub rate limit exceeds publication budget; data remains recoverable')

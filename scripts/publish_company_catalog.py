@@ -21,7 +21,7 @@ MISSING = object()
 
 
 def git(repo, *args, check=True):
-    return subprocess.run(['git','-C',str(repo),*args],check=check,capture_output=True).stdout
+    return subprocess.run(['git','-C',str(repo),*args],check=check,capture_output=True,timeout=120).stdout
 
 
 def at(repo, revision, path):
@@ -103,17 +103,19 @@ def publish(repo='.', runner_temp=None, api_client=None):
     if os.environ.get('GITHUB_ACTIONS')!='true':
         raise RuntimeError('Publishing runs only inside a GitHub Actions checkout')
     repo=Path(repo).resolve()
-    paths=git(repo,'diff','--cached','--name-only','-z').decode().split('\0')
+    print('Collecting staged generated JSON paths',flush=True)
+    paths=git(repo,'diff','--cached','--no-renames','--name-only','-z').decode().split('\0')
     paths=[p for p in paths if p]
     if not paths:
         print('No generated data changes to publish');return
     if any(not p.endswith('.json') or not (p in FILES or p.startswith(ALLOWED)) for p in paths):
         raise RuntimeError('Only approved generated JSON may be published')
-    base={p:at(repo,'HEAD',p) for p in paths}
-    ours={p:json.loads((repo/p).read_text(encoding='utf-8')) if (repo/p).exists() else MISSING for p in paths}
     if api_client is None and os.environ.get('COMPANY_PUBLISH_GITHUB_API')=='1':
         from scripts.company_github_publication import GitHubPublication
         api_client=GitHubPublication.from_environment()
+    print(f'Reading baseline for {len(paths)} generated JSON paths',flush=True)
+    base={p:at(repo,'HEAD',p) for p in paths}
+    ours={p:json.loads((repo/p).read_text(encoding='utf-8')) if (repo/p).exists() else MISSING for p in paths}
     baseline_hashes={}
     if api_client:
         for row in git(repo,'ls-tree','-r','HEAD','--',*paths).decode().splitlines():

@@ -140,5 +140,12 @@ class GitHubPublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'Incomplete'):
             client.entry('tree','data/big_company_jobs.json')
 
+    def test_secondary_limit_without_retry_header_waits_one_minute(self):
+        session=Mock();session.request.side_effect=[api_response({'message':'Secondary rate limit'},status=403),api_response({'ok':True})]
+        client=GitHubPublication('owner/repo','test-token',session,max_seconds=180)
+        with patch('scripts.company_github_publication.time.sleep') as wait:
+            self.assertEqual(client.request('GET','/git/ref/heads/main'),{'ok':True})
+            wait.assert_called_once_with(60)
+
 
 if __name__=='__main__':unittest.main()

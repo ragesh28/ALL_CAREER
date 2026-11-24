@@ -9,7 +9,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +22,7 @@ jobs:
           python-version: '3.11'
       - run: pip install requests beautifulsoup4
       - name: Test configured small extraction models without publishing credentials
+        timeout-minutes: 5
         env:
           CLOUDFLARE_WORKERS_AI_ACCOUNTS: ${{ secrets.CLOUDFLARE_WORKERS_AI_ACCOUNTS }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
@@ -29,8 +30,10 @@ jobs:
           MISTRAL_API_KEYS: ${{ secrets.MISTRAL_API_KEYS }}
           OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
           COMPANY_AI_MAX_CALLS: '80'
+          COMPANY_AI_MAX_SECONDS: '240'
         run: python -m scripts.company_scraper2 --check-ai
       - name: Save measured status
+        timeout-minutes: 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMPANY_PUBLISH_GITHUB_API: '1'

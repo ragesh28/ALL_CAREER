@@ -90,6 +90,7 @@ jobs:
           fi
 
       - name: Commit results and checkpoint
+        timeout-minutes: 10
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMPANY_PUBLISH_GITHUB_API: '1'
