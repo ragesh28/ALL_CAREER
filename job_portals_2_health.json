@@ -1,41 +1,41 @@
 {
-  "run_id": "45391010160",
-  "updated_at": "2026-11-24T18:05:08.092657",
+  "run_id": "45455927145",
+  "updated_at": "2026-11-24T21:15:56.336427",
   "portals": {
     "apna": {
-      "scraped_total": 8083,
-      "new_stored_total": 297,
-      "requests_total": 690,
+      "scraped_total": 4298,
+      "new_stored_total": 165,
+      "requests_total": 443,
       "last_probe": {
         "requests": 3,
-        "scraped": 31,
+        "scraped": 41,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/business-development-manager-jobs-in-noida"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 350,
+      "requests_total": 204,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/business-development-manager-jobs-in-noida/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 7271,
-      "new_stored_total": 39,
-      "requests_total": 745,
+      "scraped_total": 0,
+      "new_stored_total": 0,
+      "requests_total": 204,
       "last_probe": {
-        "requests": 2,
-        "scraped": 19,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-noida"
+        "requests": 1,
+        "scraped": 0,
+        "status": "blocked",
+        "http_status": 403,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
