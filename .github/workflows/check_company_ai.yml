@@ -12,6 +12,11 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/
+            /data/company_scraper2/ai_status.json
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
