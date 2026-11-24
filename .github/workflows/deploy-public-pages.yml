@@ -4,12 +4,18 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      artifact_run_id:
+        description: Optional recovery run from this Pages workflow; reuses its uploaded package
+        type: string
+        default: ''
   workflow_run:
     workflows: ['Publish Fast Web Catalog', 'Workflow Health & Telemetry Monitor', 'Big Company Jobs Scraper', 'Big Company Scraper 2', 'API Call Jobs Scraper', 'api_call_jobs2', 'Check Company AI Health']
     types: [completed]
     branches: [main]
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -27,6 +33,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        if: inputs.artifact_run_id == '' || github.event_name != 'workflow_dispatch'
         with:
           ref: main
           persist-credentials: false
@@ -65,12 +72,23 @@ jobs:
             /logo3d.css
             /top150.js
             /skills_map.json
+            /scripts/deploy_pages.cjs
+      - name: Checkout only the deployment helper for artifact recovery
+        if: github.event_name == 'workflow_dispatch' && inputs.artifact_run_id != ''
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /scripts/deploy_pages.cjs
       - name: Package public website
+        if: inputs.artifact_run_id == '' || github.event_name != 'workflow_dispatch'
         shell: bash
         run: |
           mkdir site
           git sparse-checkout list | while IFS= read -r path; do
             source=${path#/}
+            case "$source" in scripts/*) continue ;; esac
             if [ -e "$source" ]; then
               cp -r --parents -- "$source" site/
             fi
@@ -84,7 +102,20 @@ jobs:
             exit 1
           fi
       - uses: actions/upload-pages-artifact@v4
+        if: inputs.artifact_run_id == '' || github.event_name != 'workflow_dispatch'
+        id: upload
         with:
           path: site
-      - uses: actions/deploy-pages@v4
+      - name: Deploy the exact uploaded Pages package
+        uses: actions/github-script@v9
         id: deploy
+        timeout-minutes: 12
+        env:
+          PAGES_ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+          PAGES_RECOVERY_RUN: ${{ inputs.artifact_run_id || '' }}
+          PAGES_BUILD_VERSION: ${{ github.sha }}
+        with:
+          script: |
+            const {deployPages}=require(process.env.GITHUB_WORKSPACE+'/scripts/deploy_pages.cjs');
+            await deployPages({github,context,core,artifactId:process.env.PAGES_ARTIFACT_ID,
+              recoverRunId:process.env.PAGES_RECOVERY_RUN,buildVersion:process.env.PAGES_BUILD_VERSION});
