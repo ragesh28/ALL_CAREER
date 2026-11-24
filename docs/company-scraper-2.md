@@ -60,6 +60,8 @@ The String Theory dashboard reads small published reports independently of the l
 
 Reports are stored in `data/company_scraper2/latest.json`, `ai_status.json` and `runs/`. Per-run details are tied to the actual GitHub run ID. Older run reports are retained for 30 days. The workflow also emits its summary in GitHub Actions.
 
+Pages deployment uses the exact ID returned by its upload step, avoiding an artifact-service lookup that can incorrectly return no package. If packaging succeeded but deployment failed, run **Deploy All Career Pages** with `artifact_run_id` set to that Pages run ID. Recovery accepts only this repository's main-branch Pages workflow and one unexpired package; it verifies deployment completion before reporting success. Deployment helpers are excluded from the public site package.
+
 Portal-supplied structured company logos are preserved. The UI passes logo and website fields to the existing fallback component. Known official domains and cached non-generic website favicons improve fallback coverage; favicons are not claimed to be full-resolution brand logos. Their source manifest is `logos/company-scraper2/sources.json`. Missing images retain the existing question-mark fallback.
 
 ## Local verification

@@ -1,0 +1,23 @@
+name: Pages Deployment Checks
+on:
+  push:
+    paths: ['scripts/deploy_pages.cjs','tests/test_deploy_pages.cjs','.github/workflows/deploy-public-pages.yml','.github/workflows/check-pages-deployment.yml']
+  pull_request:
+    paths: ['scripts/deploy_pages.cjs','tests/test_deploy_pages.cjs','.github/workflows/deploy-public-pages.yml','.github/workflows/check-pages-deployment.yml']
+permissions:
+  contents: read
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/deploy_pages.cjs
+            /tests/test_deploy_pages.cjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test tests/test_deploy_pages.cjs
