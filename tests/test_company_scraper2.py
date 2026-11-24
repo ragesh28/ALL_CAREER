@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import date
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import Mock, patch
 
@@ -24,6 +25,13 @@ def response(status=200, payload=None, text='', headers=None):
 
 
 class ExtractionTests(unittest.TestCase):
+    def test_no_model_request_starts_after_checkpoint_deadline(self):
+        with tempfile.TemporaryDirectory() as d:
+            session=Mock()
+            ai=JobAI(Path(d)/'status.json',{'GROQ_API_KEYS':'test-key'},session)
+            ai.deadline=time.monotonic()-1
+            self.assertEqual(ai.extract('Requires 2 years of experience'),{})
+            session.post.assert_not_called()
     def test_candidate_age_is_not_work_experience(self):
         self.assertEqual(validate_facts({'experience':{'value':'28 years','evidence':'Age: 28 years'}},'Age: 28 years'),{})
     def test_requires_verbatim_evidence_and_rejects_experience_as_posting_date(self):

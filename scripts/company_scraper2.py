@@ -73,6 +73,7 @@ def run(configs, root, max_seconds=20700, browser=True, max_jobs=None):
     started = time.monotonic()
     store = CompanyJobStore(root)
     ai = JobAI(directory / 'ai_status.json')
+    ai.deadline = started + max_seconds - 30
     report = {'workflow_run_id':os.environ.get('GITHUB_RUN_ID','local'), 'cycle':checkpoint['cycle'], 'started_at':datetime.now(timezone.utc).isoformat(), 'companies':[], 'locations':{}, 'new_jobs':0, 'walkins':0, 'status':'running'}
     report_path = directory / 'latest.json'
     pending = [c for c in configs if c['board_id'] not in checkpoint['completed_boards']]

@@ -99,6 +99,7 @@ class JobAI:
         self.max_calls = int(self.env.get('COMPANY_AI_MAX_CALLS', '3000'))
         self.max_seconds = float(self.env.get('COMPANY_AI_MAX_SECONDS','900'))
         self.seconds_used = 0.0
+        self.deadline = float('inf')
         self.calls = 0
         try:
             accounts = json.loads(self.env.get('CLOUDFLARE_WORKERS_AI_ACCOUNTS', '[]'))
@@ -136,7 +137,7 @@ class JobAI:
 
     def available(self):
         now = utcnow().isoformat()
-        return self.calls < self.max_calls and self.seconds_used < self.max_seconds and any(self.state['provider_pauses'].get(a['provider'],'') <= now and self.state['accounts'][a['key']].get('retry_at','') <= now for a in self.accounts)
+        return self.calls < self.max_calls and self.seconds_used < self.max_seconds and time.monotonic() < self.deadline and any(self.state['provider_pauses'].get(a['provider'],'') <= now and self.state['accounts'][a['key']].get('retry_at','') <= now for a in self.accounts)
 
     def probe(self):
         accounts = self.accounts
@@ -165,7 +166,8 @@ class JobAI:
         else:
             url = {'groq': 'https://api.groq.com/openai/v1/chat/completions', 'mistral': 'https://api.mistral.ai/v1/chat/completions', 'openrouter': 'https://openrouter.ai/api/v1/chat/completions'}[provider]
             body['model'] = model
-        return self.session.post(url, headers=headers, json=body, timeout=(5, 30))
+        remaining = max(1, min(30, self.deadline-time.monotonic()))
+        return self.session.post(url, headers=headers, json=body, timeout=(min(5,remaining), remaining))
 
     def extract(self, description):
         if not description or self.env.get('COMPANY_AI_DISABLED') == '1':
@@ -177,7 +179,7 @@ class JobAI:
             if self.state['provider_pauses'].get(provider, '') > now or stat.get('retry_at', '') > now:
                 continue
             for model in account['models']:
-                if self.calls >= self.max_calls or self.seconds_used >= self.max_seconds:
+                if self.calls >= self.max_calls or self.seconds_used >= self.max_seconds or time.monotonic() >= self.deadline:
                     return {}
                 if stat['models'].get(model) in ('unavailable', 'invalid_json'):
                     continue
