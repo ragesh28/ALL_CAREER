@@ -1,41 +1,41 @@
 {
-  "run_id": "45339419797",
-  "updated_at": "2026-11-24T12:10:01.312651",
+  "run_id": "45391010160",
+  "updated_at": "2026-11-24T18:05:08.092657",
   "portals": {
     "apna": {
-      "scraped_total": 6937,
-      "new_stored_total": 104,
-      "requests_total": 767,
+      "scraped_total": 8083,
+      "new_stored_total": 297,
+      "requests_total": 690,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-bengaluru"
+        "requests": 3,
+        "scraped": 31,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/business-development-manager-jobs-in-noida"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 391,
+      "requests_total": 350,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-bengaluru/"
+        "url": "https://www.workindia.in/business-development-manager-jobs-in-noida/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 391,
+      "scraped_total": 7271,
+      "new_stored_total": 39,
+      "requests_total": 745,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-bangalore"
+        "requests": 2,
+        "scraped": 19,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-noida"
       }
     }
   }
