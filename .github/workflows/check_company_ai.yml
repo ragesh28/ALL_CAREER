@@ -1,0 +1,41 @@
+name: Check Company AI Health
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: big-company-${{ github.workflow }}
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/
+            /data/company_scraper2/ai_status.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - name: Test configured small extraction models without publishing credentials
+        env:
+          CLOUDFLARE_WORKERS_AI_ACCOUNTS: ${{ secrets.CLOUDFLARE_WORKERS_AI_ACCOUNTS }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
+          GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
+          MISTRAL_API_KEYS: ${{ secrets.MISTRAL_API_KEYS }}
+          OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
+          COMPANY_AI_MAX_CALLS: '80'
+        run: python -m scripts.company_scraper2 --check-ai
+      - name: Save measured status
+        run: |
+          set -euo pipefail
+          for path in data/company_scraper2/ai_status.json; do
+            if [ -e "$path" ] || git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+              git add -A -- "$path"
+            fi
+          done
+          python -m scripts.publish_company_catalog

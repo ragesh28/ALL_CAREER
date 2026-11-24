@@ -681,6 +681,20 @@
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    .company2-monitor { margin:28px 0; padding:24px; background:#0c1627; border:1px solid #294158; border-radius:16px; }
+    .company2-summary { color:#b8f3da; font-weight:650; padding:14px 0 20px; line-height:1.6; }
+    .company2-scroll { overflow:auto; max-height:420px; scrollbar-color:#52b8aa #14243a; scrollbar-width:thin; }
+    .company2-scroll table { width:100%; border-collapse:collapse; min-width:720px; }
+    .company2-scroll th,.company2-scroll td { padding:12px; text-align:left; border-bottom:1px solid #25364e; font-size:.8rem; }
+    .company2-scroll th { position:sticky; top:0; background:#17283d; color:#d6e9f7; }
+    .company2-subheading { margin:24px 0 8px; color:#e2e8f0; font-size:.95rem; }
+    .company2-ai { display:grid; grid-template-columns:repeat(auto-fit,minmax(235px,1fr)); gap:10px; margin-top:16px; }
+    .company2-profile { padding:14px; background:#15253a; border-radius:10px; color:#a7bbd4; font-size:.8rem; line-height:1.6; }
+    .company2-profile strong { display:block; color:#e2e8f0; }
+    .company2-state { display:inline-block; background:#ffdf9b; color:#452b06; border-radius:5px; padding:2px 7px; font-weight:700; }
+    .company2-state--working { background:#a7f3d0; color:#064e3b; }
+    @media(max-width:640px) { .company2-monitor { padding:16px; } .company2-monitor .section-header { flex-wrap:wrap; gap:12px; } }
   </style>
 </head>
 <body>
@@ -706,7 +720,7 @@
         ⚙️ Settings
       </button>
 
-      <button class="btn-action" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')" title="Open the API Credits workflow on GitHub">
+      <button class="btn-action" onclick="triggerWorkflow('${checkWorkflow}', 'Check API Health')" title="Open the API Credits workflow on GitHub">
         ⚡ Check Credits
       </button>
 
@@ -885,6 +899,16 @@
         </div>
       </div>
     </div>
+
+    <section class="section-container company2-monitor" aria-labelledby="company2-heading">
+      <div class="section-header"><div><h2 class="section-title" id="company2-heading">Official company collection</h2><p class="section-subtitle">New listings, locations and extraction health from Big Company Scraper 2.</p></div>
+      <a class="btn-trigger" href="https://github.com/ragesh28/ALL_CAREER/actions/workflows/big_company_scraper_2.yml" target="_blank" rel="noopener noreferrer">Open workflow</a></div>
+      <div id="company2-summary" class="company2-summary" role="status">Loading the latest recorded run…</div>
+      <div class="company2-scroll"><table class="data-table"><thead><tr><th>Company</th><th>India listings</th><th>New</th><th>Descriptions read</th><th>Collection status</th><th>New job locations</th></tr></thead><tbody id="company2-companies"><tr><td colspan="6">No recorded run loaded.</td></tr></tbody></table></div>
+      <h3 class="company2-subheading">AI profiles · observed status</h3>
+      <p class="section-subtitle">Calls and outcomes are measured. A daily quota is marked exhausted only when the provider reports it. A new runner does not reset that quota.</p>
+      <div id="company2-ai" class="company2-ai">No health check recorded.</div>
+    </section>
 
     <!-- SECTION 3: AI & PROXY API KEY CREDITS MONITOR -->
     <div class="bezel-outer">
@@ -1285,6 +1309,9 @@
       }).filter(([, value]) => Number.isFinite(value)).map(([label, value]) => `${label}: ${value.toLocaleString()}`).join(' · ') : 'Run-level extraction and location data were not recorded.';
       let snapshot = metrics?.locations && typeof metrics.locations === 'object'
         ? `<p style="margin-top:6px">Run locations: ${Object.entries(metrics.locations).map(([city, count]) => `${escapeHtml(city)}: ${Number(count).toLocaleString()}`).join(' · ')}</p>` : '';
+      if (w.companyReport) {
+        snapshot += '<p><strong>Company results for this run</strong></p>' + (w.companyReport.companies || []).map(company => `<p>${escapeHtml(company.company)}: ${Number(company.new_jobs || 0)} new · ${Number(company.india_jobs || 0)} India listings · ${Number(company.descriptions_read || 0)} descriptions read · ${escapeHtml(company.status)}</p>`).join('');
+      }
       if (w.portalHealth && typeof w.portalHealth === 'object') {
         snapshot += '<p style="margin-top:10px"><strong>Portal collection health</strong></p>' + Object.entries(w.portalHealth).map(([source, report]) => {
           const probe = report.last_probe || {};
@@ -1345,11 +1372,12 @@
       }
 
       tbody.innerHTML = list.map(item => {
-        const pct = item.creditsPct || 85;
-        let barColor = 'var(--cyan)';
-        if (pct < 25) barColor = 'var(--rose)';
-        else if (pct < 60) barColor = 'var(--amber)';
-        else if (pct >= 80) barColor = 'var(--emerald)';
+        const pct = Number.isFinite(item.creditsPct) ? Math.max(0, Math.min(100, item.creditsPct)) : null;
+        const checkWorkflow = item.checkWorkflow === 'check_company_ai.yml' ? 'check_company_ai.yml' : 'check_api_credits.yml';
+        let barColor = pct === null ? 'var(--text-dim)' : 'var(--cyan)';
+        if (pct !== null && pct < 25) barColor = 'var(--rose)';
+        else if (pct !== null && pct < 60) barColor = 'var(--amber)';
+        else if (pct !== null && pct >= 80) barColor = 'var(--emerald)';
 
         return `
           <tr>
@@ -1371,18 +1399,18 @@
             <td>
               <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-family:'JetBrains Mono', monospace; margin-bottom:3px;">
                 <span style="font-weight:700; color:#fff;">${escapeHtml(item.creditsRemaining)}</span>
-                <span style="color:${barColor}; font-weight:700;">${pct}%</span>
+                <span style="color:${barColor}; font-weight:700;">${pct === null ? 'Not measured' : pct + '%'}</span>
               </div>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill" style="width: ${pct}%; background: ${barColor};"></div>
+                <div class="progress-bar-fill" style="width: ${pct === null ? 0 : pct}%; background: ${barColor};"></div>
               </div>
             </td>
             <td>
               <span class="cell-mono" style="color:var(--text-muted);">${formatTime(item.updatedAt)}</span>
             </td>
             <td style="text-align: right;">
-              <button class="btn-trigger" onclick="triggerWorkflow('check_api_credits.yml', 'Check API Credits')">
-                🔍 Verify Quota
+              <button class="btn-trigger" onclick="triggerWorkflow('${checkWorkflow}', 'Check API Health')">
+                Check health
               </button>
             </td>
           </tr>
@@ -1431,7 +1459,7 @@
             </td>
             <td>
               <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-family:'JetBrains Mono', monospace; margin-bottom:2px;">
-                <span style="color:#fff; font-weight:700;">${pct}%</span>
+                <span style="color:#fff; font-weight:700;">${pct === null ? 'Not measured' : pct + '%'}</span>
               </div>
               <div class="progress-bar-bg">
                 <div class="progress-bar-fill" style="width: ${Math.min(100, pct * 2.5)}%; background: linear-gradient(90deg, var(--cyan), var(--blue));"></div>
@@ -1445,7 +1473,29 @@
       }).join('');
     }
 
+
+    let company2LoadedAt = 0;
+    async function loadCompany2Monitor() {
+      if (Date.now() - company2LoadedAt < 30000) return;
+      company2LoadedAt = Date.now();
+      async function read(path) {
+        const response = await fetch(path + '?v=' + Date.now(), { cache: 'no-store', signal: AbortSignal.timeout(12000) });
+        if (!response.ok) throw new Error('Report unavailable');
+        return response.json();
+      }
+      const [collection, health] = await Promise.allSettled([read('data/company_scraper2/latest.json'), read('data/company_scraper2/ai_status.json')]);
+      if (collection.status === 'fulfilled') {
+        const run = collection.value;
+        document.getElementById('company2-summary').textContent = `${Number(run.new_jobs || 0).toLocaleString()} new jobs · ${run.status || 'unknown'} · Updated ${run.updated_at || 'not recorded'}`;
+        document.getElementById('company2-companies').innerHTML = (run.companies || []).map(row => `<tr><td>${escapeHtml(row.company)}</td><td>${Number(row.india_jobs || 0).toLocaleString()}</td><td>${Number(row.new_jobs || 0).toLocaleString()}</td><td>${Number(row.descriptions_read || 0).toLocaleString()}</td><td>${escapeHtml(row.status)}${row.complete_snapshot ? ' · complete snapshot' : ' · partial / not confirmed complete'}</td><td>${Object.entries(row.locations || {}).map(([city, n]) => escapeHtml(city) + ': ' + Number(n).toLocaleString()).join(' · ') || 'No newly stored locations'}</td></tr>`).join('') || '<tr><td colspan="6">No companies processed in this run yet.</td></tr>';
+      } else document.getElementById('company2-summary').textContent = 'No published run available yet. Open the workflow to start or inspect a run.';
+      if (health.status === 'fulfilled') {
+        document.getElementById('company2-ai').innerHTML = Object.values(health.value.accounts || {}).map(profile => `<div class="company2-profile"><strong>${escapeHtml(profile.provider)} · Profile ${Number(profile.slot || 1)}</strong><span class="company2-state ${profile.status === 'working' ? 'company2-state--working' : ''}">${escapeHtml((profile.status || 'not_checked').replaceAll('_', ' '))}</span><p>${Number(profile.calls || 0)} calls · ${Number(profile.successes || 0)} successful</p><p>${Object.entries(profile.models || {}).map(([model, state]) => escapeHtml(model) + ': ' + escapeHtml(state)).join('<br>')}</p>${profile.retry_at ? '<p>Retry after: ' + escapeHtml(profile.retry_at) + '</p>' : ''}</div>`).join('') || 'No AI profiles checked yet. Jobs can still be saved without AI details.';
+      }
+    }
+
     function renderDashboard() {
+      void loadCompany2Monitor();
       renderKPIs();
       renderGraph();
       renderWorkflowsTable();

@@ -59,3 +59,16 @@ Practice company-specific questions, the Top 150, or the full catalog. Explore t
 On desktop, the optional Auto Apply extension can assist with supported applications after you review the selected jobs.
 
 All Career is a personal and educational project. Confirm current dates and eligibility on the original listing. [MIT License](./LICENSE)
+
+
+## Official company jobs: freshness and extraction
+
+**Big Company Scraper 2** runs daily at **03:00 IST**, with 36 new boards and 19 recovered boards configured. Actual results and missing descriptions are reported per company.
+
+- Native job IDs and canonical URLs prevent duplicates. Repeated scraping keeps the original discovery date.
+- Jobs leave the visible catalog after 30 days. Their IDs remain while the original posting stays online, preventing an old listing from returning as new.
+- Descriptions are read in memory to extract stated experience, salary, original posting date and walk-in details. Full descriptions are not saved; unknown facts stay blank.
+- Big Company Jobs has an experience filter and conditional experience, salary and walk-in badges.
+- String Theory reports new jobs by company/location and measured AI health. Checkpoints resume unfinished collection; provider quotas are respected.
+
+[Workflow, secret setup, identity rules and recovery guide](docs/company-scraper-2.md)

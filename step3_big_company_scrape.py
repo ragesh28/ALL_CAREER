@@ -28,6 +28,7 @@ import traceback
 from datetime import datetime, timedelta
 
 import pandas as pd
+from scripts.company_job_details import details_from_record, enrich_jobs, jobspy_options, upgrade_details
 
 # ---------------------------------------------------------------------------
 # TIMER — gracefully stop before GitHub's 6-hour hard kill
@@ -144,57 +145,9 @@ def clean_old_jobs(jobs):
 
 
 def save_jobs(all_jobs):
-    """Save jobs directly to local workday_scraper/big_company_jobs.json file."""
-    if not all_jobs:
-        return 0
-
-    all_jobs = clean_old_jobs(all_jobs)
-    
-    big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
-    existing_jobs = []
-    if os.path.exists(big_jobs_path):
-        try:
-            with open(big_jobs_path, "r", encoding="utf-8") as f:
-                existing_jobs = json.load(f)
-        except Exception as e:
-            print(f"Error loading existing big_company_jobs.json: {e}")
-            
-    existing_urls = {str(j.get("apply_url", "")) for j in existing_jobs if j.get("apply_url")}
-    
-    new_jobs_added = 0
-    for job in all_jobs:
-        u = str(job.get("url", ""))
-        if u and u not in existing_urls:
-            # Clean up incorrect OpenAI jobs (from LinkedIn search with general matches)
-            company_name = str(job.get("company", ""))
-            if company_name == 'OpenAI' and 'openai.com' not in u.lower() and 'greenhouse.io/openai' not in u.lower():
-                continue
-                
-            import storage
-            existing_jobs.append({
-                "title": str(job.get("title", "")),
-                "location": storage.normalize_location(str(job.get("location", ""))),
-                "posted": str(job.get("date", "")),
-                "apply_url": u,
-                "company": company_name,
-                "fetched_at": datetime.now().strftime("%Y-%m-%d")
-            })
-            existing_urls.add(u)
-            new_jobs_added += 1
-
-    if new_jobs_added > 0:
-        print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
-        try:
-            os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)
-            with open(big_jobs_path, "w", encoding="utf-8") as f:
-                json.dump(existing_jobs, f, indent=4)
-            print("Successfully updated big_company_jobs.json!")
-        except Exception as e:
-            print(f"Error saving big_company_jobs.json: {e}")
-    else:
-        print("No new unique jobs found to add to big_company_jobs.json.")
-        
-    return new_jobs_added
+    """Extract transient descriptions, then persist the common 30-day catalog."""
+    from scripts.company_job_store import save_legacy_batch
+    return save_legacy_batch(enrich_jobs(all_jobs), root=os.getcwd())
 
 
 def is_blocked(error):
@@ -209,6 +162,21 @@ def is_blocked(error):
 
 
 def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
+    """Keep Indeed's recent-job search, with verified official career recovery."""
+    jobs, blocked = _scrape_company(company_name, locations, results_wanted, proxy_list)
+    if jobs:
+        return jobs, blocked
+    from scripts.company_sources import scrape_verified_company
+    recovered = scrape_verified_company(company_name, results_wanted)
+    if recovered:
+        print(f"   Official career fallback: {len(recovered)} linked jobs")
+        # The company has been processed through a different source; do not retry
+        # the blocked Indeed request and save the same records repeatedly.
+        return recovered, False
+    return [], blocked
+
+
+def _scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
     """
     Scrape jobs for a single company from Indeed ONLY.
     Uses job_url_direct for original company apply links.
@@ -236,7 +204,7 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
                 country_indeed="India",
                 hours_old=72,                   # Last 3 days
                 verbose=0,
-                proxy=proxy_url
+                **jobspy_options(scrape_jobs, [proxy_url] if proxy_url else None)
             )
 
             if jobs_df is None or jobs_df.empty:
@@ -272,6 +240,7 @@ def scrape_company(company_name, locations, results_wanted=50, proxy_list=None):
                     "date":       str(row.get("date_posted", "None")),
                     "fetchedAt":  date_stamp,
                     "source":     "indeed",
+                    **details_from_record(row.to_dict()),
                 })
                 count += 1
 

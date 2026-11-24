@@ -15,6 +15,7 @@ on:
       - 'Google Jobs Aggregator (Cloudflare D1)'
       - 'API Call Jobs Scraper'
       - 'api_call_jobs2'
+      - 'Big Company Scraper 2'
       - 'Remove LinkedIn Jobs'
     types: [completed]
 

@@ -127,7 +127,8 @@ def get_workflows_status():
         wf_file = os.path.basename(wf_path) if wf_path and wf_path.endswith(".yml") else ""
 
         if not wf_file:
-            if "big company" in nl: wf_file = "big_company_scrape.yml"
+            if "big company scraper 2" in nl: wf_file = "big_company_scraper_2.yml"
+            elif "big company" in nl: wf_file = "big_company_scrape.yml"
             elif "naukri" in nl: wf_file = "naukri_scraper.yml"
             elif "all jobs 2" in nl or "all_jobs_2" in nl: wf_file = "all_jobs_2.yml"
             elif "api call jobs 2" in nl or "api_call_jobs2" in nl: wf_file = "api_call_jobs2.yml"
@@ -149,6 +150,14 @@ def get_workflows_status():
         # not zero and not a made-up per-workflow estimate.
         run_id = last_run.get("databaseId") if last_run else None
         run_metrics = None
+        company_report = None
+        if wf_file == 'big_company_scraper_2.yml' and run_id:
+            try:
+                with open(f'data/company_scraper2/runs/{run_id}.json', encoding='utf-8') as fh:
+                    company_report = json.load(fh)
+                run_metrics = {'newJobsStored': company_report.get('new_jobs'), 'walkinsStored': company_report.get('walkins'), 'locations': company_report.get('locations')}
+            except (OSError,ValueError,TypeError):
+                pass
         if wf_file == "telegram_jobs.yml" and run_id:
             for path in glob.glob("not_extracted_messages/non_job_skipped/*.json"):
                 try:
@@ -184,6 +193,7 @@ def get_workflows_status():
             "trigger": last_run.get("event", "schedule") if last_run else "schedule",
             "runId": run_id,
             "runMetrics": run_metrics,
+            "companyReport": company_report,
             "newJobsScraped": run_metrics.get("newJobsStored") if run_metrics else None,
             "jobsDeleted": None
         })
@@ -505,6 +515,27 @@ def get_api_credits_status():
             "checkWorkflow": "check_api_credits.yml"
         }
     ]
+    # Replace invented LLM percentages with recorded request outcomes.
+    llm_secrets = {'CLOUDFLARE_WORKERS_AI_ACCOUNTS','GEMINI_API_KEYS','GROQ_API_KEYS','MISTRAL_API_KEYS','OPENROUTER_API_KEYS'}
+    api_items = [item for item in api_items if item.get('secretKey') not in llm_secrets]
+    try:
+        with open('data/company_scraper2/ai_status.json',encoding='utf-8') as fh:
+            ai_report = json.load(fh)
+    except (OSError,ValueError):
+        ai_report = {}
+    secret_names = {'cloudflare':'CLOUDFLARE_WORKERS_AI_ACCOUNTS','gemini':'GEMINI_API_KEYS','groq':'GROQ_API_KEYS','mistral':'MISTRAL_API_KEYS','openrouter':'OPENROUTER_API_KEYS'}
+    for item in ai_report.get('accounts',{}).values():
+        provider = item['provider'];status = item.get('status','not_checked')
+        retry = item.get('retry_at')
+        api_items.append({'name':f"{provider.title()} profile {item.get('slot',1)}", 'provider':provider,
+          'secretKey':secret_names.get(provider,''),'category':'Job metadata extraction',
+          'slots':f"{item.get('calls',0)} recorded calls / {item.get('successes',0)} successes",
+          'creditsTotal':'Provider quota not measured','creditsUsed':'Recorded calls only',
+          'creditsRemaining':status.replace('_',' ') + (f"; retry {retry}" if retry else ''),
+          'creditsPct':None,'status':'HEALTHY' if status=='working' else 'WARNING',
+          'updatedAt':item.get('checked_at',ai_report.get('updated_at')),'canCheck':True,'checkWorkflow':'check_company_ai.yml'})
+    if not ai_report.get('accounts'):
+        api_items.append({'name':'Company AI extraction','provider':'Cloudflare / Gemini / Groq / Mistral / OpenRouter','secretKey':'CLOUDFLARE_WORKERS_AI_ACCOUNTS','category':'Job metadata extraction','slots':'Not checked','creditsRemaining':'No recorded health check yet','creditsPct':None,'updatedAt':None,'canCheck':True,'checkWorkflow':'check_company_ai.yml'})
     return api_items
 
 def main():

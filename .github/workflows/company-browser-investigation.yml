@@ -1,0 +1,73 @@
+name: Investigate Company Career Pages
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      companies:
+        type: string
+        default: ''
+permissions:
+  contents: read
+env:
+  SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+  SCRAPERAPI_KEY_2: ${{ secrets.SCRAPERAPI_KEY_2 }}
+  SCRAPERAPI_KEYS_LIST: ${{ secrets.SCRAPERAPI_KEYS_LIST }}
+  OXYLABS_USERNAME: ${{ secrets.OXYLABS_USERNAME }}
+  OXYLABS_PASSWORD: ${{ secrets.OXYLABS_PASSWORD }}
+  OXYLABS_ENTRYPOINT: ${{ vars.OXYLABS_ENTRYPOINT }}
+  WEBSHARE_PROXIES: ${{ secrets.WEBSHARE_PROXIES }}
+  HASDATA_API_KEYS: ${{ secrets.HASDATA_API_KEYS }}
+  SCRAPINGANT_API_KEYS: ${{ secrets.SCRAPINGANT_API_KEYS }}
+jobs:
+  providers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - run: python -m scripts.company_proxy_transport --output investigation-health.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: investigation-provider-health
+          path: investigation-health.json
+          retention-days: 7
+  companies:
+    needs: providers
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts
+            docs/audits
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: |
+          pip install curl_cffi requests beautifulsoup4 playwright
+          playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: investigation-provider-health
+          path: investigation-health
+      - name: Open each employer and inspect jobs, APIs and descriptions
+        env:
+          COMPANY_INVESTIGATE_ONLY: ${{ inputs.companies }}
+        run: python -m scripts.investigate_company_sources --output investigation --health investigation-health/investigation-health.json --shard ${{ matrix.shard }} --shards 4 --workers 2 --timeout 240 --only "$COMPANY_INVESTIGATE_ONLY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: company-browser-investigation-${{ matrix.shard }}
+          path: investigation/
+          retention-days: 7

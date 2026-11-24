@@ -4,6 +4,7 @@ Phase 1: Run all native API companies (requests)
 Phase 2: Run all browser-required companies (Playwright)
 """
 
+from scripts.company_job_store import without_descriptions
 import json, re, os, sys, time, requests
 try:
     from jobspy import scrape_jobs
@@ -13,6 +14,7 @@ except ImportError:
 from datetime import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+from scripts.company_job_details import is_india_location, details_from_record, enrich_jobs, jobspy_options, upgrade_details, jobs_from_payload, normalize_job_links
 
 sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
 
@@ -156,9 +158,10 @@ def scrape_workday(info):
                 break
             for j in postings:
                 all_jobs.append({
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")),
                     "location": clean(j.get("locationsText", "")),
-                    "apply_url": f"https://{urlparse(info['url']).netloc}{j.get('externalPath', '')}",
+                    "apply_url": f"https://{urlparse(info['url']).netloc}/en-US/{urlparse(info['url']).path.rstrip('/').split('/')[-2]}{j.get('externalPath', '')}",
                 })
             offset += limit
             if total and offset >= total:
@@ -184,7 +187,8 @@ def scrape_greenhouse(info):
                 for d in deps:
                     for j in d.get("jobs", []):
                         jobs.append({
-                            "title": clean(j.get("title", "")), 
+                            **details_from_record(j),
+                    "title": clean(j.get("title", "")), 
                             "location": clean(j.get("location", {}).get("name", "")),
                             "apply_url": clean(j.get("absolute_url", ""))
                         })
@@ -193,6 +197,7 @@ def scrape_greenhouse(info):
                 all_jobs = data.get("jobs", [])
                 total = data.get("meta", {}).get("total", len(all_jobs))
                 parsed_jobs = [{
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")), 
                     "location": clean(j.get("location", {}).get("name", "") if isinstance(j.get("location"), dict) else ""),
                     "apply_url": clean(j.get("absolute_url", ""))
@@ -435,7 +440,8 @@ def scrape_generic_api(info):
                 elif isinstance(data, list):
                     total = len(data)
 
-                return {"status": "OK", "total": total, "response_type": "JSON"}
+                jobs = jobs_from_payload(data, info["url"])
+                return {"status": "OK" if jobs else "NO_JOB_RECORDS", "total": total, "response_type": "JSON", "sample_jobs": jobs[:5], "all_jobs": jobs}
             except Exception:
                 # It's HTML or XML
                 return {"status": "OK", "total": "html/xml", "response_type": "HTML"}
@@ -455,37 +461,46 @@ def scrape_wipro(info):
 
 
 def _scrape_wipro_paginated(info):
-    """Wipro SAP SuccessFactors - full pagination by pageNumber."""
+    """Collect linked postings; stop on a repeated page or the sample budget."""
     try:
         h = {**HEADERS, "Content-Type": "application/json",
              "Origin": "https://careers.wipro.com",
              "Referer": "https://careers.wipro.com/en-US/search"}
-        all_jobs = []
-        page = 0
-        total = 0
+        jobs, seen = [], set()
+        page, total = 0, 0
+        sample_limit = int(os.environ.get("COMPANY_SAMPLE_LIMIT", "0"))
         while True:
             r = requests.post("https://careers.wipro.com/services/recruiting/v1/jobs",
                               headers=h, json={"pageNumber": page, "locale": "en_US"}, timeout=20)
-            if r.status_code != 200:
-                break
+            r.raise_for_status()
             data = json.loads(r.text.lstrip("\ufeff"))
-            if page == 0:
-                total = data.get("totalJobs", 0)
+            total = data.get("totalJobs", total)
             batch = data.get("jobSearchResult", [])
-            if not batch:
+            before = len(jobs)
+            for item in batch:
+                row = item.get("response", {})
+                job_id = str(row.get("id") or row.get("jobReqId") or "")
+                if not job_id or job_id in seen:
+                    continue
+                seen.add(job_id)
+                title = row.get("unifiedStandardTitle") or row.get("jobTitle") or ""
+                location = row.get("sfstd_jobLocation_obj") or row.get("jobLocationShort") or ""
+                if isinstance(title, list): title = title[0] if title else ""
+                if isinstance(location, list): location = ", ".join(str(x) for x in location)
+                jobs.append({"title": clean(title), "job_id": job_id,
+                             "location": clean(re.sub(r"<[^>]+>", " ", str(location))),
+                             "apply_url": (f"https://careers.wipro.com/job/{row['unifiedUrlTitle']}/{job_id}-en_US" if row.get("unifiedUrlTitle") else f"https://careers.wipro.com/jobs/{job_id}"),
+                             **details_from_record(row)})
+                if sample_limit and len(jobs) >= sample_limit:
+                    break
+            if len(jobs) == before or (total and len(jobs) >= total) or (sample_limit and len(jobs) >= sample_limit):
                 break
-            for j in batch:
-                all_jobs.append({
-                    "title": clean(j.get("response", {}).get("unifiedStandardTitle", "")),
-                    "job_id": str(j.get("response", {}).get("id", j.get("response", {}).get("jobReqId", "")))
-                })
             page += 1
-            if total and len(all_jobs) >= total:
-                break
             time.sleep(0.2)
-        return {"status": "OK", "total": total or len(all_jobs), "sample_jobs": all_jobs[:5], "all_jobs": all_jobs}
+        return {"status": "OK", "total": total or len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs}
     except Exception as e:
         return {"status": "ERROR", "error": str(e)}
+
 
 def scrape_maersk(info):
     """Maersk - full pagination by offset=24."""
@@ -554,6 +569,7 @@ def scrape_ibm(info):
                 break
             for j in hits:
                 all_jobs.append({
+                    **details_from_record(j),
                     "title": clean(j.get("title", "")),
                     "apply_url": clean(j.get("url", ""))
                 })
@@ -614,7 +630,8 @@ def jobspy_fallback_result(company_name):
             search_term=clean_company,
             location="India",
             results_wanted=100,
-            country_indeed="India"
+            country_indeed="India",
+            **jobspy_options(scrape_jobs)
         )
         jobs = []
         seen = set()
@@ -630,6 +647,7 @@ def jobspy_fallback_result(company_name):
                 
             seen.add(url)
             jobs.append({
+                **details_from_record(row.to_dict()),
                 "title": clean(str(row.get("title", ""))),
                 "location": clean(str(row.get("location", "India"))),
                 "apply_url": url
@@ -647,7 +665,27 @@ def jobspy_fallback_result(company_name):
 # ---------------------------------------------------------------------------
 
 def scrape_with_browser(info):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(info["name"]) or {}
+    if config.get("prefer_verified"):
+        jobs = scrape_verified_company(info["name"])
+        if jobs:
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
+    result = _scrape_with_browser(info)
+    jobs = result.get("all_jobs") or result.get("sample_jobs") or []
+    valid = [j for j in jobs if j.get("title") and posting_url(j.get("apply_url") or j.get("url") or "")]
+    if valid:
+        return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
+    jobs = scrape_verified_company(info["name"])
+    return {"status": "OK" if jobs else result.get("status", "EMPTY"), "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-fallback", "previous_status": result.get("status")}
+
+
+def _scrape_with_browser(info):
     """Use Playwright headless browser for blocked sites."""
+    if "openai" in info.get("name", "").lower():
+        # The official board exposes linked postings and full descriptions.
+        return scrape_generic_api({**info, "url": "https://api.ashbyhq.com/posting-api/job-board/openai", "method": "GET", "payload": None, "mandatory_headers": {}})
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -709,7 +747,8 @@ def scrape_with_browser(info):
                 link = item.find("a", href=True)
                 if not link and t and t.name == "a":
                     link = t
-                apply_url = link.get("href", "") if link else ""
+                from urllib.parse import urljoin
+                apply_url = urljoin(url, link.get("href", "")) if link else ""
 
                 if text and len(text) > 3:
                     parsed_jobs.append({
@@ -761,7 +800,9 @@ def scrape_qualcomm_phenom(info):
                 all_jobs.append({
                     "title": clean(p.get("name", "")),
                     "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India"),
-                    "job_id": str(p.get("jobSeqNo", p.get("id", "")))
+                    "job_id": str(p.get("jobSeqNo", p.get("id", ""))),
+                    "apply_url": p.get("positionUrl") or f"https://careers.qualcomm.com/careers/job/{p.get('id', '')}",
+                    **details_from_record(p),
                 })
             start += 10
             time.sleep(0.2)
@@ -792,7 +833,9 @@ def scrape_ericsson_phenom(info):
                 all_jobs.append({
                     "title": clean(p.get("name", "")),
                     "location": clean(p.get("locations", ["India"])[0] if p.get("locations") else "India"),
-                    "job_id": str(p.get("jobSeqNo", p.get("id", "")))
+                    "job_id": str(p.get("jobSeqNo", p.get("id", ""))),
+                    "apply_url": p.get("positionUrl") or f"https://jobs.ericsson.com/careers/job/{p.get('id', '')}",
+                    **details_from_record(p),
                 })
             start += 10
             time.sleep(0.2)
@@ -838,7 +881,8 @@ def scrape_amazon_ai(info):
             jobs = data.get("jobs", [])
             total = hits if hits else len(jobs)
             sample = [{
-                "title": clean(j.get("title", "")),
+                **details_from_record(j),
+                    "title": clean(j.get("title", "")),
                 "location": clean(j.get("location", "India")),
                 "apply_url": clean(j.get("job_path", j.get("id_icims", "")))
             } for j in jobs[:5]]
@@ -1043,6 +1087,23 @@ def scrape_publicis(info):
 # ---------------------------------------------------------------------------
 
 def dispatch_api(info):
+    from scripts.company_sources import configuration, scrape_verified_company
+    from scripts.company_recovery import posting_url
+    config = configuration(info["name"]) or {}
+    if config.get("prefer_verified"):
+        jobs = scrape_verified_company(info["name"])
+        if jobs:
+            return {"status": "OK", "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-source"}
+    result = _dispatch_api(info)
+    jobs = result.get("all_jobs") or result.get("sample_jobs") or []
+    valid = [j for j in jobs if j.get("title") and posting_url(j.get("apply_url") or j.get("url") or "")]
+    if valid:
+        return {**result, "total": len(valid), "all_jobs": valid, "sample_jobs": valid[:5]}
+    jobs = scrape_verified_company(info["name"])
+    return {"status": "OK" if jobs else result.get("status", "EMPTY"), "total": len(jobs), "sample_jobs": jobs[:5], "all_jobs": jobs, "method": "verified-career-fallback", "previous_status": result.get("status")}
+
+
+def _dispatch_api(info):
     """Route a company to the correct scraper engine based on its config."""
     name = info["name"]
     name_lower = name.lower()
@@ -1158,6 +1219,8 @@ def load_checkpoint():
 
 def save_checkpoint(next_index, results, completed=False):
     """Save progress checkpoint so the workflow can resume."""
+    # A progress marker must never get ahead of durable catalog data.
+    update_big_company_jobs(results, {})
     data = {
         "next_index": next_index,
         "completed": completed,
@@ -1165,18 +1228,10 @@ def save_checkpoint(next_index, results, completed=False):
         "results": results,
     }
     with open(CHECKPOINT_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+        json.dump(without_descriptions(data), f, indent=2, ensure_ascii=False)
 
 def is_india(location):
-    if not location:
-        return True
-    loc = location.lower()
-    indian_keywords = [
-        "india", "ind", "bangalore", "bengaluru", "hyderabad", "chennai", 
-        "pune", "mumbai", "gurgaon", "noida", "delhi", "remote", 
-        "karnataka", "maharashtra", "telangana", "tamil nadu", "haryana"
-    ]
-    return any(k in loc for k in indian_keywords)
+    return is_india_location(location)
 
 
 def clean_company_name(name):
@@ -1208,121 +1263,22 @@ def get_company_career_url(info):
 
 
 def update_big_company_jobs(all_results, company_info_map):
-    big_jobs_path = os.path.join("workday_scraper", "big_company_jobs.json")
-    seen_ids_path = "seen_job_ids.json"
-    
-    existing_jobs = []
-    if os.path.exists(big_jobs_path):
-        try:
-            with open(big_jobs_path, "r", encoding="utf-8") as f:
-                existing_jobs = json.load(f)
-        except Exception as e:
-            print(f"Error loading existing big_company_jobs.json: {e}")
-            existing_jobs = []
-            
-    seen_ids_db = {}
-    if os.path.exists(seen_ids_path):
-        try:
-            with open(seen_ids_path, "r", encoding="utf-8") as f:
-                seen_ids_db = json.load(f)
-        except Exception as e:
-            print(f"Error loading {seen_ids_path}: {e}")
-
-    existing_keys = set()
-    for job in existing_jobs:
-        comp = (job.get("company") or "").strip().lower()
-        title = (job.get("title") or "").strip().lower()
-        url = (job.get("apply_url") or "").strip().lower()
-        clean_url = url.split('?')[0] if url else ""
-        existing_keys.add((comp, title, clean_url))
-        
-    fetched_at = datetime.now().strftime("%Y-%m-%d")
-    
-    total_scraped = 0
-    total_india = 0
-    new_jobs_added = 0
-    
-    for raw_company_name, result in all_results.items():
-        if result.get("status") != "OK":
+    from scripts.company_job_store import save_legacy_batch
+    from scripts.company_job_details import confirmed_india_location
+    total_scraped = total_india = new_jobs = 0
+    for raw_name, result in all_results.items():
+        if result.get('status') != 'OK':
             continue
-            
-        clean_name = clean_company_name(raw_company_name)
-        info = company_info_map.get(raw_company_name, {})
-        company_url = get_company_career_url(info)
-        
-        # Ensure company exists in seen_ids_db
-        if clean_name not in seen_ids_db:
-            seen_ids_db[clean_name] = []
-        
-        jobs_list = result.get("all_jobs") or result.get("sample_jobs") or []
-        if not isinstance(jobs_list, list):
+        rows = result.get('all_jobs') or result.get('sample_jobs') or []
+        if not isinstance(rows, list):
             continue
-            
-        for raw_job in jobs_list:
-            if not isinstance(raw_job, dict):
-                continue
-                
-            title = clean(raw_job.get("title", ""))
-            if not title or len(title) < 2:
-                continue
-                
-            total_scraped += 1
-            location = clean(raw_job.get("location", ""))
-            
-            if not is_india(location):
-                continue
-                
-            total_india += 1
-            apply_url = raw_job.get("apply_url") or raw_job.get("url") or company_url or ""
-            unique_job_id = str(raw_job.get("job_id", apply_url)).strip()
-            
-            # Check if we have seen this ID permanently
-            if unique_job_id in seen_ids_db[clean_name] and unique_job_id != "":
-                continue  # Skip this job as we've already scraped it in the past
-
-            comp_lower = clean_name.lower()
-            title_lower = title.strip().lower()
-            url_lower = apply_url.strip().lower()
-            clean_url = url_lower.split('?')[0] if url_lower else ""
-            
-            job_key = (comp_lower, title_lower, clean_url)
-            
-            if job_key not in existing_keys:
-                import storage
-                new_job = {
-                    "title": title,
-                    "location": storage.normalize_location(location or "India"),
-                    "posted": "",
-                    "apply_url": apply_url,
-                    "total_jobs": 0,
-                    "fetched_at": fetched_at,
-                    "company": clean_name
-                }
-                existing_jobs.append(new_job)
-                existing_keys.add(job_key)
-                # Permanently store the seen ID
-                if unique_job_id:
-                    seen_ids_db[clean_name].append(unique_job_id)
-                new_jobs_added += 1
-                
-    if new_jobs_added > 0:
-        print(f"Adding {new_jobs_added} new jobs to big_company_jobs.json...")
-        os.makedirs(os.path.dirname(big_jobs_path), exist_ok=True)
-        try:
-            with open(big_jobs_path, "w", encoding="utf-8") as f:
-                json.dump(existing_jobs, f, indent=4, ensure_ascii=False)
-            print("Successfully updated big_company_jobs.json!")
-            
-            # Save the updated seen job IDs
-            with open(seen_ids_path, "w", encoding="utf-8") as f:
-                json.dump(seen_ids_db, f, indent=4, ensure_ascii=False)
-            print("Successfully updated seen_job_ids.json!")
-        except Exception as e:
-            print(f"Error saving updated JSON files: {e}")
-    else:
-        print("No new unique jobs found to add to big_company_jobs.json.")
-        
-    return total_scraped, total_india, new_jobs_added
+        company = clean_company_name(raw_name)
+        normalize_job_links(rows, get_company_career_url(company_info_map.get(raw_name, {})))
+        total_scraped += len(rows)
+        total_india += sum(confirmed_india_location(j.get('location')) for j in rows)
+        enrich_jobs(rows)
+        new_jobs += save_legacy_batch(rows, company=company, root=os.getcwd())
+    return total_scraped, total_india, new_jobs
 
 
 def save_output(all_results, api_count, browser_count):
@@ -1335,7 +1291,7 @@ def save_output(all_results, api_count, browser_count):
         "results": all_results,
     }
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+        json.dump(without_descriptions(output), f, indent=2, ensure_ascii=False)
 
     total_scraped = 0
     total_india = 0

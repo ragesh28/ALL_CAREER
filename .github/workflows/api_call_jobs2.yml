@@ -10,9 +10,25 @@ on:
   schedule:
     - cron: '30 21 * * *'  # 3:00 AM IST (UTC+5:30) daily
 
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: big-company-${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   scrape-51-companies:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_WORKERS_AI_ACCOUNTS: ${{ secrets.CLOUDFLARE_WORKERS_AI_ACCOUNTS }}
+      GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
+      GROQ_API_KEYS: ${{ secrets.GROQ_API_KEYS }}
+      MISTRAL_API_KEYS: ${{ secrets.MISTRAL_API_KEYS }}
+      OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
+      COMPANY_AI_MAX_CALLS: '300'
+      COMPANY_AI_MAX_SECONDS: '300'
     timeout-minutes: 355  # 5 hours 55 minutes max
 
     steps:
@@ -29,7 +45,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install requests beautifulsoup4 playwright pandas python-jobspy
+          pip install curl_cffi requests beautifulsoup4 playwright pandas python-jobspy
           playwright install --with-deps chromium
 
       - name: Write job_api_calls.md from Secret
@@ -75,12 +91,13 @@ jobs:
 
       - name: Commit results and checkpoint
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add scraped_jobs_output.json scrape_checkpoint.json workday_scraper/big_company_jobs.json seen_job_ids.json data/job_archives/ role_index.json jobs_by_role/*.json || true
-          git commit -m "chore(jobs): Update 51-company scraped jobs [skip ci] - idx ${{ steps.check_remaining.outputs.next_index }}" || echo "No changes to commit"
-          git pull --rebase -X theirs --autostash origin main
-          git push
+          set -euo pipefail
+          for path in workday_scraper/big_company_jobs.json data/big_company_jobs.json data/company_job_history data/company_scraper2 scraped_jobs_output.json scrape_checkpoint.json seen_job_ids.json data/job_archives role_index.json jobs_by_role; do
+            if [ -e "$path" ] || git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+              git add -A -- "$path"
+            fi
+          done
+          python -m scripts.publish_company_catalog
 
       - name: Trigger continuation if not complete
         if: steps.check_remaining.outputs.completed == 'false'
