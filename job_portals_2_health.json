@@ -1,41 +1,41 @@
 {
-  "run_id": "45599168206",
-  "updated_at": "2026-11-25T16:47:05.114684",
+  "run_id": "45657750462",
+  "updated_at": "2026-11-25T19:20:23.746333",
   "portals": {
     "apna": {
-      "scraped_total": 8751,
-      "new_stored_total": 325,
-      "requests_total": 765,
+      "scraped_total": 3717,
+      "new_stored_total": 119,
+      "requests_total": 363,
       "last_probe": {
         "requests": 3,
-        "scraped": 35,
+        "scraped": 42,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/marketing-manager-jobs-in-coimbatore"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 380,
+      "requests_total": 165,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/marketing-manager-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 380,
+      "scraped_total": 3371,
+      "new_stored_total": 164,
+      "requests_total": 349,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/marketing-manager-jobs-in-coimbatore"
+        "requests": 2,
+        "scraped": 19,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
