@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1276879,
+  "total_jobs": 1276909,
   "sources": {
     "naukri": 397483,
     "linkedin": 333340,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1493,
-    "telegram_post": 770,
+    "telegram_message": 1513,
+    "telegram_post": 780,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,16 +294,16 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 268949,
+    "bangalore": 268957,
     "mumbai": 167535,
-    "delhi": 137071,
-    "chennai": 137351,
+    "delhi": 137072,
+    "chennai": 137353,
     "hyderabad": 125643,
-    "pune": 104275,
+    "pune": 104278,
     "noida": 61918,
     "ahmedabad": 48396,
     "kolkata": 44487,
-    "all_india": 23011,
+    "all_india": 23025,
     "coimbatore": 25788,
     "kochi": 19862,
     "remote": 11764,
@@ -389,7 +389,7 @@
     "pollachi": 67,
     "kurla": 52,
     "tcs_ion_centres": 1,
-    "pan_india": 45,
+    "pan_india": 46,
     "chennanahalli_magadi_road": 1,
     "chennanahalli": 1,
     "shivamogga": 7,
@@ -1461,7 +1461,8 @@
     "kumar_nagar": 1,
     "suryapet": 1,
     "jaynagar_i": 1,
-    "haripal": 1
+    "haripal": 1,
+    "work_from_home_india": 1
   },
-  "generated_at": "2026-11-25T04:38:45.111400"
+  "generated_at": "2026-11-25T09:06:03.342439"
 }

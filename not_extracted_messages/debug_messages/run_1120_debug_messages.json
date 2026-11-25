@@ -1,0 +1,33 @@
+{
+  "workflow_run_number": "1120",
+  "workflow_run_id": "45579262096",
+  "timestamp": "2026-11-25T09:05:28.744248",
+  "runtime_minutes": 10.3,
+  "messages_processed": 55,
+  "new_jobs_stored": 37,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 14,
+  "text_messages_processed": 41,
+  "stored_locations": {
+    "Unknown": 16,
+    "Pan India": 1,
+    "Mumbai, Delhi, Tamil Nadu, Gurgaon, Bangalore": 2,
+    "Chennai, Bengaluru, Mumbai": 1,
+    "Work From Home (India)": 1,
+    "India": 1,
+    "PAN India": 1,
+    "Bangalore": 3,
+    "Bangalore, India": 1,
+    "Remote": 1,
+    "Pune": 2,
+    "Gurgaon": 1,
+    "Sriperumbudur, near Chennai": 1,
+    "Bangalore, Remote": 1,
+    "Bengaluru, Karnataka": 2,
+    "Bengaluru": 1,
+    "Pune, Maharashtra": 1
+  },
+  "stored_walkins": 3,
+  "debug_failed_messages": []
+}
