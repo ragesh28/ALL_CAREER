@@ -1,41 +1,41 @@
 {
-  "run_id": "45455927145",
-  "updated_at": "2026-11-24T21:15:56.336427",
+  "run_id": "45550448800",
+  "updated_at": "2026-11-25T10:52:22.064061",
   "portals": {
     "apna": {
-      "scraped_total": 4298,
-      "new_stored_total": 165,
-      "requests_total": 443,
+      "scraped_total": 7130,
+      "new_stored_total": 134,
+      "requests_total": 782,
       "last_probe": {
-        "requests": 3,
-        "scraped": 41,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "http_error",
+        "http_status": 404,
+        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-ahmedabad"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 204,
+      "requests_total": 400,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-ahmedabad/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 204,
+      "requests_total": 400,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-ahmedabad"
       }
     }
   }
