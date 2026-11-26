@@ -1,0 +1,47 @@
+{
+  "workflow_run_number": "1123",
+  "workflow_run_id": "45823016810",
+  "timestamp": "2026-11-26T13:09:10.941318",
+  "runtime_minutes": 13.38,
+  "messages_processed": 75,
+  "new_jobs_stored": 59,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 25,
+  "text_messages_processed": 50,
+  "stored_locations": {
+    "Unknown": 31,
+    "Bangalore, Mumbai, Thane, Kolkata, Ahmedabad, Kochi, Chennai, Hyderabad": 1,
+    "Hyderabad, Bengaluru, Chennai, Mumbai, Pune, Kolkata, Gurugram, Noida, New Delhi": 1,
+    "Lucknow, Bangalore, Pune, Kolkata, Gurgaon, Ahmedabad, Coimbatore, Hyderabad": 1,
+    "Noida, Hyderabad, Chennai, Gurugram": 1,
+    "Gurgaon, Pune, Bangalore": 1,
+    "PAN India": 2,
+    "India, Remote": 1,
+    "India": 2,
+    "Bengaluru, Hyderabad, Delhi NCR": 2,
+    "Hyderabad, Telangana": 1,
+    "Hyderabad, India": 1,
+    "Bangalore,Gurgaon, India": 1,
+    "Bangalore/Chennai, India": 1,
+    "Remote": 1,
+    "Chennai": 2,
+    "Mumbai": 1,
+    "Bangalore": 3,
+    "Pune": 1,
+    "Hyderabad": 1,
+    "Goa, India": 1,
+    "Pune / Noida": 1,
+    "Remote, India": 1
+  },
+  "stored_walkins": 5,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "way2freshers",
+      "msg_id": 19029,
+      "text": "🎓 WHAT'S NEXT AFTER GRADUATION? EXPLORE YOUR CAREER OPTIONS!\n\nCompleted your degree but confused about which career path to choose?\n\nWhether you're a B Tech, BCA, BCom, BBA, BSc or MBA graduate, there are more career opportunities than you might think.\n\nOur latest guide explores:\n\n✅ Job opportunities after each degree\n✅ Skills that employers look for\n✅ Higher studies & professional courses\n✅ Government exams and alternative career paths\n✅ Indicative starting salary ranges\n✅ Practical steps to plan your next move\n\nDon't choose a career just because everyone else is doing it. Understand your options and make an informed decision.\n\n📖 Read the complete career guide:\nhttps://www.way2fresher.com/career-options-after-btech-bca-bcom-bba-bsc-mba/\nWAY2FRESHERS\nYour\nCareer\nWHAT'S NEXT\nAhead\nAFTER\nGRADUATION?\nExplore Career Options After\nB.Tech, BCA, B.Com, BBA, B.Sc & MBA\nJobs\nSkills\nHigher Studies\nGovernment Exams\nFind Your Career Path →\nwww.way2fresher.com",
+      "timestamp": "2026-11-26T07:12:45+00:00"
+    }
+  ]
+}

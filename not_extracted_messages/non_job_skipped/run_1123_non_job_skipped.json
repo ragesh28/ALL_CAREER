@@ -1,0 +1,61 @@
+{
+  "workflow_run_number": "1123",
+  "workflow_run_id": "45823016810",
+  "timestamp": "2026-11-26T13:09:10.941318",
+  "runtime_minutes": 13.38,
+  "messages_processed": 75,
+  "new_jobs_stored": 59,
+  "skipped_jobs_count": 3,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 25,
+  "text_messages_processed": 50,
+  "stored_locations": {
+    "Unknown": 31,
+    "Bangalore, Mumbai, Thane, Kolkata, Ahmedabad, Kochi, Chennai, Hyderabad": 1,
+    "Hyderabad, Bengaluru, Chennai, Mumbai, Pune, Kolkata, Gurugram, Noida, New Delhi": 1,
+    "Lucknow, Bangalore, Pune, Kolkata, Gurgaon, Ahmedabad, Coimbatore, Hyderabad": 1,
+    "Noida, Hyderabad, Chennai, Gurugram": 1,
+    "Gurgaon, Pune, Bangalore": 1,
+    "PAN India": 2,
+    "India, Remote": 1,
+    "India": 2,
+    "Bengaluru, Hyderabad, Delhi NCR": 2,
+    "Hyderabad, Telangana": 1,
+    "Hyderabad, India": 1,
+    "Bangalore,Gurgaon, India": 1,
+    "Bangalore/Chennai, India": 1,
+    "Remote": 1,
+    "Chennai": 2,
+    "Mumbai": 1,
+    "Bangalore": 3,
+    "Pune": 1,
+    "Hyderabad": 1,
+    "Goa, India": 1,
+    "Pune / Noida": 1,
+    "Remote, India": 1
+  },
+  "stored_walkins": 5,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "kickcharm",
+      "msg_id": 44599,
+      "text": "🚨Today Last Date | Don't Miss\n\n🎮 WIN A PS5 + GTA 6!\n\nJoin Toggle Wars, a 4-day hackathon by WeMakeDevs x Flagsmith.\n\nEligibility: Open to all\n\nA 4-day hackathon. 3 exciting tracks. Some seriously cool prizes!\n\n🎮 PS5 + GTA 6 bundle\n🏆 $2,000 + $1,000 cash prizes\n🎧 AirPods giveaway\n\n🌐 100% Online | Free to participate\n\nDeadline: 26th November 2026\n\n👉 Register here: https://bit.ly/4zvJdbL",
+      "timestamp": "2026-11-26T05:25:05+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8494,
+      "text": "Quick question. What is the project line on your resume right now?\n \nIf it is empty or old, try this: 4 online hackathons closing in the next 4 weeks. \n1. Kiroween 2026 (Kiro): $100,000 in cash prizes. \n\nDeadline 5 Dec. \nkiroween.devpost.com http://kiroween.devpost.com/\n \n2. MNIT Jaipur Student Hackathon: Rs 2.5 lakh+ in rewards, for students. Deadline 5 Dec. \ninternshala.com/competitions/mnit-jaipur-student-hackathon-2026 http://internshala.com/competitions/mnit-jaipur-student-hackathon-2026\n \n3. PayPal AI Hackathon 2026: Deadline 15 Dec. \ninternshala.com/competitions/paypal-ai-hackathon-2026-2 http://internshala.com/competitions/paypal-ai-hackathon-2026-2\n \n4. Nebius x NVIDIA Global AI Hackathon: $36,000 prize pool. Deadline 15 Dec. \ninternshala.com/competitions/nebius-x-nvidia-global-ai-hackathon-2026 http://internshala.com/competitions/nebius-x-nvidia-global-ai-hackathon-2026\n \nRegister on the organiser's page and check dates first. \nWin or not, you get a resume line: what you built, the tools, one number. \n\nCheck how yours reads \ntoday: https://link.nextraise.ai/2p8k84m8\n\ntry it out now 🚀\n4 hackathons you\ncanjoinonline\nBuild something real. Add it to your resume.\nKiroween 2026\n$100,000\nby Kiro · Online\nDeadline 5 Dec\n2\nMNIT Jaipur Student Hackathon\nRs 2.5 lakh+\nMNIT Jaipur - Online · Students\nDeadline 5 Dec\nPayPal Al Hackathon 2026\nBuild with AI\n3\nPayPal · Online\nDeadline 15 Dec\nNebius x NVIDIA Global AI Hackathon\n$36,000\n4\nNebius and NVIDIA · Online\nDeadline 15 Dec\nAdd your project to your resume. Check how\nTRY FOR FREE\nit reads.\nOrganisers' details as of 9 Nov 2026. Register on the organiser's page and check dates before you start.",
+      "timestamp": "2026-11-26T11:21:59+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "arunchauhanofficial",
+      "msg_id": 8495,
+      "text": "Arun Chauhan | AI, Career & Tech https://t.me/arunchauhanofficial pinned a photo",
+      "timestamp": "2026-11-26T11:22:27+00:00"
+    }
+  ]
+}
