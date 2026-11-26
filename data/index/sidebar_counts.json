@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1280273,
+  "total_jobs": 1280970,
   "sources": {
-    "naukri": 397483,
+    "naukri": 398177,
     "linkedin": 333340,
     "timesjobs": 157710,
     "indeed": 121864,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 9612,
     "telegram": 3577,
-    "other": 6123,
+    "other": 6126,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 269704,
-    "mumbai": 167923,
-    "delhi": 137404,
-    "chennai": 137663,
-    "hyderabad": 125977,
-    "pune": 104550,
-    "noida": 62100,
-    "ahmedabad": 48545,
-    "kolkata": 44683,
+    "bangalore": 269820,
+    "mumbai": 168021,
+    "delhi": 137479,
+    "chennai": 137808,
+    "hyderabad": 126019,
+    "pune": 104603,
+    "noida": 62190,
+    "ahmedabad": 48559,
+    "kolkata": 44697,
     "all_india": 23040,
-    "coimbatore": 25859,
-    "kochi": 19884,
-    "remote": 11766,
+    "coimbatore": 25880,
+    "kochi": 19895,
+    "remote": 11783,
     "jaipur": 10326,
     "maharashtra": 11636,
     "indore": 6429,
@@ -538,7 +538,7 @@
     "warsaw_metropolitan_area": 1,
     "ind": 1,
     "khb_colony": 2,
-    "mangalore": 79,
+    "mangalore": 80,
     "moodbidri": 1,
     "belagavi": 13,
     "gokak": 2,
@@ -1470,5 +1470,5 @@
     "chitradurga": 1,
     "sunder_nagar": 1
   },
-  "generated_at": "2026-11-26T03:54:56.089518"
+  "generated_at": "2026-11-26T09:47:16.506795"
 }
