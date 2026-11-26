@@ -1,0 +1,38 @@
+{
+  "workflow_run_number": "1122",
+  "workflow_run_id": "45745362375",
+  "timestamp": "2026-11-26T03:04:43.099219",
+  "runtime_minutes": 3.78,
+  "messages_processed": 15,
+  "new_jobs_stored": 22,
+  "skipped_jobs_count": 2,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 4,
+  "text_messages_processed": 11,
+  "stored_locations": {
+    "Unknown": 16,
+    "Pan India": 1,
+    "Hyderabad, Pune": 1,
+    "Bengaluru": 1,
+    "Pune": 1,
+    "Pune, Maharashtra": 1,
+    "Remote": 1
+  },
+  "stored_walkins": 12,
+  "non_job_skipped_messages": [
+    {
+      "type": "non_job_skipped",
+      "channel": "way2freshers",
+      "msg_id": 19027,
+      "text": "When it feels scary\nto jump, you should\njump.\nOr else you'll be stuck\nin the same place\nforever.\nEric Partaker",
+      "timestamp": "2026-11-26T01:45:06+00:00"
+    },
+    {
+      "type": "non_job_skipped",
+      "channel": "goyalarsh",
+      "msg_id": 6456,
+      "text": "If you want to learn about Agent Memory, here is a good resource: https://fandf.co/3UOGFYf",
+      "timestamp": "2026-11-25T20:15:26+00:00"
+    }
+  ]
+}
