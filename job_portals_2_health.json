@@ -1,41 +1,41 @@
 {
-  "run_id": "45754307723",
-  "updated_at": "2026-11-26T10:11:10.002417",
+  "run_id": "45799047143",
+  "updated_at": "2026-11-26T16:07:23.713111",
   "portals": {
     "apna": {
-      "scraped_total": 7110,
-      "new_stored_total": 138,
-      "requests_total": 780,
+      "scraped_total": 8336,
+      "new_stored_total": 356,
+      "requests_total": 696,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/deep-learning-engineer-jobs-in-ahmedabad"
+        "requests": 2,
+        "scraped": 12,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/business-development-manager-jobs-in-indore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 400,
+      "requests_total": 348,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/deep-learning-engineer-jobs-in-ahmedabad/"
+        "url": "https://www.workindia.in/business-development-manager-jobs-in-indore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 0,
-      "new_stored_total": 0,
-      "requests_total": 400,
+      "scraped_total": 7312,
+      "new_stored_total": 31,
+      "requests_total": 748,
       "last_probe": {
-        "requests": 1,
-        "scraped": 0,
-        "status": "blocked",
-        "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/deep-learning-engineer-jobs-in-ahmedabad"
+        "requests": 2,
+        "scraped": 19,
+        "status": "ok",
+        "http_status": 200,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-indore"
       }
     }
   }
