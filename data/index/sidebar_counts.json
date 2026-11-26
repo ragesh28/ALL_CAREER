@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1291478,
+  "total_jobs": 1291487,
   "sources": {
     "naukri": 398347,
     "linkedin": 337645,
@@ -40,7 +40,7 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1564,
+    "telegram_message": 1573,
     "telegram_post": 793,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
@@ -294,7 +294,7 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 271873,
+    "bangalore": 271874,
     "mumbai": 169016,
     "delhi": 138565,
     "chennai": 138705,
@@ -303,7 +303,7 @@
     "noida": 62648,
     "ahmedabad": 48964,
     "kolkata": 45101,
-    "all_india": 23065,
+    "all_india": 23072,
     "coimbatore": 26131,
     "kochi": 20062,
     "remote": 11888,
@@ -1475,7 +1475,8 @@
     "bachitter_nagar": 1,
     "new_sunder_nagar": 1,
     "kulithalai": 1,
-    "all_areas_in_ludhiana_region": 1
+    "all_areas_in_ludhiana_region": 1,
+    "france": 1
   },
-  "generated_at": "2026-11-26T19:57:09.568952"
+  "generated_at": "2026-11-26T22:34:03.310012"
 }
