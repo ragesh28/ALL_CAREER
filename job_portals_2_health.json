@@ -1,41 +1,41 @@
 {
-  "run_id": "45799047143",
-  "updated_at": "2026-11-26T16:07:23.713111",
+  "run_id": "45856013421",
+  "updated_at": "2026-11-26T19:56:33.954258",
   "portals": {
     "apna": {
-      "scraped_total": 8336,
-      "new_stored_total": 356,
-      "requests_total": 696,
+      "scraped_total": 4154,
+      "new_stored_total": 145,
+      "requests_total": 431,
       "last_probe": {
-        "requests": 2,
-        "scraped": 12,
+        "requests": 3,
+        "scraped": 38,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/business-development-manager-jobs-in-indore"
+        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 348,
+      "requests_total": 197,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/business-development-manager-jobs-in-indore/"
+        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 7312,
-      "new_stored_total": 31,
-      "requests_total": 748,
+      "scraped_total": 4726,
+      "new_stored_total": 11,
+      "requests_total": 451,
       "last_probe": {
         "requests": 2,
         "scraped": 19,
         "status": "ok",
         "http_status": 200,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/business-development-manager-jobs-in-indore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
       }
     }
   }
