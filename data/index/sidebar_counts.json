@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1291667,
+  "total_jobs": 1291680,
   "sources": {
     "naukri": 398347,
     "linkedin": 337645,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1573,
-    "telegram_post": 793,
+    "telegram_message": 1581,
+    "telegram_post": 798,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -296,14 +296,14 @@
   "locations": {
     "bangalore": 271919,
     "mumbai": 169061,
-    "delhi": 138565,
+    "delhi": 138566,
     "chennai": 138750,
     "hyderabad": 126976,
-    "pune": 105542,
+    "pune": 105545,
     "noida": 62648,
     "ahmedabad": 48964,
     "kolkata": 45101,
-    "all_india": 23072,
+    "all_india": 23081,
     "coimbatore": 26131,
     "kochi": 20062,
     "remote": 11888,
@@ -1478,5 +1478,5 @@
     "all_areas_in_ludhiana_region": 1,
     "france": 1
   },
-  "generated_at": "2026-11-27T03:56:12.270936"
+  "generated_at": "2026-11-27T05:20:17.197978"
 }
