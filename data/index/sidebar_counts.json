@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1291680,
+  "total_jobs": 1291727,
   "sources": {
     "naukri": 398347,
     "linkedin": 337645,
@@ -13,7 +13,7 @@
     "glassdoor": 4842,
     "freshersworld": 9974,
     "telegram": 3577,
-    "other": 6189,
+    "other": 6191,
     "bebee": 60,
     "jobrapidocom": 69,
     "simplyhired": 64,
@@ -40,8 +40,8 @@
     "talentcom": 11,
     "citi": 3,
     "jobs": 3,
-    "telegram_message": 1581,
-    "telegram_post": 798,
+    "telegram_message": 1616,
+    "telegram_post": 808,
     "careers_at_millennium": 1,
     "built_in_bengaluru": 2,
     "ice_mortgage_technology": 1,
@@ -294,16 +294,16 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 271919,
-    "mumbai": 169061,
-    "delhi": 138566,
-    "chennai": 138750,
-    "hyderabad": 126976,
-    "pune": 105545,
-    "noida": 62648,
+    "bangalore": 271933,
+    "mumbai": 169063,
+    "delhi": 138567,
+    "chennai": 138752,
+    "hyderabad": 126977,
+    "pune": 105549,
+    "noida": 62651,
     "ahmedabad": 48964,
     "kolkata": 45101,
-    "all_india": 23081,
+    "all_india": 23098,
     "coimbatore": 26131,
     "kochi": 20062,
     "remote": 11888,
@@ -473,7 +473,7 @@
     "kothur_formulation_division": 1,
     "vapi": 7,
     "eu": 4,
-    "across_india": 23,
+    "across_india": 24,
     "trichy": 84,
     "perundurai": 2,
     "jhajjar": 4,
@@ -709,7 +709,7 @@
     "ambala_cantt": 6,
     "virar": 14,
     "kolhapur": 30,
-    "multiple": 4,
+    "multiple": 5,
     "lakshadweep": 3,
     "daman_diu": 5,
     "kishangarh": 2,
@@ -1476,7 +1476,8 @@
     "new_sunder_nagar": 1,
     "kulithalai": 1,
     "all_areas_in_ludhiana_region": 1,
-    "france": 1
+    "france": 1,
+    "bhuneshwar": 1
   },
-  "generated_at": "2026-11-27T05:20:17.197978"
+  "generated_at": "2026-11-27T15:32:34.242161"
 }

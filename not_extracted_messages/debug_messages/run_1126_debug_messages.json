@@ -1,0 +1,47 @@
+{
+  "workflow_run_number": "1126",
+  "workflow_run_id": "46022852639",
+  "timestamp": "2026-11-27T15:32:04.459066",
+  "runtime_minutes": 11.59,
+  "messages_processed": 80,
+  "new_jobs_stored": 54,
+  "skipped_jobs_count": 5,
+  "failed_extractions_count": 1,
+  "image_messages_processed": 21,
+  "text_messages_processed": 59,
+  "stored_locations": {
+    "Unknown": 18,
+    "Chennai, Bengaluru, Hyderabad, Mumbai, Gurgaon, Pune, Ahmedabad, Kolkata, Noida, Jaipur": 1,
+    "Bangalore, Pune, New Delhi, Chennai, Kolkata, Gurgaon, Noida": 1,
+    "Pune, Gurgaon, Navi Mumbai, Hyderabad, Bangalore, Mumbai, and Vadodara": 1,
+    "Pune": 4,
+    "Bangalore": 7,
+    "Hyderabad, Bengaluru": 1,
+    "Bengaluru": 2,
+    "India": 2,
+    "Remote": 1,
+    "Across India": 1,
+    "PAN India": 2,
+    "Hyderabad": 1,
+    "Bangalore, Hyderabad": 1,
+    "Mumbai / Bangalore": 1,
+    "Greater Noida, Uttar Pradesh": 1,
+    "Gurugram, Lucknow (Hybrid)": 1,
+    "Bengaluru, Karnataka": 1,
+    "Noida": 2,
+    "Bhuneshwar": 1,
+    "Multiple": 1,
+    "Mumbai": 2,
+    "Bengaluru, India": 1
+  },
+  "stored_walkins": 3,
+  "debug_failed_messages": [
+    {
+      "type": "failed_extraction",
+      "channel": "way2freshers",
+      "msg_id": 19034,
+      "text": "AI IS CHANGING THE JOB MARKET BEFORE YOU GRADUATE. ARE YOU READY?\n\nThe future belongs to students who know how to work with AI — not those who ignore it.\n\nA degree alone may not be enough to stand out in an AI-driven job market. Students need the right combination of technical knowledge, human skills and practical experience.\n\nSo, what should you focus on today?\n\n🎯 Don't wait for the future to arrive. Start preparing for it today.\n\n📖 Read the complete guide:\nhttps://www.way2fresher.com/how-students-can-survive-and-thrive-in-an-ai-dominated-future-2026-guide-way2fresher/\nWAY2FRESHERS\n2026 CAREER GUIDE\nAI IS CHANGING THE JOB\nMARKET BEFORE YOU\nGRADUATE. ARE YOU READY?\nYour Practical Blueprint to Survive & Thrive\nin an Al-Dominated Future.\nMaster Human Skills:\nWork With Al Daily:\nCritical Thinking &\nPrompting & AI\nCommunication\nWorkflows\nBuild Proof, Not Just\n90-Day Action Plan:\na Degree: Real\nFoundation, Skills &\nProjects & Portfolios\nVisibility\nave this guide • Share with a classmate • Comment your #1 Al tool",
+      "timestamp": "2026-11-27T13:45:15+00:00"
+    }
+  ]
+}
