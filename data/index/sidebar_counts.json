@@ -1,7 +1,7 @@
 {
-  "total_jobs": 1297516,
+  "total_jobs": 1298158,
   "sources": {
-    "naukri": 398347,
+    "naukri": 398989,
     "linkedin": 341058,
     "timesjobs": 159241,
     "indeed": 126443,
@@ -294,19 +294,19 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 272824,
-    "mumbai": 169684,
-    "delhi": 139191,
-    "chennai": 139272,
-    "hyderabad": 127526,
-    "pune": 106024,
-    "noida": 62869,
-    "ahmedabad": 49163,
-    "kolkata": 45292,
+    "bangalore": 272942,
+    "mumbai": 169743,
+    "delhi": 139263,
+    "chennai": 139379,
+    "hyderabad": 127576,
+    "pune": 106091,
+    "noida": 62940,
+    "ahmedabad": 49194,
+    "kolkata": 45325,
     "all_india": 23121,
-    "coimbatore": 26251,
-    "kochi": 20201,
-    "remote": 11981,
+    "coimbatore": 26265,
+    "kochi": 20213,
+    "remote": 11989,
     "jaipur": 10434,
     "maharashtra": 12115,
     "indore": 6468,
@@ -1479,5 +1479,5 @@
     "france": 1,
     "bhuneshwar": 1
   },
-  "generated_at": "2026-11-28T08:14:53.896965"
+  "generated_at": "2026-11-28T09:34:15.773830"
 }
