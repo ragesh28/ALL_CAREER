@@ -1,0 +1,17 @@
+{
+  "workflow_run_number": "1130",
+  "workflow_run_id": "46198571638",
+  "timestamp": "2026-11-28T22:57:41.801902",
+  "runtime_minutes": 0.91,
+  "messages_processed": 2,
+  "new_jobs_stored": 1,
+  "skipped_jobs_count": 1,
+  "failed_extractions_count": 0,
+  "image_messages_processed": 0,
+  "text_messages_processed": 2,
+  "stored_locations": {
+    "India": 1
+  },
+  "stored_walkins": 0,
+  "debug_failed_messages": []
+}
