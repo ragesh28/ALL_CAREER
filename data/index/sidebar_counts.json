@@ -1,5 +1,5 @@
 {
-  "total_jobs": 1297263,
+  "total_jobs": 1297490,
   "sources": {
     "naukri": 398347,
     "linkedin": 341058,
@@ -7,7 +7,7 @@
     "indeed": 126443,
     "internshala": 99968,
     "shine": 47528,
-    "foundit": 46134,
+    "foundit": 46361,
     "apna": 31679,
     "hirist": 17800,
     "glassdoor": 4842,
@@ -294,11 +294,11 @@
     "safran": 1
   },
   "locations": {
-    "bangalore": 272761,
-    "mumbai": 169627,
+    "bangalore": 272818,
+    "mumbai": 169683,
     "delhi": 139190,
-    "chennai": 139213,
-    "hyderabad": 127467,
+    "chennai": 139270,
+    "hyderabad": 127524,
     "pune": 106023,
     "noida": 62868,
     "ahmedabad": 49163,
@@ -1479,5 +1479,5 @@
     "france": 1,
     "bhuneshwar": 1
   },
-  "generated_at": "2026-11-27T23:41:37.010292"
+  "generated_at": "2026-11-28T03:39:54.029504"
 }
