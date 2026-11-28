@@ -1,41 +1,41 @@
 {
-  "run_id": "46133221684",
-  "updated_at": "2026-11-28T15:54:51.085286",
+  "run_id": "46162429515",
+  "updated_at": "2026-11-28T21:48:55.997917",
   "portals": {
     "apna": {
-      "scraped_total": 5268,
-      "new_stored_total": 258,
-      "requests_total": 518,
+      "scraped_total": 7434,
+      "new_stored_total": 480,
+      "requests_total": 635,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
-        "status": "http_error",
-        "http_status": 404,
-        "url": "https://apna.co/jobs/cybersecurity-engineer-jobs-in-chandigarh"
+        "status": "no_job_cards",
+        "http_status": 200,
+        "url": "https://apna.co/jobs/operations-manager-jobs-in-delhi"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 284,
+      "requests_total": 282,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/cybersecurity-engineer-jobs-in-chandigarh/"
+        "url": "https://www.workindia.in/operations-manager-jobs-in-delhi/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 284,
+      "requests_total": 282,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/cybersecurity-engineer-jobs-in-chandigarh"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/operations-manager-jobs-in-delhi"
       }
     }
   }
