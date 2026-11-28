@@ -1,41 +1,41 @@
 {
-  "run_id": "46106171697",
-  "updated_at": "2026-11-28T10:01:26.912525",
+  "run_id": "46133221684",
+  "updated_at": "2026-11-28T15:54:51.085286",
   "portals": {
     "apna": {
-      "scraped_total": 3944,
-      "new_stored_total": 53,
-      "requests_total": 519,
+      "scraped_total": 5268,
+      "new_stored_total": 258,
+      "requests_total": 518,
       "last_probe": {
-        "requests": 2,
-        "scraped": 25,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://apna.co/jobs/ui-ux-designer-jobs-in-indore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "http_error",
+        "http_status": 404,
+        "url": "https://apna.co/jobs/cybersecurity-engineer-jobs-in-chandigarh"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 283,
+      "requests_total": 284,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/ui-ux-designer-jobs-in-indore/"
+        "url": "https://www.workindia.in/cybersecurity-engineer-jobs-in-chandigarh/"
       }
     },
     "freshersworld": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 283,
+      "requests_total": 284,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/ui-ux-designer-jobs-in-indore"
+        "url": "https://www.freshersworld.com/jobs/jobsearch/cybersecurity-engineer-jobs-in-chandigarh"
       }
     }
   }
