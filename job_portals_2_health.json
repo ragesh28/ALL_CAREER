@@ -1,41 +1,41 @@
 {
-  "run_id": "45856013421",
-  "updated_at": "2026-11-26T19:56:33.954258",
+  "run_id": "46106171697",
+  "updated_at": "2026-11-28T10:01:26.912525",
   "portals": {
     "apna": {
-      "scraped_total": 4154,
-      "new_stored_total": 145,
-      "requests_total": 431,
+      "scraped_total": 3944,
+      "new_stored_total": 53,
+      "requests_total": 519,
       "last_probe": {
-        "requests": 3,
-        "scraped": 38,
+        "requests": 2,
+        "scraped": 25,
         "status": "ok",
         "http_status": 200,
-        "url": "https://apna.co/jobs/customer-support-executive-jobs-in-coimbatore"
+        "url": "https://apna.co/jobs/ui-ux-designer-jobs-in-indore"
       }
     },
     "workindia": {
       "scraped_total": 0,
       "new_stored_total": 0,
-      "requests_total": 197,
+      "requests_total": 283,
       "last_probe": {
         "requests": 1,
         "scraped": 0,
         "status": "blocked",
         "http_status": 403,
-        "url": "https://www.workindia.in/customer-support-executive-jobs-in-coimbatore/"
+        "url": "https://www.workindia.in/ui-ux-designer-jobs-in-indore/"
       }
     },
     "freshersworld": {
-      "scraped_total": 4726,
-      "new_stored_total": 11,
-      "requests_total": 451,
+      "scraped_total": 0,
+      "new_stored_total": 0,
+      "requests_total": 283,
       "last_probe": {
-        "requests": 2,
-        "scraped": 19,
-        "status": "ok",
-        "http_status": 200,
-        "url": "https://www.freshersworld.com/jobs/jobsearch/customer-support-executive-jobs-in-coimbatore"
+        "requests": 1,
+        "scraped": 0,
+        "status": "blocked",
+        "http_status": 403,
+        "url": "https://www.freshersworld.com/jobs/jobsearch/ui-ux-designer-jobs-in-indore"
       }
     }
   }
